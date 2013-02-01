@@ -1,0 +1,14 @@
+dist
+src
+*.~
+*~
+python
+minisass/settings.py
+*.pyc
+*.*.orig
+*.swp
+minisass/media/livetracks/*
+.DS_Store
+assets/
+minisass/*.txt
+minisass/media
