@@ -107,6 +107,7 @@ Rivers and dams
 Download from http://www.dwa.gov.za/iwqs/gis_data/river/rivs500k.html
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 wriall500 rivers | psql -d minisass-cms
+
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 dams500g dams | psql -d minisass-cms
 
 Catchments and WMAs
@@ -115,7 +116,10 @@ Catchments and WMAs
 download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31s4nwzcqbf1qu20%29%29/Default.aspx
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dprim_conv hca1 | psql -d minisass-cms
+
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dsec_conv.shp hca2 | psql -d minisass-cms
+
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dter_conv.shp hca3 | psql -d minisass-cms
+
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv.shp hca4 | psql -d minisass-cms
 

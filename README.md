@@ -16,6 +16,10 @@ Contact: Frank Sokolic frank@gis-solutions.co.za
 Authors
 
 Frank Sokolic, GIS-Solutions 2013
+
 Gavin Fleming, AfriSpatial 2013
+
 Jurgen Blignaut, Webtide 2013
+
 Simon Bruton, GroundTruth 2013
+
