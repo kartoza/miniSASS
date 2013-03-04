@@ -117,9 +117,74 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dprim_conv hca1 | psql -d minisass-cms
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dsec_conv.shp hca2 | psql -d minisass-cms
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dsec_conv hca2 | psql -d minisass-cms
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dter_conv.shp hca3 | psql -d minisass-cms
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dter_conv hca3 | psql -d minisass-cms
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv.shp hca4 | psql -d minisass-cms
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv hca4 | psql -d minisass-cms
+
+Schools
+-------
+
+miniSASS sample points
+----------------------
+We'll load these and pubish as WMS for early development, but might end up publishing directly via Django and OL. This is also not the final schema, just 'as is' from GroundTruth. First save the sample .xlsx file as a dbf after formatting the Data column as 'date with time'. I also had to roundtrip the date as text into a new column and fiddle with locales to get the date as a string in the right order. It arrived as MS decimal date.
+
+> shp2pgsql -n -c -D 'GT0380-Example miniSASS data - DUCT May Day River Walk' sample_temp | psql -d minisass-cms
+
+We then use SQL to generate and populate parts of the final schema from the sample data.
+
+    CREATE TABLE sites 
+    (
+      gid serial NOT NULL,
+      the_geom geometry(Point,4326),
+      name character varying(100),
+      CONSTRAINT sites_pk PRIMARY KEY (gid )
+    )
+    WITH (
+      OIDS=FALSE
+    );
+
+    CREATE INDEX sites_geom_idx
+      ON sites
+      USING gist
+      (the_geom );
+
+    --SELECT setval('public.sites_gid_seq', 0, true);
+    INSERT INTO sites (the_geom,name)
+    SELECT ST_PointFromText('POINT('||longitude||' '||latitude||')', 4326), site_name
+    FROM sample_temp;
+
+    CREATE TABLE observations 
+    (
+      gid serial NOT NULL,
+      user_id integer,
+      score numeric(4,2),
+      site integer,
+      time_stamp timestamp without time zone,
+      comment character varying(255),
+      CONSTRAINT observations_pk PRIMARY KEY (gid )
+    )
+    WITH (
+      OIDS=FALSE
+    );
+    
+    INSERT INTO observations (site)
+    SELECT gid
+    FROM sites;
+    
+    ALTER TABLE sample_temp ADD UNIQUE (site_name);
+    
+    UPDATE observations o SET score = s.mini_sass_, time_stamp = s.date_iso,comment = s.comment
+    FROM (SELECT s.*,t.comment,t.mini_sass_,t.date_iso::timestamp without time zone FROM sites s INNER JOIN sample_temp t on s.name = t.site_name) s
+    WHERE site = s.gid; 
+    
+    ALTER TABLE observations ADD FOREIGN KEY (site) REFERENCES sites (gid) ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+To add a layer to QGIS you can use somethign like this in DB Manager:
+
+> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid    
+    
+
+
 
