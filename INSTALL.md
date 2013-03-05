@@ -1,44 +1,39 @@
-[this needs to be reformatted to github flavoured markdown]
+Installing miniSASS Django-CMS project
+======================================
 
-== Installing miniSASS Django-CMS project ==
-
-This is currently a basic Django-CMS site. No extra Django applications have been added yet. To install the pre-requisites
-needed for this site to run, do the following:
+This is currently a basic Django-CMS site. No extra Django applications have been added yet. To install the pre-requisites needed for this site to run, do the following:
 
 
 Create a PostGreSQL database, based on a template that includes the PostGIS functionality.
 
-'''
-createdb -T <postgis-template> minisass-cms
-'''
+    createdb -T postgis-template minisass-cms
 
-<postgis-template> is the name of your postgis-enabled database template.
+postgis-template is the name of your postgis-enabled database template.
 
 or if you have postgresql >= 9.1 and PostGIS >= 2.0 then 
 
->createdb minisass-cms
->psql -c 'CREATE EXTENSION postgis;' minisass-cms
+    createdb minisass-cms
+    psql -c 'CREATE EXTENSION postgis;' minisass-cms
 
 
 
--- Create the project directory --
+Create the project directory
+----------------------------
 
-'''
-mkdir miniSASS
-cd miniSASS/
-'''
+    mkdir miniSASS
+    cd miniSASS/
 
 
--- Create the python virtual environment --
+Create the python virtual environment
+-------------------------------------
 
-'''
-virtualenv python
-source python/bin/activate
-'''
+    virtualenv python
+    source python/bin/activate
+
 Install initial system-level dependencies
 
-apt-get install python-dev libjpeg8-dev libpng12-dev libfreetype6-dev zlib1g-dev
- (or should that be libjpeg62-dev?)
+    apt-get install python-dev libjpeg8-dev libpng12-dev libfreetype6-dev zlib1g-dev
+ (or libjpeg62-dev if you are on Ubuntu 12.04 or lower)
 
 If you still get this in the next step when compiling PIL:
 
@@ -55,48 +50,40 @@ If you still get this in the next step when compiling PIL:
 
 then try this or similar: http://www.jayzawrotny.com/blog/django-pil-and-libjpeg-on-ubuntu-1110 (untested)
 
--- Install the Django-CMS dependencies --
+Install the Django-CMS dependencies
+-----------------------------------
 
-'''
-pip install pil==1.1.7
-pip install psycopg2
-pip install Django==1.4
-pip install django-cms
-pip install south
-pip install django-filer
-pip install cmsplugin-filer
-pip install django-reversion==1.6
-'''
+    pip install pil==1.1.7
+    pip install psycopg2
+    pip install Django==1.4
+    pip install django-cms
+    pip install south
+    pip install django-filer
+    pip install cmsplugin-filer
+    pip install django-reversion==1.6
 
+Checkout this repository from GitHub
+------------------------------------
 
--- Checkout this repository from GitHub --
-
-'''
-git clone https://github.com/sokolic/miniSASS.git minisass
-cd minisass/
-'''
+    git clone https://github.com/sokolic/miniSASS.git minisass
+    cd minisass/
 
 Now, copy settings.py.templ to settings.py, and set the database credentials correctly.
 
-'''
-cp minisass/settings.py.templ minisass/settings.py
-'''
+    cp minisass/settings.py.templ minisass/settings.py
+    vim settings.py
+    
+Change settings to fit your database credentials, etc.
 
-'''
-vim settings.py
+Initialize your database and start the site
+-------------------------------------------
 
-:wq
-'''
+    python manage.py syncdb --all
+    python manage.py migrate --fake
+    python manage.py runserver
 
--- Initialize your database and start the site --
+You should have a running, but empty, Django-CMS website.
 
-'''
-python manage.py syncdb --all
-python manage.py migrate --fake
-python manage.py runserver
-'''
-
-You should have an running, but empty, Django-CMS website.
 
 Setting up the spatial data layers
 ==================================
