@@ -139,6 +139,8 @@ We then use SQL to generate and populate parts of the final schema from the samp
       gid serial NOT NULL,
       the_geom geometry(Point,4326),
       name character varying(100),
+      description character varying(255),
+      river_cat character varying(5), --'sandy' or 'rocky', Django list
       CONSTRAINT sites_pk PRIMARY KEY (gid )
     )
     WITH (
@@ -159,6 +161,19 @@ We then use SQL to generate and populate parts of the final schema from the samp
     (
       gid serial NOT NULL,
       user_id integer,
+      flatworms boolean,
+      worms boolean,
+      leeches boolean,
+      crabs_shrimps boolean,
+      stoneflies boolean,
+      minnow_mayflies boolean,
+      other_mayflies boolean,
+      damselflies boolean,
+      dragonflies boolean,
+      bugs_beetles boolean,
+      caddisflies boolean,
+      true_flies boolean,
+      snails boolean,
       score numeric(4,2),
       site integer,
       time_stamp timestamp without time zone,
@@ -180,10 +195,12 @@ We then use SQL to generate and populate parts of the final schema from the samp
     WHERE site = s.gid; 
     
     ALTER TABLE observations ADD FOREIGN KEY (site) REFERENCES sites (gid) ON UPDATE NO ACTION ON DELETE NO ACTION;
+    
+    DROP TABLE sample_temp;
 
-To add a layer to QGIS you can use somethign like this in DB Manager:
+To add a layer to QGIS you can use something like this in DB Manager:
 
-> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid    
+> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid
     
 
 
