@@ -1,0 +1,12 @@
+<h1>miniSASS Monitor Results</h1>
+
+{% if monitors %}
+  <ul>
+  {% for item in monitors %}
+    <li><a href="/monitor/{{item.id}}/">{{item.nearest_place_name}}</a> done on
+      {{item.date_created}}.</li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p style="urgent">Please go and do a miniSASS and report on it!</p>
+{% endif %}
