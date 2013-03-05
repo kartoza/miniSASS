@@ -2,6 +2,7 @@ dist
 src
 *.~
 *~
+*.pyc
 python
 minisass/settings.py
 *.pyc
