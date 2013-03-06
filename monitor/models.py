@@ -34,7 +34,7 @@ class Sites(models.Model):
 class Observations(models.Model):
     gid = models.AutoField(primary_key=True, editable=False)
     score = models.DecimalField(max_digits=4, decimal_places=2, editable=False)
-    site = models.ForeignKey(Sites, db_column='gid')
+    site = models.ForeignKey(Sites, db_column='site',related_name='observations')
     time_stamp = models.DateTimeField()
     comment = models.CharField(max_length=255, blank=True)
     user_id = models.ForeignKey(User)
