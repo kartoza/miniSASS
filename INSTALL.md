@@ -110,6 +110,9 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv hca4 | psql -d minisass-cms
 
+Admin boundaries
+----------------
+
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 DistrictMunicipalities2011.shp | psql -p 5433 -d minisass-cms
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 Province_New_SANeighbours.shp | psql -p 5433 -d minisass-cms
@@ -118,6 +121,8 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 
 Schools
 -------
+
+[waiting for data from Frank]
 
 miniSASS sample points
 ----------------------
@@ -194,6 +199,10 @@ We then use SQL to generate and populate parts of the final schema from the samp
 To add a layer to QGIS you can use something like this in DB Manager:
 
 > SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid
+
+Or in PostGIS
+
+> CREATE VIEW sample AS ..the query above...
     
 
 

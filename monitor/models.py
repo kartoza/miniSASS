@@ -61,7 +61,7 @@ class Observations(models.Model):
 
 
 class ObservationPlugin(CMSPlugin):
-    """ This is a Django CMS plugin for the above miniSASS monitor model class
+    """ This is a Django CMS plugin for the above Observations monitor model class
     """
     observation = models.ForeignKey(Observations, related_name='plugins')
 
