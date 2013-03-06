@@ -71,7 +71,7 @@ Checkout this repository from GitHub
 Now, copy settings.py.templ to settings.py, and set the database credentials correctly.
 
     cp minisass/settings.py.templ minisass/settings.py
-    vim settings.py
+    vim minisass/settings.py
     
 Change settings to fit your database credentials, etc.
 
