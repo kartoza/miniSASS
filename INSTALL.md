@@ -123,6 +123,12 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv hca4 | psql -d minisass-cms
 
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 DistrictMunicipalities2011.shp | psql -p 5433 -d minisass-cms
+
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 Province_New_SANeighbours.shp | psql -p 5433 -d minisass-cms
+
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 LocalMunicipalities2011.shp | psql -p 5433 -d minisass-cms
+
 Schools
 -------
 
