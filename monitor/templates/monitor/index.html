@@ -1,0 +1,12 @@
+<h1>miniSASS Observation Results</h1>
+
+{% if observations %}
+  <ul>
+  {% for item in observations %}
+    <li><a href="/monitor/{{item.id}}/">{{item.site.name}}</a> done on
+      {{item.time_stamp}}.</li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p style="urgent">Please go and do a miniSASS and report the result!</p>
+{% endif %}
