@@ -7,6 +7,12 @@
       <se:FeatureTypeStyle>
         <se:Rule>
           <se:Name>local municipalities</se:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>cat2</ogc:PropertyName>
+              <ogc:Literal>Local Municipality</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
           <se:MinScaleDenominator>1000</se:MinScaleDenominator>
           <se:MaxScaleDenominator>600000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
@@ -15,26 +21,74 @@
               <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
             </se:Stroke>
           </se:PolygonSymbolizer>
-            <se:TextSymbolizer>
-                      
-                       <se:Label>
+           <se:TextSymbolizer>
+                        <se:Label>
                             <ogc:PropertyName>municname</ogc:PropertyName>
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
-                            <se:SvgParameter name="font-weight">bold</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>
                         <se:LabelPlacement>
-                            <se:LinePlacement>
-                                <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
-                            </se:LinePlacement>
+                            <se:PointPlacement>
+                                <se:AnchorPoint>
+                                    <se:AnchorPointX>0.0</se:AnchorPointX>
+                                    <se:AnchorPointY>0.0</se:AnchorPointY>
+                                </se:AnchorPoint>
+                                <se:Displacement>
+                                    <se:DisplacementX>0.0</se:DisplacementX>
+                                    <se:DisplacementY>0.0</se:DisplacementY>
+                                </se:Displacement>
+                            </se:PointPlacement>
                         </se:LabelPlacement>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#00000</se:SvgParameter>
+                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
                         </se:Fill>
                     </se:TextSymbolizer>
+        </se:Rule>
+        <se:Rule>
+          <se:Name>Metropolitan Municipality</se:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>cat2</ogc:PropertyName>
+              <ogc:Literal>Metropolitan Municipality</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
+          <se:PolygonSymbolizer>
+            <se:Stroke>
+              <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+              <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
+            </se:Stroke>
+          </se:PolygonSymbolizer>
+           <se:TextSymbolizer>
+                        <se:Label>
+                            <ogc:PropertyName>municname</ogc:PropertyName>
+                        </se:Label>
+                        <se:Font>
+                            <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
+                            <se:SvgParameter name="font-style">normal</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">normal</se:SvgParameter>
+                        </se:Font>
+                        <se:LabelPlacement>
+                            <se:PointPlacement>
+                                <se:AnchorPoint>
+                                    <se:AnchorPointX>0.0</se:AnchorPointX>
+                                    <se:AnchorPointY>0.0</se:AnchorPointY>
+                                </se:AnchorPoint>
+                                <se:Displacement>
+                                    <se:DisplacementX>0.0</se:DisplacementX>
+                                    <se:DisplacementY>0.0</se:DisplacementY>
+                                </se:Displacement>
+                            </se:PointPlacement>
+                        </se:LabelPlacement>
+                        <se:Fill>
+                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
+                        </se:Fill>
+             </se:TextSymbolizer>
         </se:Rule>
       </se:FeatureTypeStyle>
     </UserStyle>
