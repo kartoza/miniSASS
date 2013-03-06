@@ -24,8 +24,10 @@ class Sites(models.Model):
     description = models.CharField(max_length=255, blank=True)
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     objects = models.GeoManager()
+
     class Meta:
         db_table = u'sites'
+
     def __unicode__(self):
         return self.name
                
@@ -50,25 +52,18 @@ class Observations(models.Model):
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
     objects = models.GeoManager()
+
     class Meta:
         db_table = u'observations'
 
-class miniSASSmonitor(models.Model):
-    """ This is a model class to contain the information for a miniSASS event.
-
-    Please add fields as required.
-    """
-    nearest_place_name = models.CharField(max_length=80, blank=False)
-    date_created = models.DateTimeField(auto_now_add = True, editable = False)
-
     def __unicode__(self):
-        return self.nearest_place_name
+        return self.site.name
 
 
-class MonitorPlugin(CMSPlugin):
+class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above miniSASS monitor model class
     """
-    monitor = models.ForeignKey('monitor.miniSASSmonitor', related_name='plugins')
+    observation = models.ForeignKey(Observations, related_name='plugins')
 
     def __unicode__(self):
-        return self.monitor.nearest_place_name
+        return self.observation.site.name

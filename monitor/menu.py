@@ -3,21 +3,21 @@ from menu.base import Menu, NavigationNode
 from menus.menu_pool import menu_pool
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from monitor.models import miniSASSmonitor
+from monitor.models import Observations
 
 
 class MonitorMenu(CMSAttachMenu):
-    name = _(u"Monitor Menu")
+    name = _(u"Observations Menu")
 
     def get_nodes(self, request):
-        """ Build the menu tree of monitor records
+        """ Build the menu tree of observation records
         """
         nodes = []
-        for monitor in miniSASSmonitor.objects.all().order_by('-date_created'):
+        for observation in Observations.objects.all().order_by('-time_stamp'):
             node = NavigationNode(
-                    monitor.nearest_place_name,
-                    reverse('monitor.views.detail', args=(monitor.pk,)),
-                    monitor.pk
+                    observation.nearest_place_name,
+                    reverse('monitor.views.detail', args=(observation.pk,)),
+                    observation.pk
                 )
             nodes.append(node)
         return nodes

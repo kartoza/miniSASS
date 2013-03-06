@@ -13,25 +13,25 @@ from monitor import models
 def index(request):
     """ The 'landing page' for the monitor application 
     
-    Will display the list of most current miniSASS reports
+    Will display the list of most current miniSASS observation reports
     """
 
-    monitors = models.miniSASSmonitor.objects.all().order_by('-date_created')[:10]
+    observations = models.observations.objects.all().order_by('-time_stamp')[:10]
 
     # render the home page
     return render_to_response('monitor/index.html', 
-                              {'monitors':monitors}, 
+                              {'observations':observations}, 
                               context_instance=RequestContext(request))
 
 
 def detail(request, monitor_id):
-    """ miniSASS monitor detail view
+    """ miniSASS observation detail view
     """
     try:
-        monitor = models.miniSASSmonitor.objects.get(pk=monitor_id)
-    except models.miniSASSmonitor.DoesNotExist:
+        observation = models.Observations.objects.get(pk=monitor_id)
+    except models.Observations.DoesNotExist:
         raise Http404
 
     return render_to_response('monitor/detail.html',
-                              {'monitor':monitor},
+                              {'observation':observation},
                               context_instance=RequestContext(request))
