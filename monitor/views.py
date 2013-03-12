@@ -13,13 +13,21 @@ from monitor import models
 def index(request):
     """ The 'landing page' for the monitor application 
     
-    Will display the list of most current miniSASS observation reports
+    Will display a map
+    """
+
+    # render the home page
+    return render_to_response('monitor/index.html', 
+                              context_instance=RequestContext(request))
+
+def observations(request):
+    """ Will display the list of most current miniSASS observation reports
     """
 
     observations = models.observations.objects.all().order_by('-time_stamp')[:10]
 
     # render the home page
-    return render_to_response('monitor/index.html', 
+    return render_to_response('monitor/observations.html', 
                               {'observations':observations}, 
                               context_instance=RequestContext(request))
 
