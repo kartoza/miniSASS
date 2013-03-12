@@ -122,7 +122,7 @@ Admin boundaries
 Schools
 -------
 download from the GitHub miniSASS repository: webmapping/spatial_data/schools.*
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 schools.shp | psql -p 5433 -d minisass-cms
+> shp2pgsql -s 4326 -c -D -I -W LATIN1 schools.shp | psql -d minisass-cms
 
 miniSASS sample points
 ----------------------
