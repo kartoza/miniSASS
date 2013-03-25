@@ -32,6 +32,10 @@ class Sites(models.Model):
         return self.name
                
 class Observations(models.Model):
+    STATUS_CATS = (
+        (u'dirty', u'Dirty'),
+        (u'clean', u'Clean')
+    )
     gid = models.AutoField(primary_key=True, editable=False)
     score = models.DecimalField(max_digits=4, decimal_places=2, editable=False)
     site = models.ForeignKey(Sites, db_column='site',related_name='observations')
@@ -52,6 +56,7 @@ class Observations(models.Model):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
+    flag = models.CharField(max_length=5, choices=STATUS_CATS, default='dirty')
     objects = models.GeoManager()
 
     class Meta:
