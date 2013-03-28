@@ -10,9 +10,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'minisass.views.home', name='home'),
     # url(r'^minisass/', include('minisass.foo.urls')),
-
-    # Monitor app
-    url(r'^monitor/$', 'monitor.views.index'),
+    (r'^monitor/', include('monitor.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

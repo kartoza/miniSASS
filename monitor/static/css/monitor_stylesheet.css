@@ -5,3 +5,11 @@
 #layertree {
   float:left;
 }
+
+.data_input {
+  float:left;
+}
+
+.data_input td {
+  text-align:left;
+}
