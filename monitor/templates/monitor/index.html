@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang= "en">
+<!DOCTYPE html>
+<html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>miniSASS</title>
@@ -11,18 +10,94 @@
     <!--ExtJS-->
     <script src="{{ STATIC_URL }}js/ext-3.4.0/adapter/ext/ext-base.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/ext-3.4.0/ext-all.js" type="text/javascript"></script>
-    <link href="{{ STATIC_URL }}js/ext-3.4.0/resources/css/ext-all.css" rel="stylesheet" type="text/css"></link>
+    <link href="{{ STATIC_URL }}js/ext-3.4.0/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>
     <!--GeoExt-->
     <script src="{{ STATIC_URL }}js/GeoExt/lib/GeoExt.js" type="text/javascript"></script>
-    <link href="{{ STATIC_URL }}js/GeoExt/resources/css/geoext-all-debug.css" rel="stylesheet" type="text/css"></link>
+    <link href="{{ STATIC_URL }}js/GeoExt/resources/css/geoext-all-debug.css" rel="stylesheet" type="text/css"/>
     <!--miniSASS-->
     <script src="{{ STATIC_URL }}js/minisass.js" type="text/javascript"></script>
     <link href="{{ STATIC_URL }}css/monitor_stylesheet.css" rel="stylesheet" type="text/css"/>
   </head>
-  <body>
-    <div id="toolbar"></div>
-    <a href="data_input/" title="Add a new miniSASS Observation">Add New Observation</a>
+  <body onload="updateScore();">
     <div id="map"></div>
-    <div id="layertree"></div>
+    <div id=sidepanel>
+      <div id="layertree"></div>
+      <div id="toolbar">
+        <input type="button" id="data_button" value="Input Data" /><br /><br />
+      </div> <!--toolbar-->
+      {% if site_form.errors %}
+          {% for error in site_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+      {% endif %}
+      {% if coords_form.errors %}
+          {% for error in coords_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+      {% endif %}
+      {% if observation_form.errors %}
+          {% for error in observation_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+      {% endif %}
+    </div> <!--sidepanel-->
+    <div id="data_window" class="x-hidden">
+      <div class="x-window-header">miniSASS Data Input</div>
+      <div id="data_panel">
+        <form action="/monitor/" method="post" id="dataform">{% csrf_token %}
+          <table class="data_table">
+            <tr><td><label for="id_observations-0-sample_date">Date:</label></td><td>{{ observation_form.forms.0.sample_date }}</td></tr>
+            <tr><td><label for="id_observations-0-name">Collector's name:</label></td><td>{{ observation_form.forms.0.user_name }}</td></tr>
+            <tr><td><label for="id_name">River name:</label></td><td>{{ site_form.name }}</td></tr>
+            <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
+            <tr><td><label for="id_latitude">Latitude (S):</label></td><td>
+              {{ coords_form.latitude }}
+              <input type="text" name="lat_d" id="id_lat_d" style="display: none;" size="2"/>
+              <input type="text" name="lat_m" id="id_lat_m" style="display: none;" size="2"/>
+              <input type="text" name="lat_s" id="id_lat_s" style="display: none;" size="3"/>
+            </td></tr>
+            <tr><td><label for="id_longitude">Longitude (E):</label></td><td>
+              {{ coords_form.longitude }}
+              <input type="text" name="lon_d" id="id_lon_d" style="display: none;" size="2"/>
+              <input type="text" name="lon_m" id="id_lon_m" style="display: none;" size="2"/>
+              <input type="text" name="lon_s" id="id_lon_s" style="display: none;" size="3"/>
+            </td></tr>
+            <tr><td></td><td>
+              <input type="radio" name="coord_format" id="Decimal" value="Decimal" onclick="coords('Decimal');" checked="checked"/>Decimal degrees
+              <input type="radio" name="coord_format" id="DMS" value="DMS" onclick="coords('DMS');"/>DMS
+            </td></tr>
+            <tr><td><label for="id_observations-0-comment">Comments/notes:</label></td><td>{{ observation_form.forms.0.comment }}</td></tr>
+            <tr><td><label for="id_river_cat">River category:</label></td><td>
+              {{ site_form.river_cat }}
+            </td></tr>
+          </table>
+          <table class="data_table">
+            <tr><th>Groups</th><th>Sensitivity Score</th></tr>
+            <tr><td><label for="id_observations-0-flatworms">{{ observation_form.forms.0.flatworms.label }}:</label></td><td>{{ observation_form.forms.0.flatworms }}</td></tr>
+            <tr><td><label for="id_observations-0-worms">{{ observation_form.forms.0.worms.label }}:</label></td><td>{{ observation_form.forms.0.worms }}</td></tr>
+            <tr><td><label for="id_observations-0-leeches">{{ observation_form.forms.0.leeches.label }}:</label></td><td>{{ observation_form.forms.0.leeches }}</td></tr>
+            <tr><td><label for="id_observations-0-crabs_shrimps">{{ observation_form.forms.0.crabs_shrimps.label }}:</label></td><td>{{ observation_form.forms.0.crabs_shrimps }}</td></tr>
+            <tr><td><label for="id_observations-0-stoneflies">{{ observation_form.forms.0.stoneflies.label }}:</label></td><td>{{ observation_form.forms.0.stoneflies }}</td></tr>
+            <tr><td><label for="id_observations-0-minnow_mayflies">{{ observation_form.forms.0.minnow_mayflies.label }}:</label></td><td>{{ observation_form.forms.0.minnow_mayflies }}</td></tr>
+            <tr><td><label for="id_observations-0-other_mayflies">{{ observation_form.forms.0.other_mayflies.label }}:</label></td><td>{{ observation_form.forms.0.other_mayflies }}</td></tr>
+            <tr><td><label for="id_observations-0-damselflies">{{ observation_form.forms.0.damselflies.label }}:</label></td><td>{{ observation_form.forms.0.damselflies }}</td></tr>
+            <tr><td><label for="id_observations-0-dragonflies">{{ observation_form.forms.0.dragonflies.label }}:</label></td><td>{{ observation_form.forms.0.dragonflies }}</td></tr>
+            <tr><td><label for="id_observations-0-bugs_beetles">{{ observation_form.forms.0.bugs_beetles.label }}:</label></td><td>{{ observation_form.forms.0.bugs_beetles }}</td></tr>
+            <tr><td><label for="id_observations-0-caddisflies">{{ observation_form.forms.0.caddisflies.label }}</label></td><td>{{ observation_form.forms.0.caddisflies }}</td></tr>
+            <tr><td><label for="id_observations-0-true_flies">{{ observation_form.forms.0.true_flies.label }}:</label></td><td>{{ observation_form.forms.0.true_flies }}</td></tr>
+            <tr><td><label for="id_observations-0-snails">{{ observation_form.forms.0.snails.label }}:</label></td><td>{{ observation_form.forms.0.snails }}</td></tr>
+            <tr><td>Total score:</td><td id="id_total_score">0</td></tr>
+            <tr><td>Number of groups:</td><td id="id_groups">0</td></tr>
+            <tr><td>Average score:</td><td id="id_average_score">0.0</td></tr>
+          </table>
+          <input type="hidden" name="observations-0-score" id="id_observations-0-score" value="0.0"/>
+          <input type="hidden" name="the_geom" id="id_the_geom" value=""/>
+          <input type="hidden" name="observations-0-flag" id="id_observations-0-flag" value="clean"/>
+          <input type="hidden" name="observations-TOTAL_FORMS" value="1" id="id_observations-TOTAL_FORMS" />
+          <input type="hidden" name="observations-INITIAL_FORMS" value="0" id="id_observations-INITIAL_FORMS" />
+          <input type="hidden" name="observations-MAX_NUM_FORMS" id="id_observations-MAX_NUM_FORMS" />
+        </form> <!--dataform-->
+      </div>  <!--data_panel-->
+    </div> <!--data_window-->
   </body>
 </html>

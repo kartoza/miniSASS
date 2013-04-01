@@ -1,8 +1,8 @@
 from django import forms
 from monitor.models import Sites, Observations
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, DateInput
 
-
+# Form based on the Sites model
 class SiteForm(ModelForm):
     class Meta:
         model = Sites
@@ -10,10 +10,7 @@ class SiteForm(ModelForm):
             'description': Textarea(attrs={'cols':30, 'rows':4}),
         }
 
-class CoordsForm(forms.Form):
-    latitude = forms.DecimalField(min_value=-90,max_value=90)
-    longitude = forms.DecimalField(min_value=-180,max_value=180)
-
+# Form based on the Observations model
 class ObservationForm(ModelForm):
     flatworms = forms.BooleanField(required=False,label='Flat worms',widget=forms.CheckboxInput(attrs = {'onclick' : "updateScore();"}))
     worms = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick' : "updateScore();"}))
@@ -32,6 +29,13 @@ class ObservationForm(ModelForm):
         model = Observations
         exclude = ('site','time_stamp','user')
         widgets = {
+            'sample_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
             'comment':  Textarea(attrs={'cols':30, 'rows':4}),
         }
+
+# A form for storing lon/lat coordinates
+class CoordsForm(forms.Form):
+    latitude = forms.DecimalField(min_value=-90,max_value=90,widget=forms.TextInput(attrs = {'size':'2','value':'0.00000'}))
+    longitude = forms.DecimalField(min_value=-180,max_value=180,widget=forms.TextInput(attrs = {'size':'2','value':'0.00000'}))
+
 

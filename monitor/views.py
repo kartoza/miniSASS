@@ -11,18 +11,9 @@ from monitor.forms import *
 from monitor.models import Sites, Observations
 from django.forms.models import inlineformset_factory
 
-def index(request):
+def index(request, site_id=None):
     """ The 'landing page' for the monitor application 
-    
-    Will display a map
-    """
-
-    # render the home page
-    return render_to_response('monitor/index.html', 
-                              context_instance=RequestContext(request))
-
-def data_input(request, site_id=None):
-    """ Will display the miniSASS data entry screen
+        Displays a map and handles data input
     """
     if site_id == None:
         site = Sites()
@@ -35,11 +26,6 @@ def data_input(request, site_id=None):
         # create form instances with the POST data
         site_form = SiteForm(request.POST, instance=site)
         coords_form = CoordsForm(request.POST)
-        data = {
-            'form-TOTAL_FORMS': u'1',
-            'form-INITIAL_FORMS': u'0',
-            'form-MAX_NUM_FORMS': u'',
-            }
         observation_form = Observation_Formset(request.POST, instance=site)
         if (site_form.is_valid() and coords_form.is_valid() and observation_form.is_valid()):
             site_form.save()
@@ -49,7 +35,7 @@ def data_input(request, site_id=None):
         site_form = SiteForm(instance=site)
         coords_form = CoordsForm()
         observation_form = Observation_Formset(instance=site)
-    return render_to_response('monitor/data_input.html', 
+    return render_to_response('monitor/index.html', 
                                   {'site_form':site_form,'coords_form':coords_form,'observation_form':observation_form},
                                   context_instance=RequestContext(request))
 

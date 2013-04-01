@@ -1,15 +1,17 @@
 #map {
+  clear:both;
   float:left;
 }
 
-#layertree {
+#ext-gen5.x-panel-body.olMap {
+  cursor:move;
+}
+
+#sidepanel {
   float:left;
 }
 
-.data_input {
+.data_table {
   float:left;
-}
-
-.data_input td {
   text-align:left;
 }
