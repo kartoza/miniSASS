@@ -25,19 +25,28 @@ def index(request, site_id=None):
     if request.method == 'POST':
         # create form instances with the POST data
         site_form = SiteForm(request.POST, instance=site)
-        coords_form = CoordsForm(request.POST)
         observation_form = Observation_Formset(request.POST, instance=site)
+        coords_form = CoordsForm(request.POST)
+        map_form = MapForm(request.POST)
         if (site_form.is_valid() and coords_form.is_valid() and observation_form.is_valid()):
+            # save the observation and site data
             site_form.save()
             observation_form.save()
-            return HttpResponseRedirect('/monitor/')
+            # create new instances of the forms and then return to the map
+            site_form = SiteForm()
+            observation_form = Observation_Formset()
+            coords_form = CoordsForm()
+            return render_to_response('monitor/index.html', 
+                                      {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                                      context_instance=RequestContext(request))
     else: # display a either a new empty form or a form for editing
         site_form = SiteForm(instance=site)
-        coords_form = CoordsForm()
         observation_form = Observation_Formset(instance=site)
+        coords_form = CoordsForm()
+        map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950'})
     return render_to_response('monitor/index.html', 
-                                  {'site_form':site_form,'coords_form':coords_form,'observation_form':observation_form},
-                                  context_instance=RequestContext(request))
+                              {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                              context_instance=RequestContext(request))
 
 def observations(request):
     """ Will display the list of most current miniSASS observation reports

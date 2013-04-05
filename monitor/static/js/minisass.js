@@ -1,3 +1,12 @@
+      var proj4326 = new OpenLayers.Projection('EPSG:4326');
+      var proj3857 = new OpenLayers.Projection('EPSG:3857');
+//      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
+      var lonlat;
+      var map;
+      var mapClick;
+      var inputWindow;
+      var mapCursor = 'pan';
+
       /*===================================
       Functions for the data input template
       ===================================*/
@@ -40,7 +49,7 @@
       }
 
       function coords(format) {
-        if (format == "DMS") {
+        if (format == 'DMS') {
           document.getElementById('id_latitude').style.display = 'none';
           document.getElementById('id_lat_d').style.display = '';
           document.getElementById('id_lat_m').style.display = '';
@@ -58,7 +67,7 @@
           document.getElementById('id_lon_m').value = lonDMS[1];
           document.getElementById('id_lon_s').value = lonDMS[2];
         }
-        if (format == "Decimal") {
+        if (format == 'Decimal') {
           document.getElementById('id_latitude').style.display = '';
           document.getElementById('id_lat_d').style.display = 'none';
           document.getElementById('id_lat_m').style.display = 'none';
@@ -73,34 +82,57 @@
       }
 
       function updateScore() {
+      /* This function updates the species and total scores on the data
+         input form
+      */
+
         var totalScore=0;
         var numGroups=0;
         var averageScore=0;
-        if (document.getElementById('id_observations-0-flatworms').checked==true) {totalScore+=3;numGroups+=1;}
-        if (document.getElementById('id_observations-0-worms').checked==true) {totalScore+=2;numGroups+=1;}
-        if (document.getElementById('id_observations-0-leeches').checked==true) {totalScore+=2;numGroups+=1;}
-        if (document.getElementById('id_observations-0-crabs_shrimps').checked==true) {totalScore+=6;numGroups+=1;}
-        if (document.getElementById('id_observations-0-stoneflies').checked==true) {totalScore+=17;numGroups+=1;}
-        if (document.getElementById('id_observations-0-minnow_mayflies').checked==true) {totalScore+=5;numGroups+=1;}
-        if (document.getElementById('id_observations-0-other_mayflies').checked==true) {totalScore+=11;numGroups+=1;}
-        if (document.getElementById('id_observations-0-damselflies').checked==true) {totalScore+=4;numGroups+=1;}
-        if (document.getElementById('id_observations-0-dragonflies').checked==true) {totalScore+=6;numGroups+=1;}
-        if (document.getElementById('id_observations-0-bugs_beetles').checked==true) {totalScore+=5;numGroups+=1;}
-        if (document.getElementById('id_observations-0-caddisflies').checked==true) {totalScore+=9;numGroups+=1;}
-        if (document.getElementById('id_observations-0-true_flies').checked==true) {totalScore+=2;numGroups+=1;}
-        if (document.getElementById('id_observations-0-snails').checked==true) {totalScore+=4;numGroups+=1;}
+
+        function updateSpecies(species,speciesScore) {
+          var elementID = 'id_observations-0-' + species;
+          if (document.getElementById(elementID).checked==true) {
+            totalScore = totalScore +speciesScore;
+            numGroups+=1;
+            document.getElementById(species).style.color='red';
+            document.getElementById(species).style.fontWeight='bold';
+          } else {
+            document.getElementById(species).style.color='darkgray';
+            document.getElementById(species).style.fontWeight='normal';
+          }
+        }
+
+        updateSpecies('flatworms',3);
+        updateSpecies('worms',2);
+        updateSpecies('leeches',2);
+        updateSpecies('crabs_shrimps',6);
+        updateSpecies('stoneflies',17);
+        updateSpecies('minnow_mayflies',5);
+        updateSpecies('other_mayflies',11);
+        updateSpecies('damselflies',4);
+        updateSpecies('dragonflies',6);
+        updateSpecies('bugs_beetles',5);
+        updateSpecies('caddisflies',9);
+        updateSpecies('true_flies',2);
+        updateSpecies('snails',4);
         document.getElementById('id_total_score').innerHTML = totalScore;
         document.getElementById('id_groups').innerHTML = numGroups;
-        if (numGroups!=0) averageScore = (totalScore/numGroups).toFixed(1);
-        document.getElementById('id_average_score').innerHTML = averageScore;
+        if (numGroups!=0) averageScore = (totalScore/numGroups);
+        document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
       }
 
       function canSubmit() {
+      /* This function ensures that all form variables are correctly set
+         when the data input form is submitted.
+      */
+
         // convert coordinates to DD if they've been entered as DMS
         if (DMS.checked==true) {
           document.getElementById('id_latitude').value = convertDMStoDD('lat');
           document.getElementById('id_longitude').value = convertDMStoDD('lon');
         }
+
         // make sure the coordinates have the correct sign
         if (document.getElementById('id_latitude').value > 0) {
           document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
@@ -111,25 +143,48 @@
 
         // update the score value
         document.getElementById('id_observations-0-score').value = document.getElementById('id_average_score').innerHTML;
+
         // update the geometry field
         var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
         document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
-        // set the flag to Dirty
+
+        // set the observations flag to Dirty
         document.getElementById('id_observations-0-flag').value = 'dirty';
+ 
+        // update the map variables
+        document.getElementById('id_zoom_level').value = map.getZoom();
+        document.getElementById('id_centre_X').value = map.getCenter().lon;
+        document.getElementById('id_centre_Y').value = map.getCenter().lat;
         return true;
       }
 
-    /*===================
-    Functions for the map
-    ===================*/
-  
+      function inputNewMap () {
+      /* This function toggles the 'input from map' button image, changes the
+         map cursor and then activates/deactivates the mapClick control
+      */
+        if (mapCursor == 'pan') {
+          document.getElementById('id_sample_map').src = '/static/img/icon_sample_map_pressed.png';
+          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'crosshair';
+          var msg = 'Use the map to click on the location of the sample.';
+          msg = msg + '<br /><br />You can use the mouse wheel to zoom in or out on the map.';
+          msg = msg + '<br />Click and hold the mouse button to drag the map around.';
+          Ext.Msg.alert('Add sample from map', msg);
+          mapCursor = 'crosshair';
+          mapClick.activate();
+        } else {
+          document.getElementById('id_sample_map').src = '/static/img/icon_sample_map.png';
+          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'move';
+          mapCursor = 'pan';
+          mapClick.deactivate();
+        }
+      }
+
     Ext.onReady(function() {
-    
+    /*This function fires when the document is ready, before onload and
+      before any images are loaded.
+    */
+
         Ext.QuickTips.init();
-        var proj4326 = new OpenLayers.Projection("EPSG:4326");
-        var proj3857 = new OpenLayers.Projection("EPSG:3857");
-        var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-        var lonlat;
 
         // Define a handler for extracting and submitting coordinates from a click on the map
         OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
@@ -156,41 +211,42 @@
           trigger: function(e) {
             lonlat = map.getLonLatFromPixel(e.xy);
             lonlat.transform(proj3857, proj4326);
-            document.getElementById("id_latitude").value = lonlat.lat.toFixed(5);
+            document.getElementById('id_latitude').value = lonlat.lat.toFixed(5);
             document.getElementById('id_longitude').value = lonlat.lon.toFixed(5);
-            var msg = "You clicked at " +  lonlat.lat.toFixed(5) + "S " + lonlat.lon.toFixed(5) + "E.";
-            msg = msg + "<br />Do you want to enter miniSASS sample data at this location?";
-            Ext.MessageBox.confirm("Confirm", msg,function(btn,text){
-              if (btn=='yes') {win.show(this);}
+            // add something here to only trigger if the relevant button is selected
+            var msg = 'You clicked at ' +  lonlat.lat.toFixed(5) + 'S ' + lonlat.lon.toFixed(5) + 'E.';
+            msg = msg + '<br />Do you want to enter miniSASS sample data at this location?';
+            Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
+              if (btn=='yes') {inputWindow.show(this);}
             });
           }
         });
 
         // Define a new map
-        var map = new OpenLayers.Map(
-          "",
+        map = new OpenLayers.Map(
+          'miniSASS Map',
           {projection: proj3857,
            displayProjection: proj4326,
-           units: "m"});
+           units: 'm'});
 
         // Define the Google layers as base layers
         var layerGoogleSatellite = new OpenLayers.Layer.Google(
-          "Google satellite",
+          'Google satellite',
           {type: google.maps.MapTypeId.SATELLITE,sphericalMercator:true,isBaseLayer:true}
         );
         var layerGoogleTerrain = new OpenLayers.Layer.Google(
-          "Google terrain",
+          'Google terrain',
           {type: google.maps.MapTypeId.TERRAIN,sphericalMercator:true,isBaseLayer:true}
         );
         var layerGoogleRoadmap = new OpenLayers.Layer.Google(
-          "Google road map",
+          'Google road map',
           {type: google.maps.MapTypeId.ROADMAP,sphericalMercator:true,isBaseLayer:true}
         );
 
         // Define the miniSASS composite layer as a base layer
         var layerMiniSASS = new OpenLayers.Layer.WMS(
-          "miniSASS base layer",
-          "http://localhost:8080/geoserver/miniSASS/wms",
+          'miniSASS base layer',
+          'http://localhost:8080/geoserver/miniSASS/wms',
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
         );
@@ -200,8 +256,8 @@
 
         // Add the provinces as an overlay
         var layerProvinces = new OpenLayers.Layer.WMS(
-          "Provinces",
-          "http://localhost:8080/geoserver/miniSASS/wms",
+          'Provinces',
+          'http://localhost:8080/geoserver/miniSASS/wms',
           {layers:'miniSASS:provinces2011',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
@@ -209,32 +265,35 @@
 
         // Add the schools as an overlay
         var layerSchools = new OpenLayers.Layer.WMS(
-          "Schools",
-          "http://localhost:8080/geoserver/miniSASS/wms",
+          'Schools',
+          'http://localhost:8080/geoserver/miniSASS/wms',
           {layers:'miniSASS:schools',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
         map.addLayer(layerSchools);
 
-        // Add the miniSASS samples  as an overlay
+        // Add the miniSASS samples as an overlay
         var layerSamples = new OpenLayers.Layer.WMS(
-          "miniSASS Samples",
-          "http://localhost:8080/geoserver/miniSASS/wms",
+          'miniSASS Samples',
+          'http://localhost:8080/geoserver/miniSASS/wms',
           {layers:'miniSASS:samples',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
         map.addLayer(layerSamples);
 
-        var click = new OpenLayers.Control.Click();
-        map.addControl(click);
-        click.activate();
+        mapClick = new OpenLayers.Control.Click();
+        map.addControl(mapClick);
 
         // Setup the map panel
+        var zoom_level = document.getElementById('id_zoom_level').value;
+        var centreX = document.getElementById('id_centre_X').value;
+        var centreY = document.getElementById('id_centre_Y').value;
         var mapPanel = new GeoExt.MapPanel({
           renderTo: 'map',
           height: 700,
           width: 790,
-          extent: mapExtent,
+          center: [centreX,centreY],
+          zoom: zoom_level,
           map: map
         });
 
@@ -269,9 +328,10 @@
         });
 
         // Define the popup Data Input window
-        var win = new Ext.Window({
+        inputWindow = new Ext.Window({
           applyTo:'data_window',
-          layout:'fit',
+          width:580,
+          height:420,
           closeAction:'hide',
           modal:true,
           items: new Ext.Panel({
@@ -280,18 +340,18 @@
           }),
           buttons: [{
             text:'Submit',
-              handler: function(){
-                if (canSubmit()) document.forms["dataform"].submit();
-              }
+            handler: function(){
+              if (canSubmit()) document.forms['dataform'].submit();
+            }
           },{
             text: 'Close',
-            handler: function(){win.hide();}
+            handler: function(){inputWindow.hide();}
           }]
         });
 
-        // Define the button for opening the popup Data Input window
-        var button = Ext.get('data_button');
-        button.on('click', function(){win.show(this);});
+        // Link the button for opening the popup Data Input window
+        var inputButton = Ext.get('id_sample_direct');
+        inputButton.on('click', function(){inputWindow.show(this);});
   });
 
 
