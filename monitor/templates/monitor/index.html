@@ -24,10 +24,10 @@
       <div id="layertree"></div>
       <div id="input_buttons">
         <p>
-          <img src="{{ STATIC_URL }}img/icon_sample_direct.png" alt="" id="id_sample_direct" title="Enter a miniSASS sample at a new site" style="cursor:pointer;" onclick="inputNew()"/>
+          <img src="{{ STATIC_URL }}img/icon_obs_direct.png" alt="" id="id_obs_direct" title="Enter a miniSASS observation at a new site" style="cursor:pointer;"/>
         </p>
         <p>
-          <img src="{{ STATIC_URL }}img/icon_sample_map.png" alt="" id="id_sample_map" title="Enter a miniSASS sample by clicking on a new site on the map" style="cursor:pointer;" onclick="inputNewMap()"/>
+          <img src="{{ STATIC_URL }}img/icon_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;" onclick="inputNewMap()"/>
         </p>
       </div> <!--input_buttons-->
         {% if site_form.errors %}
@@ -51,7 +51,7 @@
       <div id="data_panel">
         <form action="/monitor/" method="post" id="dataform">{% csrf_token %}
           <table id="data_table_left">
-            <tr><td><label for="id_observations-0-sample_date">Date:</label></td><td>{{ observation_form.forms.0.sample_date }}</td></tr>
+            <tr><td><label for="id_observations-0-obs_date">Date:</label></td><td>{{ observation_form.forms.0.obs_date }}</td></tr>
             <tr><td><label for="id_observations-0-name">Collector"s name:</label></td><td>{{ observation_form.forms.0.user_name }}</td></tr>
             <tr><td><label for="id_name">River name:</label></td><td>{{ site_form.name }}</td></tr>
             <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
@@ -108,10 +108,7 @@
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->
-
-
-      <div id="toolbar" style="clear:both;">
-
-      </div> <!--toolbar-->
+    <div id="toolbar" style="clear:both;">
+    </div> <!--toolbar-->
   </body>
 </html>

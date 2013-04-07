@@ -163,16 +163,16 @@
          map cursor and then activates/deactivates the mapClick control
       */
         if (mapCursor == 'pan') {
-          document.getElementById('id_sample_map').src = '/static/img/icon_sample_map_pressed.png';
+          document.getElementById('id_obs_map').src = '/static/img/icon_obs_map_pressed.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'crosshair';
-          var msg = 'Use the map to click on the location of the sample.';
+          var msg = 'Use the map to click on the location of the observation.';
           msg = msg + '<br /><br />You can use the mouse wheel to zoom in or out on the map.';
           msg = msg + '<br />Click and hold the mouse button to drag the map around.';
-          Ext.Msg.alert('Add sample from map', msg);
+          Ext.Msg.alert('Add observation from map', msg);
           mapCursor = 'crosshair';
           mapClick.activate();
         } else {
-          document.getElementById('id_sample_map').src = '/static/img/icon_sample_map.png';
+          document.getElementById('id_obs_map').src = '/static/img/icon_obs_map.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'move';
           mapCursor = 'pan';
           mapClick.deactivate();
@@ -215,7 +215,7 @@
             document.getElementById('id_longitude').value = lonlat.lon.toFixed(5);
             // add something here to only trigger if the relevant button is selected
             var msg = 'You clicked at ' +  lonlat.lat.toFixed(5) + 'S ' + lonlat.lon.toFixed(5) + 'E.';
-            msg = msg + '<br />Do you want to enter miniSASS sample data at this location?';
+            msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
             Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
               if (btn=='yes') {inputWindow.show(this);}
             });
@@ -272,14 +272,14 @@
         );
         map.addLayer(layerSchools);
 
-        // Add the miniSASS samples as an overlay
-        var layerSamples = new OpenLayers.Layer.WMS(
-          'miniSASS Samples',
+        // Add the miniSASS observations as an overlay
+        var layerMiniSASS = new OpenLayers.Layer.WMS(
+          'miniSASS Observations',
           'http://localhost:8080/geoserver/miniSASS/wms',
-          {layers:'miniSASS:samples',transparent:true,format:'image/png'},
+          {layers:'miniSASS:observations',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
-        map.addLayer(layerSamples);
+        map.addLayer(layerMiniSASS);
 
         mapClick = new OpenLayers.Control.Click();
         map.addControl(mapClick);
@@ -350,8 +350,9 @@
         });
 
         // Link the button for opening the popup Data Input window
-        var inputButton = Ext.get('id_sample_direct');
+        var inputButton = Ext.get('id_obs_direct');
         inputButton.on('click', function(){inputWindow.show(this);});
+
   });
 
 
