@@ -252,7 +252,7 @@
         );
 
         // Add the base layers to the map
-        map.addLayers([layerMiniSASS,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASS]);
 
         // Add the provinces as an overlay
         var layerProvinces = new OpenLayers.Layer.WMS(
@@ -284,6 +284,29 @@
         mapClick = new OpenLayers.Control.Click();
         map.addControl(mapClick);
 
+        // Setup the menu for inputting miniSASS observations
+        var obsMenu = new Ext.menu.Menu({
+          id: 'obsMenu',
+          items: [{
+            text:'Observation at new site',
+            icon:'/static/img/icon_obs_add.png',
+            handler:function(){inputWindow.show(this);}
+          },{
+            text:'Select site from map',
+            icon:'/static/img/icon_obs_target.png',
+            handler:inputNewMap
+          }]
+        });
+
+        // Link the observations menu to a toolbar
+        var mapTb = new Ext.Toolbar({
+          items:[{
+            icon:'/static/img/icon_crab_small.png',
+            text:'Enter miniSASS observation',
+            menu:obsMenu
+          }]
+        });
+
         // Setup the map panel
         var zoom_level = document.getElementById('id_zoom_level').value;
         var centreX = document.getElementById('id_centre_X').value;
@@ -294,7 +317,8 @@
           width: 790,
           center: [centreX,centreY],
           zoom: zoom_level,
-          map: map
+          map: map,
+          tbar: mapTb // Place the map toolbar at the top
         });
 
         // Define lists to manage the layers
