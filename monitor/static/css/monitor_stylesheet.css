@@ -1,0 +1,48 @@
+#map {
+  clear:both;
+  float:left;
+}
+
+.olMapViewport {
+  cursor:move;
+}
+
+#sidepanel {
+  float:left;
+}
+
+#input_buttons {
+  margin:5px;
+  text-align:center;
+}
+
+#data_table_left {
+  float:left;
+  margin:10px;
+  text-align:left;
+}
+
+#data_table_right {
+  float:right;
+  margin:10px;
+}
+
+#data_table_right .tdtotal {
+  text-align:center;
+  font-weight:bold;
+}
+
+#data_table_right th {
+  text-align:center;
+  font-weight:bold;
+}
+
+#data_table_right .tdlabel {
+  text-align:left;
+}
+
+#data_table_right .tdscore {
+  text-align:center;
+  font-weight:normal;
+}
+

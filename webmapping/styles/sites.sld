@@ -13,7 +13,7 @@
                 <sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>
                 <sld:SemanticTypeIdentifier>simple</sld:SemanticTypeIdentifier>
                 <sld:Rule>
-                    <sld:Name>unmodified(sandy)</sld:Name>
+                    <sld:Name>Unmodified (sandy)</sld:Name>
                     <ogc:Filter>
                         <ogc:And>
                             <ogc:PropertyIsEqualTo>
@@ -29,7 +29,7 @@
                     <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="file:/icons/crab_n.svg"/>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="file:icons/crab_n.svg"/>
                                 <sld:Format>image/svg+xml</sld:Format>
                             </sld:ExternalGraphic>
                             <sld:Size>6.0</sld:Size>
@@ -37,53 +37,191 @@
                     </sld:PointSymbolizer>
                 </sld:Rule>
                 <sld:Rule>
-                    <sld:Name>Largely natural/few modifications(rocky)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>rocky</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>6.8</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>7.9</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_g.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>Seriously/critically modified (rocky)</sld:Name>
+                    <sld:Name>Unmodified (rocky)</sld:Name>
                     <ogc:Filter>
                         <ogc:And>
                             <ogc:PropertyIsEqualTo>
                                 <ogc:PropertyName>river_cat</ogc:PropertyName>
                                 <ogc:Literal>rocky</ogc:Literal>
                             </ogc:PropertyIsEqualTo>
-                            <ogc:PropertyIsLessThan>
+                            <ogc:PropertyIsGreaterThan>
                                 <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>5.1</ogc:Literal>
-                            </ogc:PropertyIsLessThan>
+                                <ogc:Literal>7.9</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
                         </ogc:And>
                     </ogc:Filter>
                     <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_sm.svg"/>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="file:icons/crab_n.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Largely natural/few modifications (sandy)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>sandy</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>6.9</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>5.8</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Largely natural/few modifications (rocky)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>rocky</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>7.9</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>6.8</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Moderately mofified (sandy)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>sandy</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>5.8</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>4.9</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Moderately modified(rocky)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>rocky</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>6.8</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>6.1</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Largely modified (sandy)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>sandy</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>4.9</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>4.3</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p.svg"/>
+                                <sld:Format>image/svg+xml</sld:Format>
+                            </sld:ExternalGraphic>
+                            <sld:Size>6.0</sld:Size>
+                        </sld:Graphic>
+                    </sld:PointSymbolizer>
+                </sld:Rule>
+                <sld:Rule>
+                    <sld:Name>Largely modified (rocky)</sld:Name>
+                    <ogc:Filter>
+                        <ogc:And>
+                            <ogc:PropertyIsEqualTo>
+                                <ogc:PropertyName>river_cat</ogc:PropertyName>
+                                <ogc:Literal>rocky</ogc:Literal>
+                            </ogc:PropertyIsEqualTo>
+                            <ogc:PropertyIsLessThanOrEqualTo>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>6.1</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
+                            <ogc:PropertyIsGreaterThan>
+                                <ogc:PropertyName>score</ogc:PropertyName>
+                                <ogc:Literal>5.1</ogc:Literal>
+                            </ogc:PropertyIsGreaterThan>
+                        </ogc:And>
+                    </ogc:Filter>
+                    <sld:PointSymbolizer>
+                        <sld:Graphic>
+                            <sld:ExternalGraphic>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p.svg"/>
                                 <sld:Format>image/svg+xml</sld:Format>
                             </sld:ExternalGraphic>
                             <sld:Size>6.0</sld:Size>
@@ -98,16 +236,16 @@
                                 <ogc:PropertyName>river_cat</ogc:PropertyName>
                                 <ogc:Literal>sandy</ogc:Literal>
                             </ogc:PropertyIsEqualTo>
-                            <ogc:PropertyIsLessThan>
+                            <ogc:PropertyIsLessThanOrEqualTo>
                                 <ogc:PropertyName>score</ogc:PropertyName>
                                 <ogc:Literal>4.3</ogc:Literal>
-                            </ogc:PropertyIsLessThan>
+                            </ogc:PropertyIsLessThanOrEqualTo>
                         </ogc:And>
                     </ogc:Filter>
                     <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_sm.svg"/>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm.svg"/>
                                 <sld:Format>image/svg+xml</sld:Format>
                             </sld:ExternalGraphic>
                             <sld:Size>6.0</sld:Size>
@@ -115,173 +253,23 @@
                     </sld:PointSymbolizer>
                 </sld:Rule>
                 <sld:Rule>
-                    <sld:Name>largely modified(rocky)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>rocky</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>5.1</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>6.1</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_p.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>Moderately modified(rocky)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>rocky</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>6.1</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>6.8</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_f.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>Moderately mofified (sandy)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>sandy</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>4.9</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>5.8</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_f.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>Largely natural/few modifications(sandy)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>sandy</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>5.8</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>6.9</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_g.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>Unmodified(rocky)</sld:Name>
+                    <sld:Name>Seriously/critically modified (rocky)</sld:Name>
                     <ogc:Filter>
                         <ogc:And>
                             <ogc:PropertyIsEqualTo>
                                 <ogc:PropertyName>river_cat</ogc:PropertyName>
                                 <ogc:Literal>rocky</ogc:Literal>
                             </ogc:PropertyIsEqualTo>
-                            <ogc:PropertyIsGreaterThan>
+                            <ogc:PropertyIsLessThanOrEqualTo>
                                 <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>7.9</ogc:Literal>
-                            </ogc:PropertyIsGreaterThan>
+                                <ogc:Literal>5.1</ogc:Literal>
+                            </ogc:PropertyIsLessThanOrEqualTo>
                         </ogc:And>
                     </ogc:Filter>
                     <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_n.svg"/>
-                                <sld:Format>image/svg+xml</sld:Format>
-                            </sld:ExternalGraphic>
-                            <sld:Size>6.0</sld:Size>
-                        </sld:Graphic>
-                    </sld:PointSymbolizer>
-                </sld:Rule>
-                <sld:Rule>
-                    <sld:Name>largely Modified(sandy)</sld:Name>
-                    <ogc:Filter>
-                        <ogc:And>
-                            <ogc:And>
-                                <ogc:PropertyIsEqualTo>
-                                    <ogc:PropertyName>river_cat</ogc:PropertyName>
-                                    <ogc:Literal>sandy</ogc:Literal>
-                                </ogc:PropertyIsEqualTo>
-                                <ogc:PropertyIsLessThanOrEqualTo>
-                                    <ogc:PropertyName>score</ogc:PropertyName>
-                                    <ogc:Literal>4.3</ogc:Literal>
-                                </ogc:PropertyIsLessThanOrEqualTo>
-                            </ogc:And>
-                            <ogc:PropertyIsGreaterThanOrEqualTo>
-                                <ogc:PropertyName>score</ogc:PropertyName>
-                                <ogc:Literal>4.9</ogc:Literal>
-                            </ogc:PropertyIsGreaterThanOrEqualTo>
-                        </ogc:And>
-                    </ogc:Filter>
-                    <sld:PointSymbolizer>
-                        <sld:Graphic>
-                            <sld:ExternalGraphic>
-                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="/icons/crab_p.svg"/>
+                                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm.svg"/>
                                 <sld:Format>image/svg+xml</sld:Format>
                             </sld:ExternalGraphic>
                             <sld:Size>6.0</sld:Size>
@@ -292,5 +280,3 @@
         </sld:UserStyle>
     </sld:UserLayer>
 </sld:StyledLayerDescriptor>
-
-

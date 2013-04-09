@@ -32,12 +32,17 @@ class Sites(models.Model):
         return self.name
                
 class Observations(models.Model):
+    FLAG_CATS = (
+        (u'dirty', u'Dirty'),
+        (u'clean', u'Clean')
+    )
     gid = models.AutoField(primary_key=True, editable=False)
-    score = models.DecimalField(max_digits=4, decimal_places=2, editable=False)
+    score = models.DecimalField(max_digits=4, decimal_places=2)
     site = models.ForeignKey(Sites, db_column='site',related_name='observations')
-    time_stamp = models.DateTimeField()
+    obs_date = models.DateField()
+    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
     comment = models.CharField(max_length=255, blank=True)
-    user_id = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)
@@ -51,6 +56,7 @@ class Observations(models.Model):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
+    flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
     objects = models.GeoManager()
 
     class Meta:
@@ -58,7 +64,6 @@ class Observations(models.Model):
 
     def __unicode__(self):
         return self.site.name
-
 
 class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
