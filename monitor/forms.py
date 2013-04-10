@@ -29,14 +29,14 @@ class ObservationForm(ModelForm):
         model = Observations
         exclude = ('site','time_stamp','user')
         widgets = {
-            'sample_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
+            'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
             'comment':  Textarea(attrs={'cols':30, 'rows':4}),
         }
 
 # Form for storing lon/lat coordinates
 class CoordsForm(forms.Form):
-    latitude = forms.DecimalField(min_value=-90,max_value=90,widget=forms.TextInput(attrs = {'size':'3','value':'0.00000'}))
-    longitude = forms.DecimalField(min_value=-180,max_value=180,widget=forms.TextInput(attrs = {'size':'3','value':'0.00000'}))
+    latitude = forms.DecimalField(min_value=-90,max_value=90,widget=forms.TextInput(attrs = {'value':'0.00000'}))
+    longitude = forms.DecimalField(min_value=-180,max_value=180,widget=forms.TextInput(attrs = {'value':'0.00000'}))
 
 # Form for storing map parameters
 class MapForm(forms.Form):
