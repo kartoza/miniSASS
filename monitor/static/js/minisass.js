@@ -1,6 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
       var lonlat;
       var map;
       var mapClick;
@@ -213,7 +215,6 @@
             lonlat.transform(proj3857, proj4326);
             document.getElementById('id_latitude').value = lonlat.lat.toFixed(5);
             document.getElementById('id_longitude').value = lonlat.lon.toFixed(5);
-            // add something here to only trigger if the relevant button is selected
             var msg = 'You clicked at ' +  lonlat.lat.toFixed(5) + 'S ' + lonlat.lon.toFixed(5) + 'E.';
             msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
             Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
@@ -246,7 +247,7 @@
         // Define the miniSASS composite layer as a base layer
         var layerMiniSASS = new OpenLayers.Layer.WMS(
           'miniSASS base layer',
-          'http://localhost:8080/geoserver/miniSASS/wms',
+          geoserverURL+'/wms',
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
         );
@@ -257,8 +258,8 @@
         // Add the provinces as an overlay
         var layerProvinces = new OpenLayers.Layer.WMS(
           'Provinces',
-          'http://localhost:8080/geoserver/miniSASS/wms',
-          {layers:'miniSASS:provinces2011',transparent:true,format:'image/png'},
+          geoserverURL+'/wms',
+          {layers:'miniSASS:provinces',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
         map.addLayer(layerProvinces);
@@ -266,7 +267,7 @@
         // Add the schools as an overlay
         var layerSchools = new OpenLayers.Layer.WMS(
           'Schools',
-          'http://localhost:8080/geoserver/miniSASS/wms',
+          geoserverURL+'/wms',
           {layers:'miniSASS:schools',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
@@ -275,8 +276,8 @@
         // Add the miniSASS observations as an overlay
         var layerMiniSASS = new OpenLayers.Layer.WMS(
           'miniSASS Observations',
-          'http://localhost:8080/geoserver/miniSASS/wms',
-          {layers:'miniSASS:observations',transparent:true,format:'image/png'},
+          geoserverURL+'/wms',
+          {layers:'miniSASS:sample',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
         map.addLayer(layerMiniSASS);
@@ -292,9 +293,13 @@
             icon:'/static/img/icon_obs_add.png',
             handler:function(){inputWindow.show(this);}
           },{
-            text:'Select site from map',
+            text:'Click site location on map',
             icon:'/static/img/icon_obs_target.png',
             handler:inputNewMap
+          },{
+            text:'Select site from list',
+            icon:'/static/img/icon_obs_list.png',
+            disabled:true
           }]
         });
 
@@ -354,7 +359,7 @@
         // Define the popup Data Input window
         inputWindow = new Ext.Window({
           applyTo:'data_window',
-          width:580,
+          width:600,
           height:420,
           closeAction:'hide',
           modal:true,

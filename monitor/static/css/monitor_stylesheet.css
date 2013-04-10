@@ -17,13 +17,11 @@
 }
 
 #data_table_left {
-  float:left;
   margin:10px;
   text-align:left;
 }
 
 #data_table_right {
-  float:right;
   margin:10px;
 }
 
