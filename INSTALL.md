@@ -113,11 +113,23 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 Admin boundaries
 ----------------
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 DistrictMunicipalities2011.shp | psql -p 5433 -d minisass-cms
+(Admire loaded these locally so he could style them - they still need to be loaded in each local db instance)
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 Province_New_SANeighbours.shp | psql -p 5433 -d minisass-cms
+for some reason (postgis / psql client version issue?) shp2pgsql -I option failing.
 
-> shp2pgsql -s 4326 -c -D -I -W LATIN1 LocalMunicipalities2011.shp | psql -p 5433 -d minisass-cms
+> shp2pgsql -s 4326 -c -D -W LATIN1 DistrictMunicipalities2011.shp  districts | psql -p 5432 -d minisass-cms
+
+> CREATE INDEX districts_geom_gist ON districts USING gist (the_geom );
+
+> shp2pgsql -s 4326 -c -D -W LATIN1 Province_New_SANeighbours.shp provinces | psql -p 5432 -d minisass-cms
+
+> CREATE INDEX provinces_geom_gist ON provinces USING gist (the_geom );
+
+> shp2pgsql -s 4326 -c -D -W LATIN1 LocalMunicipalities2011.shp municipalities | psql -p 5432 -d minisass-cms
+
+> CREATE INDEX municipalities_geom_gist ON municipalities USING gist (the_geom );
+
+
 
 Schools
 -------
@@ -198,12 +210,53 @@ We then use SQL to generate and populate parts of the final schema from the samp
 
 To add a layer to QGIS you can use something like this in DB Manager:
 
-> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid
+> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid;
 
 Or in PostGIS
 
 > CREATE VIEW sample AS ..the query above...
     
+Publishing Geoserver layers
+===========================
 
+createuser -P geoserver miniSASS@geoserver395
+
+CREATE ROLE web_read
+  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+  
+CREATE ROLE web_write
+  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+
+GRANT web_read TO geoserver;
+GRANT SELECT ON TABLE public.dams TO web_read;
+GRANT SELECT ON TABLE public.hca1 TO web_read;
+GRANT SELECT ON TABLE public.hca2 TO web_read;
+GRANT SELECT ON TABLE public.hca3 TO web_read;
+GRANT SELECT ON TABLE public.hca4 TO web_read;
+GRANT SELECT ON TABLE public.municipalities TO web_read;
+GRANT SELECT ON TABLE public.provinces TO web_read;
+GRANT SELECT ON TABLE public.districts TO web_read;
+GRANT SELECT ON TABLE public.sites TO web_read;
+GRANT SELECT ON TABLE public.rivers TO web_read;
+GRANT SELECT ON TABLE public.sample TO web_read;
+GRANT SELECT ON TABLE public.geometry_columns TO web_read;
+GRANT SELECT ON TABLE public.spatial_ref_sys TO web_read;
+GRANT SELECT ON TABLE public.geography_columns TO web_read;
+GRANT SELECT ON TABLE public.schools TO web_read;
+
+reassign owned by gavin to minisass;
+    
+Deploying updates on the production site
+========================================
+
+sudo su - django
+
+cd sites/miniSASS
+
+git pull
+
+
+Setting database permissions for Django
+=======================================
 
 
