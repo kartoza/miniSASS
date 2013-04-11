@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
-//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
       var lonlat;
       var map;
       var mapClick;
@@ -93,7 +93,7 @@
         var averageScore=0;
 
         function updateSpecies(species,speciesScore) {
-          var elementID = 'id_observation-0-' + species;
+          var elementID = 'id_observations-0-' + species;
           if (document.getElementById(elementID).checked==true) {
             totalScore = totalScore +speciesScore;
             numGroups+=1;
@@ -144,14 +144,14 @@
         }
 
         // update the score value
-        document.getElementById('id_observation-0-score').value = document.getElementById('id_average_score').innerHTML;
+        document.getElementById('id_observations-0-score').value = document.getElementById('id_average_score').innerHTML;
 
         // update the geometry field
         var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
         document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
 
         // set the observations flag to Dirty
-        document.getElementById('id_observation-0-flag').value = 'dirty';
+        document.getElementById('id_observations-0-flag').value = 'dirty';
  
         // update the map variables
         document.getElementById('id_zoom_level').value = map.getZoom();

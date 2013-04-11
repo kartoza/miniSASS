@@ -78,8 +78,8 @@
             <tr>
               <td>
                 <table id="data_table_left">
-                  <tr><td><label for="id_observation-0-obs_date">Date:</label></td><td>{{ observation_form.forms.0.obs_date }}</td></tr>
-                  <tr><td><label for="id_observation-0-name">Collector&apos;s name:</label></td><td>{{ observation_form.forms.0.user_name }}</td></tr>
+                  <tr><td><label for="id_observations-0-obs_date">Date:</label></td><td>{{ observation_form.forms.0.obs_date }}</td></tr>
+                  <tr><td><label for="id_observations-0-name">Collector&apos;s name:</label></td><td>{{ observation_form.forms.0.user_name }}</td></tr>
                   <tr><td><label for="id_name">River name:</label></td><td>{{ site_form.name }}</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude (S):</label></td>
@@ -104,7 +104,7 @@
                       <input type="radio" name="coord_format" id="DMS" value="DMS" onclick="coords('DMS');"/>DMS
                     </td>
                   </tr>
-                  <tr><td><label for="id_observation-0-comment">Comments/notes:</label></td><td>{{ observation_form.forms.0.comment }}</td></tr>
+                  <tr><td><label for="id_observations-0-comment">Comments/notes:</label></td><td>{{ observation_form.forms.0.comment }}</td></tr>
                   <tr><td><label for="id_river_cat">River category:</label></td>
                     <td>
                       {{ site_form.river_cat }}
@@ -115,19 +115,19 @@
               <td>
                 <table id="data_table_right">
                   <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th></tr>
-                  <tr><td>{{ observation_form.forms.0.flatworms }}</td><td class="tdlabel"><label for="id_observation-0-flatworms">{{ observation_form.forms.0.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td></tr>
-                  <tr><td>{{ observation_form.forms.0.worms }}</td><td class="tdlabel"><label for="id_observation-0-worms">{{ observation_form.forms.0.worms.label }}:</label></td><td id="worms" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.leeches }}</td><td class="tdlabel"><label for="id_observation-0-leeches">{{ observation_form.forms.0.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.crabs_shrimps }}</td><td class="tdlabel"><label for="id_observation-0-crabs_shrimps">{{ observation_form.forms.0.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.forms.0.stoneflies }}</td><td class="tdlabel"><label for="id_observation-0-stoneflies">{{ observation_form.forms.0.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td></tr>
-                  <tr><td>{{ observation_form.forms.0.minnow_mayflies }}</td><td class="tdlabel"><label for="id_observation-0-minnow_mayflies">{{ observation_form.forms.0.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.forms.0.other_mayflies }}</td><td class="tdlabel"><label for="id_observation-0-other_mayflies">{{ observation_form.forms.0.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td></tr>
-                  <tr><td>{{ observation_form.forms.0.damselflies }}</td><td class="tdlabel"><label for="id_observation-0-damselflies">{{ observation_form.forms.0.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td></tr>
-                  <tr><td>{{ observation_form.forms.0.dragonflies }}</td><td class="tdlabel"><label for="id_observation-0-dragonflies">{{ observation_form.forms.0.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.forms.0.bugs_beetles }}</td><td class="tdlabel"><label for="id_observation-0-bugs_beetles">{{ observation_form.forms.0.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.forms.0.caddisflies }}</td><td class="tdlabel"><label for="id_observation-0-caddisflies">{{ observation_form.forms.0.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td></tr>
-                  <tr><td>{{ observation_form.forms.0.true_flies }}</td><td class="tdlabel"><label for="id_observation-0-true_flies">{{ observation_form.forms.0.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.snails }}</td><td class="tdlabel"><label for="id_observation-0-snails">{{ observation_form.forms.0.snails.label }}:</label></td><td id="snails" class="tdscore">4</td></tr>
+                  <tr><td>{{ observation_form.forms.0.flatworms }}</td><td class="tdlabel"><label for="id_observations-0-flatworms">{{ observation_form.forms.0.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td></tr>
+                  <tr><td>{{ observation_form.forms.0.worms }}</td><td class="tdlabel"><label for="id_observations-0-worms">{{ observation_form.forms.0.worms.label }}:</label></td><td id="worms" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.forms.0.leeches }}</td><td class="tdlabel"><label for="id_observations-0-leeches">{{ observation_form.forms.0.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.forms.0.crabs_shrimps }}</td><td class="tdlabel"><label for="id_observations-0-crabs_shrimps">{{ observation_form.forms.0.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td></tr>
+                  <tr><td>{{ observation_form.forms.0.stoneflies }}</td><td class="tdlabel"><label for="id_observations-0-stoneflies">{{ observation_form.forms.0.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td></tr>
+                  <tr><td>{{ observation_form.forms.0.minnow_mayflies }}</td><td class="tdlabel"><label for="id_observations-0-minnow_mayflies">{{ observation_form.forms.0.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td></tr>
+                  <tr><td>{{ observation_form.forms.0.other_mayflies }}</td><td class="tdlabel"><label for="id_observations-0-other_mayflies">{{ observation_form.forms.0.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td></tr>
+                  <tr><td>{{ observation_form.forms.0.damselflies }}</td><td class="tdlabel"><label for="id_observations-0-damselflies">{{ observation_form.forms.0.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td></tr>
+                  <tr><td>{{ observation_form.forms.0.dragonflies }}</td><td class="tdlabel"><label for="id_observations-0-dragonflies">{{ observation_form.forms.0.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td></tr>
+                  <tr><td>{{ observation_form.forms.0.bugs_beetles }}</td><td class="tdlabel"><label for="id_observations-0-bugs_beetles">{{ observation_form.forms.0.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td></tr>
+                  <tr><td>{{ observation_form.forms.0.caddisflies }}</td><td class="tdlabel"><label for="id_observations-0-caddisflies">{{ observation_form.forms.0.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td></tr>
+                  <tr><td>{{ observation_form.forms.0.true_flies }}</td><td class="tdlabel"><label for="id_observations-0-true_flies">{{ observation_form.forms.0.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.forms.0.snails }}</td><td class="tdlabel"><label for="id_observations-0-snails">{{ observation_form.forms.0.snails.label }}:</label></td><td id="snails" class="tdscore">4</td></tr>
                   <tr><td></td><td class="tdlabel">Total score:</td><td id="id_total_score" class="tdtotal">0</td></tr>
                   <tr><td></td><td class="tdlabel">Number of groups:</td><td id="id_groups" class="tdtotal">0</td></tr>
                   <tr><td></td><td class="tdlabel">Average score:</td><td id="id_average_score" class="tdtotal">0.0</td></tr>
@@ -135,12 +135,12 @@
               </td>
             </tr>
           </table>
-          <input type="hidden" name="observation-0-score" id="id_observation-0-score" value="0.0"/>
+          <input type="hidden" name="observations-0-score" id="id_observations-0-score" value="0.0"/>
           <input type="hidden" name="the_geom" id="id_the_geom" value=""/>
-          <input type="hidden" name="observation-0-flag" id="id_observation-0-flag" value="clean"/>
-          <input type="hidden" name="observation-TOTAL_FORMS" value="1" id="id_observation-TOTAL_FORMS" />
-          <input type="hidden" name="observation-INITIAL_FORMS" value="0" id="id_observation-INITIAL_FORMS" />
-          <input type="hidden" name="observation-MAX_NUM_FORMS" id="id_observation-MAX_NUM_FORMS" />
+          <input type="hidden" name="observations-0-flag" id="id_observations-0-flag" value="clean"/>
+          <input type="hidden" name="observations-TOTAL_FORMS" value="1" id="id_observations-TOTAL_FORMS" />
+          <input type="hidden" name="observations-INITIAL_FORMS" value="0" id="id_observations-INITIAL_FORMS" />
+          <input type="hidden" name="observations-MAX_NUM_FORMS" id="id_observations-MAX_NUM_FORMS" />
           {{ map_form.zoom_level.as_hidden }}
           {{ map_form.centre_X.as_hidden }}
           {{ map_form.centre_Y.as_hidden }}
