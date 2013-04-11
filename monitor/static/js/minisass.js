@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
-      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
+      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
+//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
       var lonlat;
       var map;
       var mapClick;
@@ -93,7 +93,7 @@
         var averageScore=0;
 
         function updateSpecies(species,speciesScore) {
-          var elementID = 'id_observations-0-' + species;
+          var elementID = 'id_observation-0-' + species;
           if (document.getElementById(elementID).checked==true) {
             totalScore = totalScore +speciesScore;
             numGroups+=1;
@@ -144,14 +144,14 @@
         }
 
         // update the score value
-        document.getElementById('id_observations-0-score').value = document.getElementById('id_average_score').innerHTML;
+        document.getElementById('id_observation-0-score').value = document.getElementById('id_average_score').innerHTML;
 
         // update the geometry field
         var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
         document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
 
         // set the observations flag to Dirty
-        document.getElementById('id_observations-0-flag').value = 'dirty';
+        document.getElementById('id_observation-0-flag').value = 'dirty';
  
         // update the map variables
         document.getElementById('id_zoom_level').value = map.getZoom();
@@ -160,22 +160,24 @@
         return true;
       }
 
-      function inputNewMap () {
+      function inputFromMap () {
       /* This function toggles the 'input from map' button image, changes the
          map cursor and then activates/deactivates the mapClick control
       */
         if (mapCursor == 'pan') {
           document.getElementById('id_obs_map').src = '/static/img/icon_obs_map_pressed.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'crosshair';
-          var msg = 'Use the map to click on the location of the observation.';
-          msg = msg + '<br /><br />You can use the mouse wheel to zoom in or out on the map.';
-          msg = msg + '<br />Click and hold the mouse button to drag the map around.';
+          var msg = 'Click the location of the observation<br />on the map.';
+          msg = msg + '<br /><br />You can use the mouse wheel to<br />zoom in or out on the map. ';
+          msg = msg + 'Click and<br />hold the mouse button to drag<br />the map around.';
           Ext.Msg.alert('Add observation from map', msg);
+          document.getElementById('messages').innerHTML = msg;
           mapCursor = 'crosshair';
           mapClick.activate();
         } else {
           document.getElementById('id_obs_map').src = '/static/img/icon_obs_map.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'move';
+          document.getElementById('messages').innerHTML = '';
           mapCursor = 'pan';
           mapClick.deactivate();
         }
@@ -225,10 +227,22 @@
 
         // Define a new map
         map = new OpenLayers.Map(
-          'miniSASS Map',
-          {projection: proj3857,
-           displayProjection: proj4326,
-           units: 'm'});
+          'miniSASS Map',{
+            projection: proj3857,
+            displayProjection: proj4326,
+            units: 'm',
+            eventListeners: {'changebaselayer':mapBaseLayerChanged}
+          }
+         );
+
+        function mapBaseLayerChanged(event) {
+        // This functions toggles the Provinces layer on/off with the Google satellite layer
+          if (event.layer.name=='Google satellite') {
+            map.getLayersByName('Provinces')[0].setVisibility(true);
+          } else {
+            map.getLayersByName('Provinces')[0].setVisibility(false);
+          }
+        }
 
         // Define the Google layers as base layers
         var layerGoogleSatellite = new OpenLayers.Layer.Google(
@@ -245,43 +259,42 @@
         );
 
         // Define the miniSASS composite layer as a base layer
-        var layerMiniSASS = new OpenLayers.Layer.WMS(
+        var layerMiniSASSBase = new OpenLayers.Layer.WMS(
           'miniSASS base layer',
           geoserverURL+'/wms',
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
         );
 
-        // Add the base layers to the map
-        map.addLayers([layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASS]);
-
-        // Add the provinces as an overlay
+        // Define the provinces layer
         var layerProvinces = new OpenLayers.Layer.WMS(
           'Provinces',
           geoserverURL+'/wms',
           {layers:'miniSASS:provinces',transparent:true,format:'image/png'},
-          {isbaseLayer:false,visibility:false}
+          {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
         );
-        map.addLayer(layerProvinces);
 
-        // Add the schools as an overlay
+        // Define the schools layer as an overlay
         var layerSchools = new OpenLayers.Layer.WMS(
           'Schools',
           geoserverURL+'/wms',
           {layers:'miniSASS:schools',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
-        map.addLayer(layerSchools);
 
-        // Add the miniSASS observations as an overlay
-        var layerMiniSASS = new OpenLayers.Layer.WMS(
+        // Define the miniSASS observations as an overlay
+        var layerMiniSASSObs = new OpenLayers.Layer.WMS(
           'miniSASS Observations',
           geoserverURL+'/wms',
           {layers:'miniSASS:sample',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
-        map.addLayer(layerMiniSASS);
 
+        // Add the layers to the map
+        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerMiniSASSBase,layerSchools,layerMiniSASSObs]);
+
+        // Add the map click controller
         mapClick = new OpenLayers.Control.Click();
         map.addControl(mapClick);
 
@@ -295,7 +308,7 @@
           },{
             text:'Click site location on map',
             icon:'/static/img/icon_obs_target.png',
-            handler:inputNewMap
+            handler:inputFromMap
           },{
             text:'Select site from list',
             icon:'/static/img/icon_obs_list.png',
@@ -306,8 +319,8 @@
         // Link the observations menu to a toolbar
         var mapTb = new Ext.Toolbar({
           items:[{
-            icon:'/static/img/icon_crab_small.png',
-            text:'Enter miniSASS observation',
+            icon:'/static/img/icon_crab_n.png',
+            text:'Enter miniSASS observations',
             menu:obsMenu
           }]
         });
@@ -343,17 +356,31 @@
 
         // Define tree panels to control layer visibility
         var baselayerTree = new Ext.tree.TreePanel({
-            title: 'Base Layers',
-            renderTo: 'layertree',
+            title:'Base Layers',
+            renderTo:'layertree',
             root: baseLayers,
-            rootVisible: false
+            rootVisible:false
         });
 
         var overlaylayerTree = new Ext.tree.TreePanel({
-            title: 'Overlays',
-            renderTo: 'layertree',
+            title:'Overlays',
+            renderTo:'layertree',
             root: overlayLayers,
-            rootVisible: false
+            rootVisible:false
+        });
+
+        // Define the legend panel
+        var legendPanel = new Ext.Panel({
+          title:'Legend',
+          renderTo:'legend',
+          contentEl:'legend_table'
+        });
+
+        // Define the input buttons panel
+        var inputPanel = new Ext.Panel({
+          title:'Enter miniSASS observations',
+          renderTo:'input_obs',
+          contentEl:'input_buttons'
         });
 
         // Define the popup Data Input window
