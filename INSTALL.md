@@ -210,7 +210,7 @@ We then use SQL to generate and populate parts of the final schema from the samp
 
 To add a layer to QGIS you can use something like this in DB Manager:
 
-> SELECT s.*,o.comment,o.score,o.time_stamp,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid;
+> SELECT s.*,o.comment,o.score,o.time_stamp,o.obs_date,o_flag,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid;
 
 Or in PostGIS
 
