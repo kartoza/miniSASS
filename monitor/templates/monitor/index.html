@@ -19,7 +19,6 @@
     <link href="{{ STATIC_URL }}css/monitor_stylesheet.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <div id="map"></div>
     <div id=sidepanel>
       <div id="layertree"></div>
       <div id="legend">
@@ -48,28 +47,35 @@
       </div> <!--legend-->
       <div id="input_obs">
         <div id="input_buttons">
-          <img src="{{ STATIC_URL }}img/icon_obs_direct.png" alt="" id="id_obs_direct" title="Enter a miniSASS observation at a new site" style="cursor:pointer;"/>
-          <img src="{{ STATIC_URL }}img/icon_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;" onclick="inputFromMap()"/>
+          <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/>
+          <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site" style="cursor:pointer;"/>
+          <br />
+          <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/>
+          <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/>
         </div> <!--input_buttons-->
       </div> <!--input_obs-->
       <div id="messages">
       </div> <!--messages-->
         {% if site_form.errors %}
+          Site errors<br />
           {% for error in site_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
         {% endif %}
         {% if coords_form.errors %}
+          Coordinate errors<br />
           {% for error in coords_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
         {% endif %}
         {% if observation_form.errors %}
+          Observation errors<br />
           {% for error in observation_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
         {% endif %}
     </div> <!--sidepanel-->
+    <div id="map"></div> <!--map-->
     <div id="data_window" class="x-hidden">
       <div class="x-window-header">miniSASS Data Input</div>
       <div id="data_panel">
@@ -78,8 +84,8 @@
             <tr>
               <td>
                 <table id="data_table_left">
-                  <tr><td><label for="id_observation-0-obs_date">Date:</label></td><td>{{ observation_form.forms.0.obs_date }}</td></tr>
-                  <tr><td><label for="id_observation-0-name">Collector&apos;s name:</label></td><td>{{ observation_form.forms.0.user_name }}</td></tr>
+                  <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
+                  <tr><td><label for="id_name">Collector&apos;s name:</label></td><td>{{ observation_form.user_name }}</td></tr>
                   <tr><td><label for="id_name">River name:</label></td><td>{{ site_form.name }}</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude (S):</label></td>
@@ -101,10 +107,11 @@
                   <tr><td></td>
                     <td>
                       <input type="radio" name="coord_format" id="Decimal" value="Decimal" onclick="coords('Decimal');" checked="checked"/>Decimal degrees
-                      <input type="radio" name="coord_format" id="DMS" value="DMS" onclick="coords('DMS');"/>DMS
+                      <br />
+                      <input type="radio" name="coord_format" id="DMS" value="DMS" onclick="coords('DMS');"/>Degrees/Minutes/Seconds
                     </td>
                   </tr>
-                  <tr><td><label for="id_observation-0-comment">Comments/notes:</label></td><td>{{ observation_form.forms.0.comment }}</td></tr>
+                  <tr><td><label for="id_comment">Comments/notes:</label></td><td>{{ observation_form.comment }}</td></tr>
                   <tr><td><label for="id_river_cat">River category:</label></td>
                     <td>
                       {{ site_form.river_cat }}
@@ -115,19 +122,19 @@
               <td>
                 <table id="data_table_right">
                   <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th></tr>
-                  <tr><td>{{ observation_form.forms.0.flatworms }}</td><td class="tdlabel"><label for="id_observation-0-flatworms">{{ observation_form.forms.0.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td></tr>
-                  <tr><td>{{ observation_form.forms.0.worms }}</td><td class="tdlabel"><label for="id_observation-0-worms">{{ observation_form.forms.0.worms.label }}:</label></td><td id="worms" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.leeches }}</td><td class="tdlabel"><label for="id_observation-0-leeches">{{ observation_form.forms.0.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.crabs_shrimps }}</td><td class="tdlabel"><label for="id_observation-0-crabs_shrimps">{{ observation_form.forms.0.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.forms.0.stoneflies }}</td><td class="tdlabel"><label for="id_observation-0-stoneflies">{{ observation_form.forms.0.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td></tr>
-                  <tr><td>{{ observation_form.forms.0.minnow_mayflies }}</td><td class="tdlabel"><label for="id_observation-0-minnow_mayflies">{{ observation_form.forms.0.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.forms.0.other_mayflies }}</td><td class="tdlabel"><label for="id_observation-0-other_mayflies">{{ observation_form.forms.0.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td></tr>
-                  <tr><td>{{ observation_form.forms.0.damselflies }}</td><td class="tdlabel"><label for="id_observation-0-damselflies">{{ observation_form.forms.0.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td></tr>
-                  <tr><td>{{ observation_form.forms.0.dragonflies }}</td><td class="tdlabel"><label for="id_observation-0-dragonflies">{{ observation_form.forms.0.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.forms.0.bugs_beetles }}</td><td class="tdlabel"><label for="id_observation-0-bugs_beetles">{{ observation_form.forms.0.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.forms.0.caddisflies }}</td><td class="tdlabel"><label for="id_observation-0-caddisflies">{{ observation_form.forms.0.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td></tr>
-                  <tr><td>{{ observation_form.forms.0.true_flies }}</td><td class="tdlabel"><label for="id_observation-0-true_flies">{{ observation_form.forms.0.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.forms.0.snails }}</td><td class="tdlabel"><label for="id_observation-0-snails">{{ observation_form.forms.0.snails.label }}:</label></td><td id="snails" class="tdscore">4</td></tr>
+                  <tr><td>{{ observation_form.flatworms }}</td><td class="tdlabel"><label for="id_flatworms">{{ observation_form.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td></tr>
+                  <tr><td>{{ observation_form.worms }}</td><td class="tdlabel"><label for="id_worms">{{ observation_form.worms.label }}:</label></td><td id="worms" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.leeches }}</td><td class="tdlabel"><label for="id_leeches">{{ observation_form.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.crabs_shrimps }}</td><td class="tdlabel"><label for="id_crabs_shrimps">{{ observation_form.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td></tr>
+                  <tr><td>{{ observation_form.stoneflies }}</td><td class="tdlabel"><label for="id_stoneflies">{{ observation_form.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td></tr>
+                  <tr><td>{{ observation_form.minnow_mayflies }}</td><td class="tdlabel"><label for="id_minnow_mayflies">{{ observation_form.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td></tr>
+                  <tr><td>{{ observation_form.other_mayflies }}</td><td class="tdlabel"><label for="id_other_mayflies">{{ observation_form.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td></tr>
+                  <tr><td>{{ observation_form.damselflies }}</td><td class="tdlabel"><label for="id_damselflies">{{ observation_form.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td></tr>
+                  <tr><td>{{ observation_form.dragonflies }}</td><td class="tdlabel"><label for="id_dragonflies">{{ observation_form.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td></tr>
+                  <tr><td>{{ observation_form.bugs_beetles }}</td><td class="tdlabel"><label for="id_bugs_beetles">{{ observation_form.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td></tr>
+                  <tr><td>{{ observation_form.caddisflies }}</td><td class="tdlabel"><label for="id_caddisflies">{{ observation_form.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td></tr>
+                  <tr><td>{{ observation_form.true_flies }}</td><td class="tdlabel"><label for="id_true_flies">{{ observation_form.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td></tr>
+                  <tr><td>{{ observation_form.snails }}</td><td class="tdlabel"><label for="id_snails">{{ observation_form.snails.label }}:</label></td><td id="snails" class="tdscore">4</td></tr>
                   <tr><td></td><td class="tdlabel">Total score:</td><td id="id_total_score" class="tdtotal">0</td></tr>
                   <tr><td></td><td class="tdlabel">Number of groups:</td><td id="id_groups" class="tdtotal">0</td></tr>
                   <tr><td></td><td class="tdlabel">Average score:</td><td id="id_average_score" class="tdtotal">0.0</td></tr>
@@ -135,12 +142,10 @@
               </td>
             </tr>
           </table>
-          <input type="hidden" name="observation-0-score" id="id_observation-0-score" value="0.0"/>
-          <input type="hidden" name="the_geom" id="id_the_geom" value=""/>
-          <input type="hidden" name="observation-0-flag" id="id_observation-0-flag" value="clean"/>
-          <input type="hidden" name="observation-TOTAL_FORMS" value="1" id="id_observation-TOTAL_FORMS" />
-          <input type="hidden" name="observation-INITIAL_FORMS" value="0" id="id_observation-INITIAL_FORMS" />
-          <input type="hidden" name="observation-MAX_NUM_FORMS" id="id_observation-MAX_NUM_FORMS" />
+          {{ site_form.the_geom.as_hidden }}
+          <input type="hidden" name="score" id="id_score" value="0.0"/>
+          <input type="hidden" name="flag" id="id_flag" value="clean"/>
+          <input type="hidden" name="site" id="id_site" value="1"/>
           {{ map_form.zoom_level.as_hidden }}
           {{ map_form.centre_X.as_hidden }}
           {{ map_form.centre_Y.as_hidden }}
@@ -148,5 +153,25 @@
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->
+
+    <div id="site_list_window" class="x-hidden">
+      <div class="x-window-header">Observation Site</div>
+      <div id="site_list_panel">
+        Please select a site from the list below:
+        <select name="site_gid" id="id_site_gid">
+          <option value="" selected="selected"></option>
+          {% for site in sites %}
+            <option value="{{ site.gid.value }}">{{ site.name.value }}</option>
+          {% endfor %}
+        </select>
+      </div> <!--site_list_panel-->
+    </div> <!--site_list_window-->
+    <div id="site_data">
+      {% for site in sites %}
+        {% for field in site %}
+          {{ field.as_hidden }}
+        {% endfor %}
+      {% endfor %}
+    </div> <!--site_data-->
   </body>
 </html>

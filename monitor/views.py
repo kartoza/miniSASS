@@ -9,43 +9,60 @@ from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from monitor.forms import *
 from monitor.models import Sites, Observations
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, modelformset_factory
 
-def index(request, site_id=None):
+def index(request):
     """ The 'landing page' for the monitor application 
         Displays a map and handles data input
     """
-    if site_id == None:
-        site = Sites()
-    else:
-        site = Sites.objects.get(gid=site_id)
-
-    Observation_Formset = inlineformset_factory(Sites, Observations, form=ObservationForm)
+    
+    #create a form that sends all site data to the view
+    Site_Formset = modelformset_factory(Sites)
+    sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
 
     if request.method == 'POST':
         # create form instances with the POST data
-        site_form = SiteForm(request.POST, instance=site)
-        observation_form = Observation_Formset(request.POST, instance=site)
+        site_form = SiteForm(request.POST)
+        observation_form = ObservationForm(request.POST)
         coords_form = CoordsForm(request.POST)
         map_form = MapForm(request.POST)
-        if (site_form.is_valid() and coords_form.is_valid() and observation_form.is_valid()):
-            # save the observation and site data
-            site_form.save()
-            observation_form.save()
-            # create new instances of the forms and then return to the map
-            site_form = SiteForm()
-            observation_form = Observation_Formset()
-            coords_form = CoordsForm()
-            return render_to_response('monitor/index.html', 
-                                      {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
-                                      context_instance=RequestContext(request))
+        if 'the_geom' not in request.POST:
+            # save the observation only
+            if (observation_form.is_valid()):
+                observation_form.save()
+                # create new instances of the forms and then return to the map
+                Site_Formset = modelformset_factory(Sites)
+                sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
+                site_form = SiteForm()
+                observation_form = ObservationForm()
+                coords_form = CoordsForm()
+                return render_to_response('monitor/index.html', 
+                                          {'sites':sites,'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                                          context_instance=RequestContext(request))
+
+        else: 
+            # save both the site and observation
+            if (site_form.is_valid() and observation_form.is_valid()):
+                current_site = site_form.save()
+                current_observation = observation_form.save(commit=False)
+                current_observation.site = current_site
+                current_observation.save()
+                # create new instances of the forms and then return to the map
+                Site_Formset = modelformset_factory(Sites)
+                sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
+                site_form = SiteForm()
+                observation_form = ObservationForm()
+                coords_form = CoordsForm()
+                return render_to_response('monitor/index.html', 
+                                          {'sites':sites,'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                                          context_instance=RequestContext(request))
     else: # display a either a new empty form or a form for editing
-        site_form = SiteForm(instance=site)
-        observation_form = Observation_Formset(instance=site)
+        site_form = SiteForm()
+        observation_form = ObservationForm()
         coords_form = CoordsForm()
         map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950'})
     return render_to_response('monitor/index.html', 
-                              {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                              {'sites':sites,'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                               context_instance=RequestContext(request))
 
 def observations(request):

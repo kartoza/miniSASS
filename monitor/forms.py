@@ -27,7 +27,7 @@ class ObservationForm(ModelForm):
     snails = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick':"updateScore();"}))
     class Meta:
         model = Observations
-        exclude = ('site','time_stamp','user')
+        exclude = ('time_stamp','user')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
             'comment':  Textarea(attrs={'cols':30, 'rows':4}),
@@ -40,7 +40,6 @@ class CoordsForm(forms.Form):
 
 # Form for storing map parameters
 class MapForm(forms.Form):
-#    zoom_level = forms.CharField(widget=forms.HiddenInput)
     zoom_level = forms.CharField()
     centre_X = forms.CharField()
     centre_Y = forms.CharField()

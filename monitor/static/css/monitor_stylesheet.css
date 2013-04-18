@@ -1,13 +1,9 @@
 #map {
-  clear:both;
   float:left;
 }
 
-.olMapViewport {
-  cursor:move;
-}
-
 #sidepanel {
+  clear:both;
   float:left;
 }
 
@@ -42,6 +38,7 @@
 #data_table_right .tdscore {
   text-align:center;
   font-weight:normal;
+  color:darkgray;
 }
 
 #sidepanel {
