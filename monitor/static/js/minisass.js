@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
-//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
       var lonlat;
       var map;
       var mapClick;
