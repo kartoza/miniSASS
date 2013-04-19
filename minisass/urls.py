@@ -17,6 +17,7 @@ urlpatterns = patterns('',
 
     # django-cms urls
     url(r'^', include('cms.urls')),
+
 )
 
 if settings.DEBUG:

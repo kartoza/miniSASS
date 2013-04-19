@@ -143,13 +143,15 @@
             </tr>
           </table>
           {{ site_form.the_geom.as_hidden }}
-          <input type="hidden" name="score" id="id_score" value="0.0"/>
-          <input type="hidden" name="flag" id="id_flag" value="clean"/>
-          <input type="hidden" name="site" id="id_site" value="1"/>
+          {{ observation_form.score.as_hidden }}
+          {{ observation_form.flag.as_hidden }}
+          {{ observation_form.site.as_hidden }}
           {{ map_form.zoom_level.as_hidden }}
           {{ map_form.centre_X.as_hidden }}
           {{ map_form.centre_Y.as_hidden }}
           {{ map_form.layers.as_hidden }}
+          {{ map_form.edit_site.as_hidden }}
+          {{ map_form.error.as_hidden }}
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->

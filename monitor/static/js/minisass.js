@@ -9,7 +9,6 @@
       var inputWindow;
       var siteWindow;
       var mapCursor = 'auto';
-      var editSite = true;
 
       /*=================================
       Functions for the data input window
@@ -85,14 +84,15 @@
         }
       }
 
-      function updateScore() {
+      function updateInputForm(clickedElement) {
       /* This function updates the species and total scores on the data
-         input form
+         input form. Site data editing is also enabled/disabled as needed.
       */
 
         var totalScore=0;
         var numGroups=0;
         var averageScore=0;
+        var elementID='id_' + clickedElement;
 
         function updateSpecies(species,speciesScore) {
           var elementID = 'id_' + species;
@@ -107,23 +107,36 @@
           }
         }
 
-        updateSpecies('flatworms',3);
-        updateSpecies('worms',2);
-        updateSpecies('leeches',2);
-        updateSpecies('crabs_shrimps',6);
-        updateSpecies('stoneflies',17);
-        updateSpecies('minnow_mayflies',5);
-        updateSpecies('other_mayflies',11);
-        updateSpecies('damselflies',4);
-        updateSpecies('dragonflies',6);
-        updateSpecies('bugs_beetles',5);
-        updateSpecies('caddisflies',9);
-        updateSpecies('true_flies',2);
-        updateSpecies('snails',4);
-        document.getElementById('id_total_score').innerHTML = totalScore;
-        document.getElementById('id_groups').innerHTML = numGroups;
-        if (numGroups!=0) averageScore = (totalScore/numGroups);
-        document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
+        // Only update scores if a river category has been selected
+        if ((clickedElement != '') && (document.getElementById('id_river_cat').selectedIndex == 0)) {
+          document.getElementById(elementID).checked = false;
+          Ext.Msg.alert('River category', 'Please select a river category');
+        } else {
+          updateSpecies('flatworms',3);
+          updateSpecies('worms',2);
+          updateSpecies('leeches',2);
+          updateSpecies('crabs_shrimps',6);
+          updateSpecies('stoneflies',17);
+          updateSpecies('minnow_mayflies',5);
+          updateSpecies('other_mayflies',11);
+          updateSpecies('damselflies',4);
+          updateSpecies('dragonflies',6);
+          updateSpecies('bugs_beetles',5);
+          updateSpecies('caddisflies',9);
+          updateSpecies('true_flies',2);
+          updateSpecies('snails',4);
+          document.getElementById('id_total_score').innerHTML = totalScore;
+          document.getElementById('id_groups').innerHTML = numGroups;
+          if (numGroups!=0) averageScore = (totalScore/numGroups);
+          document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
+
+          // Enable/disable site editing as necessary
+          if (document.getElementById('id_edit_site').value == 'true'){
+            disableSiteEdit(false);
+          } else {
+            disableSiteEdit(true);
+          }
+        }
       }
 
       function canSubmit(){
@@ -131,7 +144,7 @@
          when the data input form is submitted.
       */
 
-        if (editSite==true){
+        if (document.getElementById('id_edit_site').value == 'true'){
           // convert coordinates to DD if they've been entered as DMS
           if (DMS.checked==true) {
             document.getElementById('id_latitude').value = convertDMStoDD('lat');
@@ -146,12 +159,13 @@
             document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
           }
 
-          // update the geometry field
-          var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
-          document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
         } else {
-          document.getElementById('id_the_geom').disabled = true;
+          disableSiteEdit(false);
         }
+
+        // update the geometry field
+        var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
+        document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
 
         // update the score value
         document.getElementById('id_score').value = document.getElementById('id_average_score').innerHTML;
@@ -212,10 +226,12 @@
         for (var k=0; k < selectArray.length; k++) selectArray[k].selectedIndex=0;
 
         // Reset the totals and score
-        updateScore();
+        updateInputForm('');
 
         // Enable the controls for site input variables
         disableSiteEdit(false)
+        document.getElementById('id_edit_site').value = 'true';
+
 
         // Erase the observation link to the site id
         document.getElementById('id_site').value = '';
@@ -234,10 +250,9 @@
         document.getElementById('id_lon_d').disabled = disable;
         document.getElementById('id_lon_m').disabled = disable;
         document.getElementById('id_lon_s').disabled = disable;
-        editSite = !disable;
       }
 
-      function useSelectedSite(){
+      function loadSelectedSite(){
 
         var selectedSite = document.getElementById('id_site_gid').selectedIndex;
         if (selectedSite > 0) {
@@ -264,7 +279,8 @@
           document.getElementById('id_site').value = document.getElementById(elementName+'-gid').value;
 
           // Disable the site input controls and variables
-          disableSiteEdit(true)
+          disableSiteEdit(true);
+          document.getElementById('id_edit_site').value = 'false';
         }
       }
 
@@ -376,7 +392,7 @@
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
 
@@ -384,18 +400,48 @@
         mapClick = new OpenLayers.Control.MapClick();
         map.addControl(mapClick);
 
-//        var getFeatureURL = 'http://localhost:8080/geoserver/miniSASS/wms?LAYERS=miniSASS%3Asample'
-//                      + '&QUERY_LAYERS=miniSASS%3Asample&STYLES=&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo'
-//                      + '&BBOX=1783631.947515%2C-4187598.73177%2C3711068.052485%2C-2480301.26823&FEATURE_COUNT=10'
-//                      + '&HEIGHT=698&WIDTH=788&FORMAT=image%2Fpng&INFO_FORMAT=text%2Fhtml&SRS=EPSG%3A3857&X=213&Y=354';
-//        var featureData = OpenLayers.Request.GET ({
-//                            url:getFeatureURL
-//                          });
-//        alert (getFeatureURL.responseXML);
+/*        OpenLayers.ProxyHost = '/static/proxy.py?url=';
+
+        // Setup the facility for querying features
+        var infoClick = new OpenLayers.Control.WMSGetFeatureInfo({
+          url: geoserverURL+'/wms',
+          maxFeatures: 1,
+          title: 'Identify features by clicking',
+          queryVisible: true,
+          layers: [layerMiniSASSObs],
+          eventListeners: {
+            getfeatureinfo: function(event){
+                if (event.text.length != 0) { alert (event.text);
+//                  map.addPopup(new OpenLayers.Popup.FramedCloud(
+//                    "querypopup",
+//                    map.getLonLatFromPixel(event.xy),
+//                    null,
+//                    event.text,
+//                    null,
+//                    true
+//                  ));
+                };
+            }
+          }
+        });
+        map.addControl(infoClick);
+        infoClick.activate();
+*/
 
 /*
+        var getFeatureURL = 'http://localhost:8080/geoserver/miniSASS/wms?REQUEST=GetFeatureInfo'
+                      + '&EXCEPTIONS=application%2Fvnd.ogc.se_xml&BBOX=7.5%2C-41.482422%2C41.5%2C-15.517578'
+                      + '&SERVICE=WMS&INFO_FORMAT=text%2Fhtml&QUERY_LAYERS=miniSASS%3Asample&FEATURE_COUNT=50'
+                      + '&Layers=miniSASS%3Asample&WIDTH=512&HEIGHT=391&format=image%2Fpng&styles='
+                      + '&srs=EPSG%3A4326&version=1.1.1&x=200&y=200';
+        var featureData = OpenLayers.Request.GET ({
+                            url:getFeatureURL
+                          });
+        alert (featureData.responseXML);
+*/
+/*
 map.events.register('click', map, function (e) {
-    var url = geoserverURL+'/wms'
+    var urlWMS = geoserverURL+'/wms'
       + "?REQUEST=GetFeatureInfo"
       + "&EXCEPTIONS=application/vnd.ogc.se_xml"
       + "&BBOX=" + map.getExtent().toBBOX()
@@ -409,10 +455,22 @@ map.events.register('click', map, function (e) {
       + "&STYLES="
       + "&WIDTH=" + map.size.w
       + "&HEIGHT=" + map.size.h;
-    window.open(url,
-      "getfeatureinfo",
-      "location=10,status=10,scrollbars=1,width=600,height=150"
-    );
+      var infoWindow = new Ext.Window({
+        width:600,
+        height:400,
+        closeAction:'close',
+        modal:true,
+        autoLoad: {url:urlWMS},
+        items: new Ext.Panel({
+          border:false
+        })
+      });
+      infoWindow.show();
+
+//    window.open(url,
+//      "getfeatureinfo",
+//      "location=10,status=10,scrollbars=1,width=600,height=150"
+//    );
   });
 */
 
@@ -529,7 +587,7 @@ map.events.register('click', map, function (e) {
             handler: function(){resetInputForm();inputWindow.hide();}
           }]
         });
-        updateScore();
+        updateInputForm('');
 
         // Define the popup Site Selection window
         siteWindow = new Ext.Window({
@@ -547,7 +605,7 @@ map.events.register('click', map, function (e) {
             tooltip:'Enter an observation at the selected site',
             handler: function(){
               siteWindow.hide();
-              useSelectedSite();
+              loadSelectedSite();
               inputWindow.show(this);
             }
           },{
@@ -563,7 +621,6 @@ map.events.register('click', map, function (e) {
             handler: function(){siteWindow.hide();}
           }]
         });
-        updateScore();
 
         // Link the Observation Info button
         var buttonInfo = Ext.get('id_obs_info');
@@ -580,6 +637,12 @@ map.events.register('click', map, function (e) {
         // Link the Site List input button
         var buttonList = Ext.get('id_obs_list');
         buttonList.on('click', function(){siteWindow.show(this);});
+
+        // Open the Data Input window if an error has been returned
+        if (document.getElementById('id_error').value == 'true'){
+          document.getElementById('id_error').value = 'false';
+          inputWindow.show(this);
+        }
 
   });
 
