@@ -1,5 +1,5 @@
 from cms.menu_bases import CMSAttachMenu
-from menu.base import Menu, NavigationNode
+from menus.base import Menu, NavigationNode
 from menus.menu_pool import menu_pool
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _

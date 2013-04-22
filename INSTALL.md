@@ -61,6 +61,7 @@ Install the Django-CMS dependencies
     pip install django-filer
     pip install cmsplugin-filer
     pip install django-reversion==1.6
+    pip install django-tinymce==1.5.1
 
 Checkout this repository from GitHub
 ------------------------------------

@@ -1,13 +1,32 @@
-{% load cms_tags sekizai_tags %}
+{% load cms_tags menu_tags sekizai_tags %}
 <!doctype html>
 <html>
   <head>
     {% render_block "css" %}
+    {% addtoblock "css" %}
+    <link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">
+    {% endaddtoblock %}
+    <title>{{ current_page.title }}</title>
   </head>
   <body>
     {% cms_toolbar %}
-    {% placeholder base_content %}
-    {% block base_content %}{% endblock %}
+    <div class="minisass-heading">
+      &nbsp;
+    </div>
+
+    <div class="minisass-breadcrumbs">
+      {% show_breadcrumb %}
+    </div>
+
+    <div class="minisass-menus">
+      {% show_menu %}
+    </div>
+
+    <div class="minisass-content">
+      {% placeholder "base_content" %}
+      {% block "base_content" %}{% endblock %}
+    </div>
+
     {% render_block "js" %}
   </body>
 </html>

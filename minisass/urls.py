@@ -4,12 +4,15 @@ from django.conf.urls import *
 from django.contrib import admin
 from django.conf import settings
 
+from cms.sitemaps import CMSSitemap
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'minisass.views.home', name='home'),
     # url(r'^minisass/', include('minisass.foo.urls')),
+    (r'^tinymce/', include('tinymce.urls')),
     (r'^monitor/', include('monitor.urls')),
 
     # Uncomment the next line to enable the admin:
@@ -17,6 +20,10 @@ urlpatterns = patterns('',
 
     # django-cms urls
     url(r'^', include('cms.urls')),
+
+    # site map
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
+        {'sitemaps': {'cmspages': CMSSitemap}}),
 
 )
 
