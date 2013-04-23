@@ -1,14 +1,16 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS';
-      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver';
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var lonlat;
       var map;
       var mapClick;
+      var infoClick;
       var inputWindow;
+      var infoWindow;
       var siteWindow;
-      var mapCursor = 'auto';
+      var userFunction = 'none';
 
       /*=================================
       Functions for the data input window
@@ -185,22 +187,49 @@
       /* This function toggles the 'input from map' button image, changes the
          map cursor and then activates/deactivates the mapClick control
       */
-        if (mapCursor == 'auto') {
+        if (userFunction != 'mapclick') {
           document.getElementById('id_obs_map').src = '/static/img/button_obs_map_selected.png';
+          document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'crosshair';
-          var msg = 'Click the location of the observation<br />on the map.';
-          msg = msg + '<br /><br />You can use the mouse wheel to<br />zoom in or out on the map. ';
-          msg = msg + 'Click and<br />hold the mouse button to drag<br />the map around.';
-          Ext.Msg.alert('Add observation from map', msg);
+          var msg = 'Click the location of the observation<br />on the map.'
+            + '<br /><br />You can use the mouse wheel to<br />zoom in or out on the map. Click<br />'
+            + 'and hold the mouse button to<br />drag the map around.';
           document.getElementById('messages').innerHTML = msg;
-          mapCursor = 'crosshair';
+          userFunction = 'mapclick';
           mapClick.activate();
+          infoClick.deactivate();
+          if (infoWindow.hidden == false) infoWindow.hide();
         } else {
           document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
           document.getElementById('messages').innerHTML = '';
-          mapCursor = 'auto';
+          userFunction = 'none';
           mapClick.deactivate();
+        }
+      }
+
+      function infoFromMap(){
+      /* This function toggles the 'info from map' button image, changes the
+         map cursor and then activates/deactivates the infoClick control
+      */
+        if (userFunction != 'infoclick') {
+          document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
+          document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
+          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'crosshair';
+          var msg = 'Click a miniSASS crab symbol to<br />display details of the observations<br />at that site.'
+            + '<br /><br />You can use the mouse wheel to<br />zoom in or out on the map. Click<br />'
+            + 'and hold the mouse button to<br />drag the map around.';
+          document.getElementById('messages').innerHTML = msg;
+          userFunction = 'infoclick';
+          infoClick.activate();
+          mapClick.deactivate();
+        } else {
+          document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
+          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
+          document.getElementById('messages').innerHTML = '';
+          userFunction = 'none';
+          infoClick.deactivate();
+          if (infoWindow.hidden == false) infoWindow.hide();
         }
       }
 
@@ -291,7 +320,7 @@
 
         Ext.QuickTips.init();
 
-        // Define a handler for extracting and submitting coordinates from a click on the map
+        // Define a handler for extracting coordinates from a map click
         OpenLayers.Control.MapClick = OpenLayers.Class(OpenLayers.Control, {                
           defaultHandlerOptions: {
             'single': true,
@@ -322,6 +351,63 @@
             msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
             Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
               if (btn=='yes') {inputWindow.show(this);}
+            });
+          }
+        });
+
+        // Define a handler for running a WMS GetFeatureInfo request from a map click
+        OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {                
+          defaultHandlerOptions: {
+            'single': true,
+            'double': false,
+            'pixelTolerance': 0,
+            'stopSingle': false,
+            'stopDouble': false
+          },
+          initialize: function(options) {
+            this.handlerOptions = OpenLayers.Util.extend(
+              {}, this.defaultHandlerOptions
+            );
+            OpenLayers.Control.prototype.initialize.apply(
+              this, arguments
+            ); 
+            this.handler = new OpenLayers.Handler.Click(
+              this, {
+                'click': this.trigger
+              }, this.handlerOptions
+            );
+          }, 
+          trigger: function (e) {
+            var WMSParams = 'REQUEST=GetFeatureInfo'
+              + '&SERVICE=WMS'
+              + '&VERSION=1.1.1' 
+              + '&EXCEPTIONS=application/vnd.ogc.se_xml'
+              + '&BBOX=' + map.getExtent().toBBOX()
+              + '&X=' + e.xy.x
+              + '&Y=' + e.xy.y
+              + '&INFO_FORMAT=text/html'
+              + '&QUERY_LAYERS=miniSASS:sample'
+              + '&LAYERS=miniSASS:sample'
+              + '&FEATURE_COUNT=50'
+              + '&SRS=EPSG:3857'
+              + '&STYLES='
+              + '&WIDTH=' + map.size.w
+              + '&HEIGHT=' + map.size.h;
+
+            Ext.Ajax.request({
+              url:'wms/~'+geoserverURL+'~'+WMSParams+'~',
+              success: function(response,opts){
+  //              var obj = Ext.util.JSON.decode(response.responseText);
+                if (infoWindow.hidden == false) {
+                  infoWindow.update(response.responseText);
+                } else {
+                  infoWindow.html = response.responseText;
+                  infoWindow.show();
+                }
+              },
+              failure: function(response,opts){
+                alert(response.status);
+              }
             });
           }
         });
@@ -362,7 +448,7 @@
         // Define the miniSASS composite layer as a base layer
         var layerMiniSASSBase = new OpenLayers.Layer.WMS(
           'miniSASS base layer',
-          geoserverURL+'/wms',
+          geoserverURL,
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
         );
@@ -370,7 +456,7 @@
         // Define the provinces layer
         var layerProvinces = new OpenLayers.Layer.WMS(
           'Provinces',
-          geoserverURL+'/wms',
+          geoserverURL,
           {layers:'miniSASS:provinces',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
         );
@@ -378,7 +464,7 @@
         // Define the schools layer as an overlay
         var layerSchools = new OpenLayers.Layer.WMS(
           'Schools',
-          geoserverURL+'/wms',
+          geoserverURL,
           {layers:'miniSASS:schools',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:false}
         );
@@ -386,7 +472,7 @@
         // Define the miniSASS observations as an overlay
         var layerMiniSASSObs = new OpenLayers.Layer.WMS(
           'miniSASS Observations',
-          geoserverURL+'/wms',
+          geoserverURL,
           {layers:'miniSASS:sample',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
@@ -400,80 +486,10 @@
         mapClick = new OpenLayers.Control.MapClick();
         map.addControl(mapClick);
 
-/*        OpenLayers.ProxyHost = '/static/proxy.py?url=';
-
-        // Setup the facility for querying features
-        var infoClick = new OpenLayers.Control.WMSGetFeatureInfo({
-          url: geoserverURL+'/wms',
-          maxFeatures: 1,
-          title: 'Identify features by clicking',
-          queryVisible: true,
-          layers: [layerMiniSASSObs],
-          eventListeners: {
-            getfeatureinfo: function(event){
-                if (event.text.length != 0) { alert (event.text);
-//                  map.addPopup(new OpenLayers.Popup.FramedCloud(
-//                    "querypopup",
-//                    map.getLonLatFromPixel(event.xy),
-//                    null,
-//                    event.text,
-//                    null,
-//                    true
-//                  ));
-                };
-            }
-          }
-        });
+        // Add the info click controller
+        infoClick = new OpenLayers.Control.InfoClick();
         map.addControl(infoClick);
-        infoClick.activate();
-*/
-
-/*
-        var getFeatureURL = 'http://localhost:8080/geoserver/miniSASS/wms?REQUEST=GetFeatureInfo'
-                      + '&EXCEPTIONS=application%2Fvnd.ogc.se_xml&BBOX=7.5%2C-41.482422%2C41.5%2C-15.517578'
-                      + '&SERVICE=WMS&INFO_FORMAT=text%2Fhtml&QUERY_LAYERS=miniSASS%3Asample&FEATURE_COUNT=50'
-                      + '&Layers=miniSASS%3Asample&WIDTH=512&HEIGHT=391&format=image%2Fpng&styles='
-                      + '&srs=EPSG%3A4326&version=1.1.1&x=200&y=200';
-        var featureData = OpenLayers.Request.GET ({
-                            url:getFeatureURL
-                          });
-        alert (featureData.responseXML);
-*/
-/*
-map.events.register('click', map, function (e) {
-    var urlWMS = geoserverURL+'/wms'
-      + "?REQUEST=GetFeatureInfo"
-      + "&EXCEPTIONS=application/vnd.ogc.se_xml"
-      + "&BBOX=" + map.getExtent().toBBOX()
-      + "&X=" + e.xy.x
-      + "&Y=" + e.xy.y
-      + "&INFO_FORMAT=text/html"
-      + "&QUERY_LAYERS=miniSASS:sample"
-      + "&LAYERS=miniSASS:sample"
-      + "&FEATURE_COUNT=50"
-      + "&SRS=EPSG:900913"
-      + "&STYLES="
-      + "&WIDTH=" + map.size.w
-      + "&HEIGHT=" + map.size.h;
-      var infoWindow = new Ext.Window({
-        width:600,
-        height:400,
-        closeAction:'close',
-        modal:true,
-        autoLoad: {url:urlWMS},
-        items: new Ext.Panel({
-          border:false
-        })
-      });
-      infoWindow.show();
-
-//    window.open(url,
-//      "getfeatureinfo",
-//      "location=10,status=10,scrollbars=1,width=600,height=150"
-//    );
-  });
-*/
-
+    
         /* These menus are not used at present
         // Setup the menu for inputting miniSASS observations
         var obsMenu = new Ext.menu.Menu({
@@ -589,6 +605,18 @@ map.events.register('click', map, function (e) {
         });
         updateInputForm('');
 
+        // Define a window for display miniSASS observation information
+        infoWindow = new Ext.Window({
+          title:'miniSASS observation details',
+          width:600,
+          height:250,
+          closeAction:'hide',
+          modal:false,
+          items: new Ext.Panel({
+            border:false
+          })
+        });
+
         // Define the popup Site Selection window
         siteWindow = new Ext.Window({
           applyTo:'site_list_window',
@@ -624,7 +652,7 @@ map.events.register('click', map, function (e) {
 
         // Link the Observation Info button
         var buttonInfo = Ext.get('id_obs_info');
-        buttonInfo.on('click', function(){alert('Under development');});
+        buttonInfo.on('click', infoFromMap);
 
         // Link the Data Input button
         var buttonAdd = Ext.get('id_obs_add');
