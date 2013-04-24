@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
-      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
+      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var lonlat;
       var map;
       var mapClick;
@@ -129,8 +129,34 @@
           updateSpecies('snails',4);
           document.getElementById('id_total_score').innerHTML = totalScore;
           document.getElementById('id_groups').innerHTML = numGroups;
-          if (numGroups!=0) averageScore = (totalScore/numGroups);
+          if (numGroups != 0) averageScore = (totalScore/numGroups);
           document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
+          
+          // Update the crab icon
+          var riverCat = document.getElementById('id_river_cat').value;
+          if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_u.png';
+          } else if (averageScore > 0 && averageScore <= 4.3 && riverCat == 'sandy'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_v.png';
+          } else if (averageScore > 0 && averageScore <= 5.1 && riverCat == 'rocky'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_v.png';
+          } else if (averageScore > 4.3 && averageScore <= 4.9 && riverCat == 'sandy'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_p.png';
+          } else if (averageScore > 5.1 && averageScore <= 6.1 && riverCat == 'rocky'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_p.png';
+          } else if (averageScore > 4.9 && averageScore <= 5.8 && riverCat == 'sandy'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_f.png';
+          } else if (averageScore > 6.1 && averageScore <= 6.8 && riverCat == 'rocky'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_f.png';
+          } else if (averageScore > 5.8 && averageScore <= 6.9 && riverCat == 'sandy'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_g.png';
+          } else if (averageScore > 6.8 && averageScore <= 7.9 && riverCat == 'rocky'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_g.png';
+          } else if (averageScore > 6.9 && riverCat == 'sandy'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_n.png';
+          } else if (averageScore > 7.9 && riverCat == 'rocky'){
+            document.getElementById('id_crab').src = '/static/img/icon_crab_n.png';
+          }
 
           // Enable/disable site editing as necessary
           if (document.getElementById('id_edit_site').value == 'true'){
@@ -260,7 +286,6 @@
         // Enable the controls for site input variables
         disableSiteEdit(false)
         document.getElementById('id_edit_site').value = 'true';
-
 
         // Erase the observation link to the site id
         document.getElementById('id_site').value = '';
@@ -398,12 +423,8 @@
               url:'wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
   //              var obj = Ext.util.JSON.decode(response.responseText);
-                if (infoWindow.hidden == false) {
-                  infoWindow.update(response.responseText);
-                } else {
-                  infoWindow.html = response.responseText;
-                  infoWindow.show();
-                }
+                infoWindow.update(response.responseText);
+                infoWindow.show();
               },
               failure: function(response,opts){
                 alert(response.status);
@@ -478,7 +499,7 @@
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
+        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
 
@@ -616,6 +637,8 @@
             border:false
           })
         });
+        infoWindow.show();
+        infoWindow.hide();
 
         // Define the popup Site Selection window
         siteWindow = new Ext.Window({

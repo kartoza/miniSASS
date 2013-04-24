@@ -10,7 +10,6 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from monitor.forms import *
 from monitor.models import Sites, Observations
 from django.forms.models import modelformset_factory
-
 import urllib2
 
 def index(request):
