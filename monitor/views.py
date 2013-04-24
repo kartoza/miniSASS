@@ -11,7 +11,7 @@ from monitor.forms import *
 from monitor.models import Sites, Observations
 from django.forms.models import modelformset_factory
 
-import urllib
+import urllib2
 
 def index(request):
     """ The 'landing page' for the monitor application 
@@ -88,6 +88,8 @@ def detail(request, monitor_id):
 def wms_get_feature_info(request, wms_url, wms_params):
     """ Request information from GeoServer via a WMS GetFeatureInfo call
     """
-    feature_info = urllib.urlopen(wms_url+'?'+wms_params)
+    wms_params.replace('http:/','http://')
+    wms_params.replace('///','//')
+    feature_info = urllib2.urlopen(wms_url+'?'+wms_params)
     return HttpResponse(feature_info)
 
