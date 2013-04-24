@@ -395,7 +395,7 @@
               + '&HEIGHT=' + map.size.h;
 
             Ext.Ajax.request({
-              url:'wms/~'+geoserverURL+'~'+WMSParams+'~',
+              url:'wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
   //              var obj = Ext.util.JSON.decode(response.responseText);
                 if (infoWindow.hidden == false) {

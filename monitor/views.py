@@ -88,8 +88,6 @@ def detail(request, monitor_id):
 def wms_get_feature_info(request, wms_url, wms_params):
     """ Request information from GeoServer via a WMS GetFeatureInfo call
     """
-    wms_params.replace('http:/','http://')
-    wms_params.replace('///','//')
-    feature_info = urllib2.urlopen(wms_url+'?'+wms_params)
+    feature_info = urllib2.urlopen('http://'+wms_url+'?'+wms_params)
     return HttpResponse(feature_info)
 
