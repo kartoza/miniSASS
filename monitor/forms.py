@@ -1,6 +1,6 @@
 from django import forms
 from monitor.models import Sites, Observations
-from django.forms import ModelForm, Textarea, DateInput
+from django.forms import ModelForm, Textarea, Select, DateInput
 
 # Form based on the Sites model
 class SiteForm(ModelForm):
@@ -8,6 +8,7 @@ class SiteForm(ModelForm):
         model = Sites
         widgets = {
             'description': Textarea(attrs={'cols':30, 'rows':4}),
+            'river_cat': Select(attrs={'onchange':"updateInputForm('');"}),
         }
 
 # Form based on the Observations model

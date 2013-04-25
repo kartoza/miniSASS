@@ -121,23 +121,24 @@
               </td>
               <td>
                 <table id="data_table_right">
-                  <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th></tr>
-                  <tr><td>{{ observation_form.flatworms }}</td><td class="tdlabel"><label for="id_flatworms">{{ observation_form.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td></tr>
-                  <tr><td>{{ observation_form.worms }}</td><td class="tdlabel"><label for="id_worms">{{ observation_form.worms.label }}:</label></td><td id="worms" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.leeches }}</td><td class="tdlabel"><label for="id_leeches">{{ observation_form.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.crabs_shrimps }}</td><td class="tdlabel"><label for="id_crabs_shrimps">{{ observation_form.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.stoneflies }}</td><td class="tdlabel"><label for="id_stoneflies">{{ observation_form.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td></tr>
-                  <tr><td>{{ observation_form.minnow_mayflies }}</td><td class="tdlabel"><label for="id_minnow_mayflies">{{ observation_form.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.other_mayflies }}</td><td class="tdlabel"><label for="id_other_mayflies">{{ observation_form.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td></tr>
-                  <tr><td>{{ observation_form.damselflies }}</td><td class="tdlabel"><label for="id_damselflies">{{ observation_form.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td></tr>
-                  <tr><td>{{ observation_form.dragonflies }}</td><td class="tdlabel"><label for="id_dragonflies">{{ observation_form.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td></tr>
-                  <tr><td>{{ observation_form.bugs_beetles }}</td><td class="tdlabel"><label for="id_bugs_beetles">{{ observation_form.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td></tr>
-                  <tr><td>{{ observation_form.caddisflies }}</td><td class="tdlabel"><label for="id_caddisflies">{{ observation_form.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td></tr>
-                  <tr><td>{{ observation_form.true_flies }}</td><td class="tdlabel"><label for="id_true_flies">{{ observation_form.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td></tr>
-                  <tr><td>{{ observation_form.snails }}</td><td class="tdlabel"><label for="id_snails">{{ observation_form.snails.label }}:</label></td><td id="snails" class="tdscore">4</td></tr>
-                  <tr><td></td><td class="tdlabel">Total score:</td><td id="id_total_score" class="tdtotal">0</td></tr>
-                  <tr><td></td><td class="tdlabel">Number of groups:</td><td id="id_groups" class="tdtotal">0</td></tr>
-                  <tr><td></td><td class="tdlabel">Average score:</td><td id="id_average_score" class="tdtotal">0.0</td></tr>
+                  <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th><th></th></tr>
+                  <tr><td>{{ observation_form.flatworms }}</td><td class="tdlabel"><label for="id_flatworms">{{ observation_form.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td><td></td></tr>
+                  <tr><td>{{ observation_form.worms }}</td><td class="tdlabel"><label for="id_worms">{{ observation_form.worms.label }}:</label></td><td id="worms" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.leeches }}</td><td class="tdlabel"><label for="id_leeches">{{ observation_form.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.crabs_shrimps }}</td><td class="tdlabel"><label for="id_crabs_shrimps">{{ observation_form.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td><td></td></tr>
+                  <tr><td>{{ observation_form.stoneflies }}</td><td class="tdlabel"><label for="id_stoneflies">{{ observation_form.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td><td></td></tr>
+                  <tr><td>{{ observation_form.minnow_mayflies }}</td><td class="tdlabel"><label for="id_minnow_mayflies">{{ observation_form.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td><td></td></tr>
+                  <tr><td>{{ observation_form.other_mayflies }}</td><td class="tdlabel"><label for="id_other_mayflies">{{ observation_form.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td><td></td></tr>
+                  <tr><td>{{ observation_form.damselflies }}</td><td class="tdlabel"><label for="id_damselflies">{{ observation_form.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td><td></td></tr>
+                  <tr><td>{{ observation_form.dragonflies }}</td><td class="tdlabel"><label for="id_dragonflies">{{ observation_form.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td><td></td></tr>
+                  <tr><td>{{ observation_form.bugs_beetles }}</td><td class="tdlabel"><label for="id_bugs_beetles">{{ observation_form.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td><td></td></tr>
+                  <tr><td>{{ observation_form.caddisflies }}</td><td class="tdlabel"><label for="id_caddisflies">{{ observation_form.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td><td></td></tr>
+                  <tr><td>{{ observation_form.true_flies }}</td><td class="tdlabel"><label for="id_true_flies">{{ observation_form.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.snails }}</td><td class="tdlabel"><label for="id_snails">{{ observation_form.snails.label }}:</label></td><td id="snails" class="tdscore">4</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Total score:</td><td id="id_total_score" class="tdtotal">0</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Number of groups:</td><td id="id_groups" class="tdtotal">0</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Average score:</td><td id="id_average_score" class="tdtotal">0.0</td>
+                      <td><img src="{{ STATIC_URL }}img/icon_crab_u.png" alt="" id="id_crab"/></td></tr>
                 </table>
               </td>
             </tr>

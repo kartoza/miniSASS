@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from monitor.forms import *
 from monitor.models import Sites, Observations
 from django.forms.models import modelformset_factory
+import urllib2
 
 def index(request):
     """ The 'landing page' for the monitor application 
@@ -82,4 +83,10 @@ def detail(request, monitor_id):
     return render_to_response('monitor/detail.html',
                               {'observation':observation},
                               context_instance=RequestContext(request))
+
+def wms_get_feature_info(request, wms_url, wms_params):
+    """ Request information from GeoServer via a WMS GetFeatureInfo call
+    """
+    feature_info = urllib2.urlopen('http://'+wms_url+'?'+wms_params)
+    return HttpResponse(feature_info)
 
