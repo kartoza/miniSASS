@@ -1,16 +1,24 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from monitor.models import ObservationPlugin as ObservationPluginModel
+from cms.models.pluginmodel import CMSPlugin
 from django.utils.translation import ugettext as _
 
+from monitor.models import Observations as Observation
 
-class ObservationPlugin(CMSPluginBase):
-    model = ObservationPluginModel
-    name = _(u"Observation Plugin")
-    render_template = "monitor/plugin.html"
+
+class LatestObservationsPlugin(CMSPluginBase):
+    model = CMSPlugin
+    name = _(u"Latest Observations Plugin")
+    render_template = "monitor/latest_plugin.html"
 
     def render(self, context, instance, placeholder):
-        context.update({'instance':instance})
+        context['instance'] = instance
+        
+        # get the latest 5 observations
+        latest = Observation.objects.all().order_by('-time_stamp').values(
+                'site__name', 'score', 'time_stamp')[:5]
+        context['latest'] = latest
+
         return context
 
-plugin_pool.register_plugin(ObservationPlugin)
+plugin_pool.register_plugin(LatestObservationsPlugin)

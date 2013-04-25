@@ -1,0 +1,12 @@
+<h1>The 5 Newest Observations</h1>
+{% for item in latest %}
+<section>
+<header>
+<h2>{{ item.site__name }}</h1>
+</header>
+<p>
+<label>Date</label>: {{ item.time_stamp }}<br>
+<label>Score</label>: {{ item.score }}
+</p>
+</section>
+{% endfor %}

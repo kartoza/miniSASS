@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'minisass.views.home', name='home'),
     # url(r'^minisass/', include('minisass.foo.urls')),
     (r'^tinymce/', include('tinymce.urls')),
-    (r'^monitor/', include('monitor.urls')),
+    # (r'^monitor/', include('monitor.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

@@ -65,7 +65,7 @@ def observations(request):
     """ Will display the list of most current miniSASS observation reports
     """
 
-    observations = models.observations.objects.all().order_by('-time_stamp')[:10]
+    observations = Observations.objects.all().order_by('-time_stamp')[:10]
 
     # render the home page
     return render_to_response('monitor/observations.html', 
@@ -76,7 +76,7 @@ def detail(request, monitor_id):
     """ miniSASS observation detail view
     """
     try:
-        observation = models.Observations.objects.get(pk=monitor_id)
+        observation = Observations.objects.get(pk=monitor_id)
     except models.Observations.DoesNotExist:
         raise Http404
 

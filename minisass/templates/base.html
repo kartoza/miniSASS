@@ -2,31 +2,46 @@
 <!doctype html>
 <html>
   <head>
+    {% block "minisass_css" %}
+    {% endblock %}
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% render_block "css" %}
-    {% addtoblock "css" %}
-    <link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">
-    {% endaddtoblock %}
-    <title>{{ current_page.title }}</title>
+
+    {% block "minisass_js" %}
+    {% endblock %}
+    {% render_block "js" %}
+
+    <title>
+      {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
+    </title>
   </head>
   <body>
     {% cms_toolbar %}
-    <div class="minisass-heading">
-      &nbsp;
-    </div>
 
-    <div class="minisass-breadcrumbs">
-      {% show_breadcrumb %}
-    </div>
+    <div class="minisass-container">
 
-    <div class="minisass-menus">
-      {% show_menu %}
-    </div>
+      <div class="minisass-heading">
+        <a href="/">
+          <img src="{{STATIC_URL}}images/mini_SASS_logo.jpg" alt="miniSASS Logo">
+        </a>
+        <div class="minisass-heading-space">
+          <ul class="minisass-menus">
+            {% show_menu %}
+          </div>
+        </ul>
+      </div>
+      <div class="red-line">
+      </div>
 
-    <div class="minisass-content">
-      {% placeholder "base_content" %}
-      {% block "base_content" %}{% endblock %}
-    </div>
+      {% block "minisass_page_content" %}
+      <div class="minisass-page-content">
+        {% placeholder "content" %}
+      </div>
+      <div class="minisass-right-column">
+        {% placeholder "right_column" %}
+      </div>
+      {% endblock %}
 
-    {% render_block "js" %}
+    </div>
   </body>
 </html>

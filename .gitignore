@@ -8,6 +8,7 @@ minisass/settings.py
 *.pyc
 *.*.orig
 *.swp
+*.swo
 minisass/media/livetracks/*
 .DS_Store
 assets/

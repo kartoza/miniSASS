@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, Verdana, sans;
+    font-size: medium;
+}
+
+.minisass-container {
+    width: 1024px;
+    margin: 0 auto 0 auto;
+    background: white;
+}
+
+.minisass-heading {
+    width: 100%;
+    float: left;
+    background: #3168b8;
+}
+
+.minisass-breadcrumbs {
+    float: right;
+    background: white;
+    font-size: small;
+}
+.minisass-breadcrumbs li {
+    display: block;
+}
+
+.minisass-heading img {
+    float: left;
+}
+.minisass-heading-space {
+    float: left;
+    margin-top: 123px;
+    width: auto;
+}
+.red-line {
+    height: 2px;
+    float: left;
+    width: 100%;
+    background: #c66;
+    margin-bottom: 5px;
+    border: none;
+}
+
+ul.minisass-menus {
+    float: left;
+    font-size: 0.9em;
+    font-weight: bold;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    border: 0;
+}
+.minisass-menus li {
+    width: auto;
+    display: block;
+    float: left;
+    padding: 3px 8px 3px 8px;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    margin-left: 2px;
+    text-align: center;
+    background: #cc3;
+}
+.minisass-menus li.selected {
+    background: #c66;
+    color: white;
+}
+.minisass-menus li.selected a:-webkit-any-link {
+    color: white;
+}
+.minisass-menus li.sibling a:-webkit-any-link {
+    color: #77e;
+}
+.minisass-menus a:hover {
+    color: white;
+}
+.minisass-menus li.selected a {
+    color: white;
+}
+
+.minisass-map-content {
+    width: 100%;
+    float: left;
+}
+.minisass-page-content {
+    width: 800px;
+    float: left;
+    background: white;
+}
+.minisass-right-column {
+    width: 220px;
+    float: left;
+    background: #bbf;
+    font-size: small;
+    margin-left: 4px;
+}
+.minisass-right-column h1, section {
+    margin: 8px;
+}
