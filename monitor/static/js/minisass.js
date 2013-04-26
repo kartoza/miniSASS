@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
-//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var lonlat;
       var map;
       var mapClick;
@@ -158,12 +158,13 @@
             document.getElementById('id_crab').src = '/static/img/icon_crab_n.png';
           }
 
-          // Enable/disable site editing as necessary
-          if (document.getElementById('id_edit_site').value == 'true'){
-            disableSiteEdit(false);
-          } else {
-            disableSiteEdit(true);
-          }
+        }
+
+        // Enable/disable site editing as necessary
+        if (document.getElementById('id_edit_site').value == 'true'){
+          disableSiteEdit(false);
+        } else {
+          disableSiteEdit(true);
         }
       }
 
@@ -205,6 +206,12 @@
         document.getElementById('id_zoom_level').value = map.getZoom();
         document.getElementById('id_centre_X').value = map.getCenter().lon;
         document.getElementById('id_centre_Y').value = map.getCenter().lat;
+        var layerStr = '';
+        for (var i=0; i < map.getNumLayers(); i++) {
+          if (i>0) layerStr += ',';
+          layerStr += map.layers[i].visibility;
+        }
+        document.getElementById('id_layers').value = layerStr;
 
         return true;
       }
@@ -288,7 +295,7 @@
         document.getElementById('id_edit_site').value = 'true';
 
         // Erase the observation link to the site id
-        document.getElementById('id_site').value = '';
+        document.getElementById('id_site').value = '1';
 
       }
 
@@ -499,9 +506,18 @@
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
+        // If necessary, restore layer visibility saved from a previous state
+        var layerStr = document.getElementById('id_layers').value;
+        if (layerStr != ''){
+          var layerArr = layerStr.split(',');
+          for (var i=0; i < layerArr.length; i++) {
+            if (layerArr[i]=='false') {map.layers[i].visibility = false;}
+            else {map.layers[i].visibility = true;}
+          }
+        }
 
         // Add the map click controller
         mapClick = new OpenLayers.Control.MapClick();
@@ -631,6 +647,7 @@
           title:'miniSASS observation details',
           width:600,
           height:250,
+          autoScroll:true,
           closeAction:'hide',
           modal:false,
           items: new Ext.Panel({
