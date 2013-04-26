@@ -18,6 +18,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
+    # registration urls
+    url(r'^accounts/', include('registration.backends.default.urls')),
+
     # django-cms urls
     url(r'^', include('cms.urls')),
 

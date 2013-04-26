@@ -3,27 +3,28 @@ body {
     font-size: medium;
 }
 
+/* page layout styles */
 .minisass-container {
     width: 1024px;
     margin: 0 auto 0 auto;
     background: white;
 }
-
 .minisass-heading {
     width: 100%;
     float: left;
     background: #3168b8;
 }
-
-.minisass-breadcrumbs {
-    float: right;
+.minisass-page-content {
+    width: 800px;
+    float: left;
     background: white;
-    font-size: small;
 }
-.minisass-breadcrumbs li {
-    display: block;
+.minisass-right-column {
+    width: 220px;
+    float: left;
 }
 
+/* page heading styles */
 .minisass-heading img {
     float: left;
 }
@@ -41,6 +42,17 @@ body {
     border: none;
 }
 
+/* breadcrumb styling */
+.minisass-breadcrumbs {
+    float: right;
+    background: white;
+    font-size: small;
+}
+.minisass-breadcrumbs li {
+    display: block;
+}
+
+/* top page menu styling */
 ul.minisass-menus {
     float: left;
     font-size: 0.9em;
@@ -83,22 +95,55 @@ ul.minisass-menus {
     color: white;
 }
 
+/* map page styling */
 .minisass-map-content {
     width: 100%;
     float: left;
 }
-.minisass-page-content {
-    width: 800px;
-    float: left;
-    background: white;
-}
-.minisass-right-column {
-    width: 220px;
-    float: left;
-    background: #bbf;
+
+/* recent observations plugin stylin */
+div.recent-observations {
+    width: 100%;
+    background: #5cf;
     font-size: small;
     margin-left: 4px;
 }
-.minisass-right-column h1, section {
+.recent-observations section {
     margin: 8px;
+}
+.recent-observations h1 {
+    font-size: 1.1em;
+    background-color: orange;
+    padding: 4px;
+    text-align: center;
+}
+.recent-observations section h2 {
+    font-size: 1.0em;
+    background-color: white;
+    padding: 2px;
+}
+.recent-observations section p {
+    padding-bottom: 3px;
+    border-bottom: 1px dotted white;
+}
+
+/* image plugin styling */
+img.left {
+    float: left;
+    margin-right: 7px;
+}
+span.title {
+    clear: both;
+    display: block;
+    float: left;
+    margin: 0 7px 7px 0;
+    font-size: smaller;
+}
+
+div.registration_links {
+    float: right;
+    margin: 5px 5px 0 0;
+}
+.registration_links a {
+    color: white;
 }

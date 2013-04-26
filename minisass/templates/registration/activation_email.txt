@@ -1,0 +1,8 @@
+Please activate your account with miniSASS by clicking on the link below:
+
+http://{{ site }}/accounts/activate/{{ activation_key }}
+
+You have {{ expiration_days }} days to activate your account.
+
+Kind regards,
+The miniSASS team.
