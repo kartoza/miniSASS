@@ -3,7 +3,6 @@
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
 //      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
       var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
-      var lonlat;
       var map;
       var mapClick;
       var infoClick;
@@ -329,8 +328,8 @@
             document.getElementById('id_river_cat').selectedIndex = 2;
           } else document.getElementById('id_river_cat').selectedIndex = 0;
 
-          // Extract the x- and y-coordinates from the_geom field
-          var coordsStr = document.getElementById(elementName+'-the_geom').value
+          // Extract the x- and y-coordinates from the the_geom field
+          var coordsStr = document.getElementById(elementName+'-the_geom').value;
           coordsStr = coordsStr.slice(7,-1);
           coordsArray = coordsStr.split(' ');
           document.getElementById('id_latitude').value = parseFloat(coordsArray[1]).toFixed(5);
@@ -342,6 +341,13 @@
           // Disable the site input controls and variables
           disableSiteEdit(true);
           document.getElementById('id_edit_site').value = 'false';
+
+          // Zoom the map to the selected site
+          var xyCoords = new OpenLayers.LonLat(
+            parseFloat(coordsArray[0]).toFixed(5),
+            parseFloat(coordsArray[1]).toFixed(5)
+          );
+          map.setCenter(xyCoords.transform(proj4326, proj3857),15);
         }
       }
 
@@ -375,14 +381,17 @@
             );
           }, 
           trigger: function(e) {
-            lonlat = map.getLonLatFromPixel(e.xy);
-            lonlat.transform(proj3857, proj4326);
-            document.getElementById('id_latitude').value = lonlat.lat.toFixed(5);
-            document.getElementById('id_longitude').value = lonlat.lon.toFixed(5);
-            var msg = 'You clicked at ' +  lonlat.lat.toFixed(5) + 'S ' + lonlat.lon.toFixed(5) + 'E.';
+            xyCoords = map.getLonLatFromPixel(e.xy);
+            xyCoords.transform(proj3857, proj4326);
+            document.getElementById('id_latitude').value = xyCoords.lat.toFixed(5);
+            document.getElementById('id_longitude').value = xyCoords.lon.toFixed(5);
+            var msg = 'You clicked at ' +  xyCoords.lat.toFixed(5) + 'S ' + xyCoords.lon.toFixed(5) + 'E.';
             msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
             Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
-              if (btn=='yes') {inputWindow.show(this);}
+              if (btn=='yes') {
+                map.setCenter(map.getLonLatFromPixel(e.xy),15);
+                inputWindow.show(this);
+              }
             });
           }
         });
