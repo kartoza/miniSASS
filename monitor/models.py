@@ -23,6 +23,8 @@ class Sites(models.Model):
     name = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=255, blank=True)
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
+    user = models.ForeignKey(User)
+    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
     objects = models.GeoManager()
 
     class Meta:

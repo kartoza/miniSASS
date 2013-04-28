@@ -427,8 +427,8 @@
               + '&X=' + e.xy.x
               + '&Y=' + e.xy.y
               + '&INFO_FORMAT=text/html'
-              + '&QUERY_LAYERS=miniSASS:sample'
-              + '&LAYERS=miniSASS:sample'
+              + '&QUERY_LAYERS=miniSASS:minisass_observations'
+              + '&LAYERS=miniSASS:minisass_observations'
               + '&FEATURE_COUNT=50'
               + '&SRS=EPSG:3857'
               + '&STYLES='
@@ -510,7 +510,7 @@
         var layerMiniSASSObs = new OpenLayers.Layer.WMS(
           'miniSASS Observations',
           geoserverURL,
-          {layers:'miniSASS:sample',transparent:true,format:'image/png'},
+          {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
 
