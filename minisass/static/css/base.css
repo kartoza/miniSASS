@@ -23,6 +23,14 @@ body {
     width: 220px;
     float: left;
 }
+.minisass-bottom {
+    clear: both;
+    width: 100%;
+    float: left;
+    background: #b22;
+    color: white;
+    font-size: smaller;
+}
 
 /* page heading styles */
 .minisass-heading img {
@@ -37,7 +45,7 @@ body {
     height: 2px;
     float: left;
     width: 100%;
-    background: #c66;
+    background: #b22;
     margin-bottom: 5px;
     border: none;
 }
@@ -57,14 +65,9 @@ ul.minisass-menus {
     float: left;
     font-size: 0.9em;
     font-weight: bold;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0px;
-    -webkit-padding-start: 0;
-    margin-bottom: 0;
-    margin-top: 0;
+    margin: 0;
     border: 0;
+    padding-left: 0px;
 }
 .minisass-menus li {
     width: auto;
@@ -79,20 +82,30 @@ ul.minisass-menus {
     background: #cc3;
 }
 .minisass-menus li.selected {
-    background: #c66;
+    background: #b22;
     color: white;
 }
-.minisass-menus li.selected a:-webkit-any-link {
-    color: white;
-}
-.minisass-menus li.sibling a:-webkit-any-link {
-    color: #77e;
-}
-.minisass-menus a:hover {
-    color: white;
-}
+.minisass-menus li.selected a:visited,
+.minisass-menus li.selected a:active,
+.minisass-menus li.selected a:hover, 
 .minisass-menus li.selected a {
     color: white;
+    text-decoration: none;
+}
+.minisass-menus li.sibling a:visited,
+.minisass-menus li.sibling a:active,
+.minisass-menus li.sibling a:hover, 
+.minisass-menus li.sibling a {
+    color: #77e;
+    text-decoration: none;
+}
+.minisass-menus li.selected a:active,
+.minisass-menus li.selected a:hover {
+    text-decoration: underline;
+}
+.minisass-menus li.sibling a:active,
+.minisass-menus li.sibling a:hover {
+    text-decoration: underline;
 }
 
 /* map page styling */
@@ -119,12 +132,59 @@ div.recent-observations {
 }
 .recent-observations section h2 {
     font-size: 1.0em;
-    background-color: white;
+    background-color: #b22;
+    color: white;
     padding: 2px;
 }
 .recent-observations section p {
     padding-bottom: 3px;
     border-bottom: 1px dotted white;
+}
+
+/* right column links plugin */
+div.minisass-rc-links {
+    width: 100%;
+    background: #7ce;
+    font-size: small;
+    margin-left: 4px;
+    padding-bottom: 8px;
+}
+.minisass-rc-links section {
+    margin: 8px 0 8px 0;
+}
+.minisass-rc-links section heading h1 {
+    font-size: 1.1em;
+    background-color: orange;
+    padding: 4px;
+    text-align: center;
+}
+.minisass-rc-links section p.plugin_link {
+    margin: 8px;
+}
+
+/* blog include list styling */
+div.cmsplugin-blog-include-list {
+    width: 100%;
+    background: #8ce;
+    font-size: small;
+    margin-left: 4px;
+    padding-bottom: 8px;
+}
+.cmsplugin-blog-include-list section heading h1 {
+    font-size: 1.1em;
+    background-color: orange;
+    padding: 4px;
+    text-align: center;
+}
+.cmsplugin-blog-include-list p {
+    margin: 8px;
+    font-size 0.9em;
+}
+.cmsplugin-blog-include-list p a {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #b22;
+    padding: 2px;
 }
 
 /* image plugin styling */
@@ -142,8 +202,32 @@ span.title {
 
 div.registration_links {
     float: right;
-    margin: 5px 5px 0 0;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
+    color: white;
 }
+.registration_links a:hover,
+.registration_links a:visited,
+.registration_links a:active,
 .registration_links a {
+    color: white;
+}
+
+/* bottom links */
+.minisass-bottom div {
+    width: 100%;
+    float: left;
+}
+.minisass-bottom p {
+    margin: 10px 40px 10px 40px;
+}
+.minisass-bottom a {
+    color: white;
+    float: left;
+    margin: 10px 40px 10px 0px;
+}
+.minisass-bottom a:hover,
+.minisass-bottom a:visited,
+.minisass-bottom a:active {
     color: white;
 }

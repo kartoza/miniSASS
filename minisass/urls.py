@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from cms.sitemaps import CMSSitemap
+from cmsplugin_blog.sitemaps import BlogSitemap
 
 admin.autodiscover()
 
@@ -25,14 +26,18 @@ urlpatterns = patterns('',
     url(r'^', include('cms.urls')),
 
     # site map
-    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
-        {'sitemaps': {'cmspages': CMSSitemap}}),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {
+        'sitemaps': {
+            'cmspages': CMSSitemap,
+            'blogentries': BlogSitemap
+        }
+    }),
 
 )
 
 if settings.DEBUG:
     urlpatterns = patterns('',
-            url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-                {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-            url(r'', include('django.contrib.staticfiles.urls')),
-            ) + urlpatterns
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+        url(r'', include('django.contrib.staticfiles.urls')),
+    ) + urlpatterns

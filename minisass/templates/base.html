@@ -58,11 +58,18 @@
 
       {% block minisass_bottom %}
       <div class="minisass-bottom">
+          <div>
+              {% placeholder "bottom-links" %}
+          </div>
+          <p>
+          &copy; 2013, GroundTruth cc.
+          </p>
       </div>
-
 
       {% endblock %}
 
     </div>
+
+    {% include "google_analytics.html" %}
   </body>
 </html>
