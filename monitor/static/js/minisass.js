@@ -1,9 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
-//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
-      var lonlat;
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var map;
       var mapClick;
       var infoClick;
@@ -158,12 +157,13 @@
             document.getElementById('id_crab').src = '/static/img/icon_crab_n.png';
           }
 
-          // Enable/disable site editing as necessary
-          if (document.getElementById('id_edit_site').value == 'true'){
-            disableSiteEdit(false);
-          } else {
-            disableSiteEdit(true);
-          }
+        }
+
+        // Enable/disable site editing as necessary
+        if (document.getElementById('id_edit_site').value == 'true'){
+          disableSiteEdit(false);
+        } else {
+          disableSiteEdit(true);
         }
       }
 
@@ -205,6 +205,12 @@
         document.getElementById('id_zoom_level').value = map.getZoom();
         document.getElementById('id_centre_X').value = map.getCenter().lon;
         document.getElementById('id_centre_Y').value = map.getCenter().lat;
+        var layerStr = '';
+        for (var i=0; i < map.getNumLayers(); i++) {
+          if (i>0) layerStr += ',';
+          layerStr += map.layers[i].visibility;
+        }
+        document.getElementById('id_layers').value = layerStr;
 
         return true;
       }
@@ -288,7 +294,7 @@
         document.getElementById('id_edit_site').value = 'true';
 
         // Erase the observation link to the site id
-        document.getElementById('id_site').value = '';
+        document.getElementById('id_site').value = '1';
 
       }
 
@@ -322,8 +328,8 @@
             document.getElementById('id_river_cat').selectedIndex = 2;
           } else document.getElementById('id_river_cat').selectedIndex = 0;
 
-          // Extract the x- and y-coordinates from the_geom field
-          var coordsStr = document.getElementById(elementName+'-the_geom').value
+          // Extract the x- and y-coordinates from the the_geom field
+          var coordsStr = document.getElementById(elementName+'-the_geom').value;
           coordsStr = coordsStr.slice(7,-1);
           coordsArray = coordsStr.split(' ');
           document.getElementById('id_latitude').value = parseFloat(coordsArray[1]).toFixed(5);
@@ -335,6 +341,13 @@
           // Disable the site input controls and variables
           disableSiteEdit(true);
           document.getElementById('id_edit_site').value = 'false';
+
+          // Zoom the map to the selected site
+          var xyCoords = new OpenLayers.LonLat(
+            parseFloat(coordsArray[0]).toFixed(5),
+            parseFloat(coordsArray[1]).toFixed(5)
+          );
+          map.setCenter(xyCoords.transform(proj4326, proj3857),15);
         }
       }
 
@@ -368,14 +381,17 @@
             );
           }, 
           trigger: function(e) {
-            lonlat = map.getLonLatFromPixel(e.xy);
-            lonlat.transform(proj3857, proj4326);
-            document.getElementById('id_latitude').value = lonlat.lat.toFixed(5);
-            document.getElementById('id_longitude').value = lonlat.lon.toFixed(5);
-            var msg = 'You clicked at ' +  lonlat.lat.toFixed(5) + 'S ' + lonlat.lon.toFixed(5) + 'E.';
+            xyCoords = map.getLonLatFromPixel(e.xy);
+            xyCoords.transform(proj3857, proj4326);
+            document.getElementById('id_latitude').value = xyCoords.lat.toFixed(5);
+            document.getElementById('id_longitude').value = xyCoords.lon.toFixed(5);
+            var msg = 'You clicked at ' +  xyCoords.lat.toFixed(5) + 'S ' + xyCoords.lon.toFixed(5) + 'E.';
             msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
             Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
-              if (btn=='yes') {inputWindow.show(this);}
+              if (btn=='yes') {
+                map.setCenter(map.getLonLatFromPixel(e.xy),15);
+                inputWindow.show(this);
+              }
             });
           }
         });
@@ -411,8 +427,8 @@
               + '&X=' + e.xy.x
               + '&Y=' + e.xy.y
               + '&INFO_FORMAT=text/html'
-              + '&QUERY_LAYERS=miniSASS:sample'
-              + '&LAYERS=miniSASS:sample'
+              + '&QUERY_LAYERS=miniSASS:minisass_observations'
+              + '&LAYERS=miniSASS:minisass_observations'
               + '&FEATURE_COUNT=50'
               + '&SRS=EPSG:3857'
               + '&STYLES='
@@ -494,14 +510,23 @@
         var layerMiniSASSObs = new OpenLayers.Layer.WMS(
           'miniSASS Observations',
           geoserverURL,
-          {layers:'miniSASS:sample',transparent:true,format:'image/png'},
+          {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true}
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
+        // If necessary, restore layer visibility saved from a previous state
+        var layerStr = document.getElementById('id_layers').value;
+        if (layerStr != ''){
+          var layerArr = layerStr.split(',');
+          for (var i=0; i < layerArr.length; i++) {
+            if (layerArr[i]=='false') {map.layers[i].visibility = false;}
+            else {map.layers[i].visibility = true;}
+          }
+        }
 
         // Add the map click controller
         mapClick = new OpenLayers.Control.MapClick();
@@ -631,6 +656,7 @@
           title:'miniSASS observation details',
           width:600,
           height:250,
+          autoScroll:true,
           closeAction:'hide',
           modal:false,
           items: new Ext.Panel({

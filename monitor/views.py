@@ -18,7 +18,7 @@ def index(request):
     """
     
     # Create a form that sends all site data to the view
-    Site_Formset = modelformset_factory(Sites)
+    Site_Formset = modelformset_factory(Sites,extra=0)
     sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
 
     # Process the POST data, if any
@@ -40,7 +40,8 @@ def index(request):
                 current_observation.save()
             # Create new instances of the forms and then return to the map
             site_form = SiteForm()
-            observation_form = ObservationForm(initial={'site':'1'})
+            sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
+            observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
             coords_form = CoordsForm()
             post_values = request.POST.copy()
             post_values['edit_site'] = 'true'

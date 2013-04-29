@@ -6,6 +6,7 @@ from django.forms import ModelForm, Textarea, Select, DateInput
 class SiteForm(ModelForm):
     class Meta:
         model = Sites
+        exclude = ('time_stamp','user')
         widgets = {
             'description': Textarea(attrs={'cols':30, 'rows':4}),
             'river_cat': Select(attrs={'onchange':"updateInputForm('');"}),
