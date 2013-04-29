@@ -11,6 +11,7 @@ minisass/settings.py
 *.swo
 minisass/media/livetracks/*
 .DS_Store
-assets/
+assets
 minisass/*.txt
 minisass/media
+static
