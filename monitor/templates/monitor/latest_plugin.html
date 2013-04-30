@@ -6,7 +6,7 @@
 <h2>{{ item.site__name }}</h1>
 </header>
 <p>
-<label>Date</label>: {{ item.time_stamp }}<br>
+<label>Date</label>: {{ item.time_stamp|date:"d b Y" }}<br>
 <label>Score</label>: {{ item.score }}
 </p>
 </section>

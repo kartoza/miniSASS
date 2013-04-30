@@ -25,15 +25,17 @@
           <img src="{{STATIC_URL}}images/mini_SASS_logo.jpg" alt="miniSASS Logo">
         </a>
           <div class="registration_links">
+            <p>
             {% if user.is_authenticated %}
             Welcome back, {{ user.username }}<br />
             <a href="{% url auth_logout %}">Logout</a> |
-            <a href="{% url auth_password_change %}">Change Password</a><br />
+            <a href="{% url auth_password_change %}">Change Password</a>
             {% else %}
             <a href="{% url auth_login %}">Login</a> |
             <a href="{% url registration_register %}">Register</a><br />
             <a href="{% url auth_password_reset %}">Reset Password</a>
             {% endif %}
+            </p>
           </div>
         <div class="minisass-heading-space">
           <ul class="minisass-menus">

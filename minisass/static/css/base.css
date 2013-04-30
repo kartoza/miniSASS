@@ -18,6 +18,7 @@ body {
     width: 800px;
     float: left;
     background: white;
+    font-size: 0.8em;
 }
 .minisass-right-column {
     width: 220px;
@@ -38,8 +39,8 @@ body {
 }
 .minisass-heading-space {
     float: left;
-    margin-top: 123px;
-    width: auto;
+    height: 113px;
+    width: 623px;
 }
 .red-line {
     height: 2px;
@@ -65,9 +66,10 @@ ul.minisass-menus {
     float: left;
     font-size: 0.9em;
     font-weight: bold;
-    margin: 0;
+    margin: 88px 0 0 10px;
     border: 0;
     padding-left: 0px;
+    width: 623px;
 }
 .minisass-menus li {
     width: auto;
@@ -140,6 +142,9 @@ div.recent-observations {
     padding-bottom: 3px;
     border-bottom: 1px dotted white;
 }
+.recent-observations label {
+    font-weight: bold;
+}
 
 /* right column links plugin */
 div.minisass-rc-links {
@@ -162,29 +167,79 @@ div.minisass-rc-links {
     margin: 8px;
 }
 
-/* blog include list styling */
-div.cmsplugin-blog-include-list {
+/* main content blog include list styling */
+div.minisass-blog-content {
+    float: left;
+    width: 100%;
+}
+div.minisass-blog-content h1 {
+    font-size: 2em;
+    margin: 0.47em 0 0 0;
+}
+div.minisass-blog-content p {
+    margin: 0.67em 0 0 0;
+}
+div.minisass-blog-content .cmsplugin-blog-include-list {
+    background: white;
+    font-size 0.8em;
+}
+div.minisass-blog-content .cmsplugin-blog-include-list section heading h1 {
+    display: none;
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list {
+    background: white;
+    font-size 0.8em;
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list section p {
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list section p a {
+    font-weight: bold;
+}
+
+/* blog entries for blog latest styling */
+div.blog-entries-latest {
+    float: left;
+    width: 860px;
+}
+/* blog entries for blog latest, date and tags styling */
+div.blog-entries-author-date-tag {
+    float: right;
+    width: 150px;
+    border: 1px solid grey;
+    padding: 4px;
+    background-color: #eee;
+}
+div.blog-entries-author-date-tag h1 {
+    font-size: 1.1em;
+}
+
+/* right column blog include list styling */
+div.minisass-right-column .cmsplugin-blog-include-list section h1 {
+    background: orange;
+    font-size: 0.9em;
+}
+div.minisass-right-column .cmsplugin-blog-include-list {
     width: 100%;
     background: #8ce;
-    font-size: small;
     margin-left: 4px;
     padding-bottom: 8px;
 }
-.cmsplugin-blog-include-list section heading h1 {
-    font-size: 1.1em;
+div.minisass-right-column .cmsplugin-blog-include-list section heading h1 {
     background-color: orange;
     padding: 4px;
     text-align: center;
 }
-.cmsplugin-blog-include-list p {
+div.minisass-right-column .cmsplugin-blog-include-list section p {
     margin: 8px;
-    font-size 0.9em;
+    font-size: 0.8em;
 }
-.cmsplugin-blog-include-list p a {
-    font-size: 1.0em;
-    font-weight: bold;
-    color: #b22;
+div.minisass-right-column .cmsplugin-blog-include-list section p a {
+    display: block;
     padding: 2px;
+    font-weight: bold;
+    background-color: #b22;
+    color: white;
+    text-align: center;
 }
 
 /* image plugin styling */
@@ -201,10 +256,8 @@ span.title {
 }
 
 div.registration_links {
-    float: right;
-    margin: 5px 15px 0 0;
-    font-size: smaller;
-    color: white;
+    float: left;
+    width: 623px;
 }
 .registration_links a:hover,
 .registration_links a:visited,
@@ -212,11 +265,18 @@ div.registration_links {
 .registration_links a {
     color: white;
 }
+.registration_links p{
+    float: right;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
+    color: white;
+}
 
 /* bottom links */
 .minisass-bottom div {
     width: 100%;
     float: left;
+    margin-top: 15px;
 }
 .minisass-bottom p {
     margin: 10px 40px 10px 40px;

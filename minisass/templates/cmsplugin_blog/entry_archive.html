@@ -1,0 +1,31 @@
+{% extends "cmsplugin_blog/cmsplugin_blog_base.html" %}
+{% load i18n cmsplugin_blog_tags %}
+
+{% block left-col %}
+<div class="blog-entries-latest">
+{{ block.super }}
+
+<h1>{% trans "Latest entries" %}</h1>
+
+{% with latest as object_list %}
+{% if object_list %}
+   {% include "cmsplugin_blog/entry_list_include.html" %}
+{% else %}
+	<p>{% trans "No entries" %}</p>
+{% endif %}
+{% endwith %}
+
+</div>
+{% endblock %}
+
+{% block right-col %}
+<div class="blog-entries-author-date-tag">
+
+{% render_author_links %}
+
+{% render_month_links %}
+
+{% render_tag_links %}
+
+</div>
+{% endblock %}
