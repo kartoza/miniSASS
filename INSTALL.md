@@ -90,7 +90,7 @@ Initialize your database and start the site
 
     python manage.py syncdb --all
     python manage.py migrate --fake
-    python manage.py runserver
+    python manage.py runserver 8001
 
 You should have a running, but empty, Django-CMS website.
 

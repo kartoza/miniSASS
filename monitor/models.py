@@ -13,6 +13,37 @@ from datetime import datetime
 
 # Create your models here.
 
+class Organisations(models.Model):
+    ORG_CATS = (
+        (u'school', u'School'),
+        (u'non-school', u'Non-school'),
+        (u'individual', u'Individual')
+    )
+    org_name = models.CharField(max_length=100, blank=True)
+    org_type = models.CharField(max_length=5, choices=ORG_CATS, blank=True)
+
+    class Meta:
+        db_table = u'organisations'
+
+    def __unicode__(self):
+        return self.org_name
+        
+class Schools(models.Model):
+    gid = models.AutoField(primary_key=True, editable=False)
+    geom = models.PointField()
+    natemis = models.IntegerField()
+    school = models.CharField(max_length=255)
+    province = models.CharField(max_length=2)
+    phase = models.CharField(max_length=12)
+    objects = models.GeoManager()
+
+    class Meta:
+        db_table = u'schools'
+        managed=False
+
+    def __unicode__(self):
+        return self.name
+
 class Sites(models.Model):
     RIVER_CATS = (
         (u'rocky', u'Rocky'),
