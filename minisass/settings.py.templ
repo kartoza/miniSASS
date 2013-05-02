@@ -32,11 +32,11 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Africa/Johannesburg'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -64,7 +64,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = os.path.join(PROJECT_PATH, '..', 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -75,6 +75,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -111,9 +112,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.doc.XViewMiddleware',
     'cms.middleware.multilingual.MultilingualURLMiddleware',
+    # 'missing.middleware.ForceAdminLanguage',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
@@ -131,14 +132,130 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
 )
 
-CMS_TEMPLATES = (
-    ('template_1.html', 'Template One'),
-    ('template_2.html', 'Template Two'),
-)
-
 LANGUAGES = [
     ('en', 'English')
 ]
+ADMIN_LANGUAGE_CODE = 'en'
+
+# Django CMS configuration settings
+# CMS_LANGUAGES = {
+#         '1': [
+#             {
+#                 'code': 'en',
+#                 'name': gettext('English'),
+#                 'fallbacks': [],
+#                 'public': True,
+#                 'hide_untranslated': True,
+#                 'redirect_on_fallback': False
+#                 }
+#             ],
+#         'default': {
+#             'fallbacks': ['en'],
+#             'redirect_on_fallback': True,
+#             'public': False,
+#             'hide_untranslated': False
+#             }
+#         }
+
+CMS_TEMPLATES = (
+    ('site_page.html', 'Site Page'),
+    ('map_page.html', 'Map Page'),
+    ('resource_page.html', 'Resources Page'),
+)
+CMS_TEMPLATE_INHERITANCE = True
+
+CMS_PLACEHOLDER_CONF = {
+    'links': {
+            'plugins': ['LinkPlugin'],
+            'name': gettext("Links"),
+            'limits': {
+                'LinkPlugin': 10
+                }
+            },
+    'bottom-links': {
+            'plugins': ['LinkPlugin'],
+            'name': gettext("Bottom of Page Links"),
+            'limits': {
+                'LinkPlugin': 7,
+                }
+            }
+    }
+
+CMS_PLUGIN_CONTEXT_PROCESSORS = []
+CMS_PLUGIN_PROCESSORS = []
+CMS_APPHOOKS = (
+    'monitor.cms_app.MonitorApp', 
+    'cmsplugin_blog.cms_app.BlogApphook'
+)
+PLACEHOLDER_FRONTEND_EDITING = True
+
+CMS_UNIHANDECODE_HOST = None
+CMS_UNIHANDECODE_VERSION = None
+# CMS_UNIHANDECODE_DECODERS = []
+# CMS_UNIHANDECODE_DEFAULT_DECODER = []
+
+CMS_MEDIA_PATH = 'cms/'
+CMS_MEDIA_ROOT = MEDIA_ROOT + CMS_MEDIA_PATH
+CMS_MEDIA_URL = MEDIA_URL + CMS_MEDIA_PATH
+CMS_PAGE_MEDIA_PATH = 'cms_page_media/'
+
+CMS_URL_OVERWRITE = True
+CMS_MENU_TITLE_OVERWRITE = False
+CMS_REDIRECTS = False
+CMS_SOFTROOT = False
+
+CMS_PERMISSIONS = True
+CMS_RAW_ID_USERS = True
+CMS_PUBLIC_FOR = 'all'
+
+CMS_SHOW_START_DATE = False
+CMS_SHOW_END_DATE = False
+CMS_SEO_FIELDS = False
+
+CMS_CACHE_DURATIONS = {
+        'content': 60,
+        'menus': 3600,
+        'permissions': 3600
+        }
+CMS_CACHE_PREFIX = 'minisass-dev'
+CMS_MAX_PAGE_PUBLISH_REVERSIONS = 25
+
+# WYM Editor settings
+# WYM_TOOLS
+# WYM_CONTAINERS
+# WYM_CLASSES
+# WYM_STYLES
+# WYM_STYLESHEET
+
+# filer, easy_thumbnails settings
+FILER_DEBUG = True
+FILER_ENABLE_LOGGING = True
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    #'easy_thumbnails.processors.scale_and_crop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)
+
+# blog plugin settings
+JQUERY_JS = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'
+JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js'
+JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
+
+# reCAPTCHA keys for minisass.org
+RECAPTCHA_PUBLIC_KEY = '6LfMquASAAAAAOHqdGSV9f_7MxgsU5apGmq6NXDh'
+RECAPTCHA_PRIVATE_KEY = '6LfMquASAAAAAAFQXjSQFex-IR7tVeUAgBzAica1'
+
+
+# email settings
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+
+# django registration/auth settings
+ACCOUNT_ACTIVATION_DAYS = 7
+LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -149,22 +266,39 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.gis',
+    'django.contrib.sitemaps',
+    'registration',
+    'tinymce',
     'cms',
     'mptt',
+    'easy_thumbnails',
     'menus',
     'south',
     'sekizai',
-    'cms.plugins.file',
+    # 'cms.plugins.file',
     # 'cms.plugins.flash',
     # 'cms.plugins.googlemap',
     'cms.plugins.link',
-    'cms.plugins.picture',
+    # 'cms.plugins.picture',
     # 'cms.plugins.snippet',
-    'cms.plugins.teaser',
+    # 'cms.plugins.teaser',
     'cms.plugins.text',
-    'cms.plugins.video',
+    # 'cms.plugins.video',
+    'filer',
+    'cmsplugin_filer_file',
+    'cmsplugin_filer_folder',
+    'cmsplugin_filer_image',
+    'cmsplugin_filer_teaser',
+    'cmsplugin_filer_video',
     'cms.plugins.twitter',
+    'cmsplugin_blog',
+    'cmsplugin_contact',
+    'djangocms_utils',
+    'simple_translation',
+    'tagging',
+    # 'missing',
     'reversion',
+    'cmsplugin_htmlsitemap',
     'monitor',
 )
 
