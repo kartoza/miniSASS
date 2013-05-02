@@ -152,6 +152,8 @@ We then use SQL to generate and populate parts of the final schema from the samp
       name character varying(100),
       description character varying(255),
       river_cat character varying(5), --'sandy' or 'rocky', Django list
+      user_id integer,
+      time_stamp timestamp without time zone,
       CONSTRAINT sites_pk PRIMARY KEY (gid )
     )
     WITH (
@@ -211,11 +213,23 @@ We then use SQL to generate and populate parts of the final schema from the samp
 
 To add a layer to QGIS you can use something like this in DB Manager:
 
-> SELECT s.*,o.comment,o.score,o.time_stamp,o.obs_date,o_flag,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid;
+> SELECT s.*,o.comment,o.score,o.time_stamp,o.obs_date,o.flag,o.user_id FROM sites s INNER JOIN observations o on o.site = s.gid;
+
+SELECT s.gid AS sites_gid, s.the_geom, s.name,
+s.description, s.river_cat, o.gid AS observations_gid,
+o.score, o.obs_date, o.comment,
+o.flatworms, o.worms, o.leeches,
+o.crabs_shrimps, o.stoneflies,
+o.minnow_mayflies, o.other_mayflies,
+o.damselflies, o.dragonflies,
+o.bugs_beetles, o.caddisflies,
+o.true_flies, o.snails, o.flag
+   FROM sites AS s
+   LEFT JOIN observations AS o ON s.gid = o.site;
 
 Or in PostGIS
 
-> CREATE VIEW sample AS ..the query above...
+> CREATE OR REPLACE VIEW minisass_observations AS ..the query above...
     
 Publishing Geoserver layers
 ===========================
@@ -239,13 +253,16 @@ GRANT SELECT ON TABLE public.provinces TO web_read;
 GRANT SELECT ON TABLE public.districts TO web_read;
 GRANT SELECT ON TABLE public.sites TO web_read;
 GRANT SELECT ON TABLE public.rivers TO web_read;
-GRANT SELECT ON TABLE public.sample TO web_read;
+GRANT SELECT ON TABLE public.minisass_observations TO web_read;
 GRANT SELECT ON TABLE public.geometry_columns TO web_read;
 GRANT SELECT ON TABLE public.spatial_ref_sys TO web_read;
 GRANT SELECT ON TABLE public.geography_columns TO web_read;
 GRANT SELECT ON TABLE public.schools TO web_read;
 
 reassign owned by gavin to minisass;
+grant execute on all functions in schema public to web_read;
+grant usage on schema public to web_read;
+grant usage on all sequences in schema public to web_read;
     
 Deploying updates on the production site
 ========================================
