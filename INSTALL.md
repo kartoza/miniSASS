@@ -59,7 +59,7 @@ Install the Django-CMS dependencies
     pip install django-cms==2.4.1
     pip install djangocms-utils==0.9.5
     pip install django-polymorphic==0.4.0
-    pip install django-registration==0.8
+    pip install -U -e hg+https://bitbucket.org/ubernostrum/django-registration#egg=django-registration
     pip install south==0.7.6
     pip install django-filer==0.9.4
     pip install cmsplugin-filer==0.9.4
