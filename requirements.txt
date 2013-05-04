@@ -1,4 +1,4 @@
-piL==1.1.7
+pil==1.1.7
 psycopg2==2.5
 django==1.4
 South==0.7.6
@@ -22,4 +22,4 @@ djangocms-utils==0.9.5
 cmsplugin-blog==1.1.2
 cmsplugin-contact==1.0.0
 cmsplugin-filer==0.9.5
-recaptcha-client--1.0.6
+recaptcha-client==1.0.6
