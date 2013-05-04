@@ -21,7 +21,7 @@
     <div class="minisass-container">
 
       <div class="minisass-heading">
-        <a href="/">
+        <a href="/home/">
           <img src="{{STATIC_URL}}images/mini_SASS_logo.jpg" alt="miniSASS Logo">
         </a>
           <div class="registration_links">
@@ -61,13 +61,16 @@
       {% block minisass_bottom %}
       <div class="minisass-bottom">
           <div>
-              {% placeholder "bottom-links" %}
+              {% block bottom_links %}
+                {% placeholder "footer_content" or %}
+                  {% show_placeholder "footer_content" "footer_stuff" %}
+                {% endplaceholder %}
+              {% endblock %}
           </div>
           <p>
           &copy; 2013, GroundTruth cc.
           </p>
       </div>
-
       {% endblock %}
 
     </div>
