@@ -8,12 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'Observations.obs_date'
-        db.delete_column(u'observations', 'obs_date')
+        # Adding field 'Sites.user'
+        db.add_column(u'sites', 'user',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['auth.User']),
+                      keep_default=False)
 
-        # Adding field 'Observations.sample_date'
-        db.add_column(u'observations', 'sample_date',
-                      self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 4, 22, 0, 0), blank=True),
+        # Adding field 'Sites.time_stamp'
+        db.add_column(u'sites', 'time_stamp',
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now=True, auto_now_add=True, default=datetime.datetime(2013, 5, 4, 0, 0), blank=True),
                       keep_default=False)
 
         # Adding field 'Observations.nearest_place_name'
@@ -23,13 +25,11 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Adding field 'Observations.obs_date'
-        db.add_column(u'observations', 'obs_date',
-                      self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 4, 22, 0, 0)),
-                      keep_default=False)
+        # Deleting field 'Sites.user'
+        db.delete_column(u'sites', 'user_id')
 
-        # Deleting field 'Observations.sample_date'
-        db.delete_column(u'observations', 'sample_date')
+        # Deleting field 'Sites.time_stamp'
+        db.delete_column(u'sites', 'time_stamp')
 
         # Deleting field 'Observations.nearest_place_name'
         db.delete_column(u'observations', 'nearest_place_name')
@@ -68,7 +68,7 @@ class Migration(SchemaMigration):
         'cms.cmsplugin': {
             'Meta': {'object_name': 'CMSPlugin'},
             'changed_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 4, 22, 0, 0)'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '15', 'db_index': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
@@ -95,8 +95,7 @@ class Migration(SchemaMigration):
         },
         'monitor.observationplugin': {
             'Meta': {'object_name': 'ObservationPlugin', 'db_table': "'cmsplugin_observationplugin'", '_ormbases': ['cms.CMSPlugin']},
-            'cmsplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['cms.CMSPlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'observation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'plugins'", 'to': "orm['monitor.Observations']"})
+            'cmsplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['cms.CMSPlugin']", 'unique': 'True', 'primary_key': 'True'})
         },
         'monitor.observations': {
             'Meta': {'object_name': 'Observations', 'db_table': "u'observations'"},
@@ -123,13 +122,30 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'worms': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },
+        'monitor.organisations': {
+            'Meta': {'object_name': 'Organisations', 'db_table': "u'organisations'"},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'org_name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'org_type': ('django.db.models.fields.CharField', [], {'max_length': '5', 'blank': 'True'})
+        },
+        'monitor.schools': {
+            'Meta': {'object_name': 'Schools', 'db_table': "u'schools'", 'managed': 'False'},
+            'geom': ('django.contrib.gis.db.models.fields.PointField', [], {}),
+            'gid': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'natemis': ('django.db.models.fields.IntegerField', [], {}),
+            'phase': ('django.db.models.fields.CharField', [], {'max_length': '12'}),
+            'province': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'school': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         'monitor.sites': {
             'Meta': {'object_name': 'Sites', 'db_table': "u'sites'"},
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'gid': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'river_cat': ('django.db.models.fields.CharField', [], {'max_length': '5', 'blank': 'True'}),
-            'the_geom': ('django.contrib.gis.db.models.fields.PointField', [], {})
+            'the_geom': ('django.contrib.gis.db.models.fields.PointField', [], {}),
+            'time_stamp': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'auto_now_add': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         }
     }
 

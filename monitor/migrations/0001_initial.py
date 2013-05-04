@@ -8,6 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'Organisations'
+        db.create_table(u'organisations', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('org_name', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('org_type', self.gf('django.db.models.fields.CharField')(max_length=5, blank=True)),
+        ))
+        db.send_create_signal('monitor', ['Organisations'])
+
         # Adding model 'Sites'
         db.create_table(u'sites', (
             ('gid', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -21,11 +29,6 @@ class Migration(SchemaMigration):
         # Adding model 'Observations'
         db.create_table(u'observations', (
             ('gid', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('score', self.gf('django.db.models.fields.DecimalField')(max_digits=4, decimal_places=2)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(related_name='observation', db_column='site', to=orm['monitor.Sites'])),
-            ('obs_date', self.gf('django.db.models.fields.DateField')()),
-            ('time_stamp', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, auto_now_add=True, blank=True)),
-            ('comment', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('flatworms', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('worms', self.gf('django.db.models.fields.BooleanField')(default=False)),
@@ -40,6 +43,11 @@ class Migration(SchemaMigration):
             ('caddisflies', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('true_flies', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('snails', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('score', self.gf('django.db.models.fields.DecimalField')(max_digits=4, decimal_places=2)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(related_name='observation', db_column='site', to=orm['monitor.Sites'])),
+            ('time_stamp', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, auto_now_add=True, blank=True)),
+            ('comment', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+            ('sample_date', self.gf('django.db.models.fields.DateField')(blank=True)),
             ('flag', self.gf('django.db.models.fields.CharField')(default='dirty', max_length=5)),
         ))
         db.send_create_signal('monitor', ['Observations'])
@@ -47,12 +55,14 @@ class Migration(SchemaMigration):
         # Adding model 'ObservationPlugin'
         db.create_table('cmsplugin_observationplugin', (
             ('cmsplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['cms.CMSPlugin'], unique=True, primary_key=True)),
-            ('observation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='plugins', to=orm['monitor.Observations'])),
         ))
         db.send_create_signal('monitor', ['ObservationPlugin'])
 
 
     def backwards(self, orm):
+        # Deleting model 'Organisations'
+        db.delete_table(u'organisations')
+
         # Deleting model 'Sites'
         db.delete_table(u'sites')
 
@@ -96,7 +106,7 @@ class Migration(SchemaMigration):
         'cms.cmsplugin': {
             'Meta': {'object_name': 'CMSPlugin'},
             'changed_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 4, 22, 0, 0)'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '15', 'db_index': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
@@ -123,8 +133,7 @@ class Migration(SchemaMigration):
         },
         'monitor.observationplugin': {
             'Meta': {'object_name': 'ObservationPlugin', 'db_table': "'cmsplugin_observationplugin'", '_ormbases': ['cms.CMSPlugin']},
-            'cmsplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['cms.CMSPlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'observation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'plugins'", 'to': "orm['monitor.Observations']"})
+            'cmsplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['cms.CMSPlugin']", 'unique': 'True', 'primary_key': 'True'})
         },
         'monitor.observations': {
             'Meta': {'object_name': 'Observations', 'db_table': "u'observations'"},
@@ -139,8 +148,8 @@ class Migration(SchemaMigration):
             'gid': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'leeches': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'minnow_mayflies': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'obs_date': ('django.db.models.fields.DateField', [], {}),
             'other_mayflies': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sample_date': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
             'score': ('django.db.models.fields.DecimalField', [], {'max_digits': '4', 'decimal_places': '2'}),
             'site': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'observation'", 'db_column': "'site'", 'to': "orm['monitor.Sites']"}),
             'snails': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -149,6 +158,21 @@ class Migration(SchemaMigration):
             'true_flies': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'worms': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
+        'monitor.organisations': {
+            'Meta': {'object_name': 'Organisations', 'db_table': "u'organisations'"},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'org_name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'org_type': ('django.db.models.fields.CharField', [], {'max_length': '5', 'blank': 'True'})
+        },
+        'monitor.schools': {
+            'Meta': {'object_name': 'Schools', 'db_table': "u'schools'", 'managed': 'False'},
+            'geom': ('django.contrib.gis.db.models.fields.PointField', [], {}),
+            'gid': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'natemis': ('django.db.models.fields.IntegerField', [], {}),
+            'phase': ('django.db.models.fields.CharField', [], {'max_length': '12'}),
+            'province': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'school': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'monitor.sites': {
             'Meta': {'object_name': 'Sites', 'db_table': "u'sites'"},

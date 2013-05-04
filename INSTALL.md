@@ -53,24 +53,7 @@ then try this or similar: http://www.jayzawrotny.com/blog/django-pil-and-libjpeg
 Install the Django-CMS dependencies
 -----------------------------------
 
-    pip install pil==1.1.7
-    pip install psycopg2==2.4.6
-    pip install Django>=1.4,<1.6
-    pip install django-cms==2.4.1
-    pip install djangocms-utils==0.9.5
-    pip install django-polymorphic==0.4.0
-    pip install -U -e hg+https://bitbucket.org/ubernostrum/django-registration#egg=django-registration
-    pip install south==0.7.6
-    pip install django-filer==0.9.4
-    pip install cmsplugin-filer==0.9.4
-    pip install django-reversion==1.7
-    pip install django-tinymce==1.5.1
-    pip install cmsplugin-blog==1.1.2
-    pip install cmsplugin-contact==1.0.0
-    pip install django-classy-tags==0.4
-    pip install easy-thumbnails==1.2
-    pip install recaptcha-client==1.0.6
-    pip install simple-translation==0.8.6
+    pip install -r requirements.txt
 
 Checkout this repository from GitHub
 ------------------------------------
