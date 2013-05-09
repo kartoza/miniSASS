@@ -98,8 +98,11 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.i18n',
+    # 'django.core.context_processors.debug',
     'django.core.context_processors.request',
+    'django.core.context_processors.csrf',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'cms.context_processors.media',
@@ -107,17 +110,17 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.doc.XViewMiddleware',
-    'cms.middleware.multilingual.MultilingualURLMiddleware',
-    # 'missing.middleware.ForceAdminLanguage',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
+    'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware',
 )
 
 ROOT_URLCONF = 'minisass.urls'
@@ -136,6 +139,7 @@ LANGUAGES = [
     ('en', 'English')
 ]
 ADMIN_LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'en'
 
 # Django CMS configuration settings
 # CMS_LANGUAGES = {
@@ -161,6 +165,7 @@ CMS_TEMPLATES = (
     ('site_page.html', 'Site Page'),
     ('map_page.html', 'Map Page'),
     ('resource_page.html', 'Resources Page'),
+    ('footer_content.html', 'Footer Content Only'),
 )
 CMS_TEMPLATE_INHERITANCE = True
 
@@ -257,6 +262,7 @@ EMAIL_PORT = 25
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = '/'
 
+# Installed applications
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -275,15 +281,8 @@ INSTALLED_APPS = (
     'menus',
     'south',
     'sekizai',
-    # 'cms.plugins.file',
-    # 'cms.plugins.flash',
-    # 'cms.plugins.googlemap',
     'cms.plugins.link',
-    # 'cms.plugins.picture',
-    # 'cms.plugins.snippet',
-    # 'cms.plugins.teaser',
     'cms.plugins.text',
-    # 'cms.plugins.video',
     'filer',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
@@ -298,7 +297,7 @@ INSTALLED_APPS = (
     'tagging',
     # 'missing',
     'reversion',
-    'cmsplugin_htmlsitemap',
+    # 'cmsplugin_htmlsitemap',
     'monitor',
 )
 
