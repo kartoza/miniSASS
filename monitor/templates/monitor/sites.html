@@ -1,0 +1,16 @@
+{% if sites %}
+  { "type": "FeatureCollection",
+  "features": [
+  {% for site in sites %}
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [{{ site.x }}, {{ site.y }}]},
+      "properties": {
+        "gid":{{ site.gid }},
+        "site_name":"{{ site.site_name }}",
+        "description":"{{ site.description }}",
+        "river_cat":"{{ site.river_cat }}"
+      }
+    }
+    {% if not forloop.last %},{% endif %}
+  {% endfor %}]}
+{% endif %}

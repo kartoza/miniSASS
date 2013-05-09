@@ -66,7 +66,7 @@ def observations(request):
     """ Will display the list of most current miniSASS observation reports
     """
 
-    observations = Observations.objects.all().order_by('-time_stamp')[:10]
+    observations = models.observations.objects.all().order_by('-time_stamp')[:10]
 
     # render the home page
     return render_to_response('monitor/observations.html', 
@@ -77,7 +77,7 @@ def detail(request, monitor_id):
     """ miniSASS observation detail view
     """
     try:
-        observation = Observations.objects.get(pk=monitor_id)
+        observation = models.Observations.objects.get(pk=monitor_id)
     except models.Observations.DoesNotExist:
         raise Http404
 
@@ -90,4 +90,15 @@ def wms_get_feature_info(request, wms_url, wms_params):
     """
     feature_info = urllib2.urlopen('http://'+wms_url+'?'+wms_params)
     return HttpResponse(feature_info)
+
+def get_sites(request, x, y, d):
+    """ Request all sites within distance (d) of x;y
+    """
+    query_envelope = str(float(x)-float(d))+','+str(float(y)-float(d))+','+str(float(x)+float(d))+','+str(float(y)+float(d))
+    SQL_string = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, name as site_name, description, river_cat FROM sites WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),10000)'
+    sites_returned = Sites.objects.raw(SQL_string)
+    return render_to_response('monitor/sites.html',
+                              {'sites':sites_returned},
+                              context_instance=RequestContext(request))
+
 

@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
-      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
+      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var map;
       var mapClick;
       var infoClick;
@@ -10,6 +10,9 @@
       var infoWindow;
       var siteWindow;
       var userFunction = 'none';
+      var searchRadius = 1000; // The search radius for locating nearby sites (metres)
+      var clickCoords;  // Map click coordinates
+      var siteStore; // A store for holding sites data
 
       /*=================================
       Functions for the data input window
@@ -313,7 +316,6 @@
       }
 
       function loadSelectedSite(){
-
         var selectedSite = document.getElementById('id_site_gid').selectedIndex;
         if (selectedSite > 0) {
           resetInputForm();
@@ -351,6 +353,61 @@
         }
       }
 
+      function loadNearbySite(){
+        var selectedSite = Ext.getCmp('id_sites_combo').selectedIndex;
+        if (selectedSite >= 0) {
+          resetInputForm();
+          var siteRecord = siteStore.getAt(selectedSite);
+
+          // Add the site data to the Data Input form
+          document.getElementById('id_name').value = siteRecord.get('site_name');
+          document.getElementById('id_description').value = siteRecord.get('description');
+          if (siteRecord.get('river_cat') == 'rocky'){
+            document.getElementById('id_river_cat').selectedIndex=1;
+          } else if (siteRecord.get('river_cat').value == 'sandy'){
+            document.getElementById('id_river_cat').selectedIndex = 2;
+          } else document.getElementById('id_river_cat').selectedIndex = 0;
+          document.getElementById('id_latitude').value = siteRecord.get('latitude');
+          document.getElementById('id_longitude').value = siteRecord.get('longitude');
+
+          // Link the observation to the site id
+          document.getElementById('id_site').value = siteRecord.get('site_gid');
+alert (siteRecord.get('site_gid'));
+          // Disable the site input controls and variables
+          disableSiteEdit(true);
+          document.getElementById('id_edit_site').value = 'false';
+
+          // Zoom the map to the selected site
+          var xyCoords = new OpenLayers.LonLat(
+            siteRecord.get('longitude'),
+            siteRecord.get('latitude')
+          );
+          map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+        }
+      }
+
+      function getFeatureInfoParams(x,y,infoFormat){
+      /* This function returns a string containing parameters for a 
+         WMSGetFeatureInfo request of the minisass_observations layer.
+      */
+        var params = 'REQUEST=GetFeatureInfo'
+          + '&SERVICE=WMS'
+          + '&VERSION=1.1.1' 
+          + '&EXCEPTIONS=application/vnd.ogc.se_xml'
+          + '&BBOX=' + map.getExtent().toBBOX()
+          + '&X=' + x
+          + '&Y=' + y
+          + '&INFO_FORMAT=' + infoFormat
+          + '&QUERY_LAYERS=miniSASS:minisass_observations'
+          + '&LAYERS=miniSASS:minisass_observations'
+          + '&FEATURE_COUNT=50'
+          + '&SRS=EPSG:3857'
+          + '&STYLES='
+          + '&WIDTH=' + map.size.w
+          + '&HEIGHT=' + map.size.h;
+        return params;
+      }
+
     Ext.onReady(function() {
     /* This function fires when the document is ready, before onload and
        before any images are loaded.
@@ -358,7 +415,25 @@
 
         Ext.QuickTips.init();
 
-        // Define a handler for extracting coordinates from a map click
+        // Define a store for holding site data
+        siteStore = new Ext.data.ArrayStore({
+          fields:['site_gid','site_name','description','river_cat','longitude','latitude']
+        });
+
+        // Setup up a combo box for displaying a list of nearby sites
+        var sitesCombo = new Ext.form.ComboBox({
+          id:'id_sites_combo',
+          store:siteStore,
+          displayField:'site_name',
+          value_Field:'site_gid',
+          typeAhead:true,
+          mode:'local',
+          emptyText:'Select a site...',
+          selectOnFocus:true,
+          applyTo:'id_nearby_sites'
+        });
+
+        // Define a handler for processing coordinates from a map click
         OpenLayers.Control.MapClick = OpenLayers.Class(OpenLayers.Control, {                
           defaultHandlerOptions: {
             'single': true,
@@ -381,22 +456,60 @@
             );
           }, 
           trigger: function(e) {
-            xyCoords = map.getLonLatFromPixel(e.xy);
-            xyCoords.transform(proj3857, proj4326);
-            document.getElementById('id_latitude').value = xyCoords.lat.toFixed(5);
-            document.getElementById('id_longitude').value = xyCoords.lon.toFixed(5);
-            var msg = 'You clicked at ' +  xyCoords.lat.toFixed(5) + 'S ' + xyCoords.lon.toFixed(5) + 'E.';
-            msg = msg + '<br />Do you want to enter a miniSASS observation at this location?';
-            Ext.MessageBox.confirm('Confirm', msg,function(btn,text){
-              if (btn=='yes') {
-                map.setCenter(map.getLonLatFromPixel(e.xy),15);
-                inputWindow.show(this);
-              }
-            });
-          }
-        });
 
-        // Define a handler for running a WMS GetFeatureInfo request from a map click
+            // Get the click coordinates and convert them to lon/lat
+            clickCoords = map.getLonLatFromPixel(e.xy);
+
+            // Look for existing sites close to the click point
+            var jsonData;
+            function requestSites(callback){
+              Ext.Ajax.request({
+                url:'sites/'+clickCoords.lon+'/'+clickCoords.lat+'/' + searchRadius + '/',
+                success: function(response,opts){
+                  jsonData = Ext.decode(response.responseText);
+                  callback.call();
+                },
+                failure: function(response,opts){
+                  callback.call();  // Fail silently
+                }
+              });
+            };
+
+            var afterRequestSites = function(){
+              // If nearby sites have been found, add them to the combo box
+              siteStore.removeAll();
+              sitesCombo.reset();
+              if (jsonData){
+                for (var i=0; i<jsonData.features.length; i++){
+                  siteStore.add(new siteStore.recordType({
+                    'site_gid':jsonData.features[i].properties.gid,
+                    'site_name':jsonData.features[i].properties.site_name,
+                    'description':jsonData.features[i].properties.description,
+                    'river_cat':jsonData.features[i].properties.river_cat,
+                    'longitude':jsonData.features[i].geometry.coordinates[0],
+                    'latitude':jsonData.features[i].geometry.coordinates[1]
+                  }));
+                };
+              };
+
+              clickCoords.transform(proj3857, proj4326);
+              var lat = convertDDtoDMS(clickCoords.lat.toFixed(5));
+              var lon = convertDDtoDMS(clickCoords.lon.toFixed(5));
+              var msg = 'You clicked at:<br />&nbsp;&nbsp;'
+                + lat[0] + '&deg; ' + lat[1] + '&apos; ' + lat[2] + '&quot; S<br />&nbsp;&nbsp;'
+                + lon[0] + '&deg; ' + lon[1] + '&apos; ' + lon[2] + '&quot; E<br />'
+                + 'Do you want to create a new site and miniSASS observation at this location?';
+
+              Ext.getCmp('clicked_coords').body.update(msg);
+              mapClickWindow.show();
+            };
+
+            // Request nearby sites and then callback to afterRequestSites after the Ajax response
+            requestSites(afterRequestSites);
+          }
+          });
+
+        // Define a handler to display Feature Info from a map click
         OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {                
           defaultHandlerOptions: {
             'single': true,
@@ -419,31 +532,16 @@
             );
           }, 
           trigger: function (e) {
-            var WMSParams = 'REQUEST=GetFeatureInfo'
-              + '&SERVICE=WMS'
-              + '&VERSION=1.1.1' 
-              + '&EXCEPTIONS=application/vnd.ogc.se_xml'
-              + '&BBOX=' + map.getExtent().toBBOX()
-              + '&X=' + e.xy.x
-              + '&Y=' + e.xy.y
-              + '&INFO_FORMAT=text/html'
-              + '&QUERY_LAYERS=miniSASS:minisass_observations'
-              + '&LAYERS=miniSASS:minisass_observations'
-              + '&FEATURE_COUNT=50'
-              + '&SRS=EPSG:3857'
-              + '&STYLES='
-              + '&WIDTH=' + map.size.w
-              + '&HEIGHT=' + map.size.h;
-
+            infoWindow.update('Querying...');
+            infoWindow.show();
+            var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
             Ext.Ajax.request({
               url:'wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
-  //              var obj = Ext.util.JSON.decode(response.responseText);
                 infoWindow.update(response.responseText);
-                infoWindow.show();
               },
               failure: function(response,opts){
-                alert(response.status);
+                infoWindow.update('Error: Could not request site information');
               }
             });
           }
@@ -471,20 +569,20 @@
         // Define the Google layers as base layers
         var layerGoogleSatellite = new OpenLayers.Layer.Google(
           'Google satellite',
-          {type: google.maps.MapTypeId.SATELLITE,sphericalMercator:true,isBaseLayer:true}
+          {type: google.maps.MapTypeId.SATELLITE,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
         );
         var layerGoogleTerrain = new OpenLayers.Layer.Google(
           'Google terrain',
-          {type: google.maps.MapTypeId.TERRAIN,sphericalMercator:true,isBaseLayer:true}
+          {type: google.maps.MapTypeId.TERRAIN,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
         );
         var layerGoogleRoadmap = new OpenLayers.Layer.Google(
           'Google road map',
-          {type: google.maps.MapTypeId.ROADMAP,sphericalMercator:true,isBaseLayer:true}
+          {type: google.maps.MapTypeId.ROADMAP,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
         );
 
         // Define the miniSASS composite layer as a base layer
         var layerMiniSASSBase = new OpenLayers.Layer.WMS(
-          'miniSASS base layer',
+          'Rivers and Catchments',
           geoserverURL,
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
@@ -515,7 +613,7 @@
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
+        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
         // If necessary, restore layer visibility saved from a previous state
@@ -595,23 +693,32 @@
 
         // Define tree panels to control layer visibility
         var baselayerTree = new Ext.tree.TreePanel({
-            title:'Base Layers',
-            renderTo:'layertree',
-            root: baseLayers,
-            rootVisible:false
+          title:'Base Layers',
+          renderTo:'layertree',
+          collapsible:true,
+          collapsed:true,
+          width:220,
+          root: baseLayers,
+          rootVisible:false
         });
 
         var overlaylayerTree = new Ext.tree.TreePanel({
-            title:'Overlays',
-            renderTo:'layertree',
-            root: overlayLayers,
-            rootVisible:false
+          title:'Overlays',
+          renderTo:'layertree',
+          collapsible:true,
+          collapsed:true,
+          width:220,
+          root: overlayLayers,
+          rootVisible:false
         });
 
         // Define the legend panel
         var legendPanel = new Ext.Panel({
           title:'Legend',
           renderTo:'legend',
+          collapsible:true,
+          collapsed:true,
+          width:220,
           contentEl:'legend_table'
         });
 
@@ -619,6 +726,8 @@
         var inputPanel = new Ext.Panel({
           title:'miniSASS observations',
           renderTo:'input_obs',
+          collapsible:true,
+          width:220,
           contentEl:'input_buttons'
         });
 
@@ -651,17 +760,15 @@
         });
         updateInputForm('');
 
-        // Define a window for display miniSASS observation information
+        // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
           width:600,
           height:250,
+          bodyStyle:'padding:5px;',
           autoScroll:true,
           closeAction:'hide',
-          modal:false,
-          items: new Ext.Panel({
-            border:false
-          })
+          modal:false
         });
         infoWindow.show();
         infoWindow.hide();
@@ -696,6 +803,48 @@
             text: 'Cancel',
             tooltip:'Cancel this window and return to the map',
             handler: function(){siteWindow.hide();}
+          }]
+        });
+
+        // Define the popup Map Click window
+        mapClickWindow = new Ext.Window({
+          applyTo:'map_click_window',
+          width:300,
+          height:300,
+          closeAction:'hide',
+          modal:true,
+          items: [
+            new Ext.Panel({
+              id:'clicked_coords',
+              border:false
+            }),
+            new Ext.Panel({
+              applyTo: 'nearby_sites_panel',
+              border:false
+            })
+          ],
+          buttons: [{
+            text:'Yes, create new site',
+            tooltip:'Create a new observation site',
+            handler: function(){
+              document.getElementById('id_latitude').value = clickCoords.lat.toFixed(5);
+              document.getElementById('id_longitude').value = clickCoords.lon.toFixed(5);
+              map.setCenter(clickCoords.transform(proj4326, proj3857),15);
+              mapClickWindow.hide();
+              inputWindow.show(this);
+            }
+          },{
+            text:'Use nearby site',
+            tooltip:'Enter an observation at the selected nearby site',
+            handler: function(){
+              mapClickWindow.hide();
+              loadNearbySite();
+              inputWindow.show(this);
+            }
+          },{
+            text: 'Cancel',
+            tooltip:'Cancel this window and return to the map',
+            handler: function(){mapClickWindow.hide();}
           }]
         });
 

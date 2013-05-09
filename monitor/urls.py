@@ -6,6 +6,7 @@ urlpatterns = patterns('monitor.views',
 
     # Monitor app
     url(r'^$', 'index', {}, name='monitor_index'),
-    url(r'wms/~(?P<wms_url>[^~]+)~(?P<wms_params>[^~]+)', 'wms_get_feature_info'),
+    url(r'^wms/~(?P<wms_url>[^~]+)~(?P<wms_params>[^~]+)', 'wms_get_feature_info'),
+    url(r'^sites/(?P<x>[^/]+)/(?P<y>[^/]+)/(?P<d>[^/]+)/','get_sites'),
     url(r'^(?P<monitor_id>\d+)/$', 'detail', {}, name='monitor_detail'),
         )
