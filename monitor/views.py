@@ -19,7 +19,7 @@ def index(request):
     
     # Create a form that sends all site data to the view
     Site_Formset = modelformset_factory(Sites,extra=0)
-    sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
+    sites = Site_Formset(queryset=Sites.objects.all().order_by('site_name'))
 
     # Process the POST data, if any
     if request.method == 'POST':
@@ -40,7 +40,7 @@ def index(request):
                 current_observation.save()
             # Create new instances of the forms and then return to the map
             site_form = SiteForm()
-            sites = Site_Formset(queryset=Sites.objects.all().order_by('name'))
+            sites = Site_Formset(queryset=Sites.objects.all().order_by('site_name'))
             observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
             coords_form = CoordsForm()
             post_values = request.POST.copy()
@@ -95,7 +95,7 @@ def get_sites(request, x, y, d):
     """ Request all sites within distance (d) of x;y
     """
     query_envelope = str(float(x)-float(d))+','+str(float(y)-float(d))+','+str(float(x)+float(d))+','+str(float(y)+float(d))
-    SQL_string = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, name as site_name, description, river_cat FROM sites WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),10000)'
+    SQL_string = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, site_name, description, river_cat FROM sites WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),10000)'
     sites_returned = Sites.objects.raw(SQL_string)
     return render_to_response('monitor/sites.html',
                               {'sites':sites_returned},

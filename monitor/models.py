@@ -51,7 +51,7 @@ class Sites(models.Model):
     )
     gid = models.AutoField(primary_key=True, editable=False)
     the_geom = models.PointField()
-    name = models.CharField(max_length=100, blank=True)
+    site_name = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=255, blank=True)
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user = models.ForeignKey(User)

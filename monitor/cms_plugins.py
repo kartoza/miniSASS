@@ -16,7 +16,7 @@ class LatestObservationsPlugin(CMSPluginBase):
         
         # get the latest 5 observations
         latest = Observation.objects.all().order_by('-time_stamp').values(
-                'site__name', 'score', 'time_stamp')[:5]
+                'site__site_name', 'score', 'time_stamp')[:5]
         context['latest'] = latest
 
         return context

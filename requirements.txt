@@ -1,5 +1,5 @@
 pil==1.1.7
-psycopg2==2.5
+psycopg2==2.4.6
 django==1.4
 South==0.7.6
 django-registration==0.8
