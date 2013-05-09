@@ -1,8 +1,8 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
 //      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
-      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
-//      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
+//      var geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+      var geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
       var map;
       var mapClick;
       var infoClick;
@@ -613,7 +613,7 @@ alert (siteRecord.get('site_gid'));
         );
 
         // Add the layers to the map
-        map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
+        map.addLayers([layerProvinces,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap,layerMiniSASSBase]);
         map.addLayers([layerSchools,layerMiniSASSObs]);
 
         // If necessary, restore layer visibility saved from a previous state
