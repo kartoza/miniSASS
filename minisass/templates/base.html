@@ -2,9 +2,9 @@
 <!doctype html>
 <html>
   <head>
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% render_block "css" %}
 
     {% block "minisass_js" %}

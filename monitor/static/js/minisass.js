@@ -670,7 +670,7 @@ alert (siteRecord.get('site_gid'));
         var mapPanel = new GeoExt.MapPanel({
           renderTo: 'map',
           height: 700,
-          width: 790,
+          width: 804,
           center: [centreX,centreY],
           zoom: zoom_level,
           map: map
@@ -734,10 +734,12 @@ alert (siteRecord.get('site_gid'));
         // Define the popup Data Input window
         inputWindow = new Ext.Window({
           applyTo:'data_window',
+          renderTo:'map',
           width:600,
           height:430,
           closeAction:'hide',
           modal:true,
+          constrain: true,
           items: new Ext.Panel({
             applyTo: 'data_panel',
             border:false
@@ -768,7 +770,8 @@ alert (siteRecord.get('site_gid'));
           bodyStyle:'padding:5px;',
           autoScroll:true,
           closeAction:'hide',
-          modal:false
+          modal:false,
+          constrain: true,
         });
         infoWindow.show();
         infoWindow.hide();
@@ -780,6 +783,7 @@ alert (siteRecord.get('site_gid'));
           height:200,
           closeAction:'hide',
           modal:true,
+          constrain: true,
           items: new Ext.Panel({
             applyTo: 'site_list_panel',
             border:false
@@ -813,6 +817,7 @@ alert (siteRecord.get('site_gid'));
           height:300,
           closeAction:'hide',
           modal:true,
+          constrain: true,
           items: [
             new Ext.Panel({
               id:'clicked_coords',
