@@ -30,23 +30,15 @@ DROP TABLE namibia_schools;
 
 --load all the shapefiles  for neighbouring countries into postgis using shp2pgsql
 
-shp2pgsql -s 4326 -c -D -W LATIN1 nameofshapefile  tablename | psql -p 5433 -d minisass-cms
+shp2pgsql -s 4326 -c -D -W LATIN1 neighbours | psql -p 5433 -d minisass-cms
 
 --combining all the tables into one table for all countries. insert all values from one table into another
 
-INSERT INTO botswana(id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom) 
-select id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom from mozambique;
+ ALTER TABLE provinces ADD COLUMN country character varying(30);
+ UPDATE provinces set country = 'South Africa';
 
-INSERT INTO botswana(id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom) 
-select id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom from namibia;
+INSERT INTO provinces (province,country,the_geom) select name_1, name_0,the_geom from neighbours;
 
-INSERT INTO botswana(id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom) 
-select id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom from lesotho;
+drop table neighbours;
 
-INSERT INTO botswana(id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom) 
-select id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom from zimbabwe;
 
-INSERT INTO botswana(id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom) 
-select id_0,iso,name_0,id_1, name_1, nl_name_1,varname_1,type_1,engtype_1,geom from swaziland;
-
---then rename the table botswana to be neigbouring countries

@@ -122,7 +122,13 @@ for some reason (postgis / psql client version issue?) shp2pgsql -I option faili
 
 > CREATE INDEX municipalities_geom_gist ON municipalities USING gist (the_geom );
 
+1:50000 rivers
+--------------
 
+The DWAF 1:500000 rivers are well connected and named but the NGI 1:50000 rivers show more detail of the smaller rivers users might sample and are more spatially accurate at large scales.
+
+Prepare the 1:50000 rivers according to the topostyle project. In our case we dumped the riverline table from a local topostyle database, transferred it to the minisass server and restored it. 
+Then we indexed and clustered it and set permissions, then published and styled it, again with the topostyle style, which we set to switch over from the 1:500000 rivers at an appropriate scale. 
 
 Schools
 -------
@@ -261,7 +267,7 @@ Deploying updates on the production site
 
 sudo su - django
 
-cd sites/miniSASS
+cd sites/miniSASS/minisass
 
 git pull
 
