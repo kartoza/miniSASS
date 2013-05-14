@@ -7,13 +7,152 @@
       <se:FeatureTypeStyle>
         <se:Rule>
           <se:Name>Dry</se:Name>
+ 
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>class</ogc:PropertyName>
+              <ogc:Literal>Dry</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>   
+      <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
+      <se:LineSymbolizer>
+                        <se:Stroke>
+                            <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="stroke-width">0.10</se:SvgParameter>
+                            <se:SvgParameter name="stroke-dasharray">4 2</se:SvgParameter>
+                        </se:Stroke>
+                    </se:LineSymbolizer>                    
+             <se:TextSymbolizer>
+                      
+                        <se:Label>
+                            <ogc:PropertyName>name</ogc:PropertyName>
+                        </se:Label>
+                        <se:Font>
+                            <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-style">normal</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">bold</se:SvgParameter>
+                        </se:Font>
+                        <se:LabelPlacement>
+                            <se:LinePlacement>
+                               <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
+                            </se:LinePlacement>
+                        </se:LabelPlacement>
+                        <se:Fill>
+                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                        </se:Fill>
+                      
+                    </se:TextSymbolizer>
+        </se:Rule>
+
+           <se:Rule>
+          <se:Name>Unknown</se:Name>
            
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>class</ogc:PropertyName>
+              <ogc:Literal>Unknown</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+           
+           <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
+           <se:TextSymbolizer>                         
+                        <se:Label>
+                            <ogc:PropertyName>name</ogc:PropertyName>
+                        </se:Label>
+                        <se:Font>
+                            <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-style">normal</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">bold</se:SvgParameter>
+                        </se:Font>
+                        <se:LabelPlacement>
+                            <se:LinePlacement>
+                             <se:PerpendicularOffset>10.0</se:PerpendicularOffset>   
+                            </se:LinePlacement>
+                        </se:LabelPlacement>
+                        <se:Fill>
+                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                        </se:Fill>
+                        
+                    </se:TextSymbolizer>
+        </se:Rule>
+        <se:Rule>
+          <se:Name>Perennial</se:Name>
+          
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>class</ogc:PropertyName>
+              <ogc:Literal>Perennial</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          
+          <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
+                      
+<se:TextSymbolizer>            
+                        <se:Label>
+                            <ogc:PropertyName>name</ogc:PropertyName>
+                        </se:Label>
+                        <se:Font>
+                            <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-style">normal</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">bold</se:SvgParameter>
+                        </se:Font>
+                        <se:LabelPlacement>
+                            <se:LinePlacement>
+                              <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
+                            </se:LinePlacement>
+                        </se:LabelPlacement>
+                        <se:Fill>
+                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                        </se:Fill>
+                       
+                    </se:TextSymbolizer>
+        </se:Rule>
+        <se:Rule>
+          <se:Name>NonPerennial</se:Name>
+           
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>class</ogc:PropertyName>
+              <ogc:Literal>NonPerennial</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:MinScaleDenominator>100000</se:MinScaleDenominator>
+          <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
+           <se:TextSymbolizer>
+                        <se:Label>
+                            <ogc:PropertyName>name</ogc:PropertyName>
+                        </se:Label>
+                        <se:Font>
+                            <se:SvgParameter name="font-family">Arial</se:SvgParameter>
+                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-style">normal</se:SvgParameter>
+                            <se:SvgParameter name="font-weight">bold</se:SvgParameter>
+                        </se:Font>
+                        <se:LabelPlacement>
+                            <se:LinePlacement>
+                              <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
+                            </se:LinePlacement>
+                        </se:LabelPlacement>
+                        <se:Fill>
+                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                        </se:Fill>
+                       
+                    </se:TextSymbolizer>
+        </se:Rule>
+          
+        <se:Rule>
+          <se:Name>Dry</se:Name>
+ 
           <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>class</ogc:PropertyName>
               <ogc:Literal>Dry</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+      <se:MinScaleDenominator>100000</se:MinScaleDenominator>      
       <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>         
           <se:LineSymbolizer>
                         <se:Stroke>
@@ -53,6 +192,7 @@
               <ogc:Literal>Unknown</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+           <se:MinScaleDenominator>100000</se:MinScaleDenominator>
            <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>          
           <se:LineSymbolizer>
                         <se:Stroke>
@@ -91,6 +231,7 @@
               <ogc:Literal>Perennial</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+          <se:MinScaleDenominator>100000</se:MinScaleDenominator>
           <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>          
           <se:LineSymbolizer>
                         <se:Stroke>
@@ -128,6 +269,7 @@
               <ogc:Literal>NonPerennial</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+          <se:MinScaleDenominator>100000</se:MinScaleDenominator>
           <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>   
           <se:LineSymbolizer>
                         <se:Stroke>
@@ -167,7 +309,8 @@
               <ogc:Literal>Dry</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-               
+            <se:MinScaleDenominator>100000</se:MinScaleDenominator>
+            <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>      
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -186,7 +329,8 @@
               <ogc:Literal>Unknown</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-                     
+            <se:MinScaleDenominator>100000</se:MinScaleDenominator>
+            <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>            
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -205,7 +349,8 @@
               <ogc:Literal>Perennial</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-                    
+          <se:MinScaleDenominator>100000</se:MinScaleDenominator>
+          <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>             
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -223,7 +368,8 @@
               <ogc:Literal>NonPerennial</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-             
+           <se:MinScaleDenominator>100000</se:MinScaleDenominator>
+           <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>     
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
