@@ -41,4 +41,10 @@ INSERT INTO provinces (province,country,the_geom) select name_1, name_0,the_geom
 
 drop table neighbours;
 
+--added the quinary shapefile and renamed it to hca5 and cleaned it using the following sql
+ALTER TABLE quinary DROP COLUMN area,DROP COLUMN perimeter, DROP COLUMN final_,
+DROP COLUMN final_id,DROP COLUMN beeh_id,DROP COLUMN catnum,DROP COLUMN secondary,
+DROP COLUMN tertiary,DROP COLUMN area_km2,DROP COLUMN sub_cat,DROP COLUMN unique_id,
+DROP COLUMN subquin;
+
 

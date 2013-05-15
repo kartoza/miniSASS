@@ -7,18 +7,18 @@
       <se:FeatureTypeStyle>
         <se:Rule>
           <se:Name>Single symbol</se:Name>
-            <se:MinScaleDenominator>50000</se:MinScaleDenominator>
-          <se:MaxScaleDenominator>150000</se:MaxScaleDenominator>
+            
+          <se:MaxScaleDenominator>50000</se:MaxScaleDenominator>
           
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#7F7F7F</se:SvgParameter>
+              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
               <se:SvgParameter name="stroke-width">0.1</se:SvgParameter>
             </se:Stroke>
           </se:PolygonSymbolizer>
             <se:TextSymbolizer>
                         <se:Label>
-                            <ogc:PropertyName>quaternary</ogc:PropertyName>
+                            <ogc:PropertyName>quinary</ogc:PropertyName>
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
