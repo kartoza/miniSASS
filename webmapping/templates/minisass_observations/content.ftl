@@ -36,7 +36,7 @@ will be called multiple times if there are various feature collections
     <td>${feature.site_name.value}</td>
     <td>${feature.description.value}</td>
     <td>${feature.river_cat.value}</td>
-    <td>${feature.obs_date.value?date("yyyy/mm/dd")}</td>
+    <td>${feature.obs_date.value?date("yyyy/MM/dd")}</td>
     <td>${feature.comment.value}</td>
     <td>${feature.flatworms.rawValue?string("Yes","No")}</td>
     <td>${feature.worms.rawValue?string("Yes","No")}</td>
