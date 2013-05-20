@@ -92,11 +92,17 @@ def wms_get_feature_info(request, wms_url, wms_params):
     return HttpResponse(feature_info)
 
 def get_sites(request, x, y, d):
-    """ Request all sites within distance (d) of x;y
+    """ Request all sites within distance (d) of x;y. Use a distance of -9
+        to request all sites.
     """
-    query_envelope = str(float(x)-float(d))+','+str(float(y)-float(d))+','+str(float(x)+float(d))+','+str(float(y)+float(d))
-    SQL_string = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, site_name, description, river_cat FROM sites WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),10000)'
-    sites_returned = Sites.objects.raw(SQL_string)
+    select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, site_name, description, river_cat FROM sites'
+    if (d == '-9'):
+        where_clause = ''
+    else:
+        query_envelope = str(float(x)-float(d))+','+str(float(y)-float(d))+','+str(float(x)+float(d))+','+str(float(y)+float(d))
+        where_clause = ' WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),'+d+')'
+
+    sites_returned = Sites.objects.raw(select_clause + where_clause)
     return render_to_response('monitor/sites.html',
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))

@@ -15,7 +15,11 @@
 {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/ext-3.4.0/adapter/ext/ext-base.js"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/ext-3.4.0/ext-all.js"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/GeoExt/lib/GeoExt.js"></script>{% endaddtoblock %}
-{% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass.js"></script>{% endaddtoblock %}
+{% if user.is_authenticated %}
+  {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass.js"></script>{% endaddtoblock %}
+{% else %}
+  {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass_map.js"></script>{% endaddtoblock %}
+{% endif %}
 {% endblock %}
 
 {% block "minisass_page_content" %}
@@ -48,10 +52,12 @@
       <div id="input_obs">
         <div id="input_buttons">
           <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/>
+        {% if user.is_authenticated %}
           <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site" style="cursor:pointer;"/>
           <br />
           <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/>
           <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/>
+        {% endif %}
         </div> <!--input_buttons-->
       </div> <!--input_obs-->
       <div id="messages">
@@ -79,14 +85,15 @@
     <div id="data_window" class="x-hidden">
       <div class="x-window-header">miniSASS Data Input</div>
       <div id="data_panel">
-        <form action="/monitor/" method="post" id="dataform">{% csrf_token %}
+        <form action="/map/" method="post" id="dataform">{% csrf_token %}
+        {% if user.is_authenticated %}
           <table>
             <tr>
               <td>
                 <table id="data_table_left">
                   <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
-                  <tr><td><label for="id_name">Collector&apos;s name:</label></td><td>{{ observation_form.user_name }}</td></tr>
-                  <tr><td><label for="id_name">River name:</label></td><td>{{ site_form.name }}</td></tr>
+                  <tr><td>Collector&apos;s name:</td><td>{{ user.username }}</td></tr>
+                  <tr><td><label for="id_site_name">River name:</label></td><td>{{ site_form.site_name }}</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude (S):</label></td>
                     <td>
@@ -143,6 +150,7 @@
               </td>
             </tr>
           </table>
+        {% endif %}
           {{ site_form.the_geom.as_hidden }}
           {{ observation_form.score.as_hidden }}
           {{ observation_form.flag.as_hidden }}
@@ -153,37 +161,8 @@
           {{ map_form.layers.as_hidden }}
           {{ map_form.edit_site.as_hidden }}
           {{ map_form.error.as_hidden }}
+          {{ user.username }}
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->
-
-    <div id="site_list_window" class="x-hidden">
-      <div class="x-window-header">Observation Site</div>
-      <div id="site_list_panel">
-        Please select a site from the list below:
-        <select name="site_gid" id="id_site_gid">
-          <option value="" selected="selected"></option>
-          {% for site in sites %}
-            <option value="{{ site.gid.value }}">{{ site.name.value }}</option>
-          {% endfor %}
-        </select>
-      </div> <!--site_list_panel-->
-    </div> <!--site_list_window-->
-
-    <div id="map_click_window" class="x-hidden">
-      <div class="x-window-header">New Observation</div>
-      <div id="nearby_sites_panel">
-        The following sites are close to where you clicked:
-        <input type="text" id="id_nearby_sites" size="5"/>
-      </div> <!--nearby_sites_panel-->
-    </div> <!--map_click_window-->
-
-    <div id="site_data">
-      {% for site in sites %}
-        {% for field in site %}
-          {{ field.as_hidden }}
-        {% endfor %}
-      {% endfor %}
-    </div> <!--site_data-->
-
 {% endblock %}
