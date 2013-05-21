@@ -47,6 +47,10 @@
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_v.png" id="legend_icon5" alt="" title=""/></td>
             <td class="map_legend_text">Seriously/critically modified<br />(VERY POOR condition)</td>
           </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u_dirty.png" id="legend_icon6" alt="" title=""/></td>
+            <td class="map_legend_text">Unverified data</td>
+          </tr>
         </table>
       </div> <!--legend-->
       <div id="input_obs">
@@ -152,6 +156,7 @@
           </table>
         {% endif %}
           {{ site_form.the_geom.as_hidden }}
+          <input type="hidden" name="user" value="{{ request.user.id }}" id="id_user" />
           {{ observation_form.score.as_hidden }}
           {{ observation_form.flag.as_hidden }}
           {{ observation_form.site.as_hidden }}
@@ -161,7 +166,6 @@
           {{ map_form.layers.as_hidden }}
           {{ map_form.edit_site.as_hidden }}
           {{ map_form.error.as_hidden }}
-          {{ user.username }}
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->

@@ -88,7 +88,7 @@ class Observations(models.Model):
     site = models.ForeignKey(Sites, db_column='site',related_name='observation')
     time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
     comment = models.CharField(max_length=255, blank=True)
-    obs_date = models.DateField(blank=True)
+    obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
     objects = models.GeoManager()
 

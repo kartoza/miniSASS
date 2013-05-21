@@ -6,7 +6,7 @@ from django.forms import ModelForm, Textarea, Select, DateInput
 class SiteForm(ModelForm):
     class Meta:
         model = Sites
-        exclude = ('time_stamp','user')
+        exclude = ('time_stamp')
         widgets = {
             'description': Textarea(attrs={'cols':30, 'rows':4}),
             'river_cat': Select(attrs={'onchange':"updateInputForm('');"}),
@@ -29,7 +29,7 @@ class ObservationForm(ModelForm):
     snails = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick':"updateInputForm('snails');"}))
     class Meta:
         model = Observations
-        exclude = ('time_stamp','user')
+        exclude = ('time_stamp')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
             'comment':  Textarea(attrs={'cols':30, 'rows':4}),

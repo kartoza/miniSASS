@@ -17,10 +17,6 @@ def index(request):
         Displays a map and handles data input
     """
     
-    # Create a form that sends all site data to the view
-    Site_Formset = modelformset_factory(Sites,extra=0)
-    sites = Site_Formset(queryset=Sites.objects.all().order_by('site_name'))
-
     # Process the POST data, if any
     if request.method == 'POST':
         # Create form instances with the POST data
@@ -40,14 +36,13 @@ def index(request):
                 current_observation.save()
             # Create new instances of the forms and then return to the map
             site_form = SiteForm()
-            sites = Site_Formset(queryset=Sites.objects.all().order_by('site_name'))
             observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
             coords_form = CoordsForm()
             post_values = request.POST.copy()
             post_values['edit_site'] = 'true'
             map_form = MapForm(post_values)
             return render_to_response('monitor/index.html', 
-                                      {'sites':sites,'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                                      {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                                       context_instance=RequestContext(request))
         else:
             post_values = request.POST.copy()
@@ -59,7 +54,7 @@ def index(request):
         coords_form = CoordsForm()
         map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false'})
     return render_to_response('monitor/index.html', 
-                              {'sites':sites,'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                              {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                               context_instance=RequestContext(request))
 
 def observations(request):
