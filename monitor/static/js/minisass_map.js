@@ -2,6 +2,7 @@
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
       var localhost = false;
+      var geoserverURL;
       var map;
       var infoClick;
       var infoWindow;

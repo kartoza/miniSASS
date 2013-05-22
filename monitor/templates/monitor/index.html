@@ -67,19 +67,16 @@
       </div> <!--input_obs-->
       <div id="messages"></div> <!--messages-->
         {% if site_form.errors %}
-          Site errors<br />
           {% for error in site_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
         {% endif %}
         {% if coords_form.errors %}
-          Coordinate errors<br />
           {% for error in coords_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
         {% endif %}
         {% if observation_form.errors %}
-          Observation errors<br />
           {% for error in observation_form.errors %}
             Error: {{ error }}<br />
           {% endfor %}
@@ -96,8 +93,8 @@
               <td>
                 <table id="data_table_left">
                   <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
-                  <tr><td>Collector&apos;s name:</td><td>{{ user.username }}</td></tr>
-                  <tr><td><label for="id_site_name">River name:</label></td><td>{{ site_form.site_name }}</td></tr>
+                  <tr><td>Collector&apos;s name:</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
+                  <tr><td><label for="id_site_name">Site/River name:</label></td><td>{{ site_form.site_name }}</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude (S):</label></td>
                     <td>

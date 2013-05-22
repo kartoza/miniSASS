@@ -177,47 +177,59 @@
          when the data input form is submitted.
       */
 
-        if (document.getElementById('id_edit_site').value == 'true'){
-          // convert coordinates to DD if they've been entered as DMS
-          if (DMS.checked==true) {
-            document.getElementById('id_latitude').value = convertDMStoDD('lat');
-            document.getElementById('id_longitude').value = convertDMStoDD('lon');
+        if (document.getElementById('id_obs_date').value == '') {
+          Ext.Msg.alert('Date Error', 'Please enter a valid date');
+          return false;
+        } else if (document.getElementById('id_site_name').value == '') {
+          Ext.Msg.alert('Site Name Error', 'Please enter a site name');
+          return false;
+        } else if (document.getElementById('id_river_cat').selectedIndex == 0) {
+          Ext.Msg.alert('River Category and Groups error',
+                        'Please select a river category and indicate<br />which insect groups you found');
+          return false;
+        } else { // All the required fields are present
+          if (document.getElementById('id_edit_site').value == 'true'){
+            // convert coordinates to DD if they've been entered as DMS
+            if (DMS.checked==true) {
+              document.getElementById('id_latitude').value = convertDMStoDD('lat');
+              document.getElementById('id_longitude').value = convertDMStoDD('lon');
+            }
+
+            // make sure the coordinates have the correct sign
+            if (document.getElementById('id_latitude').value > 0) {
+              document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
+            }
+            if (document.getElementById('id_longitude').value < 0) {
+              document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
+            }
+
+          } else {
+            disableSiteEdit(false);
           }
 
-          // make sure the coordinates have the correct sign
-          if (document.getElementById('id_latitude').value > 0) {
-            document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
-          }
-          if (document.getElementById('id_longitude').value < 0) {
-            document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
-          }
+          // update the geometry field
+          var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
+          document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
 
-        } else {
-          disableSiteEdit(false);
-        }
+          // update the score value
+          document.getElementById('id_score').value = document.getElementById('id_average_score').innerHTML;
 
-        // update the geometry field
-        var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
-        document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
-
-        // update the score value
-        document.getElementById('id_score').value = document.getElementById('id_average_score').innerHTML;
-
-        // set the observations flag to Dirty
-        document.getElementById('id_flag').value = 'dirty';
+          // set the observations flag to Dirty
+          document.getElementById('id_flag').value = 'dirty';
  
-        // update the map variables
-        document.getElementById('id_zoom_level').value = map.getZoom();
-        document.getElementById('id_centre_X').value = map.getCenter().lon;
-        document.getElementById('id_centre_Y').value = map.getCenter().lat;
-        var layerStr = '';
-        for (var i=0; i < map.getNumLayers(); i++) {
-          if (i>0) layerStr += ',';
-          layerStr += map.layers[i].visibility;
-        }
-        document.getElementById('id_layers').value = layerStr;
+          // update the map variables
+          document.getElementById('id_zoom_level').value = map.getZoom();
+          document.getElementById('id_centre_X').value = map.getCenter().lon;
+          document.getElementById('id_centre_Y').value = map.getCenter().lat;
+          var layerStr = '';
+          for (var i=0; i < map.getNumLayers(); i++) {
+            if (i>0) layerStr += ',';
+            layerStr += map.layers[i].visibility;
+          }
+          document.getElementById('id_layers').value = layerStr;
 
-        return true;
+          return true;
+        }
       }
 
       function inputFromMap(){
@@ -941,7 +953,7 @@
         var buttonList = Ext.get('id_obs_list');
         buttonList.on('click', function(){siteWindow.show(this);});
 
-        // Open the Data Input window if an error has been returned
+        // Re-open the Data Input window if an error has been returned
         if (document.getElementById('id_error').value == 'true'){
           document.getElementById('id_error').value = 'false';
           inputWindow.show(this);
