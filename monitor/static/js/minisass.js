@@ -15,8 +15,10 @@
       var clickCoords;          // Map click coordinates
       var storeSites;           // A store for holding sites data
       var storeNearbySites;     // A store for holding data for nearby sites
-      var comboSites;           // A combox containing a list of all sites
-      var comboNearbySites;     // A combox containing a list of nearby sites
+      var comboSites;           // A combobox containing a list of all sites
+      var comboNearbySites;     // A combobox containing a list of nearby sites
+      var comboZoomSites;       // A combobox for zooming to sites
+      var comboZoomSchools;     // A combobox for zooming to schools
 
       function convertDDtoDMS(D) {
       /* Function to convert Decimal Degrees to Degrees Minutes Seconds.
@@ -424,9 +426,28 @@
           typeAhead:true,
           mode:'local',
           emptyText:'Select a site...',
-          selectOnFocus:true,
         });
 
+        // Setup up a combo box for zooming to sites
+        comboZoomSites = new Ext.form.ComboBox({
+          store:storeSites,
+          displayField:'site_name',
+          valueField:'site_gid',
+          typeAhead:true,
+          mode:'local',
+          emptyText:'Select a site...',
+          onSelect: function(record){
+            // Zoom the map to the selected site
+            var xyCoords = new OpenLayers.LonLat(
+              record.get('longitude'),
+              record.get('latitude')
+            );
+            map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+            this.collapse();
+            this.setValue(record.get('site_name'));
+          }
+        });
+  
         // Define a store for holding data for nearby sites
         storeNearbySites = new Ext.data.ArrayStore({
           fields:['site_gid','site_name','description','river_cat','longitude','latitude']
@@ -440,7 +461,6 @@
           typeAhead:true,
           mode:'local',
           emptyText:'Nearby sites...',
-          selectOnFocus:true,
         });
 
         // Define a handler for processing coordinates from a map click
@@ -736,6 +756,20 @@
           contentEl:'legend_table'
         });
 
+        // Define the zoom panel
+        var zoomPanel = new Ext.Panel({
+          title:'Zoom to School or Site',
+          renderTo:'zoompanel',
+          collapsible:true,
+          collapsed:true,
+          width:220,
+          items: new Ext.Panel({
+            border:false,
+            bodyStyle:'padding:5px;background:#dfe8f6;',
+            items:comboZoomSites
+          })
+        });
+
         // Define the miniSASS buttons panel
         var inputPanel = new Ext.Panel({
           title:'miniSASS observations',
@@ -810,7 +844,7 @@
           items: new Ext.Panel({
             border:false,
             bodyStyle:'padding:5px;background:#dfe8f6;',
-            items:comboSites,
+            items:comboSites
           }),
           buttons: [{
             text:'Use selected site',

@@ -24,7 +24,7 @@
 
 {% block "minisass_page_content" %}
     <div id=sidepanel>
-      <div id="layertree"></div>
+      <div id="layertree"></div> <!--layertree-->
       <div id="legend">
         <table id="legend_table">
           <tr>
@@ -53,6 +53,7 @@
           </tr>
         </table>
       </div> <!--legend-->
+      <div id="zoompanel"></div> <!--zoompanel-->
       <div id="input_obs">
         <div id="input_buttons">
           <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/>
@@ -64,8 +65,7 @@
         {% endif %}
         </div> <!--input_buttons-->
       </div> <!--input_obs-->
-      <div id="messages">
-      </div> <!--messages-->
+      <div id="messages"></div> <!--messages-->
         {% if site_form.errors %}
           Site errors<br />
           {% for error in site_form.errors %}
