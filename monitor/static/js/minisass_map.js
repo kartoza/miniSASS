@@ -1,3 +1,4 @@
+      var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
       var localhost = false;
@@ -43,8 +44,8 @@
           + '&VERSION=1.1.1' 
           + '&EXCEPTIONS=application/vnd.ogc.se_xml'
           + '&BBOX=' + map.getExtent().toBBOX()
-          + '&X=' + x
-          + '&Y=' + y
+          + '&X=' + Math.round(x)
+          + '&Y=' + Math.round(y)
           + '&INFO_FORMAT=' + infoFormat
           + '&QUERY_LAYERS=miniSASS:minisass_observations'
           + '&LAYERS=miniSASS:minisass_observations'
