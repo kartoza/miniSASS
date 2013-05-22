@@ -91,13 +91,14 @@ def get_sites(request, x, y, d):
         to request all sites.
     """
     select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, site_name, description, river_cat FROM sites'
+    order_clause = ' ORDER BY site_name ASC'
     if (d == '-9'):
         where_clause = ''
     else:
         query_envelope = str(float(x)-float(d))+','+str(float(y)-float(d))+','+str(float(x)+float(d))+','+str(float(y)+float(d))
         where_clause = ' WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),ST_MakeEnvelope('+query_envelope+',3857),'+d+')'
 
-    sites_returned = Sites.objects.raw(select_clause + where_clause)
+    sites_returned = Sites.objects.raw(select_clause + where_clause + order_clause)
     return render_to_response('monitor/sites.html',
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
