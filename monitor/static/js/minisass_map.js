@@ -223,7 +223,7 @@
           'Schools',
           geoserverURL,
           {layers:'miniSASS:schools',transparent:true,format:'image/png'},
-          {isbaseLayer:false,visibility:false}
+          {minScale:400000,isbaseLayer:false,visibility:false}
         );
 
         // Define the miniSASS observations as an overlay
@@ -235,12 +235,12 @@
         );
 
         // Add the layers to the map
+        map.addLayers([layerMiniSASSObs,layerSchools]);
         if (localhost == true) {
           map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
         } else {
           map.addLayers([layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
         }
-        map.addLayers([layerSchools,layerMiniSASSObs]);
 
         // If necessary, restore layer visibility saved from a previous state
         var layerStr = document.getElementById('id_layers').value;
@@ -251,6 +251,9 @@
             else {map.layers[i].visibility = true;}
           }
         }
+
+        // Add a layerswitcher
+        map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
         // Add the info click controller
         infoClick = new OpenLayers.Control.InfoClick();
@@ -269,40 +272,15 @@
           map: map
         });
 
-        // Define lists to manage the layers
-        var baseLayers = new GeoExt.tree.BaseLayerContainer({
-          text: 'Base Layers',
-          layerStore: mapPanel.layers,
-          leaf: false,
-          expanded: true
-        });
-
-        var overlayLayers = new GeoExt.tree.OverlayLayerContainer({
-          text: 'Overlay Layers',
-          layerStore: mapPanel.layers,
-          leaf: false,
-          expanded: true
-        });
-
-        // Define tree panels to control layer visibility
-        var baselayerTree = new Ext.tree.TreePanel({
-          title:'Base Layers',
-          renderTo:'layertree',
+        // Define the layers panel
+        var legendPanel = new Ext.Panel({
+          title:'Layers',
+          renderTo:'layers',
           collapsible:true,
           collapsed:true,
           width:220,
-          root: baseLayers,
-          rootVisible:false
-        });
-
-        var overlaylayerTree = new Ext.tree.TreePanel({
-          title:'Overlays',
-          renderTo:'layertree',
-          collapsible:true,
-          collapsed:true,
-          width:220,
-          root: overlayLayers,
-          rootVisible:false
+          contentEl:'layerswitcher',
+          bodyStyle:'padding:5px;',
         });
 
         // Define the legend panel

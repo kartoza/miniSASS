@@ -45,3 +45,11 @@
   font-family:Verdana,Arial,sans-serif;
   font-size: 0.7em;
 }
+
+#layerswitcher .baseLbl,
+#layerswitcher .dataLbl{
+  margin-top: 3px;
+  margin-left: 3px;
+  margin-bottom: 3px;
+  font-weight:bold;
+}
