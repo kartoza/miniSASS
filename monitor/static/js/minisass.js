@@ -831,6 +831,18 @@
         });
         updateInputForm('');
 
+        // Define a datepick widget
+        var today = new Date();
+        var todayString = today.getFullYear() + '-'
+          + ('0' + (today.getMonth()+1)).slice(-2) + '-'
+          + ('0' + today.getDate()).slice(-2);
+        var obsDate = new Ext.form.DateField({
+          applyTo:'id_obs_date',
+          editable:false,
+          format:'Y-m-d',
+          maxValue:todayString,
+        });
+
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
