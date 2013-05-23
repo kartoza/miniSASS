@@ -62,7 +62,7 @@ class Sites(models.Model):
         db_table = u'sites'
 
     def __unicode__(self):
-        return self.name
+        return self.site_name
                
 class Observations(models.Model):
     FLAG_CATS = (
@@ -96,7 +96,7 @@ class Observations(models.Model):
         db_table = u'observations'
 
     def __unicode__(self):
-        return self.site.name
+        return str(self.obs_date) + ': ' + self.site.site_name
 
 class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
