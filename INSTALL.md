@@ -122,6 +122,15 @@ for some reason (postgis / psql client version issue?) shp2pgsql -I option faili
 
 > CREATE INDEX municipalities_geom_gist ON municipalities USING gist (the_geom );
 
+Appended provinces from neighbouring countries. 
+
+attempted to create countries from provinces:
+select  ROW_NUMBER() over () as id,st_union(ST_SnapToGrid(the_geom,0.0001)) as the_geom,country from provinces group by country;
+
+This failed because of bad input data. 
+
+
+
 1:50000 rivers
 --------------
 

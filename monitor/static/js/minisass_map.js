@@ -22,7 +22,7 @@
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
           var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.'
             + '<br />You can use the mouse wheel to zoom in or out on the map. Click '
-            + 'and hold the mouse button to drag the map around.';
+            + 'and hold the mouse button to drag the map around. Or Shift_Left-click_Drag-a-rectangle to zoom in.';
           messagePanel.update(msg);
           userFunction = 'infoclick';
           infoClick.activate();
@@ -30,7 +30,7 @@
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
           var msg = 'You can use the mouse wheel to zoom in or out on the map. Click '
-            + 'and hold the mouse button to drag the map around.';
+            + 'and hold the mouse button to drag the map around. Or Shift_Left-click_Drag-a-rectangle to zoom in.';
           messagePanel.update(msg);
           userFunction = 'none';
           infoClick.deactivate();
