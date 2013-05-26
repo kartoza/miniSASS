@@ -33,7 +33,7 @@ will be called multiple times if there are various feature collections
     <tr>
   </#if>
   <#assign odd = !odd>
-    <td>${feature.site_name.value}</td>
+    <td>${feature.name.value}</td>
     <td>${feature.description.value}</td>
     <td>${feature.river_cat.value}</td>
     <td>${feature.obs_date.value?date("yyyy/MM/dd")}</td>

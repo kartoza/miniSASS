@@ -265,6 +265,7 @@ GRANT SELECT ON TABLE public.geometry_columns TO web_read;
 GRANT SELECT ON TABLE public.spatial_ref_sys TO web_read;
 GRANT SELECT ON TABLE public.geography_columns TO web_read;
 GRANT SELECT ON TABLE public.schools TO web_read;
+GRANT SELECT ON TABLE public.country TO web_read;
 
 reassign owned by gavin to minisass;
 grant execute on all functions in schema public to web_read;
