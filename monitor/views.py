@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from monitor.forms import *
-from monitor.models import Sites, Observations
+from monitor.models import Sites, Observations, Schools
 from django.forms.models import modelformset_factory
 import urllib2
 
@@ -103,4 +103,14 @@ def get_sites(request, x, y, d):
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
 
+def get_schools_get(request):
+    """ Request all schools with names starting with the letters in the search_str
+    """
+
+    search_str = request.GET['search_str']
+    schools_returned = Schools.objects.filter(school__istartswith=search_str).order_by('school')
+     
+    return render_to_response('monitor/schools.html',
+                              {'schools':schools_returned},
+                              context_instance=RequestContext(request))
 
