@@ -3,8 +3,8 @@
     {% for school in schools %}
       { "school_gid":"{{ school.gid }}",
         "school_name":"{{ school.school }}",
-        "longitude": {{ school.geom.x }},
-        "latitude":  {{ school.geom.y }}
+        "longitude": {{ school.the_geom.x }},
+        "latitude":  {{ school.the_geom.y }}
       }
       {% if not forloop.last %},{% endif %}
     {% endfor %}

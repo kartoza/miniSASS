@@ -30,7 +30,7 @@ class Organisations(models.Model):
         
 class Schools(models.Model):
     gid = models.AutoField(primary_key=True, editable=False)
-    geom = models.PointField()
+    the_geom = models.PointField()
     natemis = models.IntegerField()
     school = models.CharField(max_length=255)
     province = models.CharField(max_length=2)
