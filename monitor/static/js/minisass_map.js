@@ -3,15 +3,20 @@
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
       var localhost = false;
       var geoserverURL;
+      var geoserverCachedURL;
       var map;
       var infoClick;
       var infoWindow;
       var messagePanel;
-      var userFunction = 'none';// Variable to determine which cursor to dsplay
+      var userFunction = 'none';// Variable to determine which cursor to display
       var storeSites;           // A store for holding sites data
+      var storeSchools;         // A store for holding data for schools
       var comboSites;           // A combobox containing a list of all sites
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
+      var navMsg = 'Use the <i>mouse wheel</i> to <b>zoom in or out</b> on the map, or press <i>Shift</i> '
+                 + 'and draw a rectangle to <b>zoom in</b>. <i>Click and hold</i> the mouse button '
+                 + 'to <b>drag the map</b> around. ';
 
       function infoFromMap(){
       /* This function toggles the 'info from map' button image, changes the
@@ -20,17 +25,14 @@
         if (userFunction != 'infoclick') {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
-          var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.'
-            + '<br />You can use the mouse wheel to zoom in or out on the map. Click '
-            + 'and hold the mouse button to drag the map around. Or Shift_Left-click_Drag-a-rectangle to zoom in.';
+          var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
           messagePanel.update(msg);
           userFunction = 'infoclick';
           infoClick.activate();
         } else {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
           document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
-          var msg = 'You can use the mouse wheel to zoom in or out on the map. Click '
-            + 'and hold the mouse button to drag the map around. Or Shift_Left-click_Drag-a-rectangle to zoom in.';
+          var msg = navMsg;
           messagePanel.update(msg);
           userFunction = 'none';
           infoClick.deactivate();
@@ -69,11 +71,13 @@
 
         if (localhost == true) {
           geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
+          geoserverCachedURL = 'http://localhost:8080/geoserver/miniSASS/wms';
         } else {
           geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
+          geoserverCachedURL = 'http://opengeo.afrispatial.co.za/geoserver/gwc/service/wms?TILED=true';
         };
 
-        // Define a store for holding data for all sites
+        // Define a store for holding data for sites
         storeSites = new Ext.data.ArrayStore({
           fields:['site_gid','site_name','description','river_cat','longitude','latitude']
         });
@@ -131,6 +135,39 @@
           }
         });
 
+        // Define a store for holding schools
+        storeSchools = new Ext.data.Store({
+          proxy:new Ext.data.HttpProxy({
+            method: 'GET',
+            prettyUrls: false,
+            url: 'schools',
+            }),
+          reader: new Ext.data.JsonReader({
+            root: 'schools',
+            id: 'school_gid'
+          }, ['school_gid','school_name','longitude','latitude'])
+        });
+
+        // Setup up a combo box for schools
+        comboZoomSchools = new Ext.form.ComboBox({
+          hideTrigger: true,
+          minChars:3,
+          emptyText:'Type a school name...',
+          store:storeSchools,
+          displayField:'school_name',
+          onSelect: function(record){
+            // Zoom the map to the selected school
+            var xyCoords = new OpenLayers.LonLat(
+              record.get('longitude'),
+              record.get('latitude')
+            );
+            map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+            map.getLayersByName('Schools')[0].setVisibility(true);
+            this.collapse();
+            this.setValue(record.get('school_name'));
+          }
+        });
+
         // Define a handler to display Feature Info from a map click
         OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {                
           defaultHandlerOptions: {
@@ -171,7 +208,7 @@
 
         // Define a new map
         map = new OpenLayers.Map(
-          'miniSASS Map',{
+          'map',{
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
@@ -205,7 +242,7 @@
         // Define the miniSASS composite layer as a base layer
         var layerMiniSASSBase = new OpenLayers.Layer.WMS(
           'Rivers and Catchments',
-          geoserverURL,
+          geoserverCachedURL,
           {layers:'miniSASS:miniSASS_base',format:'image/png'},
           {isbaseLayer:true}
         );
@@ -273,7 +310,7 @@
         });
 
         // Define the layers panel
-        var legendPanel = new Ext.Panel({
+        var layersPanel = new Ext.Panel({
           title:'Layers',
           renderTo:'layers',
           collapsible:true,
@@ -300,11 +337,18 @@
           collapsible:true,
           collapsed:true,
           width:220,
-          items: new Ext.Panel({
-            border:false,
-            bodyStyle:'padding:5px;background:#dfe8f6;',
-            items:comboZoomSites
-          })
+          items: [
+            new Ext.Panel({
+              border:false,
+              bodyStyle:'padding:5px;background:#dfe8f6;',
+              items:comboZoomSchools
+            }),
+            new Ext.Panel({
+              border:false,
+              bodyStyle:'padding:5px;background:#dfe8f6;',
+              items:comboZoomSites
+            })
+          ]
         });
 
         // Define the miniSASS buttons panel
@@ -322,8 +366,7 @@
           width:220,
           bodyStyle:'padding:5px;'
         });
-        messagePanel.update('Use the mouse wheel to zoom in or out on the map. Click '
-                          + 'and hold the mouse button to drag the map around.');
+        messagePanel.update(navMsg);
 
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({

@@ -107,7 +107,7 @@ def get_schools_get(request):
     """ Request all schools with names starting with the letters in the search_str
     """
 
-    search_str = request.GET['search_str']
+    search_str = request.GET['query']
     schools_returned = Schools.objects.filter(school__istartswith=search_str).order_by('school')
      
     return render_to_response('monitor/schools.html',
