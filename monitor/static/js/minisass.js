@@ -795,7 +795,7 @@
         // Define the popup Data Input window
         inputWindow = new Ext.Window({
           applyTo:'data_window',
-          width:600,
+          width:610,
           height:430,
           closeAction:'hide',
           modal:true,

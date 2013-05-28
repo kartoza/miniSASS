@@ -30,6 +30,9 @@
       <div id="legend">
         <table id="legend_table">
           <tr>
+            <td colspan="2" class="legend_header">miniSASS Observations</td>
+          </tr>
+          <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_n.png" id="legend_icon1" alt="" title=""/></td>
             <td class="map_legend_text">Unmodified<br />(NATURAL condition)</td>
           </tr>
@@ -52,6 +55,10 @@
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u_dirty.png" id="legend_icon6" alt="" title=""/></td>
             <td class="map_legend_text">Unverified data</td>
+          </tr>
+            <td colspan="2" class="legend_header">Schools</td>
+          <tr>
+            <td colspan="2"><img src="http://opengeo.afrispatial.co.za/geoserver/wms?REQUEST=GetLegendGraphic&LAYER=miniSASS:schools&FORMAT=image/png&SCALE=300000&LEGEND_OPTIONS=fontAntiAliasing:true" alt="" title=""/></td>
           </tr>
         </table>
       </div> <!--legend-->
