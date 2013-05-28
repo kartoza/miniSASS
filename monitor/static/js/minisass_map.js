@@ -212,7 +212,7 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
-            eventListeners: {'changebaselayer':mapBaseLayerChanged}
+            eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
           }
         );
 
@@ -222,6 +222,18 @@
             map.getLayersByName('Provinces')[0].setVisibility(true);
           } else {
             map.getLayersByName('Provinces')[0].setVisibility(false);
+          }
+        }
+
+        function mapZoomEnd(event) {
+          // Switch from Google terrain to Google road map if zoomed too close
+          if (map.zoom>=14 && map.getLayersByName('Google terrain')[0].visibility==true) {
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google terrain.<br />Switching to Google road map.');
+            map.setBaseLayer(layerGoogleRoadmap);
+          }
+          if (map.zoom>=18 && map.getLayersByName('Google satellite')[0].visibility==true) {
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google satellite.<br />Switching to Google road map.');
+            map.setBaseLayer(layerGoogleRoadmap);
           }
         }
 
