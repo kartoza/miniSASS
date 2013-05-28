@@ -247,7 +247,7 @@
         if (userFunction != 'mapclick') {
           document.getElementById('id_obs_map').src = '/static/img/button_obs_map_selected.png';
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
-          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'url(/static/img/target.cur),crosshair';
+          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'url(/static/img/target.cur),crosshair';
           var msg = 'Click the location of the observation on the map.<br />' + navMsg;
           messagePanel.update(msg);
           userFunction = 'mapclick';
@@ -256,7 +256,7 @@
           if (infoWindow.hidden == false) infoWindow.hide();
         } else {
           document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
-          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
+          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'auto';
           var msg = navMsg;
           messagePanel.update(msg);
           userFunction = 'none';
@@ -271,7 +271,7 @@
         if (userFunction != 'infoclick') {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
           document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
-          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
+          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
           var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
           messagePanel.update(msg);
           userFunction = 'infoclick';
@@ -279,7 +279,7 @@
           mapClick.deactivate();
         } else {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
-          document.getElementById('OpenLayers.Map_2_OpenLayers_ViewPort').style.cursor = 'auto';
+          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'auto';
           var msg = navMsg;
           messagePanel.update(msg);
           userFunction = 'none';
