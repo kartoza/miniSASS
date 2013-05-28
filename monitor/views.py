@@ -103,7 +103,7 @@ def get_sites(request, x, y, d):
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
 
-def get_schools_get(request):
+def get_schools(request):
     """ Request all schools with names starting with the letters in the search_str
     """
 
