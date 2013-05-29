@@ -38,25 +38,29 @@
             </p>
           </div>
         <div class="minisass-heading-space">
-          <ul class="minisass-menus">
-            {% show_menu %}
-          </ul>
         </div>
+        <ul class="minisass-menus">
+          {% show_menu %}
+        </ul>
       </div>
       <div class="red-line">
       </div>
 
-      {% block "minisass_page_content" %}
-          <div class="minisass-page-content">
-              {% placeholder "content" %}
-          </div>
-      {% endblock %}
+      <div class="minisass-page">
 
-      {% block minisass_right_column %}
-          <div class="minisass-right-column">
-              {% placeholder "right_column" %}
-          </div>
-      {% endblock %}
+          {% block "minisass_page_content" %}
+              <div class="minisass-page-content">
+                  {% placeholder "content" %}
+              </div>
+          {% endblock %}
+
+          {% block minisass_right_column %}
+              <div class="minisass-right-column">
+                  {% placeholder "right_column" %}
+              </div>
+          {% endblock %}
+
+      </div>
 
       {% block minisass_bottom %}
       <div class="minisass-bottom">

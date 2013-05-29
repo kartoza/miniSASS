@@ -53,3 +53,19 @@
   margin-bottom: 3px;
   font-weight:bold;
 }
+
+#legend_table {
+  font-family:Verdana,Arial,sans-serif;
+  font-size: 1em;
+  color:black;
+  font-weight:normal;
+}
+
+#legend_table .legend_header {
+  font-weight:bold;
+}
+
+#map .olControlZoomPanel {
+  left: 8px;
+  top: 8px;
+} 
