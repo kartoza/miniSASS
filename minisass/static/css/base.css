@@ -46,6 +46,9 @@ body {
 /* page heading styles */
 .minisass-heading img {
     float: left;
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 .minisass-heading-space {
     float: left;
