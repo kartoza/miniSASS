@@ -76,13 +76,13 @@ body {
 
 /* top page menu styling */
 ul.minisass-menus {
-    float: left;
     font-size: 0.9em;
     font-weight: bold;
-    margin: 88px 0 0 10px;
     border: 0;
-    padding-left: 0px;
-    width: 623px;
+    padding: 0px;
+    position: absolute;
+    left: 690px;
+    top: 117px;
 }
 .minisass-menus li {
     width: auto;
