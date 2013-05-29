@@ -308,3 +308,9 @@ div.registration_links {
 .minisass-bottom a:active {
     color: white;
 }
+
+div.minisass-page-content h1 {
+    background-color: #68d;
+    color: white;
+    text-align: center;
+}
