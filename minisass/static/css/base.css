@@ -308,6 +308,18 @@ div.registration_links {
 .minisass-bottom a:active {
     color: white;
 }
+.minisass-bottom-logos {
+    clear: both;
+    width: 100%;
+    float: left;
+    background: #eef;
+    color: #aab;
+    font-size: smaller;
+    text-align: center;
+}
+.minisass-bottom-logos img {
+    margin: 5px 15px 5px 15px;
+}
 
 div.minisass-page-content h1 {
     background-color: #68d;
