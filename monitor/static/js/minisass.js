@@ -21,6 +21,7 @@
       var comboNearbySites;     // A combobox containing a list of nearby sites
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
+      var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
       var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
                  + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
                  + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
@@ -639,23 +640,41 @@
         );
 
         function mapBaseLayerChanged(event) {
-        // This functions toggles the Provinces layer on/off with the Google satellite layer
+          // Toggle the Provinces layer on/off with the Google satellite layer
           if (event.layer.name=='Google satellite') { 
             map.getLayersByName('Provinces')[0].setVisibility(true);
           } else {
             map.getLayersByName('Provinces')[0].setVisibility(false);
+          }
+          if (exceededZoom != '') {
+            exceededZoom = '';
           }
         }
 
         function mapZoomEnd(event) {
           // Switch from Google terrain to Google road map if zoomed too close
           if (map.zoom>=14 && map.getLayersByName('Google terrain')[0].visibility==true) {
-            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google terrain.<br />Switching to Google road map.');
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
             map.setBaseLayer(layerGoogleRoadmap);
+            exceededZoom='Google terrain';
           }
+          // Switch from Google satellite to Google road map if zoomed too close
           if (map.zoom>=18 && map.getLayersByName('Google satellite')[0].visibility==true) {
-            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google satellite.<br />Switching to Google road map.');
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google satellite.<br />Automatically switching to Google road map.');
             map.setBaseLayer(layerGoogleRoadmap);
+            exceededZoom='Google satellite';
+          }
+          // Switch back to Google terrain if within zoom range
+          if (map.zoom<14 && exceededZoom=='Google terrain') {
+            Ext.Msg.alert('Within Zoom', 'Switching back to Google terrain.');
+            map.setBaseLayer(layerGoogleTerrain);
+            exceededZoom='';
+          }
+          // Switch back to Google satellite if within zoom range
+          if (map.zoom<18 && exceededZoom=='Google satellite') {
+            Ext.Msg.alert('Within Zoom', 'Switching back to Google satellite.');
+            map.setBaseLayer(layerGoogleSatellite);
+            exceededZoom='';
           }
         }
 
