@@ -1,11 +1,13 @@
 body {
     font-family: Arial, Verdana, sans;
     font-size: medium;
+    background: #38b;
 }
 
 /* page layout styles */
 .minisass-container {
     width: 1024px;
+    height: auto;
     margin: 0 auto 0 auto;
     background: white;
 }
@@ -14,11 +16,19 @@ body {
     float: left;
     background: #3168b8;
 }
+
+.minisass-page {
+    width: 100%;
+    float: left;
+    background: white;
+}
+
 .minisass-page-content {
-    width: 800px;
+    width: 795px;
     float: left;
     background: white;
     font-size: 0.8em;
+    margin-left: 5px;
 }
 .minisass-right-column {
     width: 220px;
@@ -28,7 +38,7 @@ body {
     clear: both;
     width: 100%;
     float: left;
-    background: #b22;
+    background: #3168b8;
     color: white;
     font-size: smaller;
 }
@@ -46,7 +56,7 @@ body {
     height: 2px;
     float: left;
     width: 100%;
-    background: #b22;
+    background: #44d;
     margin-bottom: 5px;
     border: none;
 }
@@ -81,10 +91,10 @@ ul.minisass-menus {
     border-right: 2px solid white;
     margin-left: 2px;
     text-align: center;
-    background: #cc3;
+    background: #adf;
 }
 .minisass-menus li.selected {
-    background: #b22;
+    background: #44d;
     color: white;
 }
 .minisass-menus li.selected a:visited,
@@ -98,7 +108,7 @@ ul.minisass-menus {
 .minisass-menus li.sibling a:active,
 .minisass-menus li.sibling a:hover, 
 .minisass-menus li.sibling a {
-    color: #77e;
+    color: #68d;
     text-decoration: none;
 }
 .minisass-menus li.selected a:active,
@@ -119,7 +129,7 @@ ul.minisass-menus {
 /* recent observations plugin stylin */
 div.recent-observations {
     width: 100%;
-    background: #5cf;
+    background: #adf;
     font-size: small;
     margin-left: 4px;
 }
@@ -128,13 +138,15 @@ div.recent-observations {
 }
 .recent-observations h1 {
     font-size: 1.1em;
-    background-color: orange;
+    background-color: #44d;
     padding: 4px;
     text-align: center;
+    color: white;
+    margin: 0 0 0.67em 0;
 }
 .recent-observations section h2 {
     font-size: 1.0em;
-    background-color: #b22;
+    background-color: #68d;
     color: white;
     padding: 2px;
 }
@@ -159,7 +171,7 @@ div.minisass-rc-links {
 }
 .minisass-rc-links section heading h1 {
     font-size: 1.1em;
-    background-color: orange;
+    background-color: #47c;
     padding: 4px;
     text-align: center;
 }
@@ -215,7 +227,7 @@ div.blog-entries-author-date-tag h1 {
 
 /* right column blog include list styling */
 div.minisass-right-column .cmsplugin-blog-include-list section h1 {
-    background: orange;
+    background: #47c;
     font-size: 0.9em;
 }
 div.minisass-right-column .cmsplugin-blog-include-list {
@@ -225,7 +237,7 @@ div.minisass-right-column .cmsplugin-blog-include-list {
     padding-bottom: 8px;
 }
 div.minisass-right-column .cmsplugin-blog-include-list section heading h1 {
-    background-color: orange;
+    background-color: #47c;
     padding: 4px;
     text-align: center;
 }
@@ -237,7 +249,7 @@ div.minisass-right-column .cmsplugin-blog-include-list section p a {
     display: block;
     padding: 2px;
     font-weight: bold;
-    background-color: #b22;
+    background-color: #44d;
     color: white;
     text-align: center;
 }
@@ -245,7 +257,9 @@ div.minisass-right-column .cmsplugin-blog-include-list section p a {
 /* image plugin styling */
 img.left {
     float: left;
-    margin-right: 7px;
+    border: 1px solid lightgray;
+    padding: 3px;
+    margin: 3px;
 }
 span.title {
     clear: both;
@@ -256,8 +270,8 @@ span.title {
 }
 
 div.registration_links {
-    float: left;
-    width: 623px;
+    float: right;
+    /* width: 623px; */
 }
 .registration_links a:hover,
 .registration_links a:visited,
