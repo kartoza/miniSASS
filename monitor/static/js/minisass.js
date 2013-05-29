@@ -219,9 +219,6 @@
           var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
           document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
 
-          // update the score value
-          document.getElementById('id_score').value = document.getElementById('id_average_score').innerHTML;
-
           // set the observations flag to Dirty
           document.getElementById('id_flag').value = 'dirty';
  

@@ -163,7 +163,6 @@
         {% endif %}
           {{ site_form.the_geom.as_hidden }}
           <input type="hidden" name="user" value="{{ request.user.id }}" id="id_user" />
-          {{ observation_form.score.as_hidden }}
           {{ observation_form.flag.as_hidden }}
           {{ observation_form.site.as_hidden }}
           {{ map_form.zoom_level.as_hidden }}
