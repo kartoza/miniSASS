@@ -21,9 +21,10 @@
       var comboNearbySites;     // A combobox containing a list of nearby sites
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
-      var navMsg = 'Use the <i>mouse wheel</i> to <b>zoom in or out</b> on the map, or press <i>Shift</i> '
-                 + 'and draw a rectangle to <b>zoom in</b>. <i>Click and hold</i> the mouse button '
-                 + 'to <b>drag the map</b> around. ';
+      var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
+                 + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
+                 + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
+                 + 'and hold</i> the mouse button to <b>drag the map</b> around.';
 
       function convertDDtoDMS(D) {
       /* Function to convert Decimal Degrees to Degrees Minutes Seconds.
@@ -218,9 +219,6 @@
           // update the geometry field
           var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
           document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
-
-          // update the score value
-          document.getElementById('id_score').value = document.getElementById('id_average_score').innerHTML;
 
           // set the observations flag to Dirty
           document.getElementById('id_flag').value = 'dirty';

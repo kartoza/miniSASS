@@ -14,9 +14,10 @@
       var comboSites;           // A combobox containing a list of all sites
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
-      var navMsg = 'Use the <i>mouse wheel</i> to <b>zoom in or out</b> on the map, or press <i>Shift</i> '
-                 + 'and draw a rectangle to <b>zoom in</b>. <i>Click and hold</i> the mouse button '
-                 + 'to <b>drag the map</b> around. ';
+      var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
+                 + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
+                 + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
+                 + 'and hold</i> the mouse button to <b>drag the map</b> around.';
 
       function infoFromMap(){
       /* This function toggles the 'info from map' button image, changes the

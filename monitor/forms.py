@@ -29,7 +29,7 @@ class ObservationForm(ModelForm):
     snails = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick':"updateInputForm('snails');"}))
     class Meta:
         model = Observations
-        exclude = ('time_stamp')
+        exclude = ('time_stamp', 'score')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
             'comment':  Textarea(attrs={'cols':30, 'rows':4}),
