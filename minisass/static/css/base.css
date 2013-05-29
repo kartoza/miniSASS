@@ -52,8 +52,8 @@ body {
 }
 .minisass-heading-space {
     float: left;
-    height: 113px;
-    width: 623px;
+    height: 123px;
+    width: 500px;
 }
 .red-line {
     height: 2px;
@@ -76,13 +76,13 @@ body {
 
 /* top page menu styling */
 ul.minisass-menus {
+    float: left;
     font-size: 0.9em;
     font-weight: bold;
+    margin: 0 0 0 10px;
     border: 0;
     padding: 0px;
-    position: absolute;
-    left: 690px;
-    top: 117px;
+    /* width: 623px; */
 }
 .minisass-menus li {
     width: auto;
