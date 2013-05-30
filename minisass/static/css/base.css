@@ -59,7 +59,7 @@ body {
     height: 2px;
     float: left;
     width: 100%;
-    background: #44d;
+    background: #45a;
     margin-bottom: 5px;
     border: none;
 }
@@ -97,7 +97,7 @@ ul.minisass-menus {
     background: #adf;
 }
 .minisass-menus li.selected {
-    background: #44d;
+    background: #45a;
     color: white;
 }
 .minisass-menus li.selected a:visited,
@@ -141,7 +141,7 @@ div.recent-observations {
 }
 .recent-observations h1 {
     font-size: 1.1em;
-    background-color: #44d;
+    background-color: #45a;
     padding: 4px;
     text-align: center;
     color: white;
@@ -252,7 +252,7 @@ div.minisass-right-column .cmsplugin-blog-include-list section p a {
     display: block;
     padding: 2px;
     font-weight: bold;
-    background-color: #44d;
+    background-color: #45a;
     color: white;
     text-align: center;
 }
