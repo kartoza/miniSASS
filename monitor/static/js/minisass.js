@@ -666,13 +666,11 @@
           }
           // Switch back to Google terrain if within zoom range
           if (map.zoom<14 && exceededZoom=='Google terrain') {
-            Ext.Msg.alert('Within Zoom', 'Switching back to Google terrain.');
             map.setBaseLayer(layerGoogleTerrain);
             exceededZoom='';
           }
           // Switch back to Google satellite if within zoom range
           if (map.zoom<18 && exceededZoom=='Google satellite') {
-            Ext.Msg.alert('Within Zoom', 'Switching back to Google satellite.');
             map.setBaseLayer(layerGoogleSatellite);
             exceededZoom='';
           }
@@ -835,8 +833,6 @@
           height:430,
           closeAction:'hide',
           modal:true,
-          constrain: true,
-          draggable:false,  // workaround to the postioning problem caused by the CMS
           items: new Ext.Panel({
             applyTo: 'data_panel',
             border:false
@@ -998,6 +994,18 @@
           document.getElementById('id_error').value = 'false';
           inputWindow.show(this);
         }
+
+        // Define tooltips for the layer switcher
+        document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
+        new Ext.ToolTip({
+          target:'id_baseLayersDiv',
+          html:'Onle one base layer can be shown at a time'
+        });
+        document.querySelector('div.dataLayersDiv').id='id_dataLayersDiv';
+        new Ext.ToolTip({
+          target:'id_dataLayersDiv',
+          html:'Layers not within scale are greyed out'
+        });
 
   });
 
