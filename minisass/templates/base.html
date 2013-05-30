@@ -22,7 +22,8 @@
 
       <div class="minisass-heading">
         <a href="/">
-          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo">
+          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
+          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
         </a>
           <div class="registration_links">
             <p>
@@ -77,12 +78,18 @@
       </div>
       {% endblock %}
       <div class="minisass-bottom-logos">
-        <img src="{{ STATIC_URL }}images/dwa.png" 
-             alt="Department of Water Affairs" 
-             title="Department of Water Affairs" />
-        <img src="{{ STATIC_URL }}images/wrc.png" 
-             alt="Water Research Council" 
-             title="Water Research Commission" />
+          <a href="http://www.dwa.gov.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/dwa.png" 
+                 alt="Department of Water Affairs" 
+                 title="Department of Water Affairs" /></a>
+         <a href="http://www.wrc.org.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/wrc.png" 
+                 alt="Water Research Council" 
+                 title="Water Research Commission" /></a>
+         <a href="http://www.groundtruth.co.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/groundtruth.png" 
+                 alt="GroundTruth" 
+                 title="GroundTruth" /></a>
       </div>
 
     </div>
