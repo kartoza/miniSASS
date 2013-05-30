@@ -147,6 +147,17 @@ div.recent-observations {
     color: white;
     margin: 0 0 0.67em 0;
 }
+.recent-observations h2 a:visited,
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover, 
+.recent-observations h2 a {
+    color: white;
+    text-decoration: none;
+}
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover {
+    text-decoration: underline;
+}
 .recent-observations section h2 {
     font-size: 1.0em;
     background-color: #68d;
