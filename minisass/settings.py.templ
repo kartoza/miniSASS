@@ -139,7 +139,6 @@ LANGUAGES = [
     ('en', 'English')
 ]
 ADMIN_LANGUAGE_CODE = 'en'
-LANGUAGE_CODE = 'en'
 
 # Django CMS configuration settings
 # CMS_LANGUAGES = {
@@ -253,6 +252,14 @@ JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smo
 RECAPTCHA_PUBLIC_KEY = '6LfMquASAAAAAOHqdGSV9f_7MxgsU5apGmq6NXDh'
 RECAPTCHA_PRIVATE_KEY = '6LfMquASAAAAAAFQXjSQFex-IR7tVeUAgBzAica1'
 
+# tiny-MCE settings
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'simple', 
+    'relative_urls': False,
+    'width': 800,
+    'height': 600,
+    'resize': True
+}
 
 # email settings
 EMAIL_HOST = 'localhost'
@@ -290,13 +297,13 @@ INSTALLED_APPS = (
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_video',
     'cms.plugins.twitter',
-    'cmsplugin_blog',
     'cmsplugin_contact',
     'djangocms_utils',
     'simple_translation',
     'tagging',
     # 'missing',
     'reversion',
+    'cmsplugin_blog',
     # 'cmsplugin_htmlsitemap',
     'monitor',
 )
