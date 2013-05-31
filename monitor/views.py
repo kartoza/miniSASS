@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from monitor.forms import *
 from monitor.models import Sites, Observations, Schools
 from django.forms.models import modelformset_factory
+from django.db import connection
 import urllib2
 
 def index(request):
@@ -113,4 +114,23 @@ def get_schools(request):
     return render_to_response('monitor/schools.html',
                               {'schools':schools_returned},
                               context_instance=RequestContext(request))
+
+def zoom_observation(request, obs_id):
+    """ Zoom to a miniSASS observation
+    """
+
+    observation = Observations.objects.get(pk=obs_id)
+    # Select statement converts coordinates to Google projection
+    select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s'
+    cursor = connection.cursor()
+    cursor.execute(select_stmt, [observation.site_id])
+    site = cursor.fetchone()
+    site_form = SiteForm()
+    observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
+    coords_form = CoordsForm()
+    map_form = MapForm({'zoom_level':'15','centre_X':site[1],'centre_Y':site[2],'edit_site':'true','error':'false'})
+    return render_to_response('monitor/index.html', 
+                              {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
+                              context_instance=RequestContext(request))
+
 

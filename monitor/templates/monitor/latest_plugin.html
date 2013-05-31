@@ -3,7 +3,7 @@
 {% for item in latest %}
 <section>
 <header>
-<h2><a href="/observation/{{ item.gid }}/">{{ item.site__site_name }}</a></h2>
+<h2><a href="/map/observation/{{ item.gid }}/">{{ item.site__site_name }}</a></h2>
 </header>
 <p>
 <label>Date</label>: {{ item.time_stamp|date:"d b Y" }}<br>
