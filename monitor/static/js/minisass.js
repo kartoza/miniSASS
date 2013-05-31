@@ -412,7 +412,7 @@
 
         // Request a list of all sites
         Ext.Ajax.request({
-          url:'sites/-9/-9/-9/',
+          url:'/map/sites/-9/-9/-9/',
           success: function(response,opts){
             var jsonData = Ext.decode(response.responseText);
             if (jsonData){
@@ -468,7 +468,7 @@
           proxy:new Ext.data.HttpProxy({
             method: 'GET',
             prettyUrls: false,
-            url: 'schools',
+            url: '/map/schools',
             }),
           reader: new Ext.data.JsonReader({
             root: 'schools',
@@ -542,7 +542,7 @@
             var jsonData;
             function requestSites(callback){
               Ext.Ajax.request({
-                url:'sites/'+clickCoords.lon+'/'+clickCoords.lat+'/' + searchRadius + '/',
+                url:'/map/sites/'+clickCoords.lon+'/'+clickCoords.lat+'/' + searchRadius + '/',
                 success: function(response,opts){
                   jsonData = Ext.decode(response.responseText);
                   callback.call();
@@ -614,7 +614,7 @@
             infoWindow.show();
             var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
             Ext.Ajax.request({
-              url:'wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
+              url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
                 infoWindow.update(response.responseText);
               },
