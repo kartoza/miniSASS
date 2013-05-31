@@ -999,7 +999,7 @@
         document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
         new Ext.ToolTip({
           target:'id_baseLayersDiv',
-          html:'Onle one base layer can be shown at a time'
+          html:'Only one base layer can be shown at a time'
         });
         document.querySelector('div.dataLayersDiv').id='id_dataLayersDiv';
         new Ext.ToolTip({
