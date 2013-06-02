@@ -28,8 +28,8 @@ $BODY$
      WHEN division_by_zero THEN NEW.score := NULL; RETURN NEW;
   END
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
+  LANGUAGE plpgsql VOLATILE;
+  
 ALTER FUNCTION score_trigger()
   OWNER TO minisass;
 

@@ -6476,8 +6476,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_n.svg"/>
@@ -6508,8 +6507,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_n_dirty.svg"/>
@@ -6540,8 +6538,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_n.svg"/>
@@ -6572,8 +6569,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_n_dirty.svg"/>
@@ -6610,8 +6606,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g.svg"/>
@@ -6648,8 +6643,7 @@
             </ogc:And>
           </ogc:Filter>
               <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g_dirty.svg"/>
@@ -6686,8 +6680,7 @@
             </ogc:And>
           </ogc:Filter>
                      <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g.svg"/>
@@ -6725,8 +6718,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_g_dirty.svg"/>
@@ -6763,8 +6755,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f.svg"/>
@@ -6801,8 +6792,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f_dirty.svg"/>
@@ -6839,8 +6829,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f.svg"/>
@@ -6877,8 +6866,7 @@
             </ogc:And>
           </ogc:Filter>
                      <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_f_dirty.svg"/>
@@ -6915,8 +6903,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p.svg"/>
@@ -6953,8 +6940,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p_dirty.svg"/>
@@ -6992,8 +6978,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p.svg"/>
@@ -7031,8 +7016,7 @@
             </ogc:And>            
           </ogc:Filter>
                      <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_p_dirty.svg"/>
@@ -7063,8 +7047,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm.svg"/>
@@ -7096,8 +7079,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm_dirty.svg"/>
@@ -7129,8 +7111,7 @@
             </ogc:And>
           </ogc:Filter>
                      <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm.svg"/>
@@ -7161,8 +7142,7 @@
             </ogc:And>
           </ogc:Filter>
                     <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
-              <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
-                    <sld:PointSymbolizer>
+                                  <sld:PointSymbolizer>
                         <sld:Graphic>
                             <sld:ExternalGraphic>
                                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm_dirty.svg"/>
