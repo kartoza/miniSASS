@@ -11,7 +11,7 @@
           <se:MaxScaleDenominator>450000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#7F7F7F</se:SvgParameter>
+              <se:SvgParameter name="stroke">#A52A2A</se:SvgParameter>
               <se:SvgParameter name="stroke-width">0.1</se:SvgParameter>
             </se:Stroke>
           </se:PolygonSymbolizer>
@@ -21,26 +21,26 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">12.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>
-                        <se:LabelPlacement>
-                            <se:PointPlacement>
-                                <se:AnchorPoint>
-                                    <se:AnchorPointX>0.0</se:AnchorPointX>
-                                    <se:AnchorPointY>0.0</se:AnchorPointY>
-                                </se:AnchorPoint>
-                                <se:Displacement>
-                                    <se:DisplacementX>0.0</se:DisplacementX>
-                                    <se:DisplacementY>0.0</se:DisplacementY>
-                                </se:Displacement>
-                            </se:PointPlacement>
-                        </se:LabelPlacement>
+                        <se:Geometry>
+                           <ogc:Function name="centroid">
+                           <ogc:PropertyName>geom</ogc:PropertyName>
+                           </ogc:Function>
+                          </se:Geometry>  
+                        <se:Halo>
+                            <se:Radius>2</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
+            
                         <se:Fill>
-                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
+                            <se:SvgParameter name="fill">#A52A2A</se:SvgParameter>
                         </se:Fill>
-                    </se:TextSymbolizer>
+                        </se:TextSymbolizer>
         </se:Rule>
       </se:FeatureTypeStyle>
     </UserStyle>

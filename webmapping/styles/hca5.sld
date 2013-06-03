@@ -12,7 +12,7 @@
           
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
+              <se:SvgParameter name="stroke">#8A2BE2</se:SvgParameter>
               <se:SvgParameter name="stroke-width">0.1</se:SvgParameter>
             </se:Stroke>
           </se:PolygonSymbolizer>
@@ -38,10 +38,17 @@
                                 </se:Displacement>
                             </se:PointPlacement>
                         </se:LabelPlacement>
+                         <se:Halo>
+                            <se:Radius>2</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
+            
                         <se:Fill>
-                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                        </se:Fill>
-                    </se:TextSymbolizer>
+                            <se:SvgParameter name="fill">#8A2BE2</se:SvgParameter>
+                        </se:Fill>   
+                        </se:TextSymbolizer>
         </se:Rule>
       </se:FeatureTypeStyle>
     </UserStyle>

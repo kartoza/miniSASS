@@ -15,13 +15,6 @@
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>   
       <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
-      <se:LineSymbolizer>
-                        <se:Stroke>
-                            <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
-                            <se:SvgParameter name="stroke-width">0.10</se:SvgParameter>
-                            <se:SvgParameter name="stroke-dasharray">4 2</se:SvgParameter>
-                        </se:Stroke>
-                    </se:LineSymbolizer>                    
              <se:TextSymbolizer>
                       
                         <se:Label>
@@ -310,7 +303,7 @@
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
             <se:MinScaleDenominator>100000</se:MinScaleDenominator>
-            <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>      
+            <se:MaxScaleDenominator>10000000</se:MaxScaleDenominator>      
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -330,7 +323,7 @@
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
             <se:MinScaleDenominator>100000</se:MinScaleDenominator>
-            <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>            
+            <se:MaxScaleDenominator>10000000</se:MaxScaleDenominator>            
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -350,7 +343,7 @@
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
           <se:MinScaleDenominator>100000</se:MinScaleDenominator>
-          <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>             
+          <se:MaxScaleDenominator>20000000</se:MaxScaleDenominator>             
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>
@@ -369,7 +362,7 @@
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
            <se:MinScaleDenominator>100000</se:MinScaleDenominator>
-           <se:MaxScaleDenominator>3500000</se:MaxScaleDenominator>     
+           <se:MaxScaleDenominator>10000000</se:MaxScaleDenominator>     
           <se:LineSymbolizer>
                         <se:Stroke>
                             <se:SvgParameter name="stroke">#6998C9</se:SvgParameter>

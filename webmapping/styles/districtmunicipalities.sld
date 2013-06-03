@@ -8,11 +8,20 @@
         <se:Rule>
           <se:Name>District_municipalities</se:Name>
           <se:MinScaleDenominator>600000</se:MinScaleDenominator>
-          <se:MaxScaleDenominator>3000000</se:MaxScaleDenominator>
+           <se:MaxScaleDenominator>3000000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
+              
+              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
+              <se:SvgParameter name="stroke-width">0.86</se:SvgParameter>
+              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+              <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+              <se:SvgParameter name="stroke-dasharray">1 3</se:SvgParameter>
+              
+              
+              
+              
+              
             </se:Stroke>
           </se:PolygonSymbolizer>
            <se:TextSymbolizer>
@@ -22,31 +31,38 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
-                        <se:LabelPlacement>
-                            <se:LinePlacement>
-                                <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
-                            </se:LinePlacement>
-                        </se:LabelPlacement>
+                        
+                          <se:Geometry>
+                           <ogc:Function name="centroid">
+                           <ogc:PropertyName>the_geom</ogc:PropertyName>
+                           </ogc:Function>
+                          </se:Geometry>  
+             
+             
+             
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
                         </se:Fill>
                     </se:TextSymbolizer>
         </se:Rule>
-       <se:Rule>
+           <se:Rule>
           <se:Name>District_municipalities</se:Name>
           <se:MinScaleDenominator>600000</se:MinScaleDenominator>
-          <se:MaxScaleDenominator>3000000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
+              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
+              <se:SvgParameter name="stroke-width">0.86</se:SvgParameter>
+              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+              <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+              <se:SvgParameter name="stroke-dasharray">1 3</se:SvgParameter>
+
             </se:Stroke>
           </se:PolygonSymbolizer>
-          </se:Rule>
+        </se:Rule>            
       </se:FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
