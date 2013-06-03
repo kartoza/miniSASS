@@ -631,6 +631,7 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
+            restrictedExtent:mapExtent,
             eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd},
             controls: [
               new OpenLayers.Control.Navigation(),
@@ -750,9 +751,6 @@
         // Add the info click controller
         infoClick = new OpenLayers.Control.InfoClick();
         map.addControl(infoClick);
-
-        // Set map panning restrictions
-        map.setOptions({restrictedExtent:mapExtent});
     
         // Setup the map panel
         var zoom_level = document.getElementById('id_zoom_level').value;

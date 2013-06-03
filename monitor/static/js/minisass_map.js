@@ -214,6 +214,7 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
+            restrictedExtent:mapExtent,
             eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd},
             controls: [
               new OpenLayers.Control.Navigation(),
@@ -327,9 +328,6 @@
         infoClick = new OpenLayers.Control.InfoClick();
         map.addControl(infoClick);
 
-        // Set map panning restrictions
-        map.setOptions({restrictedExtent:mapExtent});
-
         // Setup the map panel
         var zoom_level = document.getElementById('id_zoom_level').value;
         var centreX = document.getElementById('id_centre_X').value;
@@ -346,7 +344,6 @@
         // Define the layers panel
         var layersPanel = new Ext.Panel({
           title:'Layers',
-id:'id_layerspanel',
           renderTo:'layers',
           collapsible:true,
           collapsed:true,
