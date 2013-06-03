@@ -110,7 +110,7 @@
     <div id="data_window" class="x-hidden">
       <div class="x-window-header">miniSASS Data Input</div>
       <div id="data_panel">
-        <form action="" method="post" id="dataform">{% csrf_token %}
+        <form action="/map/" method="post" id="dataform">{% csrf_token %}
         {% if user.is_authenticated %}
           <table>
             <tr>

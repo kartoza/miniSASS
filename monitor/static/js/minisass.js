@@ -702,8 +702,8 @@
         // Define the provinces layer
         var layerProvinces = new OpenLayers.Layer.WMS(
           'Provinces',
-          geoserverURL,
-          {layers:'miniSASS:provinces',transparent:true,format:'image/png'},
+          geoserverCachedURL,
+          {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
         );
 
