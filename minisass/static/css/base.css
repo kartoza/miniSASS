@@ -9,12 +9,31 @@ body {
     width: 1024px;
     height: auto;
     margin: 0 auto 0 auto;
-    background: white;
+    overflow: hidden;
+    -webkit-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -moz-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.minisass-box {
+    padding: 15px 0;
+    overflow: hidden;
 }
 .minisass-heading {
     width: 100%;
     float: left;
     background: #3168b8;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .minisass-page {
@@ -60,7 +79,6 @@ body {
     float: left;
     width: 100%;
     background: #45a;
-    margin-bottom: 5px;
     border: none;
 }
 
@@ -95,6 +113,12 @@ ul.minisass-menus {
     margin-left: 2px;
     text-align: center;
     background: #adf;
+    -webkit-border-top-left-radius: 9px;
+    -webkit-border-top-right-radius: 9px;
+    -moz-border-radius-topleft: 9px;
+    -moz-border-radius-topright: 9px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
 }
 .minisass-menus li.selected {
     background: #45a;
@@ -107,10 +131,10 @@ ul.minisass-menus {
     color: white;
     text-decoration: none;
 }
-.minisass-menus li.sibling a:visited,
-.minisass-menus li.sibling a:active,
-.minisass-menus li.sibling a:hover, 
-.minisass-menus li.sibling a {
+.minisass-menus li a:visited,
+.minisass-menus li a:active,
+.minisass-menus li a:hover, 
+.minisass-menus li a {
     color: #68d;
     text-decoration: none;
 }
@@ -135,6 +159,13 @@ div.recent-observations {
     background: #adf;
     font-size: small;
     margin-left: 4px;
+    margin-top: 4px;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 .recent-observations section {
     margin: 8px;
@@ -146,6 +177,12 @@ div.recent-observations {
     text-align: center;
     color: white;
     margin: 0 0 0.67em 0;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 .recent-observations h2 a:visited,
 .recent-observations h2 a:active,
@@ -268,6 +305,28 @@ div.minisass-right-column .cmsplugin-blog-include-list section p a {
     text-align: center;
 }
 
+/* right column action links styling */
+div.minisass-right-column address p.plugin_link {
+    background: #45a;
+    margin: 0.7em;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    border-top: 2px solid #abd;
+    border-left: 2px solid #abd;
+    border-right: 2px solid #24d;
+    border-bottom: 2px solid #129;
+}
+
+div.minisass-right-column address p.plugin_link a {
+    display: block;
+    padding: 1em;
+    color: white;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* image plugin styling */
 img.left {
     float: left;
@@ -327,9 +386,17 @@ div.registration_links {
     color: #aab;
     font-size: smaller;
     text-align: center;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 .minisass-bottom-logos img {
     margin: 5px 15px 5px 15px;
+    border: 0;
+    padding: 0;
 }
 
 div.minisass-page-content h1 {
