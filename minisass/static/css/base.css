@@ -4,6 +4,16 @@ body {
     background: #38b;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Coming Soon', serif;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-border-bottom-right-radius: 20px;
+    -moz-border-radius-bottomright: 20px;
+    border-bottom-right-radius: 20px;
+}
+
 /* page layout styles */
 .minisass-container {
     width: 1024px;
@@ -103,6 +113,7 @@ ul.minisass-menus {
     /* width: 623px; */
 }
 .minisass-menus li {
+    font-family: 'Coming Soon', serif;
     width: auto;
     display: block;
     float: left;

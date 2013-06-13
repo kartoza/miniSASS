@@ -2,6 +2,8 @@
 <!doctype html>
 <html>
   <head>
+    {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
