@@ -214,12 +214,12 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
-            restrictedExtent:mapExtent,
+//            restrictedExtent:mapExtent,
             eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd},
-            controls: [
-              new OpenLayers.Control.Navigation(),
-              new OpenLayers.Control.ZoomPanel()
-            ]
+//            controls: [
+//              new OpenLayers.Control.Navigation(),
+//              new OpenLayers.Control.ZoomPanel()
+//            ]
           }
         );
 
@@ -431,5 +431,3 @@
         });
 
   });
-
-
