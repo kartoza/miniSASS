@@ -26,14 +26,16 @@
       */
         if (userFunction != 'infoclick') {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
-          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
+          var mapViewPort = document.getElementsByClassName('olMapViewport');
+          mapViewPort[0].style.cursor = 'url(/static/img/info.cur),crosshair';
           var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
           messagePanel.update(msg);
           userFunction = 'infoclick';
           infoClick.activate();
         } else {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
-          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'auto';
+          var mapViewPort = document.getElementsByClassName('olMapViewport');
+          mapViewPort[0].style.cursor = 'auto';
           var msg = navMsg;
           messagePanel.update(msg);
           userFunction = 'none';
