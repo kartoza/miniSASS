@@ -6,12 +6,12 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Coming Soon', serif;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-border-bottom-right-radius: 20px;
-    -moz-border-radius-bottomright: 20px;
-    border-bottom-right-radius: 20px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px;
 }
 
 /* page layout styles */
@@ -37,7 +37,8 @@ h1, h2, h3, h4, h5, h6 {
 .minisass-heading {
     width: 100%;
     float: left;
-    background: #3168b8;
+    background: white;
+    /* background: #eef; */
     -webkit-border-top-left-radius: 10px;
     -webkit-border-top-right-radius: 10px;
     -moz-border-radius-topleft: 10px;
@@ -76,13 +77,14 @@ h1, h2, h3, h4, h5, h6 {
 .minisass-heading img {
     float: left;
     border: 0;
-    margin: 0;
+    margin: 17px 10px 0 7px;
     padding: 0;
 }
 .minisass-heading-space {
     float: left;
-    height: 123px;
-    width: 400px;
+    height: 127px;
+    width: 485px;
+    margin: 0 0 0 10px;
 }
 .red-line {
     height: 2px;
@@ -107,7 +109,7 @@ ul.minisass-menus {
     float: left;
     font-size: 0.9em;
     font-weight: bold;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 15px;
     border: 0;
     padding: 0px;
     /* width: 623px; */
@@ -118,9 +120,9 @@ ul.minisass-menus {
     display: block;
     float: left;
     padding: 3px 8px 3px 8px;
-    border-left: 2px solid white;
-    border-top: 2px solid white;
-    border-right: 2px solid white;
+    border-left: 2px solid #68d;
+    border-top: 2px solid #68d;
+    border-right: 2px solid #68d;
     margin-left: 2px;
     text-align: center;
     background: #adf;
@@ -132,7 +134,7 @@ ul.minisass-menus {
     border-top-right-radius: 9px;
 }
 .minisass-menus li.selected {
-    background: #45a;
+    background: #3168b8;
     color: white;
 }
 .minisass-menus li.selected a:visited,
@@ -146,7 +148,7 @@ ul.minisass-menus {
 .minisass-menus li a:active,
 .minisass-menus li a:hover, 
 .minisass-menus li a {
-    color: #68d;
+    color: #3168b8;
     text-decoration: none;
 }
 .minisass-menus li.selected a:active,
@@ -183,7 +185,7 @@ div.recent-observations {
 }
 .recent-observations h1 {
     font-size: 1.1em;
-    background-color: #45a;
+    background-color: #3168b8;
     padding: 4px;
     text-align: center;
     color: white;
@@ -355,19 +357,19 @@ span.title {
 
 div.registration_links {
     float: right;
-    /* width: 623px; */
+    max-width: 120px; */
+    color: #3168b8;
 }
 .registration_links a:hover,
 .registration_links a:visited,
 .registration_links a:active,
 .registration_links a {
-    color: white;
+    color: #3168b8;
 }
 .registration_links p{
     float: right;
     margin: 5px 15px 0 0;
     font-size: smaller;
-    color: white;
 }
 
 /* bottom links */
@@ -414,4 +416,8 @@ div.minisass-page-content h1 {
     background-color: #68d;
     color: white;
     text-align: center;
+}
+
+div.minisass-page-content p {
+    margin: 0.5em 1em;
 }
