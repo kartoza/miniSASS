@@ -82,6 +82,10 @@
       </div>
       {% endblock %}
       <div class="minisass-bottom-logos">
+          {% placeholder "sponsor_links" or %}
+            {% show_placeholder "sponsor_links" "footer_stuff" %}
+          {% endplaceholder %}
+          {% comment %}
           <a href="http://www.dwa.gov.za/" target="_blank">
             <img src="{{ STATIC_URL }}images/dwa.png" 
                  alt="Department of Water Affairs" 
@@ -94,6 +98,7 @@
             <img src="{{ STATIC_URL }}images/groundtruth.png" 
                  alt="GroundTruth" 
                  title="GroundTruth" /></a>
+          {% endcomment %}
       </div>
 
     </div></div>
