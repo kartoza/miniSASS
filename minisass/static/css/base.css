@@ -104,62 +104,6 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
 }
 
-/* top page menu styling */
-ul.minisass-menus {
-    float: left;
-    font-size: 0.9em;
-    font-weight: bold;
-    margin: 0 0 0 15px;
-    border: 0;
-    padding: 0px;
-    /* width: 623px; */
-}
-.minisass-menus li {
-    font-family: 'Coming Soon', serif;
-    width: auto;
-    display: block;
-    float: left;
-    padding: 3px 8px 3px 8px;
-    border-left: 2px solid #68d;
-    border-top: 2px solid #68d;
-    border-right: 2px solid #68d;
-    margin-left: 2px;
-    text-align: center;
-    background: #adf;
-    -webkit-border-top-left-radius: 9px;
-    -webkit-border-top-right-radius: 9px;
-    -moz-border-radius-topleft: 9px;
-    -moz-border-radius-topright: 9px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-}
-.minisass-menus li.selected {
-    background: #3168b8;
-    color: white;
-}
-.minisass-menus li.selected a:visited,
-.minisass-menus li.selected a:active,
-.minisass-menus li.selected a:hover, 
-.minisass-menus li.selected a {
-    color: white;
-    text-decoration: none;
-}
-.minisass-menus li a:visited,
-.minisass-menus li a:active,
-.minisass-menus li a:hover, 
-.minisass-menus li a {
-    color: #3168b8;
-    text-decoration: none;
-}
-.minisass-menus li.selected a:active,
-.minisass-menus li.selected a:hover {
-    text-decoration: underline;
-}
-.minisass-menus li.sibling a:active,
-.minisass-menus li.sibling a:hover {
-    text-decoration: underline;
-}
-
 /* map page styling */
 .minisass-map-content {
     width: 100%;
