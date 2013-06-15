@@ -87,10 +87,10 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 0 10px;
 }
 .red-line {
-    height: 2px;
+    height: 12px;
     float: left;
     width: 100%;
-    background: #45a;
+    background: #3168b8;
     border: none;
 }
 

@@ -15,7 +15,6 @@ ul.minisass-menus {
     width: auto;
     /* display: block; */
     float: left;
-    padding: 3px 8px 3px 8px;
     border-left: 2px solid #68d;
     border-top: 2px solid #68d;
     border-right: 2px solid #68d;
@@ -32,6 +31,7 @@ ul.minisass-menus {
 .minisass-menus li a {
     display: block;
     text-decoration: none;
+    padding: 3px 8px 3px 8px;
 }
 
 .minisass-menus li.selected {
@@ -55,10 +55,12 @@ ul.minisass-menus {
 .minisass-menus li.selected a:active,
 .minisass-menus li.selected a:hover {
     text-decoration: underline;
+    background: #eef;
 }
 .minisass-menus li.sibling a:active,
 .minisass-menus li.sibling a:hover {
     text-decoration: underline;
+    background: #eef;
 }
 
 .minisass-menus li ul {
@@ -81,3 +83,8 @@ ul.minisass-menus {
     margin: 0;
     width: 130px;
 }
+/* 
+.minisass-menu li ul li a:hover {
+    background: #eef;
+}
+*/
