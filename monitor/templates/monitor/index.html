@@ -5,16 +5,9 @@
 
 {% block "minisass_css" %}
 {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
-{% addtoblock "css" %}
-<style type="text/css" media="screen">
-.minisass-menus li ul {
-    z-index: 1000;
-}
-</style>
 {% addtoblock "css" %}<link href="{{ STATIC_URL }}js/ext-3.4.0/resources/css/ext-all.css" rel="stylesheet"/>{% endaddtoblock %}
 {% addtoblock "css" %}<link href="{{ STATIC_URL }}js/GeoExt/resources/css/geoext-all-debug.css" rel="stylesheet"/>{% endaddtoblock %}
 {% addtoblock "css" %}<link href="{{ STATIC_URL }}css/monitor_stylesheet.css" rel="stylesheet"/>{% endaddtoblock %}
-{% endaddtoblock %}
 {% endblock %}
 
 {% block "minisass_js" %}

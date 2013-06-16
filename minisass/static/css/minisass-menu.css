@@ -70,6 +70,7 @@ ul.minisass-menus {
     visibility: hidden;
     list-style-type: none;
     padding: 0;
+    z-index: 1000;
 }
 
 .minisass-menus li ul li {
@@ -83,7 +84,7 @@ ul.minisass-menus {
     margin: 0;
     width: 130px;
 }
-/* 
+/*
 .minisass-menu li ul li a:hover {
     background: #eef;
 }

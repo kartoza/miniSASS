@@ -10,7 +10,7 @@
     {% endblock %}
     {% render_block "css" %}
 
-    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
     {% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
     {% block "minisass_js" %}
     {% endblock %}
@@ -89,6 +89,8 @@
           {% placeholder "sponsor_links" or %}
             {% show_placeholder "sponsor_links" "footer_stuff" %}
           {% endplaceholder %}
+      </div>
+
           {% comment %}
           <a href="http://www.dwa.gov.za/" target="_blank">
             <img src="{{ STATIC_URL }}images/dwa.png" 
@@ -103,7 +105,6 @@
                  alt="GroundTruth" 
                  title="GroundTruth" /></a>
           {% endcomment %}
-      </div>
 
     </div></div>
 
