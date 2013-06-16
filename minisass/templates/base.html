@@ -4,11 +4,14 @@
   <head>
     {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
     {% addtoblock "css" %}<link href="{{STATIC_URL}}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
     {% render_block "css" %}
 
+    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
     {% block "minisass_js" %}
     {% endblock %}
     {% render_block "js" %}
@@ -41,11 +44,13 @@
           </p>
         </div>
         <div class="minisass-heading-space">
+            {% placeholder "logo_content" %}
         </div>
-        <ul class="minisass-menus">
-          {% show_menu 0 0 %}
-        </ul>
-      </div>
+        <div id="myslidemenu" class="jqueryslidemenu">
+          <ul class="minisass-menus">
+            {% show_menu 0 100 100 100 %}
+          </ul>
+        </div>
 
       <div class="red-line">
       </div>
@@ -81,6 +86,12 @@
       </div>
       {% endblock %}
       <div class="minisass-bottom-logos">
+          {% placeholder "sponsor_links" or %}
+            {% show_placeholder "sponsor_links" "footer_stuff" %}
+          {% endplaceholder %}
+      </div>
+
+          {% comment %}
           <a href="http://www.dwa.gov.za/" target="_blank">
             <img src="{{ STATIC_URL }}images/dwa.png" 
                  alt="Department of Water Affairs" 
@@ -93,7 +104,7 @@
             <img src="{{ STATIC_URL }}images/groundtruth.png" 
                  alt="GroundTruth" 
                  title="GroundTruth" /></a>
-      </div>
+          {% endcomment %}
 
     </div></div>
 

@@ -1,0 +1,91 @@
+/* top page menu styling */
+ul.minisass-menus {
+    float: left;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin: 0 0 0 15px;
+    border: 0;
+    padding: 0px;
+    list-style-type: none;
+}
+.minisass-menus li {
+    position: relative;
+    display: inline;
+    font-family: 'Coming Soon', serif;
+    width: auto;
+    /* display: block; */
+    float: left;
+    border-left: 2px solid #68d;
+    border-top: 2px solid #68d;
+    border-right: 2px solid #68d;
+    margin-left: 2px;
+    text-align: center;
+    background: #adf;
+    -webkit-border-top-left-radius: 9px;
+    -webkit-border-top-right-radius: 9px;
+    -moz-border-radius-topleft: 9px;
+    -moz-border-radius-topright: 9px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+.minisass-menus li a {
+    display: block;
+    text-decoration: none;
+    padding: 3px 8px 3px 8px;
+}
+
+.minisass-menus li.selected {
+    background: #3168b8;
+    color: white;
+}
+.minisass-menus li.selected a:visited,
+.minisass-menus li.selected a:active,
+.minisass-menus li.selected a:hover, 
+.minisass-menus li.selected a {
+    color: white;
+    text-decoration: none;
+}
+.minisass-menus li a:visited,
+.minisass-menus li a:active,
+.minisass-menus li a:hover, 
+.minisass-menus li a {
+    color: #3168b8;
+    text-decoration: none;
+}
+.minisass-menus li.selected a:active,
+.minisass-menus li.selected a:hover {
+    text-decoration: underline;
+    background: #eef;
+}
+.minisass-menus li.sibling a:active,
+.minisass-menus li.sibling a:hover {
+    text-decoration: underline;
+    background: #eef;
+}
+
+.minisass-menus li ul {
+    position: absolute;
+    left: 0;
+    display: block;
+    visibility: hidden;
+    list-style-type: none;
+    padding: 0;
+    z-index: 1000;
+}
+
+.minisass-menus li ul li {
+    display: list-item;
+    float: none;
+    text-align: left;
+    -webkit-border-left-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: 0;
+    margin: 0;
+    width: 130px;
+}
+/*
+.minisass-menu li ul li a:hover {
+    background: #eef;
+}
+*/

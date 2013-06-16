@@ -64,7 +64,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, '..', 'static')
+# STATIC_ROOT = os.path.join(PROJECT_PATH, '..', 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -120,7 +120,6 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
-    'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware',
 )
 
 ROOT_URLCONF = 'minisass.urls'
@@ -142,7 +141,7 @@ ADMIN_LANGUAGE_CODE = 'en'
 
 # Django CMS configuration settings
 # CMS_LANGUAGES = {
-#         '1': [
+#         1: [
 #             {
 #                 'code': 'en',
 #                 'name': gettext('English'),
@@ -264,6 +263,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # email settings
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = 'info@test.minisass.org'
 
 # django registration/auth settings
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -297,14 +297,12 @@ INSTALLED_APPS = (
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_video',
     'cms.plugins.twitter',
+    'cmsplugin_blog',
     'cmsplugin_contact',
     'djangocms_utils',
     'simple_translation',
     'tagging',
-    # 'missing',
     'reversion',
-    'cmsplugin_blog',
-    # 'cmsplugin_htmlsitemap',
     'monitor',
 )
 
