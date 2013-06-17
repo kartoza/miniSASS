@@ -12,13 +12,17 @@
   text-align:center;
 }
 
+#data_panel td, th {
+  padding:1px;
+}
+
 #data_table_left {
-  margin:10px;
+  margin:5px;
   text-align:left;
 }
 
 #data_table_right {
-  margin:10px;
+  margin:5px;
 }
 
 #data_table_right .tdtotal {
@@ -46,8 +50,7 @@
   font-size: 0.7em;
 }
 
-#layerswitcher .baseLbl,
-#layerswitcher .dataLbl{
+#layerswitcher .baseLbl, .dataLbl{
   margin-top: 3px;
   margin-left: 3px;
   margin-bottom: 3px;
