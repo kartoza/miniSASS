@@ -366,5 +366,5 @@ div.minisass-page-content p {
     margin: 0.5em 1em;
 }
 div.cmsplugin_filer_folder_slidshow {
-    height: 440px;
+    height: 235px !important;
 }

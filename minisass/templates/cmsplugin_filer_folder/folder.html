@@ -50,7 +50,7 @@ jQuery(document).ready(function ($) {
     <!-- start: slideshow -->
     <div class="cmsplugin_filer_folder_slidshow" id="folder_{{ object.id }}">
         {% for image in folder_images %}
-            <img src="{% thumbnail image.file 750x400 crop="True" upscale="True" %}">
+            <img src="{% thumbnail image.file 750x200 crop="True" upscale="True" %}">
         {% endfor %}
     </div>
     <!-- end: gallery -->
