@@ -7,13 +7,25 @@
   float:left;
 }
 
+#zoompanel img {
+  margin:0px;
+}
+
 #input_buttons {
-  margin:5px;
-  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#input_buttons img {
+  margin:2px;
 }
 
 #data_panel td, th {
   padding:1px;
+}
+
+#data_panel img {
+  margin:0px;
 }
 
 #data_table_left {
@@ -51,21 +63,25 @@
 }
 
 #layerswitcher .baseLbl, .dataLbl{
-  margin-top: 3px;
-  margin-left: 3px;
-  margin-bottom: 3px;
+  margin-top:3px;
+  margin-left:3px;
+  margin-bottom:3px;
   font-weight:bold;
 }
 
 #legend_table {
   font-family:Verdana,Arial,sans-serif;
-  font-size: 1em;
+  font-size:1em;
   color:black;
   font-weight:normal;
 }
 
 #legend_table .legend_header {
   font-weight:bold;
+}
+
+#legend_table img {
+  margin:2px;
 }
 
 #map .olControlZoomPanel {

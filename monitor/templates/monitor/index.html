@@ -83,15 +83,26 @@
       </div> <!--legend-->
       <div id="zoompanel"></div> <!--zoompanel-->
       <div id="input_obs">
-        <div id="input_buttons">
-          <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/>
-        {% if user.is_authenticated %}
-          <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/>
-          <br />
-          <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/>
-          <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/>
-        {% endif %}
-        </div> <!--input_buttons-->
+        <table id="input_buttons">
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/>
+            </td>
+            {% if user.is_authenticated %}
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/>
+            </td>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/>
+            </td>
+            {% endif %}
+          </tr>
+        </table> <!--input_buttons-->
       </div> <!--input_obs-->
       <div id="messages"></div> <!--messages-->
         {% if site_form.errors %}
