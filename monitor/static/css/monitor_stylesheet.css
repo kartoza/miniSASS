@@ -2,6 +2,10 @@
   float:left;
 }
 
+#map img {
+  margin:0px;
+}
+
 #sidepanel {
   clear:both;
   float:left;
