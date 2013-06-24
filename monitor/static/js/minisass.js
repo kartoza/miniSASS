@@ -1,7 +1,7 @@
       var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
-      var localhost = true;
+      var localhost = false;
       var geoserverURL;
       var geoserverCachedURL;
       var map;
