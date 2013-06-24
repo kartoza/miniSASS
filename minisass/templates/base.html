@@ -37,7 +37,11 @@
           <a href="{% url auth_logout %}">Logout</a> |
           <a href="{% url auth_password_change %}">Change Password</a>
           {% else %}
-          <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
+            {% if "/map/" in request.path %}
+              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
+            {% else %}
+              <a href="{% url auth_login %}">Login</a> |
+            {% endif %}
           <a href="{% url registration_register %}">Register</a><br />
           <a href="{% url auth_password_reset %}">Reset Password</a>
           {% endif %}
