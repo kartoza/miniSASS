@@ -91,8 +91,8 @@ def get_sites(request, x, y, d):
     """ Request all sites within distance (d) of x;y. Use a distance of -9
         to request all sites.
     """
-    select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, site_name, description, river_cat FROM sites'
-    order_clause = ' ORDER BY site_name ASC'
+    select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, river_name, site_name, description, river_cat, date(time_stamp) AS time_stamp FROM sites'
+    order_clause = ' ORDER BY river_name, site_name, time_stamp ASC'
     if (d == '-9'):
         where_clause = ''
     else:
@@ -116,7 +116,8 @@ def get_schools(request):
                               context_instance=RequestContext(request))
 
 def zoom_observation(request, obs_id):
-    """ Zoom to a miniSASS observation
+    """ Zoom to a miniSASS observation - Find the coordinates for an observation obs_id, convert them
+        to Google projection coordinates and then return a map_form containing these coordinates
     """
 
     observation = Observations.objects.get(pk=obs_id)

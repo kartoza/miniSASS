@@ -37,17 +37,37 @@
   text-align:left;
 }
 
+#data_table_left .section_header {
+  text-align:left;
+  font-weight:bold;
+}
+
+#data_table_left textarea {
+  width:170px;
+}
+
+#id_site_name, #id_river_name {
+  width:80px;
+}
+
+#id_latitude, #id_longitude {
+  width:70px;
+}
+
+#id_lat_d, #id_lat_m, #id_lat_s, #id_lon_d, #id_lon_m, #id_lon_s {
+  width:40px;
+}
+
+#id_obs_date {
+  width:100px;
+}
+
 #data_table_right {
   margin:5px;
 }
 
 #data_table_right .tdtotal {
   text-align:center;
-  font-weight:bold;
-}
-
-#data_table_left .section_header {
-  text-align:left;
   font-weight:bold;
 }
 

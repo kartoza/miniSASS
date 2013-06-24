@@ -187,8 +187,8 @@
          when the data input form is submitted.
       */
 
-        if (document.getElementById('id_obs_date').value == '') {
-          Ext.Msg.alert('Date Error', 'Please enter a valid date');
+        if (document.getElementById('id_river_name').value == '') {
+          Ext.Msg.alert('River Name Error', 'Please enter a river name');
           return false;
         } else if (document.getElementById('id_site_name').value == '') {
           Ext.Msg.alert('Site Name Error', 'Please enter a site name');
@@ -196,6 +196,9 @@
         } else if (document.getElementById('id_river_cat').selectedIndex == 0) {
           Ext.Msg.alert('River Category and Groups error',
                         'Please select a river category and indicate<br />which insect groups you found');
+          return false;
+        } else if (document.getElementById('id_obs_date').value == '') {
+          Ext.Msg.alert('Date Error', 'Please enter a valid date');
           return false;
         } else { // All the required fields are present
           if (document.getElementById('id_edit_site').value == 'true'){
@@ -325,6 +328,7 @@
       }
 
       function disableSiteEdit(disable){
+        document.getElementById('id_river_name').disabled = disable;
         document.getElementById('id_site_name').disabled = disable;
         document.getElementById('id_description').disabled = disable;
         document.getElementById('id_river_cat').disabled = disable;
@@ -346,6 +350,7 @@
           var siteRecord = store.getAt(store.find('site_gid',selectedSite));
 
           // Add the site data to the Data Input form
+          document.getElementById('id_river_name').value = siteRecord.get('river_name');
           document.getElementById('id_site_name').value = siteRecord.get('site_name');
           document.getElementById('id_description').value = siteRecord.get('description');
           if (siteRecord.get('river_cat') == 'rocky'){
@@ -411,7 +416,7 @@
 
         // Define a store for holding data for sites
         storeSites = new Ext.data.ArrayStore({
-          fields:['site_gid','site_name','description','river_cat','longitude','latitude']
+          fields:['site_gid','river_name','site_name','combo_name','description','river_cat','longitude','latitude']
         });
 
         // Request a list of all sites
@@ -423,7 +428,9 @@
               for (var i=0; i<jsonData.features.length; i++){
                 storeSites.add(new storeSites.recordType({
                   'site_gid':jsonData.features[i].properties.gid,
+                  'river_name':jsonData.features[i].properties.river_name,
                   'site_name':jsonData.features[i].properties.site_name,
+                  'combo_name':jsonData.features[i].properties.combo_name,
                   'description':jsonData.features[i].properties.description,
                   'river_cat':jsonData.features[i].properties.river_cat,
                   'longitude':jsonData.features[i].geometry.coordinates[0],
@@ -440,7 +447,9 @@
         // Setup up a combo box for displaying a list of all sites
         comboSites = new Ext.form.ComboBox({
           store:storeSites,
-          displayField:'site_name',
+          width:220,
+          listWidth:255,
+          displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
           mode:'local',
@@ -450,7 +459,8 @@
         // Setup up a combo box for zooming to sites
         comboZoomSites = new Ext.form.ComboBox({
           store:storeSites,
-          displayField:'site_name',
+          listWidth:255,
+          displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
           mode:'local',
@@ -463,7 +473,7 @@
             );
             map.setCenter(xyCoords.transform(proj4326, proj3857),15);
             this.collapse();
-            this.setValue(record.get('site_name'));
+            this.setValue(record.get('combo_name'));
           }
         });
 
@@ -502,13 +512,13 @@
 
         // Define a store for holding data for nearby sites
         storeNearbySites = new Ext.data.ArrayStore({
-          fields:['site_gid','site_name','description','river_cat','longitude','latitude']
+          fields:['site_gid','river_name','site_name','combo_name','description','river_cat','longitude','latitude']
         });
 
         // Setup up a combo box for displaying a list of nearby sites
         comboNearbySites = new Ext.form.ComboBox({
           store:storeNearbySites,
-          displayField:'site_name',
+          displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
           mode:'local',
@@ -565,7 +575,9 @@
                 for (var i=0; i<jsonData.features.length; i++){
                   storeNearbySites.add(new storeNearbySites.recordType({
                     'site_gid':jsonData.features[i].properties.gid,
+                    'river_name':jsonData.features[i].properties.river_name,
                     'site_name':jsonData.features[i].properties.site_name,
+                    'combo_name':jsonData.features[i].properties.combo_name,
                     'description':jsonData.features[i].properties.description,
                     'river_cat':jsonData.features[i].properties.river_cat,
                     'longitude':jsonData.features[i].geometry.coordinates[0],
@@ -801,12 +813,14 @@
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSchools
+              items:comboZoomSchools,
+              html:'Start typing the name of the school you would like to zoom to.'
             }),
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSites
+              items:comboZoomSites,
+              html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
             })
           ]
         });
@@ -831,8 +845,8 @@
         // Define the popup Data Input window
         inputWindow = new Ext.Window({
           applyTo:'data_window',
-          width:610,
-          height:430,
+          width:570,
+          height:470,
           closeAction:'hide',
           modal:true,
           items: new Ext.Panel({
@@ -886,7 +900,7 @@
         // Define the popup Site Selection window
         siteWindow = new Ext.Window({
           title:'Existing observation sites',
-          width:300,
+          width:280,
           height:200,
           closeAction:'hide',
           modal:true,
@@ -894,7 +908,8 @@
           items: new Ext.Panel({
             border:false,
             bodyStyle:'padding:5px;background:#dfe8f6;',
-            items:comboSites
+            items:comboSites,
+            html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
           }),
           buttons: [{
             text:'Use selected site',

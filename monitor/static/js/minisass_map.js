@@ -83,7 +83,7 @@
 
         // Define a store for holding data for sites
         storeSites = new Ext.data.ArrayStore({
-          fields:['site_gid','site_name','description','river_cat','longitude','latitude']
+          fields:['site_gid','river_name','site_name','combo_name','description','river_cat','longitude','latitude']
         });
 
         // Request a list of all sites
@@ -95,7 +95,9 @@
               for (var i=0; i<jsonData.features.length; i++){
                 storeSites.add(new storeSites.recordType({
                   'site_gid':jsonData.features[i].properties.gid,
+                  'river_name':jsonData.features[i].properties.river_name,
                   'site_name':jsonData.features[i].properties.site_name,
+                  'combo_name':jsonData.features[i].properties.combo_name,
                   'description':jsonData.features[i].properties.description,
                   'river_cat':jsonData.features[i].properties.river_cat,
                   'longitude':jsonData.features[i].geometry.coordinates[0],
@@ -109,20 +111,11 @@
           }
         });
 
-        // Setup up a combo box for displaying a list of all sites
-        comboSites = new Ext.form.ComboBox({
-          store:storeSites,
-          displayField:'site_name',
-          valueField:'site_gid',
-          typeAhead:true,
-          mode:'local',
-          emptyText:'Select a site...',
-        });
-
         // Setup up a combo box for zooming to sites
         comboZoomSites = new Ext.form.ComboBox({
           store:storeSites,
-          displayField:'site_name',
+          listWidth:255,
+          displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
           mode:'local',
@@ -375,12 +368,14 @@
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSchools
+              items:comboZoomSchools,
+              html:'Start typing the name of the school you would like to zoom to.'
             }),
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSites
+              items:comboZoomSites,
+              html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
             })
           ]
         });
