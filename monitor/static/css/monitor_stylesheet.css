@@ -46,6 +46,11 @@
   font-weight:bold;
 }
 
+#data_table_left .section_header {
+  text-align:left;
+  font-weight:bold;
+}
+
 #data_table_right th {
   text-align:center;
   font-weight:bold;

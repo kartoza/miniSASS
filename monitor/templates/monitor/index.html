@@ -131,8 +131,7 @@
             <tr>
               <td>
                 <table id="data_table_left">
-                  <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
-                  <tr><td>Collector&apos;s name:</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
+                  <td class="section_header" colspan="2">Site Details</td>
                   <tr><td><label for="id_site_name">Site/River name:</label></td><td>{{ site_form.site_name }}</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude (S):</label></td>
@@ -158,12 +157,15 @@
                       <input type="radio" name="coord_format" id="DMS" value="DMS" onclick="coords('DMS');"/>Degrees/Minutes/Seconds
                     </td>
                   </tr>
-                  <tr><td><label for="id_comment">Comments/notes:</label></td><td>{{ observation_form.comment }}</td></tr>
                   <tr><td><label for="id_river_cat">River category:</label></td>
                     <td>
                       {{ site_form.river_cat }}
                     </td>
                   </tr>
+                  <td class="section_header" colspan="2"><br />Observation Details</td>
+                  <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
+                  <tr><td>Collector&apos;s name:</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
+                  <tr><td><label for="id_comment">Comments/notes:</label></td><td>{{ observation_form.comment }}</td></tr>
                 </table>
               </td>
               <td>
