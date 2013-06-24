@@ -1,7 +1,7 @@
       var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
-      var localhost = false;
+      var localhost = true;
       var geoserverURL;
       var geoserverCachedURL;
       var map;
@@ -44,23 +44,19 @@
          Assumption: It is assumed that coordinates are in southern Africa so
                      latitudes are negative and longitudes are positive.
       */
-        var DD;
         var D = parseInt(document.getElementById('id_'+latOrLon+'_d').value);
         var M = parseInt(document.getElementById('id_'+latOrLon+'_m').value);
         var S = parseFloat(document.getElementById('id_'+latOrLon+'_s').value);
-        if (D != NaN) {
-          DD = D;
-          if (DD < 0) {DD = -1 * DD}
-          if ((M != NaN) && (M >= 0) && (M <= 60)) {
-            DD = DD + M/60;
-            if ((S != NaN) && (S >= 0) && (S <= 60)) {
-              DD = DD + S/3600;
-              if ((latOrLon.toUpperCase()=='S') || (latOrLon.toUpperCase()=='W')) {
-                if (DD > 0) {DD = -1 * DD};
-              }
-            }
-          }
-        } else DD = '';
+        if (!D) D = 0;
+        if (!M) M = 0;
+        if (!S) S = 0;
+        DD = D;
+        if (DD < 0) DD = -1 * DD;
+        if ((M >= 0) && (M <= 60)) DD = DD + M/60;
+        if ((S >= 0) && (S <= 60)) DD = DD + S/3600;
+        if (latOrLon=='lat') {
+          if (DD > 0) DD = -1 * DD;
+        }
         return DD;
       }
 
@@ -192,6 +188,21 @@
           return false;
         } else if (document.getElementById('id_site_name').value == '') {
           Ext.Msg.alert('Site Name Error', 'Please enter a site name');
+          return false;
+        } else if (document.getElementById('id_description').value == '') {
+          Ext.Msg.alert('Site Description Error', 'Please enter a site description');
+          return false;
+        } else if ((DMS.checked==true) && (convertDMStoDD('lat') == 0)) {
+          Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
+          return false;
+        } else if ((DMS.checked==true) && (convertDMStoDD('lon') == 0)) {
+          Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
+          return false;
+        } else if (!parseFloat(document.getElementById('id_latitude').value)) {
+          Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
+          return false;
+        } else if (!parseFloat(document.getElementById('id_longitude').value)) {
+          Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
           return false;
         } else if (document.getElementById('id_river_cat').selectedIndex == 0) {
           Ext.Msg.alert('River Category and Groups error',
