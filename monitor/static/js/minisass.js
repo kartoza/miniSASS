@@ -22,6 +22,8 @@
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
       var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
+      var editSite = 'true';      // Keep track of whether site data can be edited or not
+      var editCoords = 'true';    // Keep track of whether coordinates can be edited or not
       var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
                  + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
                  + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
@@ -170,12 +172,9 @@
 
         }
 
-        // Enable/disable site editing as necessary
-        if (document.getElementById('id_edit_site').value == 'true'){
-          disableSiteEdit(false);
-        } else {
-          disableSiteEdit(true);
-        }
+        // Enable/disable site and coordinate editing as necessary
+        enableEditSite(editSite);
+        enableEditCoords(editCoords);
       }
 
       function canSubmit(){
@@ -212,7 +211,7 @@
           Ext.Msg.alert('Date Error', 'Please enter a valid date');
           return false;
         } else { // All the required fields are present
-          if (document.getElementById('id_edit_site').value == 'true'){
+          if ((editSite == 'true') || (editCoords == 'true')) {
             // convert coordinates to DD if they've been entered as DMS
             if (DMS.checked==true) {
               document.getElementById('id_latitude').value = convertDMStoDD('lat');
@@ -227,9 +226,8 @@
               document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
             }
 
-          } else {
-            disableSiteEdit(false);
-          }
+          };
+          enableEditSite('true');
 
           // update the geometry field
           var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
@@ -239,16 +237,20 @@
           document.getElementById('id_flag').value = 'dirty';
  
           // update the map variables
-          document.getElementById('id_zoom_level').value = map.getZoom();
-          document.getElementById('id_centre_X').value = map.getCenter().lon;
-          document.getElementById('id_centre_Y').value = map.getCenter().lat;
+          var mapCenter = new OpenLayers.LonLat(
+            document.getElementById('id_longitude').value,
+            document.getElementById('id_latitude').value
+          );
+          mapCenter.transform(proj4326, proj3857);
+          document.getElementById('id_zoom_level').value = 15;
+          document.getElementById('id_centre_X').value = mapCenter.lon;
+          document.getElementById('id_centre_Y').value = mapCenter.lat;
           var layerStr = '';
           for (var i=0; i < map.getNumLayers(); i++) {
             if (i>0) layerStr += ',';
             layerStr += map.layers[i].visibility;
           }
           document.getElementById('id_layers').value = layerStr;
-
           return true;
         }
       }
@@ -330,7 +332,9 @@
         updateInputForm('');
 
         // Enable the controls for site input variables
-        disableSiteEdit(false)
+        editSite = 'true';
+        editCoords = 'true';
+        enableEditSite(editSite)
         document.getElementById('id_edit_site').value = 'true';
 
         // Erase the observation link to the site id
@@ -338,19 +342,34 @@
 
       }
 
-      function disableSiteEdit(disable){
-        document.getElementById('id_river_name').disabled = disable;
-        document.getElementById('id_site_name').disabled = disable;
-        document.getElementById('id_description').disabled = disable;
-        document.getElementById('id_river_cat').disabled = disable;
-        document.getElementById('id_latitude').disabled = disable;
-        document.getElementById('id_lat_d').disabled = disable;
-        document.getElementById('id_lat_m').disabled = disable;
-        document.getElementById('id_lat_s').disabled = disable;
-        document.getElementById('id_longitude').disabled = disable;
-        document.getElementById('id_lon_d').disabled = disable;
-        document.getElementById('id_lon_m').disabled = disable;
-        document.getElementById('id_lon_s').disabled = disable;
+      function enableEditSite(enable){
+        var disabled = false;
+        if (enable == 'false') disabled = true;
+        document.getElementById('id_river_name').disabled = disabled;
+        document.getElementById('id_site_name').disabled = disabled;
+        document.getElementById('id_description').disabled = disabled;
+        document.getElementById('id_river_cat').disabled = disabled;
+        document.getElementById('id_latitude').disabled = disabled;
+        document.getElementById('id_lat_d').disabled = disabled;
+        document.getElementById('id_lat_m').disabled = disabled;
+        document.getElementById('id_lat_s').disabled = disabled;
+        document.getElementById('id_longitude').disabled = disabled;
+        document.getElementById('id_lon_d').disabled = disabled;
+        document.getElementById('id_lon_m').disabled = disabled;
+        document.getElementById('id_lon_s').disabled = disabled;
+      }
+
+      function enableEditCoords(enable){
+        var disabled = false;
+        if (enable == 'false') disabled = true;
+        document.getElementById('id_latitude').disabled = disabled;
+        document.getElementById('id_lat_d').disabled = disabled;
+        document.getElementById('id_lat_m').disabled = disabled;
+        document.getElementById('id_lat_s').disabled = disabled;
+        document.getElementById('id_longitude').disabled = disabled;
+        document.getElementById('id_lon_d').disabled = disabled;
+        document.getElementById('id_lon_m').disabled = disabled;
+        document.getElementById('id_lon_s').disabled = disabled;
       }
 
       function loadSelectedSite(combo,store){
@@ -376,7 +395,8 @@
           document.getElementById('id_site').value = siteRecord.get('site_gid');
 
           // Disable the site input controls and variables
-          disableSiteEdit(true);
+          editSite = 'false';
+          enableEditSite(editSite);
           document.getElementById('id_edit_site').value = 'false';
 
           // Zoom the map to the selected site
@@ -880,6 +900,7 @@
             handler: function(){resetInputForm();inputWindow.hide();}
           }]
         });
+        editSite = document.getElementById('id_edit_site').value;
         updateInputForm('');
 
         // Define a datepick widget
@@ -929,6 +950,7 @@
               resetInputForm();
               siteWindow.hide();
               loadSelectedSite(comboSites,storeSites);
+              comboSites.clearValue();
               inputWindow.show(this);
             }
           },{
@@ -969,6 +991,8 @@
                   document.getElementById('id_longitude').value = clickCoords.lon.toFixed(5);
                   map.setCenter(clickCoords.transform(proj4326, proj3857),15);
                   mapClickWindow.hide();
+                  editCoords = 'false';
+                  enableEditCoords(editCoords);
                   inputWindow.show(this);
                 }
               }]
