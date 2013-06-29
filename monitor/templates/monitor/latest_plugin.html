@@ -6,7 +6,8 @@
 <h2><a href="/map/observation/{{ item.gid }}/">{{ item.site__site_name }}</a></h2>
 </header>
 <p>
-<label>Date</label>: {{ item.time_stamp|date:"d b Y" }}<br>
+<label>Username</label>: {{ item.user__username }}<br>
+<label>Date added</label>: {{ item.time_stamp|date:"d b Y" }}<br>
 <label>Score</label>: {{ item.score }}
 </p>
 </section>

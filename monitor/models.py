@@ -16,11 +16,13 @@ from datetime import datetime
 class Organisations(models.Model):
     ORG_CATS = (
         (u'school', u'School'),
-        (u'non-school', u'Non-school'),
-        (u'individual', u'Individual')
+        (u'ngo', u'NGO'),
+        (u'conservancy', u'Conservancy'),
+        (u'private', u'Private citizen'),
+        (u'government', u'Government department')
     )
     org_name = models.CharField(max_length=100, blank=True)
-    org_type = models.CharField(max_length=5, choices=ORG_CATS, blank=True)
+    org_type = models.CharField(max_length=11, choices=ORG_CATS, blank=True)
 
     class Meta:
         db_table = u'organisations'
