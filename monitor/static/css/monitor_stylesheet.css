@@ -20,6 +20,13 @@
   margin-right:auto;
 }
 
+#input_buttons td {
+  width:89px;
+  text-align:center;
+  vertical-align:text-top;
+  font-size:0.8em;
+}
+
 #input_buttons img {
   margin:2px;
 }
