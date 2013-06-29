@@ -120,7 +120,21 @@
   margin:2px;
 }
 
-#map .olControlZoomPanel {
-  left: 8px;
-  top: 8px;
-} 
+#map .olControlZoom {
+  left:8px;
+  top:30px;
+}
+
+#customZoom {
+  z-index: 1001;
+  position:relative;
+  top:5px;
+  left:10px;
+}
+
+#customZoom img {
+  position: absolute;
+  margin:0px;
+  padding:2px;
+  cursor:pointer;
+}

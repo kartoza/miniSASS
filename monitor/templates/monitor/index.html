@@ -125,7 +125,11 @@
           {% endfor %}
         {% endif %}
     </div> <!--sidepanel-->
-    <div id="map"></div> <!--map-->
+    <div id="map">
+       <div id="customZoom">
+         <img src="{{ STATIC_URL }}img/zoom_full.png" alt="Home" title="Home" onclick="zoomFull()"/>
+      </div>
+    </div> <!--map-->
     <div id="data_window" class="x-hidden">
       <div class="x-window-header">miniSASS Data Input</div>
       <div id="data_panel">

@@ -1,4 +1,7 @@
       var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
+      var mapExtentX = 2747350;
+      var mapExtentY = -3333950;
+      var mapExtentZoom = 6;
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
       var localhost = false;
@@ -430,6 +433,12 @@
         return params;
       }
 
+      function zoomFull() {
+      /* This function zooms the map to its full extent.
+      */
+        map.setCenter(new OpenLayers.LonLat(mapExtentX,mapExtentY),mapExtentZoom);
+      }
+
     Ext.onReady(function() {
     /* This function fires when the document is ready, before onload and
        before any images are loaded.
@@ -678,12 +687,7 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
-//            restrictedExtent:mapExtent,
-            eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd},
-//            controls: [
-//              new OpenLayers.Control.Navigation(),
-//              new OpenLayers.Control.ZoomPanel()
-//            ]
+            eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
           }
         );
 
