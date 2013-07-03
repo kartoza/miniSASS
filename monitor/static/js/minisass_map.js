@@ -123,7 +123,7 @@
         // Setup up a combo box for zooming to sites
         comboZoomSites = new Ext.form.ComboBox({
           store:storeSites,
-          listWidth:255,
+          listWidth:290,
           displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,

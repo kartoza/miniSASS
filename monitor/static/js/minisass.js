@@ -488,7 +488,7 @@
         comboSites = new Ext.form.ComboBox({
           store:storeSites,
           width:220,
-          listWidth:255,
+          listWidth:290,
           displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
@@ -499,7 +499,7 @@
         // Setup up a combo box for zooming to sites
         comboZoomSites = new Ext.form.ComboBox({
           store:storeSites,
-          listWidth:255,
+          listWidth:290,
           displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
@@ -558,6 +558,7 @@
         // Setup up a combo box for displaying a list of nearby sites
         comboNearbySites = new Ext.form.ComboBox({
           store:storeNearbySites,
+          listWidth:290,
           displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
