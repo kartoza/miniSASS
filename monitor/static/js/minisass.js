@@ -666,13 +666,22 @@
             );
           }, 
           trigger: function (e) {
-            infoWindow.update('Querying...');
+            obsTabPanel.removeAll();
             infoWindow.show();
             var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
             Ext.Ajax.request({
               url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
-                infoWindow.update(response.responseText);
+                if (response.responseText.length > 1) {
+                  // Split the observations into tabs
+                  var obsCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
+                  var t = response.responseText.slice(response.responseText.indexOf('#')+1);
+                  obsTabPanel.update(response.responseText.slice(response.responseText.indexOf('#')+1));
+                  for (var i=1; i <= obsCount; i++) {
+                    obsTabPanel.add({contentEl:'id_obs_'+i, title: 'Observation '+i});
+                  }
+                  obsTabPanel.setActiveTab(0);
+                }
               },
               failure: function(response,opts){
                 infoWindow.update('Error: Could not request site information');
@@ -919,16 +928,25 @@
           maxValue:todayString,
         });
 
+        // Define a tab panel for holding miniSASS observation information
+        var obsTabPanel = new Ext.TabPanel({
+          activeTab:0,
+          frame:true,
+          autoScroll:true,
+          enableTabScroll:true
+        });
+
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
-          width:600,
-          height:250,
+          width:440,
+          height:370,
+          layout:'fit',
           bodyStyle:'padding:5px;',
-          autoScroll:true,
           closeAction:'hide',
           modal:false,
-          constrain: true,
+          constrain:true,
+          items:[obsTabPanel]
         });
         infoWindow.show();
         infoWindow.hide();

@@ -1,3 +1,4 @@
+/* Styling for the map */
 #map {
   float:left;
 }
@@ -6,15 +7,44 @@
   margin:0px;
 }
 
+/* Styling for the side panel */
 #sidepanel {
   clear:both;
   float:left;
+  font-family:Verdana,Arial,sans-serif;
+  font-size: 0.7em;
 }
 
+/* Styling for the layer switcher */
+#layerswitcher .baseLbl, .dataLbl{
+  margin-top:3px;
+  margin-left:3px;
+  margin-bottom:3px;
+  font-weight:bold;
+}
+
+/* Styling for the map legend */
+#legend_table {
+  font-family:Verdana,Arial,sans-serif;
+  font-size:1em;
+  color:black;
+  font-weight:normal;
+}
+
+#legend_table .legend_header {
+  font-weight:bold;
+}
+
+#legend_table img {
+  margin:2px;
+}
+
+/* Styling for the zoom panel */
 #zoompanel img {
   margin:0px;
 }
 
+/* Styling for the function buttons */
 #input_buttons {
   margin-left:auto;
   margin-right:auto;
@@ -31,6 +61,7 @@
   margin:2px;
 }
 
+/* Styling for the data input window */
 #data_panel td, th {
   padding:1px;
 }
@@ -42,6 +73,7 @@
 #data_table_left {
   margin:5px;
   text-align:left;
+  vertical-align:text-top;
 }
 
 #data_table_left .section_header {
@@ -93,33 +125,48 @@
   color:darkgray;
 }
 
-#sidepanel {
-  font-family:Verdana,Arial,sans-serif;
-  font-size: 0.7em;
+/* Styling for the observation information window */
+#obs_table_left {
+  margin:5px;
 }
 
-#layerswitcher .baseLbl, .dataLbl{
-  margin-top:3px;
-  margin-left:3px;
-  margin-bottom:3px;
+#obs_table_left td {
+  margin:0px;
+  padding:2px;
+  text-align:left;
+  vertical-align:text-top;
+}
+
+#obs_site_details, #obs_groups {
+  vertical-align:text-top;
+}
+
+#obs_table_left .section_header {
+  text-align:left;
   font-weight:bold;
 }
 
-#legend_table {
-  font-family:Verdana,Arial,sans-serif;
-  font-size:1em;
-  color:black;
-  font-weight:normal;
+#obs_table_left .tddata {
+  width:180px;
 }
 
-#legend_table .legend_header {
+#obs_table_right th {
+  text-align:center;
   font-weight:bold;
 }
 
-#legend_table img {
-  margin:2px;
+#obs_table_right td {
+  margin:0px;
+  padding:2px;
+  vertical-align:text-top;
 }
 
+#obs_table_right .tddata {
+  text-align:center;
+}
+
+
+/* Styling for the map zoom controls */
 #map .olControlZoom {
   left:8px;
   top:30px;
