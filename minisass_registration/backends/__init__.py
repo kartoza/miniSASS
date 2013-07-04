@@ -13,11 +13,13 @@ class miniSASSbackend(DefaultBackend):
         This method also stores the firstname, lastname and organisation fields
         collected from the custom registration form.
         """
+        # Save the new user
         new_user = super(miniSASSbackend, self).register(request, **kwargs)
         new_user.first_name = kwargs['firstname']
         new_user.last_name = kwargs['lastname']
         new_user.save()
 
+        # Save the user profile
         organisation_type = Lookup.objects.get(pk=kwargs['organisation_type'])
         profile = UserProfile.objects.create(
                 user=new_user,
