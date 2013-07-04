@@ -299,23 +299,6 @@ span.title {
     font-size: smaller;
 }
 
-div.registration_links {
-    float: right;
-    max-width: 120px; */
-    color: #3168b8;
-}
-.registration_links a:hover,
-.registration_links a:visited,
-.registration_links a:active,
-.registration_links a {
-    color: #3168b8;
-}
-.registration_links p{
-    float: right;
-    margin: 5px 15px 0 0;
-    font-size: smaller;
-}
-
 /* bottom links */
 .minisass-bottom div {
     width: 100%;

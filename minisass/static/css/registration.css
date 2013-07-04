@@ -1,6 +1,7 @@
 /* registration pages styling */
 div.minisass-registration-content {
-    width: 100%;
+    width: auto;
+    margin: 10px;
 }
 
 .minisass-registration-content th {
@@ -28,4 +29,21 @@ p.errorlist {
     border: 1px solid red;
     color: red;
     padding: 3px;
+}
+
+div.registration_links {
+    float: right;
+    max-width: 120px; */
+    color: #3168b8;
+}
+.registration_links a:hover,
+.registration_links a:visited,
+.registration_links a:active,
+.registration_links a {
+    color: #3168b8;
+}
+.registration_links p{
+    float: right;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
 }
