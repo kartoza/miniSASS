@@ -1,5 +1,5 @@
 from registration.backends.default import DefaultBackend
-from minisass.forms import miniSASSregistrationForm
+from minisass_registration.forms import miniSASSregistrationForm
 
 
 class miniSASSbackend(DefaultBackend):

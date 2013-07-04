@@ -6,9 +6,24 @@ from registration.forms import RegistrationForm
 from minisass_registration.models import Lookup
 
 
+def _get_organisation_types():
+    result = [('','-- All Types --')]
+    qs = Lookup.objects.filter(
+        container__description='Organisation Types',
+        active=True).values('id', 'description')
+    qs = qs.order_by('rank', 'description')
+    result.extend([(itm.id, itm.description,) for itm in qs])
+    return result
+
+
+def _get_organisation_names():
+    return []
+
+
 class miniSASSregistrationForm(RegistrationForm):
     """ Add fields for firstname, lastname and organisation
     """
+
     firstname = forms.CharField(
             label=_("Name"), 
             max_length=30)
@@ -18,13 +33,14 @@ class miniSASSregistrationForm(RegistrationForm):
     organisation_type = forms.ChoiceField(
             label=_("Organisation Type"),
             required=False, 
-            choices=self._get_organisation_types())
+            choices=_get_organisation_types())
     organisation_list = forms.ChoiceField(
             label=_("Organisation List"),
             required=False, 
-            choices=self._get_organisation_names())
+            choices=_get_organisation_names())
     organisation_name = forms.CharField(
-            label=_("Name"), 
+            label=_("Organisation Name"), 
+            help_text=_("Only if not in organisation list above."),
             max_length=50,
             required=False)
 
@@ -40,14 +56,3 @@ class miniSASSregistrationForm(RegistrationForm):
             'password1',
             'password2'
         ]
-
-    def _get_organisation_types(self):
-        result = [('','-- All Types --')]
-        qs = Lookup.objects.filter(
-            container__description='Organisation Types',
-            active=True).values('id', 'description')
-        qs = qs.order_by('rank', 'description')
-        result.extend([(itm.id, itm.description,) for itm in qs])
-        return tuple(result)
-
-    def _get_organisation_names(self):
