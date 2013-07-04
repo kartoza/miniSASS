@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from minisass.models import Lookup
+from minisass_registration.models import Lookup
 
 
 class LookupAdmin(admin.ModelAdmin):

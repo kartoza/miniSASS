@@ -30,7 +30,7 @@ urlpatterns += i18n_patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # registration urls
-    url(r'^accounts/', include('minisass.backends.urls')),
+    url(r'^accounts/', include('minisass_registration.backends.urls')),
 
     # django-cms urls
     url(r'^', include('cms.urls')),

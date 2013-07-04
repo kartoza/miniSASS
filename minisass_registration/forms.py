@@ -2,7 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from registration.forms import RegistrationForm
-from registration.models import Lookup
+
+from minisass_registration.models import Lookup
 
 
 class miniSASSregistrationForm(RegistrationForm):
