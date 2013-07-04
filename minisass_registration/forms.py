@@ -7,10 +7,10 @@ from minisass_registration.models import Lookup
 
 
 def _get_organisation_types():
-    result = [('','-- All Types --')]
+    result = [('','-- Select a Type --')]
     qs = Lookup.objects.filter(
-        container__description='Organisation Types',
-        active=True).values('id', 'description')
+        container__description='Organisation Type',
+        active=True)
     qs = qs.order_by('rank', 'description')
     result.extend([(itm.id, itm.description,) for itm in qs])
     return result

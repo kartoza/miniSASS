@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from minisass_registration.models import Lookup
+from minisass_registration.models import Lookup, UserProfile
 
 
 class LookupAdmin(admin.ModelAdmin):
@@ -12,3 +12,13 @@ class LookupAdmin(admin.ModelAdmin):
     list_filter = ('active', 'container', )
 
 admin.site.register(Lookup, LookupAdmin)
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    raw_id_fields = ('user',)
+    list_display = ('user', 'organisation_type', 'organisation_name',)
+    search_fields = ('user__username', 'user__first_name', 'user__last_name',)
+    list_filter = ('organisation_type',)
+
+admin.site.register(UserProfile, UserProfileAdmin)
+

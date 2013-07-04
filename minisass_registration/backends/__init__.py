@@ -1,5 +1,6 @@
 from registration.backends.default import DefaultBackend
 from minisass_registration.forms import miniSASSregistrationForm
+from minisass_registration.models import UserProfile, Lookup
 
 
 class miniSASSbackend(DefaultBackend):
@@ -16,6 +17,14 @@ class miniSASSbackend(DefaultBackend):
         new_user.first_name = kwargs['firstname']
         new_user.last_name = kwargs['lastname']
         new_user.save()
+
+        organisation_type = Lookup.objects.get(pk=kwargs['organisation_type'])
+        profile = UserProfile.objects.create(
+                user=new_user,
+                organisation_type=organisation_type,
+                organisation_name=kwargs['organisation_name'])
+        profile.save()
+
         return new_user
 
     def get_form_class(self, request):
