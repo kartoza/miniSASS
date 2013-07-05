@@ -4,14 +4,13 @@
 
 {% block "minisass_css" %}
 {% addtoblock "css" %}
-<link rel="stylesheet" type="text/css"
-    href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css" 
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
 {% endaddtoblock %}
 {{ block.super }}
 {% endblock %}
 
 {% block "minisass_js" %}
-{% addtoblock "js" %}<script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="http://code.jquery.com/ui/1.8.24/jquery-ui.min.js"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script src="{{STATIC_URL}}js/registration.js"></script>{% endaddtoblock %}
 {% endblock %}
 

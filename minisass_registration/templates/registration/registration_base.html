@@ -2,7 +2,8 @@
 {% load sekizai_tags %}
 
 {% block "minisass_css" %}
-{% addtoblock "css" %}<link href="{{STATIC_URL}}css/registration.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+{% addtoblock "css" %}<link rel="stylesheet" href="{{STATIC_URL}}css/registration.css" media="screen, print">{% endaddtoblock %}
+{{ block.super }}
 {% endblock %}
 
 {% block "minisass_page_content" %}
