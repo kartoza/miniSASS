@@ -674,12 +674,14 @@
               url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
                 if (response.responseText.length > 1) {
-                  // Split the observations into tabs
-                  var obsCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
-                  var t = response.responseText.slice(response.responseText.indexOf('#')+1);
-                  obsTabPanel.update(response.responseText.slice(response.responseText.indexOf('#')+1));
-                  for (var i=1; i <= obsCount; i++) {
-                    obsTabPanel.add({contentEl:'id_obs_'+i, title: 'Observation '+i});
+                  // Split the observations into tabs and extract the dates
+                  var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
+                  var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1)
+                  var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
+                  obsTabPanel.update(obsInfoText);
+                  for (var i=1; i <= obsInfoCount; i++) {
+                    var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
+                    obsTabPanel.add({contentEl:'id_obs_'+i, title: obsInfoDate});
                   }
                   obsTabPanel.setActiveTab(0);
                 }

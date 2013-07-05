@@ -142,17 +142,25 @@
 }
 
 #obs_table_left .section_header {
+  color:blue;
   text-align:left;
   font-weight:bold;
+  text-decoration:underline;
 }
 
 #obs_table_left .tddata {
-  width:180px;
+  width:160px;
+}
+
+#obs_table_left .tdlabel {
+  font-weight:bold;
 }
 
 #obs_table_right th {
+  color:blue;
   text-align:center;
   font-weight:bold;
+  text-decoration:underline;
 }
 
 #obs_table_right td {
@@ -165,6 +173,9 @@
   text-align:center;
 }
 
+#obs_table_right .tdlabel {
+  font-weight:bold;
+}
 
 /* Styling for the map zoom controls */
 #map .olControlZoom {
