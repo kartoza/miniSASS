@@ -34,13 +34,8 @@ class miniSASSregistrationForm(RegistrationForm):
             label=_("Organisation Type"),
             required=True, 
             choices=_get_organisation_types())
-    organisation_list = forms.ChoiceField(
-            label=_("Organisation List"),
-            required=False, 
-            choices=_get_organisation_names())
     organisation_name = forms.CharField(
             label=_("Organisation Name"), 
-            help_text=_("If type is not School, or name not in list above."),
             max_length=50,
             required=False)
 
@@ -51,7 +46,6 @@ class miniSASSregistrationForm(RegistrationForm):
             'firstname', 'lastname',
             'email',
             'organisation_type',
-            'organisation_list',
             'organisation_name',
             'password1',
             'password2'
