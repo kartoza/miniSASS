@@ -12,7 +12,7 @@
   clear:both;
   float:left;
   font-family:Verdana,Arial,sans-serif;
-  font-size: 0.7em;
+  font-size:0.7em;
 }
 
 /* Styling for the layer switcher */
@@ -195,15 +195,24 @@
 }
 
 #customZoom {
-  z-index: 1001;
+  z-index:1001;
   position:relative;
   top:5px;
   left:10px;
 }
 
 #customZoom img {
-  position: absolute;
+  position:absolute;
   margin:0px;
   padding:2px;
   cursor:pointer;
+}
+
+/* Fix for width of popup date menu in IE */
+.x-date-menu > ul{
+  display:inline;
+}
+
+.x-date-menu > ul li{
+  display:inline;
 }

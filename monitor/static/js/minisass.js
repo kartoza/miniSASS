@@ -151,7 +151,7 @@
           var riverCat = document.getElementById('id_river_cat').value;
           if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
             document.getElementById('id_crab').src = '/static/img/icon_crab_u_large.png';
-            document.getElementById('id_health_class').innerHTML = '';
+            document.getElementById('id_health_class').innerHTML = '&nbsp;';
           } else if (averageScore > 0 && averageScore <= 4.3 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_v_large.png';
             document.getElementById('id_health_class').innerHTML = 'Very Poor';
