@@ -16,7 +16,7 @@
 }
 
 /* Styling for the layer switcher */
-#layerswitcher .baseLbl, .dataLbl{
+#layerswitcher .baseLbl, .dataLbl {
   margin-top:3px;
   margin-left:3px;
   margin-bottom:3px;
@@ -103,6 +103,7 @@
 
 #data_table_right {
   margin:5px;
+  vertical-align:text-top;
 }
 
 #data_table_right .tdtotal {

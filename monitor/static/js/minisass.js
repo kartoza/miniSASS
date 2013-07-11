@@ -195,7 +195,16 @@
       /* This function ensures that all form variables are correctly set
          when the data input form is submitted.
       */
+/* Debug block start */
 
+console.log ('convertDMStoDD(lat) ' + convertDMStoDD('lat'));
+console.log ('convertDMStoDD(lon) ' + convertDMStoDD('lon'));
+console.log ('latitude: ' + document.getElementById('id_latitude').value);
+console.log ('longitude: ' + document.getElementById('id_longitude').value);
+console.log ('parseFloat latitude: ' + parseFloat(document.getElementById('id_latitude').value));
+console.log ('parseFloat longitude: ' + parseFloat(document.getElementById('id_longitude').value));
+
+/* Debug block end */
         if (document.getElementById('id_river_name').value == '') {
           Ext.Msg.alert('River Name Error', 'Please enter a river name');
           return false;
