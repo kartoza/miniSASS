@@ -195,16 +195,7 @@
       /* This function ensures that all form variables are correctly set
          when the data input form is submitted.
       */
-/* Debug block start */
 
-console.log ('convertDMStoDD(lat) ' + convertDMStoDD('lat'));
-console.log ('convertDMStoDD(lon) ' + convertDMStoDD('lon'));
-console.log ('latitude: ' + document.getElementById('id_latitude').value);
-console.log ('longitude: ' + document.getElementById('id_longitude').value);
-console.log ('parseFloat latitude: ' + parseFloat(document.getElementById('id_latitude').value));
-console.log ('parseFloat longitude: ' + parseFloat(document.getElementById('id_longitude').value));
-
-/* Debug block end */
         if (document.getElementById('id_river_name').value == '') {
           Ext.Msg.alert('River Name Error', 'Please enter a river name');
           return false;
@@ -214,10 +205,10 @@ console.log ('parseFloat longitude: ' + parseFloat(document.getElementById('id_l
         } else if (document.getElementById('id_description').value == '') {
           Ext.Msg.alert('Site Description Error', 'Please enter a site description');
           return false;
-        } else if ((DMS.checked==true) && (convertDMStoDD('lat') == 0)) {
+        } else if ((document.getElementById('DMS').checked==true) && (convertDMStoDD('lat') == 0)) {
           Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
           return false;
-        } else if ((DMS.checked==true) && (convertDMStoDD('lon') == 0)) {
+        } else if ((document.getElementById('DMS').checked==true) && (convertDMStoDD('lon') == 0)) {
           Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
           return false;
         } else if (!parseFloat(document.getElementById('id_latitude').value)) {
