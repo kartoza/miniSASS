@@ -3,7 +3,7 @@
 {% for item in latest %}
 <section>
 <header>
-<h2><a href="/map/observation/{{ item.gid }}/">{{ item.site__site_name }}</a></h2>
+<h2><a href="/map/observation/{{ item.gid }}/">{{ item.site__river_name }}-{{ item.site__site_name }}</a></h2>
 </header>
 <p>
 <label>Username</label>: {{ item.user__username }}<br>
