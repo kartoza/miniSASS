@@ -227,7 +227,7 @@
         } else { // All the required fields are present
           if ((editSite == 'true') || (editCoords == 'true')) {
             // convert coordinates to DD if they've been entered as DMS
-            if (DMS.checked==true) {
+            if (document.getElementById('DMS').checked==true) {
               document.getElementById('id_latitude').value = convertDMStoDD('lat');
               document.getElementById('id_longitude').value = convertDMStoDD('lon');
             }
