@@ -26,7 +26,8 @@ ${observation}#
             <tr><td class="section_header" colspan="2"><br />Observation Details</td></tr>
             <tr><td class="tdlabel">Date:</td><td class="tddata">${feature.obs_date.value?date("yyyy/MM/dd")}</td></tr>
             <tr><td class="tdlabel">Username:</td><td class="tddata">${feature.username.value}</td></tr>
-            <tr><td class="tdlabel">Organisation:</td><td class="tddata">${feature.organisation_name.value}</td></tr>
+            <tr><td class="tdlabel">Organisation type:</td><td class="tddata">${feature.organisation_type.value}</td></tr>
+            <tr><td class="tdlabel">Organisation name:</td><td class="tddata">${feature.organisation_name.value}</td></tr>
             <tr><td class="tdlabel">Comments/notes:</td><td class="tddata">${feature.comment.value}</td></tr>
           </table>
         </td>

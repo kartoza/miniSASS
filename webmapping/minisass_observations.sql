@@ -12,11 +12,13 @@ CREATE OR REPLACE VIEW minisass_observations AS
         observations.other_mayflies, observations.damselflies, observations.dragonflies,
         observations.bugs_beetles, observations.caddisflies, observations.true_flies,
         observations.snails, observations.flag, auth_user.username,
-        minisass_registration_userprofile.organisation_name
+        minisass_registration_userprofile.organisation_name,
+        minisass_registration_lookup.description as organisation_type
    FROM sites
    LEFT JOIN observations ON sites.gid = observations.site
    LEFT JOIN auth_user ON observations.user_id = auth_user.id
    LEFT JOIN minisass_registration_userprofile ON auth_user.id = minisass_registration_userprofile.user_id
+   LEFT JOIN minisass_registration_lookup ON minisass_registration_userprofile.organisation_type_id = minisass_registration_lookup.id
    ORDER BY observations.obs_date;
 
 ALTER TABLE minisass_observations
