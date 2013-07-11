@@ -125,6 +125,16 @@
   color:darkgray;
 }
 
+#id_average_score, #id_crab_cell {
+  background-color:#cbd4ff;
+}
+
+#id_health_class {
+  text-align:center;
+  font-weight:bold;
+  background-color:#cbd4ff;
+}
+
 /* Styling for the observation information window */
 #obs_table_left {
   margin:5px;

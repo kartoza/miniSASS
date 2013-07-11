@@ -151,26 +151,37 @@
           var riverCat = document.getElementById('id_river_cat').value;
           if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
             document.getElementById('id_crab').src = '/static/img/icon_crab_u_large.png';
+            document.getElementById('id_health_class').innerHTML = '';
           } else if (averageScore > 0 && averageScore <= 4.3 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_v_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Very Poor';
           } else if (averageScore > 0 && averageScore <= 5.1 && riverCat == 'rocky'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_v_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Very Poor';
           } else if (averageScore > 4.3 && averageScore <= 4.9 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_p_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Poor';
           } else if (averageScore > 5.1 && averageScore <= 6.1 && riverCat == 'rocky'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_p_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Poor';
           } else if (averageScore > 4.9 && averageScore <= 5.8 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_f_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Fair';
           } else if (averageScore > 6.1 && averageScore <= 6.8 && riverCat == 'rocky'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_f_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Fair';
           } else if (averageScore > 5.8 && averageScore <= 6.9 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_g_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Good';
           } else if (averageScore > 6.8 && averageScore <= 7.9 && riverCat == 'rocky'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_g_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Good';
           } else if (averageScore > 6.9 && riverCat == 'sandy'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_n_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Natural';
           } else if (averageScore > 7.9 && riverCat == 'rocky'){
             document.getElementById('id_crab').src = '/static/img/icon_crab_n_large.png';
+            document.getElementById('id_health_class').innerHTML = 'Natural';
           }
 
         }
