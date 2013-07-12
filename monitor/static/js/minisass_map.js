@@ -211,6 +211,7 @@
                   obsTabPanel.update(obsInfoText);
                   for (var i=1; i <= obsInfoCount; i++) {
                     var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
+                    if (!obsInfoDate) {obsInfoDate = 'No Observation';}
                     obsTabPanel.add({contentEl:'id_obs_'+i, title: obsInfoDate});
                   }
                   obsTabPanel.setActiveTab(0);
