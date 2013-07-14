@@ -32,35 +32,60 @@
                  + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
                  + 'and hold</i> the mouse button to <b>drag the map</b> around.';
 
-      function convertDDtoDMS(D) {
+      function convertDDtoDMS() {
       /* Function to convert Decimal Degrees to Degrees Minutes Seconds.
-         Assumption: It is assumed that coordinates are in southern Africa so
-                     latitudes are negative and longitudes are positive.
       */
-        var DMS=new Array();
-        DMS[0] = 0|(D<0?D=-D:D);
-        DMS[1] = 0|D%1*60;
-        DMS[2] = (0|D*60%1*600)/10;
+        var latD = parseFloat(document.getElementById('id_latitude').value);
+        var lonD = parseFloat(document.getElementById('id_longitude').value);
+        var hemNS = document.getElementById('id_hem_s').checked;
+        var hemEW = document.getElementById('id_hem_e').checked;
+        var DMS = new Array();
+        // Convert the latitude
+        DMS[0] = 0|(latD<0?latD=-latD:latD);
+        DMS[1] = 0|latD%1*60;
+        DMS[2] = (0|latD*60%1*600)/10;
+        DMS[3] = hemNS?'S':'N';
+        // Convert the longitude
+        DMS[4] = 0|(lonD<0?lonD=-lonD:lonD);
+        DMS[5] = 0|lonD%1*60;
+        DMS[6] = (0|lonD*60%1*600)/10;
+        DMS[7] = hemEW?'E':'W';
         return DMS;
       }
 
-      function convertDMStoDD(latOrLon) {
+      function convertDMStoDD() {
       /* Function to convert Degrees Minutes Seconds to Decimal Degrees.
-         Assumption: It is assumed that coordinates are in southern Africa so
-                     latitudes are negative and longitudes are positive.
       */
-        var D = parseInt(document.getElementById('id_'+latOrLon+'_d').value);
-        var M = parseInt(document.getElementById('id_'+latOrLon+'_m').value);
-        var S = parseFloat(document.getElementById('id_'+latOrLon+'_s').value);
-        if (!D) D = 0;
-        if (!M) M = 0;
-        if (!S) S = 0;
-        DD = D;
-        if (DD < 0) DD = -1 * DD;
-        if ((M >= 0) && (M <= 60)) DD = DD + M/60;
-        if ((S >= 0) && (S <= 60)) DD = DD + S/3600;
-        if (latOrLon=='lat') {
-          if (DD > 0) DD = -1 * DD;
+        var latD = parseInt(document.getElementById('id_lat_d').value);
+        var latM = parseInt(document.getElementById('id_lat_m').value);
+        var latS = parseFloat(document.getElementById('id_lat_s').value);
+        var lonD = parseInt(document.getElementById('id_lon_d').value);
+        var lonM = parseInt(document.getElementById('id_lon_m').value);
+        var lonS = parseFloat(document.getElementById('id_lon_s').value);
+        var hemNS = document.getElementById('id_hem_s').checked;
+        var hemEW = document.getElementById('id_hem_e').checked;
+        var DD = new Array();
+        // Convert the latitude
+        if (!latD) latD = 0;
+        if (!latM) latM = 0;
+        if (!latS) latS = 0;
+        DD[0] = latD;
+        if (DD[0] < 0) DD[0] = -1 * DD[0];
+        if ((latM >= 0) && (latM <= 60)) DD[0] = DD[0] + latM/60;
+        if ((latS >= 0) && (latS <= 60)) DD[0] = DD[0] + latS/3600;
+        if (hemNS) {
+          if (DD[0] > 0) DD[0] = -1 * DD[0];
+        }
+        // Convert the latitude
+        if (!lonD) lonD = 0;
+        if (!lonM) lonM = 0;
+        if (!lonS) lonS = 0;
+        DD[1] = lonD;
+        if (DD[1] < 0) DD[1] = -1 * DD[1];
+        if ((lonM >= 0) && (lonM <= 60)) DD[1] = DD[1] + lonM/60;
+        if ((lonS >= 0) && (lonS <= 60)) DD[1] = DD[1] + lonS/3600;
+        if (!hemEW) {
+          if (DD[1] > 0) DD[1] = -1 * DD[1];
         }
         return DD;
       }
@@ -75,14 +100,13 @@
           document.getElementById('id_lon_d').style.display = '';
           document.getElementById('id_lon_m').style.display = '';
           document.getElementById('id_lon_s').style.display = '';
-          var latDMS = convertDDtoDMS(document.getElementById('id_latitude').value,'lat');
-          document.getElementById('id_lat_d').value = latDMS[0];
-          document.getElementById('id_lat_m').value = latDMS[1];
-          document.getElementById('id_lat_s').value = latDMS[2];
-          var lonDMS = convertDDtoDMS(document.getElementById('id_longitude').value,'lon');
-          document.getElementById('id_lon_d').value = lonDMS[0];
-          document.getElementById('id_lon_m').value = lonDMS[1];
-          document.getElementById('id_lon_s').value = lonDMS[2];
+          var coordsDMS = convertDDtoDMS();
+          document.getElementById('id_lat_d').value = coordsDMS[0];
+          document.getElementById('id_lat_m').value = coordsDMS[1];
+          document.getElementById('id_lat_s').value = coordsDMS[2];
+          document.getElementById('id_lon_d').value = coordsDMS[4];
+          document.getElementById('id_lon_m').value = coordsDMS[5];
+          document.getElementById('id_lon_s').value = coordsDMS[6];
         }
         if (format == 'Decimal') {
           document.getElementById('id_latitude').style.display = '';
@@ -93,8 +117,8 @@
           document.getElementById('id_lon_d').style.display = 'none';
           document.getElementById('id_lon_m').style.display = 'none';
           document.getElementById('id_lon_s').style.display = 'none';
-          document.getElementById('id_latitude').value = convertDMStoDD('lat').toFixed(5);
-          document.getElementById('id_longitude').value = convertDMStoDD('lon').toFixed(5);
+          document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
+          document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
         }
       }
 
@@ -189,6 +213,10 @@
         // Enable/disable site and coordinate editing as necessary
         enableEditSite(editSite);
         enableEditCoords(editCoords);
+
+        // Set the hemisphere radio buttons
+        if (document.getElementById('id_latitude').value > 0) document.getElementById('id_hem_n').checked = true;
+        if (document.getElementById('id_longitude').value < 0) document.getElementById('id_hem_w').checked = true;
       }
 
       function canSubmit(){
@@ -205,16 +233,16 @@
         } else if (document.getElementById('id_description').value == '') {
           Ext.Msg.alert('Site Description Error', 'Please enter a site description');
           return false;
-        } else if ((document.getElementById('DMS').checked==true) && (convertDMStoDD('lat') == 0)) {
+        } else if ((document.getElementById('id_DMS').checked==true) && (convertDMStoDD()[0] == 0)) {
           Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
           return false;
-        } else if ((document.getElementById('DMS').checked==true) && (convertDMStoDD('lon') == 0)) {
+        } else if ((document.getElementById('id_DMS').checked==true) && (convertDMStoDD()[1] == 0)) {
           Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
           return false;
-        } else if (!parseFloat(document.getElementById('id_latitude').value)) {
+        } else if ((document.getElementById('id_decimal').checked==true) && !parseFloat(document.getElementById('id_latitude').value)) {
           Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
           return false;
-        } else if (!parseFloat(document.getElementById('id_longitude').value)) {
+        } else if ((document.getElementById('id_decimal').checked==true) && !parseFloat(document.getElementById('id_longitude').value)) {
           Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
           return false;
         } else if (document.getElementById('id_river_cat').selectedIndex == 0) {
@@ -227,19 +255,26 @@
         } else { // All the required fields are present
           if ((editSite == 'true') || (editCoords == 'true')) {
             // convert coordinates to DD if they've been entered as DMS
-            if (document.getElementById('DMS').checked==true) {
-              document.getElementById('id_latitude').value = convertDMStoDD('lat');
-              document.getElementById('id_longitude').value = convertDMStoDD('lon');
+            if (document.getElementById('id_DMS').checked==true) {
+              document.getElementById('id_latitude').value = convertDMStoDD()[0];
+              document.getElementById('id_longitude').value = convertDMStoDD()[1];
             }
 
             // make sure the coordinates have the correct sign
-            if (document.getElementById('id_latitude').value > 0) {
-              document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
-            }
-            if (document.getElementById('id_longitude').value < 0) {
-              document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
-            }
-
+            var hemS = document.getElementById('id_hem_s').checked;
+            var hemW = document.getElementById('id_hem_w').checked;
+            if (hemS && (document.getElementById('id_latitude').value > 0)) {
+                document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
+            };
+            if (hemW && (document.getElementById('id_longitude').value > 0)) {
+                document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
+            };
+            if (!hemS && (document.getElementById('id_latitude').value < 0)) {
+                document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
+            };
+            if (!hemW && (document.getElementById('id_longitude').value < 0)) {
+                document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
+            };
           };
           enableEditSite('true');
 
@@ -259,11 +294,7 @@
           document.getElementById('id_zoom_level').value = 15;
           document.getElementById('id_centre_X').value = mapCenter.lon;
           document.getElementById('id_centre_Y').value = mapCenter.lat;
-          var layerStr = '';
-          for (var i=0; i < map.getNumLayers(); i++) {
-            if (i>0) layerStr += ',';
-            layerStr += map.layers[i].visibility;
-          }
+          var layerStr = map.layers[0].visibility + ',' + map.layers[1].visibility + ',' + map.baseLayer.name;
           document.getElementById('id_layers').value = layerStr;
           return true;
         }
@@ -342,6 +373,12 @@
         var selectArray = divDataPanel.getElementsByTagName('select');
         for (var k=0; k < selectArray.length; k++) selectArray[k].selectedIndex=0;
 
+        // Reset the radio buttons
+        document.getElementById('id_hem_s').checked = 'checked';
+        document.getElementById('id_hem_e').checked = 'checked';
+        document.getElementById('id_decimal').checked = 'checked';
+        coords('Decimal');
+
         // Reset the totals and score
         updateInputForm('');
 
@@ -371,6 +408,10 @@
         document.getElementById('id_lon_d').disabled = disabled;
         document.getElementById('id_lon_m').disabled = disabled;
         document.getElementById('id_lon_s').disabled = disabled;
+        document.getElementById('id_hem_n').disabled = disabled;
+        document.getElementById('id_hem_s').disabled = disabled;
+        document.getElementById('id_hem_e').disabled = disabled;
+        document.getElementById('id_hem_w').disabled = disabled;
       }
 
       function enableEditCoords(enable){
@@ -384,6 +425,10 @@
         document.getElementById('id_lon_d').disabled = disabled;
         document.getElementById('id_lon_m').disabled = disabled;
         document.getElementById('id_lon_s').disabled = disabled;
+        document.getElementById('id_hem_n').disabled = disabled;
+        document.getElementById('id_hem_s').disabled = disabled;
+        document.getElementById('id_hem_e').disabled = disabled;
+        document.getElementById('id_hem_w').disabled = disabled;
       }
 
       function loadSelectedSite(combo,store){
@@ -639,11 +684,11 @@
               };
 
               clickCoords.transform(proj3857, proj4326);
-              var lat = convertDDtoDMS(clickCoords.lat.toFixed(5));
-              var lon = convertDDtoDMS(clickCoords.lon.toFixed(5));
+              var lat = clickCoords.lat.toFixed(5);
+              var lon = clickCoords.lon.toFixed(5);
               var msg = 'You clicked at:<br />&nbsp;&nbsp;'
-                + lat[0] + '&deg; ' + lat[1] + '&apos; ' + lat[2] + '&quot; S<br />&nbsp;&nbsp;'
-                + lon[0] + '&deg; ' + lon[1] + '&apos; ' + lon[2] + '&quot; E<br />'
+                + 'Latitude ' + lat + '&deg;<br />&nbsp;&nbsp;'
+                + 'Longitude ' + lon + '&deg;<br />'
                 + 'Do you want to create a new site and miniSASS observation at this location?';
 
               Ext.getCmp('id_clicked_coords').body.update(msg);
@@ -810,10 +855,14 @@
         var layerStr = document.getElementById('id_layers').value;
         if (layerStr != ''){
           var layerArr = layerStr.split(',');
-          for (var i=0; i < layerArr.length; i++) {
-            if (layerArr[i]=='false') {map.layers[i].visibility = false;}
-            else {map.layers[i].visibility = true;}
-          }
+          // Set the miniSASS observations layer
+          if (layerArr[0]=='false') {map.layers[0].setVisibility(false);}
+          else {map.layers[0].setVisibility(true);}
+          // Set the Schools layers
+          if (layerArr[1]=='false') {map.layers[1].setVisibility(false);}
+          else {map.layers[1].setVisibility(true);}
+          // Set the base layer
+          map.setBaseLayer(map.getLayersByName(layerArr[2])[0]);
         }
 
         // Add a layerswitcher
@@ -1026,6 +1075,16 @@
                   resetInputForm();
                   document.getElementById('id_latitude').value = clickCoords.lat.toFixed(5);
                   document.getElementById('id_longitude').value = clickCoords.lon.toFixed(5);
+                  if (clickCoords.lat < 0) {
+                    document.getElementById('id_hem_s').checked = true;
+                  } else {
+                    document.getElementById('id_hem_n').checked = true;
+                  }
+                  if (clickCoords.lon < 0) {
+                    document.getElementById('id_hem_w').checked = true;
+                  } else {
+                    document.getElementById('id_hem_e').checked = true;
+                  }
                   map.setCenter(clickCoords.transform(proj4326, proj3857),15);
                   mapClickWindow.hide();
                   editCoords = 'false';

@@ -94,7 +94,7 @@
 }
 
 #id_lat_d, #id_lat_m, #id_lat_s, #id_lon_d, #id_lon_m, #id_lon_s {
-  width:40px;
+  width:30px;
 }
 
 #id_obs_date {
