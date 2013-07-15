@@ -17,7 +17,7 @@ Follow up to Install.md outlining styling
 
 --Geoserver supports extensions which allows data to be styled more dynamically and the following have been used in order to have a nice rendering effect.
 
-For the river the geoserver vendor option was applied in order to allow the river label to follow the river lines.
+--For the river the geoserver vendor option was applied in order to allow the river label to follow the river lines.
 
 >> example: <se:VendorOption name="followLine">true</se:VendorOption>  
 
