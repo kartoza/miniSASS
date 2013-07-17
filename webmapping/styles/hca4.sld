@@ -12,7 +12,7 @@
           
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#7F7F7F</se:SvgParameter>
+              <se:SvgParameter name="stroke">#FF6C00</se:SvgParameter>
               <se:SvgParameter name="stroke-width">0.1</se:SvgParameter>
             </se:Stroke>
           </se:PolygonSymbolizer>
@@ -22,7 +22,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">12.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>
@@ -38,9 +38,17 @@
                                 </se:Displacement>
                             </se:PointPlacement>
                         </se:LabelPlacement>
+                       <se:Halo>
+                            <se:Radius>2</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
+            
                         <se:Fill>
-                            <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                        </se:Fill>
+                            <se:SvgParameter name="fill">#FF6C00</se:SvgParameter>
+                        </se:Fill>   
+                       
                     </se:TextSymbolizer>
         </se:Rule>
       </se:FeatureTypeStyle>

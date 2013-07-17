@@ -1,4 +1,7 @@
       var mapExtent = new OpenLayers.Bounds(1833200,-4141400,3661500,-2526500);
+      var mapExtentX = 2747350;
+      var mapExtentY = -3333950;
+      var mapExtentZoom = 6;
       var proj4326 = new OpenLayers.Projection('EPSG:4326');
       var proj3857 = new OpenLayers.Projection('EPSG:3857');
       var localhost = false;
@@ -14,9 +17,11 @@
       var comboSites;           // A combobox containing a list of all sites
       var comboZoomSites;       // A combobox for zooming to sites
       var comboZoomSchools;     // A combobox for zooming to schools
-      var navMsg = 'Use the <i>mouse wheel</i> to <b>zoom in or out</b> on the map, or press <i>Shift</i> '
-                 + 'and draw a rectangle to <b>zoom in</b>. <i>Click and hold</i> the mouse button '
-                 + 'to <b>drag the map</b> around. ';
+      var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
+      var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
+                 + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
+                 + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
+                 + 'and hold</i> the mouse button to <b>drag the map</b> around.';
 
       function infoFromMap(){
       /* This function toggles the 'info from map' button image, changes the
@@ -24,14 +29,16 @@
       */
         if (userFunction != 'infoclick') {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
-          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'url(/static/img/info.cur),crosshair';
+          var mapViewPort = document.getElementsByClassName('olMapViewport');
+          mapViewPort[0].style.cursor = 'url(/static/img/info.cur),crosshair';
           var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
           messagePanel.update(msg);
           userFunction = 'infoclick';
           infoClick.activate();
         } else {
           document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
-          document.getElementById('OpenLayers.Map_7_OpenLayers_ViewPort').style.cursor = 'auto';
+          var mapViewPort = document.getElementsByClassName('olMapViewport');
+          mapViewPort[0].style.cursor = 'auto';
           var msg = navMsg;
           messagePanel.update(msg);
           userFunction = 'none';
@@ -62,6 +69,12 @@
         return params;
       }
 
+      function zoomFull() {
+      /* This function zooms the map to its full extent.
+      */
+        map.setCenter(new OpenLayers.LonLat(mapExtentX,mapExtentY),mapExtentZoom);
+      }
+
     Ext.onReady(function() {
     /* This function fires when the document is ready, before onload and
        before any images are loaded.
@@ -79,19 +92,21 @@
 
         // Define a store for holding data for sites
         storeSites = new Ext.data.ArrayStore({
-          fields:['site_gid','site_name','description','river_cat','longitude','latitude']
+          fields:['site_gid','river_name','site_name','combo_name','description','river_cat','longitude','latitude']
         });
 
         // Request a list of all sites
         Ext.Ajax.request({
-          url:'sites/-9/-9/-9/',
+          url:'/map/sites/-9/-9/-9/',
           success: function(response,opts){
             var jsonData = Ext.decode(response.responseText);
             if (jsonData){
               for (var i=0; i<jsonData.features.length; i++){
                 storeSites.add(new storeSites.recordType({
                   'site_gid':jsonData.features[i].properties.gid,
+                  'river_name':jsonData.features[i].properties.river_name,
                   'site_name':jsonData.features[i].properties.site_name,
+                  'combo_name':jsonData.features[i].properties.combo_name,
                   'description':jsonData.features[i].properties.description,
                   'river_cat':jsonData.features[i].properties.river_cat,
                   'longitude':jsonData.features[i].geometry.coordinates[0],
@@ -105,20 +120,11 @@
           }
         });
 
-        // Setup up a combo box for displaying a list of all sites
-        comboSites = new Ext.form.ComboBox({
-          store:storeSites,
-          displayField:'site_name',
-          valueField:'site_gid',
-          typeAhead:true,
-          mode:'local',
-          emptyText:'Select a site...',
-        });
-
         // Setup up a combo box for zooming to sites
         comboZoomSites = new Ext.form.ComboBox({
           store:storeSites,
-          displayField:'site_name',
+          listWidth:290,
+          displayField:'combo_name',
           valueField:'site_gid',
           typeAhead:true,
           mode:'local',
@@ -140,7 +146,7 @@
           proxy:new Ext.data.HttpProxy({
             method: 'GET',
             prettyUrls: false,
-            url: 'schools',
+            url: '/map/schools',
             }),
           reader: new Ext.data.JsonReader({
             root: 'schools',
@@ -191,13 +197,25 @@
             );
           }, 
           trigger: function (e) {
-            infoWindow.update('Querying...');
+            obsTabPanel.removeAll();
             infoWindow.show();
             var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
             Ext.Ajax.request({
-              url:'wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
+              url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
               success: function(response,opts){
-                infoWindow.update(response.responseText);
+                if (response.responseText.length > 1) {
+                  // Split the observations into tabs and extract the dates
+                  var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
+                  var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1)
+                  var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
+                  obsTabPanel.update(obsInfoText);
+                  for (var i=1; i <= obsInfoCount; i++) {
+                    var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
+                    if (!obsInfoDate) {obsInfoDate = 'No Observation';}
+                    obsTabPanel.add({contentEl:'id_obs_'+i, title: obsInfoDate});
+                  }
+                  obsTabPanel.setActiveTab(0);
+                }
               },
               failure: function(response,opts){
                 infoWindow.update('Error: Could not request site information');
@@ -212,11 +230,7 @@
             projection: proj3857,
             displayProjection: proj4326,
             units: 'm',
-            eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd},
-            controls: [
-              new OpenLayers.Control.Navigation(),
-              new OpenLayers.Control.ZoomPanel()
-            ]
+            eventListeners: {'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
           }
         );
 
@@ -231,13 +245,26 @@
 
         function mapZoomEnd(event) {
           // Switch from Google terrain to Google road map if zoomed too close
-          if (map.zoom>=14 && map.getLayersByName('Google terrain')[0].visibility==true) {
-            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google terrain.<br />Switching to Google road map.');
+          if (map.zoom>=16 && map.getLayersByName('Google terrain')[0].visibility==true) {
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
             map.setBaseLayer(layerGoogleRoadmap);
+            exceededZoom='Google terrain';
           }
-          if (map.zoom>=18 && map.getLayersByName('Google satellite')[0].visibility==true) {
-            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in any further on Google satellite.<br />Switching to Google road map.');
+          // Switch from Google satellite to Google road map if zoomed too close
+          if (map.zoom>=20 && map.getLayersByName('Google satellite')[0].visibility==true) {
+            Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google satellite.<br />Automatically switching to Google road map.');
             map.setBaseLayer(layerGoogleRoadmap);
+            exceededZoom='Google satellite';
+          }
+          // Switch back to Google terrain if within zoom range
+          if (map.zoom<16 && exceededZoom=='Google terrain') {
+            map.setBaseLayer(layerGoogleTerrain);
+            exceededZoom='';
+          }
+          // Switch back to Google satellite if within zoom range
+          if (map.zoom<20 && exceededZoom=='Google satellite') {
+            map.setBaseLayer(layerGoogleSatellite);
+            exceededZoom='';
           }
         }
 
@@ -266,8 +293,8 @@
         // Define the provinces layer
         var layerProvinces = new OpenLayers.Layer.WMS(
           'Provinces',
-          geoserverURL,
-          {layers:'miniSASS:provinces',transparent:true,format:'image/png'},
+          geoserverCachedURL,
+          {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
           {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
         );
 
@@ -311,9 +338,6 @@
         // Add the info click controller
         infoClick = new OpenLayers.Control.InfoClick();
         map.addControl(infoClick);
-
-        // Set map panning restrictions
-        map.setOptions({restrictedExtent:mapExtent});
 
         // Setup the map panel
         var zoom_level = document.getElementById('id_zoom_level').value;
@@ -360,12 +384,14 @@
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSchools
+              items:comboZoomSchools,
+              html:'Start typing the name of the school you would like to zoom to.'
             }),
             new Ext.Panel({
               border:false,
               bodyStyle:'padding:5px;background:#dfe8f6;',
-              items:comboZoomSites
+              items:comboZoomSites,
+              html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
             })
           ]
         });
@@ -387,16 +413,25 @@
         });
         messagePanel.update(navMsg);
 
+        // Define a tab panel for holding miniSASS observation information
+        var obsTabPanel = new Ext.TabPanel({
+          activeTab:0,
+          frame:true,
+          autoScroll:true,
+          enableTabScroll:true
+        });
+
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
-          width:600,
-          height:250,
+          width:440,
+          height:370,
+          layout:'fit',
           bodyStyle:'padding:5px;',
-          autoScroll:true,
           closeAction:'hide',
           modal:false,
-          constrain: true,
+          constrain:true,
+          items:[obsTabPanel]
         });
         infoWindow.show();
         infoWindow.hide();
@@ -405,6 +440,16 @@
         var buttonInfo = Ext.get('id_obs_info');
         buttonInfo.on('click', infoFromMap);
 
+        // Define tooltips for the layer switcher
+        document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
+        new Ext.ToolTip({
+          target:'id_baseLayersDiv',
+          html:'Only one base layer can be shown at a time'
+        });
+        document.querySelector('div.dataLayersDiv').id='id_dataLayersDiv';
+        new Ext.ToolTip({
+          target:'id_dataLayersDiv',
+          html:'Layers not within scale are greyed out'
+        });
+
   });
-
-

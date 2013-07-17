@@ -4,17 +4,47 @@ body {
     background: #38b;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Coming Soon', serif;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px;
+}
+
 /* page layout styles */
 .minisass-container {
     width: 1024px;
     height: auto;
     margin: 0 auto 0 auto;
-    background: white;
+    overflow: hidden;
+    -webkit-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -moz-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.minisass-box {
+    padding: 15px 0;
+    overflow: hidden;
 }
 .minisass-heading {
     width: 100%;
     float: left;
-    background: #3168b8;
+    background: white;
+    /* background: #eef; */
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .minisass-page {
@@ -47,20 +77,20 @@ body {
 .minisass-heading img {
     float: left;
     border: 0;
-    margin: 0;
+    margin: 17px 10px 0 7px;
     padding: 0;
 }
 .minisass-heading-space {
     float: left;
-    height: 123px;
-    width: 500px;
+    height: 127px;
+    width: 485px;
+    margin: 0 0 0 10px;
 }
 .red-line {
-    height: 2px;
+    height: 12px;
     float: left;
     width: 100%;
-    background: #44d;
-    margin-bottom: 5px;
+    background: #3168b8;
     border: none;
 }
 
@@ -72,55 +102,6 @@ body {
 }
 .minisass-breadcrumbs li {
     display: block;
-}
-
-/* top page menu styling */
-ul.minisass-menus {
-    float: left;
-    font-size: 0.9em;
-    font-weight: bold;
-    margin: 0 0 0 10px;
-    border: 0;
-    padding: 0px;
-    /* width: 623px; */
-}
-.minisass-menus li {
-    width: auto;
-    display: block;
-    float: left;
-    padding: 3px 8px 3px 8px;
-    border-left: 2px solid white;
-    border-top: 2px solid white;
-    border-right: 2px solid white;
-    margin-left: 2px;
-    text-align: center;
-    background: #adf;
-}
-.minisass-menus li.selected {
-    background: #44d;
-    color: white;
-}
-.minisass-menus li.selected a:visited,
-.minisass-menus li.selected a:active,
-.minisass-menus li.selected a:hover, 
-.minisass-menus li.selected a {
-    color: white;
-    text-decoration: none;
-}
-.minisass-menus li.sibling a:visited,
-.minisass-menus li.sibling a:active,
-.minisass-menus li.sibling a:hover, 
-.minisass-menus li.sibling a {
-    color: #68d;
-    text-decoration: none;
-}
-.minisass-menus li.selected a:active,
-.minisass-menus li.selected a:hover {
-    text-decoration: underline;
-}
-.minisass-menus li.sibling a:active,
-.minisass-menus li.sibling a:hover {
-    text-decoration: underline;
 }
 
 /* map page styling */
@@ -135,17 +116,41 @@ div.recent-observations {
     background: #adf;
     font-size: small;
     margin-left: 4px;
+    margin-top: 4px;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 .recent-observations section {
     margin: 8px;
 }
 .recent-observations h1 {
     font-size: 1.1em;
-    background-color: #44d;
+    background-color: #3168b8;
     padding: 4px;
     text-align: center;
     color: white;
     margin: 0 0 0.67em 0;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+.recent-observations h2 a:visited,
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover, 
+.recent-observations h2 a {
+    color: white;
+    text-decoration: none;
+}
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover {
+    text-decoration: underline;
 }
 .recent-observations section h2 {
     font-size: 1.0em;
@@ -252,8 +257,30 @@ div.minisass-right-column .cmsplugin-blog-include-list section p a {
     display: block;
     padding: 2px;
     font-weight: bold;
-    background-color: #44d;
+    background-color: #45a;
     color: white;
+    text-align: center;
+}
+
+/* right column action links styling */
+div.minisass-right-column address p.plugin_link {
+    background: #45a;
+    margin: 0.7em;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    border-top: 2px solid #abd;
+    border-left: 2px solid #abd;
+    border-right: 2px solid #24d;
+    border-bottom: 2px solid #129;
+}
+
+div.minisass-right-column address p.plugin_link a {
+    display: block;
+    padding: 1em;
+    color: white;
+    font-style: normal;
+    font-weight: bold;
     text-align: center;
 }
 
@@ -271,22 +298,21 @@ span.title {
     margin: 0 7px 7px 0;
     font-size: smaller;
 }
-
 div.registration_links {
     float: right;
-    /* width: 623px; */
+    max-width: 120px; */
+    color: #3168b8;
 }
 .registration_links a:hover,
 .registration_links a:visited,
 .registration_links a:active,
 .registration_links a {
-    color: white;
+    color: #3168b8;
 }
 .registration_links p{
     float: right;
     margin: 5px 15px 0 0;
     font-size: smaller;
-    color: white;
 }
 
 /* bottom links */
@@ -308,9 +334,36 @@ div.registration_links {
 .minisass-bottom a:active {
     color: white;
 }
+.minisass-bottom-logos {
+    clear: both;
+    width: 100%;
+    float: left;
+    background: #eef;
+    color: #aab;
+    font-size: smaller;
+    text-align: center;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.minisass-bottom-logos img {
+    margin: 5px 15px 5px 15px;
+    border: 0;
+    padding: 0;
+}
 
 div.minisass-page-content h1 {
     background-color: #68d;
     color: white;
     text-align: center;
+}
+
+div.minisass-page-content p {
+    margin: 0.5em 1em;
+}
+div.cmsplugin_filer_folder_slidshow {
+    height: 235px !important;
 }

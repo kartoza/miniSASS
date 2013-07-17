@@ -5,7 +5,6 @@ from django.utils.translation import ugettext as _
 
 from monitor.models import Observations as Observation
 
-
 class LatestObservationsPlugin(CMSPluginBase):
     model = CMSPlugin
     name = _(u"Latest Observations Plugin")
@@ -14,9 +13,9 @@ class LatestObservationsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['instance'] = instance
         
-        # get the latest 5 observations
+        # get the latest 8 observations
         latest = Observation.objects.all().order_by('-time_stamp').values(
-                'site__site_name', 'score', 'time_stamp')[:5]
+                'gid', 'site__site_name', 'site__river_name', 'user__username', 'user__userprofile__organisation_name', 'score', 'time_stamp')[:8]
         context['latest'] = latest
 
         return context

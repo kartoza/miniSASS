@@ -1,14 +1,25 @@
 /* registration pages styling */
 div.minisass-registration-content {
-    width: 100%;
+    width: auto;
+    margin: 10px;
 }
 
 .minisass-registration-content th {
     text-align: left;
     vertical-align: bottom;
+    min-width: 50%;
+    width: 50%;
 }
 .minisass-registration-content td {
     vertical-align: bottom;
+}
+.minisass-registration-content td br {
+    display: none;
+}
+.minisass-registration-content td span.helptext {
+    font-size: smaller;
+    color: grey;
+    margin-left: 10px;
 }
 ul.errorlist {
     display: block;

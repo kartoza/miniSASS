@@ -17,8 +17,12 @@
           <se:MaxScaleDenominator>600000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
+              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
+              <se:SvgParameter name="stroke-width">0.86</se:SvgParameter>
+              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+              <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+              <se:SvgParameter name="stroke-dasharray">1 3</se:SvgParameter>
+
             </se:Stroke>
           </se:PolygonSymbolizer>
            <se:TextSymbolizer>
@@ -31,18 +35,11 @@
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>
-                        <se:LabelPlacement>
-                            <se:PointPlacement>
-                                <se:AnchorPoint>
-                                    <se:AnchorPointX>0.0</se:AnchorPointX>
-                                    <se:AnchorPointY>0.0</se:AnchorPointY>
-                                </se:AnchorPoint>
-                                <se:Displacement>
-                                    <se:DisplacementX>0.0</se:DisplacementX>
-                                    <se:DisplacementY>0.0</se:DisplacementY>
-                                </se:Displacement>
-                            </se:PointPlacement>
-                        </se:LabelPlacement>
+                        <se:Geometry>
+                           <ogc:Function name="centroid">
+                           <ogc:PropertyName>the_geom</ogc:PropertyName>
+                           </ogc:Function>
+                          </se:Geometry>    
                         <se:Fill>
                             <se:SvgParameter name="fill">#000000</se:SvgParameter>
                         </se:Fill>
@@ -59,8 +56,12 @@
           <se:MaxScaleDenominator>1500000</se:MaxScaleDenominator>
           <se:PolygonSymbolizer>
             <se:Stroke>
-              <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">0.26</se:SvgParameter>
+              <se:SvgParameter name="stroke">#aaaa7f</se:SvgParameter>
+              <se:SvgParameter name="stroke-width">0.86</se:SvgParameter>
+              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+              <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+              <se:SvgParameter name="stroke-dasharray">1 3</se:SvgParameter>
+
             </se:Stroke>
           </se:PolygonSymbolizer>
            <se:TextSymbolizer>
@@ -73,18 +74,11 @@
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>
-                        <se:LabelPlacement>
-                            <se:PointPlacement>
-                                <se:AnchorPoint>
-                                    <se:AnchorPointX>0.0</se:AnchorPointX>
-                                    <se:AnchorPointY>0.0</se:AnchorPointY>
-                                </se:AnchorPoint>
-                                <se:Displacement>
-                                    <se:DisplacementX>0.0</se:DisplacementX>
-                                    <se:DisplacementY>0.0</se:DisplacementY>
-                                </se:Displacement>
-                            </se:PointPlacement>
-                        </se:LabelPlacement>
+                        <se:Geometry>
+                           <ogc:Function name="centroid">
+                           <ogc:PropertyName>the_geom</ogc:PropertyName>
+                           </ogc:Function>
+                          </se:Geometry>    
                         <se:Fill>
                             <se:SvgParameter name="fill">#000000</se:SvgParameter>
                         </se:Fill>

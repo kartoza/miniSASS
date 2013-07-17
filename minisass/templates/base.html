@@ -2,11 +2,16 @@
 <!doctype html>
 <html>
   <head>
+    {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
     {% render_block "css" %}
 
+    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
     {% block "minisass_js" %}
     {% endblock %}
     {% render_block "js" %}
@@ -18,31 +23,39 @@
   <body>
     {% cms_toolbar %}
 
-    <div class="minisass-container">
+    <div class="minisass-box"><div class="minisass-container">
 
       <div class="minisass-heading">
         <a href="/">
-          <img src="{{STATIC_URL}}images/mini_SASS_logo.jpg" alt="miniSASS Logo">
+          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
+          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
         </a>
-          <div class="registration_links">
-            <p>
-            {% if user.is_authenticated %}
-            Welcome back, {{ user.username }}<br />
-            <a href="{% url auth_logout %}">Logout</a> |
-            <a href="{% url auth_password_change %}">Change Password</a>
+        <div class="registration_links">
+          <p>
+          {% if user.is_authenticated %}
+          Welcome back, {{ user.username }}<br />
+          <a href="{% url auth_logout %}">Logout</a> |
+          <a href="{% url auth_password_change %}">Change Password</a>
+          {% else %}
+            {% if "/map/" in request.path %}
+              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
             {% else %}
-            <a href="{% url auth_login %}">Login</a> |
-            <a href="{% url registration_register %}">Register</a><br />
-            <a href="{% url auth_password_reset %}">Reset Password</a>
+              <a href="{% url auth_login %}">Login</a> |
             {% endif %}
-            </p>
-          </div>
-        <div class="minisass-heading-space">
+          <a href="{% url registration_register %}">Register</a><br />
+          <a href="{% url auth_password_reset %}">Reset Password</a>
+          {% endif %}
+          </p>
         </div>
-        <ul class="minisass-menus">
-          {% show_menu %}
-        </ul>
-      </div>
+        <div class="minisass-heading-space">
+            {% placeholder "logo_content" %}
+        </div>
+        <div id="myslidemenu" class="jqueryslidemenu">
+          <ul class="minisass-menus">
+            {% show_menu 0 100 100 100 %}
+          </ul>
+        </div>
+
       <div class="red-line">
       </div>
 
@@ -76,8 +89,28 @@
           </p>
       </div>
       {% endblock %}
+      <div class="minisass-bottom-logos">
+          {% placeholder "sponsor_links" or %}
+            {% show_placeholder "sponsor_links" "footer_stuff" %}
+          {% endplaceholder %}
+      </div>
 
-    </div>
+          {% comment %}
+          <a href="http://www.dwa.gov.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/dwa.png" 
+                 alt="Department of Water Affairs" 
+                 title="Department of Water Affairs" /></a>
+         <a href="http://www.wrc.org.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/wrc.png" 
+                 alt="Water Research Council" 
+                 title="Water Research Commission" /></a>
+         <a href="http://www.groundtruth.co.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/groundtruth.png" 
+                 alt="GroundTruth" 
+                 title="GroundTruth" /></a>
+          {% endcomment %}
+
+    </div></div>
 
     {% include "google_analytics.html" %}
   </body>

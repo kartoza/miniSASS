@@ -16,11 +16,13 @@ from datetime import datetime
 class Organisations(models.Model):
     ORG_CATS = (
         (u'school', u'School'),
-        (u'non-school', u'Non-school'),
-        (u'individual', u'Individual')
+        (u'ngo', u'NGO'),
+        (u'conservancy', u'Conservancy'),
+        (u'private', u'Private citizen'),
+        (u'government', u'Government department')
     )
     org_name = models.CharField(max_length=100, blank=True)
-    org_type = models.CharField(max_length=5, choices=ORG_CATS, blank=True)
+    org_type = models.CharField(max_length=11, choices=ORG_CATS, blank=True)
 
     class Meta:
         db_table = u'organisations'
@@ -51,7 +53,8 @@ class Sites(models.Model):
     )
     gid = models.AutoField(primary_key=True, editable=False)
     the_geom = models.PointField()
-    site_name = models.CharField(max_length=100, blank=False)
+    site_name = models.CharField(max_length=15, blank=False)
+    river_name = models.CharField(max_length=10, blank=False)
     description = models.CharField(max_length=255, blank=True)
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user = models.ForeignKey(User)

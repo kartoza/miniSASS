@@ -1,24 +1,109 @@
+/* Styling for the map */
 #map {
   float:left;
 }
 
+#map img {
+  margin:0px;
+}
+
+/* Styling for the side panel */
 #sidepanel {
   clear:both;
   float:left;
+  font-family:Verdana,Arial,sans-serif;
+  font-size:0.7em;
 }
 
+/* Styling for the layer switcher */
+#layerswitcher .baseLbl, .dataLbl {
+  margin-top:3px;
+  margin-left:3px;
+  margin-bottom:3px;
+  font-weight:bold;
+}
+
+/* Styling for the map legend */
+#legend_table {
+  font-family:Verdana,Arial,sans-serif;
+  font-size:1em;
+  color:black;
+  font-weight:normal;
+}
+
+#legend_table .legend_header {
+  font-weight:bold;
+}
+
+#legend_table img {
+  margin:2px;
+}
+
+/* Styling for the zoom panel */
+#zoompanel img {
+  margin:0px;
+}
+
+/* Styling for the function buttons */
 #input_buttons {
-  margin:5px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#input_buttons td {
+  width:89px;
   text-align:center;
+  vertical-align:text-top;
+  font-size:0.8em;
+}
+
+#input_buttons img {
+  margin:2px;
+}
+
+/* Styling for the data input window */
+#data_panel td, th {
+  padding:1px;
+}
+
+#data_panel img {
+  margin:0px;
 }
 
 #data_table_left {
-  margin:10px;
+  margin:5px;
   text-align:left;
+  vertical-align:text-top;
+}
+
+#data_table_left .section_header {
+  text-align:left;
+  font-weight:bold;
+}
+
+#data_table_left textarea {
+  width:170px;
+}
+
+#id_site_name, #id_river_name {
+  width:80px;
+}
+
+#id_latitude, #id_longitude {
+  width:70px;
+}
+
+#id_lat_d, #id_lat_m, #id_lat_s, #id_lon_d, #id_lon_m, #id_lon_s {
+  width:30px;
+}
+
+#id_obs_date {
+  width:100px;
 }
 
 #data_table_right {
-  margin:10px;
+  margin:5px;
+  vertical-align:text-top;
 }
 
 #data_table_right .tdtotal {
@@ -41,31 +126,93 @@
   color:darkgray;
 }
 
-#sidepanel {
-  font-family:Verdana,Arial,sans-serif;
-  font-size: 0.7em;
+#id_average_score, #id_crab_cell {
+  background-color:#cbd4ff;
 }
 
-#layerswitcher .baseLbl,
-#layerswitcher .dataLbl{
-  margin-top: 3px;
-  margin-left: 3px;
-  margin-bottom: 3px;
+#id_health_class {
+  text-align:center;
+  font-weight:bold;
+  background-color:#cbd4ff;
+}
+
+/* Styling for the observation information window */
+#obs_table_left {
+  margin:5px;
+}
+
+#obs_table_left td {
+  margin:0px;
+  padding:2px;
+  text-align:left;
+  vertical-align:text-top;
+}
+
+#obs_site_details, #obs_groups {
+  vertical-align:text-top;
+}
+
+#obs_table_left .section_header {
+  color:blue;
+  text-align:left;
+  font-weight:bold;
+  text-decoration:underline;
+}
+
+#obs_table_left .tddata {
+  width:160px;
+}
+
+#obs_table_left .tdlabel {
   font-weight:bold;
 }
 
-#legend_table {
-  font-family:Verdana,Arial,sans-serif;
-  font-size: 1em;
-  color:black;
-  font-weight:normal;
+#obs_table_right th {
+  color:blue;
+  text-align:center;
+  font-weight:bold;
+  text-decoration:underline;
 }
 
-#legend_table .legend_header {
+#obs_table_right td {
+  margin:0px;
+  padding:2px;
+  vertical-align:text-top;
+}
+
+#obs_table_right .tddata {
+  text-align:center;
+}
+
+#obs_table_right .tdlabel {
   font-weight:bold;
 }
 
-#map .olControlZoomPanel {
-  left: 8px;
-  top: 8px;
-} 
+/* Styling for the map zoom controls */
+#map .olControlZoom {
+  left:8px;
+  top:30px;
+}
+
+#customZoom {
+  z-index:1001;
+  position:relative;
+  top:5px;
+  left:10px;
+}
+
+#customZoom img {
+  position:absolute;
+  margin:0px;
+  padding:2px;
+  cursor:pointer;
+}
+
+/* Fix for width of popup date menu in IE */
+.x-date-menu > ul{
+  display:inline;
+}
+
+.x-date-menu > ul li{
+  display:inline;
+}

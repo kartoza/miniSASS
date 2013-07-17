@@ -3,10 +3,12 @@
 {% for item in latest %}
 <section>
 <header>
-<h2>{{ item.site__site_name }}</h1>
+<h2><a href="/map/observation/{{ item.gid }}/">{{ item.site__river_name }}-{{ item.site__site_name }}</a></h2>
 </header>
 <p>
-<label>Date</label>: {{ item.time_stamp|date:"d b Y" }}<br>
+<label>Username</label>: {{ item.user__username }}<br>
+<label>Organisation</label>: {{ item.user__userprofile__organisation_name }}<br>
+<label>Date added</label>: {{ item.time_stamp|date:"d b Y" }}<br>
 <label>Score</label>: {{ item.score }}
 </p>
 </section>
