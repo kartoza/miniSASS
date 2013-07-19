@@ -1155,4 +1155,23 @@
           html:'Layers not within scale are greyed out'
         });
 
+        // Define tooltips for the latitude/longitude input
+        new Ext.ToolTip({
+          target:'id_hem_s',
+          html:'Choose S for locations in Africa south of the Equator. This includes all countries in southern Africa.'
+        });
+        new Ext.ToolTip({
+          target:'id_hem_n',
+          html:'Choose N for locations in Africa north of the Equator. This includes all countries in north and west Africa.'
+        });
+        new Ext.ToolTip({
+          target:'id_hem_e',
+          html:'Choose E for all locations in Africa south of the Equator. This includes all countries in southern Africa.'
+        });
+        new Ext.ToolTip({
+          target:'id_hem_w',
+          html:'Choose W for locations in the extreme west of Africa.'
+        });
+
+
   });
