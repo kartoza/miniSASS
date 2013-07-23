@@ -1,4 +1,6 @@
+from django.core.mail import send_mail
 from registration.backends.default import DefaultBackend
+
 from minisass_registration.forms import miniSASSregistrationForm
 from minisass_registration.models import UserProfile, Lookup
 
@@ -28,6 +30,20 @@ class miniSASSbackend(DefaultBackend):
                 organisation_name=kwargs['organisation_name'],
                 country=country)
         profile.save()
+
+        # send an email to info@minisass.org
+        send_mail(
+                "New miniSASS user registration",
+                """Dear miniSASS admin,
+
+This is to notify you that a new user, %s, registered on the miniSASS website.
+
+Kind regards,
+minisass.org
+""" % new_user.get_full_name(),
+                'admin@minisass.org',
+                ['info@minisass.org'],
+                fail_silently=False)
 
         return new_user
 
