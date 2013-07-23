@@ -10,16 +10,6 @@
     }
   }, 
   {
-    "pk": 2, 
-    "model": "minisass_registration.lookup", 
-    "fields": {
-      "active": true, 
-      "container": 1, 
-      "description": "Schools", 
-      "rank": 0
-    }
-  }, 
-  {
     "pk": 3, 
     "model": "minisass_registration.lookup", 
     "fields": {
@@ -47,6 +37,126 @@
       "container": 1, 
       "description": "Government Department", 
       "rank": 4
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Private Individual", 
+      "rank": 3
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "School", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": null, 
+      "description": "Country", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "South Africa", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Namibia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Lesotho", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Swaziland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Botswana", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Zimbabwe", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mozambique", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Angola", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "minisass_registration.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Malawi", 
+      "rank": 0
     }
   }
 ]
