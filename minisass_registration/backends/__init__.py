@@ -21,10 +21,12 @@ class miniSASSbackend(DefaultBackend):
 
         # Save the user profile
         organisation_type = Lookup.objects.get(pk=kwargs['organisation_type'])
+        country = Lookup.objects.get(pk=kwargs['country'])
         profile = UserProfile.objects.create(
                 user=new_user,
                 organisation_type=organisation_type,
-                organisation_name=kwargs['organisation_name'])
+                organisation_name=kwargs['organisation_name'],
+                country=country)
         profile.save()
 
         return new_user
