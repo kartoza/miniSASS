@@ -51,7 +51,7 @@ class miniSASSregistrationForm(RegistrationForm):
     organisation_name = forms.CharField(
             label=_("Organisation Name"), 
             max_length=50,
-            help_text=_(u"Please check if organisation already listed, \
+            help_text=_(u"Please check if school already listed, \
                     then add if not."),
             required=False)
     country = forms.ChoiceField(
