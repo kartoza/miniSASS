@@ -45,7 +45,6 @@ class miniSASSregistrationForm(RegistrationForm):
     organisation_type = forms.ChoiceField(
             label=_("Organisation Type"),
             required=True, 
-            choices=_get_organisation_types(),
             help_text=_(u"Please select an organisation type, \
                     or private individual"))
     organisation_name = forms.CharField(
@@ -57,7 +56,6 @@ class miniSASSregistrationForm(RegistrationForm):
     country = forms.ChoiceField(
             label=_("Country"),
             required=False, 
-            choices=_get_countries(),
             help_text=_(u"Please select a country"))
 
     def __init__(self, *args, **kwargs):
@@ -65,6 +63,8 @@ class miniSASSregistrationForm(RegistrationForm):
         self.fields['username'].help_text = \
                 _(u"Public username (don't use any spaces)")
         self.fields['email'].help_text = _(u"Kept confidential")
+        self.fields['organisation_type'].choices = _get_organisation_types()
+        self.fields['country'].choices = _get_countries()
         self.fields.keyOrder = [
             'username',
             'firstname', 'lastname',
