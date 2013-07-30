@@ -23,7 +23,10 @@ class miniSASSbackend(DefaultBackend):
 
         # Save the user profile
         organisation_type = Lookup.objects.get(pk=kwargs['organisation_type'])
-        country = Lookup.objects.get(pk=kwargs['country'])
+        try:
+            country = Lookup.objects.get(pk=kwargs['country'])
+        except ValueError:
+            country = None
         profile = UserProfile.objects.create(
                 user=new_user,
                 organisation_type=organisation_type,
@@ -41,7 +44,7 @@ This is to notify you that a new user, %s, registered on the miniSASS website.
 Kind regards,
 minisass.org
 """ % new_user.get_full_name(),
-                'admin@minisass.org',
+                'info@minisass.org',
                 ['info@minisass.org'],
                 fail_silently=False)
 
