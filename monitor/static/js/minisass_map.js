@@ -368,7 +368,7 @@
           title:'Legend',
           renderTo:'legend',
           collapsible:true,
-          collapsed:true,
+          collapsed:false,
           width:220,
           contentEl:'legend_table'
         });
