@@ -215,8 +215,8 @@
         enableEditCoords(editCoords);
 
         // Set the hemisphere radio buttons
-        if (document.getElementById('id_latitude').value > 0) document.getElementById('id_hem_n').checked = true;
-        if (document.getElementById('id_longitude').value < 0) document.getElementById('id_hem_w').checked = true;
+        // if (document.getElementById('id_latitude').value > 0) document.getElementById('id_hem_n').checked = true;
+        // if (document.getElementById('id_longitude').value < 0) document.getElementById('id_hem_w').checked = true;
       }
 
       function canSubmit(){
