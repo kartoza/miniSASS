@@ -195,7 +195,7 @@
                 'click': this.trigger
               }, this.handlerOptions
             );
-          }, 
+          },
           trigger: function (e) {
             obsTabPanel.removeAll();
             infoWindow.show();
