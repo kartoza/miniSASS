@@ -62,6 +62,7 @@ class miniSASSregistrationForm(RegistrationForm):
         super(miniSASSregistrationForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = \
                 _(u"Public username (don't use any spaces)")
+        self.fields['username'].error_messages={'invalid': _("The username may only contain letters, numbers and @, fullstop, plus, minus or underscore characters. NO SPACES.")}
         self.fields['email'].help_text = _(u"Kept confidential")
         self.fields['organisation_type'].choices = _get_organisation_types()
         self.fields['country'].choices = _get_countries()
