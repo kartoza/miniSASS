@@ -8,7 +8,7 @@ class SiteForm(ModelForm):
         model = Sites
         exclude = ('time_stamp')
         widgets = {
-            'description': Textarea(attrs={'cols':30, 'rows':4}),
+            'description': Textarea(attrs={'cols':30, 'rows':4, 'placeholder':'e.g. downstream of industry'}),
             'river_cat': Select(attrs={'onchange':"updateInputForm('');"}),
         }
 
@@ -32,7 +32,7 @@ class ObservationForm(ModelForm):
         exclude = ('time_stamp', 'score')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
-            'comment':  Textarea(attrs={'cols':30, 'rows':4}),
+            'comment':  Textarea(attrs={'cols':30, 'rows':4, 'placeholder':'e.g. weather, impacts, alien plants, level of flow, etc.'}),
         }
 
 # Form for storing lon/lat coordinates
