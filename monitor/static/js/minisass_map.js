@@ -424,8 +424,8 @@
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
-          width:440,
-          height:370,
+          width:500,
+          height:400,
           layout:'fit',
           bodyStyle:'padding:5px;',
           closeAction:'hide',

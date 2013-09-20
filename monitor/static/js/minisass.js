@@ -214,9 +214,6 @@
         enableEditSite(editSite);
         enableEditCoords(editCoords);
 
-        // Set the hemisphere radio buttons
-        // if (document.getElementById('id_latitude').value > 0) document.getElementById('id_hem_n').checked = true;
-        // if (document.getElementById('id_longitude').value < 0) document.getElementById('id_hem_w').checked = true;
       }
 
       function canSubmit(){
@@ -256,8 +253,8 @@
           if ((editSite == 'true') || (editCoords == 'true')) {
             // convert coordinates to DD if they've been entered as DMS
             if (document.getElementById('id_DMS').checked==true) {
-              document.getElementById('id_latitude').value = convertDMStoDD()[0];
-              document.getElementById('id_longitude').value = convertDMStoDD()[1];
+              document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
+              document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
             }
 
             // make sure the coordinates have the correct sign
@@ -394,6 +391,9 @@
       }
 
       function enableEditSite(enable){
+      /* This function enables or disables editing of site-related variables
+         in the data input form.
+      */
         var disabled = false;
         if (enable == 'false') disabled = true;
         document.getElementById('id_river_name').disabled = disabled;
@@ -415,6 +415,9 @@
       }
 
       function enableEditCoords(enable){
+      /* This function enables or disables editing of the site coordinates
+         in the data input form.
+      */
         var disabled = false;
         if (enable == 'false') disabled = true;
         document.getElementById('id_latitude').disabled = disabled;
@@ -432,7 +435,10 @@
       }
 
       function loadSelectedSite(combo,store){
-
+      /* This function loads the data from the selected site into the
+         fields of the data input form and then disables editing of these
+         fields.
+      */
         var selectedSite = combo.getValue();
         if (selectedSite != '') {
           resetInputForm();
@@ -447,8 +453,8 @@
           } else if (siteRecord.get('river_cat') == 'sandy'){
             document.getElementById('id_river_cat').selectedIndex = 2;
           } else document.getElementById('id_river_cat').selectedIndex = 0;
-          document.getElementById('id_latitude').value = siteRecord.get('latitude');
-          document.getElementById('id_longitude').value = siteRecord.get('longitude');
+          document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(5);
+          document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(5);
 
           // Link the observation to the site id
           document.getElementById('id_site').value = siteRecord.get('site_gid');
@@ -1003,8 +1009,8 @@
         // Define a window to display miniSASS observation information
         infoWindow = new Ext.Window({
           title:'miniSASS observation details',
-          width:440,
-          height:370,
+          width:500,
+          height:400,
           layout:'fit',
           bodyStyle:'padding:5px;',
           closeAction:'hide',
@@ -1173,5 +1179,9 @@
           html:'Choose W for locations in the extreme west of Africa.'
         });
 
-
+        // Define a tooltip for the river category
+        new Ext.ToolTip({
+          target:'id_river_cat',
+          html:'If your river had no rocky habitats<br />that were sampled, select sandy'
+        });
   });

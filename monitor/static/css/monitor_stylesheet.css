@@ -188,6 +188,12 @@
   font-weight:bold;
 }
 
+#obs_table_right .tdtotal {
+  text-align:center;
+  font-weight:bold;
+background-color:#cbd4ff;
+}
+
 /* Styling for the map zoom controls */
 #map .olControlZoom {
   left:8px;
