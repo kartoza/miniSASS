@@ -20,8 +20,16 @@ ${observation}#
             <tr><td class="tdlabel">River name:</td><td class="tddata">${feature.river_name.value}</td></tr>
             <tr><td class="tdlabel">Site name:</td><td class="tddata">${feature.site_name.value}</td></tr>
             <tr><td class="tdlabel">Site description:</td><td class="tddata">${feature.description.value}</td></tr>
-            <tr><td class="tdlabel">Latitude (S):</td><td class="tddata">${feature.y.rawValue?string("0.00000")}</td></tr>
+            <#if (feature.y.rawValue > 0)>
+              <tr><td class="tdlabel">Latitude (N):</td><td class="tddata">${feature.y.rawValue?string("0.00000")}</td></tr>
+            <#else>
+              <tr><td class="tdlabel">Latitude (S):</td><td class="tddata">${feature.y.rawValue?string("0.00000")}</td></tr>
+            </#if>
+            <#if (feature.x.rawValue > 0)>
             <tr><td class="tdlabel">Longitude (E):</td><td class="tddata">${feature.x.rawValue?string("0.00000")}</td></tr>
+            <#else>
+            <tr><td class="tdlabel">Longitude (W):</td><td class="tddata">${feature.x.rawValue?string("0.00000")}</td></tr>
+            </#if>
             <tr><td class="tdlabel">River category:</td><td class="tddata">${feature.river_cat.value}</td></tr>
             <tr><td class="section_header" colspan="2"><br />Observation Details</td></tr>
             <tr><td class="tdlabel">Date:</td><td class="tddata"><#if feature.obs_date.value != "">${feature.obs_date.value?date("yyyy/MM/dd")}</#if></td></tr>
