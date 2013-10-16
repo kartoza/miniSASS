@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<div class="cmsplugin-blog-include-list">
+  <section>
+    <heading>
+    <h1>{% trans "Latest Blog Posts" %}</h1>
+    </heading>
+    {% for item in feed %}
+    <div style="border-bottom: 1px dotted lightgray; margin-bottom: 0.5em">
+      <p>{{ item.pub_date }}<br/>
+      <strong style="font-size: bigger">
+        <a href="{{ item.link }}">{{ item.title }}</a>
+      </strong><br/>
+      {{ item.description|safe }}
+      </p>
+    </div>
+    {% empty %}
+      <p>
+      {% trans "There are no blog entries available" %}
+      </p>
+    {% endfor %}
+  </section>
+</div>
