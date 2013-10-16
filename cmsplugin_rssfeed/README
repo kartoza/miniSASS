@@ -17,4 +17,5 @@ In the settings.py file:
 Run south migration.
 
 Using the CMS admin site:
- - Add the RSSFeedPlugin to the 'content' placeholder in the home page.
+ - Add the RSSFeedPlugin to the 'content' placeholder in the home page. Use
+   this URL: http://minisassblog.wordpress.com/feed/
