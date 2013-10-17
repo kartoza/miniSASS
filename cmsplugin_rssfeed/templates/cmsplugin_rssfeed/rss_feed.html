@@ -6,11 +6,14 @@
     <h1>{% trans "Latest Blog Posts" %}</h1>
     </heading>
     {% for item in feed %}
-    <div style="border-bottom: 1px dotted lightgray; margin-bottom: 0.5em">
-      <p>{{ item.pub_date }}<br/>
-      <strong style="font-size: bigger">
-        <a href="{{ item.link }}">{{ item.title }}</a>
-      </strong><br/>
+    <div class="blog-leader">
+      <p>
+      <span class="blog-heading">
+        <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+      </span><br/>
+      {{ item.pub_date }}
+      {% if item.creator %} by {{ item.creator }}{% endif %}
+      <br/><br/>
       {{ item.description|safe }}
       </p>
     </div>

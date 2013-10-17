@@ -27,7 +27,9 @@ class RSSFeedPlugin(CMSPluginBase):
                         'title' : item.find('title').text,
                         'link' : item.find('link').text,
                         'description' : item.find('description').text,
-                        'pub_date' : item.find('pubDate').text
+                        'pub_date' : item.find('pubDate').text[:22],
+                        'creator' : item.find(
+                            '{http://purl.org/dc/elements/1.1/}creator').text
                     })
             else:
                 logger.error("Response Error: %s - %s", 

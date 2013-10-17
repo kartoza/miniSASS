@@ -187,6 +187,26 @@ div.minisass-rc-links {
     margin: 8px;
 }
 
+div.blog-leader {
+    border-bottom: 1px dotted lightgray; 
+    margin-bottom: 1.5em;
+    margin-top: 0.5em;
+}
+span.blog-heading {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Oswald', Tahoma, Geneva, sans-serif;
+    font-weight: bold;
+    color: #ff6633;
+    line-height: 1.15em;
+    margin
+}
+.blog-heading a:active,
+.blog-heading a:hover,
+.blog-heading a:visited {
+    color: #ff6633;
+}
+
 /* main content blog include list styling */
 div.minisass-blog-content {
     float: left;
