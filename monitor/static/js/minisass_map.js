@@ -86,8 +86,8 @@ Ext.onReady(function() {
     geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
     geoserverCachedURL = 'http://localhost:8080/geoserver/miniSASS/wms';
   } else {
-    geoserverURL = 'http://opengeo.afrispatial.co.za/geoserver/wms';
-    geoserverCachedURL = 'http://opengeo.afrispatial.co.za/geoserver/gwc/service/wms?TILED=true';
+    geoserverURL = 'http://orasecom.org:8080/geoserver/wms';
+    geoserverCachedURL = 'http://orasecom.org:8080/geoserver/gwc/service/wms?TILED=true';
   };
 
   // Define a store for holding data for sites

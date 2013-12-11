@@ -258,7 +258,7 @@ GRANT SELECT ON TABLE public.hca4 TO web_read;
 GRANT SELECT ON TABLE public.municipalities TO web_read;
 GRANT SELECT ON TABLE public.provinces TO web_read;
 GRANT SELECT ON TABLE public.districts TO web_read;
-GRANT SELECT ON TABLE public.sites TO web_read;
+GRANT SELECT,UPDATE ON TABLE public.sites TO web_read;
 GRANT SELECT ON TABLE public.rivers TO web_read;
 GRANT SELECT ON TABLE public.minisass_observations TO web_read;
 GRANT SELECT ON TABLE public.geometry_columns TO web_read;
