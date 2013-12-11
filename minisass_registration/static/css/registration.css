@@ -7,8 +7,8 @@ div.minisass-registration-content {
 .minisass-registration-content th {
     text-align: left;
     vertical-align: bottom;
-    min-width: 50%;
-    width: 50%;
+    min-width: 30%;
+    width: 30%;
 }
 .minisass-registration-content td {
     vertical-align: bottom;

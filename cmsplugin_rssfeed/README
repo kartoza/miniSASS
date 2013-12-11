@@ -1,0 +1,21 @@
+Installation.
+=============
+When installing this in the miniSASS site, do the following.
+
+Using the CMS admin site:
+ - Delete the "Blog" page using the admin site.
+ - Remove the "Latest Blog Posts" plugin on the home page
+
+Install requests. 'pip install requests'
+
+In the settings.py file:
+ - Remove the 'cmsplugin_blog' from INSTALLED_APPS.
+ - Remove cmsplugin_blog.cms_app.BlogApphook from CMS_APPHOOKS
+ - Remove the JQUERY_JS, JQUERY_UI_JS, JQUERY_UI_CSS settings.
+ - Add 'cmsplugin_rssfeed' app to INSTALLED_APPS
+
+Run south migration.
+
+Using the CMS admin site:
+ - Add the RSSFeedPlugin to the 'content' placeholder in the home page. Use
+   this URL: http://minisassblog.wordpress.com/feed/

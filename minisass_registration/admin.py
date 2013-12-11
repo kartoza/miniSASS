@@ -16,9 +16,10 @@ admin.site.register(Lookup, LookupAdmin)
 
 class UserProfileAdmin(admin.ModelAdmin):
     raw_id_fields = ('user',)
-    list_display = ('user', 'organisation_type', 'organisation_name',)
+    list_display = (
+            'user', 'organisation_type', 'organisation_name', 'country',)
     search_fields = ('user__username', 'user__first_name', 'user__last_name',)
-    list_filter = ('organisation_type',)
+    list_filter = ('organisation_type', 'country',)
 
 admin.site.register(UserProfile, UserProfileAdmin)
 

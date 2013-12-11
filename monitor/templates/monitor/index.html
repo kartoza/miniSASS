@@ -28,9 +28,6 @@
 
 {% block "minisass_page_content" %}
     <div id=sidepanel>
-      <div id="layers">
-        <div id="layerswitcher"></div> <!--layerswitcher-->
-      </div> <!--layers-->
       <div id="legend">
         <table id="legend_table">
           <tr>
@@ -81,6 +78,9 @@
           </tr>
         </table>
       </div> <!--legend-->
+      <div id="layers">
+        <div id="layerswitcher"></div> <!--layerswitcher-->
+      </div> <!--layers-->
       <div id="zoompanel"></div> <!--zoompanel-->
       <div id="input_obs">
         <table id="input_buttons">
@@ -89,22 +89,32 @@
               <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/><br />
               Observation details
             </td>
-            {% if user.is_authenticated %}
             <td>
+            {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
               Enter observation
             </td>
           </tr>
           <tr>
             <td>
+            {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
               Click site on map
             </td>
             <td>
+            {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
               Select site from list
             </td>
-            {% endif %}
           </tr>
         </table> <!--input_buttons-->
       </div> <!--input_obs-->
@@ -140,7 +150,7 @@
               <td>
                 <table id="data_table_left">
                   <tr><td class="section_header" colspan="2">Site Details</td></tr>
-                  <tr><td><label for="id_river_name">River name:</label></td><td>{{ site_form.river_name }} Max 10 characters</td></tr>
+                  <tr><td><label for="id_river_name">River name:</label></td><td>{{ site_form.river_name }} Max 15 characters</td></tr>
                   <tr><td><label for="id_site_name">Site name:</label></td><td>{{ site_form.site_name }} Max 15 characters</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
                   <tr><td><label for="id_latitude">Latitude:</label></td>
@@ -170,7 +180,7 @@
                       <input type="radio" name="coord_format" id="id_DMS" value="DMS" onclick="coords('DMS');"/>Degrees/Minutes/Seconds
                     </td>
                   </tr>
-                  <tr><td><label for="id_river_cat">River category:</label></td>
+                  <tr><td><label for="id_river_cat">Were there rocks<br /> where you sampled?</label></td>
                     <td>
                       {{ site_form.river_cat }}
                     </td>
@@ -220,4 +230,10 @@
         </form> <!--dataform-->
       </div>  <!--data_panel-->
     </div> <!--data_window-->
+{% endblock %}
+
+{% block minisass_right_column %}
+{% comment %}
+There should be nothing here
+{% endcomment %}
 {% endblock %}

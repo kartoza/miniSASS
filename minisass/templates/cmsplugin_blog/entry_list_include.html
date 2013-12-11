@@ -8,7 +8,7 @@
 {% for entry in object_list|annotate_with_translations %}
     {% with entry|get_preferred_translation_from_request:request as title %}
     {% with entry.placeholders|choose_placeholder:"excerpt" as excerpt %}
-    <p>{{ entry.pub_date|date:"d b Y" }}<br/>
+    <p>{{ entry.pub_date|date:"d M Y" }}<br/>
     <a href="{{ title.get_absolute_url }}">{{ title }}</a>
     {{ entry|render_language_choices:request|safe }}
     </p>

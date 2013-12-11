@@ -20,7 +20,7 @@ buildmenu:function(menuid){
 			var $subul=$(this).find('ul:eq(0)');
 			this._dimensions={w:this.offsetWidth, h:this.offsetHeight, subulw:$subul.outerWidth(), subulh:$subul.outerHeight()}
 			this.istopheader=$curobj.parents("ul").length==1? true : false;
-			$subul.css({top:this.istopheader? this._dimensions.h+"px" : 0});
+			$subul.css({top:this.istopheader? (this._dimensions.h-2)+"px" : 0});
             $curobj.hover(
 				function(e){
 					var $targetul=$(this).children("ul:eq(0)");

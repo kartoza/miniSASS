@@ -25,8 +25,16 @@ class UserProfile(models.Model):
     """ Store extra user profile information here
     """
     user = models.OneToOneField(User, blank=False)
-    organisation_type = models.ForeignKey(Lookup, blank=False)
+    organisation_type = models.ForeignKey(
+            Lookup, 
+            limit_choices_to={'container__description':'Organisation Type'}, 
+            blank=False)
     organisation_name = models.CharField(max_length=255, blank=True)
+    country = models.ForeignKey(
+            Lookup,
+            limit_choices_to={'container__description':'Country'}, 
+            related_name='country_lookup',
+            blank=True, null=True)
 
     def __unicode__(self):
         return "%s: %s" % (
