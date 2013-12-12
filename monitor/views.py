@@ -116,22 +116,33 @@ def get_schools(request):
                               context_instance=RequestContext(request))
 
 def zoom_observation(request, obs_id):
-    """ Zoom to a miniSASS observation - Find the coordinates for an observation obs_id, convert them
-        to Google projection coordinates and then return a map_form containing these coordinates
+    """ 
+    Zoom to a miniSASS observation - Find the coordinates for an observation
+    obs_id, convert them to Google projection coordinates and then return a
+    map_form containing these coordinates 
     """
 
-    observation = Observations.objects.get(pk=obs_id)
+    # observation = Observations.objects.get(pk=obs_id)
     # Select statement converts coordinates to Google projection
-    select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s'
+    select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s' % obs_id
     cursor = connection.cursor()
-    cursor.execute(select_stmt % (observation.site_id,))
+    cursor.execute(select_stmt)
     site = cursor.fetchone()
     site_form = SiteForm()
     observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
     coords_form = CoordsForm()
-    map_form = MapForm({'zoom_level':'15','centre_X':site[1],'centre_Y':site[2],'edit_site':'true','error':'false'})
-    return render_to_response('monitor/index.html', 
-                              {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
-                              context_instance=RequestContext(request))
+    map_form = MapForm({
+        'zoom_level':'15',
+        'centre_X':site[1],
+        'centre_Y':site[2],
+        'edit_site':'true',
+        'error':'false'
+    })
+    return render_to_response('monitor/index.html', {
+        'site_form': site_form,
+        'observation_form': observation_form,
+        'coords_form': coords_form,
+        'map_form': map_form
+    }, context_instance=RequestContext(request))
 
 
