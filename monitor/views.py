@@ -124,7 +124,7 @@ def zoom_observation(request, obs_id):
     # Select statement converts coordinates to Google projection
     select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s'
     cursor = connection.cursor()
-    cursor.execute(select_stmt, [observation.site_id])
+    cursor.execute(select_stmt, % (observation.site_id,))
     site = cursor.fetchone()
     site_form = SiteForm()
     observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
