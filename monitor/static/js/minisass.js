@@ -502,6 +502,14 @@ function zoomFull() {
   map.setCenter(new OpenLayers.LonLat(mapExtentX,mapExtentY),mapExtentZoom);
 }
 
+function escape(str) {
+/* This function removes newline characters from a string.
+*/
+  return str
+    .replace(/[\n]/g," ")
+    .replace(/[\r]/g," ");
+}
+
 Ext.onReady(function() {
 /* This function fires when the document is ready, before onload and
    before any images are loaded.
@@ -526,7 +534,7 @@ Ext.onReady(function() {
   Ext.Ajax.request({
     url:'/map/sites/-9/-9/-9/',
     success:function(response,opts){
-      var jsonData = Ext.decode(response.responseText);
+      var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
           storeSites.add(new storeSites.recordType({
