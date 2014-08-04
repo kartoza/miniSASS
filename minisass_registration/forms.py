@@ -63,7 +63,7 @@ class miniSASSregistrationForm(RegistrationForm):
     recaptcha_challenge_field = forms.CharField(widget=RecaptchaChallenge)
     recaptcha_response_field = forms.CharField(
                 widget = RecaptchaResponse,
-                label = _('Please enter the two words on the image separated by a space:'),
+                label = _('Please enter the letters/digits you see in the image :'),
                 error_messages = {
                     'required': _('You did not enter any of the words.')
             })
