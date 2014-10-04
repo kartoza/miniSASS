@@ -10,7 +10,7 @@ Create a PostGreSQL database, based on a template that includes the PostGIS func
 
 postgis-template is the name of your postgis-enabled database template.
 
-or if you have postgresql >= 9.1 and PostGIS >= 2.0 then 
+or if you have postgresql >= 9.1 and PostGIS >= 2.0 then
 
     createdb minisass-cms
     psql -c 'CREATE EXTENSION postgis;' minisass-cms
@@ -55,6 +55,10 @@ Install the Django-CMS dependencies
 
     pip install -r requirements.txt
 
+If installing on Ubuntu and you get a "fatal error: freetype/fterrors.h: No such file or directory" try this fix:
+    sudo ln -s /usr/include/freetype2 /usr/local/include/freetype
+The run "pip install -r requirements.txt" again
+
 Checkout this repository from GitHub
 ------------------------------------
 
@@ -65,7 +69,7 @@ Now, copy settings.py.templ to settings.py, and set the database credentials cor
 
     cp minisass/settings.py.templ minisass/settings.py
     vim minisass/settings.py
-    
+
 Change settings to fit your database credentials, etc.
 
 Initialize your database and start the site
@@ -122,12 +126,12 @@ for some reason (postgis / psql client version issue?) shp2pgsql -I option faili
 
 > CREATE INDEX municipalities_geom_gist ON municipalities USING gist (the_geom );
 
-Appended provinces from neighbouring countries. 
+Appended provinces from neighbouring countries.
 
 attempted to create countries from provinces:
 select  ROW_NUMBER() over () as id,st_union(ST_SnapToGrid(the_geom,0.0001)) as the_geom,country from provinces group by country;
 
-This failed because of bad input data. 
+This failed because of bad input data.
 
 
 
@@ -136,8 +140,8 @@ This failed because of bad input data.
 
 The DWAF 1:500000 rivers are well connected and named but the NGI 1:50000 rivers show more detail of the smaller rivers users might sample and are more spatially accurate at large scales.
 
-Prepare the 1:50000 rivers according to the topostyle project. In our case we dumped the riverline table from a local topostyle database, transferred it to the minisass server and restored it. 
-Then we indexed and clustered it and set permissions, then published and styled it, again with the topostyle style, which we set to switch over from the 1:500000 rivers at an appropriate scale. 
+Prepare the 1:50000 rivers according to the topostyle project. In our case we dumped the riverline table from a local topostyle database, transferred it to the minisass server and restored it.
+Then we indexed and clustered it and set permissions, then published and styled it, again with the topostyle style, which we set to switch over from the 1:500000 rivers at an appropriate scale.
 
 Schools
 -------
@@ -152,7 +156,7 @@ We'll load these and pubish as WMS for early development, but might end up publi
 
 We then use SQL to generate and populate parts of the final schema from the sample data.
 
-    CREATE TABLE sites 
+    CREATE TABLE sites
     (
       gid serial NOT NULL,
       the_geom geometry(Point,4326),
@@ -177,7 +181,7 @@ We then use SQL to generate and populate parts of the final schema from the samp
     SELECT ST_PointFromText('POINT('||longitude||' '||latitude||')', 4326), site_name
     FROM sample_temp;
 
-    CREATE TABLE observations 
+    CREATE TABLE observations
     (
       gid serial NOT NULL,
       user_id integer,
@@ -203,19 +207,19 @@ We then use SQL to generate and populate parts of the final schema from the samp
     WITH (
       OIDS=FALSE
     );
-    
+
     INSERT INTO observations (site)
     SELECT gid
     FROM sites;
-    
+
     ALTER TABLE sample_temp ADD UNIQUE (site_name);
-    
+
     UPDATE observations o SET score = s.mini_sass_, time_stamp = s.date_iso,comment = s.comment
     FROM (SELECT s.*,t.comment,t.mini_sass_,t.date_iso::timestamp without time zone FROM sites s INNER JOIN sample_temp t on s.name = t.site_name) s
-    WHERE site = s.gid; 
-    
+    WHERE site = s.gid;
+
     ALTER TABLE observations ADD FOREIGN KEY (site) REFERENCES sites (gid) ON UPDATE NO ACTION ON DELETE NO ACTION;
-    
+
     DROP TABLE sample_temp;
 
 To add a layer to QGIS you can use something like this in DB Manager:
@@ -237,7 +241,7 @@ o.true_flies, o.snails, o.flag
 Or in PostGIS
 
 > CREATE OR REPLACE VIEW minisass_observations AS ..the query above...
-    
+
 Publishing Geoserver layers
 ===========================
 
@@ -245,7 +249,7 @@ createuser -P geoserver miniSASS@geoserver395
 
 CREATE ROLE web_read
   NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
-  
+
 CREATE ROLE web_write
   NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 
@@ -271,7 +275,7 @@ reassign owned by gavin to minisass;
 grant execute on all functions in schema public to web_read;
 grant usage on schema public to web_read;
 grant usage on all sequences in schema public to web_read;
-    
+
 Deploying updates on the production site
 ========================================
 
