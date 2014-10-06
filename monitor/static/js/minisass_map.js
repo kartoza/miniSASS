@@ -48,12 +48,12 @@ function infoFromMap(){
 }
 
 function getFeatureInfoParams(x,y,infoFormat){
-/* This function returns a string containing parameters for a 
+/* This function returns a string containing parameters for a
    WMSGetFeatureInfo request of the minisass_observations layer.
 */
   var params = 'REQUEST=GetFeatureInfo'
     + '&SERVICE=WMS'
-    + '&VERSION=1.1.1' 
+    + '&VERSION=1.1.1'
     + '&EXCEPTIONS=application/vnd.ogc.se_xml'
     + '&BBOX=' + map.getExtent().toBBOX()
     + '&X=' + Math.round(x)
@@ -183,7 +183,7 @@ Ext.onReady(function() {
   });
 
   // Define a handler to display Feature Info from a map click
-  OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {                
+  OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions:{
       'single':true,
       'double':false,
@@ -197,7 +197,7 @@ Ext.onReady(function() {
       );
       OpenLayers.Control.prototype.initialize.apply(
         this, arguments
-      ); 
+      );
       this.handler = new OpenLayers.Handler.Click(
         this, {
           'click':this.trigger
@@ -222,6 +222,10 @@ Ext.onReady(function() {
               if (!obsInfoDate) {obsInfoDate = 'No Observation';}
               obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
             }
+            obsTabPanel.setActiveTab(0);
+          } else { // No observations were found
+            var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
+            obsTabPanel.update(obsInfoText);
             obsTabPanel.setActiveTab(0);
           }
         },

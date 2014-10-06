@@ -172,7 +172,7 @@ function updateInputForm(clickedElement) {
     document.getElementById('id_groups').innerHTML = numGroups;
     if (numGroups != 0) averageScore = (totalScore/numGroups);
     document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
-    
+
     // Update the crab icon
     var riverCat = document.getElementById('id_river_cat').value;
     if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
@@ -475,12 +475,12 @@ function loadSelectedSite(combo,store){
 }
 
 function getFeatureInfoParams(x,y,infoFormat){
-/* This function returns a string containing parameters for a 
+/* This function returns a string containing parameters for a
    WMSGetFeatureInfo request of the minisass_observations layer.
 */
   var params = 'REQUEST=GetFeatureInfo'
     + '&SERVICE=WMS'
-    + '&VERSION=1.1.1' 
+    + '&VERSION=1.1.1'
     + '&EXCEPTIONS=application/vnd.ogc.se_xml'
     + '&BBOX=' + map.getExtent().toBBOX()
     + '&X=' + Math.round(x)
@@ -652,13 +652,13 @@ Ext.onReady(function() {
       );
       OpenLayers.Control.prototype.initialize.apply(
         this, arguments
-      ); 
+      );
       this.handler = new OpenLayers.Handler.Click(
         this, {
           'click':this.trigger
         }, this.handlerOptions
       );
-    }, 
+    },
     trigger:function(e) {
 
       // Get the click coordinates and convert them to lon/lat
@@ -730,13 +730,13 @@ Ext.onReady(function() {
       );
       OpenLayers.Control.prototype.initialize.apply(
         this, arguments
-      ); 
+      );
       this.handler = new OpenLayers.Handler.Click(
         this, {
           'click':this.trigger
         }, this.handlerOptions
       );
-    }, 
+    },
     trigger:function (e) {
       obsTabPanel.removeAll();
       infoWindow.show();
@@ -747,7 +747,7 @@ Ext.onReady(function() {
           if (response.responseText.length > 1) {
             // Split the observations into tabs and extract the dates
             var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
-            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1)
+            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1);
             var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
             obsTabPanel.update(obsInfoText);
             for (var i=1; i <= obsInfoCount; i++) {
@@ -755,6 +755,10 @@ Ext.onReady(function() {
               if (!obsInfoDate) {obsInfoDate = 'No Observation';}
               obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
             }
+            obsTabPanel.setActiveTab(0);
+          } else { // No observations were found
+            var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
+            obsTabPanel.update(obsInfoText);
             obsTabPanel.setActiveTab(0);
           }
         },
@@ -777,7 +781,7 @@ Ext.onReady(function() {
 
   function mapBaseLayerChanged(event) {
     // Toggle the Provinces layer on/off with the Google satellite layer
-    if (event.layer.name=='Google satellite') { 
+    if (event.layer.name=='Google satellite') {
       map.getLayersByName('Provinces')[0].setVisibility(true);
     } else {
       map.getLayersByName('Provinces')[0].setVisibility(false);
@@ -890,7 +894,7 @@ Ext.onReady(function() {
   // Add the info click controller
   infoClick = new OpenLayers.Control.InfoClick();
   map.addControl(infoClick);
-  
+
   // Setup the map panel
   var zoom_level = document.getElementById('id_zoom_level').value;
   var centreX = document.getElementById('id_centre_X').value;
