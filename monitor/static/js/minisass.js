@@ -750,7 +750,8 @@ Ext.onReady(function() {
             var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1);
             var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
             obsTabPanel.update(obsInfoText);
-            for (var i=1; i <= obsInfoCount; i++) {
+            // Display the dates in descending date order
+            for (var i=obsInfoCount; i >= 1; i--) {
               var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
               if (!obsInfoDate) {obsInfoDate = 'No Observation';}
               obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
