@@ -888,6 +888,14 @@ Ext.onReady(function() {
   // Add a layerswitcher
   map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
+  // Setup the coordinate display
+  map.addControl(new OpenLayers.Control.MousePosition({
+    separator:'&deg;E ',
+    suffix:"&deg;S",
+    numDigits:4,
+    emptyString:'',
+  }));
+
   // Add the map click controller
   mapClick = new OpenLayers.Control.MapClick();
   map.addControl(mapClick);
