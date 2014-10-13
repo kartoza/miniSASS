@@ -32,7 +32,7 @@
   width:140px;
   text-align:right;
   color:#000000;
-  text-shadow: 0px 0px 6px #ffffff;
+  text-shadow: 1px 0px 2px #ffffff, -1px 0px 2px #ffffff, 0px 1px 2px #ffffff, 0px -1px 2px #ffffff;
   padding:1px 2px 1px 2px;
 }
 
@@ -136,7 +136,7 @@
 #data_table_right .tdscore {
   text-align:center;
   font-weight:normal;
-  color:darkgray;
+  color:#a9a9a9;
 }
 
 #id_average_score, #id_crab_cell {
