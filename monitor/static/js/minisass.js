@@ -1149,9 +1149,10 @@ Ext.onReady(function() {
   mapClickWindow.show();
   mapClickWindow.hide();
 
-  // Link the Observation Info button
+  // Link the Observation Info button and activate it
   var buttonInfo = Ext.get('id_obs_info');
   buttonInfo.on('click', infoFromMap);
+  infoFromMap();
 
   // Link the Data Input button
   var buttonAdd = Ext.get('id_obs_add');

@@ -457,9 +457,10 @@ Ext.onReady(function() {
   infoWindow.show();
   infoWindow.hide();
 
-  // Link the Observation Info button
+  // Link the Observation Info button and activate it
   var buttonInfo = Ext.get('id_obs_info');
   buttonInfo.on('click', infoFromMap);
+  infoFromMap();
 
   // Define tooltips for the layer switcher
   document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
