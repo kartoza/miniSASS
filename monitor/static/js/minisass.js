@@ -435,12 +435,11 @@ function enableEditCoords(enable){
   document.getElementById('id_hem_w').disabled = disabled;
 }
 
-function loadSelectedSite(combo,store){
+function loadSelectedSite(selectedSite,store){
 /* This function loads the data from the selected site into the
    fields of the data input form and then disables editing of these
    fields.
 */
-  var selectedSite = combo.getValue();
   if (selectedSite != '') {
     resetInputForm();
     var siteRecord = store.getAt(store.find('site_gid',selectedSite));
@@ -760,7 +759,6 @@ Ext.onReady(function() {
           } else { // No observations were found
             var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
             obsTabPanel.update(obsInfoText);
-            obsTabPanel.setActiveTab(0);
           }
         },
         failure:function(response,opts){
@@ -864,12 +862,7 @@ Ext.onReady(function() {
   );
 
   // Add the layers to the map
-  map.addLayers([layerMiniSASSObs,layerSchools]);
-  if (localhost == true) {
-    map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
-  } else {
-    map.addLayers([layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
-  };
+  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
 
   // If necessary, restore layer visibility saved from a previous state
   var layerStr = document.getElementById('id_layers').value;
@@ -1038,7 +1031,26 @@ Ext.onReady(function() {
     closeAction:'hide',
     modal:false,
     constrain:true,
-    items:[obsTabPanel]
+    items:[obsTabPanel],
+    tools:[{
+      id:'plus',
+      qtip:'Add a new observation at this site',
+      handler:function(event, toolEl, panel){
+        var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
+        if (selectedTab >= 0){
+          // There are one or more observations displayed in the observation
+          // info window so work out which one is being displayed and then load
+          // it into the input form.
+          var observation = selectedTab + 1;
+          var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
+          console.log('Selected site: ' + selectedSite);
+          resetInputForm();
+          infoWindow.hide();
+          loadSelectedSite(selectedSite,storeSites);
+          inputWindow.show(this);
+        }
+      },
+    }],
   });
   infoWindow.show();
   infoWindow.hide();
@@ -1063,7 +1075,7 @@ Ext.onReady(function() {
       handler:function(){
         resetInputForm();
         siteWindow.hide();
-        loadSelectedSite(comboSites,storeSites);
+        loadSelectedSite(comboSites.getValue(),storeSites);
         comboSites.clearValue();
         inputWindow.show(this);
       }
@@ -1134,7 +1146,7 @@ Ext.onReady(function() {
           handler:function(){
             resetInputForm();
             mapClickWindow.hide();
-            loadSelectedSite(comboNearbySites,storeNearbySites);
+            loadSelectedSite(comboNearbySites.getValue(),storeNearbySites);
             inputWindow.show(this);
           }
         }]

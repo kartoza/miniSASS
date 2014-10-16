@@ -328,12 +328,7 @@ Ext.onReady(function() {
   );
 
   // Add the layers to the map
-  map.addLayers([layerMiniSASSObs,layerSchools]);
-  if (localhost == true) {
-    map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
-  } else {
-    map.addLayers([layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
-  };
+  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
 
   // If necessary, restore layer visibility saved from a previous state
   var layerStr = document.getElementById('id_layers').value;

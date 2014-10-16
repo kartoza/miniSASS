@@ -12,6 +12,7 @@ ${observation}#
   <#list features as feature>
   <#assign observation = observation + 1>
   <div id="id_tab_${observation}" class="x-hide-display">
+    <input type="hidden" name="name_sites_gid_${observation}" value="${feature.sites_gid.value}" id="id_sites_gid_${observation}" />
     <table id="id_obs_${observation}" class="featureInfo">
       <tr>
         <td id="obs_site_details">
