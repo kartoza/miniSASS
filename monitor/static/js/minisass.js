@@ -8,11 +8,21 @@ var localhost = false;
 var geoserverURL;
 var geoserverCachedURL;
 var map;
+var layerGoogleSatellite;
+var layerGoogleTerrain;
+var layerGoogleRoadmap;
+var layerMiniSASSBase;
+var layerProvinces;
+var layerSchools;
+var layerMiniSASSObs;
 var mapClick;
 var infoClick;
 var inputWindow;
 var infoWindow;
 var siteWindow;
+var filterWindow;
+var filtered = false;
+var cqlFilter = '';
 var messagePanel;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
@@ -300,7 +310,7 @@ function canSubmit(){
 
 function inputFromMap(){
 /* This function toggles the 'input from map' button image, changes the
-   map cursor and then activates/deactivates the mapClick control
+   map cursor and then activates/deactivates the mapClick control.
 */
   if (userFunction != 'mapclick') {
     document.getElementById('id_obs_map').src = '/static/img/button_obs_map_selected.png';
@@ -326,7 +336,7 @@ function inputFromMap(){
 
 function infoFromMap(){
 /* This function toggles the 'info from map' button image, changes the
-   map cursor and then activates/deactivates the infoClick control
+   map cursor and then activates/deactivates the infoClick control.
 */
   if (userFunction != 'infoclick') {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
@@ -493,6 +503,113 @@ function getFeatureInfoParams(x,y,infoFormat){
     + '&WIDTH=' + map.size.w
     + '&HEIGHT=' + map.size.h;
   return params;
+}
+
+function filterApply(){
+/* This function applies a user-defined filter to the observations and then
+ * updates the map.
+*/
+  // Get the values entered by the user
+  var river_name = Ext.getCmp('id_filter_river').getValue();
+  var sitename = Ext.getCmp('id_filter_sitename').getValue();
+  var river_cat = Ext.getCmp('id_filter_category').getValue();
+  var username = Ext.getCmp('id_filter_username').getValue();
+  var organisation_name = Ext.getCmp('id_filter_organisation').getValue();
+  var scoremin = Ext.getCmp('id_filter_scoremin').getValue();
+  var scoremax = Ext.getCmp('id_filter_scoremax').getValue();
+  var datestart = Ext.getCmp('id_filter_datestart').getRawValue();
+  var dateend = Ext.getCmp('id_filter_dateend').getRawValue();
+  var flag = Ext.getCmp('id_filter_flag').getValue();
+  var flatworms = Ext.getCmp('id_filter_flatworms').getValue();
+  var worms = Ext.getCmp('id_filter_worms').getValue();
+  var leeches = Ext.getCmp('id_filter_leeches').getValue();
+  var crabs_shrimps = Ext.getCmp('id_filter_crabsshrimps').getValue();
+  var stoneflies = Ext.getCmp('id_filter_stoneflies').getValue();
+  var minnow_mayflies = Ext.getCmp('id_filter_minnowmayflies').getValue();
+  var other_mayflies = Ext.getCmp('id_filter_othermayflies').getValue();
+  var damselflies = Ext.getCmp('id_filter_damselflies').getValue();
+  var dragonflies = Ext.getCmp('id_filter_dragonflies').getValue();
+  var bugs_beetles = Ext.getCmp('id_filter_bugsbeetles').getValue();
+  var caddisflies = Ext.getCmp('id_filter_caddisflies').getValue();
+  var true_flies = Ext.getCmp('id_filter_trueflies').getValue();
+  var snails = Ext.getCmp('id_filter_snails').getValue();
+
+  // Build the filter string
+  cqlFilter = '';
+  if (river_name != '') cqlFilter += "river_name ILIKE '%" + river_name + "%' AND ";
+  if (sitename != '') cqlFilter += "site_name ILIKE '%" + sitename + "%' AND ";
+  if (river_cat == 'Rocky' || river_cat == 'Sandy') cqlFilter += "river_cat ILIKE '%" + river_cat + "%' AND ";
+  if (username != '') cqlFilter += "username ILIKE '%" + username + "%' AND ";
+  if (organisation_name != '') cqlFilter += "organisation_name ILIKE '%" + organisation_name + "%' AND ";
+  if (scoremin != '') cqlFilter += "score>=" + scoremin + " AND ";
+  if (scoremax != '') cqlFilter += "score<=" + scoremax + " AND ";
+  if (datestart != '') cqlFilter += "obs_date>='" + datestart + "' AND ";
+  if (dateend != '') cqlFilter += "obs_date<='" + dateend + "' AND ";
+  if (flag == 'Verified') cqlFilter += "flag='clean' AND ";
+  if (flag == 'Unverified') cqlFilter += "flag='dirty' AND ";
+  if (flatworms != '') cqlFilter += "flatworms=" + flatworms + " AND ";
+  if (worms != '') cqlFilter += "worms=" + worms + " AND ";
+  if (leeches != '') cqlFilter += "leeches=" + leeches + " AND ";
+  if (crabs_shrimps != '') cqlFilter += "crabs_shrimps=" + crabs_shrimps + " AND ";
+  if (stoneflies != '') cqlFilter += "stoneflies=" + stoneflies + " AND ";
+  if (minnow_mayflies != '') cqlFilter += "minnow_mayflies=" + minnow_mayflies + " AND ";
+  if (other_mayflies != '') cqlFilter += "other_mayflies=" + other_mayflies + " AND ";
+  if (damselflies != '') cqlFilter += "damselflies=" + damselflies + " AND ";
+  if (dragonflies != '') cqlFilter += "dragonflies=" + dragonflies + " AND ";
+  if (bugs_beetles != '') cqlFilter += "bugs_beetles=" + bugs_beetles + " AND ";
+  if (caddisflies != '') cqlFilter += "caddisflies=" + caddisflies + " AND ";
+  if (true_flies != '') cqlFilter += "true_flies=" + true_flies + " AND ";
+  if (snails != '') cqlFilter += "snails=" + snails + " AND ";
+
+  // Apply the filter
+  if (cqlFilter != '') {
+    cqlFilter = cqlFilter.replace(/ AND $/,'');
+    layerMiniSASSObs.mergeNewParams({'CQL_FILTER':cqlFilter});
+    document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter_clear.png';
+    document.getElementById('id_obs_filtertext').innerHTML = 'Remove the filter';
+    document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations (Filtered)';
+    filtered = true;
+  } else filterRemove();
+}
+
+function filterRemove(){
+/* This function removes the user-defined filter from the observations and then
+ * updates the map to show all the observations. The filter form is also cleared.
+*/
+  // Remove the filter and redraw the layer
+  delete layerMiniSASSObs.params.CQL_FILTER;
+  layerMiniSASSObs.redraw();
+
+  // Clear the filter form
+  Ext.getCmp('id_filter_river').setValue();
+  Ext.getCmp('id_filter_sitename').setValue();
+  Ext.getCmp('id_filter_category').setValue('All');
+  Ext.getCmp('id_filter_username').setValue();
+  Ext.getCmp('id_filter_organisation').setValue();
+  Ext.getCmp('id_filter_scoremin').setValue();
+  Ext.getCmp('id_filter_scoremax').setValue();
+  Ext.getCmp('id_filter_datestart').setRawValue();
+  Ext.getCmp('id_filter_dateend').setRawValue();
+  Ext.getCmp('id_filter_flag').setValue('All');
+  Ext.getCmp('id_filter_flatworms').setValue();
+  Ext.getCmp('id_filter_worms').setValue();
+  Ext.getCmp('id_filter_leeches').setValue();
+  Ext.getCmp('id_filter_crabsshrimps').setValue();
+  Ext.getCmp('id_filter_stoneflies').setValue();
+  Ext.getCmp('id_filter_minnowmayflies').setValue();
+  Ext.getCmp('id_filter_othermayflies').setValue();
+  Ext.getCmp('id_filter_damselflies').setValue();
+  Ext.getCmp('id_filter_dragonflies').setValue();
+  Ext.getCmp('id_filter_bugsbeetles').setValue();
+  Ext.getCmp('id_filter_caddisflies').setValue();
+  Ext.getCmp('id_filter_trueflies').setValue();
+  Ext.getCmp('id_filter_snails').setValue();
+
+  // Reset the filter elements
+  document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter.png';
+  document.getElementById('id_obs_filtertext').innerHTML = 'Filter observations';
+  document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
+  filtered = false;
 }
 
 function zoomFull() {
@@ -816,21 +933,21 @@ Ext.onReady(function() {
   };
 
   // Define the Google layers as base layers
-  var layerGoogleSatellite = new OpenLayers.Layer.Google(
+  layerGoogleSatellite = new OpenLayers.Layer.Google(
     'Google satellite',
     {type:google.maps.MapTypeId.SATELLITE,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
-  var layerGoogleTerrain = new OpenLayers.Layer.Google(
+  layerGoogleTerrain = new OpenLayers.Layer.Google(
     'Google terrain',
     {type:google.maps.MapTypeId.TERRAIN,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
-  var layerGoogleRoadmap = new OpenLayers.Layer.Google(
+  layerGoogleRoadmap = new OpenLayers.Layer.Google(
     'Google road map',
     {type:google.maps.MapTypeId.ROADMAP,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
 
   // Define the miniSASS composite layer as a base layer
-  var layerMiniSASSBase = new OpenLayers.Layer.WMS(
+  layerMiniSASSBase = new OpenLayers.Layer.WMS(
     'Rivers and Catchments',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_base',format:'image/png'},
@@ -838,7 +955,7 @@ Ext.onReady(function() {
   );
 
   // Define the provinces layer
-  var layerProvinces = new OpenLayers.Layer.WMS(
+  layerProvinces = new OpenLayers.Layer.WMS(
     'Provinces',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
@@ -846,7 +963,7 @@ Ext.onReady(function() {
   );
 
   // Define the schools layer as an overlay
-  var layerSchools = new OpenLayers.Layer.WMS(
+  layerSchools = new OpenLayers.Layer.WMS(
     'Schools',
     geoserverURL,
     {layers:'miniSASS:schools',transparent:true,format:'image/png'},
@@ -854,7 +971,7 @@ Ext.onReady(function() {
   );
 
   // Define the miniSASS observations as an overlay
-  var layerMiniSASSObs = new OpenLayers.Layer.WMS(
+  layerMiniSASSObs = new OpenLayers.Layer.WMS(
     'miniSASS Observations',
     geoserverURL,
     {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
@@ -1161,6 +1278,156 @@ Ext.onReady(function() {
   mapClickWindow.show();
   mapClickWindow.hide();
 
+  // Define a window for filtering miniSASS observations
+  filterWindow = new Ext.Window({
+    title:'Filter Observations',
+    width:470,
+    height:420,
+    layout:'fit',
+    bodyStyle:'padding:5px;',
+    closeAction:'hide',
+    modal:false,
+    constrain:true,
+    items:[
+      {
+        xtype:'form',
+        layout:'column',
+        defaults:{
+          layout:'form',
+          border:false,
+          bodyStyle:'padding:5px'
+        },
+        items:[
+          { // Column 1
+            columnWidth:0.65,
+            defaults:{
+              width:120
+            },
+            items:[
+              {
+                xtype:'label',
+                fieldLabel:'',
+                html:'You can filter observations using one or more of the criteria on this form. For text fields you can enter part or all of the name.<br />&nbsp;',
+              },{
+                xtype:'textfield',
+                fieldLabel:'River name',
+                id:'id_filter_river',
+              },{
+                xtype:'textfield',
+                fieldLabel:'Site name',
+                id:'id_filter_sitename',
+              },{
+                xtype:'combo',
+                fieldLabel:'River category',
+                id:'id_filter_category',
+                store:['All','Rocky','Sandy'],
+                triggerAction:'all',
+                value:'All',
+              },{
+                xtype:'textfield',
+                fieldLabel:'User name',
+                id:'id_filter_username',
+              },{
+                xtype:'textfield',
+                fieldLabel:'Organisation',
+                id:'id_filter_organisation',
+              },{
+                xtype:'numberfield',
+                fieldLabel:'Minimum score',
+                id:'id_filter_scoremin',
+              },{
+                xtype:'numberfield',
+                fieldLabel:'Maximum score',
+                id:'id_filter_scoremax',
+              },{
+                xtype:'datefield',
+                fieldLabel:'Start date',
+                id:'id_filter_datestart',
+                format:"Y-m-d",
+              },{
+                xtype:'datefield',
+                fieldLabel:'End date',
+                id:'id_filter_dateend',
+                format:"Y-m-d",
+              },{
+                xtype:'combo',
+                fieldLabel:'Status',
+                id:'id_filter_flag',
+                store:['All','Verified','Unverified'],
+                triggerAction:'all',
+                value:'All',
+              },
+            ]
+          },{ // Column 2
+            columnWidth:0.35,
+            defaultType:'checkbox',
+            items:[
+              {
+                fieldLabel:'Flat worms',
+                id:'id_filter_flatworms',
+              },{
+                fieldLabel:'Worms',
+                id:'id_filter_worms',
+              },{
+                fieldLabel:'Leeches',
+                id:'id_filter_leeches',
+              },{
+                fieldLabel:'Crabs/Shimps',
+                id:'id_filter_crabsshrimps',
+              },{
+                fieldLabel:'Stoneflies',
+                id:'id_filter_stoneflies',
+              },{
+                fieldLabel:'Minnow mayflies',
+                id:'id_filter_minnowmayflies',
+              },{
+                fieldLabel:'Other mayflies',
+                id:'id_filter_othermayflies',
+              },{
+                fieldLabel:'Damselflies',
+                id:'id_filter_damselflies',
+              },{
+                fieldLabel:'Dragonflies',
+                id:'id_filter_dragonflies',
+              },{
+                fieldLabel:'Bugs/beetles',
+                id:'id_filter_bugsbeetles',
+              },{
+                fieldLabel:'Caddisflies',
+                id:'id_filter_caddisflies',
+              },{
+                fieldLabel:'True flies',
+                id:'id_filter_trueflies',
+              },{
+                fieldLabel:'Snails',
+                id:'id_filter_snails',
+              },
+            ],
+          }
+        ],
+      },
+    ],
+    buttons:[
+      {
+        text:'Apply Filter',
+        tooltip:'Apply the filter',
+        handler:function(){filterApply();}
+      },{
+        text:'Remove Filter',
+        tooltip:'Remove the filter',
+        handler:function(){filterRemove();}
+      },{
+        text:'Close',
+        tooltip:'Apply the filter and close this window',
+        handler:function(){filterApply();filterWindow.hide();}
+      },{
+        text:'Cancel',
+        tooltip:'Remove the filter and close this window',
+        handler:function(){filterRemove();filterWindow.hide();}
+      },
+    ],
+  });
+
   // Link the Observation Info button and activate it
   var buttonInfo = Ext.get('id_obs_info');
   buttonInfo.on('click', infoFromMap);
@@ -1177,6 +1444,13 @@ Ext.onReady(function() {
   // Link the Site List input button
   var buttonList = Ext.get('id_obs_list');
   buttonList.on('click', function(){siteWindow.show(this);});
+
+  // Link the Filter Observations button
+  var buttonInfo = Ext.get('id_obs_filter');
+  buttonInfo.on('click', function(){
+    if (filtered){filterRemove();filterWindow.hide();}
+    else filterWindow.show(this);
+  });
 
   // Re-open the Data Input window if an error has been returned
   if (document.getElementById('id_error').value == 'true'){

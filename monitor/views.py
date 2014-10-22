@@ -14,10 +14,10 @@ from django.db import connection
 import urllib2
 
 def index(request):
-    """ The 'landing page' for the monitor application 
+    """ The 'landing page' for the monitor application
         Displays a map and handles data input
     """
-    
+
     # Process the POST data, if any
     if request.method == 'POST':
         # Create form instances with the POST data
@@ -42,7 +42,7 @@ def index(request):
             post_values = request.POST.copy()
             post_values['edit_site'] = 'true'
             map_form = MapForm(post_values)
-            return render_to_response('monitor/index.html', 
+            return render_to_response('monitor/index.html',
                                       {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                                       context_instance=RequestContext(request))
         else:
@@ -54,7 +54,7 @@ def index(request):
         observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
         coords_form = CoordsForm()
         map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false'})
-    return render_to_response('monitor/index.html', 
+    return render_to_response('monitor/index.html',
                               {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                               context_instance=RequestContext(request))
 
@@ -65,8 +65,8 @@ def observations(request):
     observations = models.observations.objects.all().order_by('-time_stamp')[:10]
 
     # render the home page
-    return render_to_response('monitor/observations.html', 
-                              {'observations':observations}, 
+    return render_to_response('monitor/observations.html',
+                              {'observations':observations},
                               context_instance=RequestContext(request))
 
 def detail(request, monitor_id):
@@ -110,28 +110,28 @@ def get_schools(request):
 
     search_str = request.GET['query']
     schools_returned = Schools.objects.filter(school__istartswith=search_str).order_by('school')
-     
+
     return render_to_response('monitor/schools.html',
                               {'schools':schools_returned},
                               context_instance=RequestContext(request))
 
 def zoom_observation(request, obs_id):
-    """ 
+    """
     Zoom to a miniSASS observation - Find the coordinates for an observation
     obs_id, convert them to Google projection coordinates and then return a
-    map_form containing these coordinates 
+    map_form containing these coordinates
     """
 
     # observation = Observations.objects.get(pk=obs_id)
     # Select statement converts coordinates to Google projection
     # select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s' % obs_id
     select_stmt = """
-        SELECT  s.gid, 
-                ST_X(ST_Transform(s.the_geom,3857)) as x, 
-                ST_Y(ST_Transform(s.the_geom,3857)) as y 
-        FROM    sites s, 
-                observations o 
-        WHERE   s.gid = o.site 
+        SELECT  s.gid,
+                ST_X(ST_Transform(s.the_geom,3857)) as x,
+                ST_Y(ST_Transform(s.the_geom,3857)) as y
+        FROM    sites s,
+                observations o
+        WHERE   s.gid = o.site
         and     o.gid = %s;
     """ % obs_id
     cursor = connection.cursor()
