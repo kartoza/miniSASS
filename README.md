@@ -3,7 +3,7 @@ miniSASS
 
 miniSASS web application and CMS
 
-Copyright (C) 2013 Water Research Commission 
+Copyright (C) 2013-2014 Water Research Commission 
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -15,11 +15,11 @@ Contact: Frank Sokolic frank@gis-solutions.co.za
 
 Authors
 
-Frank Sokolic, GIS-Solutions 2013
+Frank Sokolic, GIS-Solutions 2013-2014
 
-Gavin Fleming, AfriSpatial 2013
+Gavin Fleming, Kartoza 2013-2014
 
 Jurgen Blignaut, Webtide 2013
 
-Simon Bruton, GroundTruth 2013
+Simon Bruton, GroundTruth 2013-2014
 
