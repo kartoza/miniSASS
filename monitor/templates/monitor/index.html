@@ -93,7 +93,7 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Enter observation
             </td>
@@ -103,7 +103,7 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Click site on map
             </td>
@@ -111,7 +111,7 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Select site from list
             </td>

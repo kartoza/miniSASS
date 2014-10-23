@@ -17,6 +17,7 @@ var layerSchools;
 var layerMiniSASSObs;
 var infoClick;
 var infoWindow;
+var redirectWindow;
 var filterWindow;
 var filtered = false;
 var cqlFilter = '';
@@ -569,11 +570,6 @@ Ext.onReady(function() {
   infoWindow.show();
   infoWindow.hide();
 
-  // Link the Observation Info button and activate it
-  var buttonInfo = Ext.get('id_obs_info');
-  buttonInfo.on('click', infoFromMap);
-  infoFromMap();
-
   // Define a window for filtering miniSASS observations
   filterWindow = new Ext.Window({
     title:'Filter Observations',
@@ -723,6 +719,58 @@ Ext.onReady(function() {
       },
     ],
   });
+
+  // Define a window redirecting users to the login or register views
+  redirectWindow = new Ext.Window({
+    title:'Not logged in',
+    width:240,
+    height:140,
+    closeAction:'hide',
+    modal:true,
+    constrain:true,
+    items:new Ext.Panel({
+      border:false,
+      bodyStyle:'padding:5px;background:#dfe8f6;',
+      html:'This tool is not active as you are not logged in. Please log in or register by clicking one of the buttons below.'
+    }),
+    buttons:[{
+      text:'Login',
+      tooltip:'Go to the Login page',
+      width:60,
+      handler:function(){
+        document.location.href = '/en/accounts/login/?next=/en/map/';
+      }
+    },{
+      text:'Register',
+      tooltip:'Go to the Register page',
+      width:60,
+      handler:function(){
+        document.location.href = '/en/accounts/register/';
+      }
+    },{
+      text:'Cancel',
+      tooltip:'Close this window and return to the map',
+      width:60,
+      handler:function(){redirectWindow.hide();}
+    }]
+  });
+
+  // Link the Observation Info button and activate it
+  var buttonInfo = Ext.get('id_obs_info');
+  buttonInfo.on('click', infoFromMap);
+  infoFromMap();
+
+  // Link the Data Input button
+  var buttonAdd = Ext.get('id_obs_add');
+  buttonAdd.on('click', function(){redirectWindow.show(this);});
+
+  // Link the Map Click input button
+  var buttonMap = Ext.get('id_obs_map');
+  buttonMap.on('click', function(){redirectWindow.show(this);});
+
+  // Link the Site List input button
+  var buttonList = Ext.get('id_obs_list');
+  buttonList.on('click', function(){redirectWindow.show(this);});
 
   // Link the Filter Observations button
   var buttonInfo = Ext.get('id_obs_filter');
