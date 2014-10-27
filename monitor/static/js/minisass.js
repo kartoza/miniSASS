@@ -563,7 +563,7 @@ function loadSelectedSite(selectedSite,store){
     document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(6);
     if (siteRecord.get('latitude').toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
     else document.getElementById('id_hem_n').checked = true;
-    if (siteRecord.get('longiitude').toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    if (siteRecord.get('longitude').toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
     else document.getElementById('id_hem_e').checked = true;
 
     // Link the observation to the site id
