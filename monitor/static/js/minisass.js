@@ -1100,10 +1100,17 @@ Ext.onReady(function() {
 
   // Setup the coordinate display
   map.addControl(new OpenLayers.Control.MousePosition({
-    separator:'&deg;E ',
-    suffix:"&deg;S",
     numDigits:4,
     emptyString:'',
+    formatOutput:function(coords){
+      if (coords.lat < 0) var hemNS = 'S'
+      else var hemNS = 'N';
+      if (coords.lon < 0) var hemEW = 'W'
+      else var hemEW = 'E';
+      var markup = coords.lat.toFixed(4) + '&deg;' + hemNS + ' ';
+      markup += coords.lon.toFixed(4) + '&deg;' + hemEW;
+      return markup;
+    },
   }));
 
   // Add the map click controller
