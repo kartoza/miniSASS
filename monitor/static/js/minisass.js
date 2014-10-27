@@ -15,6 +15,7 @@ var layerMiniSASSBase;
 var layerProvinces;
 var layerSchools;
 var layerMiniSASSObs;
+var layerMarker;
 var mapClick;
 var infoClick;
 var inputWindow;
@@ -24,6 +25,8 @@ var filterWindow;
 var filtered = false;
 var cqlFilter = '';
 var messagePanel;
+var modifyControl;
+var markerPoint;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
 var clickCoords;          // Map click coordinates
@@ -35,8 +38,7 @@ var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
 var comboZoomSchools;     // A combobox for zooming to schools
 var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
-var editSite = 'true';      // Keep track of whether site data can be edited or not
-var editCoords = 'true';    // Keep track of whether coordinates can be edited or not
+var editSite = true;      // Keep track of whether site data can be edited or not
 var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
            + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
            + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
@@ -130,8 +132,127 @@ function coords(format) {
     document.getElementById('id_lon_d').style.display = 'none';
     document.getElementById('id_lon_m').style.display = 'none';
     document.getElementById('id_lon_s').style.display = 'none';
-    document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
-    document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
+    document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+    document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
+  }
+}
+
+function updateCoords(event) {
+/* This function updates the latitude and longitude in the Data Input window
+ * when the user drags the site marker to a new position on the screen.
+ */
+    // Get the marker coordinates and reproject them
+    var xyCoords = new OpenLayers.LonLat(event.feature.geometry.x,event.feature.geometry.y);
+    xyCoords.transform(proj3857,proj4326);
+
+    // Update the lat/lon text fields and hemisphere selectors
+    document.getElementById('id_latitude').value = xyCoords.lat.toFixed(6);
+    document.getElementById('id_longitude').value = xyCoords.lon.toFixed(6);
+    if (xyCoords.lat.toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (xyCoords.lon.toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
+
+    if (document.getElementById('id_DMS').checked) {
+      coords('DMS');
+    }
+}
+
+function zoomToCoords() {
+/* This function zooms the map to the coordinates shown in the Data Input
+ * window. If the user is entering a new site then the marker can be dragged
+ * to a new position and the coordinates in the Data Input window are
+ * automatically updated.
+*/
+  if (document.getElementById('id_DMS').checked==true){
+    var coords = convertDMStoDD();
+    var latitude = coords[0];
+    var longitude = coords[1];
+  } else {
+    var latitude = parseFloat(document.getElementById('id_latitude').value);
+    var longitude = parseFloat(document.getElementById('id_longitude').value);
+    // Make sure the coordinates have the correct sign
+    var hemS = document.getElementById('id_hem_s').checked;
+    var hemW = document.getElementById('id_hem_w').checked;
+    if (hemS && (latitude > 0)) latitude = -1 * latitude;
+    if (hemW && (longitude > 0)) longitude = -1 * longitude;
+    if (!hemS && (latitude < 0)) latitude = -1 * latitude;
+    if (!hemW && (longitude < 0)) longitude = -1 * longitude;
+  }
+  if (latitude && longitude && (latitude != 0 || longitude != 0)){
+    // Zoom the map to the coordinates
+    var xyCoords = new OpenLayers.LonLat(longitude,latitude);
+    map.setCenter(xyCoords.transform(proj4326, proj3857),13);
+
+    // Setup the marker layer
+    if (layerMarker) {
+      // The marker layer already exists so update the coordinates
+      markerPoint.x = longitude;
+      markerPoint.y = latitude;
+      // Reset the marker size
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+    } else {
+      // The marker layer doesn't exist so create it
+      var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+      renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+      layerMarker = new OpenLayers.Layer.Vector(
+        "Site Location",
+        {renderers:renderer}
+      );
+
+      // Add the marker layer to the map
+      map.addLayer(layerMarker);
+
+      // Create a control for moving the marker
+      modifyControl = new OpenLayers.Control.ModifyFeature(layerMarker);
+      map.addControl(modifyControl);
+
+      // Update the coordinates in the form when the marker is dragged
+      layerMarker.events.on({featuremodified:updateCoords});
+
+      // Set a default marker style
+      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '3';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#00ff00';
+      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#00ff00';
+      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '3';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#00aa00';
+      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#00aa00';
+
+      // Create the marker and add it to the marker layer
+      markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
+      layerMarker.addFeatures(new OpenLayers.Feature.Vector(markerPoint));
+    }
+    markerPoint.transform(proj4326, proj3857);
+    layerMarker.redraw();
+
+    // If site editing is allowed then allow the user to move the marker
+    if (editSite == true){
+      modifyControl.activate();
+      // Deactivate the map click and info click functions
+      userFunction = 'mapclick';
+      inputFromMap();
+      userFunction = 'infoclick';
+      infoFromMap();
+      Ext.Msg.alert('Site Marker', 'The green circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+    } else {
+      modifyControl.deactivate();
+    }
+  } else {
+    Ext.Msg.alert('Invalid Coordinates', 'The coordinates you have entered are invalid.<br />Please check them.');
+  }
+}
+
+function hideMarker() {
+/* This function hides the marker showing the location of the site coordinates
+ * on the map.
+ */
+  if (layerMarker) {
+    OpenLayers.Feature.Vector.style['default']['pointRadius'] = '0';
+    OpenLayers.Feature.Vector.style['select']['pointRadius'] = '0';
+    layerMarker.redraw();
   }
 }
 
@@ -222,10 +343,8 @@ function updateInputForm(clickedElement) {
 
   }
 
-  // Enable/disable site and coordinate editing as necessary
+  // Enable/disable site editing as necessary
   enableEditSite(editSite);
-  enableEditCoords(editCoords);
-
 }
 
 function canSubmit(){
@@ -261,11 +380,11 @@ function canSubmit(){
     Ext.Msg.alert('Date Error', 'Please enter a valid date');
     return false;
   } else { // All the required fields are present
-    if ((editSite == 'true') || (editCoords == 'true')) {
+    if (editSite == true) {
       // convert coordinates to DD if they've been entered as DMS
       if (document.getElementById('id_DMS').checked==true) {
-        document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
-        document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
+        document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+        document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
       }
 
       // make sure the coordinates have the correct sign
@@ -284,7 +403,7 @@ function canSubmit(){
           document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
       };
     };
-    enableEditSite('true');
+    enableEditSite(true);
 
     // update the geometry field
     var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
@@ -391,8 +510,7 @@ function resetInputForm(){
   updateInputForm('');
 
   // Enable the controls for site input variables
-  editSite = 'true';
-  editCoords = 'true';
+  editSite = true;
   enableEditSite(editSite)
   document.getElementById('id_edit_site').value = 'true';
 
@@ -405,44 +523,22 @@ function enableEditSite(enable){
 /* This function enables or disables editing of site-related variables
    in the data input form.
 */
-  var disabled = false;
-  if (enable == 'false') disabled = true;
-  document.getElementById('id_river_name').disabled = disabled;
-  document.getElementById('id_site_name').disabled = disabled;
-  document.getElementById('id_description').disabled = disabled;
-  document.getElementById('id_river_cat').disabled = disabled;
-  document.getElementById('id_latitude').disabled = disabled;
-  document.getElementById('id_lat_d').disabled = disabled;
-  document.getElementById('id_lat_m').disabled = disabled;
-  document.getElementById('id_lat_s').disabled = disabled;
-  document.getElementById('id_longitude').disabled = disabled;
-  document.getElementById('id_lon_d').disabled = disabled;
-  document.getElementById('id_lon_m').disabled = disabled;
-  document.getElementById('id_lon_s').disabled = disabled;
-  document.getElementById('id_hem_n').disabled = disabled;
-  document.getElementById('id_hem_s').disabled = disabled;
-  document.getElementById('id_hem_e').disabled = disabled;
-  document.getElementById('id_hem_w').disabled = disabled;
-}
-
-function enableEditCoords(enable){
-/* This function enables or disables editing of the site coordinates
-   in the data input form.
-*/
-  var disabled = false;
-  if (enable == 'false') disabled = true;
-  document.getElementById('id_latitude').disabled = disabled;
-  document.getElementById('id_lat_d').disabled = disabled;
-  document.getElementById('id_lat_m').disabled = disabled;
-  document.getElementById('id_lat_s').disabled = disabled;
-  document.getElementById('id_longitude').disabled = disabled;
-  document.getElementById('id_lon_d').disabled = disabled;
-  document.getElementById('id_lon_m').disabled = disabled;
-  document.getElementById('id_lon_s').disabled = disabled;
-  document.getElementById('id_hem_n').disabled = disabled;
-  document.getElementById('id_hem_s').disabled = disabled;
-  document.getElementById('id_hem_e').disabled = disabled;
-  document.getElementById('id_hem_w').disabled = disabled;
+  document.getElementById('id_river_name').disabled = !enable;
+  document.getElementById('id_site_name').disabled = !enable;
+  document.getElementById('id_description').disabled = !enable;
+  document.getElementById('id_river_cat').disabled = !enable;
+  document.getElementById('id_latitude').disabled = !enable;
+  document.getElementById('id_lat_d').disabled = !enable;
+  document.getElementById('id_lat_m').disabled = !enable;
+  document.getElementById('id_lat_s').disabled = !enable;
+  document.getElementById('id_longitude').disabled = !enable;
+  document.getElementById('id_lon_d').disabled = !enable;
+  document.getElementById('id_lon_m').disabled = !enable;
+  document.getElementById('id_lon_s').disabled = !enable;
+  document.getElementById('id_hem_n').disabled = !enable;
+  document.getElementById('id_hem_s').disabled = !enable;
+  document.getElementById('id_hem_e').disabled = !enable;
+  document.getElementById('id_hem_w').disabled = !enable;
 }
 
 function loadSelectedSite(selectedSite,store){
@@ -463,14 +559,18 @@ function loadSelectedSite(selectedSite,store){
     } else if (siteRecord.get('river_cat') == 'sandy'){
       document.getElementById('id_river_cat').selectedIndex = 2;
     } else document.getElementById('id_river_cat').selectedIndex = 0;
-    document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(5);
-    document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(5);
+    document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(6);
+    document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(6);
+    if (siteRecord.get('latitude').toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (siteRecord.get('longiitude').toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
 
     // Link the observation to the site id
     document.getElementById('id_site').value = siteRecord.get('site_gid');
 
     // Disable the site input controls and variables
-    editSite = 'false';
+    editSite = false;
     enableEditSite(editSite);
     document.getElementById('id_edit_site').value = 'false';
 
@@ -815,8 +915,8 @@ Ext.onReady(function() {
         };
 
         clickCoords.transform(proj3857, proj4326);
-        var lat = clickCoords.lat.toFixed(5);
-        var lon = clickCoords.lon.toFixed(5);
+        var lat = clickCoords.lat.toFixed(6);
+        var lon = clickCoords.lon.toFixed(6);
         var msg = 'You clicked at:<br />&nbsp;&nbsp;'
           + 'Latitude ' + lat + '&deg;<br />&nbsp;&nbsp;'
           + 'Longitude ' + lon + '&deg;<br />'
@@ -1094,7 +1194,8 @@ Ext.onReady(function() {
     width:570,
     height:470,
     closeAction:'hide',
-    modal:true,
+    modal:false,
+    x:20,
     items:new Ext.Panel({
       applyTo:'data_panel',
       border:false
@@ -1108,14 +1209,17 @@ Ext.onReady(function() {
     },{
       text:'Close',
       tooltip:'Close this window but keep any data that has been entered',
-      handler:function(){inputWindow.hide();}
+      handler:function(){hideMarker();inputWindow.hide();}
     },{
       text:'Cancel',
       tooltip:'Close this window and erase any data that has been entered',
-      handler:function(){resetInputForm();inputWindow.hide();}
-    }]
+      handler:function(){hideMarker();resetInputForm();inputWindow.hide();}
+    }],
+    listeners:{
+      'hide':function(win){hideMarker();},
+    },
   });
-  editSite = document.getElementById('id_edit_site').value;
+  editSite = (document.getElementById('id_edit_site').value === 'true');
   updateInputForm('');
 
   // Define a datepick widget
@@ -1230,8 +1334,8 @@ Ext.onReady(function() {
           tooltip:'Create a new observation site',
           handler:function(){
             resetInputForm();
-            document.getElementById('id_latitude').value = clickCoords.lat.toFixed(5);
-            document.getElementById('id_longitude').value = clickCoords.lon.toFixed(5);
+            document.getElementById('id_latitude').value = clickCoords.lat.toFixed(6);
+            document.getElementById('id_longitude').value = clickCoords.lon.toFixed(6);
             if (clickCoords.lat < 0) {
               document.getElementById('id_hem_s').checked = true;
             } else {
@@ -1244,8 +1348,6 @@ Ext.onReady(function() {
             }
             map.setCenter(clickCoords.transform(proj4326, proj3857),15);
             mapClickWindow.hide();
-            editCoords = 'false';
-            enableEditCoords(editCoords);
             inputWindow.show(this);
           }
         }]
@@ -1450,6 +1552,14 @@ Ext.onReady(function() {
   buttonInfo.on('click', function(){
     if (filtered){filterRemove();filterWindow.hide();}
     else filterWindow.show(this);
+  });
+
+  // Create a button for checking user-entered coordinates
+  var buttonCheckCoords = new Ext.Button({
+    renderTo:'id_check_coords',
+    text:'Show on map',
+    tooltip:'Zoom the map to the latitude/longitude coordinates',
+    handler:function(){zoomToCoords();},
   });
 
   // Re-open the Data Input window if an error has been returned
