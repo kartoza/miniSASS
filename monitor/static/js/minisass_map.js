@@ -77,6 +77,7 @@ function getFeatureInfoParams(x,y,infoFormat){
     + '&STYLES='
     + '&WIDTH=' + map.size.w
     + '&HEIGHT=' + map.size.h;
+    if (cqlFilter != '') params += '&CQL_FILTER=' + cqlFilter;
   return params;
 }
 
@@ -185,6 +186,7 @@ function filterRemove(){
   document.getElementById('id_obs_filtertext').innerHTML = 'Filter observations';
   document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
   filtered = false;
+  cqlFilter = '';
 }
 
 function zoomFull() {
