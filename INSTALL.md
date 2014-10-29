@@ -77,6 +77,7 @@ Initialize your database and start the site
 
     python manage.py syncdb --all
     python manage.py migrate --fake
+    python manage.py collectstatic -l
     python manage.py runserver 8001
 
 You should have a running, but empty, Django-CMS website.
@@ -264,6 +265,7 @@ GRANT SELECT ON TABLE public.provinces TO web_read;
 GRANT SELECT ON TABLE public.districts TO web_read;
 GRANT SELECT,UPDATE ON TABLE public.sites TO web_read;
 GRANT SELECT ON TABLE public.rivers TO web_read;
+GRANT SELECT ON TABLE public.riverline TO web_read;
 GRANT SELECT ON TABLE public.minisass_observations TO web_read;
 GRANT SELECT ON TABLE public.geometry_columns TO web_read;
 GRANT SELECT ON TABLE public.spatial_ref_sys TO web_read;
@@ -271,7 +273,7 @@ GRANT SELECT ON TABLE public.geography_columns TO web_read;
 GRANT SELECT ON TABLE public.schools TO web_read;
 GRANT SELECT ON TABLE public.country TO web_read;
 
-reassign owned by gavin to minisass;
+reassign owned by gavin to minisass;--[replace gavin with the user who loaded the data]
 grant execute on all functions in schema public to web_read;
 grant usage on schema public to web_read;
 grant usage on all sequences in schema public to web_read;

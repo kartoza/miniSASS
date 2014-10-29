@@ -16,7 +16,8 @@ framework.
 import os
 import sys
 
-sys.path.append("/home/django/sites/miniSASS/miniSASS")
+#sys.path.append("/home/django/sites/miniSASS/miniSASS")
+sys.path.append("/home/gavin/dev/miniSASS")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings")
 
