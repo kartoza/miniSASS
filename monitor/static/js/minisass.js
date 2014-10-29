@@ -190,8 +190,8 @@ function zoomToCoords() {
       markerPoint.x = longitude;
       markerPoint.y = latitude;
       // Reset the marker size
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
     } else {
       // The marker layer doesn't exist so create it
       var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
@@ -212,14 +212,14 @@ function zoomToCoords() {
       layerMarker.events.on({featuremodified:updateCoords});
 
       // Set a default marker style
-      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '3';
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#00ff00';
-      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#00ff00';
-      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '3';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#00aa00';
-      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#00aa00';
+      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
+      OpenLayers.Feature.Vector.style['default']['fill'] = false;
+      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#cc0000';
+      OpenLayers.Feature.Vector.style['select']['fill'] = false;
 
       // Create the marker and add it to the marker layer
       markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
@@ -236,7 +236,7 @@ function zoomToCoords() {
       inputFromMap();
       userFunction = 'infoclick';
       infoFromMap();
-      Ext.Msg.alert('Site Marker', 'The green circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
     } else {
       modifyControl.deactivate();
     }
