@@ -1,7 +1,7 @@
 Django==1.4
 PIL==1.1.7
 South==0.7.6
-cmsplugin-blog==1.1.2
+#cmsplugin-blog==1.1.2
 cmsplugin-contact==1.0.0
 cmsplugin-filer==0.9.5
 cmsplugin-nivoslider==0.5.1
