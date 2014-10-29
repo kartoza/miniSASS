@@ -666,8 +666,7 @@ function filterApply(){
   if (cqlFilter != '') {
     cqlFilter = cqlFilter.replace(/ AND $/,'');
     layerMiniSASSObs.mergeNewParams({'CQL_FILTER':cqlFilter});
-    document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter_clear.png';
-    document.getElementById('id_obs_filtertext').innerHTML = 'Remove the filter';
+    document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear.png';
     document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations (Filtered)';
     filtered = true;
   } else filterRemove();
@@ -706,9 +705,8 @@ function filterRemove(){
   Ext.getCmp('id_filter_trueflies').setValue();
   Ext.getCmp('id_filter_snails').setValue();
 
-  // Reset the filter elements
-  document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter.png';
-  document.getElementById('id_obs_filtertext').innerHTML = 'Filter observations';
+  // Disable the clear filter button
+  document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear_disabled.png';
   document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
   filtered = false;
   cqlFilter = '';
@@ -1557,10 +1555,13 @@ Ext.onReady(function() {
   buttonList.on('click', function(){siteWindow.show(this);});
 
   // Link the Filter Observations button
-  var buttonInfo = Ext.get('id_obs_filter');
-  buttonInfo.on('click', function(){
+  var buttonFilter = Ext.get('id_obs_filter');
+  buttonFilter.on('click', function(){filterWindow.show(this);});
+
+  // Link the Clear Filter button
+  var buttonFilterClear = Ext.get('id_obs_filter_clear');
+  buttonFilterClear.on('click', function(){
     if (filtered){filterRemove();filterWindow.hide();}
-    else filterWindow.show(this);
   });
 
   // Create a button for checking user-entered coordinates
