@@ -8,12 +8,25 @@ var localhost = false;
 var geoserverURL;
 var geoserverCachedURL;
 var map;
+var layerGoogleSatellite;
+var layerGoogleTerrain;
+var layerGoogleRoadmap;
+var layerMiniSASSBase;
+var layerProvinces;
+var layerSchools;
+var layerMiniSASSObs;
+var layerMarker;
 var mapClick;
 var infoClick;
 var inputWindow;
 var infoWindow;
 var siteWindow;
+var filterWindow;
+var filtered = false;
+var cqlFilter = '';
 var messagePanel;
+var modifyControl;
+var markerPoint;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
 var clickCoords;          // Map click coordinates
@@ -25,8 +38,7 @@ var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
 var comboZoomSchools;     // A combobox for zooming to schools
 var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
-var editSite = 'true';      // Keep track of whether site data can be edited or not
-var editCoords = 'true';    // Keep track of whether coordinates can be edited or not
+var editSite = true;      // Keep track of whether site data can be edited or not
 var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
            + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
            + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
@@ -120,8 +132,127 @@ function coords(format) {
     document.getElementById('id_lon_d').style.display = 'none';
     document.getElementById('id_lon_m').style.display = 'none';
     document.getElementById('id_lon_s').style.display = 'none';
-    document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
-    document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
+    document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+    document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
+  }
+}
+
+function updateCoords(event) {
+/* This function updates the latitude and longitude in the Data Input window
+ * when the user drags the site marker to a new position on the screen.
+ */
+    // Get the marker coordinates and reproject them
+    var xyCoords = new OpenLayers.LonLat(event.feature.geometry.x,event.feature.geometry.y);
+    xyCoords.transform(proj3857,proj4326);
+
+    // Update the lat/lon text fields and hemisphere selectors
+    document.getElementById('id_latitude').value = xyCoords.lat.toFixed(6);
+    document.getElementById('id_longitude').value = xyCoords.lon.toFixed(6);
+    if (xyCoords.lat.toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (xyCoords.lon.toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
+
+    if (document.getElementById('id_DMS').checked) {
+      coords('DMS');
+    }
+}
+
+function zoomToCoords() {
+/* This function zooms the map to the coordinates shown in the Data Input
+ * window. If the user is entering a new site then the marker can be dragged
+ * to a new position and the coordinates in the Data Input window are
+ * automatically updated.
+*/
+  if (document.getElementById('id_DMS').checked==true){
+    var coords = convertDMStoDD();
+    var latitude = coords[0];
+    var longitude = coords[1];
+  } else {
+    var latitude = parseFloat(document.getElementById('id_latitude').value);
+    var longitude = parseFloat(document.getElementById('id_longitude').value);
+    // Make sure the coordinates have the correct sign
+    var hemS = document.getElementById('id_hem_s').checked;
+    var hemW = document.getElementById('id_hem_w').checked;
+    if (hemS && (latitude > 0)) latitude = -1 * latitude;
+    if (hemW && (longitude > 0)) longitude = -1 * longitude;
+    if (!hemS && (latitude < 0)) latitude = -1 * latitude;
+    if (!hemW && (longitude < 0)) longitude = -1 * longitude;
+  }
+  if (latitude && longitude && (latitude != 0 || longitude != 0)){
+    // Zoom the map to the coordinates
+    var xyCoords = new OpenLayers.LonLat(longitude,latitude);
+    map.setCenter(xyCoords.transform(proj4326, proj3857),13);
+
+    // Setup the marker layer
+    if (layerMarker) {
+      // The marker layer already exists so update the coordinates
+      markerPoint.x = longitude;
+      markerPoint.y = latitude;
+      // Reset the marker size
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+    } else {
+      // The marker layer doesn't exist so create it
+      var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+      renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+      layerMarker = new OpenLayers.Layer.Vector(
+        "Site Location",
+        {renderers:renderer}
+      );
+
+      // Add the marker layer to the map
+      map.addLayer(layerMarker);
+
+      // Create a control for moving the marker
+      modifyControl = new OpenLayers.Control.ModifyFeature(layerMarker);
+      map.addControl(modifyControl);
+
+      // Update the coordinates in the form when the marker is dragged
+      layerMarker.events.on({featuremodified:updateCoords});
+
+      // Set a default marker style
+      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '3';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#00ff00';
+      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#00ff00';
+      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '3';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#00aa00';
+      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#00aa00';
+
+      // Create the marker and add it to the marker layer
+      markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
+      layerMarker.addFeatures(new OpenLayers.Feature.Vector(markerPoint));
+    }
+    markerPoint.transform(proj4326, proj3857);
+    layerMarker.redraw();
+
+    // If site editing is allowed then allow the user to move the marker
+    if (editSite == true){
+      modifyControl.activate();
+      // Deactivate the map click and info click functions
+      userFunction = 'mapclick';
+      inputFromMap();
+      userFunction = 'infoclick';
+      infoFromMap();
+      Ext.Msg.alert('Site Marker', 'The green circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+    } else {
+      modifyControl.deactivate();
+    }
+  } else {
+    Ext.Msg.alert('Invalid Coordinates', 'The coordinates you have entered are invalid.<br />Please check them.');
+  }
+}
+
+function hideMarker() {
+/* This function hides the marker showing the location of the site coordinates
+ * on the map.
+ */
+  if (layerMarker) {
+    OpenLayers.Feature.Vector.style['default']['pointRadius'] = '0';
+    OpenLayers.Feature.Vector.style['select']['pointRadius'] = '0';
+    layerMarker.redraw();
   }
 }
 
@@ -172,7 +303,7 @@ function updateInputForm(clickedElement) {
     document.getElementById('id_groups').innerHTML = numGroups;
     if (numGroups != 0) averageScore = (totalScore/numGroups);
     document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
-    
+
     // Update the crab icon
     var riverCat = document.getElementById('id_river_cat').value;
     if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
@@ -212,10 +343,8 @@ function updateInputForm(clickedElement) {
 
   }
 
-  // Enable/disable site and coordinate editing as necessary
+  // Enable/disable site editing as necessary
   enableEditSite(editSite);
-  enableEditCoords(editCoords);
-
 }
 
 function canSubmit(){
@@ -251,11 +380,11 @@ function canSubmit(){
     Ext.Msg.alert('Date Error', 'Please enter a valid date');
     return false;
   } else { // All the required fields are present
-    if ((editSite == 'true') || (editCoords == 'true')) {
+    if (editSite == true) {
       // convert coordinates to DD if they've been entered as DMS
       if (document.getElementById('id_DMS').checked==true) {
-        document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(5);
-        document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(5);
+        document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+        document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
       }
 
       // make sure the coordinates have the correct sign
@@ -274,7 +403,7 @@ function canSubmit(){
           document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
       };
     };
-    enableEditSite('true');
+    enableEditSite(true);
 
     // update the geometry field
     var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
@@ -300,7 +429,7 @@ function canSubmit(){
 
 function inputFromMap(){
 /* This function toggles the 'input from map' button image, changes the
-   map cursor and then activates/deactivates the mapClick control
+   map cursor and then activates/deactivates the mapClick control.
 */
   if (userFunction != 'mapclick') {
     document.getElementById('id_obs_map').src = '/static/img/button_obs_map_selected.png';
@@ -326,7 +455,7 @@ function inputFromMap(){
 
 function infoFromMap(){
 /* This function toggles the 'info from map' button image, changes the
-   map cursor and then activates/deactivates the infoClick control
+   map cursor and then activates/deactivates the infoClick control.
 */
   if (userFunction != 'infoclick') {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
@@ -381,8 +510,7 @@ function resetInputForm(){
   updateInputForm('');
 
   // Enable the controls for site input variables
-  editSite = 'true';
-  editCoords = 'true';
+  editSite = true;
   enableEditSite(editSite)
   document.getElementById('id_edit_site').value = 'true';
 
@@ -395,52 +523,29 @@ function enableEditSite(enable){
 /* This function enables or disables editing of site-related variables
    in the data input form.
 */
-  var disabled = false;
-  if (enable == 'false') disabled = true;
-  document.getElementById('id_river_name').disabled = disabled;
-  document.getElementById('id_site_name').disabled = disabled;
-  document.getElementById('id_description').disabled = disabled;
-  document.getElementById('id_river_cat').disabled = disabled;
-  document.getElementById('id_latitude').disabled = disabled;
-  document.getElementById('id_lat_d').disabled = disabled;
-  document.getElementById('id_lat_m').disabled = disabled;
-  document.getElementById('id_lat_s').disabled = disabled;
-  document.getElementById('id_longitude').disabled = disabled;
-  document.getElementById('id_lon_d').disabled = disabled;
-  document.getElementById('id_lon_m').disabled = disabled;
-  document.getElementById('id_lon_s').disabled = disabled;
-  document.getElementById('id_hem_n').disabled = disabled;
-  document.getElementById('id_hem_s').disabled = disabled;
-  document.getElementById('id_hem_e').disabled = disabled;
-  document.getElementById('id_hem_w').disabled = disabled;
+  document.getElementById('id_river_name').disabled = !enable;
+  document.getElementById('id_site_name').disabled = !enable;
+  document.getElementById('id_description').disabled = !enable;
+  document.getElementById('id_river_cat').disabled = !enable;
+  document.getElementById('id_latitude').disabled = !enable;
+  document.getElementById('id_lat_d').disabled = !enable;
+  document.getElementById('id_lat_m').disabled = !enable;
+  document.getElementById('id_lat_s').disabled = !enable;
+  document.getElementById('id_longitude').disabled = !enable;
+  document.getElementById('id_lon_d').disabled = !enable;
+  document.getElementById('id_lon_m').disabled = !enable;
+  document.getElementById('id_lon_s').disabled = !enable;
+  document.getElementById('id_hem_n').disabled = !enable;
+  document.getElementById('id_hem_s').disabled = !enable;
+  document.getElementById('id_hem_e').disabled = !enable;
+  document.getElementById('id_hem_w').disabled = !enable;
 }
 
-function enableEditCoords(enable){
-/* This function enables or disables editing of the site coordinates
-   in the data input form.
-*/
-  var disabled = false;
-  if (enable == 'false') disabled = true;
-  document.getElementById('id_latitude').disabled = disabled;
-  document.getElementById('id_lat_d').disabled = disabled;
-  document.getElementById('id_lat_m').disabled = disabled;
-  document.getElementById('id_lat_s').disabled = disabled;
-  document.getElementById('id_longitude').disabled = disabled;
-  document.getElementById('id_lon_d').disabled = disabled;
-  document.getElementById('id_lon_m').disabled = disabled;
-  document.getElementById('id_lon_s').disabled = disabled;
-  document.getElementById('id_hem_n').disabled = disabled;
-  document.getElementById('id_hem_s').disabled = disabled;
-  document.getElementById('id_hem_e').disabled = disabled;
-  document.getElementById('id_hem_w').disabled = disabled;
-}
-
-function loadSelectedSite(combo,store){
+function loadSelectedSite(selectedSite,store){
 /* This function loads the data from the selected site into the
    fields of the data input form and then disables editing of these
    fields.
 */
-  var selectedSite = combo.getValue();
   if (selectedSite != '') {
     resetInputForm();
     var siteRecord = store.getAt(store.find('site_gid',selectedSite));
@@ -454,14 +559,18 @@ function loadSelectedSite(combo,store){
     } else if (siteRecord.get('river_cat') == 'sandy'){
       document.getElementById('id_river_cat').selectedIndex = 2;
     } else document.getElementById('id_river_cat').selectedIndex = 0;
-    document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(5);
-    document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(5);
+    document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(6);
+    document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(6);
+    if (siteRecord.get('latitude').toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (siteRecord.get('longitude').toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
 
     // Link the observation to the site id
     document.getElementById('id_site').value = siteRecord.get('site_gid');
 
     // Disable the site input controls and variables
-    editSite = 'false';
+    editSite = false;
     enableEditSite(editSite);
     document.getElementById('id_edit_site').value = 'false';
 
@@ -475,12 +584,12 @@ function loadSelectedSite(combo,store){
 }
 
 function getFeatureInfoParams(x,y,infoFormat){
-/* This function returns a string containing parameters for a 
+/* This function returns a string containing parameters for a
    WMSGetFeatureInfo request of the minisass_observations layer.
 */
   var params = 'REQUEST=GetFeatureInfo'
     + '&SERVICE=WMS'
-    + '&VERSION=1.1.1' 
+    + '&VERSION=1.1.1'
     + '&EXCEPTIONS=application/vnd.ogc.se_xml'
     + '&BBOX=' + map.getExtent().toBBOX()
     + '&X=' + Math.round(x)
@@ -493,7 +602,116 @@ function getFeatureInfoParams(x,y,infoFormat){
     + '&STYLES='
     + '&WIDTH=' + map.size.w
     + '&HEIGHT=' + map.size.h;
+    if (cqlFilter != '') params += '&CQL_FILTER=' + cqlFilter;
   return params;
+}
+
+function filterApply(){
+/* This function applies a user-defined filter to the observations and then
+ * updates the map.
+*/
+  // Get the values entered by the user
+  var river_name = Ext.getCmp('id_filter_river').getValue();
+  var sitename = Ext.getCmp('id_filter_sitename').getValue();
+  var river_cat = Ext.getCmp('id_filter_category').getValue();
+  var username = Ext.getCmp('id_filter_username').getValue();
+  var organisation_name = Ext.getCmp('id_filter_organisation').getValue();
+  var scoremin = Ext.getCmp('id_filter_scoremin').getValue();
+  var scoremax = Ext.getCmp('id_filter_scoremax').getValue();
+  var datestart = Ext.getCmp('id_filter_datestart').getRawValue();
+  var dateend = Ext.getCmp('id_filter_dateend').getRawValue();
+  var flag = Ext.getCmp('id_filter_flag').getValue();
+  var flatworms = Ext.getCmp('id_filter_flatworms').getValue();
+  var worms = Ext.getCmp('id_filter_worms').getValue();
+  var leeches = Ext.getCmp('id_filter_leeches').getValue();
+  var crabs_shrimps = Ext.getCmp('id_filter_crabsshrimps').getValue();
+  var stoneflies = Ext.getCmp('id_filter_stoneflies').getValue();
+  var minnow_mayflies = Ext.getCmp('id_filter_minnowmayflies').getValue();
+  var other_mayflies = Ext.getCmp('id_filter_othermayflies').getValue();
+  var damselflies = Ext.getCmp('id_filter_damselflies').getValue();
+  var dragonflies = Ext.getCmp('id_filter_dragonflies').getValue();
+  var bugs_beetles = Ext.getCmp('id_filter_bugsbeetles').getValue();
+  var caddisflies = Ext.getCmp('id_filter_caddisflies').getValue();
+  var true_flies = Ext.getCmp('id_filter_trueflies').getValue();
+  var snails = Ext.getCmp('id_filter_snails').getValue();
+
+  // Build the filter string
+  cqlFilter = '';
+  if (river_name != '') cqlFilter += "river_name ILIKE '%" + river_name + "%' AND ";
+  if (sitename != '') cqlFilter += "site_name ILIKE '%" + sitename + "%' AND ";
+  if (river_cat == 'Rocky' || river_cat == 'Sandy') cqlFilter += "river_cat ILIKE '%" + river_cat + "%' AND ";
+  if (username != '') cqlFilter += "username ILIKE '%" + username + "%' AND ";
+  if (organisation_name != '') cqlFilter += "organisation_name ILIKE '%" + organisation_name + "%' AND ";
+  if (scoremin != '') cqlFilter += "score>=" + scoremin + " AND ";
+  if (scoremax != '') cqlFilter += "score<=" + scoremax + " AND ";
+  if (datestart != '') cqlFilter += "obs_date>='" + datestart + "' AND ";
+  if (dateend != '') cqlFilter += "obs_date<='" + dateend + "' AND ";
+  if (flag == 'Verified') cqlFilter += "flag='clean' AND ";
+  if (flag == 'Unverified') cqlFilter += "flag='dirty' AND ";
+  if (flatworms != '') cqlFilter += "flatworms=" + flatworms + " AND ";
+  if (worms != '') cqlFilter += "worms=" + worms + " AND ";
+  if (leeches != '') cqlFilter += "leeches=" + leeches + " AND ";
+  if (crabs_shrimps != '') cqlFilter += "crabs_shrimps=" + crabs_shrimps + " AND ";
+  if (stoneflies != '') cqlFilter += "stoneflies=" + stoneflies + " AND ";
+  if (minnow_mayflies != '') cqlFilter += "minnow_mayflies=" + minnow_mayflies + " AND ";
+  if (other_mayflies != '') cqlFilter += "other_mayflies=" + other_mayflies + " AND ";
+  if (damselflies != '') cqlFilter += "damselflies=" + damselflies + " AND ";
+  if (dragonflies != '') cqlFilter += "dragonflies=" + dragonflies + " AND ";
+  if (bugs_beetles != '') cqlFilter += "bugs_beetles=" + bugs_beetles + " AND ";
+  if (caddisflies != '') cqlFilter += "caddisflies=" + caddisflies + " AND ";
+  if (true_flies != '') cqlFilter += "true_flies=" + true_flies + " AND ";
+  if (snails != '') cqlFilter += "snails=" + snails + " AND ";
+
+  // Apply the filter
+  if (cqlFilter != '') {
+    cqlFilter = cqlFilter.replace(/ AND $/,'');
+    layerMiniSASSObs.mergeNewParams({'CQL_FILTER':cqlFilter});
+    document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter_clear.png';
+    document.getElementById('id_obs_filtertext').innerHTML = 'Remove the filter';
+    document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations (Filtered)';
+    filtered = true;
+  } else filterRemove();
+}
+
+function filterRemove(){
+/* This function removes the user-defined filter from the observations and then
+ * updates the map to show all the observations. The filter form is also cleared.
+*/
+  // Remove the filter and redraw the layer
+  delete layerMiniSASSObs.params.CQL_FILTER;
+  layerMiniSASSObs.redraw();
+
+  // Clear the filter form
+  Ext.getCmp('id_filter_river').setValue();
+  Ext.getCmp('id_filter_sitename').setValue();
+  Ext.getCmp('id_filter_category').setValue('All');
+  Ext.getCmp('id_filter_username').setValue();
+  Ext.getCmp('id_filter_organisation').setValue();
+  Ext.getCmp('id_filter_scoremin').setValue();
+  Ext.getCmp('id_filter_scoremax').setValue();
+  Ext.getCmp('id_filter_datestart').setRawValue();
+  Ext.getCmp('id_filter_dateend').setRawValue();
+  Ext.getCmp('id_filter_flag').setValue('All');
+  Ext.getCmp('id_filter_flatworms').setValue();
+  Ext.getCmp('id_filter_worms').setValue();
+  Ext.getCmp('id_filter_leeches').setValue();
+  Ext.getCmp('id_filter_crabsshrimps').setValue();
+  Ext.getCmp('id_filter_stoneflies').setValue();
+  Ext.getCmp('id_filter_minnowmayflies').setValue();
+  Ext.getCmp('id_filter_othermayflies').setValue();
+  Ext.getCmp('id_filter_damselflies').setValue();
+  Ext.getCmp('id_filter_dragonflies').setValue();
+  Ext.getCmp('id_filter_bugsbeetles').setValue();
+  Ext.getCmp('id_filter_caddisflies').setValue();
+  Ext.getCmp('id_filter_trueflies').setValue();
+  Ext.getCmp('id_filter_snails').setValue();
+
+  // Reset the filter elements
+  document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter.png';
+  document.getElementById('id_obs_filtertext').innerHTML = 'Filter observations';
+  document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
+  filtered = false;
+  cqlFilter = '';
 }
 
 function zoomFull() {
@@ -652,13 +870,13 @@ Ext.onReady(function() {
       );
       OpenLayers.Control.prototype.initialize.apply(
         this, arguments
-      ); 
+      );
       this.handler = new OpenLayers.Handler.Click(
         this, {
           'click':this.trigger
         }, this.handlerOptions
       );
-    }, 
+    },
     trigger:function(e) {
 
       // Get the click coordinates and convert them to lon/lat
@@ -699,8 +917,8 @@ Ext.onReady(function() {
         };
 
         clickCoords.transform(proj3857, proj4326);
-        var lat = clickCoords.lat.toFixed(5);
-        var lon = clickCoords.lon.toFixed(5);
+        var lat = clickCoords.lat.toFixed(6);
+        var lon = clickCoords.lon.toFixed(6);
         var msg = 'You clicked at:<br />&nbsp;&nbsp;'
           + 'Latitude ' + lat + '&deg;<br />&nbsp;&nbsp;'
           + 'Longitude ' + lon + '&deg;<br />'
@@ -730,13 +948,13 @@ Ext.onReady(function() {
       );
       OpenLayers.Control.prototype.initialize.apply(
         this, arguments
-      ); 
+      );
       this.handler = new OpenLayers.Handler.Click(
         this, {
           'click':this.trigger
         }, this.handlerOptions
       );
-    }, 
+    },
     trigger:function (e) {
       obsTabPanel.removeAll();
       infoWindow.show();
@@ -747,15 +965,19 @@ Ext.onReady(function() {
           if (response.responseText.length > 1) {
             // Split the observations into tabs and extract the dates
             var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
-            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1)
+            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1);
             var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
             obsTabPanel.update(obsInfoText);
-            for (var i=1; i <= obsInfoCount; i++) {
+            // Display the dates in descending date order
+            for (var i=obsInfoCount; i >= 1; i--) {
               var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
               if (!obsInfoDate) {obsInfoDate = 'No Observation';}
               obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
             }
             obsTabPanel.setActiveTab(0);
+          } else { // No observations were found
+            var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
+            obsTabPanel.update(obsInfoText);
           }
         },
         failure:function(response,opts){
@@ -777,7 +999,7 @@ Ext.onReady(function() {
 
   function mapBaseLayerChanged(event) {
     // Toggle the Provinces layer on/off with the Google satellite layer
-    if (event.layer.name=='Google satellite') { 
+    if (event.layer.name=='Google satellite') {
       map.getLayersByName('Provinces')[0].setVisibility(true);
     } else {
       map.getLayersByName('Provinces')[0].setVisibility(false);
@@ -813,21 +1035,21 @@ Ext.onReady(function() {
   };
 
   // Define the Google layers as base layers
-  var layerGoogleSatellite = new OpenLayers.Layer.Google(
+  layerGoogleSatellite = new OpenLayers.Layer.Google(
     'Google satellite',
     {type:google.maps.MapTypeId.SATELLITE,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
-  var layerGoogleTerrain = new OpenLayers.Layer.Google(
+  layerGoogleTerrain = new OpenLayers.Layer.Google(
     'Google terrain',
     {type:google.maps.MapTypeId.TERRAIN,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
-  var layerGoogleRoadmap = new OpenLayers.Layer.Google(
+  layerGoogleRoadmap = new OpenLayers.Layer.Google(
     'Google road map',
     {type:google.maps.MapTypeId.ROADMAP,maxZoomLevel:21,sphericalMercator:true,isBaseLayer:true}
   );
 
   // Define the miniSASS composite layer as a base layer
-  var layerMiniSASSBase = new OpenLayers.Layer.WMS(
+  layerMiniSASSBase = new OpenLayers.Layer.WMS(
     'Rivers and Catchments',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_base',format:'image/png'},
@@ -835,7 +1057,7 @@ Ext.onReady(function() {
   );
 
   // Define the provinces layer
-  var layerProvinces = new OpenLayers.Layer.WMS(
+  layerProvinces = new OpenLayers.Layer.WMS(
     'Provinces',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
@@ -843,7 +1065,7 @@ Ext.onReady(function() {
   );
 
   // Define the schools layer as an overlay
-  var layerSchools = new OpenLayers.Layer.WMS(
+  layerSchools = new OpenLayers.Layer.WMS(
     'Schools',
     geoserverURL,
     {layers:'miniSASS:schools',transparent:true,format:'image/png'},
@@ -851,7 +1073,7 @@ Ext.onReady(function() {
   );
 
   // Define the miniSASS observations as an overlay
-  var layerMiniSASSObs = new OpenLayers.Layer.WMS(
+  layerMiniSASSObs = new OpenLayers.Layer.WMS(
     'miniSASS Observations',
     geoserverURL,
     {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
@@ -859,12 +1081,7 @@ Ext.onReady(function() {
   );
 
   // Add the layers to the map
-  map.addLayers([layerMiniSASSObs,layerSchools]);
-  if (localhost == true) {
-    map.addLayers([layerProvinces,layerMiniSASSBase,layerGoogleSatellite,layerGoogleTerrain,layerGoogleRoadmap]);
-  } else {
-    map.addLayers([layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
-  };
+  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
 
   // If necessary, restore layer visibility saved from a previous state
   var layerStr = document.getElementById('id_layers').value;
@@ -883,6 +1100,21 @@ Ext.onReady(function() {
   // Add a layerswitcher
   map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
+  // Setup the coordinate display
+  map.addControl(new OpenLayers.Control.MousePosition({
+    numDigits:4,
+    emptyString:'',
+    formatOutput:function(coords){
+      if (coords.lat < 0) var hemNS = 'S'
+      else var hemNS = 'N';
+      if (coords.lon < 0) var hemEW = 'W'
+      else var hemEW = 'E';
+      var markup = coords.lat.toFixed(4) + '&deg;' + hemNS + ' ';
+      markup += coords.lon.toFixed(4) + '&deg;' + hemEW;
+      return markup;
+    },
+  }));
+
   // Add the map click controller
   mapClick = new OpenLayers.Control.MapClick();
   map.addControl(mapClick);
@@ -890,7 +1122,7 @@ Ext.onReady(function() {
   // Add the info click controller
   infoClick = new OpenLayers.Control.InfoClick();
   map.addControl(infoClick);
-  
+
   // Setup the map panel
   var zoom_level = document.getElementById('id_zoom_level').value;
   var centreX = document.getElementById('id_centre_X').value;
@@ -971,7 +1203,8 @@ Ext.onReady(function() {
     width:570,
     height:470,
     closeAction:'hide',
-    modal:true,
+    modal:false,
+    x:20,
     items:new Ext.Panel({
       applyTo:'data_panel',
       border:false
@@ -985,14 +1218,17 @@ Ext.onReady(function() {
     },{
       text:'Close',
       tooltip:'Close this window but keep any data that has been entered',
-      handler:function(){inputWindow.hide();}
+      handler:function(){hideMarker();inputWindow.hide();}
     },{
       text:'Cancel',
       tooltip:'Close this window and erase any data that has been entered',
-      handler:function(){resetInputForm();inputWindow.hide();}
-    }]
+      handler:function(){hideMarker();resetInputForm();inputWindow.hide();}
+    }],
+    listeners:{
+      'hide':function(win){hideMarker();},
+    },
   });
-  editSite = document.getElementById('id_edit_site').value;
+  editSite = (document.getElementById('id_edit_site').value === 'true');
   updateInputForm('');
 
   // Define a datepick widget
@@ -1025,7 +1261,26 @@ Ext.onReady(function() {
     closeAction:'hide',
     modal:false,
     constrain:true,
-    items:[obsTabPanel]
+    items:[obsTabPanel],
+    tools:[{
+      id:'plus',
+      qtip:'Add a new observation at this site',
+      handler:function(event, toolEl, panel){
+        var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
+        if (selectedTab >= 0){
+          // There are one or more observations displayed in the observation
+          // info window so work out which one is being displayed and then load
+          // it into the input form.
+          var observation = selectedTab + 1;
+          var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
+          console.log('Selected site: ' + selectedSite);
+          resetInputForm();
+          infoWindow.hide();
+          loadSelectedSite(selectedSite,storeSites);
+          inputWindow.show(this);
+        }
+      },
+    }],
   });
   infoWindow.show();
   infoWindow.hide();
@@ -1050,7 +1305,7 @@ Ext.onReady(function() {
       handler:function(){
         resetInputForm();
         siteWindow.hide();
-        loadSelectedSite(comboSites,storeSites);
+        loadSelectedSite(comboSites.getValue(),storeSites);
         comboSites.clearValue();
         inputWindow.show(this);
       }
@@ -1088,8 +1343,8 @@ Ext.onReady(function() {
           tooltip:'Create a new observation site',
           handler:function(){
             resetInputForm();
-            document.getElementById('id_latitude').value = clickCoords.lat.toFixed(5);
-            document.getElementById('id_longitude').value = clickCoords.lon.toFixed(5);
+            document.getElementById('id_latitude').value = clickCoords.lat.toFixed(6);
+            document.getElementById('id_longitude').value = clickCoords.lon.toFixed(6);
             if (clickCoords.lat < 0) {
               document.getElementById('id_hem_s').checked = true;
             } else {
@@ -1102,8 +1357,6 @@ Ext.onReady(function() {
             }
             map.setCenter(clickCoords.transform(proj4326, proj3857),15);
             mapClickWindow.hide();
-            editCoords = 'false';
-            enableEditCoords(editCoords);
             inputWindow.show(this);
           }
         }]
@@ -1121,7 +1374,7 @@ Ext.onReady(function() {
           handler:function(){
             resetInputForm();
             mapClickWindow.hide();
-            loadSelectedSite(comboNearbySites,storeNearbySites);
+            loadSelectedSite(comboNearbySites.getValue(),storeNearbySites);
             inputWindow.show(this);
           }
         }]
@@ -1136,9 +1389,160 @@ Ext.onReady(function() {
   mapClickWindow.show();
   mapClickWindow.hide();
 
-  // Link the Observation Info button
+  // Define a window for filtering miniSASS observations
+  filterWindow = new Ext.Window({
+    title:'Filter Observations',
+    width:470,
+    height:420,
+    layout:'fit',
+    bodyStyle:'padding:5px;',
+    closeAction:'hide',
+    modal:false,
+    constrain:true,
+    items:[
+      {
+        xtype:'form',
+        layout:'column',
+        defaults:{
+          layout:'form',
+          border:false,
+          bodyStyle:'padding:5px'
+        },
+        items:[
+          { // Column 1
+            columnWidth:0.65,
+            defaults:{
+              width:120
+            },
+            items:[
+              {
+                xtype:'label',
+                fieldLabel:'',
+                html:'You can filter observations using one or more of the criteria on this form. For text fields you can enter part or all of the name.<br />&nbsp;',
+              },{
+                xtype:'textfield',
+                fieldLabel:'River name',
+                id:'id_filter_river',
+              },{
+                xtype:'textfield',
+                fieldLabel:'Site name',
+                id:'id_filter_sitename',
+              },{
+                xtype:'combo',
+                fieldLabel:'River category',
+                id:'id_filter_category',
+                store:['All','Rocky','Sandy'],
+                triggerAction:'all',
+                value:'All',
+              },{
+                xtype:'textfield',
+                fieldLabel:'User name',
+                id:'id_filter_username',
+              },{
+                xtype:'textfield',
+                fieldLabel:'Organisation',
+                id:'id_filter_organisation',
+              },{
+                xtype:'numberfield',
+                fieldLabel:'Minimum score',
+                id:'id_filter_scoremin',
+              },{
+                xtype:'numberfield',
+                fieldLabel:'Maximum score',
+                id:'id_filter_scoremax',
+              },{
+                xtype:'datefield',
+                fieldLabel:'Start date',
+                id:'id_filter_datestart',
+                format:"Y-m-d",
+              },{
+                xtype:'datefield',
+                fieldLabel:'End date',
+                id:'id_filter_dateend',
+                format:"Y-m-d",
+              },{
+                xtype:'combo',
+                fieldLabel:'Status',
+                id:'id_filter_flag',
+                store:['All','Verified','Unverified'],
+                triggerAction:'all',
+                value:'All',
+              },
+            ]
+          },{ // Column 2
+            columnWidth:0.35,
+            defaultType:'checkbox',
+            items:[
+              {
+                fieldLabel:'Flat worms',
+                id:'id_filter_flatworms',
+              },{
+                fieldLabel:'Worms',
+                id:'id_filter_worms',
+              },{
+                fieldLabel:'Leeches',
+                id:'id_filter_leeches',
+              },{
+                fieldLabel:'Crabs/Shimps',
+                id:'id_filter_crabsshrimps',
+              },{
+                fieldLabel:'Stoneflies',
+                id:'id_filter_stoneflies',
+              },{
+                fieldLabel:'Minnow mayflies',
+                id:'id_filter_minnowmayflies',
+              },{
+                fieldLabel:'Other mayflies',
+                id:'id_filter_othermayflies',
+              },{
+                fieldLabel:'Damselflies',
+                id:'id_filter_damselflies',
+              },{
+                fieldLabel:'Dragonflies',
+                id:'id_filter_dragonflies',
+              },{
+                fieldLabel:'Bugs/beetles',
+                id:'id_filter_bugsbeetles',
+              },{
+                fieldLabel:'Caddisflies',
+                id:'id_filter_caddisflies',
+              },{
+                fieldLabel:'True flies',
+                id:'id_filter_trueflies',
+              },{
+                fieldLabel:'Snails',
+                id:'id_filter_snails',
+              },
+            ],
+          }
+        ],
+      },
+    ],
+    buttons:[
+      {
+        text:'Apply Filter',
+        tooltip:'Apply the filter',
+        handler:function(){filterApply();}
+      },{
+        text:'Remove Filter',
+        tooltip:'Remove the filter',
+        handler:function(){filterRemove();}
+      },{
+        text:'Close',
+        tooltip:'Apply the filter and close this window',
+        handler:function(){filterApply();filterWindow.hide();}
+      },{
+        text:'Cancel',
+        tooltip:'Remove the filter and close this window',
+        handler:function(){filterRemove();filterWindow.hide();}
+      },
+    ],
+  });
+
+  // Link the Observation Info button and activate it
   var buttonInfo = Ext.get('id_obs_info');
   buttonInfo.on('click', infoFromMap);
+  infoFromMap();
 
   // Link the Data Input button
   var buttonAdd = Ext.get('id_obs_add');
@@ -1151,6 +1555,21 @@ Ext.onReady(function() {
   // Link the Site List input button
   var buttonList = Ext.get('id_obs_list');
   buttonList.on('click', function(){siteWindow.show(this);});
+
+  // Link the Filter Observations button
+  var buttonInfo = Ext.get('id_obs_filter');
+  buttonInfo.on('click', function(){
+    if (filtered){filterRemove();filterWindow.hide();}
+    else filterWindow.show(this);
+  });
+
+  // Create a button for checking user-entered coordinates
+  var buttonCheckCoords = new Ext.Button({
+    renderTo:'id_check_coords',
+    text:'Show on map',
+    tooltip:'Zoom the map to the latitude/longitude coordinates',
+    handler:function(){zoomToCoords();},
+  });
 
   // Re-open the Data Input window if an error has been returned
   if (document.getElementById('id_error').value == 'true'){

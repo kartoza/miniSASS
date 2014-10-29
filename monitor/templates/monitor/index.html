@@ -31,7 +31,7 @@
       <div id="legend">
         <table id="legend_table">
           <tr>
-            <td colspan="2" class="legend_header">miniSASS Observations</td>
+            <td colspan="2" id="id_legend_header" class="legend_header">miniSASS Observations</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_n.png" id="legend_icon1" alt="" title=""/></td>
@@ -93,7 +93,7 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Enter observation
             </td>
@@ -103,7 +103,7 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Click site on map
             </td>
@@ -111,10 +111,17 @@
             {% if user.is_authenticated %}
               <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/><br />
             {% else %}
-              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and log in to activate this tool" style="cursor:pointer;"/><br />
+              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
             {% endif %}
               Select site from list
             </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_filter.png" alt="" id="id_obs_filter" title="Filter observations by date, score, river category and group" style="cursor:pointer;"/><br />
+              <span id="id_obs_filtertext">Filter observations</span>
+            </td>
+            <td>&nbsp;</td>
           </tr>
         </table> <!--input_buttons-->
       </div> <!--input_obs-->
@@ -173,7 +180,10 @@
                       <input type="radio" name="hem_ew" id="id_hem_w" value="W"/>W
                     </td>
                   </tr>
-                  <tr><td></td>
+                  <tr>
+                    <td>
+                      <span id="id_check_coords"></span>
+                    </td>
                     <td>
                       <input type="radio" name="coord_format" id="id_decimal" value="Decimal" onclick="coords('Decimal');" checked="checked"/>Decimal degrees
                       <br />

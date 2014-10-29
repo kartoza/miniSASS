@@ -12,6 +12,7 @@ ${observation}#
   <#list features as feature>
   <#assign observation = observation + 1>
   <div id="id_tab_${observation}" class="x-hide-display">
+    <input type="hidden" name="name_sites_gid_${observation}" value="${feature.sites_gid.value}" id="id_sites_gid_${observation}" />
     <table id="id_obs_${observation}" class="featureInfo">
       <tr>
         <td id="obs_site_details">
@@ -83,56 +84,65 @@ ${observation}#
             </tr>
             <#assign crabURL = "">
             <#assign healthClass = "">
-            <#if feature.score.rawValue = 0 >
-              <#assign crabURL = "/static/img/icon_crab_u_large.png">
-              <#assign healthClass = "&nbsp;">
-            </#if>
-            <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 4.3) && (feature.river_cat.value = "sandy")>
-              <#assign crabURL = "/static/img/icon_crab_v_large.png">
-              <#assign healthClass = "Very Poor">
-            </#if>
-            <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 5.1) && (feature.river_cat.value = "rocky")>
-              <#assign crabURL = "/static/img/icon_crab_v_large.png">
-              <#assign healthClass = "Very Poor">
-            </#if>
-            <#if (feature.score.rawValue > 4.3) && (feature.score.rawValue <= 4.9) && (feature.river_cat.value = "sandy")>
-              <#assign crabURL = "/static/img/icon_crab_p_large.png">
-              <#assign healthClass = "Poor">
-            </#if>
-            <#if (feature.score.rawValue > 5.1) && (feature.score.rawValue <= 6.1) && (feature.river_cat.value = "rocky")>
-              <#assign crabURL = "/static/img/icon_crab_p_large.png">
-              <#assign healthClass = "Poor">
-            </#if>
-            <#if (feature.score.rawValue > 4.9) && (feature.score.rawValue <= 5.8) && (feature.river_cat.value = "sandy")>
-              <#assign crabURL = "/static/img/icon_crab_f_large.png">
-              <#assign healthClass = "Fair">
-            </#if>
-            <#if (feature.score.rawValue > 6.1) && (feature.score.rawValue <= 6.8) && (feature.river_cat.value = "rocky")>
-              <#assign crabURL = "/static/img/icon_crab_f_large.png">
-              <#assign healthClass = "Fair">
-            </#if>
-            <#if (feature.score.rawValue > 5.8) && (feature.score.rawValue <= 6.9) && (feature.river_cat.value = "sandy")>
-              <#assign crabURL = "/static/img/icon_crab_g_large.png">
-              <#assign healthClass = "Good">
-            </#if>
-            <#if (feature.score.rawValue > 6.8) && (feature.score.rawValue <= 7.9) && (feature.river_cat.value = "rocky")>
-              <#assign crabURL = "/static/img/icon_crab_g_large.png">
-              <#assign healthClass = "Good">
-            </#if>
-            <#if (feature.score.rawValue > 6.9) && (feature.river_cat.rawValue = "sandy")>
-              <#assign crabURL = "/static/img/icon_crab_n_large.png">
-              <#assign healthClass = "Natural">
-            </#if>
-            <#if (feature.score.rawValue > 7.9) && (feature.river_cat.rawValue = "rocky")>
-              <#assign crabURL = "/static/img/icon_crab_n_large.png">
-              <#assign healthClass = "Natural">
-            </#if>
-            <tr><td class="tdlabel">Average score:</td>
+            <#if feature.score.rawValue?is_number>
+              <#if feature.score.rawValue = 0 >
+                <#assign crabURL = "/static/img/icon_crab_u_large.png">
+                <#assign healthClass = "&nbsp;">
+              </#if>
+              <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 4.3) && (feature.river_cat.value = "sandy")>
+                <#assign crabURL = "/static/img/icon_crab_v_large.png">
+                <#assign healthClass = "Very Poor">
+              </#if>
+              <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 5.1) && (feature.river_cat.value = "rocky")>
+                <#assign crabURL = "/static/img/icon_crab_v_large.png">
+                <#assign healthClass = "Very Poor">
+              </#if>
+              <#if (feature.score.rawValue > 4.3) && (feature.score.rawValue <= 4.9) && (feature.river_cat.value = "sandy")>
+                <#assign crabURL = "/static/img/icon_crab_p_large.png">
+                <#assign healthClass = "Poor">
+              </#if>
+              <#if (feature.score.rawValue > 5.1) && (feature.score.rawValue <= 6.1) && (feature.river_cat.value = "rocky")>
+                <#assign crabURL = "/static/img/icon_crab_p_large.png">
+                <#assign healthClass = "Poor">
+              </#if>
+              <#if (feature.score.rawValue > 4.9) && (feature.score.rawValue <= 5.8) && (feature.river_cat.value = "sandy")>
+                <#assign crabURL = "/static/img/icon_crab_f_large.png">
+                <#assign healthClass = "Fair">
+              </#if>
+              <#if (feature.score.rawValue > 6.1) && (feature.score.rawValue <= 6.8) && (feature.river_cat.value = "rocky")>
+                <#assign crabURL = "/static/img/icon_crab_f_large.png">
+                <#assign healthClass = "Fair">
+              </#if>
+              <#if (feature.score.rawValue > 5.8) && (feature.score.rawValue <= 6.9) && (feature.river_cat.value = "sandy")>
+                <#assign crabURL = "/static/img/icon_crab_g_large.png">
+                <#assign healthClass = "Good">
+              </#if>
+              <#if (feature.score.rawValue > 6.8) && (feature.score.rawValue <= 7.9) && (feature.river_cat.value = "rocky")>
+                <#assign crabURL = "/static/img/icon_crab_g_large.png">
+                <#assign healthClass = "Good">
+              </#if>
+              <#if (feature.score.rawValue > 6.9) && (feature.river_cat.rawValue = "sandy")>
+                <#assign crabURL = "/static/img/icon_crab_n_large.png">
+                <#assign healthClass = "Natural">
+              </#if>
+              <#if (feature.score.rawValue > 7.9) && (feature.river_cat.rawValue = "rocky")>
+                <#assign crabURL = "/static/img/icon_crab_n_large.png">
+                <#assign healthClass = "Natural">
+              </#if>
+              <tr><td class="tdlabel">Average score:</td>
                 <td class="tdtotal">${feature.score.value}</td>
                 <td class="tdtotal"><img src="${crabURL}" alt="crab" id="id_crab"/></td></tr>
-            <tr><td></td>
+              <tr><td></td>
                 <td class="tdtotal" colspan="2">${healthClass}</td>
-            </tr>
+              </tr>
+            <#else>
+              <tr><td class="tdlabel">Average score:</td>
+                <td class="tdtotal">&nbsp;</td>
+                <td class="tdtotal"><img src="/static/img/icon_crab_u_large.png" alt="crab" id="id_crab"/></td></tr>
+              <tr><td>&nbsp;</td>
+                <td class="tdtotal" colspan="2">Undefined</td>
+              </tr>
+            </#if>
           </table>
         </td>
       </tr>
