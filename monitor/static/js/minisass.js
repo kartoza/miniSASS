@@ -1246,39 +1246,42 @@ Ext.onReady(function() {
     activeTab:0,
     frame:true,
     autoScroll:true,
-    enableTabScroll:true
+    enableTabScroll:true,
+    bbar:new Ext.Toolbar({
+      items:[{
+        xtype:'button',
+        text:'New observation',
+        tooltip:'Add a new observation to this site',
+        handler:function(event,toolEl,panel){
+          var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
+          if (selectedTab >= 0){
+            // There are one or more observations displayed in the observation
+            // info window so work out which one is being displayed and then load
+            // it into the input form. The tabs are shown in descending date order
+            // so start counting from the last tab backwards.
+            var observation = obsTabPanel.items.length - selectedTab;
+            var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
+            resetInputForm();
+            infoWindow.hide();
+            loadSelectedSite(selectedSite,storeSites);
+            inputWindow.show(this);
+          }
+        },
+      }],
+    }),
   });
 
   // Define a window to display miniSASS observation information
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
     width:500,
-    height:400,
+    height:420,
     layout:'fit',
     bodyStyle:'padding:5px;',
     closeAction:'hide',
     modal:false,
     constrain:true,
     items:[obsTabPanel],
-    tools:[{
-      id:'plus',
-      qtip:'Add a new observation at this site',
-      handler:function(event, toolEl, panel){
-        var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
-        if (selectedTab >= 0){
-          // There are one or more observations displayed in the observation
-          // info window so work out which one is being displayed and then load
-          // it into the input form.
-          var observation = selectedTab + 1;
-          var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
-          console.log('Selected site: ' + selectedSite);
-          resetInputForm();
-          infoWindow.hide();
-          loadSelectedSite(selectedSite,storeSites);
-          inputWindow.show(this);
-        }
-      },
-    }],
   });
   infoWindow.show();
   infoWindow.hide();

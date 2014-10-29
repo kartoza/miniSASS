@@ -559,7 +559,15 @@ Ext.onReady(function() {
     activeTab:0,
     frame:true,
     autoScroll:true,
-    enableTabScroll:true
+    enableTabScroll:true,
+    bbar:new Ext.Toolbar({
+      items:[{
+        xtype:'button',
+        text:'New observation',
+        tooltip:'Add a new observation to this site',
+        handler:function(event,toolEl,panel){redirectWindow.show(this);},
+      }],
+    }),
   });
 
   // Define a window to display miniSASS observation information
