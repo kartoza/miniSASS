@@ -268,6 +268,7 @@ GRANT SELECT ON TABLE public.hca1 TO web_read;
 GRANT SELECT ON TABLE public.hca2 TO web_read;
 GRANT SELECT ON TABLE public.hca3 TO web_read;
 GRANT SELECT ON TABLE public.hca4 TO web_read;
+GRANT SELECT ON TABLE public.hca5 TO web_read;
 GRANT SELECT ON TABLE public.municipalities TO web_read;
 GRANT SELECT ON TABLE public.provinces TO web_read;
 GRANT SELECT ON TABLE public.districts TO web_read;
