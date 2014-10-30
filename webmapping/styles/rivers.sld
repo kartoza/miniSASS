@@ -22,7 +22,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -31,11 +31,18 @@
                                <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                          <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
                       
-                    </se:TextSymbolizer>
+            <se:VendorOption name="followLine">true</se:VendorOption>                    
+          </se:TextSymbolizer>
         </se:Rule>
 
            <se:Rule>
@@ -55,7 +62,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -64,10 +71,16 @@
                              <se:PerpendicularOffset>10.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                         <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                        
+                     <se:VendorOption name="followLine">true</se:VendorOption>        
                     </se:TextSymbolizer>
         </se:Rule>
         <se:Rule>
@@ -88,19 +101,25 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
                         <se:LabelPlacement>
                             <se:LinePlacement>
-                              <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
+                              <se:PerpendicularOffset>2.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                           <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                       
+                       <se:VendorOption name="followLine">true</se:VendorOption>     
                     </se:TextSymbolizer>
         </se:Rule>
         <se:Rule>
@@ -120,7 +139,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -129,10 +148,16 @@
                               <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                           <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                       
+                       <se:VendorOption name="followLine">true</se:VendorOption>     
                     </se:TextSymbolizer>
         </se:Rule>
           
@@ -161,7 +186,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -170,10 +195,16 @@
                                <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                           <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                      
+                      <se:VendorOption name="followLine">true</se:VendorOption>     
                     </se:TextSymbolizer>
         </se:Rule>
         <se:Rule>
@@ -200,7 +231,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -209,10 +240,16 @@
                              <se:PerpendicularOffset>10.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                          <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                        
+                       <se:VendorOption name="followLine">true</se:VendorOption>      
                     </se:TextSymbolizer>
         </se:Rule>
         <se:Rule>
@@ -238,7 +275,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -247,10 +284,16 @@
                               <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                          <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                       
+                       <se:VendorOption name="followLine">true</se:VendorOption>     
                     </se:TextSymbolizer>
         </se:Rule>
         <se:Rule>
@@ -278,7 +321,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">6.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">bold</se:SvgParameter>
                         </se:Font>
@@ -287,10 +330,16 @@
                               <se:PerpendicularOffset>6.0</se:PerpendicularOffset>   
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                            <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
-                       
+                       <se:VendorOption name="followLine">true</se:VendorOption>     
                     </se:TextSymbolizer>
         </se:Rule>
           <se:Rule>

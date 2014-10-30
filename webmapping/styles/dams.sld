@@ -33,8 +33,14 @@
                                 <se:PerpendicularOffset>10.0</se:PerpendicularOffset>
                             </se:LinePlacement>
                         </se:LabelPlacement>
+                         <se:Halo>
+                            <se:Radius>1</se:Radius>
+                            <se:Fill>
+                                <se:SvgParameter name="fill">#FFFFFF</se:SvgParameter>
+                            </se:Fill>
+                        </se:Halo>
                         <se:Fill>
-                            <se:SvgParameter name="fill">#6998C9</se:SvgParameter>
+                            <se:SvgParameter name="fill">#0021FF</se:SvgParameter>
                         </se:Fill>
                     </se:TextSymbolizer>
         </se:Rule>

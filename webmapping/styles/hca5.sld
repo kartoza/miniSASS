@@ -22,7 +22,7 @@
                         </se:Label>
                         <se:Font>
                             <se:SvgParameter name="font-family">Arial</se:SvgParameter>
-                            <se:SvgParameter name="font-size">8.0</se:SvgParameter>
+                            <se:SvgParameter name="font-size">12.0</se:SvgParameter>
                             <se:SvgParameter name="font-style">normal</se:SvgParameter>
                             <se:SvgParameter name="font-weight">normal</se:SvgParameter>
                         </se:Font>

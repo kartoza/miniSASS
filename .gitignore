@@ -13,6 +13,7 @@ minisass/media/livetracks/*
 .DS_Store
 assets
 minisass/*.txt
+minisass/smedia
 minisass/media
 minisass/settings_jurgen.py
 minisass/static/admin/
