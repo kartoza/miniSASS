@@ -84,7 +84,8 @@ def detail(request, monitor_id):
 def wms_get_feature_info(request, wms_url, wms_params):
     """ Request information from GeoServer via a WMS GetFeatureInfo call
     """
-    feature_info = urllib2.urlopen('http://'+wms_url+'?'+wms_params)
+    # Send the WMS parameters as a POST request in order to handle spaces in the CQL filter
+    feature_info = urllib2.urlopen('http://'+wms_url, data=wms_params)
     return HttpResponse(feature_info)
 
 def get_sites(request, x, y, d):

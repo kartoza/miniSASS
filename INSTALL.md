@@ -70,22 +70,31 @@ Now, copy settings.py.templ to settings.py, and set the database credentials cor
     cp minisass/settings.py.templ minisass/settings.py
     vim minisass/settings.py
 
-Change settings to fit your database credentials, etc.
+Change settings to match your database credentials, etc.
 
 Initialize your database and start the site
 -------------------------------------------
 
     python manage.py syncdb --all
     python manage.py migrate --fake
+    python manage.py collectstatic -l
     python manage.py runserver 8001
 
 You should have a running, but empty, Django-CMS website.
+
+If you get an error like this:
+
+    django.contrib.gis.geos.error.GEOSException: Could not parse version info string "3.4.2-CAPI-1.8.2 r3921"
+    
+Then follow the advice here: http://stackoverflow.com/questions/18643998/geodjango-eosexception-error (except there's no .decode() in Django 1.4)
 
 
 Setting up the spatial data layers
 ==================================
 
-Rivers and dams
+Layers marked Optional form part of the Rivers and Catchments base map on minisass.org. You can load your own layers and publish them yourself using a web map server such as Geoserver or QGIS server, or fetch the basemap from the minisass Geoserver WMS. 
+
+Rivers and dams (optional)
 ---------------
 
 Download from http://www.dwa.gov.za/iwqs/gis_data/river/rivs500k.html
@@ -94,7 +103,7 @@ Download from http://www.dwa.gov.za/iwqs/gis_data/river/rivs500k.html
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 dams500g dams | psql -d minisass-cms
 
-Catchments and WMAs
+Catchments and WMAs (optional)
 -------------------
 
 download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31s4nwzcqbf1qu20%29%29/Default.aspx
@@ -107,7 +116,7 @@ download from here: http://www.dwaf.gov.za/Dir_BI/SLIMDownload/%28S%28gd31jnee31
 
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 sde_other_SDE_dquat_conv hca4 | psql -d minisass-cms
 
-Admin boundaries
+Admin boundaries (optional)
 ----------------
 
 (Admire loaded these locally so he could style them - they still need to be loaded in each local db instance)
@@ -133,9 +142,7 @@ select  ROW_NUMBER() over () as id,st_union(ST_SnapToGrid(the_geom,0.0001)) as t
 
 This failed because of bad input data.
 
-
-
-1:50000 rivers
+1:50000 rivers (optional)
 --------------
 
 The DWAF 1:500000 rivers are well connected and named but the NGI 1:50000 rivers show more detail of the smaller rivers users might sample and are more spatially accurate at large scales.
@@ -143,12 +150,12 @@ The DWAF 1:500000 rivers are well connected and named but the NGI 1:50000 rivers
 Prepare the 1:50000 rivers according to the topostyle project. In our case we dumped the riverline table from a local topostyle database, transferred it to the minisass server and restored it.
 Then we indexed and clustered it and set permissions, then published and styled it, again with the topostyle style, which we set to switch over from the 1:500000 rivers at an appropriate scale.
 
-Schools
+Schools (mandatory)
 -------
 download from the GitHub miniSASS repository: webmapping/spatial_data/schools.*
 > shp2pgsql -s 4326 -c -D -I -W LATIN1 schools.shp | psql -d minisass-cms
 
-miniSASS sample points
+miniSASS sample points (optional)
 ----------------------
 We'll load these and pubish as WMS for early development, but might end up publishing directly via Django and OL. This is also not the final schema, just 'as is' from GroundTruth. First save the sample .xlsx file as a dbf after formatting the Data column as 'date with time'. I also had to roundtrip the date as text into a new column and fiddle with locales to get the date as a string in the right order. It arrived as MS decimal date.
 
@@ -245,6 +252,8 @@ Or in PostGIS
 Publishing Geoserver layers
 ===========================
 
+This is optional - only do this if you loaded the spatial layers above and want to publish them via WMS yourself.
+
 createuser -P geoserver miniSASS@geoserver395
 
 CREATE ROLE web_read
@@ -259,11 +268,13 @@ GRANT SELECT ON TABLE public.hca1 TO web_read;
 GRANT SELECT ON TABLE public.hca2 TO web_read;
 GRANT SELECT ON TABLE public.hca3 TO web_read;
 GRANT SELECT ON TABLE public.hca4 TO web_read;
+GRANT SELECT ON TABLE public.hca5 TO web_read;
 GRANT SELECT ON TABLE public.municipalities TO web_read;
 GRANT SELECT ON TABLE public.provinces TO web_read;
 GRANT SELECT ON TABLE public.districts TO web_read;
 GRANT SELECT,UPDATE ON TABLE public.sites TO web_read;
 GRANT SELECT ON TABLE public.rivers TO web_read;
+GRANT SELECT ON TABLE public.riverline TO web_read;
 GRANT SELECT ON TABLE public.minisass_observations TO web_read;
 GRANT SELECT ON TABLE public.geometry_columns TO web_read;
 GRANT SELECT ON TABLE public.spatial_ref_sys TO web_read;
@@ -271,10 +282,10 @@ GRANT SELECT ON TABLE public.geography_columns TO web_read;
 GRANT SELECT ON TABLE public.schools TO web_read;
 GRANT SELECT ON TABLE public.country TO web_read;
 
-reassign owned by gavin to minisass;
-grant execute on all functions in schema public to web_read;
-grant usage on schema public to web_read;
-grant usage on all sequences in schema public to web_read;
+REASSIGN OWNED BY gavin TO minisass;--[replace gavin with the user who loaded the data]
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO web_read;
+GRANT USAGE ON SCHEMA public TO web_read;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO web_read;
 
 Deploying updates on the production site
 ========================================

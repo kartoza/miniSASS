@@ -29,10 +29,10 @@
   right:0px;
   top:0px;
   height:15px;
-  width:140px;
-  text-align:right;
+  width:135px;
+  text-align:center;
   color:#000000;
-  text-shadow: 1px 0px 2px #ffffff, -1px 0px 2px #ffffff, 0px 1px 2px #ffffff, 0px -1px 2px #ffffff;
+  background-color:#dddddd;
   padding:1px 2px 1px 2px;
 }
 

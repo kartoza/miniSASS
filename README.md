@@ -17,7 +17,9 @@ Authors
 
 Frank Sokolic, GIS-Solutions 2013-2014
 
-Gavin Fleming, Kartoza 2013-2014
+Gavin Fleming, Afrispatial 2013, Kartoza 2014
+
+Admire Nyakudya, Kartoza, 2013
 
 Jurgen Blignaut, Webtide 2013
 

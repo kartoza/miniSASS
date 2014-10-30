@@ -77,6 +77,7 @@ function getFeatureInfoParams(x,y,infoFormat){
     + '&STYLES='
     + '&WIDTH=' + map.size.w
     + '&HEIGHT=' + map.size.h;
+    if (cqlFilter != '') params += '&CQL_FILTER=' + cqlFilter;
   return params;
 }
 
@@ -90,8 +91,7 @@ function filterApply(){
   var river_cat = Ext.getCmp('id_filter_category').getValue();
   var username = Ext.getCmp('id_filter_username').getValue();
   var organisation_name = Ext.getCmp('id_filter_organisation').getValue();
-  var scoremin = Ext.getCmp('id_filter_scoremin').getValue();
-  var scoremax = Ext.getCmp('id_filter_scoremax').getValue();
+  var healthClass = Ext.getCmp('id_filter_class').getValue();
   var datestart = Ext.getCmp('id_filter_datestart').getRawValue();
   var dateend = Ext.getCmp('id_filter_dateend').getRawValue();
   var flag = Ext.getCmp('id_filter_flag').getValue();
@@ -116,8 +116,22 @@ function filterApply(){
   if (river_cat == 'Rocky' || river_cat == 'Sandy') cqlFilter += "river_cat ILIKE '%" + river_cat + "%' AND ";
   if (username != '') cqlFilter += "username ILIKE '%" + username + "%' AND ";
   if (organisation_name != '') cqlFilter += "organisation_name ILIKE '%" + organisation_name + "%' AND ";
-  if (scoremin != '') cqlFilter += "score>=" + scoremin + " AND ";
-  if (scoremax != '') cqlFilter += "score<=" + scoremax + " AND ";
+  if (healthClass =='Very Poor'){
+   cqlFilter += "((score > 0 AND score <= 4.3 AND river_cat = 'sandy')"
+              + " OR (score > 0 AND score <= 5.1 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Poor'){
+   cqlFilter += "((score > 4.3 AND score <= 4.9 AND river_cat = 'sandy')"
+              + " OR (score > 5.1 AND score <= 6.1 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Fair'){
+   cqlFilter += "((score > 4.9 AND score <= 5.8 AND river_cat = 'sandy')"
+              + " OR (score > 6.1 AND score <= 6.8 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Good'){
+   cqlFilter += "((score > 5.8 AND score <= 6.9 AND river_cat = 'sandy')"
+              + " OR (score > 6.8 AND score <= 7.9 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Natural'){
+   cqlFilter += "((score > 6.9 AND river_cat = 'sandy')"
+              + " OR (score > 7.9 AND river_cat = 'rocky')) AND ";
+  }
   if (datestart != '') cqlFilter += "obs_date>='" + datestart + "' AND ";
   if (dateend != '') cqlFilter += "obs_date<='" + dateend + "' AND ";
   if (flag == 'Verified') cqlFilter += "flag='clean' AND ";
@@ -140,8 +154,7 @@ function filterApply(){
   if (cqlFilter != '') {
     cqlFilter = cqlFilter.replace(/ AND $/,'');
     layerMiniSASSObs.mergeNewParams({'CQL_FILTER':cqlFilter});
-    document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter_clear.png';
-    document.getElementById('id_obs_filtertext').innerHTML = 'Remove the filter';
+    document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear.png';
     document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations (Filtered)';
     filtered = true;
   } else filterRemove();
@@ -161,8 +174,7 @@ function filterRemove(){
   Ext.getCmp('id_filter_category').setValue('All');
   Ext.getCmp('id_filter_username').setValue();
   Ext.getCmp('id_filter_organisation').setValue();
-  Ext.getCmp('id_filter_scoremin').setValue();
-  Ext.getCmp('id_filter_scoremax').setValue();
+  Ext.getCmp('id_filter_class').setValue('All');
   Ext.getCmp('id_filter_datestart').setRawValue();
   Ext.getCmp('id_filter_dateend').setRawValue();
   Ext.getCmp('id_filter_flag').setValue('All');
@@ -180,11 +192,11 @@ function filterRemove(){
   Ext.getCmp('id_filter_trueflies').setValue();
   Ext.getCmp('id_filter_snails').setValue();
 
-  // Reset the filter button
-  document.getElementById('id_obs_filter').src = '/static/img/button_obs_filter.png';
-  document.getElementById('id_obs_filtertext').innerHTML = 'Filter observations';
+  // Disable the clear filter button
+  document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear_disabled.png';
   document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
   filtered = false;
+  cqlFilter = '';
 }
 
 function zoomFull() {
@@ -559,7 +571,15 @@ Ext.onReady(function() {
     activeTab:0,
     frame:true,
     autoScroll:true,
-    enableTabScroll:true
+    enableTabScroll:true,
+    bbar:new Ext.Toolbar({
+      items:[{
+        xtype:'button',
+        text:'New observation',
+        tooltip:'Add a new observation to this site',
+        handler:function(event,toolEl,panel){redirectWindow.show(this);},
+      }],
+    }),
   });
 
   // Define a window to display miniSASS observation information
@@ -631,13 +651,12 @@ Ext.onReady(function() {
                 fieldLabel:'Organisation',
                 id:'id_filter_organisation',
               },{
-                xtype:'numberfield',
-                fieldLabel:'Minimum score',
-                id:'id_filter_scoremin',
-              },{
-                xtype:'numberfield',
-                fieldLabel:'Maximum score',
-                id:'id_filter_scoremax',
+                xtype:'combo',
+                fieldLabel:'Health class',
+                id:'id_filter_class',
+                store:['All','Very Poor','Poor','Fair','Good','Natural'],
+                triggerAction:'all',
+                value:'All',
               },{
                 xtype:'datefield',
                 fieldLabel:'Start date',
@@ -780,10 +799,13 @@ Ext.onReady(function() {
   buttonList.on('click', function(){redirectWindow.show(this);});
 
   // Link the Filter Observations button
-  var buttonInfo = Ext.get('id_obs_filter');
-  buttonInfo.on('click', function(){
+  var buttonFilter = Ext.get('id_obs_filter');
+  buttonFilter.on('click', function(){filterWindow.show(this);});
+
+  // Link the Clear Filter button
+  var buttonFilterClear = Ext.get('id_obs_filter_clear');
+  buttonFilterClear.on('click', function(){
     if (filtered){filterRemove();filterWindow.hide();}
-    else filterWindow.show(this);
   });
 
   // Define tooltips for the layer switcher
