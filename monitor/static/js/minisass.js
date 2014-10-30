@@ -190,8 +190,8 @@ function zoomToCoords() {
       markerPoint.x = longitude;
       markerPoint.y = latitude;
       // Reset the marker size
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
     } else {
       // The marker layer doesn't exist so create it
       var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
@@ -212,14 +212,14 @@ function zoomToCoords() {
       layerMarker.events.on({featuremodified:updateCoords});
 
       // Set a default marker style
-      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '3';
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#00ff00';
-      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#00ff00';
-      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '3';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '10';
-      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#00aa00';
-      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#00aa00';
+      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
+      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
+      OpenLayers.Feature.Vector.style['default']['fill'] = false;
+      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
+      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#cc0000';
+      OpenLayers.Feature.Vector.style['select']['fill'] = false;
 
       // Create the marker and add it to the marker layer
       markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
@@ -236,7 +236,7 @@ function zoomToCoords() {
       inputFromMap();
       userFunction = 'infoclick';
       infoFromMap();
-      Ext.Msg.alert('Site Marker', 'The green circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
     } else {
       modifyControl.deactivate();
     }
@@ -616,8 +616,7 @@ function filterApply(){
   var river_cat = Ext.getCmp('id_filter_category').getValue();
   var username = Ext.getCmp('id_filter_username').getValue();
   var organisation_name = Ext.getCmp('id_filter_organisation').getValue();
-  var scoremin = Ext.getCmp('id_filter_scoremin').getValue();
-  var scoremax = Ext.getCmp('id_filter_scoremax').getValue();
+  var healthClass = Ext.getCmp('id_filter_class').getValue();
   var datestart = Ext.getCmp('id_filter_datestart').getRawValue();
   var dateend = Ext.getCmp('id_filter_dateend').getRawValue();
   var flag = Ext.getCmp('id_filter_flag').getValue();
@@ -642,8 +641,22 @@ function filterApply(){
   if (river_cat == 'Rocky' || river_cat == 'Sandy') cqlFilter += "river_cat ILIKE '%" + river_cat + "%' AND ";
   if (username != '') cqlFilter += "username ILIKE '%" + username + "%' AND ";
   if (organisation_name != '') cqlFilter += "organisation_name ILIKE '%" + organisation_name + "%' AND ";
-  if (scoremin != '') cqlFilter += "score>=" + scoremin + " AND ";
-  if (scoremax != '') cqlFilter += "score<=" + scoremax + " AND ";
+  if (healthClass =='Very Poor'){
+   cqlFilter += "((score > 0 AND score <= 4.3 AND river_cat = 'sandy')"
+              + " OR (score > 0 AND score <= 5.1 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Poor'){
+   cqlFilter += "((score > 4.3 AND score <= 4.9 AND river_cat = 'sandy')"
+              + " OR (score > 5.1 AND score <= 6.1 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Fair'){
+   cqlFilter += "((score > 4.9 AND score <= 5.8 AND river_cat = 'sandy')"
+              + " OR (score > 6.1 AND score <= 6.8 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Good'){
+   cqlFilter += "((score > 5.8 AND score <= 6.9 AND river_cat = 'sandy')"
+              + " OR (score > 6.8 AND score <= 7.9 AND river_cat = 'rocky')) AND ";
+  } else if (healthClass =='Natural'){
+   cqlFilter += "((score > 6.9 AND river_cat = 'sandy')"
+              + " OR (score > 7.9 AND river_cat = 'rocky')) AND ";
+  }
   if (datestart != '') cqlFilter += "obs_date>='" + datestart + "' AND ";
   if (dateend != '') cqlFilter += "obs_date<='" + dateend + "' AND ";
   if (flag == 'Verified') cqlFilter += "flag='clean' AND ";
@@ -686,8 +699,7 @@ function filterRemove(){
   Ext.getCmp('id_filter_category').setValue('All');
   Ext.getCmp('id_filter_username').setValue();
   Ext.getCmp('id_filter_organisation').setValue();
-  Ext.getCmp('id_filter_scoremin').setValue();
-  Ext.getCmp('id_filter_scoremax').setValue();
+  Ext.getCmp('id_filter_class').setValue('All');
   Ext.getCmp('id_filter_datestart').setRawValue();
   Ext.getCmp('id_filter_dateend').setRawValue();
   Ext.getCmp('id_filter_flag').setValue('All');
@@ -1246,39 +1258,42 @@ Ext.onReady(function() {
     activeTab:0,
     frame:true,
     autoScroll:true,
-    enableTabScroll:true
+    enableTabScroll:true,
+    bbar:new Ext.Toolbar({
+      items:[{
+        xtype:'button',
+        text:'New observation',
+        tooltip:'Add a new observation to this site',
+        handler:function(event,toolEl,panel){
+          var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
+          if (selectedTab >= 0){
+            // There are one or more observations displayed in the observation
+            // info window so work out which one is being displayed and then load
+            // it into the input form. The tabs are shown in descending date order
+            // so start counting from the last tab backwards.
+            var observation = obsTabPanel.items.length - selectedTab;
+            var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
+            resetInputForm();
+            infoWindow.hide();
+            loadSelectedSite(selectedSite,storeSites);
+            inputWindow.show(this);
+          }
+        },
+      }],
+    }),
   });
 
   // Define a window to display miniSASS observation information
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
     width:500,
-    height:400,
+    height:420,
     layout:'fit',
     bodyStyle:'padding:5px;',
     closeAction:'hide',
     modal:false,
     constrain:true,
     items:[obsTabPanel],
-    tools:[{
-      id:'plus',
-      qtip:'Add a new observation at this site',
-      handler:function(event, toolEl, panel){
-        var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
-        if (selectedTab >= 0){
-          // There are one or more observations displayed in the observation
-          // info window so work out which one is being displayed and then load
-          // it into the input form.
-          var observation = selectedTab + 1;
-          var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
-          console.log('Selected site: ' + selectedSite);
-          resetInputForm();
-          infoWindow.hide();
-          loadSelectedSite(selectedSite,storeSites);
-          inputWindow.show(this);
-        }
-      },
-    }],
   });
   infoWindow.show();
   infoWindow.hide();
@@ -1441,13 +1456,12 @@ Ext.onReady(function() {
                 fieldLabel:'Organisation',
                 id:'id_filter_organisation',
               },{
-                xtype:'numberfield',
-                fieldLabel:'Minimum score',
-                id:'id_filter_scoremin',
-              },{
-                xtype:'numberfield',
-                fieldLabel:'Maximum score',
-                id:'id_filter_scoremax',
+                xtype:'combo',
+                fieldLabel:'Health class',
+                id:'id_filter_class',
+                store:['All','Very Poor','Poor','Fair','Good','Natural'],
+                triggerAction:'all',
+                value:'All',
               },{
                 xtype:'datefield',
                 fieldLabel:'Start date',
