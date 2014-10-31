@@ -1593,6 +1593,11 @@ Ext.onReady(function() {
     inputWindow.show(this);
   };
 
+  // Display a confirmation window if an observation has been saved
+  if (document.getElementById('id_saved_obs').value == 'true'){
+    Ext.Msg.alert('Observation saved', 'Your observation has been saved. It still needs to be<br />verified and you may contacted in this regard.');
+  };
+
   // Define tooltips for the layer switcher
   document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
   new Ext.ToolTip({

@@ -55,4 +55,5 @@ class MapForm(forms.Form):
     layers = forms.CharField()
     edit_site = forms.CharField()
     error = forms.CharField()
+    saved_obs = forms.CharField()
 
