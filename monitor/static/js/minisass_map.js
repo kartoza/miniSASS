@@ -586,7 +586,7 @@ Ext.onReady(function() {
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
     width:500,
-    height:400,
+    height:480,
     layout:'fit',
     bodyStyle:'padding:5px;',
     closeAction:'hide',

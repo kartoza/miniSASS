@@ -29,7 +29,7 @@ class Organisations(models.Model):
 
     def __unicode__(self):
         return self.org_name
-        
+
 class Schools(models.Model):
     gid = models.AutoField(primary_key=True, editable=False)
     the_geom = models.PointField()
@@ -66,11 +66,20 @@ class Sites(models.Model):
 
     def __unicode__(self):
         return self.site_name
-               
+
 class Observations(models.Model):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
         (u'clean', u'Clean')
+    )
+    UNIT_DO_CATS = (
+        (u'mgl', u'mg/l'),
+        (u'pDO', u'%DO'),
+        (u'na', u'Unknown')
+    )
+    UNIT_EC_CATS = (
+        (u'mSm', u'mS/m'),
+        (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User)
@@ -93,6 +102,13 @@ class Observations(models.Model):
     comment = models.CharField(max_length=255, blank=True)
     obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
+    water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True)
+    water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True)
+    ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True)
+    diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
+    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mSm', blank=True)
     objects = models.GeoManager()
 
     class Meta:
@@ -105,6 +121,6 @@ class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
     """
 #     observation = models.ForeignKey(Observations, related_name='plugins')
-# 
+#
 #     def __unicode__(self):
 #         return self.observation.site.name

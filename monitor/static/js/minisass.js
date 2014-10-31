@@ -1211,7 +1211,7 @@ Ext.onReady(function() {
   inputWindow = new Ext.Window({
     applyTo:'data_window',
     width:570,
-    height:470,
+    height:560,
     closeAction:'hide',
     modal:false,
     x:20,
@@ -1287,7 +1287,7 @@ Ext.onReady(function() {
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
     width:500,
-    height:420,
+    height:480,
     layout:'fit',
     bodyStyle:'padding:5px;',
     closeAction:'hide',

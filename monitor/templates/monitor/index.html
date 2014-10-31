@@ -157,9 +157,9 @@
         {% if user.is_authenticated %}
           <table>
             <tr>
-              <td>
+              <td class="clAlignTop">
                 <table id="data_table_left">
-                  <tr><td class="section_header" colspan="2">Site Details</td></tr>
+                  <tr><td class="clBold clAlignLeft" colspan="2">Site Details</td></tr>
                   <tr><td><label for="id_river_name">River name:</label></td><td>{{ site_form.river_name }} Max 15 characters</td></tr>
                   <tr><td><label for="id_site_name">Site name:</label></td><td>{{ site_form.site_name }} Max 15 characters</td></tr>
                   <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
@@ -198,13 +198,22 @@
                       {{ site_form.river_cat }}
                     </td>
                   </tr>
-                  <tr><td class="section_header" colspan="2"><br />Observation Details</td></tr>
+                  <tr><td class="clBold clAlignLeft" colspan="2"><br />Observation Details</td></tr>
                   <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
                   <tr><td>Collector&apos;s name:</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
                   <tr><td><label for="id_comment">Comments/notes:</label></td><td>{{ observation_form.comment }}</td></tr>
                 </table>
               </td>
-              <td>
+              <td class="clAlignTop">
+                <table>
+                  <tr><td class="clBold clAlignLeft" colspan="2">Measured Parameters</td></tr>
+                  <tr><td><label for="id_water_clarity">Water clarity:</label></td><td>{{ observation_form.water_clarity }}cm</td></tr>
+                  <tr><td><label for="id_water_temp">Water temperature:</label></td><td>{{ observation_form.water_temp }}&deg;C</td></tr>
+                  <tr><td><label for="id_ph">pH:</label></td><td>{{ observation_form.ph }}</td></tr>
+                  <tr><td><label for="id_diss_oxygen">Dissolved oxygen:</label></td><td>{{ observation_form.diss_oxygen }}{{ observation_form.diss_oxygen_unit }}</td></tr>
+                  <tr><td><label for="id_elec_cond">Electrical conductivity:</label></td><td>{{ observation_form.elec_cond }}{{ observation_form.elec_cond_unit }}</td></tr>
+                </table>
+
                 <table id="data_table_right">
                   <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th><th></th></tr>
                   <tr><td>{{ observation_form.flatworms }}</td><td class="tdlabel"><label for="id_flatworms">{{ observation_form.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td><td></td></tr>
