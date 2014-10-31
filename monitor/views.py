@@ -107,6 +107,14 @@ def get_sites(request, x, y, d):
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
 
+def get_unique(request, field):
+    """ Request all unique values.
+    """
+    values_returned = Sites.objects.distinct(field)
+    return render_to_response('monitor/unique_values.html',
+                              {'values':values_returned},
+                              context_instance=RequestContext(request))
+
 def get_schools(request):
     """ Request all schools with names starting with the letters in the search_str
     """
