@@ -218,11 +218,11 @@ function zoomToCoords() {
       OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
       OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
       OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
-      OpenLayers.Feature.Vector.style['default']['fill'] = false;
+      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#ff0000';
       OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
       OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
       OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#cc0000';
-      OpenLayers.Feature.Vector.style['select']['fill'] = false;
+      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#cc0000';
 
       // Create the marker and add it to the marker layer
       markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
@@ -239,7 +239,7 @@ function zoomToCoords() {
       inputFromMap();
       userFunction = 'infoclick';
       infoFromMap();
-      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the site<br />you want to create. If it is in the wrong position then<br />1. first click on the green circle to select it<br />2. then click and drag the circle to the correct position');
     } else {
       modifyControl.deactivate();
     }
