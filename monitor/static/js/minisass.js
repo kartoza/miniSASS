@@ -33,6 +33,9 @@ var clickCoords;          // Map click coordinates
 var storeSites;           // A store for holding sites data
 var storeNearbySites;     // A store for holding data for nearby sites
 var storeSchools;         // A store for holding data for schools
+var storeRiverNames;      // A store for holding unique river names
+var storeSiteNames;       // A store for holding unique site names
+var storeUserNames;       // A store for holding unique user names
 var comboSites;           // A combobox containing a list of all sites
 var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
@@ -783,6 +786,78 @@ Ext.onReady(function() {
     }
   });
 
+  // Define a store for holding unique river names
+  storeRiverNames = new Ext.data.ArrayStore({
+    fields:['river_name']
+  });
+
+  // Request a list of all river names
+  Ext.Ajax.request({
+    url:'/map/unique/river_name/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeRiverNames.add(new storeSites.recordType({
+            'river_name':jsonData.features[i].properties.river_name,
+          }));
+        };
+        storeRiverNames.sort('river_name','ASC');
+      };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
+  // Define a store for holding unique site names
+  storeSiteNames = new Ext.data.ArrayStore({
+    fields:['site_name']
+  });
+
+  // Request a list of all site names
+  Ext.Ajax.request({
+    url:'/map/unique/site_name/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeSiteNames.add(new storeSites.recordType({
+            'site_name':jsonData.features[i].properties.site_name,
+          }));
+        };
+        storeSiteNames.sort('site_name','ASC');
+      };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
+  // Define a store for holding unique user names
+  storeUserNames = new Ext.data.ArrayStore({
+    fields:['user_name']
+  });
+
+  // Request a list of all user names
+  Ext.Ajax.request({
+    url:'/map/unique/user/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeUserNames.add(new storeSites.recordType({
+            'user_name':jsonData.features[i].properties.user_name,
+          }));
+        };
+        storeUserNames.sort('user_name','ASC');
+     };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
   // Setup up a combo box for displaying a list of all sites
   comboSites = new Ext.form.ComboBox({
     store:storeSites,
@@ -1434,13 +1509,23 @@ Ext.onReady(function() {
                 fieldLabel:'',
                 html:'You can filter observations using one or more of the criteria on this form. For text fields you can enter part or all of the name.<br />&nbsp;',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'River name',
                 id:'id_filter_river',
+                store:storeRiverNames,
+                displayField:'river_name',
+                valueField:'river_name',
+                typeAhead:true,
+                mode:'local',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'Site name',
                 id:'id_filter_sitename',
+                store:storeSiteNames,
+                displayField:'site_name',
+                valueField:'site_name',
+                typeAhead:true,
+                mode:'local',
               },{
                 xtype:'combo',
                 fieldLabel:'River category',
@@ -1449,9 +1534,14 @@ Ext.onReady(function() {
                 triggerAction:'all',
                 value:'All',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'User name',
                 id:'id_filter_username',
+                store:storeUserNames,
+                displayField:'user_name',
+                valueField:'user_name',
+                typeAhead:true,
+                mode:'local',
               },{
                 xtype:'textfield',
                 fieldLabel:'Organisation',
