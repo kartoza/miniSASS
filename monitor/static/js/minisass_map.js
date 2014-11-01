@@ -653,6 +653,7 @@ Ext.onReady(function() {
         xtype:'button',
         text:'New observation',
         tooltip:'Add a new observation to this site',
+        ctCls:'x-btn-over',
         handler:function(event,toolEl,panel){redirectWindow.show(this);},
       }],
     }),
