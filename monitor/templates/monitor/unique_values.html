@@ -1,0 +1,14 @@
+{% if values %}
+  { "type": "FeatureCollection",
+  "features": [
+  {% for value in values %}
+    { "type": "Feature",
+      "properties": {
+        "river_name":"{{ value.river_name }}",
+        "site_name":"{{ value.site_name }}",
+        "user_name":"{{ value.user }}"
+      }
+    }
+    {% if not forloop.last %},{% endif %}
+  {% endfor %}]}
+{% endif %}
