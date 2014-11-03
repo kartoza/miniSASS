@@ -58,19 +58,19 @@
 }
 
 /* Styling for the function buttons */
-#input_buttons {
+.cl_input_buttons {
   margin-left:auto;
   margin-right:auto;
 }
 
-#input_buttons td {
+.cl_input_buttons td {
   width:89px;
   text-align:center;
   vertical-align:text-top;
   font-size:0.8em;
 }
 
-#input_buttons img {
+.cl_input_buttons img {
   margin:2px;
 }
 
