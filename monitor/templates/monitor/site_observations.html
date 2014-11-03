@@ -1,0 +1,41 @@
+{% if observations %}
+  { "type": "FeatureCollection",
+  "features": [
+  {% for observation in observations %}
+    { "type": "Feature",
+      "properties": {
+        "gid":"{{observation.gid}}",
+        "site_name":"{{observation.site.site_name}}",
+        "river_name":"{{observation.site.river_name}}",
+        "time_stamp":"{{observation.site.river_name}}",
+        "description":"{{observation.site.description}}",
+        "river_cat":"{{observation.site.river_cat}}",
+        "user":"{{observation.user}}",
+        "flatworms":"{{observation.flatworms}}",
+        "worms":"{{observation.worms}}",
+        "leeches":"{{observation.leeches}}",
+        "crabs_shrimps":"{{observation.crabs_shrimps}}",
+        "stoneflies":"{{observation.stoneflies}}",
+        "minnow_mayflies":"{{observation.minnow_mayflies}}",
+        "other_mayflies":"{{observation.other_mayflies}}",
+        "damselflies":"{{observation.damselflies}}",
+        "dragonflies":"{{observation.dragonflies}}",
+        "bugs_beetles":"{{observation.bugs_beetles}}",
+        "caddisflies":"{{observation.caddisflies}}",
+        "true_flies":"{{observation.true_flies}}",
+        "snails":"{{observation.snails}}",
+        "score":"{{observation.score}}",
+        "obs_date":"{{observation.obs_date}}",
+        "flag":"{{observation.flag}}",
+        "water_clarity":"{{observation.water_clarity}}",
+        "water_temp":"{{observation.water_temp}}",
+        "ph":"{{observation.ph}}",
+        "diss_oxygen":"{{observation.diss_oxygen}}",
+        "diss_oxygen_unit":"{{observation.diss_oxygen_unit}}",
+        "elec_cond":"{{observation.elec_cond}}",
+        "elec_cond_unit":"{{observation.elec_cond_unit}}"
+      }
+    }
+    {% if not forloop.last %},{% endif %}
+  {% endfor %}]}
+{% endif %}

@@ -126,6 +126,16 @@ def get_schools(request):
                               {'schools':schools_returned},
                               context_instance=RequestContext(request))
 
+
+def get_observations(request, site_id):
+    """ Request all observations for the requested site ID.
+    """
+    observations = Observations.objects.filter(site=site_id)
+
+    return render_to_response('monitor/site_observations.html',
+                              {'observations':observations},
+                              context_instance=RequestContext(request))
+
 def zoom_observation(request, obs_id):
     """
     Zoom to a miniSASS observation - Find the coordinates for an observation
