@@ -17,6 +17,8 @@ var layerSchools;
 var layerMiniSASSObs;
 var infoClick;
 var infoWindow;
+var dataWindow;
+var siteDataSelectWindow;
 var redirectWindow;
 var filterWindow;
 var filtered = false;
@@ -31,6 +33,7 @@ var storeUserNames;       // A store for holding unique user names
 var comboSites;           // A combobox containing a list of all sites
 var comboZoomSites;       // A combobox for zooming to sites
 var comboZoomSchools;     // A combobox for zooming to schools
+var dataTabPanel;         // A tab panel for showing site details, observations and graphs
 var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
 var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
            + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
@@ -58,6 +61,130 @@ function infoFromMap(){
     userFunction = 'none';
     infoClick.deactivate();
     if (infoWindow.hidden == false) infoWindow.hide();
+  }
+}
+
+function loadSelectedObs(selectedSite,store){
+/* This function loads the site details and observations from the selected site
+   into the data window.
+*/
+  if (selectedSite != '') {
+    var siteRecord = store.getAt(store.find('site_gid',selectedSite));
+
+    // Define a store for holding a site's observation data
+    storeSiteObs = new Ext.data.ArrayStore({
+      fields:['obs_gid','user','flatworms','worms','leeches','crabs_shrimps','stoneflies','minnow_mayflies','other_mayflies','damselflies','dragonflies','bugs_beetles','caddisflies','true_flies','snails','score','obs_date','flag','water_clarity','water_temp','ph','diss_oxygen','diss_oxygen_unit','elec_cond','elec_cond_unit',]
+    });
+
+    // Request all the site's observations
+    Ext.Ajax.request({
+      url:'/map/observations/'+siteRecord.get('site_gid'),
+      success:function(response,opts){
+        var jsonData = Ext.decode(escape(response.responseText));
+        if (jsonData){
+          for (var i=0; i<jsonData.features.length; i++){
+            storeSiteObs.add(new storeSiteObs.recordType({
+              'obs_gid':jsonData.features[i].properties.obs_gid,
+              'user':jsonData.features[i].properties.user,
+              'flatworms':jsonData.features[i].properties.flatworms,
+              'worms':jsonData.features[i].properties.worms,
+              'leeches':jsonData.features[i].properties.leeches,
+              'crabs_shrimps':jsonData.features[i].properties.crabs_shrimps,
+              'stoneflies':jsonData.features[i].properties.stoneflies,
+              'minnow_mayflies':jsonData.features[i].properties.minnow_mayflies,
+              'other_mayflies':jsonData.features[i].properties.other_mayflies,
+              'damselflies':jsonData.features[i].properties.damselflies,
+              'dragonflies':jsonData.features[i].properties.dragonflies,
+              'bugs_beetles':jsonData.features[i].properties.bugs_beetles,
+              'caddisflies':jsonData.features[i].properties.caddisflies,
+              'true_flies':jsonData.features[i].properties.true_flies,
+              'snails':jsonData.features[i].properties.snails,
+              'score':jsonData.features[i].properties.score,
+              'obs_date':jsonData.features[i].properties.obs_date,
+              'flag':jsonData.features[i].properties.flag,
+              'water_clarity':jsonData.features[i].properties.water_clarity,
+              'water_temp':jsonData.features[i].properties.water_temp,
+              'ph':jsonData.features[i].properties.ph,
+              'diss_oxygen':jsonData.features[i].properties.diss_oxygen,
+              'elec_cond':jsonData.features[i].properties.elec_cond,
+            }));
+          };
+
+          // Remove any existing data in the tab panel
+          dataTabPanel.removeAll();
+
+          // Add the site details to tab 1
+          var tab1Content  = '<p><b>Site name:</b> ' + siteRecord.get('site_name'); + '</p>';
+          tab1Content += '<p><b>River name:</b> ' + siteRecord.get('river_name'); + '</p>';
+          tab1Content += '<p><b>River category:</b> ' + siteRecord.get('river_cat'); + '</p>';
+          tab1Content += '<p><b>Latitude:</b> ' + siteRecord.get('latitude'); + '</p>';
+          tab1Content += '<p><b>Longitude:</b> ' + siteRecord.get('longitude'); + '</p>';
+          tab1Content += '<p><b>Unique site name:</b> ' + siteRecord.get('combo_name'); + '</p>';
+          tab1Content += '<p><b>Description:</b> ' + siteRecord.get('description'); + '</p>';
+          tab1Content += '<p><b>Observations:</b> ' + storeSiteObs.getCount() + '</p>';
+
+          dataTabPanel.add({
+            title:'Site Details',
+            html:tab1Content,
+            padding:'5px',
+            autoScroll:true,
+          });
+
+          // Add the table to tab 2
+          if (storeSiteObs.getCount() >= 1) {
+
+            // Create a grid panel to hold the data table
+            var tablePanel = new Ext.grid.GridPanel({
+              title:'Observations',
+              store:storeSiteObs,
+              columns:[
+                {header:'Date',dataIndex:'obs_date',},
+                {header:'User name',dataIndex:'user',},
+                {header:'Flat worms',dataIndex:'flatworms',width:90,},
+                {header:'Worms',dataIndex:'worms',width:90,},
+                {header:'Leeches',dataIndex:'leeches',width:90,},
+                {header:'Crabs/Shrimps',dataIndex:'crabs_shrimps',width:90,},
+                {header:'Stoneflies',dataIndex:'stoneflies',width:90,},
+                {header:'Minnow mayflies',dataIndex:'minnow_mayflies',width:90,},
+                {header:'Other mayflies',dataIndex:'other_mayflies',width:90,},
+                {header:'Damselflies',dataIndex:'damselflies',width:90,},
+                {header:'Dragonflies',dataIndex:'dragonflies',width:90,},
+                {header:'Bugs/beetles',dataIndex:'bugs_beetles',width:90,},
+                {header:'Caddisflies',dataIndex:'caddisflies',width:90,},
+                {header:'True flies',dataIndex:'true_flies',width:90,},
+                {header:'Snails',dataIndex:'snails',width:90,},
+                {header:'Score',dataIndex:'score',width:45,},
+                {header:'Status',dataIndex:'flag',width:65,},
+                {header:'Water clarity',dataIndex:'water_clarity',},
+                {header:'Water temp',dataIndex:'water_temp',},
+                {header:'pH',dataIndex:'ph',},
+                {header:'DO',dataIndex:'diss_oxygen',},
+                {header:'EC',dataIndex:'elec_cond',},
+              ],
+            });
+            dataTabPanel.add(tablePanel);
+          }
+
+          // Add the graph to tab 3
+          if (storeSiteObs.getCount() >= 1) {
+            dataTabPanel.add({
+              title:'River Health Graph',
+              html:'Graph goes here',
+              padding:'5px',
+              autoScroll:true,
+            });
+          }
+
+          // Show the popup window
+          dataTabPanel.setActiveTab(0);
+          dataWindow.show(this);
+        };
+      },
+      failure:function(response,opts){
+        // Fail silently
+      }
+    });
+
   }
 }
 
@@ -273,7 +400,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeRiverNames.add(new storeSites.recordType({
+          storeRiverNames.add(new storeRiverNames.recordType({
             'river_name':jsonData.features[i].properties.river_name,
           }));
         };
@@ -297,7 +424,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeSiteNames.add(new storeSites.recordType({
+          storeSiteNames.add(new storeSiteNames.recordType({
             'site_name':jsonData.features[i].properties.site_name,
           }));
         };
@@ -321,7 +448,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeUserNames.add(new storeSites.recordType({
+          storeUserNames.add(new storeUserNames.recordType({
             'user_name':jsonData.features[i].properties.user_name,
           }));
         };
@@ -331,6 +458,18 @@ Ext.onReady(function() {
     failure:function(response,opts){
       // Fail silently
     }
+  });
+
+  // Setup up a combo box for displaying a list of all sites
+  comboSites = new Ext.form.ComboBox({
+    store:storeSites,
+    width:220,
+    listWidth:290,
+    displayField:'combo_name',
+    valueField:'site_gid',
+    typeAhead:true,
+    mode:'local',
+    emptyText:'Select a site...',
   });
 
   // Setup up a combo box for zooming to sites
@@ -534,7 +673,8 @@ Ext.onReady(function() {
   );
 
   // Add the layers to the map
-  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
+//  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
+  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerMiniSASSBase]);
 
   // If necessary, restore layer visibility saved from a previous state
   var layerStr = document.getElementById('id_layers').value;
@@ -620,9 +760,19 @@ Ext.onReady(function() {
         border:false,
         bodyStyle:'padding:5px;background:#dfe8f6;',
         items:comboZoomSites,
-        html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
+        html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
       })
     ]
+  });
+
+  // Define the miniSASS Site Data and Graphs panel
+  var siteDataPanel = new Ext.Panel({
+    title:'Site Data and Graphs',
+    renderTo:'site_data',
+    collapsible:true,
+    collapsed:true,
+    width:220,
+    contentEl:'site_data_buttons'
   });
 
   // Define the miniSASS buttons panel
@@ -638,7 +788,8 @@ Ext.onReady(function() {
   messagePanel = new Ext.Panel({
     renderTo:'messages',
     width:220,
-    bodyStyle:'padding:5px;'
+    border:false,
+    bodyStyle:'padding:2px;'
   });
   messagePanel.update(navMsg);
 
@@ -659,6 +810,13 @@ Ext.onReady(function() {
     }),
   });
 
+  // Define a tab panel for showing site details, observations and graphs
+  dataTabPanel = new Ext.TabPanel({
+    activeTab:0,
+    frame:true,
+    activeTab: 0,
+  });
+
   // Define a window to display miniSASS observation information
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
@@ -673,6 +831,19 @@ Ext.onReady(function() {
   });
   infoWindow.show();
   infoWindow.hide();
+
+  // Define a window to display site details, observations and graphs
+  dataWindow = new Ext.Window({
+    title:'Site Data and Graphs',
+    width:500,
+    height:480,
+    layout:'fit',
+    bodyStyle:'padding:5px;',
+    closeAction:'hide',
+    modal:false,
+    constrain:true,
+    items:[dataTabPanel]
+  });
 
   // Define a window for filtering miniSASS observations
   filterWindow = new Ext.Window({
@@ -838,6 +1009,38 @@ Ext.onReady(function() {
     ],
   });
 
+  // Define the popup Site Data Selection window
+  siteDataSelectWindow = new Ext.Window({
+    title:'Existing observation sites',
+    width:280,
+    height:200,
+    closeAction:'hide',
+    modal:false,
+    x:20,
+    constrain:true,
+    items:new Ext.Panel({
+      border:false,
+      bodyStyle:'padding:5px;background:#dfe8f6;',
+      items:comboSites,
+      html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
+    }),
+    buttons:[
+      {
+        text:'Show data',
+        tooltip:'Display observations and graphs for the selected site',
+        handler:function(){loadSelectedObs(comboSites.getValue(),storeSites);}
+      },{
+        text:'Clear selection',
+        tooltip:'Clear the selected value in the drop-down list',
+        handler:function(){comboSites.clearValue();}
+      },{
+        text:'Cancel',
+        tooltip:'Cancel this window and return to the map',
+        handler:function(){siteDataSelectWindow.hide();}
+      }
+    ]
+  });
+
   // Define a window redirecting users to the login or register views
   redirectWindow = new Ext.Window({
     title:'Not logged in',
@@ -899,6 +1102,14 @@ Ext.onReady(function() {
   buttonFilterClear.on('click', function(){
     if (filtered){filterRemove();filterWindow.hide();}
   });
+
+  // Link the Site Data Map Click input button
+  var buttonMap = Ext.get('id_site_map');
+  buttonMap.on('click', function(){dataWindow.show(this);});
+
+  // Link the Site Data Site List input button
+  var buttonList = Ext.get('id_site_list');
+  buttonList.on('click', function(){siteDataSelectWindow.show(this);});
 
   // Define tooltips for the layer switcher
   document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';

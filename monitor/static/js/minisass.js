@@ -20,7 +20,7 @@ var mapClick;
 var infoClick;
 var inputWindow;
 var infoWindow;
-var siteWindow;
+var siteSelectWindow;
 var filterWindow;
 var filtered = false;
 var cqlFilter = '';
@@ -798,7 +798,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeRiverNames.add(new storeSites.recordType({
+          storeRiverNames.add(new storeRiverNames.recordType({
             'river_name':jsonData.features[i].properties.river_name,
           }));
         };
@@ -822,7 +822,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeSiteNames.add(new storeSites.recordType({
+          storeSiteNames.add(new storeSiteNames.recordType({
             'site_name':jsonData.features[i].properties.site_name,
           }));
         };
@@ -846,7 +846,7 @@ Ext.onReady(function() {
       var jsonData = Ext.decode(escape(response.responseText));
       if (jsonData){
         for (var i=0; i<jsonData.features.length; i++){
-          storeUserNames.add(new storeSites.recordType({
+          storeUserNames.add(new storeUserNames.recordType({
             'user_name':jsonData.features[i].properties.user_name,
           }));
         };
@@ -1261,7 +1261,7 @@ Ext.onReady(function() {
         border:false,
         bodyStyle:'padding:5px;background:#dfe8f6;',
         items:comboZoomSites,
-        html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
+        html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
       })
     ]
   });
@@ -1376,7 +1376,7 @@ Ext.onReady(function() {
   infoWindow.hide();
 
   // Define the popup Site Selection window
-  siteWindow = new Ext.Window({
+  siteSelectWindow = new Ext.Window({
     title:'Existing observation sites',
     width:280,
     height:200,
@@ -1387,14 +1387,14 @@ Ext.onReady(function() {
       border:false,
       bodyStyle:'padding:5px;background:#dfe8f6;',
       items:comboSites,
-      html:'Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the observation was entered.'
+      html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
     }),
     buttons:[{
       text:'Use selected site',
       tooltip:'Enter an observation at the selected site',
       handler:function(){
         resetInputForm();
-        siteWindow.hide();
+        siteSelectWindow.hide();
         loadSelectedSite(comboSites.getValue(),storeSites);
         comboSites.clearValue();
         inputWindow.show(this);
@@ -1404,13 +1404,13 @@ Ext.onReady(function() {
       tooltip:'Enter an observation at a new site',
       handler:function(){
         resetInputForm();
-        siteWindow.hide();
+        siteSelectWindow.hide();
         inputWindow.show(this);
       }
     },{
       text:'Cancel',
       tooltip:'Cancel this window and return to the map',
-      handler:function(){siteWindow.hide();}
+      handler:function(){siteSelectWindow.hide();}
     }]
   });
 
@@ -1658,7 +1658,7 @@ Ext.onReady(function() {
 
   // Link the Site List input button
   var buttonList = Ext.get('id_obs_list');
-  buttonList.on('click', function(){siteWindow.show(this);});
+  buttonList.on('click', function(){siteSelectWindow.show(this);});
 
   // Link the Filter Observations button
   var buttonFilter = Ext.get('id_obs_filter');
