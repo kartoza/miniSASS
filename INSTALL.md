@@ -59,6 +59,18 @@ If installing on Ubuntu and you get a "fatal error: freetype/fterrors.h: No such
     sudo ln -s /usr/include/freetype2 /usr/local/include/freetype
 The run "pip install -r requirements.txt" again
 
+If you get an error like this:
+
+    Downloading/unpacking PIL==1.7
+      Could not find any downloads that satisfy the requirement PIL==1.7
+      Some externally hosted files were ignored (use --allow-external PIL to allow).
+    Cleaning up...
+    No distributions at all found for PIL==1.7
+    Storing debug log for failure in /home/ismailsunni/.pip/pip.log
+    
+Then follow the advice here: http://stackoverflow.com/questions/20060096/installing-pil-with-pip/26605247#26605247
+
+
 Checkout this repository from GitHub
 ------------------------------------
 
