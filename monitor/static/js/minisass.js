@@ -33,6 +33,9 @@ var clickCoords;          // Map click coordinates
 var storeSites;           // A store for holding sites data
 var storeNearbySites;     // A store for holding data for nearby sites
 var storeSchools;         // A store for holding data for schools
+var storeRiverNames;      // A store for holding unique river names
+var storeSiteNames;       // A store for holding unique site names
+var storeUserNames;       // A store for holding unique user names
 var comboSites;           // A combobox containing a list of all sites
 var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
@@ -215,11 +218,11 @@ function zoomToCoords() {
       OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
       OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
       OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
-      OpenLayers.Feature.Vector.style['default']['fill'] = false;
+      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#ff0000';
       OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
       OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
       OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#cc0000';
-      OpenLayers.Feature.Vector.style['select']['fill'] = false;
+      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#cc0000';
 
       // Create the marker and add it to the marker layer
       markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
@@ -236,7 +239,7 @@ function zoomToCoords() {
       inputFromMap();
       userFunction = 'infoclick';
       infoFromMap();
-      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the coordinates.<br />If it is in the wrong position then click on the green circle to select it<br />and then click and drag it to the correct position.');
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the site<br />you want to create. If it is in the wrong position then<br />1. first click on the green circle to select it<br />2. then click and drag the circle to the correct position');
     } else {
       modifyControl.deactivate();
     }
@@ -783,6 +786,78 @@ Ext.onReady(function() {
     }
   });
 
+  // Define a store for holding unique river names
+  storeRiverNames = new Ext.data.ArrayStore({
+    fields:['river_name']
+  });
+
+  // Request a list of all river names
+  Ext.Ajax.request({
+    url:'/map/unique/river_name/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeRiverNames.add(new storeSites.recordType({
+            'river_name':jsonData.features[i].properties.river_name,
+          }));
+        };
+        storeRiverNames.sort('river_name','ASC');
+      };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
+  // Define a store for holding unique site names
+  storeSiteNames = new Ext.data.ArrayStore({
+    fields:['site_name']
+  });
+
+  // Request a list of all site names
+  Ext.Ajax.request({
+    url:'/map/unique/site_name/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeSiteNames.add(new storeSites.recordType({
+            'site_name':jsonData.features[i].properties.site_name,
+          }));
+        };
+        storeSiteNames.sort('site_name','ASC');
+      };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
+  // Define a store for holding unique user names
+  storeUserNames = new Ext.data.ArrayStore({
+    fields:['user_name']
+  });
+
+  // Request a list of all user names
+  Ext.Ajax.request({
+    url:'/map/unique/user/',
+    success:function(response,opts){
+      var jsonData = Ext.decode(escape(response.responseText));
+      if (jsonData){
+        for (var i=0; i<jsonData.features.length; i++){
+          storeUserNames.add(new storeSites.recordType({
+            'user_name':jsonData.features[i].properties.user_name,
+          }));
+        };
+        storeUserNames.sort('user_name','ASC');
+     };
+    },
+    failure:function(response,opts){
+      // Fail silently
+    }
+  });
+
   // Setup up a combo box for displaying a list of all sites
   comboSites = new Ext.form.ComboBox({
     store:storeSites,
@@ -1003,6 +1078,7 @@ Ext.onReady(function() {
       projection:proj3857,
       displayProjection:proj4326,
       units:'m',
+      numZoomLevels:21,
       eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
     }
   );
@@ -1063,7 +1139,7 @@ Ext.onReady(function() {
     'Rivers and Catchments',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_base',format:'image/png'},
-    {isbaseLayer:true}
+    {isbaseLayer:true,numZoomLevels:21}
   );
 
   // Define the provinces layer
@@ -1071,7 +1147,7 @@ Ext.onReady(function() {
     'Provinces',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
+    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false,numZoomLevels:21}
   );
 
   // Define the schools layer as an overlay
@@ -1079,7 +1155,7 @@ Ext.onReady(function() {
     'Schools',
     geoserverURL,
     {layers:'miniSASS:schools',transparent:true,format:'image/png'},
-    {minScale:400000,isbaseLayer:false,visibility:false}
+    {minScale:400000,isbaseLayer:false,visibility:false,numZoomLevels:21}
   );
 
   // Define the miniSASS observations as an overlay
@@ -1087,7 +1163,7 @@ Ext.onReady(function() {
     'miniSASS Observations',
     geoserverURL,
     {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true}
+    {isbaseLayer:false,visibility:true,numZoomLevels:21}
   );
 
   // Add the layers to the map
@@ -1211,7 +1287,7 @@ Ext.onReady(function() {
   inputWindow = new Ext.Window({
     applyTo:'data_window',
     width:570,
-    height:470,
+    height:560,
     closeAction:'hide',
     modal:false,
     x:20,
@@ -1264,6 +1340,7 @@ Ext.onReady(function() {
         xtype:'button',
         text:'New observation',
         tooltip:'Add a new observation to this site',
+        ctCls:'x-btn-over',
         handler:function(event,toolEl,panel){
           var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
           if (selectedTab >= 0){
@@ -1287,7 +1364,7 @@ Ext.onReady(function() {
   infoWindow = new Ext.Window({
     title:'miniSASS observation details',
     width:500,
-    height:420,
+    height:480,
     layout:'fit',
     bodyStyle:'padding:5px;',
     closeAction:'hide',
@@ -1433,13 +1510,23 @@ Ext.onReady(function() {
                 fieldLabel:'',
                 html:'You can filter observations using one or more of the criteria on this form. For text fields you can enter part or all of the name.<br />&nbsp;',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'River name',
                 id:'id_filter_river',
+                store:storeRiverNames,
+                displayField:'river_name',
+                valueField:'river_name',
+                typeAhead:true,
+                mode:'local',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'Site name',
                 id:'id_filter_sitename',
+                store:storeSiteNames,
+                displayField:'site_name',
+                valueField:'site_name',
+                typeAhead:true,
+                mode:'local',
               },{
                 xtype:'combo',
                 fieldLabel:'River category',
@@ -1448,9 +1535,14 @@ Ext.onReady(function() {
                 triggerAction:'all',
                 value:'All',
               },{
-                xtype:'textfield',
+                xtype:'combo',
                 fieldLabel:'User name',
                 id:'id_filter_username',
+                store:storeUserNames,
+                displayField:'user_name',
+                valueField:'user_name',
+                typeAhead:true,
+                mode:'local',
               },{
                 xtype:'textfield',
                 fieldLabel:'Organisation',
@@ -1590,6 +1682,11 @@ Ext.onReady(function() {
   if (document.getElementById('id_error').value == 'true'){
     document.getElementById('id_error').value = 'false';
     inputWindow.show(this);
+  };
+
+  // Display a confirmation window if an observation has been saved
+  if (document.getElementById('id_saved_obs').value == 'true'){
+    Ext.Msg.alert('Observation saved', 'Your observation has been saved. It still needs to be<br />verified and you may contacted in this regard.');
   };
 
   // Define tooltips for the layer switcher

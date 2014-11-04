@@ -40,6 +40,7 @@ def index(request):
             observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
             coords_form = CoordsForm()
             post_values = request.POST.copy()
+            post_values['saved_obs'] = 'true'
             post_values['edit_site'] = 'true'
             map_form = MapForm(post_values)
             return render_to_response('monitor/index.html',
@@ -48,12 +49,13 @@ def index(request):
         else:
             post_values = request.POST.copy()
             post_values['error'] = 'true'
+            post_values['saved_obs'] = 'false'
             map_form = MapForm(post_values)
     else: # create new empty forms
         site_form = SiteForm()
         observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
         coords_form = CoordsForm()
-        map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false'})
+        map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false','saved_obs':'false'})
     return render_to_response('monitor/index.html',
                               {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                               context_instance=RequestContext(request))
@@ -103,6 +105,14 @@ def get_sites(request, x, y, d):
     sites_returned = Sites.objects.raw(select_clause + where_clause + order_clause)
     return render_to_response('monitor/sites.html',
                               {'sites':sites_returned},
+                              context_instance=RequestContext(request))
+
+def get_unique(request, field):
+    """ Request all unique values.
+    """
+    values_returned = Sites.objects.distinct(field)
+    return render_to_response('monitor/unique_values.html',
+                              {'values':values_returned},
                               context_instance=RequestContext(request))
 
 def get_schools(request):
