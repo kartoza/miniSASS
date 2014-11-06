@@ -107,6 +107,17 @@ def get_sites(request, x, y, d):
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
 
+def get_closest_site(request, x, y, d):
+    """ Requests the closest site within distance (d) of x;y.
+    """
+    xy_point = "ST_PointFromText('POINT(" + x + " " + y + ")', 3857)"
+    select_clause = 'SELECT gid, ST_Distance(ST_Transform(sites.the_geom,3857),' + xy_point + ') AS distance FROM sites'
+    where_clause = ' WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),'+xy_point+','+d+')'
+    site_returned = Sites.objects.raw(select_clause + where_clause + ' ORDER BY distance LIMIT 1;')
+    return render_to_response('monitor/closest_site.html',
+                              {'site':site_returned},
+                              context_instance=RequestContext(request))
+
 def get_unique(request, field):
     """ Request all unique values.
     """
@@ -124,6 +135,16 @@ def get_schools(request):
 
     return render_to_response('monitor/schools.html',
                               {'schools':schools_returned},
+                              context_instance=RequestContext(request))
+
+
+def get_observations(request, site_id):
+    """ Request all observations for the requested site ID.
+    """
+    observations = Observations.objects.filter(site=site_id)
+
+    return render_to_response('monitor/site_observations.html',
+                              {'observations':observations},
                               context_instance=RequestContext(request))
 
 def zoom_observation(request, obs_id):

@@ -31,48 +31,44 @@
       <div id="legend">
         <table id="legend_table">
           <tr>
-            <td colspan="2" id="id_legend_header" class="legend_header">miniSASS Observations</td>
+            <td colspan="4" id="id_legend_header" class="legend_header">miniSASS Observations</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_n.png" id="legend_icon1" alt="" title=""/></td>
-            <td class="map_legend_text">Unmodified<br />(NATURAL condition)</td>
+            <td colspan="3" class="map_legend_text">Unmodified<br />(NATURAL condition)</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_g.png" id="legend_icon2" alt="" title=""/></td>
-            <td class="map_legend_text">Largely natural/few modifications<br />(GOOD condition)</td>
+            <td colspan="3" class="map_legend_text">Largely natural/few modifications<br />(GOOD condition)</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_f.png" id="legend_icon3" alt="" title=""/></td>
-            <td class="map_legend_text">Moderately modified<br />(FAIR condition)</td>
+            <td colspan="3" class="map_legend_text">Moderately modified<br />(FAIR condition)</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_p.png" id="legend_icon4" alt="" title=""/></td>
-            <td class="map_legend_text">Largely modified<br />(POOR condition)</td>
+            <td colspan="3" class="map_legend_text">Largely modified<br />(POOR condition)</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_v.png" id="legend_icon5" alt="" title=""/></td>
-            <td class="map_legend_text">Seriously/critically modified<br />(VERY POOR condition)</td>
+            <td colspan="3" class="map_legend_text">Seriously/critically modified<br />(VERY POOR condition)</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u_dirty.png" id="legend_icon6" alt="" title=""/></td>
-            <td class="map_legend_text">Unverified data</td>
+            <td colspan="3" class="map_legend_text">Unverified data</td>
           </tr>
           <tr>
-            <td colspan="2" class="legend_header">Schools</td>
+            <td colspan="4" class="legend_header">Schools</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_pri.png" id="legend_icon7" alt="" title=""/></td>
             <td class="map_legend_text">Primary</td>
-          </tr>
-          <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_int.png" id="legend_icon8" alt="" title=""/></td>
             <td class="map_legend_text">Intermediate</td>
           </tr>
           <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_com.png" id="legend_icon9" alt="" title=""/></td>
             <td class="map_legend_text">Combined</td>
-          </tr>
-          <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_sec.png" id="legend_icon10" alt="" title=""/></td>
             <td class="map_legend_text">Secondary</td>
           </tr>
@@ -82,8 +78,22 @@
         <div id="layerswitcher"></div> <!--layerswitcher-->
       </div> <!--layers-->
       <div id="zoompanel"></div> <!--zoompanel-->
+      <div id="site_data">
+        <table id="site_data_buttons" class="cl_input_buttons">
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_site_map.png" alt="" id="id_site_map" title="Display site data and graphs by clicking the site on the map" style="cursor:pointer;"/><br />
+              Click site on map
+            </td>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_site_list.png" alt="" id="id_site_list" title="Display site data and graphs by selecting the site from a list" style="cursor:pointer;"/><br />
+              Select site from list
+            </td>
+          </tr>
+        </table> <!--site_data_buttons-->
+      </div> <!--site_data-->
       <div id="input_obs">
-        <table id="input_buttons">
+        <table id="input_buttons" class="cl_input_buttons">
           <tr>
             <td>
               <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/><br />
@@ -119,11 +129,11 @@
           <tr>
             <td>
               <img src="{{ STATIC_URL }}img/button_obs_filter.png" alt="" id="id_obs_filter" title="Filter observations by date, score, river category and group" style="cursor:pointer;"/><br />
-              <span id="id_obs_filtertext">Filter observations</span>
+              Filter observations
             </td>
             <td>
               <img src="{{ STATIC_URL }}img/button_obs_filter_clear_disabled.png" alt="" id="id_obs_filter_clear" title="Remove the filter that has been applied to the observations" style="cursor:pointer;"/><br />
-              <span id="id_obs_filtertext">Remove filter</span>
+              Remove filter
             </td>
           </tr>
         </table> <!--input_buttons-->
