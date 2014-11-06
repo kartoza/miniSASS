@@ -4,7 +4,7 @@ var mapExtentY = -3333950;
 var mapExtentZoom = 6;
 var proj4326 = new OpenLayers.Projection('EPSG:4326');
 var proj3857 = new OpenLayers.Projection('EPSG:3857');
-var localhost = false;
+var localhost = true;
 var geoserverURL;
 var geoserverCachedURL;
 var map;
@@ -138,28 +138,28 @@ function loadSelectedObs(selectedSite,store){
               title:'Observations',
               store:storeSiteObs,
               columns:[
-                {header:'Date',dataIndex:'obs_date',},
-                {header:'User name',dataIndex:'user',},
-                {header:'Flat worms',dataIndex:'flatworms',width:90,},
-                {header:'Worms',dataIndex:'worms',width:90,},
-                {header:'Leeches',dataIndex:'leeches',width:90,},
-                {header:'Crabs/Shrimps',dataIndex:'crabs_shrimps',width:90,},
-                {header:'Stoneflies',dataIndex:'stoneflies',width:90,},
-                {header:'Minnow mayflies',dataIndex:'minnow_mayflies',width:90,},
-                {header:'Other mayflies',dataIndex:'other_mayflies',width:90,},
-                {header:'Damselflies',dataIndex:'damselflies',width:90,},
-                {header:'Dragonflies',dataIndex:'dragonflies',width:90,},
-                {header:'Bugs/beetles',dataIndex:'bugs_beetles',width:90,},
-                {header:'Caddisflies',dataIndex:'caddisflies',width:90,},
-                {header:'True flies',dataIndex:'true_flies',width:90,},
-                {header:'Snails',dataIndex:'snails',width:90,},
-                {header:'Score',dataIndex:'score',width:45,},
-                {header:'Status',dataIndex:'flag',width:65,},
-                {header:'Water clarity',dataIndex:'water_clarity',},
-                {header:'Water temp',dataIndex:'water_temp',},
-                {header:'pH',dataIndex:'ph',},
-                {header:'DO',dataIndex:'diss_oxygen',},
-                {header:'EC',dataIndex:'elec_cond',},
+                {header:'Date',dataIndex:'obs_date',align:'left',},
+                {header:'User name',dataIndex:'user',align:'left',},
+                {header:'Flat worms',dataIndex:'flatworms',width:90,align:'center',},
+                {header:'Worms',dataIndex:'worms',width:90,align:'center',},
+                {header:'Leeches',dataIndex:'leeches',width:90,align:'center',},
+                {header:'Crabs/Shrimps',dataIndex:'crabs_shrimps',width:90,align:'center',},
+                {header:'Stoneflies',dataIndex:'stoneflies',width:90,align:'center',},
+                {header:'Minnow mayflies',dataIndex:'minnow_mayflies',width:90,align:'center',},
+                {header:'Other mayflies',dataIndex:'other_mayflies',width:90,align:'center',},
+                {header:'Damselflies',dataIndex:'damselflies',width:90,align:'center',},
+                {header:'Dragonflies',dataIndex:'dragonflies',width:90,align:'center',},
+                {header:'Bugs/beetles',dataIndex:'bugs_beetles',width:90,align:'center',},
+                {header:'Caddisflies',dataIndex:'caddisflies',width:90,align:'center',},
+                {header:'True flies',dataIndex:'true_flies',width:90,align:'center',},
+                {header:'Snails',dataIndex:'snails',width:90,align:'center',},
+                {header:'Score',dataIndex:'score',width:60,align:'right',},
+                {header:'Status',dataIndex:'flag',width:65,align:'center',},
+                {header:'Water clarity',dataIndex:'water_clarity',align:'right',},
+                {header:'Water temp',dataIndex:'water_temp',align:'right',},
+                {header:'pH',dataIndex:'ph',align:'right',},
+                {header:'DO',dataIndex:'diss_oxygen',align:'right',},
+                {header:'EC',dataIndex:'elec_cond',align:'right',},
               ],
             });
             dataTabPanel.add(tablePanel);
@@ -167,12 +167,25 @@ function loadSelectedObs(selectedSite,store){
 
           // Add the graph to tab 3
           if (storeSiteObs.getCount() >= 1) {
-            dataTabPanel.add({
-              title:'River Health Graph',
-              html:'Graph goes here',
-              padding:'5px',
-              autoScroll:true,
+            // Create a panel to hold the graph
+            var graphPanel = new Ext.Panel({
+              title: 'River Health Graph',
+              width:500,
+              height:300,
+              layout:'fit',
+              items:{
+                xtype:'barchart',
+                store:storeSiteObs,
+                yField:'obs_date',
+                xField:'score',
+                xAxis:new Ext.chart.NumericAxis({
+                  displayName:'Score',
+                  minimum:0,
+                  majorUnit:1,
+                }),
+              },
             });
+            dataTabPanel.add(graphPanel);
           }
 
           // Show the popup window
@@ -349,6 +362,7 @@ Ext.onReady(function() {
 */
 
   Ext.QuickTips.init();
+  Ext.chart.Chart.CHART_URL = '/static/js/ext-3.4.0/resources/charts.swf';
 
   if (localhost == true) {
     geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
