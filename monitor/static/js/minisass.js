@@ -639,6 +639,11 @@ function loadSelectedObs(selectedSite,store){
             dataTabPanel.add(graphPanel);
           }
 
+          // Configure the Downloads button with the site id
+          Ext.getCmp('id_download').handler = function(event,toolEl,panel){
+            document.location.href = '/map/observations/download/' + selectedSite;
+          };
+
           // Show the popup window
           if (activeTab == -1) activeTab = 0;
           dataTabPanel.setActiveTab(activeTab);
@@ -1610,7 +1615,15 @@ Ext.onReady(function() {
   dataTabPanel = new Ext.TabPanel({
     activeTab:0,
     frame:true,
-    activeTab: 0,
+    bbar:new Ext.Toolbar({
+      items:[{
+        xtype:'button',
+        id:'id_download',
+        text:'Download',
+        tooltip:'Download the observation(s) in CSV format',
+        ctCls:'x-btn-over',
+      }],
+    }),
   });
 
   // Define a window to display miniSASS observation information
