@@ -41,11 +41,14 @@ Site name: %s
 Site Description: %s
 Category: %s
 
-
 Observation Details:
 Date: %s
 Collector's name: %s
 Comments/notes: %s
+
+
+Your observation still needs to be verified and you may contacted in this \
+regard.
 
 Kind regards,
 The miniSASS team.
