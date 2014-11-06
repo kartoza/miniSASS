@@ -4,7 +4,7 @@ var mapExtentY = -3333950;
 var mapExtentZoom = 6;
 var proj4326 = new OpenLayers.Projection('EPSG:4326');
 var proj3857 = new OpenLayers.Projection('EPSG:3857');
-var localhost = true;
+var localhost = false;
 var geoserverURL;
 var geoserverCachedURL;
 var map;
@@ -25,6 +25,7 @@ var filtered = false;
 var cqlFilter = '';
 var messagePanel;
 var userFunction = 'none';// Variable to determine which cursor to display
+var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
 var storeSites;           // A store for holding sites data
 var storeSchools;         // A store for holding data for schools
 var storeRiverNames;      // A store for holding unique river names
@@ -46,12 +47,14 @@ function infoFromMap(){
 */
   if (userFunction != 'infoclick') {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
+    document.getElementById('id_site_map').src = '/static/img/button_site_map.png';
     var mapViewPort = document.getElementsByClassName('olMapViewport');
     mapViewPort[0].style.cursor = 'url(/static/img/info.cur),crosshair';
     var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
     messagePanel.update(msg);
     userFunction = 'infoclick';
     infoClick.activate();
+    dataClick.deactivate();
   } else {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
     var mapViewPort = document.getElementsByClassName('olMapViewport');
@@ -61,6 +64,32 @@ function infoFromMap(){
     userFunction = 'none';
     infoClick.deactivate();
     if (infoWindow.hidden == false) infoWindow.hide();
+  }
+}
+
+function dataFromMap(){
+/* This function toggles the 'data and graphs from map' button image, changes the
+   map cursor and then activates/deactivates the mapClick control.
+*/
+  if (userFunction != 'dataclick') {
+    document.getElementById('id_site_map').src = '/static/img/button_site_map_selected.png';
+    document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
+    var mapViewPort = document.getElementsByClassName('olMapViewport');
+    mapViewPort[0].style.cursor = 'url(/static/img/target.cur),crosshair';
+    var msg = 'Click a site on the map.<br />' + navMsg;
+    messagePanel.update(msg);
+    userFunction = 'dataclick';
+    dataClick.activate();
+    infoClick.deactivate();
+    if (infoWindow.hidden == false) infoWindow.hide();
+  } else {
+    document.getElementById('id_site_map').src = '/static/img/button_site_map.png';
+    var mapViewPort = document.getElementsByClassName('olMapViewport');
+    mapViewPort[0].style.cursor = 'auto';
+    var msg = navMsg;
+    messagePanel.update(msg);
+    userFunction = 'none';
+    dataClick.deactivate();
   }
 }
 
@@ -111,6 +140,7 @@ function loadSelectedObs(selectedSite,store){
           };
 
           // Remove any existing data in the tab panel
+          var activeTab = dataTabPanel.items.indexOf(dataTabPanel.getActiveTab());
           dataTabPanel.removeAll();
 
           // Add the site details to tab 1
@@ -189,7 +219,8 @@ function loadSelectedObs(selectedSite,store){
           }
 
           // Show the popup window
-          dataTabPanel.setActiveTab(0);
+          if (activeTab == -1) activeTab = 0;
+          dataTabPanel.setActiveTab(activeTab);
           dataWindow.show(this);
         };
       },
@@ -595,6 +626,65 @@ Ext.onReady(function() {
     }
   });
 
+  // Define a handler for finding the site closest to a map click
+  OpenLayers.Control.DataClick = OpenLayers.Class(OpenLayers.Control, {
+    defaultHandlerOptions:{
+      'single':true,
+      'double':false,
+      'pixelTolerance':0,
+      'stopSingle':false,
+      'stopDouble':false
+    },
+    initialize:function(options) {
+      this.handlerOptions = OpenLayers.Util.extend(
+        {}, this.defaultHandlerOptions
+      );
+      OpenLayers.Control.prototype.initialize.apply(
+        this, arguments
+      );
+      this.handler = new OpenLayers.Handler.Click(
+        this, {
+          'click':this.trigger
+        }, this.handlerOptions
+      );
+    },
+    trigger:function(e) {
+
+      // Get the click coordinates and convert them to lon/lat
+      clickCoords = map.getLonLatFromPixel(e.xy);
+
+      // Look for the site closest to the click point
+      var jsonData;
+      function requestSite(callback){
+        Ext.Ajax.request({
+          url:'/map/closest_site/'+clickCoords.lon+'/'+clickCoords.lat+'/' + searchRadius + '/',
+          success:function(response,opts){
+            jsonData = Ext.decode(response.responseText);
+            callback.call();
+          },
+          failure:function(response,opts){
+            callback.call();  // Fail silently
+          }
+        });
+      };
+
+      var afterRequestSite = function(){
+        // If nearby sites have been found, add them to the combo box
+        if (jsonData && (jsonData.features.length > 0)){
+          for (var i=0; i<jsonData.features.length; i++){
+            var site_id = jsonData.features[i].properties.gid;
+            var site_distance = jsonData.features[i].properties.distance;
+            loadSelectedObs(site_id,storeSites);
+          };
+        };
+
+      };
+
+      // Request the closest sites and then callback to afterRequestSite after the Ajax response
+      requestSite(afterRequestSite);
+    }
+  });
+
   // Define a new map
   map = new OpenLayers.Map(
     'map',{
@@ -687,8 +777,7 @@ Ext.onReady(function() {
   );
 
   // Add the layers to the map
-//  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
-  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerMiniSASSBase]);
+  map.addLayers([layerMiniSASSObs,layerSchools,layerProvinces,layerGoogleTerrain,layerGoogleSatellite,layerGoogleRoadmap,layerMiniSASSBase]);
 
   // If necessary, restore layer visibility saved from a previous state
   var layerStr = document.getElementById('id_layers').value;
@@ -721,6 +810,10 @@ Ext.onReady(function() {
   // Add the info click controller
   infoClick = new OpenLayers.Control.InfoClick();
   map.addControl(infoClick);
+
+  // Add the data click controller
+  dataClick = new OpenLayers.Control.DataClick();
+  map.addControl(dataClick);
 
   // Setup the map panel
   var zoom_level = document.getElementById('id_zoom_level').value;
@@ -1090,6 +1183,14 @@ Ext.onReady(function() {
     }]
   });
 
+  // Link the Site Data Map Click input button
+  var buttonMap = Ext.get('id_site_map');
+  buttonMap.on('click', dataFromMap);
+
+  // Link the Site Data Site List input button
+  var buttonList = Ext.get('id_site_list');
+  buttonList.on('click', function(){siteDataSelectWindow.show(this);});
+
   // Link the Observation Info button and activate it
   var buttonInfo = Ext.get('id_obs_info');
   buttonInfo.on('click', infoFromMap);
@@ -1116,14 +1217,6 @@ Ext.onReady(function() {
   buttonFilterClear.on('click', function(){
     if (filtered){filterRemove();filterWindow.hide();}
   });
-
-  // Link the Site Data Map Click input button
-  var buttonMap = Ext.get('id_site_map');
-  buttonMap.on('click', function(){dataWindow.show(this);});
-
-  // Link the Site Data Site List input button
-  var buttonList = Ext.get('id_site_list');
-  buttonList.on('click', function(){siteDataSelectWindow.show(this);});
 
   // Define tooltips for the layer switcher
   document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
