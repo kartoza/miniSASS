@@ -21,6 +21,7 @@ var infoClick;
 var inputWindow;
 var infoWindow;
 var siteSelectWindow;
+var siteDataSelectWindow;
 var filterWindow;
 var filtered = false;
 var cqlFilter = '';
@@ -36,7 +37,8 @@ var storeSchools;         // A store for holding data for schools
 var storeRiverNames;      // A store for holding unique river names
 var storeSiteNames;       // A store for holding unique site names
 var storeUserNames;       // A store for holding unique user names
-var comboSites;           // A combobox containing a list of all sites
+var comboSitesNewObs;     // A list of all sites (for entering new observations)
+var comboSitesData;       // A list of all sites (for displaying site data and graphs)
 var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
 var comboZoomSchools;     // A combobox for zooming to schools
@@ -185,7 +187,7 @@ function zoomToCoords() {
   if (latitude && longitude && (latitude != 0 || longitude != 0)){
     // Zoom the map to the coordinates
     var xyCoords = new OpenLayers.LonLat(longitude,latitude);
-    map.setCenter(xyCoords.transform(proj4326, proj3857),13);
+    map.setCenter(xyCoords.transform(proj4326, proj3857),15);
 
     // Setup the marker layer
     if (layerMarker) {
@@ -1035,8 +1037,18 @@ Ext.onReady(function() {
     }
   });
 
-  // Setup up a combo box for displaying a list of all sites
-  comboSites = new Ext.form.ComboBox({
+  // Setup up combo boxes for displaying a list of all sites
+  comboSitesNewObs = new Ext.form.ComboBox({
+    store:storeSites,
+    width:220,
+    listWidth:290,
+    displayField:'combo_name',
+    valueField:'site_gid',
+    typeAhead:true,
+    mode:'local',
+    emptyText:'Select a site...',
+  });
+  comboSitesData = new Ext.form.ComboBox({
     store:storeSites,
     width:220,
     listWidth:290,
@@ -1652,7 +1664,7 @@ Ext.onReady(function() {
     items:new Ext.Panel({
       border:false,
       bodyStyle:'padding:5px;background:#dfe8f6;',
-      items:comboSites,
+      items:comboSitesNewObs,
       html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
     }),
     buttons:[{
@@ -1661,8 +1673,8 @@ Ext.onReady(function() {
       handler:function(){
         resetInputForm();
         siteSelectWindow.hide();
-        loadSelectedSite(comboSites.getValue(),storeSites);
-        comboSites.clearValue();
+        loadSelectedSite(comboSitesNewObs.getValue(),storeSites);
+        comboSitesNewObs.clearValue();
         inputWindow.show(this);
       }
     },{
@@ -1934,18 +1946,18 @@ Ext.onReady(function() {
     items:new Ext.Panel({
       border:false,
       bodyStyle:'padding:5px;background:#dfe8f6;',
-      items:comboSites,
+      items:comboSitesData,
       html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
     }),
     buttons:[
       {
         text:'Show data',
         tooltip:'Display observations and graphs for the selected site',
-        handler:function(){loadSelectedObs(comboSites.getValue(),storeSites);}
+        handler:function(){loadSelectedObs(comboSitesData.getValue(),storeSites);}
       },{
         text:'Clear selection',
         tooltip:'Clear the selected value in the drop-down list',
-        handler:function(){comboSites.clearValue();}
+        handler:function(){comboSitesData.clearValue();}
       },{
         text:'Cancel',
         tooltip:'Cancel this window and return to the map',
