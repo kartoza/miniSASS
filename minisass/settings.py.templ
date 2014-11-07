@@ -75,7 +75,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    #os.path.join(PROJECT_PATH, 'static'),
+    os.path.join(PROJECT_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -243,9 +243,9 @@ THUMBNAIL_PROCESSORS = (
 )
 
 # blog plugin settings
-#JQUERY_JS = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'
-#JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js'
-#JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
+JQUERY_JS = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'
+JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js'
+JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
 
 # reCAPTCHA keys for minisass.org
 RECAPTCHA_PUBLIC_KEY = '6LfMquASAAAAAOHqdGSV9f_7MxgsU5apGmq6NXDh'
@@ -304,6 +304,8 @@ INSTALLED_APPS = (
     'tagging',
     'reversion',
     'monitor',
+    'cmsplugin_rssfeed',
+    'minisass_registration'
 )
 
 # A sample logging configuration. The only tangible logging

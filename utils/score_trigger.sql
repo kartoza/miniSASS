@@ -25,7 +25,7 @@ $BODY$
      NEW.score := total::numeric / count::numeric;
     RETURN NEW;
     EXCEPTION
-     WHEN division_by_zero THEN NEW.score := NULL; RETURN NEW;
+     WHEN division_by_zero THEN NEW.score := 0; RETURN NEW;
   END
 $BODY$
   LANGUAGE plpgsql VOLATILE;
