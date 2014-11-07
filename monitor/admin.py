@@ -5,13 +5,21 @@ from monitor.models import Observations
 
 
 def make_verified(modeladmin, request, queryset):
-    queryset.update(flag='clean')
+    # Ismail Sunni: I use this (not using queryset.update(flag='clean'))
+    # since we need to do save for send signal
+    for observation in queryset:
+        observation.flag = 'clean'
+        observation.save()
 make_verified.short_description = (
     "Mark selected observations as verified (clean)")
 
 
 def make_unverified(modeladmin, request, queryset):
-    queryset.update(flag='dirty')
+    # Ismail Sunni: I use this (not using queryset.update(flag='dirty'))
+    # since we need to do save for send signal
+    for observation in queryset:
+        observation.flag = 'dirty'
+        observation.save()
 make_unverified.short_description = (
     "Mark selected observations as unverified (dirty)")
 
