@@ -14,6 +14,11 @@ class SiteForm(ModelForm):
 
 # Form based on the Observations model
 class ObservationForm(ModelForm):
+    water_clarity = forms.DecimalField(required=False,label='Water clarity')
+    water_temp = forms.DecimalField(required=False,label='Water temperature')
+    ph = forms.DecimalField(required=False,label='pH')
+    diss_oxygen = forms.DecimalField(required=False,label='Dissolved oxygen')
+    elec_cond = forms.DecimalField(required=False,label='Electrical conductivity')
     flatworms = forms.BooleanField(required=False,label='Flat worms',widget=forms.CheckboxInput(attrs = {'onclick':"updateInputForm('flatworms');"}))
     worms = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick':"updateInputForm('worms');"}))
     leeches = forms.BooleanField(required=False,widget=forms.CheckboxInput(attrs = {'onclick':"updateInputForm('leeches');"}))
@@ -32,7 +37,9 @@ class ObservationForm(ModelForm):
         exclude = ('time_stamp', 'score')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
-            'comment':  Textarea(attrs={'cols':30, 'rows':4, 'placeholder':'e.g. weather, impacts, alien plants, level of flow, etc.'}),
+            'comment':  Textarea(attrs={'cols':30, 'rows':6, 'placeholder':'e.g. weather, impacts, alien plants, level of flow, etc.'}),
+            'diss_oxygen_unit' : Select(),
+            'elec_cond_unit' : Select()
         }
 
 # Form for storing lon/lat coordinates
@@ -48,4 +55,5 @@ class MapForm(forms.Form):
     layers = forms.CharField()
     edit_site = forms.CharField()
     error = forms.CharField()
+    saved_obs = forms.CharField()
 

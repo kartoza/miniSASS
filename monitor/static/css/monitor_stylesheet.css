@@ -58,19 +58,19 @@
 }
 
 /* Styling for the function buttons */
-#input_buttons {
+.cl_input_buttons {
   margin-left:auto;
   margin-right:auto;
 }
 
-#input_buttons td {
+.cl_input_buttons td {
   width:89px;
   text-align:center;
   vertical-align:text-top;
   font-size:0.8em;
 }
 
-#input_buttons img {
+.cl_input_buttons img {
   margin:2px;
 }
 
@@ -86,12 +86,6 @@
 #data_table_left {
   margin:5px;
   text-align:left;
-  vertical-align:text-top;
-}
-
-#data_table_left .section_header {
-  text-align:left;
-  font-weight:bold;
 }
 
 #data_table_left textarea {
@@ -114,9 +108,15 @@
   width:100px;
 }
 
+#id_water_clarity,#id_water_temp,#id_ph,#id_diss_oxygen,#id_elec_cond {
+  width:50px;
+}
+#id_diss_oxygen_unit,#id_elec_cond_unit {
+  width:70px;
+}
+
 #data_table_right {
   margin:5px;
-  vertical-align:text-top;
 }
 
 #data_table_right .tdtotal {
@@ -204,7 +204,7 @@
 #obs_table_right .tdtotal {
   text-align:center;
   font-weight:bold;
-background-color:#cbd4ff;
+  background-color:#cbd4ff;
 }
 
 /* Styling for the map zoom controls */
@@ -235,3 +235,17 @@ background-color:#cbd4ff;
 .x-date-menu > ul li{
   display:inline;
 }
+
+/* Text formatting */
+.clAlignTop {
+  vertical-align:text-top;
+}
+
+.clAlignLeft {
+  text-align:left;
+}
+
+.clBold {
+  font-weight:bold;
+}
+
