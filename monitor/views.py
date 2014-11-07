@@ -13,6 +13,82 @@ from django.forms.models import modelformset_factory
 from django.db import connection
 import urllib2
 
+
+def get_email_content(observation, new_site=False):
+    """Helper function to create email content based on observation and user.
+
+    :param observation: The Observation.
+    :type observation: Observations
+
+    :param new_site: Flag whether the observation for new site or not.
+    :type new_site: bool
+
+    :returns: An email content to be sent.
+    :rtype: str
+    """
+    if new_site:
+        email_sub_content = 'new observation and site'
+    else:
+        email_sub_content = 'new observation'
+    email_content = '''
+Dear %s,
+
+Thank you for your %s submission.
+
+Site Details:
+River name: %s
+Site name: %s
+Site Description: %s
+Category: %s
+
+Observation Details:
+Date: %s
+Collector's name: %s
+Comments/notes: %s
+
+
+Your observation still needs to be verified and you may contacted in this \
+regard.
+
+Kind regards,
+The miniSASS team.
+                ''' % (
+        observation.user.get_full_name(),
+        email_sub_content,
+        observation.site.river_name,
+        observation.site.site_name,
+        observation.site.description,
+        observation.site.river_cat,
+
+        observation.obs_date.strftime("%d %b %Y"),
+        observation.user.get_full_name(),
+        observation.comment,
+    )
+
+    return email_content
+
+
+def send_email_observation(observation, new_site=False):
+    """Helper function to send email content based on observation.
+
+    :param observation: The Observation.
+    :type observation: Observations
+
+    :param new_site: Flag whether the observation for new site or not.
+    :type new_site: bool
+    """
+    if new_site:
+        email_subject = 'New Site and Observation Submitted'
+    else:
+        email_subject = 'New Observation Submitted'
+
+    email_content = get_email_content(observation, new_site)
+
+    email_sender = 'info@minisass.org'
+
+    observation.user.email_user(email_subject, email_content, email_sender)
+
+
 def index(request):
     """ The 'landing page' for the monitor application
         Displays a map and handles data input
@@ -28,13 +104,21 @@ def index(request):
         if (site_form.is_valid() and observation_form.is_valid() and coords_form.is_valid()):
             if request.POST['edit_site'] == 'false':
                 # Save the observation only
-                observation_form.save()
+                observation = observation_form.save()
+
+                # Send email to the user.
+                send_email_observation(observation, new_site=False)
+
             else:
                 # Save both the site and observation
                 current_site = site_form.save()
                 current_observation = observation_form.save(commit=False)
                 current_observation.site = current_site
                 current_observation.save()
+
+                # Send email to the user.
+                send_email_observation(current_observation, new_site=True)
+
             # Create new instances of the forms and then return to the map
             site_form = SiteForm()
             observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
