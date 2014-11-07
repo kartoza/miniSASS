@@ -4,6 +4,9 @@ from django.contrib.gis.db import models # defines geometry field types
 from django.contrib.auth.models import User # refers to auth_user table
 from django.template.defaultfilters import escape
 from django.core.urlresolvers import reverse
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from dirtyfields import DirtyFieldsMixin
 
 # django-cms imports
 from cms.models import CMSPlugin
@@ -67,7 +70,7 @@ class Sites(models.Model):
     def __unicode__(self):
         return self.site_name
 
-class Observations(models.Model):
+class Observations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
         (u'clean', u'Clean')
@@ -124,3 +127,62 @@ class ObservationPlugin(CMSPlugin):
 #
 #     def __unicode__(self):
 #         return self.observation.site.name
+
+
+def send_confirmation_email(observation):
+    """Helper function to send email content based on observation.
+
+    :param observation: The Observation.
+    :type observation: Observations
+
+    """
+    email_subject = 'Your Observation has been Verified'
+
+    email_content = '''
+Dear %s,
+
+We want to inform you that your observation has been verified. Below is the \
+detail of your observation.
+
+Site Details:
+River name: %s
+Site name: %s
+Site Description: %s
+Category: %s
+
+Observation Details:
+Date: %s
+Collector's name: %s
+Comments/notes: %s
+
+
+Kind regards,
+The miniSASS team.
+    ''' % (
+        observation.user.get_full_name(),
+        observation.site.river_name,
+        observation.site.site_name,
+        observation.site.description,
+        observation.site.river_cat,
+
+        observation.obs_date.strftime("%d %b %Y"),
+        observation.user.get_full_name(),
+        observation.comment,
+    )
+
+    email_sender = 'info@minisass.org'
+
+    observation.user.email_user(email_subject, email_content, email_sender)
+
+
+@receiver(pre_save, sender=Observations)
+def send_email_to_user(sender, **kwargs):
+    observation = kwargs.get('instance')
+    if not observation.is_dirty():
+        return
+    dirty_fields = observation.get_dirty_fields()
+    # Check is it verified (the previous state: flag==dirty and the current
+    # state == clean)
+    if dirty_fields.get('flag') == 'dirty' and observation.flag == 'clean':
+        send_confirmation_email(observation)
+

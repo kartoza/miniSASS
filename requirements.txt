@@ -25,12 +25,13 @@ django-staticfiles==1.2.1
 django-tagging==0.3.1
 django-tinymce==1.5.1
 djangocms-utils==0.9.5
+django-dirtyfields
 easy-thumbnails==1.2
 html5lib==0.95
-httplib2==0.7.2
+httplib2==0.7.3
 launchpadlib==1.6.0
 #lazr.restfulclient==0.9.11
-lazr.uri==1.0.2
+lazr.uri==1.0.3
 #oauth==1.0a
 #pexpect==2.3
 psycopg2==2.4.6
@@ -47,6 +48,6 @@ six==1.3.0
 #ufw==0.30pre1-0ubuntu2
 #unattended-upgrades==0.1
 virtualenv==1.4.5
-wadllib==1.1.4
+wadllib==1.3.2
 wsgiref==0.1.2
 zope.interface==3.5.3
