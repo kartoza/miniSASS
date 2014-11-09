@@ -225,7 +225,7 @@ def get_schools(request):
 def get_observations(request, site_id):
     """ Request all observations for the requested site ID.
     """
-    observations = Observations.objects.filter(site=site_id)
+    observations = Observations.objects.filter(site=site_id).order_by('obs_date')
 
     return render_to_response('monitor/site_observations.html',
                               {'observations':observations},

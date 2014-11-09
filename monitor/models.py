@@ -77,11 +77,14 @@ class Observations(models.Model, DirtyFieldsMixin):
     )
     UNIT_DO_CATS = (
         (u'mgl', u'mg/l'),
-        (u'pDO', u'%DO'),
+        (u'%DO', u'%DO'),
+        (u'PPM', u'PPM'),
         (u'na', u'Unknown')
     )
     UNIT_EC_CATS = (
-        (u'mSm', u'mS/m'),
+        (u'S/m', u'S/m'),
+        (u'\u00B5S/cm', u'\u00B5S/cm'),
+        (u'mS/m', u'mS/m'),
         (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
