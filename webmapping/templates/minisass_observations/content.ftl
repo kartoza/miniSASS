@@ -97,7 +97,7 @@ ${observation}#
                 <#assign healthClass = "&nbsp;">
               </#if>
               <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 4.3) && (feature.river_cat.value = "sandy")>
-                <#assign crabURL = "/static/img/icon_crab_v_large.png">
+                <#assign crabURL = "/static/img/icon_crab_u_large.png">
                 <#assign healthClass = "Very Poor">
               </#if>
               <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 5.1) && (feature.river_cat.value = "rocky")>

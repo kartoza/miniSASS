@@ -6,7 +6,6 @@
 {% block "minisass_css" %}
 {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
 {% addtoblock "css" %}<link href="{{ STATIC_URL }}js/ext-3.4.0/resources/css/ext-all.css" rel="stylesheet"/>{% endaddtoblock %}
-{% addtoblock "css" %}<link href="{{ STATIC_URL }}js/GeoExt/resources/css/geoext-all-debug.css" rel="stylesheet"/>{% endaddtoblock %}
 {% addtoblock "css" %}<link href="{{ STATIC_URL }}css/monitor_stylesheet.css" rel="stylesheet"/>{% endaddtoblock %}
 {% endblock %}
 
@@ -54,8 +53,12 @@
             <td colspan="3" class="map_legend_text">Seriously/critically modified<br />(VERY POOR condition)</td>
           </tr>
           <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u.png" id="legend_icon6" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">No groups present</td>
+          </tr>
+          <tr>
             <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u_dirty.png" id="legend_icon6" alt="" title=""/></td>
-            <td colspan="3" class="map_legend_text">Unverified data</td>
+            <td colspan="3" class="map_legend_text"> Exclamation mark: unverified</td>
           </tr>
           <tr>
             <td colspan="4" class="legend_header">Schools</td>
