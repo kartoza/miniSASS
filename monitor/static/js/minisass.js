@@ -627,15 +627,20 @@ function loadSelectedObs(selectedSite,store){
               height:300,
               layout:'fit',
               items:{
-                xtype:'barchart',
+                xtype:'columnchart',
                 store:storeSiteObs,
-                yField:'obs_date',
-                xField:'score',
-                xAxis:new Ext.chart.NumericAxis({
-                  displayName:'Score',
+                xField:'obs_date',
+                yField:'score',
+                yAxis:new Ext.chart.NumericAxis({
+                  title:'Score',
                   minimum:0,
                   majorUnit:1,
                 }),
+                extraStyle:{
+                  xAxis:{labelRotation:-90},
+                  yAxis:{titleRotation:-90},
+                  font:{name:'Verdana',size:10,},
+                },
               },
             });
             dataTabPanel.add(graphPanel);
