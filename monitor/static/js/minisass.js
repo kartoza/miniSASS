@@ -1331,7 +1331,6 @@ Ext.onReady(function() {
       projection:proj3857,
       displayProjection:proj4326,
       units:'m',
-      numZoomLevels:21,
       eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
     }
   );
@@ -1392,7 +1391,7 @@ Ext.onReady(function() {
     'Rivers and Catchments',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_base',format:'image/png'},
-    {isbaseLayer:true,numZoomLevels:21}
+    {isbaseLayer:true,numZoomLevels:22}
   );
 
   // Define the provinces layer
@@ -1400,7 +1399,7 @@ Ext.onReady(function() {
     'Provinces',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false,numZoomLevels:21}
+    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
   );
 
   // Define the schools layer as an overlay
@@ -1408,7 +1407,7 @@ Ext.onReady(function() {
     'Schools',
     geoserverURL,
     {layers:'miniSASS:schools',transparent:true,format:'image/png'},
-    {minScale:400000,isbaseLayer:false,visibility:false,numZoomLevels:21}
+    {minScale:400000,isbaseLayer:false,visibility:false}
   );
 
   // Define the miniSASS observations as an overlay
@@ -1416,7 +1415,7 @@ Ext.onReady(function() {
     'miniSASS Observations',
     geoserverURL,
     {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true,numZoomLevels:21}
+    {isbaseLayer:false,visibility:true}
   );
 
   // Add the layers to the map
