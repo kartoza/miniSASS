@@ -204,15 +204,20 @@ function loadSelectedObs(selectedSite,store){
               height:300,
               layout:'fit',
               items:{
-                xtype:'barchart',
+                xtype:'columnchart',
                 store:storeSiteObs,
-                yField:'obs_date',
-                xField:'score',
-                xAxis:new Ext.chart.NumericAxis({
-                  displayName:'Score',
+                xField:'obs_date',
+                yField:'score',
+                yAxis:new Ext.chart.NumericAxis({
+                  title:'Score',
                   minimum:0,
                   majorUnit:1,
                 }),
+                extraStyle:{
+                  xAxis:{labelRotation:-90},
+                  yAxis:{titleRotation:-90},
+                  font:{name:'Verdana',size:10,},
+                },
               },
             });
             dataTabPanel.add(graphPanel);
@@ -696,7 +701,6 @@ Ext.onReady(function() {
       projection:proj3857,
       displayProjection:proj4326,
       units:'m',
-      numZoomLevels:21,
       eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
     }
   );
@@ -754,7 +758,7 @@ Ext.onReady(function() {
     'Rivers and Catchments',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_base',format:'image/png'},
-    {isbaseLayer:true,numZoomLevels:21}
+    {isbaseLayer:true,numZoomLevels:22}
   );
 
   // Define the provinces layer
@@ -762,7 +766,7 @@ Ext.onReady(function() {
     'Provinces',
     geoserverCachedURL,
     {layers:'miniSASS:miniSASS_admin',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false,numZoomLevels:21}
+    {isbaseLayer:false,visibility:true,displayInLayerSwitcher:false}
   );
 
   // Define the schools layer as an overlay
@@ -770,7 +774,7 @@ Ext.onReady(function() {
     'Schools',
     geoserverURL,
     {layers:'miniSASS:schools',transparent:true,format:'image/png'},
-    {minScale:400000,isbaseLayer:false,visibility:false,numZoomLevels:21}
+    {minScale:400000,isbaseLayer:false,visibility:false}
   );
 
   // Define the miniSASS observations as an overlay
@@ -778,7 +782,7 @@ Ext.onReady(function() {
     'miniSASS Observations',
     geoserverURL,
     {layers:'miniSASS:minisass_observations',transparent:true,format:'image/png'},
-    {isbaseLayer:false,visibility:true,numZoomLevels:21}
+    {isbaseLayer:false,visibility:true}
   );
 
   // Add the layers to the map
