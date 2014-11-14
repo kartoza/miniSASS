@@ -4,7 +4,7 @@ from django.contrib.gis.db import models # defines geometry field types
 from django.contrib.auth.models import User # refers to auth_user table
 from django.template.defaultfilters import escape
 from django.core.urlresolvers import reverse
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 from dirtyfields import DirtyFieldsMixin
 
@@ -69,7 +69,30 @@ class Sites(models.Model):
 
     def __unicode__(self):
         return self.site_name
-               
+
+
+class ArchivedSites(models.Model):
+    """Model for keeping the deleted sites."""
+    RIVER_CATS = (
+        (u'rocky', u'Rocky'),
+        (u'sandy', u'Sandy')
+    )
+    gid = models.AutoField(primary_key=True, editable=False)
+    the_geom = models.PointField()
+    site_name = models.CharField(max_length=15, blank=False)
+    river_name = models.CharField(max_length=15, blank=False)
+    description = models.CharField(max_length=255, blank=True)
+    river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
+    user_id = models.IntegerField(default=0)
+    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    class Meta:
+        db_table = u'archived_sites'
+
+    def __unicode__(self):
+        return self.site_name
+
+
 class Observations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
@@ -103,6 +126,42 @@ class Observations(models.Model, DirtyFieldsMixin):
 
     def __unicode__(self):
         return str(self.obs_date) + ': ' + self.site.site_name
+
+
+class ArchivedObservations(models.Model, DirtyFieldsMixin):
+    """Model for keeping the deleted Observations."""
+    FLAG_CATS = (
+        (u'dirty', u'Dirty'),
+        (u'clean', u'Clean')
+    )
+    gid = models.AutoField(primary_key=True, editable=False)
+    user_id = models.IntegerField(default=0)
+    flatworms = models.BooleanField(default=False)
+    worms = models.BooleanField(default=False)
+    leeches = models.BooleanField(default=False)
+    crabs_shrimps = models.BooleanField(default=False)
+    stoneflies = models.BooleanField(default=False)
+    minnow_mayflies = models.BooleanField(default=False)
+    other_mayflies = models.BooleanField(default=False)
+    damselflies = models.BooleanField(default=False)
+    dragonflies = models.BooleanField(default=False)
+    bugs_beetles = models.BooleanField(default=False)
+    caddisflies = models.BooleanField(default=False)
+    true_flies = models.BooleanField(default=False)
+    snails = models.BooleanField(default=False)
+    score = models.DecimalField(max_digits=4, decimal_places=2)
+    site = models.IntegerField(default=0)
+    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+    comment = models.CharField(max_length=255, blank=True)
+    obs_date = models.DateField()
+    flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
+
+    class Meta:
+        db_table = u'archived_observations'
+
+    def __unicode__(self):
+        return str(self.obs_date)
+
 
 class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
@@ -170,3 +229,49 @@ def send_email_to_user(sender, **kwargs):
     if dirty_fields.get('flag') == 'dirty' and observation.flag == 'clean':
         send_confirmation_email(observation)
 
+
+@receiver(pre_delete, sender=Sites)
+def archive_site(sender, instance, using, **kwargs):
+    # site = kwargs.get('instance')
+    archived_site = ArchivedSites()
+    # archived_site.gid = site.gid
+    archived_site.the_geom = instance.the_geom
+    archived_site.site_name = instance.site_name
+    archived_site.river_name = instance.river_name
+    archived_site.description = instance.description
+    archived_site.river_cat = instance.river_cat
+    archived_site.user = instance.user.id
+    archived_site.time_stamp = instance.time_stamp
+    archived_site.objects = models.GeoManager()
+
+    archive_site.save()
+
+@receiver(pre_delete, sender=Observations)
+def archive_site(sender, instance, using, **kwargs):
+    observation = instance
+    archived_observation = ArchivedObservations()
+
+    # archived_observation.gid = observation.gid
+    archived_observation.user_id = observation.user.id
+    archived_observation.flatworms = observation.flatworms
+    archived_observation.worms = observation.worms
+    archived_observation.leeches = observation.leeches
+    archived_observation.crabs_shrimps = observation.crabs_shrimps
+    archived_observation.stoneflies = observation.stoneflies
+    archived_observation.minnow_mayflies = observation.minnow_mayflies
+    archived_observation.other_mayflies = observation.other_mayflies
+    archived_observation.damselflies = observation.damselflies
+    archived_observation.dragonflies = observation.dragonflies
+    archived_observation.bugs_beetles = observation.bugs_beetles
+    archived_observation.caddisflies = observation.caddisflies
+    archived_observation.true_flies = observation.true_flies
+    archived_observation.snails = observation.snails
+    archived_observation.score = observation.score
+    archived_observation.site = observation.site.gid
+    archived_observation.time_stamp = observation.time_stamp
+    archived_observation.comment = observation.comment
+    archived_observation.obs_date = observation.obs_date
+    archived_observation.flag = observation.flag
+    archived_observation.objects = models.GeoManager()
+
+    archived_observation.save()
