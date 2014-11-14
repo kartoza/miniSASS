@@ -34,10 +34,17 @@ ${observation}#
             <tr><td class="tdlabel">River category:</td><td class="tddata">${feature.river_cat.value}</td></tr>
             <tr><td class="section_header" colspan="2"><br />Observation Details</td></tr>
             <tr><td class="tdlabel">Date:</td><td class="tddata"><#if feature.obs_date.value != "">${feature.obs_date.value?date("yyyy/MM/dd")}</#if></td></tr>
+            <tr><td class="tdlabel">Date:</td><td class="tddata">${feature.obs_date.value}</td></tr>
             <tr><td class="tdlabel">Username:</td><td class="tddata">${feature.username.value}</td></tr>
             <tr><td class="tdlabel">Organisation type:</td><td class="tddata">${feature.organisation_type.value}</td></tr>
             <tr><td class="tdlabel">Organisation name:</td><td class="tddata">${feature.organisation_name.value}</td></tr>
             <tr><td class="tdlabel">Comments/notes:</td><td class="tddata">${feature.comment.value}</td></tr>
+            <tr><td class="section_header" colspan="2"><br />Measured Parameters</td></tr>
+            <tr><td class="tdlabel">Water clarity:</td><td>${feature.water_clarity.value} cm</td></tr>
+            <tr><td class="tdlabel">Water temperature:</label></td><td>${feature.water_temp.value}&deg;C</td></tr>
+            <tr><td class="tdlabel">pH:</label></td><td>${feature.ph.value}</td></tr>
+            <tr><td class="tdlabel">Dissolved oxygen:</label></td><td>${feature.diss_oxygen.value} ${feature.diss_oxygen_unit.value}</td></tr>
+            <tr><td class="tdlabel">Electrical conductivity:</label></td><td>${feature.elec_cond.value} ${feature.elec_cond_unit.value}</td></tr>
           </table>
         </td>
         <td id="obs_groups">
@@ -90,7 +97,7 @@ ${observation}#
                 <#assign healthClass = "&nbsp;">
               </#if>
               <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 4.3) && (feature.river_cat.value = "sandy")>
-                <#assign crabURL = "/static/img/icon_crab_v_large.png">
+                <#assign crabURL = "/static/img/icon_crab_u_large.png">
                 <#assign healthClass = "Very Poor">
               </#if>
               <#if (feature.score.rawValue > 0) && (feature.score.rawValue <= 5.1) && (feature.river_cat.value = "rocky")>

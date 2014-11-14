@@ -124,6 +124,7 @@ def index(request):
             observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
             coords_form = CoordsForm()
             post_values = request.POST.copy()
+            post_values['saved_obs'] = 'true'
             post_values['edit_site'] = 'true'
             map_form = MapForm(post_values)
             return render_to_response('monitor/index.html',
@@ -132,12 +133,13 @@ def index(request):
         else:
             post_values = request.POST.copy()
             post_values['error'] = 'true'
+            post_values['saved_obs'] = 'false'
             map_form = MapForm(post_values)
     else: # create new empty forms
         site_form = SiteForm()
         observation_form = ObservationForm(initial={'site':'1','score':'0.0'})
         coords_form = CoordsForm()
-        map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false'})
+        map_form = MapForm({'zoom_level':'6','centre_X':'2747350','centre_Y':'-3333950','edit_site':'true','error':'false','saved_obs':'false'})
     return render_to_response('monitor/index.html',
                               {'site_form':site_form,'observation_form':observation_form,'coords_form':coords_form,'map_form':map_form},
                               context_instance=RequestContext(request))
@@ -189,6 +191,25 @@ def get_sites(request, x, y, d):
                               {'sites':sites_returned},
                               context_instance=RequestContext(request))
 
+def get_closest_site(request, x, y, d):
+    """ Requests the closest site within distance (d) of x;y.
+    """
+    xy_point = "ST_PointFromText('POINT(" + x + " " + y + ")', 3857)"
+    select_clause = 'SELECT gid, ST_Distance(ST_Transform(sites.the_geom,3857),' + xy_point + ') AS distance FROM sites'
+    where_clause = ' WHERE ST_DWithin(ST_Transform(sites.the_geom,3857),'+xy_point+','+d+')'
+    site_returned = Sites.objects.raw(select_clause + where_clause + ' ORDER BY distance LIMIT 1;')
+    return render_to_response('monitor/closest_site.html',
+                              {'site':site_returned},
+                              context_instance=RequestContext(request))
+
+def get_unique(request, field):
+    """ Request all unique values.
+    """
+    values_returned = Sites.objects.distinct(field)
+    return render_to_response('monitor/unique_values.html',
+                              {'values':values_returned},
+                              context_instance=RequestContext(request))
+
 def get_schools(request):
     """ Request all schools with names starting with the letters in the search_str
     """
@@ -200,6 +221,103 @@ def get_schools(request):
                               {'schools':schools_returned},
                               context_instance=RequestContext(request))
 
+
+def get_observations(request, site_id):
+    """ Request all observations for the requested site ID.
+    """
+    observations = Observations.objects.filter(site=site_id).order_by('obs_date')
+
+    return render_to_response('monitor/site_observations.html',
+                              {'observations':observations},
+                              context_instance=RequestContext(request))
+
+def download_observations(request, site_id):
+    """ Download all observations for the requested site ID in csv format.
+    """
+    import csv
+    from django.utils.encoding import smart_str
+
+    # Get the site's observations
+    observations = Observations.objects.filter(site=site_id)
+
+    # Get the site coordinates
+    select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y FROM sites WHERE gid = ' + site_id
+    site_coords = Sites.objects.raw(select_clause)
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="observations.csv"'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"Obs ID"),
+        smart_str(u"User name"),
+        smart_str(u"Obs Date"),
+        smart_str(u"Site name"),
+        smart_str(u"Latitude"),
+        smart_str(u"Longitude"),
+        smart_str(u"Flatworms"),
+        smart_str(u"Worms"),
+        smart_str(u"Leeches"),
+        smart_str(u"Crabs/shrimps"),
+        smart_str(u"Stoneflies"),
+        smart_str(u"Minnow mayflies"),
+        smart_str(u"Other mayflies"),
+        smart_str(u"Damselflies"),
+        smart_str(u"Dragonflies"),
+        smart_str(u"Bugs/beetles"),
+        smart_str(u"Caddisflies"),
+        smart_str(u"True flies"),
+        smart_str(u"Snails"),
+        smart_str(u"Score"),
+        smart_str(u"Status"),
+        smart_str(u"Water clarity"),
+        smart_str(u"Water temp"),
+        smart_str(u"pH"),
+        smart_str(u"Diss oxygen"),
+        smart_str(u"diss oxygen unit"),
+        smart_str(u"Elec cond"),
+        smart_str(u"Elec cond unit"),
+        smart_str(u"Comment"),
+    ])
+    for obs in observations:
+        if obs.flag == 'clean':
+            flag = 'Verified'
+        else:
+            flag = 'Unverified'
+        writer.writerow([
+            smart_str(obs.pk),
+            smart_str(obs.user),
+            smart_str(obs.obs_date),
+            smart_str(obs.site),
+            smart_str(site_coords[0].y),
+            smart_str(site_coords[0].x),
+            smart_str(obs.flatworms),
+            smart_str(obs.worms),
+            smart_str(obs.leeches),
+            smart_str(obs.crabs_shrimps),
+            smart_str(obs.stoneflies),
+            smart_str(obs.minnow_mayflies),
+            smart_str(obs.other_mayflies),
+            smart_str(obs.damselflies),
+            smart_str(obs.dragonflies),
+            smart_str(obs.bugs_beetles),
+            smart_str(obs.caddisflies),
+            smart_str(obs.true_flies),
+            smart_str(obs.snails),
+            smart_str(obs.score),
+            smart_str(flag),
+            smart_str(obs.water_clarity),
+            smart_str(obs.water_temp),
+            smart_str(obs.ph),
+            smart_str(obs.diss_oxygen),
+            smart_str(obs.diss_oxygen_unit),
+            smart_str(obs.elec_cond),
+            smart_str(obs.elec_cond_unit),
+            smart_str(obs.comment),
+        ])
+    return response
+
 def zoom_observation(request, obs_id):
     """
     Zoom to a miniSASS observation - Find the coordinates for an observation
@@ -209,7 +327,6 @@ def zoom_observation(request, obs_id):
 
     # observation = Observations.objects.get(pk=obs_id)
     # Select statement converts coordinates to Google projection
-    # select_stmt = 'SELECT gid, ST_X(ST_Transform(the_geom,3857)) as x, ST_Y(ST_Transform(the_geom,3857)) as y FROM sites WHERE gid = %s' % obs_id
     select_stmt = """
         SELECT  s.gid,
                 ST_X(ST_Transform(s.the_geom,3857)) as x,

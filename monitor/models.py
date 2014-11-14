@@ -102,6 +102,18 @@ class Observations(models.Model, DirtyFieldsMixin):
         (u'dirty', u'Dirty'),
         (u'clean', u'Clean')
     )
+    UNIT_DO_CATS = (
+        (u'mgl', u'mg/l'),
+        (u'%DO', u'%DO'),
+        (u'PPM', u'PPM'),
+        (u'na', u'Unknown')
+    )
+    UNIT_EC_CATS = (
+        (u'S/m', u'S/m'),
+        (u'\u00B5S/cm', u'\u00B5S/cm'),
+        (u'mS/m', u'mS/m'),
+        (u'na', u'Unknown')
+    )
     gid = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User)
     flatworms = models.BooleanField(default=False)
@@ -123,6 +135,13 @@ class Observations(models.Model, DirtyFieldsMixin):
     comment = models.CharField(max_length=255, blank=True)
     obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
+    water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True)
+    water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True)
+    ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True)
+    diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
+    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mSm', blank=True)
     objects = models.GeoManager()
 
     class Meta:
@@ -137,6 +156,18 @@ class ArchivedObservations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
         (u'clean', u'Clean')
+    )
+    UNIT_DO_CATS = (
+        (u'mgl', u'mg/l'),
+        (u'%DO', u'%DO'),
+        (u'PPM', u'PPM'),
+        (u'na', u'Unknown')
+    )
+    UNIT_EC_CATS = (
+        (u'S/m', u'S/m'),
+        (u'\u00B5S/cm', u'\u00B5S/cm'),
+        (u'mS/m', u'mS/m'),
+        (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
     user_id = models.IntegerField(default=0)
@@ -159,6 +190,13 @@ class ArchivedObservations(models.Model, DirtyFieldsMixin):
     comment = models.CharField(max_length=255, blank=True)
     obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
+    water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True)
+    water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True)
+    ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True)
+    diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
+    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mSm', blank=True)
     objects = models.GeoManager()
 
     class Meta:
@@ -172,11 +210,11 @@ class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
     """
 #     observation = models.ForeignKey(Observations, related_name='plugins')
-# 
+#
 #     def __unicode__(self):
 #         return self.observation.site.name
 
-    
+
 def send_confirmation_email(observation):
     """Helper function to send email content based on observation.
 
@@ -275,6 +313,13 @@ def archive_observation(sender, instance, using, **kwargs):
     archived_observation.comment = observation.comment
     archived_observation.obs_date = observation.obs_date
     archived_observation.flag = observation.flag
+    archived_observation.water_clarity = observation.water_clarity
+    archived_observation.water_temp = observation.water_temp
+    archived_observation.ph = observation.ph
+    archived_observation.diss_oxygen = observation.diss_oxygen
+    archived_observation.diss_oxygen_unit = observation.diss_oxygen_unit
+    archived_observation.elec_cond = observation.elec_cond
+    archived_observation.elec_cond_unit = observation.elec_cond_unit
     archived_observation.objects = models.GeoManager()
 
     archived_observation.save()
