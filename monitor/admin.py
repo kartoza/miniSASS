@@ -43,7 +43,7 @@ class ArchivedObservationsAdmin(admin.ModelAdmin):
     list_display = (
         'gid',
         'user_id',
-        'site',
+        'site_id',
         'obs_date',
         'score',
         'flag'

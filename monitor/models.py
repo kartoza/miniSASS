@@ -16,6 +16,7 @@ from datetime import datetime
 
 # Create your models here.
 
+
 class Organisations(models.Model):
     ORG_CATS = (
         (u'school', u'School'),
@@ -32,7 +33,8 @@ class Organisations(models.Model):
 
     def __unicode__(self):
         return self.org_name
-        
+
+
 class Schools(models.Model):
     gid = models.AutoField(primary_key=True, editable=False)
     the_geom = models.PointField()
@@ -48,6 +50,7 @@ class Schools(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Sites(models.Model):
     RIVER_CATS = (
@@ -85,6 +88,7 @@ class ArchivedSites(models.Model):
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user_id = models.IntegerField(default=0)
     time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+    objects = models.GeoManager()
 
     class Meta:
         db_table = u'archived_sites'
@@ -150,11 +154,12 @@ class ArchivedObservations(models.Model, DirtyFieldsMixin):
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
     score = models.DecimalField(max_digits=4, decimal_places=2)
-    site = models.IntegerField(default=0)
+    site_id = models.IntegerField(default=0)
     time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
     comment = models.CharField(max_length=255, blank=True)
     obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
+    objects = models.GeoManager()
 
     class Meta:
         db_table = u'archived_observations'
@@ -232,9 +237,8 @@ def send_email_to_user(sender, **kwargs):
 
 @receiver(pre_delete, sender=Sites)
 def archive_site(sender, instance, using, **kwargs):
-    # site = kwargs.get('instance')
     archived_site = ArchivedSites()
-    # archived_site.gid = site.gid
+
     archived_site.the_geom = instance.the_geom
     archived_site.site_name = instance.site_name
     archived_site.river_name = instance.river_name
@@ -244,14 +248,13 @@ def archive_site(sender, instance, using, **kwargs):
     archived_site.time_stamp = instance.time_stamp
     archived_site.objects = models.GeoManager()
 
-    archive_site.save()
+    archived_site.save()
 
 @receiver(pre_delete, sender=Observations)
-def archive_site(sender, instance, using, **kwargs):
+def archive_observation(sender, instance, using, **kwargs):
     observation = instance
     archived_observation = ArchivedObservations()
 
-    # archived_observation.gid = observation.gid
     archived_observation.user_id = observation.user.id
     archived_observation.flatworms = observation.flatworms
     archived_observation.worms = observation.worms
@@ -267,7 +270,7 @@ def archive_site(sender, instance, using, **kwargs):
     archived_observation.true_flies = observation.true_flies
     archived_observation.snails = observation.snails
     archived_observation.score = observation.score
-    archived_observation.site = observation.site.gid
+    archived_observation.site_id = observation.site.gid
     archived_observation.time_stamp = observation.time_stamp
     archived_observation.comment = observation.comment
     archived_observation.obs_date = observation.obs_date
