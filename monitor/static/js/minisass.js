@@ -591,7 +591,7 @@ function loadSelectedObs(selectedSite,store){
               title:'Observations',
               store:storeSiteObs,
               columns:[
-                {header:'Date',dataIndex:'obs_date',align:'left',},
+                {header:'Date (Obs ID)',dataIndex:'obs_date',align:'left',},
                 {header:'User name',dataIndex:'user',align:'left',},
                 {header:'Flat worms',dataIndex:'flatworms',width:90,align:'center',},
                 {header:'Worms',dataIndex:'worms',width:90,align:'center',},
@@ -631,13 +631,16 @@ function loadSelectedObs(selectedSite,store){
                 store:storeSiteObs,
                 xField:'obs_date',
                 yField:'score',
+                xAxis:new Ext.chart.CategoryAxis({
+                  title:'Date (Observation ID)',
+                }),
                 yAxis:new Ext.chart.NumericAxis({
                   title:'Score',
                   minimum:0,
                   majorUnit:1,
                 }),
                 extraStyle:{
-                  xAxis:{labelRotation:-90},
+                  xAxis:{labelRotation:-45},
                   yAxis:{titleRotation:-90},
                   font:{name:'Verdana',size:10,},
                 },
