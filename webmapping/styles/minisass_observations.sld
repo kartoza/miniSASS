@@ -2,7 +2,7 @@
 <sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" version="1.0.0">
   <sld:UserLayer>
     <sld:LayerFeatureConstraints>
-      <sld:FeatureTypeConstraint/>
+       <sld:FeatureTypeConstraint/>
     </sld:LayerFeatureConstraints>
     <sld:UserStyle>
       <sld:Name>sites</sld:Name>
