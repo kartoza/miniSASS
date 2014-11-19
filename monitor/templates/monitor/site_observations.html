@@ -20,7 +20,7 @@
         {% if observation.true_flies %} "true_flies":"Yes", {% else %} "true_flies":"No",{% endif %}
         {% if observation.snails %} "snails":"Yes", {% else %} "snails":"No",{% endif %}
         "score":"{{observation.score}}",
-        "obs_date":"{{observation.obs_date}}",
+        "obs_date":"{{observation.obs_date|date:"Y/m/d"}} ({{observation.gid}})",
         {% if observation.flag == clean %} "flag":"Verified", {% else %} "flag":"Unverified",{% endif %}
         {% if observation.water_clarity == None %}
           "water_clarity":"",

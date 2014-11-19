@@ -100,6 +100,13 @@ If you get an error like this:
     
 Then follow the advice here: http://stackoverflow.com/questions/18643998/geodjango-eosexception-error (except there's no .decode() in Django 1.4)
 
+If you get an error like this:
+
+    Failed to install index for monitor.ArchivedSites model: operator class 
+    "gist_geometry_ops" does not exist for access method "gist"
+    
+Then follow the advice here: http://stackoverflow.com/a/15746383/1198772
+
 
 Setting up the spatial data layers
 ==================================
