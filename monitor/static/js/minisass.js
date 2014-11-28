@@ -765,11 +765,7 @@ function loadSelectedSite(selectedSite,store){
     document.getElementById('id_edit_site').value = 'false';
 
     // Zoom the map to the selected site
-    var xyCoords = new OpenLayers.LonLat(
-      siteRecord.get('longitude'),
-      siteRecord.get('latitude')
-    );
-    map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+    zoomToCoords();
   }
 }
 
