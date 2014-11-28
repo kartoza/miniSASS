@@ -138,6 +138,7 @@ function loadSelectedObs(selectedSite,store){
               'elec_cond':jsonData.features[i].properties.elec_cond,
             }));
           };
+          storeSiteObs.sort('obs_date','ASC');
 
           // Remove any existing data in the tab panel
           var activeTab = dataTabPanel.items.indexOf(dataTabPanel.getActiveTab());
@@ -213,7 +214,8 @@ function loadSelectedObs(selectedSite,store){
                 }),
                 yAxis:new Ext.chart.NumericAxis({
                   title:'Score',
-                  minimum:0,
+                  minimum:1,
+                  minimum:10,
                   majorUnit:1,
                 }),
                 extraStyle:{

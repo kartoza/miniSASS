@@ -561,6 +561,7 @@ function loadSelectedObs(selectedSite,store){
               'elec_cond':jsonData.features[i].properties.elec_cond,
             }));
           };
+          storeSiteObs.sort('obs_date','ASC');
 
           // Remove any existing data in the tab panel
           var activeTab = dataTabPanel.items.indexOf(dataTabPanel.getActiveTab());
@@ -636,7 +637,8 @@ function loadSelectedObs(selectedSite,store){
                 }),
                 yAxis:new Ext.chart.NumericAxis({
                   title:'Score',
-                  minimum:0,
+                  minimum:1,
+                  minimum:10,
                   majorUnit:1,
                 }),
                 extraStyle:{
@@ -764,11 +766,7 @@ function loadSelectedSite(selectedSite,store){
     document.getElementById('id_edit_site').value = 'false';
 
     // Zoom the map to the selected site
-    var xyCoords = new OpenLayers.LonLat(
-      siteRecord.get('longitude'),
-      siteRecord.get('latitude')
-    );
-    map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+    zoomToCoords();
   }
 }
 
