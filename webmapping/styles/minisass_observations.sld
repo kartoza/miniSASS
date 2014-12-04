@@ -701,6 +701,56 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MaxScaleDenominator>25000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>16.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MaxScaleDenominator>25000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>16.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -1409,6 +1459,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>25000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>50000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>16.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>25000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>50000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>16.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -2117,6 +2219,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>50000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>100000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>14.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>50000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>100000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>14.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -2825,6 +2979,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>100000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>250000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>14.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>100000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>250000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>14.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -3533,6 +3739,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>250000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>12.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>250000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>12.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -4241,6 +4499,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>750000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>12.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>750000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>12.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -4949,6 +5259,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>750000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>1500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>10.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>750000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>1500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>10.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -5657,6 +6019,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>1500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>2500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>10.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>1500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>2500000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>10.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -6365,6 +6779,58 @@
           </sld:PointSymbolizer>
         </sld:Rule>
         <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>2500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>5000000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>6.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>2500000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>5000000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>6.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
           <sld:Name>Unmodified (sandy)</sld:Name>
           <ogc:Filter>
             <ogc:And>
@@ -7066,6 +7532,58 @@
             <sld:Graphic>
               <sld:ExternalGraphic>
                 <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_sm_dirty.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>6.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>clean</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u.svg"/>
+                <sld:Format>image/svg+xml</sld:Format>
+              </sld:ExternalGraphic>
+              <sld:Size>6.0</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>No invertebrates found</sld:Name>
+          <ogc:Filter>
+            <ogc:And>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>score</ogc:PropertyName>
+                  <ogc:Literal>0</ogc:Literal>
+                </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>flag</ogc:PropertyName>
+                <ogc:Literal>dirty</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+            </ogc:And>
+          </ogc:Filter>
+          <sld:MinScaleDenominator>5000000</sld:MinScaleDenominator>
+          <sld:MaxScaleDenominator>10000000</sld:MaxScaleDenominator>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:ExternalGraphic>
+                <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="icons/crab_u_dirty.svg"/>
                 <sld:Format>image/svg+xml</sld:Format>
               </sld:ExternalGraphic>
               <sld:Size>6.0</sld:Size>
