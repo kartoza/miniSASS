@@ -640,7 +640,7 @@ function loadSelectedObs(selectedSite,store){
                 yAxis:new Ext.chart.NumericAxis({
                   title:'Score',
                   minimum:1,
-                  minimum:10,
+                  maximum:10,
                   majorUnit:1,
                 }),
                 extraStyle:{
