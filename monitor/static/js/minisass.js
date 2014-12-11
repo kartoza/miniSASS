@@ -241,7 +241,7 @@ function zoomToCoords() {
       inputFromMap();
       userFunction = 'infoclick';
       infoFromMap();
-      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the site<br />you want to create. If it is in the wrong position then<br />1. first click on the green circle to select it<br />2. then click and drag the circle to the correct position');
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the site<br />you want to create. If it is in the wrong position then<br />1. first click on the red circle to select it<br />2. then click and drag the circle to the correct position');
     } else {
       modifyControl.deactivate();
     }
