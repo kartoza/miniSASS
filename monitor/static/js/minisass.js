@@ -1349,27 +1349,35 @@ Ext.onReady(function() {
   };
 
   function mapZoomEnd(event) {
-    // Switch from Google terrain to Google road map if zoomed too close
-    if (map.zoom>=16 && map.getLayersByName('Google terrain')[0].visibility==true) {
-      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
-      map.setBaseLayer(layerGoogleRoadmap);
-      exceededZoom='Google terrain';
+
+    if (map.zoom >= 16 && map.zoom < 20 && map.getLayersByName('Google terrain')[0].visibility == true) {
+      // Switch from Google terrain to Google satellite if zoomed too close
+      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google satellite.');
+      map.setBaseLayer(layerGoogleSatellite);
+      exceededZoom = 'Google terrain';
     }
-    // Switch from Google satellite to Google road map if zoomed too close
-    if (map.zoom>=20 && map.getLayersByName('Google satellite')[0].visibility==true) {
+    else if (map.zoom >= 20 && map.getLayersByName('Google satellite')[0].visibility == true) {
+      // Switch from Google satellite to Google road map if zoomed too close
       Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google satellite.<br />Automatically switching to Google road map.');
       map.setBaseLayer(layerGoogleRoadmap);
-      exceededZoom='Google satellite';
+      exceededZoom = 'Google satellite';
     }
+    else if (map.zoom >= 20 && map.getLayersByName('Google terrain')[0].visibility == true) {
+      // Switch from Google terrain to Google road map if zoomed too close
+      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
+      map.setBaseLayer(layerGoogleRoadmap);
+      exceededZoom = 'Google terrain';
+    }
+
     // Switch back to Google terrain if within zoom range
-    if (map.zoom<16 && exceededZoom=='Google terrain') {
+    if (map.zoom < 16 && exceededZoom == 'Google terrain') {
       map.setBaseLayer(layerGoogleTerrain);
-      exceededZoom='';
+      exceededZoom = '';
     }
     // Switch back to Google satellite if within zoom range
-    if (map.zoom<20 && exceededZoom=='Google satellite') {
+    if (map.zoom < 20 && exceededZoom == 'Google satellite') {
       map.setBaseLayer(layerGoogleSatellite);
-      exceededZoom='';
+      exceededZoom = '';
     }
   };
 
