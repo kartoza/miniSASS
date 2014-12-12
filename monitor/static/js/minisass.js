@@ -1764,9 +1764,9 @@ Ext.onReady(function() {
             } else {
               document.getElementById('id_hem_e').checked = true;
             }
-            map.setCenter(clickCoords.transform(proj4326, proj3857),15);
             mapClickWindow.hide();
             inputWindow.show(this);
+            zoomToCoords();
           }
         }]
       }),
