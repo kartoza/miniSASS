@@ -15,6 +15,7 @@ var layerMiniSASSBase;
 var layerProvinces;
 var layerSchools;
 var layerMiniSASSObs;
+var layerMarker;
 var infoClick;
 var infoWindow;
 var dataWindow;
@@ -24,6 +25,7 @@ var filterWindow;
 var filtered = false;
 var cqlFilter = '';
 var messagePanel;
+var markerPoint;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
 var storeSites;           // A store for holding sites data
@@ -40,6 +42,29 @@ var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> 
            + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
            + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
            + 'and hold</i> the mouse button to <b>drag the map</b> around.';
+
+function hideMarker() {
+/* This function hides the marker showing the location of the site coordinates
+ * on the map.
+ */
+  if (layerMarker) {
+    OpenLayers.Feature.Vector.style['default']['pointRadius'] = '0';
+    OpenLayers.Feature.Vector.style['select']['pointRadius'] = '0';
+    layerMarker.redraw();
+  }
+}
+
+function showMarker(longitude,latitude) {
+/* This function shows the marker at the location of the coordinates
+ * passed as variables.
+ */
+  OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+  markerPoint.x = longitude;
+  markerPoint.y = latitude;
+  markerPoint.transform(proj4326, proj3857);
+  layerMarker.redraw();
+}
 
 function infoFromMap(){
 /* This function toggles the 'info from map' button image, changes the
@@ -215,7 +240,7 @@ function loadSelectedObs(selectedSite,store){
                 yAxis:new Ext.chart.NumericAxis({
                   title:'Score',
                   minimum:1,
-                  minimum:10,
+                  maximum:10,
                   majorUnit:1,
                 }),
                 extraStyle:{
@@ -237,6 +262,17 @@ function loadSelectedObs(selectedSite,store){
           if (activeTab == -1) activeTab = 0;
           dataTabPanel.setActiveTab(activeTab);
           dataWindow.show(this);
+
+          // Zoom the map to the selected site
+          var xyCoords = new OpenLayers.LonLat(
+            siteRecord.get('longitude'),
+            siteRecord.get('latitude')
+          );
+          map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+          // Show the marker
+          showMarker(siteRecord.get('longitude'),siteRecord.get('latitude'))
+
         };
       },
       failure:function(response,opts){
@@ -392,6 +428,7 @@ function zoomFull() {
 /* This function zooms the map to its full extent.
 */
   map.setCenter(new OpenLayers.LonLat(mapExtentX,mapExtentY),mapExtentZoom);
+  hideMarker();
 }
 
 function escape(str) {
@@ -548,8 +585,12 @@ Ext.onReady(function() {
         record.get('latitude')
       );
       map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+      // Show the marker
+      showMarker(record.get('longitude'),record.get('latitude'))
+
       this.collapse();
-      this.setValue(record.get('site_name'));
+      this.setValue(record.get('combo_name'));
     }
   });
 
@@ -580,6 +621,10 @@ Ext.onReady(function() {
         record.get('latitude')
       );
       map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+      // Show the marker
+      showMarker(record.get('longitude'),record.get('latitude'))
+
       map.getLayersByName('Schools')[0].setVisibility(true);
       this.collapse();
       this.setValue(record.get('school_name'));
@@ -720,27 +765,35 @@ Ext.onReady(function() {
   };
 
   function mapZoomEnd(event) {
-    // Switch from Google terrain to Google road map if zoomed too close
-    if (map.zoom>=16 && map.getLayersByName('Google terrain')[0].visibility==true) {
-      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
-      map.setBaseLayer(layerGoogleRoadmap);
-      exceededZoom='Google terrain';
+
+    if (map.zoom >= 16 && map.zoom < 20 && map.getLayersByName('Google terrain')[0].visibility == true) {
+      // Switch from Google terrain to Google satellite if zoomed too close
+      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google satellite.');
+      map.setBaseLayer(layerGoogleSatellite);
+      exceededZoom = 'Google terrain';
     }
-    // Switch from Google satellite to Google road map if zoomed too close
-    if (map.zoom>=20 && map.getLayersByName('Google satellite')[0].visibility==true) {
+    else if (map.zoom >= 20 && map.getLayersByName('Google satellite')[0].visibility == true) {
+      // Switch from Google satellite to Google road map if zoomed too close
       Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google satellite.<br />Automatically switching to Google road map.');
       map.setBaseLayer(layerGoogleRoadmap);
-      exceededZoom='Google satellite';
+      exceededZoom = 'Google satellite';
     }
+    else if (map.zoom >= 20 && map.getLayersByName('Google terrain')[0].visibility == true) {
+      // Switch from Google terrain to Google road map if zoomed too close
+      Ext.Msg.alert('Maximum Zoom', 'Cannot zoom in this close on Google terrain.<br />Automatically switching to Google road map.');
+      map.setBaseLayer(layerGoogleRoadmap);
+      exceededZoom = 'Google terrain';
+    }
+
     // Switch back to Google terrain if within zoom range
-    if (map.zoom<16 && exceededZoom=='Google terrain') {
+    if (map.zoom < 16 && exceededZoom == 'Google terrain') {
       map.setBaseLayer(layerGoogleTerrain);
-      exceededZoom='';
+      exceededZoom = '';
     }
     // Switch back to Google satellite if within zoom range
-    if (map.zoom<20 && exceededZoom=='Google satellite') {
+    if (map.zoom < 20 && exceededZoom == 'Google satellite') {
       map.setBaseLayer(layerGoogleSatellite);
-      exceededZoom='';
+      exceededZoom = '';
     }
   };
 
@@ -841,6 +894,34 @@ Ext.onReady(function() {
     zoom:zoom_level,
     map:map
   });
+
+  /** Add the marker layer now that the map has been created **/
+  // Define the marker layer
+  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+  renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+  layerMarker = new OpenLayers.Layer.Vector(
+    "Site Location",
+    {projection:proj3857,displayInLayerSwitcher:false,renderers:renderer}
+  );
+
+  // Set a default marker style
+  OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
+  OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['default']['fillColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['default']['fillOpacity'] = 0.1;
+  OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
+  OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['select']['fillColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['select']['fillOpacity'] = 0.1;
+
+  // Create a marker and add it to the marker layer
+  markerPoint = new OpenLayers.Geometry.Point(0,-90);
+  markerPoint.transform(proj4326, proj3857);
+  layerMarker.addFeatures(new OpenLayers.Feature.Vector(markerPoint));
+  map.addLayer(layerMarker);
+  /** End of marker layer setup **/
 
   // Define the layers panel
   var layersPanel = new Ext.Panel({
