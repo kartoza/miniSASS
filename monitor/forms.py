@@ -44,8 +44,8 @@ class ObservationForm(ModelForm):
 
 # Form for storing lon/lat coordinates
 class CoordsForm(forms.Form):
-    latitude = forms.DecimalField(min_value=-90,max_value=90,widget=forms.TextInput(attrs = {'value':'0.00000'}))
-    longitude = forms.DecimalField(min_value=-180,max_value=180,widget=forms.TextInput(attrs = {'value':'0.00000'}))
+    latitude = forms.DecimalField(min_value=-90,max_value=90,widget=forms.TextInput(attrs = {'value':'0.00000','onchange':"coordsChanged();"}))
+    longitude = forms.DecimalField(min_value=-180,max_value=180,widget=forms.TextInput(attrs = {'value':'0.00000','onchange':"coordsChanged();"}))
 
 # Form for map view and data input parameters
 class MapForm(forms.Form):

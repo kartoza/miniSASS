@@ -28,6 +28,7 @@ var cqlFilter = '';
 var messagePanel;
 var modifyControl;
 var markerPoint;
+var flagCoordsChanged = false;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
 var clickCoords;          // Map click coordinates
@@ -161,6 +162,16 @@ function updateCoords(event) {
     if (document.getElementById('id_DMS').checked) {
       coords('DMS');
     }
+
+    // Unset the CoordsChanged flag
+    flagCoordsChanged = false;
+}
+
+function coordsChanged() {
+/* This function sets the CoordsChanged flag to true if the user has
+ * entered or changed the latitude/longitude coordinates.
+ */
+  flagCoordsChanged = true;
 }
 
 function zoomToCoords() {
@@ -206,6 +217,10 @@ function zoomToCoords() {
     } else {
       modifyControl.deactivate();
     }
+
+    // Unset the CoordsChanged flag
+    flagCoordsChanged = false;
+
   } else {
     Ext.Msg.alert('Invalid Coordinates', 'The coordinates you have entered are invalid.<br />Please check them.');
   }
@@ -356,6 +371,9 @@ function canSubmit(){
     return false;
   } else if (document.getElementById('id_obs_date').value == '') {
     Ext.Msg.alert('Date Error', 'Please enter a valid date');
+    return false;
+  } else if (flagCoordsChanged) {
+    Ext.Msg.alert('Check coordinates', 'Please click the <b>Show on Map</b> button to check<br />if your latitude/longitude coordinates are correct');
     return false;
   } else { // All the required fields are present
     if (editSite == true) {
