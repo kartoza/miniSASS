@@ -189,49 +189,8 @@ function zoomToCoords() {
     var xyCoords = new OpenLayers.LonLat(longitude,latitude);
     map.setCenter(xyCoords.transform(proj4326, proj3857),15);
 
-    // Setup the marker layer
-    if (layerMarker) {
-      // The marker layer already exists so update the coordinates
-      markerPoint.x = longitude;
-      markerPoint.y = latitude;
-      // Reset the marker size
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
-    } else {
-      // The marker layer doesn't exist so create it
-      var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-      renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-      layerMarker = new OpenLayers.Layer.Vector(
-        "Site Location",
-        {renderers:renderer}
-      );
-
-      // Add the marker layer to the map
-      map.addLayer(layerMarker);
-
-      // Create a control for moving the marker
-      modifyControl = new OpenLayers.Control.ModifyFeature(layerMarker);
-      map.addControl(modifyControl);
-
-      // Update the coordinates in the form when the marker is dragged
-      layerMarker.events.on({featuremodified:updateCoords});
-
-      // Set a default marker style
-      OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
-      OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
-      OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
-      OpenLayers.Feature.Vector.style['default']['fillColor'] = '#ff0000';
-      OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
-      OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
-      OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#ff0000';
-      OpenLayers.Feature.Vector.style['select']['fillColor'] = '#ff0000';
-
-      // Create the marker and add it to the marker layer
-      markerPoint = new OpenLayers.Geometry.Point(longitude,latitude);
-      layerMarker.addFeatures(new OpenLayers.Feature.Vector(markerPoint));
-    }
-    markerPoint.transform(proj4326, proj3857);
-    layerMarker.redraw();
+    // Show the marker
+    showMarker(longitude,latitude)
 
     // If site editing is allowed then allow the user to move the marker
     if (editSite == true){
@@ -261,6 +220,18 @@ function hideMarker() {
     OpenLayers.Feature.Vector.style['select']['pointRadius'] = '0';
     layerMarker.redraw();
   }
+}
+
+function showMarker(longitude,latitude) {
+/* This function shows the marker at the location of the coordinates
+ * passed as variables.
+ */
+  OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+  markerPoint.x = longitude;
+  markerPoint.y = latitude;
+  markerPoint.transform(proj4326, proj3857);
+  layerMarker.redraw();
 }
 
 function updateInputForm(clickedElement) {
@@ -662,6 +633,17 @@ function loadSelectedObs(selectedSite,store){
           if (activeTab == -1) activeTab = 0;
           dataTabPanel.setActiveTab(activeTab);
           dataWindow.show(this);
+
+          // Zoom the map to the selected site
+          var xyCoords = new OpenLayers.LonLat(
+            siteRecord.get('longitude'),
+            siteRecord.get('latitude')
+          );
+          map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+          // Show the marker
+          showMarker(siteRecord.get('longitude'),siteRecord.get('latitude'))
+
         };
       },
       failure:function(response,opts){
@@ -917,6 +899,7 @@ function zoomFull() {
 /* This function zooms the map to its full extent.
 */
   map.setCenter(new OpenLayers.LonLat(mapExtentX,mapExtentY),mapExtentZoom);
+  hideMarker();
 }
 
 function escape(str) {
@@ -1083,6 +1066,10 @@ Ext.onReady(function() {
         record.get('latitude')
       );
       map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+      // Show the marker
+      showMarker(record.get('longitude'),record.get('latitude'))
+
       this.collapse();
       this.setValue(record.get('combo_name'));
     }
@@ -1115,6 +1102,10 @@ Ext.onReady(function() {
         record.get('latitude')
       );
       map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+      // Show the marker
+      showMarker(record.get('longitude'),record.get('latitude'))
+
       map.getLayersByName('Schools')[0].setVisibility(true);
       this.collapse();
       this.setValue(record.get('school_name'));
@@ -1488,6 +1479,41 @@ Ext.onReady(function() {
     zoom:zoom_level,
     map:map
   });
+
+  /** Add the marker layer now that the map has been created **/
+  // Define the marker layer
+  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+  renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+  layerMarker = new OpenLayers.Layer.Vector(
+    "Site Location",
+    {projection:proj3857,displayInLayerSwitcher:false,renderers:renderer}
+  );
+
+  // Create a control for moving the marker
+  modifyControl = new OpenLayers.Control.ModifyFeature(layerMarker);
+  map.addControl(modifyControl);
+
+  // Update the coordinates in the form when the marker is dragged
+  layerMarker.events.on({featuremodified:updateCoords});
+
+  // Set a default marker style
+  OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
+  OpenLayers.Feature.Vector.style['default']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['default']['strokeColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['default']['fillColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['default']['fillOpacity'] = 0.1;
+  OpenLayers.Feature.Vector.style['select']['strokeWidth'] = '5';
+  OpenLayers.Feature.Vector.style['select']['pointRadius'] = '12';
+  OpenLayers.Feature.Vector.style['select']['strokeColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['select']['fillColor'] = '#ff0000';
+  OpenLayers.Feature.Vector.style['select']['fillOpacity'] = 0.1;
+
+  // Create a marker and add it to the marker layer
+  markerPoint = new OpenLayers.Geometry.Point(0,-90);
+  markerPoint.transform(proj4326, proj3857);
+  layerMarker.addFeatures(new OpenLayers.Feature.Vector(markerPoint));
+  map.addLayer(layerMarker);
+  /** End of marker layer setup **/
 
   // Define the layers panel
   var layersPanel = new Ext.Panel({
