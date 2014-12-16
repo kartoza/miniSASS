@@ -13,6 +13,7 @@ urlpatterns = patterns('monitor.views',
     url(r'^observation/(?P<obs_id>\d+)/$','zoom_observation'),
     url(r'^observations/(?P<site_id>\d+)/$','get_observations'),
     url(r'^observations/download/(?P<site_id>\d+)/$','download_observations'),
+    url(r'^observations/download/filtered/~(?P<filter_string>[^~]+)','download_observations_filtered'),
     url(r'^schools/','get_schools'),
     url(r'^(?P<monitor_id>\d+)/$', 'detail', {}, name='monitor_detail'),
         )

@@ -871,7 +871,11 @@ function filterApply(){
     document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear.png';
     document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations (Filtered)';
     filtered = true;
-  } else filterRemove();
+    Ext.getCmp('id_download_filtered').enable();
+  } else {
+    filterRemove();
+    Ext.getCmp('id_download_filtered').disable();
+  }
 }
 
 function filterRemove(){
@@ -909,8 +913,11 @@ function filterRemove(){
   // Disable the clear filter button
   document.getElementById('id_obs_filter_clear').src = '/static/img/button_obs_filter_clear_disabled.png';
   document.getElementById('id_legend_header').innerHTML = 'miniSASS Observations';
+
+  // Clean up
   filtered = false;
   cqlFilter = '';
+  Ext.getCmp('id_download_filtered').disable();
 }
 
 function zoomFull() {
@@ -1981,6 +1988,16 @@ Ext.onReady(function() {
         text:'Remove Filter',
         tooltip:'Remove the filter',
         handler:function(){filterRemove();}
+      },{
+        text:'Download',
+        tooltip:'Download the filtered observations',
+        id:'id_download_filtered',
+        disabled:true,
+        handler:function(){
+          // Substitute the % symbols with + symbols to avoid problems with Django placeholders
+          var downloadFilter = cqlFilter.replace(/%/g,'+');
+          document.location.href = '/map/observations/download/filtered/~' + downloadFilter + '~';
+        }
       },{
         text:'Close',
         tooltip:'Apply the filter and close this window',
