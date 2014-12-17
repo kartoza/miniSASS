@@ -384,7 +384,7 @@ def download_observations_filtered(request, filter_string):
             smart_str(obs['username']),
             smart_str(obs['obs_date']),
             smart_str(obs['site_name']),
-            smart_str(obs['x']),
+            smart_str(obs['y']),
             smart_str(obs['x']),
             smart_str(obs['flatworms']),
             smart_str(obs['worms']),
