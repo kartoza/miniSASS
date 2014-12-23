@@ -40,7 +40,7 @@ class Schools(models.Model):
     the_geom = models.PointField()
     natemis = models.IntegerField()
     school = models.CharField(max_length=255)
-    province = models.CharField(max_length=2)
+    province = models.CharField(max_length=15)
     phase = models.CharField(max_length=12)
     objects = models.GeoManager()
 
