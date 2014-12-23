@@ -21,7 +21,7 @@
         {% if observation.snails %} "snails":"Yes", {% else %} "snails":"No",{% endif %}
         "score":"{{observation.score}}",
         "obs_date":"{{observation.obs_date|date:"Y/m/d"}} ({{observation.gid}})",
-        {% if observation.flag == clean %} "flag":"Verified", {% else %} "flag":"Unverified",{% endif %}
+        {% if observation.flag == "clean" %} "flag":"Verified", {% else %} "flag":"Unverified",{% endif %}
         {% if observation.water_clarity == None %}
           "water_clarity":"",
         {% else %}

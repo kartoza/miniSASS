@@ -34,7 +34,6 @@ ${observation}#
             <tr><td class="tdlabel">River category:</td><td class="tddata">${feature.river_cat.value}</td></tr>
             <tr><td class="section_header" colspan="2"><br />Observation Details</td></tr>
             <tr><td class="tdlabel">Date:</td><td class="tddata"><#if feature.obs_date.value != "">${feature.obs_date.value?date("yyyy/MM/dd")}</#if></td></tr>
-            <tr><td class="tdlabel">Date:</td><td class="tddata">${feature.obs_date.value}</td></tr>
             <tr><td class="tdlabel">Username:</td><td class="tddata">${feature.username.value}</td></tr>
             <tr><td class="tdlabel">Organisation type:</td><td class="tddata">${feature.organisation_type.value}</td></tr>
             <tr><td class="tdlabel">Organisation name:</td><td class="tddata">${feature.organisation_name.value}</td></tr>

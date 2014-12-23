@@ -179,9 +179,9 @@
                   <tr><td><label for="id_latitude">Latitude:</label></td>
                     <td>
                       {{ coords_form.latitude }}
-                      <input type="text" name="lat_d" id="id_lat_d" style="display: none;" size="2"/>
-                      <input type="text" name="lat_m" id="id_lat_m" style="display: none;" size="2"/>
-                      <input type="text" name="lat_s" id="id_lat_s" style="display: none;" size="3"/>
+                      <input type="text" name="lat_d" id="id_lat_d" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lat_m" id="id_lat_m" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lat_s" id="id_lat_s" style="display: none;" size="3" onchange="coordsChanged();"/>
                       <input type="radio" name="hem_ns" id="id_hem_s" checked="checked" value="S"/>S
                       <input type="radio" name="hem_ns" id="id_hem_n" value="N"/>N
                     </td>
@@ -189,9 +189,9 @@
                   <tr><td><label for="id_longitude">Longitude:</label></td>
                     <td>
                       {{ coords_form.longitude }}
-                      <input type="text" name="lon_d" id="id_lon_d" style="display: none;" size="2"/>
-                      <input type="text" name="lon_m" id="id_lon_m" style="display: none;" size="2"/>
-                      <input type="text" name="lon_s" id="id_lon_s" style="display: none;" size="3"/>
+                      <input type="text" name="lon_d" id="id_lon_d" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lon_m" id="id_lon_m" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lon_s" id="id_lon_s" style="display: none;" size="3" onchange="coordsChanged();"/>
                       <input type="radio" name="hem_ew" id="id_hem_e" checked="checked" value="E"/>E
                       <input type="radio" name="hem_ew" id="id_hem_w" value="W"/>W
                     </td>
