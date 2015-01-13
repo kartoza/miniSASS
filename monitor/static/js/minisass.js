@@ -1350,7 +1350,7 @@ Ext.onReady(function() {
       projection:proj3857,
       displayProjection:proj4326,
       units:'m',
-      eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
+      eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd,'moveend':hideMarker}
     }
   );
 
@@ -1640,7 +1640,7 @@ Ext.onReady(function() {
       handler:function(){hideMarker();resetInputForm();inputWindow.hide();}
     }],
     listeners:{
-      'hide':function(win){hideMarker();},
+      'hide':function(){hideMarker();},
     },
   });
   editSite = (document.getElementById('id_edit_site').value === 'true');
@@ -1833,7 +1833,10 @@ Ext.onReady(function() {
     closeAction:'hide',
     modal:false,
     constrain:true,
-    items:[dataTabPanel]
+    items:[dataTabPanel],
+    listeners:{
+      hide:function(){hideMarker();}
+    },
   });
 
   // Define a window for filtering miniSASS observations
@@ -2039,7 +2042,10 @@ Ext.onReady(function() {
         tooltip:'Cancel this window and return to the map',
         handler:function(){siteDataSelectWindow.hide();}
       }
-    ]
+    ],
+    listeners:{
+      hide:function(){hideMarker();}
+    },
   });
 
   // Link the Site Data Map Click input button
