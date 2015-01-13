@@ -758,7 +758,7 @@ Ext.onReady(function() {
       projection:proj3857,
       displayProjection:proj4326,
       units:'m',
-      eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd}
+      eventListeners:{'changebaselayer':mapBaseLayerChanged,'zoomend':mapZoomEnd,'moveend':hideMarker}
     }
   );
 
@@ -1059,7 +1059,10 @@ Ext.onReady(function() {
     closeAction:'hide',
     modal:false,
     constrain:true,
-    items:[dataTabPanel]
+    items:[dataTabPanel],
+    listeners:{
+      hide:function(){hideMarker();}
+    },
   });
 
   // Define a window for filtering miniSASS observations
@@ -1265,7 +1268,10 @@ Ext.onReady(function() {
         tooltip:'Cancel this window and return to the map',
         handler:function(){siteDataSelectWindow.hide();}
       }
-    ]
+    ],
+    listeners:{
+      hide:function(){hideMarker();}
+    },
   });
 
   // Define a window redirecting users to the login or register views
