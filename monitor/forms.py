@@ -8,7 +8,7 @@ class SiteForm(ModelForm):
         model = Sites
         exclude = ('time_stamp')
         widgets = {
-            'description': Textarea(attrs={'cols':30, 'rows':4, 'placeholder':'e.g. downstream of industry'}),
+            'description': Textarea(attrs={'cols':30, 'rows':4, 'placeholder':'e.g. downstream of industry. Maximum of 255 characters allowed.'}),
             'river_cat': Select(attrs={'onchange':"updateInputForm('');"}),
         }
 
@@ -37,7 +37,7 @@ class ObservationForm(ModelForm):
         exclude = ('time_stamp', 'score')
         widgets = {
             'obs_date': DateInput(attrs={'placeholder':'yyyy-mm-dd'}),
-            'comment':  Textarea(attrs={'cols':30, 'rows':6, 'placeholder':'e.g. weather, impacts, alien plants, level of flow, etc.'}),
+            'comment':  Textarea(attrs={'cols':30, 'rows':6, 'placeholder':'e.g. weather, impacts, alien plants, level of flow, etc. Maximum of 255 characters allowed.'}),
             'diss_oxygen_unit' : Select(),
             'elec_cond_unit' : Select()
         }
