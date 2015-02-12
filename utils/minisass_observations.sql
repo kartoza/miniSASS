@@ -43,8 +43,7 @@ CREATE OR REPLACE VIEW minisass_observations AS
      LEFT JOIN minisass_registration_userprofile ON auth_user.id = minisass_registration_userprofile.user_id
      LEFT JOIN minisass_registration_lookup ON minisass_registration_userprofile.organisation_type_id = minisass_registration_lookup.id
   ORDER BY observations.obs_date;
-
-ALTER TABLE minisass_observations
-  OWNER TO minisass;
+  
+ALTER TABLE minisass_observations OWNER TO minisass;
 GRANT ALL ON TABLE minisass_observations TO minisass;
 GRANT SELECT ON TABLE minisass_observations TO web_read;
