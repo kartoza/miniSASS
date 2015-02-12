@@ -142,8 +142,6 @@ class Observations(models.Model, DirtyFieldsMixin):
     diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
     elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mS/m', blank=True)
-    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mSm', blank=True)
     objects = models.GeoManager()
 
     class Meta:
