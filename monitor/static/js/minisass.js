@@ -353,6 +353,12 @@ function canSubmit(){
   } else if (document.getElementById('id_description').value == '') {
     Ext.Msg.alert('Site Description Error', 'Please enter a site description');
     return false;
+  } else if (document.getElementById('id_description').value.length > 255) {
+    var lenDescription = document.getElementById('id_description').value.length;
+    Ext.Msg.alert('Site Description Error',
+                  'Your site description is too long (' +  lenDescription + ' characters).<br />'
+                + 'Please shorten it to 255 characters or less.');
+    return false;
   } else if ((document.getElementById('id_DMS').checked==true) && (convertDMStoDD()[0] == 0)) {
     Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
     return false;
@@ -371,6 +377,12 @@ function canSubmit(){
     return false;
   } else if (document.getElementById('id_obs_date').value == '') {
     Ext.Msg.alert('Date Error', 'Please enter a valid date');
+    return false;
+  } else if (document.getElementById('id_comment').value.length > 255) {
+    var lenComment = document.getElementById('id_comment').value.length;
+    Ext.Msg.alert('Comment Error',
+                  'Your comment is too long (' +  lenComment + ' characters).<br />'
+                + 'Please shorten it to 255 characters or less.');
     return false;
   } else if (flagCoordsChanged) {
     Ext.Msg.alert('Check coordinates', 'Please click the <b>Show on Map</b> button to check<br />if your latitude/longitude coordinates are correct');

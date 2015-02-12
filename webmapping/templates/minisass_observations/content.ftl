@@ -41,7 +41,7 @@ ${observation}#
             <tr><td class="section_header" colspan="2"><br />Measured Parameters</td></tr>
             <tr><td class="tdlabel">Water clarity:</td><td>${feature.water_clarity.value} cm</td></tr>
             <tr><td class="tdlabel">Water temperature:</label></td><td>${feature.water_temp.value}&deg;C</td></tr>
-            <tr><td class="tdlabel">pH:</label></td><td>${feature.ph.value}</td></tr>
+            <tr><td class="tdlabel">pH:</label></td><td>${feature.ph.value} pH units</td></tr>
             <tr><td class="tdlabel">Dissolved oxygen:</label></td><td>${feature.diss_oxygen.value} ${feature.diss_oxygen_unit.value}</td></tr>
             <tr><td class="tdlabel">Electrical conductivity:</label></td><td>${feature.elec_cond.value} ${feature.elec_cond_unit.value}</td></tr>
           </table>
