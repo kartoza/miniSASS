@@ -8,7 +8,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from cms.sitemaps import CMSSitemap
-from cmsplugin_blog.sitemaps import BlogSitemap
+#from cmsplugin_blog.sitemaps import BlogSitemap
 
 admin.autodiscover()
 
@@ -40,7 +40,7 @@ urlpatterns += i18n_patterns('',
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {
         'sitemaps': {
             'cmspages': CMSSitemap,
-            'blogentries': BlogSitemap
+            #'blogentries': BlogSitemap
         }
     }),
 
