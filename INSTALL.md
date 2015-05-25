@@ -32,8 +32,10 @@ Create the python virtual environment
 
 Install initial system-level dependencies
 
-    apt-get install python-dev libjpeg8-dev libpng12-dev libfreetype6-dev zlib1g-dev
+    apt-get install python-dev libjpeg8-dev libpng12-dev libfreetype6-dev zlib1g-dev libpq-dev libcurl3-dev
  (or libjpeg62-dev if you are on Ubuntu 12.04 or lower)
+
+ For production deployment also install: libapache2-mod-wsgi
 
 If you still get this in the next step when compiling PIL:
 
@@ -67,7 +69,7 @@ If you get an error like this:
     Cleaning up...
     No distributions at all found for PIL==1.7
     Storing debug log for failure in /home/ismailsunni/.pip/pip.log
-    
+
 Then follow the advice here: http://stackoverflow.com/questions/20060096/installing-pil-with-pip/26605247#26605247
 
 
@@ -97,21 +99,21 @@ You should have a running, but empty, Django-CMS website.
 If you get an error like this:
 
     django.contrib.gis.geos.error.GEOSException: Could not parse version info string "3.4.2-CAPI-1.8.2 r3921"
-    
+
 Then follow the advice here: http://stackoverflow.com/questions/18643998/geodjango-eosexception-error (except there's no .decode() in Django 1.4)
 
 If you get an error like this:
 
-    Failed to install index for monitor.ArchivedSites model: operator class 
+    Failed to install index for monitor.ArchivedSites model: operator class
     "gist_geometry_ops" does not exist for access method "gist"
-    
+
 Then follow the advice here: http://stackoverflow.com/a/15746383/1198772
 
 
 Setting up the spatial data layers
 ==================================
 
-Layers marked Optional form part of the Rivers and Catchments base map on minisass.org. You can load your own layers and publish them yourself using a web map server such as Geoserver or QGIS server, or fetch the basemap from the minisass Geoserver WMS. 
+Layers marked Optional form part of the Rivers and Catchments base map on minisass.org. You can load your own layers and publish them yourself using a web map server such as Geoserver or QGIS server, or fetch the basemap from the minisass Geoserver WMS.
 
 Rivers and dams (optional)
 ---------------
@@ -319,4 +321,8 @@ git pull
 Setting database permissions for Django
 =======================================
 
+Setting up styles for version control
 
+In the geoserver data directory (/home/minisass/geoserver_data/styles), as root or tomcat user:
+
+for link in countries.sld hca1.sld hca4.sld localmunicipalities2011.sld riverline.sld dams.sld hca2.sld hca5.sld minisass_observations.sld rivers.sld districtmunicipalities2011.sld hca3.sld province_new_saneighbours.sld schools.sld; do ln -fs /home/minisass/miniSASS/webmapping/styles/$link $link; done
