@@ -342,20 +342,20 @@ function filterApply(){
   if (username != '') cqlFilter += "username ILIKE '%" + username + "%' AND ";
   if (organisation_name != '') cqlFilter += "organisation_name ILIKE '%" + organisation_name + "%' AND ";
   if (healthClass =='Very Poor'){
-   cqlFilter += "((score > 0 AND score <= 4.3 AND river_cat = 'sandy')"
-              + " OR (score > 0 AND score <= 5.1 AND river_cat = 'rocky')) AND ";
+   cqlFilter += "((score > 0 AND score <= 4.8 AND river_cat = 'sandy')"
+              + " OR (score > 0 AND score <= 5.3 AND river_cat = 'rocky')) AND ";
   } else if (healthClass =='Poor'){
-   cqlFilter += "((score > 4.3 AND score <= 4.9 AND river_cat = 'sandy')"
-              + " OR (score > 5.1 AND score <= 6.1 AND river_cat = 'rocky')) AND ";
+   cqlFilter += "((score > 4.8 AND score <= 5.3 AND river_cat = 'sandy')"
+              + " OR (score > 5.3 AND score <= 5.6 AND river_cat = 'rocky')) AND ";
   } else if (healthClass =='Fair'){
-   cqlFilter += "((score > 4.9 AND score <= 5.8 AND river_cat = 'sandy')"
-              + " OR (score > 6.1 AND score <= 6.8 AND river_cat = 'rocky')) AND ";
+   cqlFilter += "((score > 5.3 AND score <= 5.8 AND river_cat = 'sandy')"
+              + " OR (score > 5.6 AND score <= 6.1 AND river_cat = 'rocky')) AND ";
   } else if (healthClass =='Good'){
-   cqlFilter += "((score > 5.8 AND score <= 6.9 AND river_cat = 'sandy')"
-              + " OR (score > 6.8 AND score <= 7.9 AND river_cat = 'rocky')) AND ";
+   cqlFilter += "((score > 5.8 AND score <= 6.8 AND river_cat = 'sandy')"
+              + " OR (score > 6.1 AND score <= 7.2 AND river_cat = 'rocky')) AND ";
   } else if (healthClass =='Natural'){
-   cqlFilter += "((score > 6.9 AND river_cat = 'sandy')"
-              + " OR (score > 7.9 AND river_cat = 'rocky')) AND ";
+   cqlFilter += "((score > 6.8 AND river_cat = 'sandy')"
+              + " OR (score > 7.2 AND river_cat = 'rocky')) AND ";
   }
   if (datestart != '') cqlFilter += "obs_date>='" + datestart + "' AND ";
   if (dateend != '') cqlFilter += "obs_date<='" + dateend + "' AND ";
@@ -374,7 +374,7 @@ function filterApply(){
   if (caddisflies != '') cqlFilter += "caddisflies=" + caddisflies + " AND ";
   if (true_flies != '') cqlFilter += "true_flies=" + true_flies + " AND ";
   if (snails != '') cqlFilter += "snails=" + snails + " AND ";
-console.log(cqlFilter);
+
   // Apply the filter
   if (cqlFilter != '') {
     cqlFilter = cqlFilter.replace(/ AND $/,'');
