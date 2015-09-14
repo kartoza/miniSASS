@@ -143,7 +143,7 @@ div.recent-observations {
 }
 .recent-observations h2 a:visited,
 .recent-observations h2 a:active,
-.recent-observations h2 a:hover, 
+.recent-observations h2 a:hover,
 .recent-observations h2 a {
     color: white;
     text-decoration: none;
@@ -188,7 +188,7 @@ div.minisass-rc-links {
 }
 
 div.blog-leader {
-    border-bottom: 1px dotted lightgray; 
+    border-bottom: 1px dotted lightgray;
     margin-bottom: 1.5em;
     margin-top: 0.5em;
 }
@@ -318,6 +318,8 @@ span.title {
     margin: 0 7px 7px 0;
     font-size: smaller;
 }
+
+/* registration links */
 div.registration_links {
     float: right;
     max-width: 120px; */
@@ -334,6 +336,12 @@ div.registration_links {
     margin: 5px 15px 0 0;
     font-size: smaller;
 }
+.social_media_links p{
+    float: right;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
+}
+
 
 /* bottom links */
 .minisass-bottom div {
@@ -346,7 +354,6 @@ div.registration_links {
 }
 .minisass-bottom a {
     color: white;
-    float: left;
     margin: 10px 40px 10px 0px;
 }
 .minisass-bottom a:hover,
@@ -386,4 +393,9 @@ div.minisass-page-content p {
 }
 div.cmsplugin_filer_folder_slidshow {
     height: 235px !important;
+}
+
+/* general styling */
+.float_right {
+    float:right;
 }

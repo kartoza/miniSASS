@@ -30,22 +30,41 @@
           <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
           title="miniSASS Logo" style="margin: 4px 0 4px 4px">
         </a>
-        <div class="registration_links">
-          <p>
-          {% if user.is_authenticated %}
-          Welcome back, {{ user.username }}<br />
-          <a href="{% url auth_logout %}">Logout</a> |
-          <a href="{% url auth_password_change %}">Change Password</a>
-          {% else %}
-            {% if "/map/" in request.path %}
-              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
-            {% else %}
-              <a href="{% url auth_login %}">Login</a> |
-            {% endif %}
-          <a href="{% url registration_register %}">Register</a><br />
-          <a href="{% url auth_password_reset %}">Reset Password</a>
-          {% endif %}
-          </p>
+        <div class="float_right">
+          <div class="registration_links">
+            <p>
+              {% if user.is_authenticated %}
+              Welcome back, {{ user.username }}<br />
+              <a href="{% url auth_logout %}">Logout</a> |
+              <a href="{% url auth_password_change %}">Change Password</a>
+              {% else %}
+                {% if "/map/" in request.path %}
+                  <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
+                {% else %}
+                  <a href="{% url auth_login %}">Login</a> |
+                {% endif %}
+              <a href="{% url registration_register %}">Register</a><br />
+              <a href="{% url auth_password_reset %}">Reset Password</a>
+              {% endif %}
+            </p>
+          </div>
+          <div class="social_media_links">
+            <p>
+              <br />
+              <a href="https://minisassblog.wordpress.com/" target="_blank">
+                <img src="{{STATIC_URL}}images/icon_wordpress.png" alt="WordPress Logo"
+                title="Read our Blog on WordPress" style="margin: 4px 0 4px 4px">
+              </a>
+              <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank">
+                <img src="{{STATIC_URL}}images/icon_youtube.png" alt="YouTube Logo"
+                title="Watch us on YouTube" style="margin: 4px 0 4px 4px">
+              </a>
+              <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank">
+                <img src="{{STATIC_URL}}images/icon_facebook.png" alt="Facebook Logo"
+                title="Follow us on Facebook" style="margin: 4px 0 4px 4px">
+              </a>
+            </p>
+          </div>
         </div>
         <div class="minisass-heading-space">
             {% placeholder "logo_content" %}
@@ -55,10 +74,9 @@
             {% show_menu 0 100 100 100 %}
           </ul>
         </div>
-
-      <div class="red-line">
+        <div class="red-line">
+        </div>
       </div>
-
       <div class="minisass-page">
 
           {% block "minisass_page_content" %}
@@ -98,16 +116,16 @@
 
           {% comment %}
           <a href="http://www.dwa.gov.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/dwa.png" 
-                 alt="Department of Water Affairs" 
+            <img src="{{ STATIC_URL }}images/dwa.png"
+                 alt="Department of Water Affairs"
                  title="Department of Water Affairs" /></a>
          <a href="http://www.wrc.org.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/wrc.png" 
+            <img src="{{ STATIC_URL }}images/wrc.png"
                  alt="Water Research Council"
                  title="Water Research Commission" /></a>
          <a href="http://www.groundtruth.co.za/" target="_blank">
             <img src="{{ STATIC_URL }}images/groundtruth.png"
-                 alt="GroundTruth" 
+                 alt="GroundTruth"
                  title="GroundTruth" /></a>
           {% endcomment %}
 
