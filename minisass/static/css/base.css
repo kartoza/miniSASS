@@ -58,6 +58,7 @@ h1, h2, h3, h4, h5, h6 {
     float: left;
     background: white;
     font-size: 0.8em;
+    margin-top: 10px;
     margin-left: 5px;
 }
 .minisass-right-column {
@@ -82,8 +83,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .minisass-heading-space {
     float: left;
-    height: 127px;
-    width: 485px;
+    height: 100px;
+    width: 576px;
     margin: 0 0 0 10px;
 }
 .red-line {
@@ -92,6 +93,14 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     background: #3168b8;
     border: none;
+}
+
+/* news ticker styles */
+.news-ticker {
+    float: left;
+    width: 860px;
+    border: 1px solid #aaaaaa;
+    margin: 10px 10px 10px 17px;
 }
 
 /* breadcrumb styling */
@@ -322,7 +331,7 @@ span.title {
 /* registration links */
 div.registration_links {
     float: right;
-    max-width: 120px; */
+    max-width: 200px; */
     color: #3168b8;
 }
 .registration_links a:hover,

@@ -611,6 +611,62 @@
        y1="771.65118"
        x2="414.48059"
        y2="730.37915" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5854"
+       id="radialGradient6151"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.9111235,-0.32203278,0.17298719,0.9661116,-18.13091,111.58568)"
+       cx="300.62146"
+       cy="363.36734"
+       fx="300.62146"
+       fy="363.36734"
+       r="67.912643" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient5854">
+      <stop
+         style="stop-color:#a7afc8;stop-opacity:1;"
+         offset="0"
+         id="stop5856" />
+      <stop
+         style="stop-color:#a7afc8;stop-opacity:0;"
+         offset="1"
+         id="stop5858" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5854"
+       id="radialGradient6135"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.9111235,-0.32203278,0.17298719,0.9661116,-184.13091,111.58568)"
+       cx="300.62146"
+       cy="363.36734"
+       fx="300.62146"
+       fy="363.36734"
+       r="67.912643" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5854"
+       id="radialGradient6119"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.9111235,-0.32203278,0.17298719,0.9661116,-344.13091,111.58568)"
+       cx="300.62146"
+       cy="363.36734"
+       fx="300.62146"
+       fy="363.36734"
+       r="67.912643" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5854"
+       id="radialGradient5860"
+       cx="300.62146"
+       cy="363.36734"
+       fx="300.62146"
+       fy="363.36734"
+       r="67.912643"
+       gradientTransform="matrix(1.9111235,-0.32203278,0.17298719,0.9661116,-504.13091,111.58568)"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -619,9 +675,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.144664"
-     inkscape:cx="177.67387"
-     inkscape:cy="834.19222"
+     inkscape:zoom="0.78965209"
+     inkscape:cx="372.04724"
+     inkscape:cy="526.18109"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -648,7 +704,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -5077,6 +5133,174 @@
          d="m 225.1364,143.84023 0,2.24219 -8.65235,0 0,3.22265 8.65235,0 0,2.24219 6.67383,-3.85352 -6.67383,-3.85351 z"
          id="path5660"
          inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="translate(-27.690021,639.58317)"
+       id="g7929"
+       inkscape:export-filename="/home/frank/Desktop/button_explore"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(1.0007937,0,0,1.0012545,-0.06954284,-0.48703695)"
+         id="g6165">
+        <rect
+           y="308.24377"
+           x="87.623955"
+           height="80"
+           width="126"
+           id="rect4149"
+           style="opacity:1;fill:url(#radialGradient5860);fill-opacity:1;stroke:#000000;stroke-width:0.89907932;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
+           ry="8"
+           rx="8" />
+        <rect
+           style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4147"
+           width="116"
+           height="70"
+           x="92.623955"
+           y="313.24377"
+           ry="8"
+           rx="8" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot5828"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           transform="translate(-16.864937,233.17842)"><flowRegion
+             id="flowRegion5830"><rect
+               id="rect5832"
+               width="208.43819"
+               height="139.23019"
+               x="63.508511"
+               y="93.220825"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff" /></flowRegion><flowPara
+             id="flowPara5836">Explore</flowPara><flowPara
+             id="flowPara5838">the map</flowPara></flowRoot>      </g>
+    </g>
+    <g
+       transform="translate(-27.690021,639.58317)"
+       id="g7919"
+       inkscape:export-filename="/home/frank/Desktop/button_minisass"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(1.0007937,0,0,1.0012545,-0.19652699,-0.48703695)"
+         id="g6174">
+        <rect
+           rx="8"
+           ry="8"
+           style="opacity:1;fill:url(#radialGradient6119);fill-opacity:1;stroke:#000000;stroke-width:0.89907932;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
+           id="rect6105"
+           width="126"
+           height="80"
+           x="247.62395"
+           y="308.24377" />
+        <rect
+           rx="8"
+           ry="8"
+           y="313.24377"
+           x="252.62395"
+           height="70"
+           width="116"
+           id="rect6107"
+           style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <flowRoot
+           transform="translate(143.13506,233.17842)"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           id="flowRoot6109"
+           xml:space="preserve"><flowRegion
+             id="flowRegion6111"><rect
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff"
+               y="93.220825"
+               x="63.508511"
+               height="139.23019"
+               width="208.43819"
+               id="rect6113" /></flowRegion><flowPara
+             id="flowPara6153">How to do</flowPara><flowPara
+             id="flowPara6155">miniSASS</flowPara></flowRoot>      </g>
+    </g>
+    <g
+       transform="translate(-27.690021,639.58317)"
+       id="g7909"
+       inkscape:export-filename="/home/frank/Desktop/button_submit"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(1.0007937,0,0,1.0012545,-0.32351116,-0.48703695)"
+         id="g6183">
+        <rect
+           y="308.24377"
+           x="407.62396"
+           height="80"
+           width="126"
+           id="rect6121"
+           style="opacity:1;fill:url(#radialGradient6135);fill-opacity:1;stroke:#000000;stroke-width:0.89907932;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
+           ry="8"
+           rx="8" />
+        <rect
+           style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect6123"
+           width="116"
+           height="70"
+           x="412.62396"
+           y="313.24377"
+           ry="8"
+           rx="8" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot6125"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           transform="translate(303.13506,233.17842)"><flowRegion
+             id="flowRegion6127"><rect
+               id="rect6129"
+               width="208.43819"
+               height="139.23019"
+               x="63.508511"
+               y="93.220825"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff" /></flowRegion><flowPara
+             id="flowPara6157">Submit</flowPara><flowPara
+             id="flowPara6159">results</flowPara></flowRoot>      </g>
+    </g>
+    <g
+       transform="translate(-27.690021,639.58317)"
+       id="g7899"
+       inkscape:export-filename="/home/frank/Desktop/button_download"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(1.0007937,0,0,1.0012545,-0.45525722,-0.48703695)"
+         id="g6192">
+        <rect
+           rx="8"
+           ry="8"
+           style="opacity:1;fill:url(#radialGradient6151);fill-opacity:1;stroke:#000000;stroke-width:0.89907932;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
+           id="rect6137"
+           width="126"
+           height="80"
+           x="573.62396"
+           y="308.24377" />
+        <rect
+           rx="8"
+           ry="8"
+           y="313.24377"
+           x="578.62396"
+           height="70"
+           width="116"
+           id="rect6139"
+           style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <flowRoot
+           transform="translate(469.13506,233.17842)"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           id="flowRoot6141"
+           xml:space="preserve"><flowRegion
+             id="flowRegion6143"><rect
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff"
+               y="93.220825"
+               x="63.508511"
+               height="139.23019"
+               width="208.43819"
+               id="rect6145" /></flowRegion><flowPara
+             id="flowPara6161">Download</flowPara><flowPara
+             id="flowPara6163">here</flowPara></flowRoot>      </g>
     </g>
   </g>
 </svg>
