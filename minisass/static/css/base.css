@@ -89,7 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 .minisass-button-links {
     float: left;
     margin: 0;
-    padding: 5px 36px 5px 36px;
+    padding: 5px 35px 5px 35px;
 }
 
 .minisass-button-links img {
@@ -141,12 +141,6 @@ div.registration-links {
     margin: 0;
     padding: 8px 0px 0px 0px;
 }
-
-#myslidemenu .minisass-menus {
-    margin: 0;
-    padding: 0;
-}
-
 
 .blue-line {
     height: 12px;
