@@ -34,18 +34,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 15px 0;
     overflow: hidden;
 }
-.minisass-heading {
-    width: 100%;
-    float: left;
-    background: white;
-    /* background: #eef; */
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-topright: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
 
 .minisass-page {
     width: 100%;
@@ -61,10 +49,119 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 10px;
     margin-left: 5px;
 }
+
+
+/* Styling for the header elements. These are placed in divs with the
+ * following classes/IDs:
+ *   minisass-heading (the container for the header elements)
+ *   minisass-logo (container for the miniSASS logo)
+ *   minisass-button-links (container for the link buttons)
+ *   registration-links (container for login, logout, etc.)
+ *   social-media-links (container for social media links)
+ *   news-ticker (container for scrolling news ticker)
+ *   myslidemenu (container for the menu)
+ */
+
+.minisass-heading {
+    width: 100%;
+    float: left;
+    background: white;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.minisass-logo {
+    float: left;
+    margin: 0;
+    padding: 4px 36px 4px 36px;
+}
+
+.minisass-logo img {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.minisass-button-links {
+    float: left;
+    margin: 0;
+    padding: 5px 36px 5px 36px;
+}
+
+.minisass-button-links img {
+    border: 0;
+    padding: 0;
+    margin: 0px 4px 0px 4px;
+}
+
+div.registration-links {
+    width: 200px;
+}
+
+.registration-links a:hover,
+.registration-links a:visited,
+.registration-links a:active,
+.registration-links a {
+    color: #3168b8;
+}
+
+.registration-links p{
+    float: right;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
+}
+
+.social-media-links {
+    width: 200px;
+}
+
+.social-media-links p{
+    float: right;
+    margin: 15px 10px 0 0;
+}
+
+.social-media-links a{
+    text-decoration: none;
+}
+
+.news-ticker {
+    float: left;
+    height: 30px;
+    width: 810px;
+    border: 1px solid #bbbbbb;
+    margin: 5px 10px 5px 0px;
+}
+
+#myslidemenu {
+    float: left;
+    margin: 0;
+    padding: 8px 0px 0px 0px;
+}
+
+#myslidemenu .minisass-menus {
+    margin: 0;
+    padding: 0;
+}
+
+
+.blue-line {
+    height: 12px;
+    float: left;
+    width: 100%;
+    background: #3168b8;
+    border: none;
+}
+/* End of styling for the header elements */
+
 .minisass-right-column {
     width: 220px;
     float: left;
 }
+
 .minisass-bottom {
     clear: both;
     width: 100%;
@@ -72,35 +169,6 @@ h1, h2, h3, h4, h5, h6 {
     background: #3168b8;
     color: white;
     font-size: smaller;
-}
-
-/* page heading styles */
-.minisass-heading img {
-    float: left;
-    border: 0;
-    margin: 17px 10px 0 7px;
-    padding: 0;
-}
-.minisass-heading-space {
-    float: left;
-    height: 100px;
-    width: 576px;
-    margin: 0 0 0 10px;
-}
-.red-line {
-    height: 12px;
-    float: left;
-    width: 100%;
-    background: #3168b8;
-    border: none;
-}
-
-/* news ticker styles */
-.news-ticker {
-    float: left;
-    width: 860px;
-    border: 1px solid #aaaaaa;
-    margin: 10px 10px 10px 17px;
 }
 
 /* breadcrumb styling */
@@ -327,30 +395,6 @@ span.title {
     margin: 0 7px 7px 0;
     font-size: smaller;
 }
-
-/* registration links */
-div.registration_links {
-    float: right;
-    max-width: 200px; */
-    color: #3168b8;
-}
-.registration_links a:hover,
-.registration_links a:visited,
-.registration_links a:active,
-.registration_links a {
-    color: #3168b8;
-}
-.registration_links p{
-    float: right;
-    margin: 5px 15px 0 0;
-    font-size: smaller;
-}
-.social_media_links p{
-    float: right;
-    margin: 5px 15px 0 0;
-    font-size: smaller;
-}
-
 
 /* bottom links */
 .minisass-bottom div {
