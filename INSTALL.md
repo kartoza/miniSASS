@@ -15,6 +15,13 @@ or if you have postgresql >= 9.1 and PostGIS >= 2.0 then
     createdb minisass-cms
     psql -c 'CREATE EXTENSION postgis;' minisass-cms
 
+Django 1.4 is not 100% compatible with PostGIS 2.
+
+One change which might resolve errors like this:
+```Exception AttributeError: "'NoneType' object has no attribute 'finishGEOS_r'```
+is setting this in postgresql.conf:
+```standard_conforming_strings = off```
+
 
 
 Create the project directory
@@ -32,10 +39,12 @@ Create the python virtual environment
 
 Install initial system-level dependencies
 
-    apt-get install python-dev libjpeg8-dev libpng12-dev libfreetype6-dev zlib1g-dev libpq-dev libcurl3-dev
+    apt-get install python-dev libjpeg-dev libpng12-dev libfreetype6-dev zlib1g-dev libpq-dev libcurl3-dev
  (or libjpeg62-dev if you are on Ubuntu 12.04 or lower)
 
  For production deployment also install: libapache2-mod-wsgi
+
+ And if you configure Django to use a local SMTP server then also install postfix.
 
 If you still get this in the next step when compiling PIL:
 
