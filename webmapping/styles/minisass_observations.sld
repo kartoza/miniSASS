@@ -22,7 +22,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -51,7 +51,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -81,7 +81,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -112,7 +112,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -144,12 +144,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -181,12 +181,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -223,7 +223,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -260,7 +260,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -292,12 +292,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -329,12 +329,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -366,7 +366,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -403,7 +403,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -440,12 +440,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -477,12 +477,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -514,12 +514,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -551,12 +551,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -587,7 +587,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -618,7 +618,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -649,7 +649,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -680,7 +680,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -760,7 +760,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -790,7 +790,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -821,7 +821,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -853,7 +853,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -886,12 +886,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -924,12 +924,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -967,7 +967,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1005,7 +1005,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1038,12 +1038,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1076,12 +1076,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1114,7 +1114,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -1152,7 +1152,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -1190,12 +1190,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1228,12 +1228,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1266,12 +1266,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1304,12 +1304,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1341,7 +1341,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1373,7 +1373,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1405,7 +1405,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1437,7 +1437,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1520,7 +1520,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -1550,7 +1550,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -1581,7 +1581,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1613,7 +1613,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1646,12 +1646,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1684,12 +1684,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1727,7 +1727,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1765,7 +1765,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1798,12 +1798,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1836,12 +1836,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1874,7 +1874,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -1912,7 +1912,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -1950,12 +1950,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -1988,12 +1988,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2026,12 +2026,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2064,12 +2064,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2101,7 +2101,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2133,7 +2133,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2165,7 +2165,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2197,7 +2197,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2280,7 +2280,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -2310,7 +2310,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -2341,7 +2341,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2373,7 +2373,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2406,12 +2406,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2444,12 +2444,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2487,7 +2487,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2525,7 +2525,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2558,12 +2558,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2596,12 +2596,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2634,7 +2634,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -2672,7 +2672,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -2710,12 +2710,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2748,12 +2748,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2786,12 +2786,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2824,12 +2824,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2861,7 +2861,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2893,7 +2893,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2925,7 +2925,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -2957,7 +2957,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3040,7 +3040,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -3070,7 +3070,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -3101,7 +3101,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3133,7 +3133,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3166,12 +3166,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3204,12 +3204,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3247,7 +3247,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3285,7 +3285,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3318,12 +3318,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3356,12 +3356,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3394,7 +3394,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -3432,7 +3432,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -3470,12 +3470,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3508,12 +3508,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3546,12 +3546,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3584,12 +3584,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3621,7 +3621,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3653,7 +3653,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3685,7 +3685,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3717,7 +3717,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3800,7 +3800,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -3830,7 +3830,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -3861,7 +3861,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3893,7 +3893,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3926,12 +3926,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -3964,12 +3964,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4007,7 +4007,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4045,7 +4045,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4078,12 +4078,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4116,12 +4116,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4154,7 +4154,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -4192,7 +4192,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -4230,12 +4230,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4268,12 +4268,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4306,12 +4306,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4344,12 +4344,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4381,7 +4381,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4413,7 +4413,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4445,7 +4445,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4477,7 +4477,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4560,7 +4560,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -4590,7 +4590,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -4621,7 +4621,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4653,7 +4653,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4686,12 +4686,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4724,12 +4724,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4767,7 +4767,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4805,7 +4805,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4838,12 +4838,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4876,12 +4876,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -4914,7 +4914,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -4952,7 +4952,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -4990,12 +4990,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5028,12 +5028,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5066,12 +5066,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5104,12 +5104,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5141,7 +5141,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5173,7 +5173,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5205,7 +5205,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5237,7 +5237,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5320,7 +5320,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -5350,7 +5350,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -5381,7 +5381,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5413,7 +5413,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5446,12 +5446,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5484,12 +5484,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5527,7 +5527,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5565,7 +5565,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5598,12 +5598,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5636,12 +5636,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5674,7 +5674,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -5712,7 +5712,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -5750,12 +5750,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5788,12 +5788,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5826,12 +5826,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5864,12 +5864,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5901,7 +5901,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5933,7 +5933,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5965,7 +5965,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -5997,7 +5997,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6080,7 +6080,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -6110,7 +6110,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -6141,7 +6141,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6173,7 +6173,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6206,12 +6206,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6244,12 +6244,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6287,7 +6287,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6325,7 +6325,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6358,12 +6358,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6396,12 +6396,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6434,7 +6434,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -6472,7 +6472,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -6510,12 +6510,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6548,12 +6548,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6586,12 +6586,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6624,12 +6624,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6661,7 +6661,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6693,7 +6693,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6725,7 +6725,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6757,7 +6757,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6840,7 +6840,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -6870,7 +6870,7 @@
               </ogc:PropertyIsEqualTo>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>score</ogc:PropertyName>
-                <ogc:Literal>6.9</ogc:Literal>
+                <ogc:Literal>6.8</ogc:Literal>
               </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsEqualTo>
                 <ogc:PropertyName>flag</ogc:PropertyName>
@@ -6901,7 +6901,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6933,7 +6933,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsGreaterThan>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsGreaterThan>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -6966,12 +6966,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7004,12 +7004,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.8</ogc:Literal>
+                    <ogc:Literal>6.1</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>7.9</ogc:Literal>
+                  <ogc:Literal>7.2</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7047,7 +7047,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7085,7 +7085,7 @@
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.9</ogc:Literal>
+                  <ogc:Literal>6.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7118,12 +7118,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7156,12 +7156,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>6.1</ogc:Literal>
+                    <ogc:Literal>5.6</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.8</ogc:Literal>
+                  <ogc:Literal>6.1</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7194,7 +7194,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -7232,7 +7232,7 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.9</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -7270,12 +7270,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7308,12 +7308,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>5.1</ogc:Literal>
+                    <ogc:Literal>5.3</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>6.1</ogc:Literal>
+                  <ogc:Literal>5.6</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7346,12 +7346,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7384,12 +7384,12 @@
                   </ogc:PropertyIsEqualTo>
                   <ogc:PropertyIsGreaterThan>
                     <ogc:PropertyName>score</ogc:PropertyName>
-                    <ogc:Literal>4.3</ogc:Literal>
+                    <ogc:Literal>4.8</ogc:Literal>
                   </ogc:PropertyIsGreaterThan>
                 </ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.9</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7421,7 +7421,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7453,7 +7453,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>5.1</ogc:Literal>
+                  <ogc:Literal>5.3</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7485,7 +7485,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
@@ -7517,7 +7517,7 @@
                 </ogc:PropertyIsEqualTo>
                 <ogc:PropertyIsLessThanOrEqualTo>
                   <ogc:PropertyName>score</ogc:PropertyName>
-                  <ogc:Literal>4.3</ogc:Literal>
+                  <ogc:Literal>4.8</ogc:Literal>
                 </ogc:PropertyIsLessThanOrEqualTo>
               </ogc:And>
               <ogc:PropertyIsEqualTo>
