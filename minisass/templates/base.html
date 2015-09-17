@@ -96,16 +96,8 @@
           {% endblock %}
 
       </div>
-
       {% block minisass_bottom %}
       <div class="minisass-bottom">
-          <div>
-              {% block bottom_links %}
-                {% placeholder "footer_content" or %}
-                  {% show_placeholder "footer_content" "footer_stuff" %}
-                {% endplaceholder %}
-              {% endblock %}
-          </div>
           <p>
           &copy; {% now "Y" %} Water Research Commission. This is an open source project. Get the source code at <a href="https://github.com/sokolic/miniSASS" target="_blank">Github</a>
           </p>
@@ -116,23 +108,8 @@
             {% show_placeholder "sponsor_links" "footer_stuff" %}
           {% endplaceholder %}
       </div>
-
-          {% comment %}
-          <a href="http://www.dwa.gov.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/dwa.png"
-                 alt="Department of Water Affairs"
-                 title="Department of Water Affairs" /></a>
-         <a href="http://www.wrc.org.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/wrc.png"
-                 alt="Water Research Council"
-                 title="Water Research Commission" /></a>
-         <a href="http://www.groundtruth.co.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/groundtruth.png"
-                 alt="GroundTruth"
-                 title="GroundTruth" /></a>
-          {% endcomment %}
-
-    </div></div>
+    </div>
+    </div>
 
     {% include "google_analytics.html" %}
   </body>
