@@ -77,7 +77,7 @@ h1, h2, h3, h4, h5, h6 {
 .minisass-logo {
     float: left;
     margin: 0;
-    padding: 4px 36px 4px 36px;
+    padding: 4px 30px 4px 30px;
 }
 
 .minisass-logo img {
@@ -89,7 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 .minisass-button-links {
     float: left;
     margin: 0;
-    padding: 5px 35px 5px 35px;
+    padding: 25px 24px 25px 24px;
 }
 
 .minisass-button-links img {
@@ -121,19 +121,24 @@ div.registration-links {
 
 .social-media-links p{
     float: right;
-    margin: 15px 10px 0 0;
+    margin: 10px 10px 0 0;
+    text-align: right;
 }
 
 .social-media-links a{
     text-decoration: none;
 }
 
+.social-media-links img{
+    margin: 0px 0px 0px 4px;
+}
+
 .news-ticker {
     float: left;
     height: 30px;
-    width: 810px;
+    width: 790px;
     border: 1px solid #bbbbbb;
-    margin: 5px 10px 5px 0px;
+    margin: 5px 10px 10px 0px;
 }
 
 #myslidemenu {
