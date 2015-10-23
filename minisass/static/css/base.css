@@ -55,6 +55,7 @@ h1, h2, h3, h4, h5, h6 {
  * following classes/IDs:
  *   minisass-heading (the container for the header elements)
  *   minisass-logo (container for the miniSASS logo)
+ *   minisass-text (container for the miniSASS text)
  *   minisass-button-links (container for the link buttons)
  *   registration-links (container for login, logout, etc.)
  *   social-media-links (container for social media links)
@@ -86,10 +87,15 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 }
 
-.minisass-button-links {
-    float: left;
+.minisass-text {
     margin: 0;
-    padding: 25px 24px 25px 24px;
+    padding: 4px;
+    text-align:center;
+}
+
+.minisass-button-links {
+    margin: 0;
+    padding: 2px 24px 2px 24px;
 }
 
 .minisass-button-links img {
@@ -138,7 +144,7 @@ div.registration-links {
     height: 30px;
     width: 790px;
     border: 1px solid #bbbbbb;
-    margin: 5px 10px 10px 0px;
+    margin: 5px 10px 5px 0px;
 }
 
 #myslidemenu {
@@ -448,6 +454,10 @@ div.cmsplugin_filer_folder_slidshow {
 }
 
 /* general styling */
+.float_left {
+    float:left;
+}
+
 .float_right {
     float:right;
 }
