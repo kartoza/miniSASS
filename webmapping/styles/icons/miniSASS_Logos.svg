@@ -676,8 +676,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="419.48709"
-     inkscape:cy="526.18109"
+     inkscape:cx="405.55099"
+     inkscape:cy="510.81141"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -5303,7 +5303,10 @@
              id="flowPara6163">here</flowPara></flowRoot>      </g>
     </g>
     <g
-       id="g4989">
+       id="g4989"
+       inkscape:export-filename="/home/frank/miniSASS/minisass/minisass/static/images/miniSASS_text.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -5319,22 +5322,22 @@
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="/home/frank/miniSASS/minisass/minisass/static/images/miniSASS_text.png"
-         style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#3068bd;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#2f3a80;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
          id="flowRoot4136"
          xml:space="preserve"
          transform="translate(400.26562,278.08324)"><flowRegion
            id="flowRegion4138"><rect
-             style="fill:#3068bd;fill-opacity:1"
+             style="fill:#2f3a80;fill-opacity:1;"
              y="276.49277"
              x="-135.91769"
              height="100.89703"
              width="408.85007"
              id="rect4140" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Cooper Black';-inkscape-font-specification:'Cooper Black, ';fill:#3068bd;fill-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Cooper Black';-inkscape-font-specification:'Cooper Black, ';fill:#2f3a80;fill-opacity:1;"
            id="flowPara4142"><flowSpan
              id="flowSpan4987"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Cooper Becker Black Outl Cond';-inkscape-font-specification:'Cooper Becker Black Outl Cond'">mini</flowSpan><flowSpan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Cooper Becker Black Outl Cond';-inkscape-font-specification:'Cooper Becker Black Outl Cond';fill:#2f3a80;fill-opacity:1;">mini</flowSpan><flowSpan
              id="flowSpan4144"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#3068bd;fill-opacity:1">SASS</flowSpan></flowPara></flowRoot>    </g>
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:80px;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#2f3a80;fill-opacity:1;">SASS</flowSpan></flowPara></flowRoot>    </g>
   </g>
 </svg>
