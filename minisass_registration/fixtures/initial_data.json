@@ -76,7 +76,7 @@
       "active": true,
       "container": 8,
       "description": "South Africa",
-      "rank": 0
+      "rank": 396
     }
   },
   {
@@ -86,7 +86,7 @@
       "active": true,
       "container": 8,
       "description": "Namibia",
-      "rank": 0
+      "rank": 5
     }
   },
   {
@@ -96,7 +96,7 @@
       "active": true,
       "container": 8,
       "description": "Lesotho",
-      "rank": 0
+      "rank": 8
     }
   },
   {
@@ -106,7 +106,7 @@
       "active": true,
       "container": 8,
       "description": "Swaziland",
-      "rank": 0
+      "rank": 3
     }
   },
   {
@@ -116,7 +116,7 @@
       "active": true,
       "container": 8,
       "description": "Botswana",
-      "rank": 0
+      "rank": 1
     }
   },
   {
@@ -126,7 +126,7 @@
       "active": true,
       "container": 8,
       "description": "Zimbabwe",
-      "rank": 0
+      "rank": 7
     }
   },
   {
@@ -136,7 +136,7 @@
       "active": true,
       "container": 8,
       "description": "Mozambique",
-      "rank": 0
+      "rank": 1
     }
   },
   {
@@ -156,7 +156,7 @@
       "active": true,
       "container": 8,
       "description": "Malawi",
-      "rank": 0
+      "rank": 2
     }
   },
   {
@@ -1676,7 +1676,7 @@
       "active": true,
       "container": 8,
       "description": "Tanzania",
-      "rank": 0
+      "rank": 2
     }
   },
   {
@@ -1796,7 +1796,587 @@
       "active": true,
       "container": 8,
       "description": "Zambia",
+      "rank": 2
+    }
+  },
+  {
+    "pk": 182,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Democratic Republic of the Congo",
+      "rank": 3
+    }
+  },
+  {
+    "pk": 183,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Iceland",
       "rank": 0
+    }
+  },
+  {
+    "pk": 184,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Kitts and Nevis",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 185,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Cayman Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 186,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Lucia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 187,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Martin",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 188,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Madagascar",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 189,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Marshall Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 190,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Macedonia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 191,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Mali",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 192,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Macao",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 193,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Northern Mariana Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 194,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Martinique",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 195,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Mauritania",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 196,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Montserrat",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 197,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Malta",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 198,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Mauritius",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 199,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Maldives",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 200,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "New Caledonia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 201,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Norfolk Island",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 202,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Nicaragua",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 203,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Nauru",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 204,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Niue",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 205,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Panama",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 206,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "French Polynesia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 207,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Pierre and Miquelon",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 208,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Pitcairn Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 209,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Puerto Rico",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 210,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Réunion",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 211,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saudi Arabia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 212,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Solomon Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 213,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Seychelles",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 214,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Helena",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 215,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Svalbard and Jan Mayen",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 216,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Slovakia",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 217,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Sierra Leone",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 218,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "San Marino",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 219,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Senegal",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 220,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "South Sudan",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 221,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "São Tomé and Príncipe",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 222,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "El Salvador",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 223,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Sint Maarten",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 224,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Turks and Caicos Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 225,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Chad",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 226,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "French Southern Territories",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 227,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Togo",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 228,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Tokelau",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 229,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Tonga",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 230,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Trinidad and Tobago",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 231,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Tuvalu",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 232,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "U.S. Minor Outlying Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 233,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Vatican City",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 234,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Saint Vincent and the Grenadines",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 235,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "British Virgin Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 236,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "U.S. Virgin Islands",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 237,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Vanuatu",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 238,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Wallis and Futuna",
+      "rank": 0
+    }
+  },
+  {
+    "pk": 239,
+    "model": "minisass_registration.lookup",
+    "fields": {
+      "active": true,
+      "container": 8,
+      "description": "Other",
+      "rank": 17
     }
   }
 ]
