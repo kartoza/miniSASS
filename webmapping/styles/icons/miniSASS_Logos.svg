@@ -616,7 +616,7 @@
        xlink:href="#linearGradient5854"
        id="radialGradient6151"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.9111235,-0.32203278,0.17298719,0.9661116,-18.13091,111.58568)"
+       gradientTransform="matrix(1.9126404,-0.32243677,0.17312449,0.96732359,-46.290579,750.82179)"
        cx="300.62146"
        cy="363.36734"
        fx="300.62146"
@@ -677,7 +677,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1"
      inkscape:cx="405.55099"
-     inkscape:cy="510.81141"
+     inkscape:cy="270.81141"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -5261,47 +5261,42 @@
              id="flowPara6159">results</flowPara></flowRoot>      </g>
     </g>
     <g
-       transform="translate(-27.690021,639.58317)"
-       id="g7899"
-       inkscape:export-filename="/home/frank/Desktop/button_download"
+       id="g5005"
+       inkscape:export-filename="/home/frank/miniSASS/minisass/minisass/static/images/button-download.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
-      <g
-         transform="matrix(1.0007937,0,0,1.0012545,-0.45525722,-0.48703695)"
-         id="g6192">
-        <rect
-           rx="8"
-           ry="8"
-           style="opacity:1;fill:url(#radialGradient6151);fill-opacity:1;stroke:#000000;stroke-width:0.89907932;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
-           id="rect6137"
-           width="126"
-           height="80"
-           x="573.62396"
-           y="308.24377" />
-        <rect
-           rx="8"
-           ry="8"
-           y="313.24377"
-           x="578.62396"
-           height="70"
-           width="116"
-           id="rect6139"
-           style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <flowRoot
-           transform="translate(469.13506,233.17842)"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           id="flowRoot6141"
-           xml:space="preserve"><flowRegion
-             id="flowRegion6143"><rect
-               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff"
-               y="93.220825"
-               x="63.508511"
-               height="139.23019"
-               width="208.43819"
-               id="rect6145" /></flowRegion><flowPara
-             id="flowPara6161">Download</flowPara><flowPara
-             id="flowPara6163">here</flowPara></flowRoot>      </g>
-    </g>
+      <rect
+         y="947.72662"
+         x="545.93396"
+         height="80.100357"
+         width="126.10001"
+         id="rect6137"
+         style="opacity:1;fill:url(#radialGradient6151);fill-opacity:1;stroke:#000000;stroke-width:0.90000004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.13836478"
+         ry="8.0100365"
+         rx="8.0063496" />
+      <rect
+         style="opacity:1;fill:#2d3361;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect6139"
+         width="116.09207"
+         height="70.087814"
+         x="550.93793"
+         y="952.73285"
+         ry="8.0100365"
+         rx="8.0063496" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot6141"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(1.0007937,0,0,1.0012545,441.36213,872.56707)"><flowRegion
+           id="flowRegion6143"><rect
+             id="rect6145"
+             width="208.43819"
+             height="139.23019"
+             x="63.508511"
+             y="93.220825"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.25px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff" /></flowRegion><flowPara
+           id="flowPara6161">Download</flowPara><flowPara
+           id="flowPara6163">resources</flowPara></flowRoot>    </g>
     <g
        id="g4989"
        inkscape:export-filename="/home/frank/miniSASS/minisass/minisass/static/images/miniSASS_text.png"
