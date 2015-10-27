@@ -76,7 +76,7 @@
       "active": true,
       "container": 8,
       "description": "South Africa",
-      "rank": 396
+      "rank": 1
     }
   },
   {
@@ -96,7 +96,7 @@
       "active": true,
       "container": 8,
       "description": "Lesotho",
-      "rank": 8
+      "rank": 3
     }
   },
   {
@@ -106,7 +106,7 @@
       "active": true,
       "container": 8,
       "description": "Swaziland",
-      "rank": 3
+      "rank": 6
     }
   },
   {
@@ -116,7 +116,7 @@
       "active": true,
       "container": 8,
       "description": "Botswana",
-      "rank": 1
+      "rank": 12
     }
   },
   {
@@ -126,7 +126,7 @@
       "active": true,
       "container": 8,
       "description": "Zimbabwe",
-      "rank": 7
+      "rank": 4
     }
   },
   {
@@ -136,7 +136,7 @@
       "active": true,
       "container": 8,
       "description": "Mozambique",
-      "rank": 1
+      "rank": 11
     }
   },
   {
@@ -156,7 +156,7 @@
       "active": true,
       "container": 8,
       "description": "Malawi",
-      "rank": 2
+      "rank": 9
     }
   },
   {
@@ -1676,7 +1676,7 @@
       "active": true,
       "container": 8,
       "description": "Tanzania",
-      "rank": 2
+      "rank": 8
     }
   },
   {
@@ -1796,7 +1796,7 @@
       "active": true,
       "container": 8,
       "description": "Zambia",
-      "rank": 2
+      "rank": 10
     }
   },
   {
@@ -1806,7 +1806,7 @@
       "active": true,
       "container": 8,
       "description": "Democratic Republic of the Congo",
-      "rank": 3
+      "rank": 7
     }
   },
   {
@@ -2376,7 +2376,7 @@
       "active": true,
       "container": 8,
       "description": "Other",
-      "rank": 17
+      "rank": 2
     }
   }
 ]
