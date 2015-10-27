@@ -52,6 +52,7 @@ class ArchivedObservationsAdmin(admin.ModelAdmin):
 
 
 class SitesAdmin(admin.ModelAdmin):
+    list_max_show_all = 1000
     list_display = (
         'site_name',
         'user',
