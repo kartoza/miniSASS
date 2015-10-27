@@ -51,7 +51,15 @@ class ArchivedObservationsAdmin(admin.ModelAdmin):
     list_filter = ('flag',)
 
 
-admin.site.register(Sites)
+class SitesAdmin(admin.ModelAdmin):
+    list_max_show_all = 1000
+    list_display = (
+        'site_name',
+        'user',
+        'river_name',
+    )
+
+admin.site.register(Sites, SitesAdmin)
 admin.site.register(Observations, ObservationsAdmin)
 admin.site.register(ArchivedSites)
 admin.site.register(ArchivedObservations, ArchivedObservationsAdmin)
