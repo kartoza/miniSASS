@@ -1,102 +1,126 @@
 {% load cms_tags menu_tags sekizai_tags %}
 <!doctype html>
 <html>
-  <head>
-    {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+<head>
+    {% addtoblock "css" %}
+        <link rel="stylesheet" type="text/css"
+              href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/marquee.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
     {% render_block "css" %}
 
-    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
-    {% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="{{ STATIC_URL }}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="{{ STATIC_URL }}js/marquee.js"></script>{% endaddtoblock %}
     {% block "minisass_js" %}
     {% endblock %}
     {% render_block "js" %}
 
     <title>
-      {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
+        {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
     </title>
-  </head>
-  <body>
-    {% cms_toolbar %}
+</head>
+<body>
+{% cms_toolbar %}
 
-    <div class="minisass-box"><div class="minisass-container">
+<div class="minisass-box">
 
-      <div class="minisass-heading">
-        <a href="/">
-          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
-          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
-        </a>
-        <div class="registration_links">
-          <p>
-          {% if user.is_authenticated %}
-          Welcome back, {{ user.username }}<br />
-          <a href="{% url auth_logout %}">Logout</a> |
-          <a href="{% url auth_password_change %}">Change Password</a>
-          {% else %}
-            {% if "/map/" in request.path %}
-              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
-            {% else %}
-              <a href="{% url auth_login %}">Login</a> |
-            {% endif %}
-          <a href="{% url registration_register %}">Register</a><br />
-          <a href="{% url auth_password_reset %}">Reset Password</a>
-          {% endif %}
-          </p>
-        </div>
-        <div class="minisass-heading-space">
-            {% placeholder "logo_content" %}
-        </div>
-        <div id="myslidemenu">
-          <ul class="minisass-menus">
-            {% show_menu 0 100 100 100 %}
-          </ul>
-        </div>
+    {% block minisass_banner %}
+        <p class="microsoft marquee">
+            {% placeholder "banner" %}
+        </p>
+    {% endblock %}
 
-      <div class="red-line">
-      </div>
 
-      <div class="minisass-page">
+    <div class="minisass-container">
 
-          {% block "minisass_page_content" %}
-              <div class="minisass-page-content">
-                  {% placeholder "content" %}
-              </div>
-          {% endblock %}
+        <div class="minisass-heading">
+            <a href="/">
+                <img src="{{ STATIC_URL }}images/mini_SASS_logo.png" alt="miniSASS Logo"
+                     title="miniSASS Logo" style="margin: 4px 0 4px 4px">
+            </a>
 
-          {% block minisass_right_column %}
-              <div class="minisass-right-column">
-                  {% placeholder "right_column" %}
-                  <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FMinisass-Mini-Stream-Assessment-Scoring-System%2F544121315643167&amp;width=220&amp;height=590&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:220px; height:590px;" allowTransparency="true"></iframe>
-              </div>
-          {% endblock %}
+            <div class="registration_links">
+                <p>
+                    {% if user.is_authenticated %}
+                        Welcome back, {{ user.username }}<br/>
+                        <a href="{% url auth_logout %}">Logout</a> |
+                        <a href="{% url auth_password_change %}">Change Password</a>
+                    {% else %}
+                        {% if "/map/" in request.path %}
+                            <a href="{% url auth_login %}?next={{ request.path }}">Login</a> |
+                        {% else %}
+                            <a href="{% url auth_login %}">Login</a> |
+                        {% endif %}
+                        <a href="{% url registration_register %}">Register</a><br/>
+                        <a href="{% url auth_password_reset %}">Reset Password</a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="minisass-heading-space">
+                {% placeholder "logo_content" %}
+            </div>
+            <div id="myslidemenu">
+                <ul class="minisass-menus">
+                    {% show_menu 0 100 100 100 %}
+                </ul>
+            </div>
 
-      </div>
+            <div class="red-line">
+            </div>
 
-      {% block minisass_bottom %}
-      <div class="minisass-bottom">
-          <div>
-              {% block bottom_links %}
-                {% placeholder "footer_content" or %}
-                  {% show_placeholder "footer_content" "footer_stuff" %}
+            <div class="minisass-page">
+
+                {% block "minisass_page_content" %}
+                    <div class="minisass-page-content">
+                        {% placeholder "content" %}
+                    </div>
+                {% endblock %}
+
+                {% block minisass_right_column %}
+                    <div class="minisass-right-column">
+                        {% placeholder "right_column" %}
+                        <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FMinisass-Mini-Stream-Assessment-Scoring-System%2F544121315643167&amp;width=220&amp;height=590&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true"
+                                scrolling="no" frameborder="0"
+                                style="border:none; overflow:hidden; width:220px; height:590px;"
+                                allowTransparency="true"></iframe>
+                    </div>
+                {% endblock %}
+
+            </div>
+
+            {% block minisass_bottom %}
+                <div class="minisass-bottom">
+                    <div>
+                        {% block bottom_links %}
+                            {% placeholder "footer_content" or %}
+                                {% show_placeholder "footer_content" "footer_stuff" %}
+                            {% endplaceholder %}
+                        {% endblock %}
+                    </div>
+                    <p>
+                        &copy; {% now "Y" %}, GroundTruth cc.
+                    </p>
+                </div>
+            {% endblock %}
+            <div class="minisass-bottom-logos">
+                {% placeholder "sponsor_links" or %}
+                    {% show_placeholder "sponsor_links" "footer_stuff" %}
                 {% endplaceholder %}
-              {% endblock %}
-          </div>
-          <p>
-          &copy; {% now "Y" %}, GroundTruth cc.
-          </p>
-      </div>
-      {% endblock %}
-      <div class="minisass-bottom-logos">
-          {% placeholder "sponsor_links" or %}
-            {% show_placeholder "sponsor_links" "footer_stuff" %}
-          {% endplaceholder %}
-      </div>
+            </div>
 
-          {% comment %}
+            {% comment %}
           <a href="http://www.dwa.gov.za/" target="_blank">
             <img src="{{ STATIC_URL }}images/dwa.png" 
                  alt="Department of Water Affairs" 
@@ -111,8 +135,9 @@
                  title="GroundTruth" /></a>
           {% endcomment %}
 
-    </div></div>
+        </div>
+    </div>
 
     {% include "google_analytics.html" %}
-  </body>
+</body>
 </html>
