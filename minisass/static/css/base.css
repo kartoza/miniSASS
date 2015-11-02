@@ -458,5 +458,13 @@ div.cmsplugin_filer_folder_slidshow {
 }
 
 .float_right {
-    float:right;
+    float: right;
+}
+
+.news-ticker {
+    float: left;
+    height: 30px;
+    width: 1024px;
+    border: 1px solid #bbbbbb;
+    margin: 5px 10px 5px 0px;
 }
