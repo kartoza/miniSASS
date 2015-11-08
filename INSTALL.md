@@ -335,3 +335,7 @@ Setting up styles for version control
 In the geoserver data directory (/home/minisass/geoserver_data/styles), as root or tomcat user:
 
 for link in countries.sld hca1.sld hca4.sld localmunicipalities2011.sld riverline.sld dams.sld hca2.sld hca5.sld minisass_observations.sld rivers.sld districtmunicipalities2011.sld hca3.sld province_new_saneighbours.sld schools.sld; do ln -fs /home/minisass/miniSASS/webmapping/styles/$link $link; done
+
+Adding support for scrolling text
+=================================
+pip install http://pypi.python.org/packages/source/c/cmsplugin-plaintext/cmsplugin-plaintext-0.1.1-alpha-2.tar.gz

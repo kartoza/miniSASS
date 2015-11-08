@@ -2,99 +2,87 @@
 <!doctype html>
 <html>
   <head>
-    {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
-    {% addtoblock "css" %}<link href="{{STATIC_URL}}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link rel="stylesheet" type="text/css"
+              href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/normalize.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/base.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link href="{{ STATIC_URL }}css/marquee.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
     {% block "minisass_css" %}
     {% endblock %}
     {% render_block "css" %}
 
-    {% addtoblock "js" %}<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
-    {% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="{{ STATIC_URL }}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script src="{{ STATIC_URL }}js/marquee.js"></script>{% endaddtoblock %}
     {% block "minisass_js" %}
     {% endblock %}
     {% render_block "js" %}
 
     <title>
-      {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
+        {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
     </title>
-  </head>
+</head>
   <body>
     {% cms_toolbar %}
 
     <div class="minisass-box"><div class="minisass-container">
 
       <div class="minisass-heading">
-        <div class="minisass-logo">
-          <a href="/">
-            <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo" title="miniSASS Logo">
-          </a>
+        <a href="/">
+          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
+          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
+        </a>
+        <div class="registration_links">
+          <p>
+          {% if user.is_authenticated %}
+          Welcome back, {{ user.username }}<br />
+          <a href="{% url auth_logout %}">Logout</a> |
+          <a href="{% url auth_password_change %}">Change Password</a>
+          {% else %}
+            {% if "/map/" in request.path %}
+              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
+            {% else %}
+              <a href="{% url auth_login %}">Login</a> |
+            {% endif %}
+          <a href="{% url registration_register %}">Register</a><br />
+          <a href="{% url auth_password_reset %}">Reset Password</a>
+          {% endif %}
+          </p>
         </div>
-        <div class="float_left">
-          <div class="minisass-text">
-            <a href="/">
-              <img src="{{STATIC_URL}}images/miniSASS_text.png" alt="miniSASS Logo" title="miniSASS Logo">
-            </a>
-          </div>
-          <div class="minisass-button-links">
-            <a href="/en/map/"><img alt="Explore the map" src="{{STATIC_URL}}images/button-explore.png" /></a>
-            <a href="/en/how/"><img alt="How to do miniSASS" src="{{STATIC_URL}}images/button-minisass.png" /></a>
-            <a href="/en/map/"><img alt="Submit results" src="{{STATIC_URL}}images/button-submit.png" /></a>
-            <a href="/en/downloads/"><img alt="Download here" src="{{STATIC_URL}}images/button-download.png" /></a>
-          </div>
+
+        <div class="minisass-heading-space">
+            {% placeholder "logo_content" %}
         </div>
-        <div class="float_right">
-          <div class="registration-links">
-            <p>
-              {% if user.is_authenticated %}
-              Welcome back, {{ user.username }}<br />
-              <a href="{% url auth_logout %}">Logout</a> |
-              <a href="{% url auth_password_change %}">Change Password</a>
-              {% else %}
-                {% if "/map/" in request.path %}
-                  <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
-                {% else %}
-                  <a href="{% url auth_login %}">Login</a> |
-                {% endif %}
-              <a href="{% url registration_register %}">Register</a><br />
-              <a href="{% url auth_password_reset %}">Reset Password</a>
-              {% endif %}
-            </p>
-          </div>
-          <div class="social-media-links">
-            <p>
-              <a href="https://minisassblog.wordpress.com/" target="_blank">
-                <img src="{{STATIC_URL}}images/icon_wordpress.png" alt="WordPress Logo"
-                title="Read our Blog on WordPress">
-              </a>
-              <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank">
-                <img src="{{STATIC_URL}}images/icon_youtube.png" alt="YouTube Logo"
-                title="Watch us on YouTube">
-              </a>
-              <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank">
-                <img src="{{STATIC_URL}}images/icon_facebook.png" alt="Facebook Logo"
-                title="Follow us on Facebook">
-              </a>
-              <br />
-              <a href="https://play.google.com/store/apps/details?id=com.sifiso.codetribe.app" target="_blank">
-                <img src="{{STATIC_URL}}images/icon_google_play.png" alt="Google Play Logo"
-                title="Get it on Google Play">
-              </a>
-            </p>
-          </div>
+
+        {% block banner %}
+       <div class="news-ticker">
+            <p class="microsoft marquee">
+                {% placeholder "news_ticker_content" %}
+           </p>
         </div>
-        <div class="news-ticker">
-            {% placeholder "news_ticker_content" %}
-        </div>
+      {% endblock %}
+
+
         <div id="myslidemenu">
           <ul class="minisass-menus">
             {% show_menu 0 100 100 100 %}
           </ul>
         </div>
-        <div class="blue-line">
-        </div>
+
+      <div class="red-line">
       </div>
+
+
+
       <div class="minisass-page">
 
           {% block "minisass_page_content" %}
@@ -111,10 +99,18 @@
           {% endblock %}
 
       </div>
+
       {% block minisass_bottom %}
       <div class="minisass-bottom">
+          <div>
+              {% block bottom_links %}
+                {% placeholder "footer_content" or %}
+                  {% show_placeholder "footer_content" "footer_stuff" %}
+                {% endplaceholder %}
+              {% endblock %}
+          </div>
           <p>
-          &copy; {% now "Y" %} Water Research Commission. This is an open source project. Get the source code at <a href="https://github.com/sokolic/miniSASS" target="_blank">Github</a>
+          &copy; {% now "Y" %}, GroundTruth cc.
           </p>
       </div>
       {% endblock %}
@@ -123,8 +119,23 @@
             {% show_placeholder "sponsor_links" "footer_stuff" %}
           {% endplaceholder %}
       </div>
-    </div>
-    </div>
+
+          {% comment %}
+          <a href="http://www.dwa.gov.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/dwa.png" 
+                 alt="Department of Water Affairs" 
+                 title="Department of Water Affairs" /></a>
+         <a href="http://www.wrc.org.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/wrc.png" 
+                 alt="Water Research Council"
+                 title="Water Research Commission" /></a>
+         <a href="http://www.groundtruth.co.za/" target="_blank">
+            <img src="{{ STATIC_URL }}images/groundtruth.png"
+                 alt="GroundTruth" 
+                 title="GroundTruth" /></a>
+          {% endcomment %}
+
+    </div></div>
 
     {% include "google_analytics.html" %}
   </body>
