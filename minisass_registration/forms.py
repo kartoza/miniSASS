@@ -24,10 +24,7 @@ def _get_organisation_names():
 
 def _get_countries():
     result = [('','-- Select a Country --')]
-    qs = Lookup.objects.filter(
-        container__description='Country',
-        active=True)
-    qs = qs.order_by('rank', 'description')
+    qs = Lookup.objects.raw("SELECT * FROM minisass_registration_lookup WHERE container_id='8' AND active ='t' ORDER BY rank = 0, rank" )
     result.extend([(itm.id, itm.description,) for itm in qs])
     return result
 
