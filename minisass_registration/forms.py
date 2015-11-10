@@ -24,7 +24,7 @@ def _get_organisation_names():
 
 def _get_countries():
     result = [('','-- Select a Country --')]
-    qs = Lookup.objects.raw("SELECT * FROM minisass_registration_lookup WHERE container_id='8' AND active ='t' ORDER BY rank = 0, rank" )
+    qs = Lookup.objects.raw("SELECT * FROM minisass_registration_lookup WHERE container_id='8' AND active ='t' ORDER BY rank = 0, rank, description" )
     result.extend([(itm.id, itm.description,) for itm in qs])
     return result
 
