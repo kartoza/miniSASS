@@ -75,7 +75,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, 'static'),
+    #os.path.join(PROJECT_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -138,10 +138,11 @@ LANGUAGES = [
     ('en', 'English')
 ]
 ADMIN_LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'en'
 
 # Django CMS configuration settings
 # CMS_LANGUAGES = {
-#         1: [
+#         '1': [
 #             {
 #                 'code': 'en',
 #                 'name': gettext('English'),
@@ -262,9 +263,11 @@ TINYMCE_DEFAULT_CONFIG = {
 
 # email settings
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = 'info@test.minisass.org'
+EMAIL_HOST = 'smtp.minisass.org' 
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'info@minisass.org'
+EMAIL_HOST_USER = 'info@minisass.org'
+EMAIL_HOST_PASSWORD = ''
 
 # django registration/auth settings
 ACCOUNT_ACTIVATION_DAYS = 7
