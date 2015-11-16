@@ -20,7 +20,7 @@
 
 /* Make it pretty */
 .microsoft {
-    padding-left: 1.5em;
+    padding: 5px 0;
     position: relative;
     font: 16px 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 }
