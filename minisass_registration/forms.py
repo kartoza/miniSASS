@@ -24,6 +24,12 @@ def _get_organisation_names():
 
 def _get_countries():
     result = [('','-- Select a Country --')]
+    qs = Lookup.objects.raw("SELECT * FROM minisass_registration_lookup WHERE container_id='8' AND active ='t' ORDER BY rank = 0, rank, description" )
+    result.extend([(itm.id, itm.description,) for itm in qs])
+    return result
+
+def _get_countries_old():
+    result = [('','-- Select a Country --')]
     qs = Lookup.objects.filter(
         container__description='Country',
         active=True)
@@ -37,27 +43,27 @@ class miniSASSregistrationForm(RegistrationForm):
     """
 
     firstname = forms.CharField(
-            label=_("Name"), 
+            label=_("Name"),
             max_length=30,
             help_text=_(u"Kept confidential"))
     lastname = forms.CharField(
-            label=_("Surname"), 
+            label=_("Surname"),
             max_length=30,
             help_text=_(u"Kept confidential"))
     organisation_type = forms.ChoiceField(
             label=_("Organisation Type"),
-            required=True, 
+            required=True,
             help_text=_(u"Please select an organisation type, \
                     or private individual"))
     organisation_name = forms.CharField(
-            label=_("Organisation Name"), 
+            label=_("Organisation Name"),
             max_length=50,
             help_text=_(u"Please check if school already listed, \
                     then add if not."),
             required=False)
     country = forms.ChoiceField(
             label=_("Country"),
-            required=False, 
+            required=False,
             help_text=_(u"Please select a country"))
 
     recaptcha_challenge_field = forms.CharField(widget=RecaptchaChallenge)
@@ -125,7 +131,7 @@ class miniSASSregistrationForm(RegistrationForm):
         if 'recaptcha_response_field' in self.cleaned_data:
             self._validate_captcha()
         return self.cleaned_data['recaptcha_challenge_field']
-    
+
     def _validate_captcha(self):
         if not self.recaptcha_always_validate:
             rcf = self.cleaned_data['recaptcha_challenge_field']

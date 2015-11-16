@@ -74,6 +74,13 @@ h1, h2, h3, h4, h5, h6 {
     border-top-right-radius: 10px;
 }
 
+.minisass-heading-space {
+    float: left;
+    height: 127px;
+    width: 685px;
+    margin: 0 0 0 10px;
+}
+
 .minisass-logo {
     float: left;
     margin: 0;
@@ -459,12 +466,4 @@ div.cmsplugin_filer_folder_slidshow {
 
 .float_right {
     float: right;
-}
-
-.news-ticker {
-    float: left;
-    height: 30px;
-    width: 1024px;
-    border: 1px solid #bbbbbb;
-    margin: 5px 10px 5px 0px;
 }

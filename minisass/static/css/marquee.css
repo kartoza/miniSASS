@@ -1,6 +1,6 @@
 /* Make it a marquee */
 .marquee {
-    width: 1024px;
+    width: 790px;
     margin: 0 auto;
     overflow: hidden;
     white-space: nowrap;
@@ -14,8 +14,8 @@
 
 /* Make it move */
 @keyframes marquee {
-    0%   { text-indent: 89.5em }
-    100% { text-indent: -105em }
+    0%   { text-indent: 80.5em }
+    100% { text-indent: -100em }
 }
 
 /* Make it pretty */
