@@ -14,8 +14,8 @@
 
 /* Make it move */
 @keyframes marquee {
-    0%   { text-indent: 80.5em }
-    100% { text-indent: -100em }
+    0% {transform: translateX(100%);}
+    100% {transform: translateX(-100%);}
 }
 
 /* Make it pretty */
