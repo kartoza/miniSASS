@@ -152,6 +152,9 @@ div.registration-links {
     border: 1px solid #bbbbbb;
     margin: 5px 10px 5px 0px;
     overflow: hidden;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 #myslidemenu {
