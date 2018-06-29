@@ -2,7 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from cmsplugin_contact.nospam.widgets import RecaptchaChallenge, RecaptchaResponse
+# Frank Sokolic: June 2018 - Disabled all the recaptcha code as version 1 is no longer supported
+#from cmsplugin_contact.nospam.widgets import RecaptchaChallenge, RecaptchaResponse
 from registration.forms import RegistrationForm
 
 from minisass_registration.models import Lookup
@@ -66,14 +67,14 @@ class miniSASSregistrationForm(RegistrationForm):
             required=False,
             help_text=_(u"Please select a country"))
 
-    recaptcha_challenge_field = forms.CharField(widget=RecaptchaChallenge)
-    recaptcha_response_field = forms.CharField(
-                widget = RecaptchaResponse,
-                label = _('Please enter the letters/digits you see in the image :'),
-                error_messages = {
-                    'required': _('You did not enter any of the words.')
-            })
-    recaptcha_always_validate = False
+ #   recaptcha_challenge_field = forms.CharField(widget=RecaptchaChallenge)
+ #   recaptcha_response_field = forms.CharField(
+ #               widget = RecaptchaResponse,
+ #               label = _('Please enter the letters/digits you see in the image :'),
+ #               error_messages = {
+ #                   'required': _('You did not enter any of the words.')
+ #           })
+ #   recaptcha_always_validate = False
 
 
     def __init__(self, request, *args, **kwargs):
@@ -83,10 +84,10 @@ class miniSASSregistrationForm(RegistrationForm):
         self._request = request
         if ('data' in kwargs or len(args) > 1) and 'prefix' in kwargs:
             data = kwargs.get('data', args[1]).__copy__()
-            data['%s-recaptcha_challenge_field' % kwargs['prefix']] = \
-                data.pop('recaptcha_challenge_field', [u''])[0]
-            data['%s-recaptcha_response_field' % kwargs['prefix']] = \
-                data.pop('recaptcha_response_field', [u''])[0]
+#            data['%s-recaptcha_challenge_field' % kwargs['prefix']] = \
+#                data.pop('recaptcha_challenge_field', [u''])[0]
+#            data['%s-recaptcha_response_field' % kwargs['prefix']] = \
+#                data.pop('recaptcha_response_field', [u''])[0]
             data._mutable = False
             # Since data could have been passed eith as an arg or kwarg, set
             # the right one to the new data
@@ -95,14 +96,14 @@ class miniSASSregistrationForm(RegistrationForm):
             else:
                 args = (args[0], data) + args[2:]
         super(miniSASSregistrationForm, self).__init__(*args, **kwargs)
-        self._recaptcha_public_key = getattr(self, 'recaptcha_public_key', getattr(settings, 'RECAPTCHA_PUBLIC_KEY', None))
-        self._recaptcha_private_key = getattr(self, 'recaptcha_private_key', getattr(settings, 'RECAPTCHA_PRIVATE_KEY', None))
-        self._recaptcha_theme = getattr(self, 'recaptcha_theme', getattr(settings, 'RECAPTCHA_THEME', 'clean'))
-        self.fields['recaptcha_response_field'].widget.public_key = self._recaptcha_public_key
-        self.fields['recaptcha_response_field'].widget.theme = self._recaptcha_theme
+#        self._recaptcha_public_key = getattr(self, 'recaptcha_public_key', getattr(settings, 'RECAPTCHA_PUBLIC_KEY', None))
+#        self._recaptcha_private_key = getattr(self, 'recaptcha_private_key', getattr(settings, 'RECAPTCHA_PRIVATE_KEY', None))
+#        self._recaptcha_theme = getattr(self, 'recaptcha_theme', getattr(settings, 'RECAPTCHA_THEME', 'clean'))
+#        self.fields['recaptcha_response_field'].widget.public_key = self._recaptcha_public_key
+#        self.fields['recaptcha_response_field'].widget.theme = self._recaptcha_theme
         # Move the ReCAPTCHA fields to the end of the form
-        self.fields['recaptcha_challenge_field'] = self.fields.pop('recaptcha_challenge_field')
-        self.fields['recaptcha_response_field'] = self.fields.pop('recaptcha_response_field')
+#        self.fields['recaptcha_challenge_field'] = self.fields.pop('recaptcha_challenge_field')
+#        self.fields['recaptcha_response_field'] = self.fields.pop('recaptcha_response_field')
         self.fields['username'].help_text = \
                 _(u"Public username (don't use any spaces)")
         self.fields['username'].error_messages={'invalid': _("The username may only contain letters, numbers and @, fullstop, plus, minus or underscore characters. NO SPACES.")}
@@ -118,29 +119,29 @@ class miniSASSregistrationForm(RegistrationForm):
             'country',
             'password1',
             'password2',
-            'recaptcha_challenge_field',
-            'recaptcha_response_field'
+#            'recaptcha_challenge_field',
+#            'recaptcha_response_field'
         ]
 
-    def clean_recaptcha_response_field(self):
-        if 'recaptcha_challenge_field' in self.cleaned_data:
-            self._validate_captcha()
-        return self.cleaned_data['recaptcha_response_field']
+#    def clean_recaptcha_response_field(self):
+#        if 'recaptcha_challenge_field' in self.cleaned_data:
+#            self._validate_captcha()
+#        return self.cleaned_data['recaptcha_response_field']
 
-    def clean_recaptcha_challenge_field(self):
-        if 'recaptcha_response_field' in self.cleaned_data:
-            self._validate_captcha()
-        return self.cleaned_data['recaptcha_challenge_field']
+#    def clean_recaptcha_challenge_field(self):
+#        if 'recaptcha_response_field' in self.cleaned_data:
+#            self._validate_captcha()
+#        return self.cleaned_data['recaptcha_challenge_field']
 
-    def _validate_captcha(self):
-        if not self.recaptcha_always_validate:
-            rcf = self.cleaned_data['recaptcha_challenge_field']
-            rrf = self.cleaned_data['recaptcha_response_field']
-            if rrf == '':
-                raise forms.ValidationError(_('You did not enter the two words shown in the image.'))
-            else:
-                from recaptcha.client import captcha as recaptcha
-                ip = self._request.META['REMOTE_ADDR']
-                check = recaptcha.submit(rcf, rrf, self._recaptcha_private_key, ip)
-                if not check.is_valid:
-                    raise forms.ValidationError(_('The words you entered did not match the image.'))
+#    def _validate_captcha(self):
+#        if not self.recaptcha_always_validate:
+#            rcf = self.cleaned_data['recaptcha_challenge_field']
+#            rrf = self.cleaned_data['recaptcha_response_field']
+#            if rrf == '':
+#                raise forms.ValidationError(_('You did not enter the two words shown in the image.'))
+#            else:
+#                from recaptcha.client import captcha as recaptcha
+#                ip = self._request.META['REMOTE_ADDR']
+#                check = recaptcha.submit(rcf, rrf, self._recaptcha_private_key, ip)
+#                if not check.is_valid:
+#                    raise forms.ValidationError(_('The words you entered did not match the image.'))
