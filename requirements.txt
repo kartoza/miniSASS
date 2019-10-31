@@ -38,7 +38,7 @@ lazr.uri==1.0.3
 #oauth==1.0a
 #pexpect==2.3
 psycopg2==2.4.6
-pyOpenSSL==0.10
+pyOpenSSL==17.5.0
 pycurl==7.19.0
 pyserial==2.3
 #python-apt==0.7.94.2ubuntu6.4
