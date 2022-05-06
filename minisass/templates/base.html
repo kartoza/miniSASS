@@ -1,7 +1,7 @@
 {% load cms_tags menu_tags sekizai_tags %}
 <!doctype html>
 <html>
-  <head>
+<head>
     {% addtoblock "css" %}
         <link rel="stylesheet" type="text/css"
               href="http://fonts.googleapis.com/css?family=Coming+Soon">{% endaddtoblock %}
@@ -31,112 +31,130 @@
         {% block "minisass_page_title" %}{% page_attribute "page_title" %}{% endblock %}
     </title>
 </head>
-  <body>
-    {% cms_toolbar %}
+<body>
+{% cms_toolbar %}
 
-    <div class="minisass-box"><div class="minisass-container">
+<div class="minisass-box">
+    <div class="minisass-container">
 
-      <div class="minisass-heading">
-        <a href="/">
-          <img src="{{STATIC_URL}}images/mini_SASS_logo.png" alt="miniSASS Logo"
-          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
-        </a>
-        <div class="registration_links">
-          <p>
-          {% if user.is_authenticated %}
-          Welcome back, {{ user.username }}<br />
-          <a href="{% url auth_logout %}">Logout</a> |
-          <a href="{% url auth_password_change %}">Change Password</a>
-          {% else %}
-            {% if "/map/" in request.path %}
-              <a href="{% url auth_login %}?next={{request.path}}">Login</a> |
-            {% else %}
-              <a href="{% url auth_login %}">Login</a> |
-            {% endif %}
-          <a href="{% url registration_register %}">Register</a><br />
-          <a href="{% url auth_password_reset %}">Reset Password</a>
-          {% endif %}
-          </p>
+        <div class="minisass-heading">
+            <div class="minisass-logo">
+                <a href="/">
+                    <img src="{{ STATIC_URL }}images/mini_SASS_logo.png" alt="miniSASS Logo" title="miniSASS Logo">
+                </a>
+            </div>
+            <div class="float_left">
+                <div class="minisass-text">
+                    <a href="/">
+                        <img src="{{ STATIC_URL }}images/miniSASS_text.png" alt="miniSASS Logo" title="miniSASS Logo">
+                    </a>
+                </div>
+                <div class="minisass-button-links">
+                    <a href="/en/map/"><img alt="Explore the map" src="{{ STATIC_URL }}images/button-explore.png"/></a>
+                    <a href="/en/how/"><img alt="How to do miniSASS" src="{{ STATIC_URL }}images/button-minisass.png"/></a>
+                    <a href="/en/map/"><img alt="Submit results" src="{{ STATIC_URL }}images/button-submit.png"/></a>
+                    <a href="/en/downloads/"><img alt="Download here" src="{{ STATIC_URL }}images/button-download.png"/></a>
+                </div>
+            </div>
+            <div class="float_right">
+                <div class="registration-links">
+                    <p>
+                        {% if user.is_authenticated %}
+                            Welcome back, {{ user.username }}<br/>
+                            <a href="{% url auth_logout %}">Logout</a> |
+                            <a href="{% url auth_password_change %}">Change Password</a>
+                        {% else %}
+                            {% if "/map/" in request.path %}
+                                <a href="{% url auth_login %}?next={{ request.path }}">Login</a> |
+                            {% else %}
+                                <a href="{% url auth_login %}">Login</a> |
+                            {% endif %}
+                            <a href="{% url registration_register %}">Register</a><br/>
+                            <a href="{% url auth_password_reset %}">Reset Password</a>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="social-media-links">
+                    <p>
+                        <a href="https://minisassblog.wordpress.com/" target="_blank">
+                            <img src="{{ STATIC_URL }}images/icon_wordpress.png" alt="WordPress Logo"
+                                 title="Read our Blog on WordPress">
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank">
+                            <img src="{{ STATIC_URL }}images/icon_youtube.png" alt="YouTube Logo"
+                                 title="Watch us on YouTube">
+                        </a>
+                        <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank">
+                            <img src="{{ STATIC_URL }}images/icon_facebook.png" alt="Facebook Logo"
+                                 title="Follow us on Facebook">
+                        </a>
+                        <br/>
+                        <a href="https://play.google.com/store/apps/details?id=com.sifiso.codetribe.app"
+                           target="_blank">
+                            <img src="{{ STATIC_URL }}images/icon_google_play.png" alt="Google Play Logo"
+                                 title="Get it on Google Play">
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="minisass-heading-space">
+                {% placeholder "logo_content" %}
+            </div>
+
+            {% block banner %}
+                <div class="news-ticker">
+                    <p class="microsoft marquee">
+                        {% placeholder "news_ticker_content" %}
+                    </p>
+                </div>
+            {% endblock %}
+
+
+            <div id="myslidemenu">
+                <ul class="minisass-menus">
+                    {% show_menu 0 100 100 100 %}
+                </ul>
+            </div>
+            <div class="blue-line">
+            </div>
         </div>
 
-        <div class="minisass-heading-space">
-            {% placeholder "logo_content" %}
+        <div class="minisass-page">
+
+            {% block "minisass_page_content" %}
+                <div class="minisass-page-content">
+                    {% placeholder "content" %}
+                </div>
+            {% endblock %}
+
+            {% block minisass_right_column %}
+                <div class="minisass-right-column">
+                    {% placeholder "right_column" %}
+                    <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FMinisass-Mini-Stream-Assessment-Scoring-System%2F544121315643167&amp;width=220&amp;height=590&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true"
+                            scrolling="no" frameborder="0"
+                            style="border:none; overflow:hidden; width:220px; height:590px;"
+                            allowTransparency="true"></iframe>
+                </div>
+            {% endblock %}
+
         </div>
-
-        {% block banner %}
-       <div class="news-ticker">
-            <p class="microsoft marquee">
-                {% placeholder "news_ticker_content" %}
-           </p>
+        {% block minisass_bottom %}
+            <div class="minisass-bottom">
+                <p>
+                    &copy; {% now "Y" %} Water Research Commission. This is an open source project. Get the source code
+                    at <a href="https://github.com/sokolic/miniSASS" target="_blank">Github</a>
+                </p>
+            </div>
+        {% endblock %}
+        <div class="minisass-bottom-logos">
+            {% placeholder "sponsor_links" or %}
+                {% show_placeholder "sponsor_links" "footer_stuff" %}
+            {% endplaceholder %}
         </div>
-      {% endblock %}
+    </div>
+</div>
 
-
-        <div id="myslidemenu">
-          <ul class="minisass-menus">
-            {% show_menu 0 100 100 100 %}
-          </ul>
-        </div>
-
-      <div class="red-line">
-      </div>
-
-
-
-      <div class="minisass-page">
-
-          {% block "minisass_page_content" %}
-              <div class="minisass-page-content">
-                  {% placeholder "content" %}
-              </div>
-          {% endblock %}
-
-          {% block minisass_right_column %}
-              <div class="minisass-right-column">
-                  {% placeholder "right_column" %}
-                  <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FMinisass-Mini-Stream-Assessment-Scoring-System%2F544121315643167&amp;width=220&amp;height=590&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:220px; height:590px;" allowTransparency="true"></iframe>
-              </div>
-          {% endblock %}
-
-      </div>
-
-      {% block minisass_bottom %}
-      <div class="minisass-bottom">
-          <div>
-              {% block bottom_links %}
-                {% placeholder "footer_content" or %}
-                  {% show_placeholder "footer_content" "footer_stuff" %}
-                {% endplaceholder %}
-              {% endblock %}
-          </div>
-          <p>
-          &copy; {% now "Y" %}, GroundTruth cc.
-          </p>
-      </div>
-      {% endblock %}
-      <div class="minisass-bottom-logos">
-          {% placeholder "sponsor_links" or %}
-            {% show_placeholder "sponsor_links" "footer_stuff" %}
-          {% endplaceholder %}
-      </div>
-
-          {% comment %}
-          <a href="http://www.dwa.gov.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/dwa.png" 
-                 alt="Department of Water Affairs" 
-                 title="Department of Water Affairs" /></a>
-         <a href="http://www.wrc.org.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/wrc.png" 
-                 alt="Water Research Council"
-                 title="Water Research Commission" /></a>
-         <a href="http://www.groundtruth.co.za/" target="_blank">
-            <img src="{{ STATIC_URL }}images/groundtruth.png"
-                 alt="GroundTruth" 
-                 title="GroundTruth" /></a>
-          {% endcomment %}
-
-    </div></div>
-
-    {% include "google_analytics.html" %}
-  </body>
+{% include "google_analytics.html" %}
+</body>
 </html>

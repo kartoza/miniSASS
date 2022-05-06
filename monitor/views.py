@@ -47,7 +47,7 @@ Collector's name: %s
 Comments/notes: %s
 
 
-Your observation still needs to be verified and you may contacted in this \
+Your observation still needs to be verified and you may be contacted in this \
 regard.
 
 Kind regards,

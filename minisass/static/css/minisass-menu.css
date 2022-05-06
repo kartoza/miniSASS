@@ -3,7 +3,7 @@ ul.minisass-menus {
     float: left;
     font-size: 0.9em;
     font-weight: bold;
-    margin: 0 0 0 15px;
+    margin: 0;
     border: 0;
     padding: 0px;
     list-style-type: none;
@@ -40,14 +40,14 @@ ul.minisass-menus {
 }
 .minisass-menus li.selected a:visited,
 .minisass-menus li.selected a:active,
-.minisass-menus li.selected a:hover, 
+.minisass-menus li.selected a:hover,
 .minisass-menus li.selected a {
     color: white;
     text-decoration: none;
 }
 .minisass-menus li a:visited,
 .minisass-menus li a:active,
-.minisass-menus li a:hover, 
+.minisass-menus li a:hover,
 .minisass-menus li a {
     color: #3168b8;
     text-decoration: none;

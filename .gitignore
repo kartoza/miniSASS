@@ -5,6 +5,7 @@ src
 *.pyc
 python
 minisass/settings.py
+minisass/wsgi.py
 *.pyc
 *.*.orig
 *.swp

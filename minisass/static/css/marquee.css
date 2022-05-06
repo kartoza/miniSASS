@@ -5,7 +5,7 @@
     overflow: hidden;
     white-space: nowrap;
     box-sizing: border-box;
-    animation: marquee 50s linear infinite;
+    animation: marquee 20s linear infinite;
 }
 
 .marquee:hover {
@@ -14,7 +14,7 @@
 
 /* Make it move */
 @keyframes marquee {
-    0%   { text-indent: 27.5em }
+    0%   { text-indent: 89.5em }
     100% { text-indent: -105em }
 }
 

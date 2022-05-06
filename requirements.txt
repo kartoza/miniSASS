@@ -2,10 +2,11 @@ Django==1.4
 #GnuPGInterface==0.3.2
 #Landscape-Client==13.07.3
 #PAM==0.4.2
-PIL==1.1.7
+#PIL==1.1.7
+pillow
 South==0.7.6
 #Twisted-Core==10.0.0
-##cmsplugin-blog==1.1.2
+cmsplugin-blog==1.1.2
 cmsplugin-contact==1.0.0
 cmsplugin-filer==0.9.5
 cmsplugin-nivoslider==0.5.1
@@ -25,12 +26,14 @@ django-staticfiles==1.2.1
 django-tagging==0.3.1
 django-tinymce==1.5.1
 djangocms-utils==0.9.5
-django-dirtyfields
+django-dirtyfields==0.3
 easy-thumbnails==1.2
 html5lib==0.95
 httplib2==0.7.3
 launchpadlib==1.6.0
 #lazr.restfulclient==0.9.11
+# Gavin add lazr.authentication since it was loaded anyway?
+#lazr.authentication
 lazr.uri==1.0.3
 #oauth==1.0a
 #pexpect==2.3
