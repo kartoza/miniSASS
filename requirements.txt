@@ -28,7 +28,7 @@ django-tinymce==1.5.1
 djangocms-utils==0.9.5
 django-dirtyfields==0.3
 easy-thumbnails==1.2
-html5lib==0.95
+html5lib==0.99999999
 httplib2==0.7.3
 launchpadlib==1.6.0
 #lazr.restfulclient==0.9.11
