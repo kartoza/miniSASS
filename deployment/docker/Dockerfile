@@ -25,5 +25,6 @@ RUN chmod 0755 /run.sh
 
 # Open port 8080 as we will be running our uwsgi socket on that
 EXPOSE 8080
+EXPOSE 8000
 
 CMD ["/bin/bash", "/run.sh"]
