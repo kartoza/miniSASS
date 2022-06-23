@@ -35,3 +35,4 @@ minisass/static/simple_translation/
 minisass/static/tiny_mce/
 minisass/wsgi-jurgen.py
 tags
+.idea/
