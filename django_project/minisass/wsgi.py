@@ -18,7 +18,7 @@ import sys
 from django.core.wsgi import get_wsgi_application
 
 # sys.path.append("/home/django/sites/miniSASS/miniSASS")
-sys.path.append("/home/web/django_project")
+# sys.path.append("/home/web/django_project")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings")
 

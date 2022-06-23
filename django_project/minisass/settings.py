@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import ast
 import os
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -7,9 +8,9 @@ DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Rischan Mafrur', 'rischan@kartoza.com'),
     ('Gavin Fleming', 'gavin@kartoza.com'),
-    ('Frank Sokolic', 'frank@gis-solutions.co.za')
+    ('Frank Sokolic', 'frank@gis-solutions.co.za'),
+    ('Ismail Sunni', 'ismail@kartoza.com')
 )
 
 MANAGERS = ADMINS
@@ -75,7 +76,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, 'static'),
+    # os.path.join(PROJECT_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -138,10 +139,11 @@ LANGUAGES = [
     ('en', 'English')
 ]
 ADMIN_LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'en'
 
 # Django CMS configuration settings
 # CMS_LANGUAGES = {
-#         1: [
+#         '1': [
 #             {
 #                 'code': 'en',
 #                 'name': gettext('English'),
@@ -188,7 +190,7 @@ CMS_PLUGIN_CONTEXT_PROCESSORS = []
 CMS_PLUGIN_PROCESSORS = []
 CMS_APPHOOKS = (
     'monitor.cms_app.MonitorApp', 
-    #'cmsplugin_blog.cms_app.BlogApphook'
+    # 'cmsplugin_blog.cms_app.BlogApphook'
 )
 PLACEHOLDER_FRONTEND_EDITING = True
 
@@ -220,7 +222,7 @@ CMS_CACHE_DURATIONS = {
         'menus': 3600,
         'permissions': 3600
         }
-CMS_CACHE_PREFIX = 'minisass-dev'
+CMS_CACHE_PREFIX = 'minisass-prod'
 CMS_MAX_PAGE_PUBLISH_REVERSIONS = 25
 
 # WYM Editor settings
@@ -231,21 +233,20 @@ CMS_MAX_PAGE_PUBLISH_REVERSIONS = 25
 # WYM_STYLESHEET
 
 # filer, easy_thumbnails settings
-FILER_DEBUG = True
+FILER_DEBUG = False
 FILER_ENABLE_LOGGING = True
 
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
-    #'easy_thumbnails.processors.scale_and_crop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
 )
 
-# blog plugin settings
-JQUERY_JS = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'
-JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js'
-JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
+# # blog plugin settings
+# JQUERY_JS = 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'
+# JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js'
+# JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
 
 # reCAPTCHA keys for minisass.org
 RECAPTCHA_PUBLIC_KEY = '6LfMquASAAAAAOHqdGSV9f_7MxgsU5apGmq6NXDh'
@@ -253,18 +254,21 @@ RECAPTCHA_PRIVATE_KEY = '6LfMquASAAAAAAFQXjSQFex-IR7tVeUAgBzAica1'
 
 # tiny-MCE settings
 TINYMCE_DEFAULT_CONFIG = {
-    'theme': 'simple', 
-    'relative_urls': False,
-    'width': 800,
-    'height': 600,
-    'resize': True
+   'theme': 'simple', 
+   'relative_urls': False,
+   'width': 800,
+   'height': 600,
+   'resize': True
 }
 
 # email settings
+# EMAIL_HOST = 'smtp.minisass.org'
+EMAIL_HOST = '41.204.202.49'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'info@minisass.org'
+EMAIL_HOST_USER = 'info@minisass.org'
+EMAIL_HOST_PASSWORD = 'M75aE@ik845'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = 'info@test.minisass.org'
 
 # django registration/auth settings
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -300,15 +304,15 @@ INSTALLED_APPS = (
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_video',
     'cms.plugins.twitter',
-    #'cmsplugin_blog',
+    # 'cmsplugin_blog',
     'cmsplugin_contact',
+    'cmsplugin_rssfeed',
     'djangocms_utils',
     'simple_translation',
     'tagging',
     'reversion',
     'monitor',
-    'cmsplugin_rssfeed',
-    'minisass_registration'
+    'minisass_registration',
 )
 
 # A sample logging configuration. The only tangible logging

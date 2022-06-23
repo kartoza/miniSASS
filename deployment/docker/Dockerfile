@@ -1,5 +1,5 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
-FROM ubuntu:2.7.18-buster
+FROM python:2.7.18-buster
 MAINTAINER Admire Nyakudya<admire@kartoza.com>
 
 
@@ -11,8 +11,8 @@ RUN apt-get update && \
 ADD requirements.txt /REQUIREMENTS.txt
 RUN pip install --upgrade -r /REQUIREMENTS.txt
 
-# ADD libgeos.py /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
-RUN sed -i 's/geos_version().decode()/geos_version().decode().split(\x27 \x27)/g' /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
+ADD libgeos.py /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
+#RUN sed -i 's/geos_version().decode()/geos_version().decode().split(\x27 \x27)/g' /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
 #USER www-data
 #ADD ../django_project /home/web/django_project
 WORKDIR /home/web/django_project
