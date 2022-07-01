@@ -26,25 +26,33 @@ services:
     environment:
       - POSTGRES_DB=minisass
       - POSTGRES_USER=docker
-      - POSTGRES_PASS=MTdlY2Q5ZDBkYWNmY2I3ZmNlNzNjMTA4
-      - DATABASE_HOST=196.21.240.112
-      - DATABASE_PORT=32767
+      - POSTGRES_PASS=docker
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
       - ALLOWED_HOSTS='*'
-      - SERVER_MODE=develop
+      - SERVER_MODE=production
+      - RECAPTCHA_PUBLIC_KEY=''
+      - RECAPTCHA_PRIVATE_KEY=''
+      - SMTP_HOST=''
+      - SMTP_PORT=587
+      - SMTP_EMAIL=''
+      - SMTP_HOST_USER=''
+      - SMTP_HOST_PASSWORD=''
+      - SMTP_EMAIL_TLS=True
     depends_on:
       - db
     ports:
-      - "8080"
-      - "8000"
+      - "8080:8080"
   web:
     image: nginx
     volumes:
       - ./sites-available/default.conf:/etc/nginx/conf.d/default.conf:rw
+      - ./django_project/minisass/static:/home/web/static
     ports:
       - "80:80"
     depends_on:
       - django
-      - postgres
+      - db
 
 
 

@@ -26,7 +26,21 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings")
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
 
-application = get_wsgi_application()
+_application = get_wsgi_application()
+
+
+def application(environ, start_response):
+    """Factory for the application instance.
+
+    :param environ: os environment passed in by web server.
+    :type environ: dict
+
+    :param start_response: ?
+    :type start_response: ?
+
+    Places env vars defined in apache conf into a context accessible by django.
+    """
+    return _application(environ, start_response)
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
