@@ -6,10 +6,10 @@ MAINTAINER Admire Nyakudya<admire@kartoza.com>
 # Install system dependencies
 RUN apt-get update && \
     apt-get install -y libgdal-dev libcurl4-gnutls-dev librtmp-dev libssl-dev  binutils libproj-dev gdal-bin &&  \
-    pip install uwsgi setuptools
+    pip install uwsgi setuptools;pip uninstall -y wheel
 
 ADD requirements.txt /REQUIREMENTS.txt
-RUN pip install --upgrade -r /REQUIREMENTS.txt
+RUN pip install --no-deps -r /REQUIREMENTS.txt
 
 ADD libgeos.py /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
 ADD trans_real.py /usr/local/lib/python2.7/site-packages/django/utils/translation/trans_real.py
