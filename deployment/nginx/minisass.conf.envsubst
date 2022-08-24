@@ -1,10 +1,17 @@
 server {
   include  /etc/nginx/mime.types;
   listen 80;
-  server_name         $HTTP_HOST 127.0.0.1 nginx;
+  server_name $HTTPS_HOST $HTTP_HOST;
+  # Except for let's encrypt challenge
+  location /.well-known {
+    alias /certificates/.well-known;
+    include  /etc/nginx/mime.types;
+  }
 
-  # Redirect all traffic to SSL
-  rewrite ^ https://$server_name$request_uri? permanent;
+  # Redirect to https
+  location / {
+      return 302 https://$HTTPS_HOST$request_uri; # TODO : we should use 301 (permanent redirect, but not practical for debug)
+  }
 }
 
 server {
@@ -34,11 +41,6 @@ server {
     ssl_certificate_key /certificate_symlink/privkey.pem;
     ssl_session_timeout  5m;
 
-    # Except for let's encrypt challenge
-    location /.well-known {
-        alias /certificates/.well-known;
-        include  /etc/nginx/mime.types;
-    }
     # Drop any non django related requests
     # Its probably someone nefarious probing for vulnerabilities...
     location ~ (\.php|.aspx|.asp|myadmin) {
