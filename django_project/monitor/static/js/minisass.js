@@ -959,8 +959,8 @@ Ext.onReady(function() {
     geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
     geoserverCachedURL = 'http://localhost:8080/geoserver/miniSASS/wms';
   } else {
-    geoserverURL = 'http://minisass.org:8080/geoserver/wms';
-    geoserverCachedURL = 'http://minisass.org:8080/geoserver/gwc/service/wms?TILED=true';
+    geoserverURL = 'https://minisass.org/geoserver/wms';
+    geoserverCachedURL = 'https://minisass.org/geoserver/gwc/service/wms?TILED=true';
   };
 
   // Define a store for holding data for sites
@@ -1328,8 +1328,9 @@ Ext.onReady(function() {
       obsTabPanel.removeAll();
       infoWindow.show();
       var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
+      console.log(WMSParams);
       Ext.Ajax.request({
-        url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
+        url:geoserverURL+'?'+WMSParams,
         success:function(response,opts){
           if (response.responseText.length > 1) {
             // Split the observations into tabs and extract the dates
