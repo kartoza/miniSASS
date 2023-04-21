@@ -16,32 +16,215 @@ var layerProvinces;
 var layerSchools;
 var layerMiniSASSObs;
 var layerMarker;
+var mapClick;
 var infoClick;
+var inputWindow;
 var infoWindow;
-var dataWindow;
+var siteSelectWindow;
 var siteDataSelectWindow;
-var redirectWindow;
 var filterWindow;
 var filtered = false;
 var cqlFilter = '';
 var messagePanel;
+var modifyControl;
 var markerPoint;
+var flagCoordsChanged = false;
 var userFunction = 'none';// Variable to determine which cursor to display
 var searchRadius = 1000;  // The search radius for locating nearby sites (metres)
+var clickCoords;          // Map click coordinates
 var storeSites;           // A store for holding sites data
+var storeNearbySites;     // A store for holding data for nearby sites
 var storeSchools;         // A store for holding data for schools
 var storeRiverNames;      // A store for holding unique river names
 var storeSiteNames;       // A store for holding unique site names
 var storeUserNames;       // A store for holding unique user names
+var comboSitesNewObs;     // A list of all sites (for entering new observations)
 var comboSitesData;       // A list of all sites (for displaying site data and graphs)
+var comboNearbySites;     // A combobox containing a list of nearby sites
 var comboZoomSites;       // A combobox for zooming to sites
 var comboZoomSchools;     // A combobox for zooming to schools
-var dataTabPanel;         // A tab panel for showing site details, observations and graphs
 var exceededZoom = '';    // Keep track of base layers zoomed beyond their limit
+var editSite = true;      // Keep track of whether site data can be edited or not
 var navMsg = 'Use the <b>+</b> and <b>–</b> buttons or the <i>mouse wheel</i> to '
            + '<b>zoom in or out</b> on the map. To <b>zoom in</b> <i>double-click</i> '
            + 'on the map or press <i>Shift</i> and <i>draw a rectangle</i>. <i>Click '
            + 'and hold</i> the mouse button to <b>drag the map</b> around.';
+
+function convertDDtoDMS() {
+/* Function to convert Decimal Degrees to Degrees Minutes Seconds.
+*/
+  var latD = parseFloat(document.getElementById('id_latitude').value);
+  var lonD = parseFloat(document.getElementById('id_longitude').value);
+  var hemNS = document.getElementById('id_hem_s').checked;
+  var hemEW = document.getElementById('id_hem_e').checked;
+  var DMS = new Array();
+  // Convert the latitude
+  DMS[0] = 0|(latD<0?latD=-latD:latD);
+  DMS[1] = 0|latD%1*60;
+  DMS[2] = (0|latD*60%1*600)/10;
+  DMS[3] = hemNS?'S':'N';
+  // Convert the longitude
+  DMS[4] = 0|(lonD<0?lonD=-lonD:lonD);
+  DMS[5] = 0|lonD%1*60;
+  DMS[6] = (0|lonD*60%1*600)/10;
+  DMS[7] = hemEW?'E':'W';
+  return DMS;
+}
+
+function convertDMStoDD() {
+/* Function to convert Degrees Minutes Seconds to Decimal Degrees.
+*/
+  var latD = parseInt(document.getElementById('id_lat_d').value);
+  var latM = parseInt(document.getElementById('id_lat_m').value);
+  var latS = parseFloat(document.getElementById('id_lat_s').value);
+  var lonD = parseInt(document.getElementById('id_lon_d').value);
+  var lonM = parseInt(document.getElementById('id_lon_m').value);
+  var lonS = parseFloat(document.getElementById('id_lon_s').value);
+  var hemNS = document.getElementById('id_hem_s').checked;
+  var hemEW = document.getElementById('id_hem_e').checked;
+  var DD = new Array();
+  // Convert the latitude
+  if (!latD) latD = 0;
+  if (!latM) latM = 0;
+  if (!latS) latS = 0;
+  DD[0] = latD;
+  if (DD[0] < 0) DD[0] = -1 * DD[0];
+  if ((latM >= 0) && (latM <= 60)) DD[0] = DD[0] + latM/60;
+  if ((latS >= 0) && (latS <= 60)) DD[0] = DD[0] + latS/3600;
+  if (hemNS) {
+    if (DD[0] > 0) DD[0] = -1 * DD[0];
+  }
+  // Convert the latitude
+  if (!lonD) lonD = 0;
+  if (!lonM) lonM = 0;
+  if (!lonS) lonS = 0;
+  DD[1] = lonD;
+  if (DD[1] < 0) DD[1] = -1 * DD[1];
+  if ((lonM >= 0) && (lonM <= 60)) DD[1] = DD[1] + lonM/60;
+  if ((lonS >= 0) && (lonS <= 60)) DD[1] = DD[1] + lonS/3600;
+  if (!hemEW) {
+    if (DD[1] > 0) DD[1] = -1 * DD[1];
+  }
+  return DD;
+}
+
+function coords(format) {
+/* This function switches the lat/lon coordinate display in the data
+   entry window to either DMS or Decimal Degrees.
+*/
+  if (format == 'DMS') {
+    document.getElementById('id_latitude').style.display = 'none';
+    document.getElementById('id_lat_d').style.display = '';
+    document.getElementById('id_lat_m').style.display = '';
+    document.getElementById('id_lat_s').style.display = '';
+    document.getElementById('id_longitude').style.display = 'none';
+    document.getElementById('id_lon_d').style.display = '';
+    document.getElementById('id_lon_m').style.display = '';
+    document.getElementById('id_lon_s').style.display = '';
+    var coordsDMS = convertDDtoDMS();
+    document.getElementById('id_lat_d').value = coordsDMS[0];
+    document.getElementById('id_lat_m').value = coordsDMS[1];
+    document.getElementById('id_lat_s').value = coordsDMS[2];
+    document.getElementById('id_lon_d').value = coordsDMS[4];
+    document.getElementById('id_lon_m').value = coordsDMS[5];
+    document.getElementById('id_lon_s').value = coordsDMS[6];
+  }
+  if (format == 'Decimal') {
+    document.getElementById('id_latitude').style.display = '';
+    document.getElementById('id_lat_d').style.display = 'none';
+    document.getElementById('id_lat_m').style.display = 'none';
+    document.getElementById('id_lat_s').style.display = 'none';
+    document.getElementById('id_longitude').style.display = '';
+    document.getElementById('id_lon_d').style.display = 'none';
+    document.getElementById('id_lon_m').style.display = 'none';
+    document.getElementById('id_lon_s').style.display = 'none';
+    document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+    document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
+  }
+}
+
+function updateCoords(event) {
+/* This function updates the latitude and longitude in the Data Input window
+ * when the user drags the site marker to a new position on the screen.
+ */
+    // Get the marker coordinates and reproject them
+    var xyCoords = new OpenLayers.LonLat(event.feature.geometry.x,event.feature.geometry.y);
+    xyCoords.transform(proj3857,proj4326);
+
+    // Update the lat/lon text fields and hemisphere selectors
+    document.getElementById('id_latitude').value = xyCoords.lat.toFixed(6);
+    document.getElementById('id_longitude').value = xyCoords.lon.toFixed(6);
+    if (xyCoords.lat.toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (xyCoords.lon.toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
+
+    if (document.getElementById('id_DMS').checked) {
+      coords('DMS');
+    }
+
+    // Unset the CoordsChanged flag
+    flagCoordsChanged = false;
+}
+
+function coordsChanged() {
+/* This function sets the CoordsChanged flag to true if the user has
+ * entered or changed the latitude/longitude coordinates.
+ */
+  flagCoordsChanged = true;
+}
+
+function zoomToCoords() {
+/* This function zooms the map to the coordinates shown in the Data Input
+ * window. If the user is entering a new site then the marker can be dragged
+ * to a new position and the coordinates in the Data Input window are
+ * automatically updated.
+*/
+  if (document.getElementById('id_DMS').checked==true){
+    var coords = convertDMStoDD();
+    var latitude = coords[0];
+    var longitude = coords[1];
+  } else {
+    var latitude = parseFloat(document.getElementById('id_latitude').value);
+    var longitude = parseFloat(document.getElementById('id_longitude').value);
+    // Make sure the coordinates have the correct sign
+    var hemS = document.getElementById('id_hem_s').checked;
+    var hemW = document.getElementById('id_hem_w').checked;
+    if (hemS && (latitude > 0)) latitude = -1 * latitude;
+    if (hemW && (longitude > 0)) longitude = -1 * longitude;
+    if (!hemS && (latitude < 0)) latitude = -1 * latitude;
+    if (!hemW && (longitude < 0)) longitude = -1 * longitude;
+  }
+  if (latitude && longitude && (latitude != 0 || longitude != 0)){
+    // Zoom the map to the coordinates
+    var xyCoords = new OpenLayers.LonLat(longitude,latitude);
+    map.setCenter(xyCoords.transform(proj4326, proj3857),15);
+
+    // Show the marker
+    showMarker(longitude,latitude)
+
+    // If site editing is allowed then allow the user to move the marker
+    if (editSite == true){
+      // Activate the control and select the marker
+      modifyControl.activate();
+      modifyControl.selectFeature(layerMarker.features[0]);
+      // Deactivate the map click and info click functions
+      userFunction = 'mapclick';
+      inputFromMap();
+      userFunction = 'infoclick';
+      infoFromMap();
+      Ext.Msg.alert('Site Marker', 'The red circle on the map shows the position of the site<br />you want to create. If it is in the wrong position then<br />click and drag the circle to the correct position');
+    } else {
+      modifyControl.deactivate();
+    }
+
+    // Unset the CoordsChanged flag
+    flagCoordsChanged = false;
+
+  } else {
+    Ext.Msg.alert('Invalid Coordinates', 'The coordinates you have entered are invalid.<br />Please check them.');
+  }
+}
 
 function hideMarker() {
 /* This function hides the marker showing the location of the site coordinates
@@ -66,20 +249,236 @@ function showMarker(longitude,latitude) {
   layerMarker.redraw();
 }
 
+function updateInputForm(clickedElement) {
+/* This function updates the species and total scores on the data
+   input form. Site data editing is also enabled/disabled as needed.
+*/
+  var totalScore=0;
+  var numGroups=0;
+  var averageScore=0;
+  var elementID='id_' + clickedElement;
+
+  function updateSpecies(species,speciesScore) {
+  /* This function is called once for each of the species.
+     Function scope: Local to function unpdateInputform.
+  */
+    var elementID = 'id_' + species;
+    if (document.getElementById(elementID).checked==true) {
+      totalScore = totalScore +speciesScore;
+      numGroups+=1;
+      document.getElementById(species).style.color='red';
+      document.getElementById(species).style.fontWeight='bold';
+    } else {
+      document.getElementById(species).style.color='darkgray';
+      document.getElementById(species).style.fontWeight='normal';
+    }
+  }
+
+  // Only update scores if a river category has been selected
+  if ((clickedElement != '') && (document.getElementById('id_river_cat').selectedIndex == 0)) {
+    document.getElementById(elementID).checked = false;
+    Ext.Msg.alert('River category', 'Please select a river category');
+  } else {
+    updateSpecies('flatworms',3);
+    updateSpecies('worms',2);
+    updateSpecies('leeches',2);
+    updateSpecies('crabs_shrimps',6);
+    updateSpecies('stoneflies',17);
+    updateSpecies('minnow_mayflies',5);
+    updateSpecies('other_mayflies',11);
+    updateSpecies('damselflies',4);
+    updateSpecies('dragonflies',6);
+    updateSpecies('bugs_beetles',5);
+    updateSpecies('caddisflies',9);
+    updateSpecies('true_flies',2);
+    updateSpecies('snails',4);
+    document.getElementById('id_total_score').innerHTML = totalScore;
+    document.getElementById('id_groups').innerHTML = numGroups;
+    if (numGroups != 0) averageScore = (totalScore/numGroups);
+    document.getElementById('id_average_score').innerHTML = averageScore.toFixed(1);
+
+    // Update the crab icon
+    var riverCat = document.getElementById('id_river_cat').value;
+    if (averageScore == 0 || document.getElementById('id_river_cat').selectedIndex == 0){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_u_large.png';
+      document.getElementById('id_health_class').innerHTML = '&nbsp;';
+    } else if (averageScore > 0 && averageScore <= 4.8 && riverCat == 'sandy'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_v_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Very Poor';
+    } else if (averageScore > 0 && averageScore <= 5.3 && riverCat == 'rocky'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_v_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Very Poor';
+    } else if (averageScore > 4.8 && averageScore <= 5.3 && riverCat == 'sandy'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_p_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Poor';
+    } else if (averageScore > 5.3 && averageScore <= 5.6 && riverCat == 'rocky'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_p_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Poor';
+    } else if (averageScore > 5.3 && averageScore <= 5.8 && riverCat == 'sandy'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_f_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Fair';
+    } else if (averageScore > 5.6 && averageScore <= 6.1 && riverCat == 'rocky'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_f_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Fair';
+    } else if (averageScore > 5.8 && averageScore <= 6.8 && riverCat == 'sandy'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_g_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Good';
+    } else if (averageScore > 6.1 && averageScore <= 7.2 && riverCat == 'rocky'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_g_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Good';
+    } else if (averageScore > 6.8 && riverCat == 'sandy'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_n_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Natural';
+    } else if (averageScore > 7.2 && riverCat == 'rocky'){
+      document.getElementById('id_crab').src = '/static/img/icon_crab_n_large.png';
+      document.getElementById('id_health_class').innerHTML = 'Natural';
+    }
+
+  }
+
+  // Enable/disable site editing as necessary
+  enableEditSite(editSite);
+}
+
+function canSubmit(){
+/* This function ensures that all form variables are correctly set
+   when the data input form is submitted.
+*/
+  if (document.getElementById('id_river_name').value == '') {
+    Ext.Msg.alert('River Name Error', 'Please enter a river name');
+    return false;
+  } else if (document.getElementById('id_site_name').value == '') {
+    Ext.Msg.alert('Site Name Error', 'Please enter a site name');
+    return false;
+  } else if (document.getElementById('id_description').value == '') {
+    Ext.Msg.alert('Site Description Error', 'Please enter a site description');
+    return false;
+  } else if (document.getElementById('id_description').value.length > 255) {
+    var lenDescription = document.getElementById('id_description').value.length;
+    Ext.Msg.alert('Site Description Error',
+                  'Your site description is too long (' +  lenDescription + ' characters).<br />'
+                + 'Please shorten it to 255 characters or less.');
+    return false;
+  } else if ((document.getElementById('id_DMS').checked==true) && (convertDMStoDD()[0] == 0)) {
+    Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
+    return false;
+  } else if ((document.getElementById('id_DMS').checked==true) && (convertDMStoDD()[1] == 0)) {
+    Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
+    return false;
+  } else if ((document.getElementById('id_decimal').checked==true) && !parseFloat(document.getElementById('id_latitude').value)) {
+    Ext.Msg.alert('Latitude Error', 'Please enter a correct latitude');
+    return false;
+  } else if ((document.getElementById('id_decimal').checked==true) && !parseFloat(document.getElementById('id_longitude').value)) {
+    Ext.Msg.alert('Longitude Error', 'Please enter a correct longitude');
+    return false;
+  } else if (document.getElementById('id_river_cat').selectedIndex == 0) {
+    Ext.Msg.alert('River Category and Groups error',
+                  'Please select a river category and indicate<br />which insect groups you found');
+    return false;
+  } else if (document.getElementById('id_obs_date').value == '') {
+    Ext.Msg.alert('Date Error', 'Please enter a valid date');
+    return false;
+  } else if (document.getElementById('id_comment').value.length > 255) {
+    var lenComment = document.getElementById('id_comment').value.length;
+    Ext.Msg.alert('Comment Error',
+                  'Your comment is too long (' +  lenComment + ' characters).<br />'
+                + 'Please shorten it to 255 characters or less.');
+    return false;
+  } else if (flagCoordsChanged) {
+    Ext.Msg.alert('Check coordinates', 'Please click the <b>Show on Map</b> button to check<br />if your latitude/longitude coordinates are correct');
+    return false;
+  } else { // All the required fields are present
+    if (editSite == true) {
+      // convert coordinates to DD if they've been entered as DMS
+      if (document.getElementById('id_DMS').checked==true) {
+        document.getElementById('id_latitude').value = convertDMStoDD()[0].toFixed(6);
+        document.getElementById('id_longitude').value = convertDMStoDD()[1].toFixed(6);
+      }
+
+      // make sure the coordinates have the correct sign
+      var hemS = document.getElementById('id_hem_s').checked;
+      var hemW = document.getElementById('id_hem_w').checked;
+      if (hemS && (document.getElementById('id_latitude').value > 0)) {
+          document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
+      };
+      if (hemW && (document.getElementById('id_longitude').value > 0)) {
+          document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
+      };
+      if (!hemS && (document.getElementById('id_latitude').value < 0)) {
+          document.getElementById('id_latitude').value = -1 * document.getElementById('id_latitude').value;
+      };
+      if (!hemW && (document.getElementById('id_longitude').value < 0)) {
+          document.getElementById('id_longitude').value = -1 * document.getElementById('id_longitude').value;
+      };
+    };
+    enableEditSite(true);
+
+    // update the geometry field
+    var theGeomString = document.getElementById('id_longitude').value + ' ' + document.getElementById('id_latitude').value;
+    document.getElementById('id_the_geom').value = 'POINT(' + theGeomString + ')';
+
+    // set the observations flag to Dirty
+    document.getElementById('id_flag').value = 'dirty';
+
+    // update the map variables
+    var mapCenter = new OpenLayers.LonLat(
+      document.getElementById('id_longitude').value,
+      document.getElementById('id_latitude').value
+    );
+    mapCenter.transform(proj4326, proj3857);
+    document.getElementById('id_zoom_level').value = 15;
+    document.getElementById('id_centre_X').value = mapCenter.lon;
+    document.getElementById('id_centre_Y').value = mapCenter.lat;
+    var layerStr = map.layers[0].visibility + ',' + map.layers[1].visibility + ',' + map.baseLayer.name;
+    document.getElementById('id_layers').value = layerStr;
+    return true;
+  }
+}
+
+function inputFromMap(){
+/* This function toggles the 'input from map' button image, changes the
+   map cursor and then activates/deactivates the mapClick control.
+*/
+  if (userFunction != 'mapclick') {
+    document.getElementById('id_obs_map').src = '/static/img/button_obs_map_selected.png';
+    document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
+    document.getElementById('id_site_map').src = '/static/img/button_site_map.png';
+    var mapViewPort = document.getElementsByClassName('olMapViewport');
+    mapViewPort[0].style.cursor = 'url(/static/img/target.cur),crosshair';
+    var msg = 'Click the location of the observation on the map.<br />' + navMsg;
+    messagePanel.update(msg);
+    userFunction = 'mapclick';
+    infoClick.deactivate();
+    dataClick.deactivate();
+    mapClick.activate();
+    if (infoWindow.hidden == false) infoWindow.hide();
+  } else {
+    document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
+    var mapViewPort = document.getElementsByClassName('olMapViewport');
+    mapViewPort[0].style.cursor = 'auto';
+    var msg = navMsg;
+    messagePanel.update(msg);
+    userFunction = 'none';
+    mapClick.deactivate();
+  }
+}
+
 function infoFromMap(){
 /* This function toggles the 'info from map' button image, changes the
    map cursor and then activates/deactivates the infoClick control.
 */
   if (userFunction != 'infoclick') {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info_selected.png';
+    document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
     document.getElementById('id_site_map').src = '/static/img/button_site_map.png';
     var mapViewPort = document.getElementsByClassName('olMapViewport');
     mapViewPort[0].style.cursor = 'url(/static/img/info.cur),crosshair';
     var msg = 'Click a miniSASS crab symbol to display details of the observations at that site.<br />' + navMsg;
     messagePanel.update(msg);
     userFunction = 'infoclick';
-    infoClick.activate();
     dataClick.deactivate();
+    infoClick.activate();
+    mapClick.deactivate();
   } else {
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
     var mapViewPort = document.getElementsByClassName('olMapViewport');
@@ -99,6 +498,7 @@ function dataFromMap(){
   if (userFunction != 'dataclick') {
     document.getElementById('id_site_map').src = '/static/img/button_site_map_selected.png';
     document.getElementById('id_obs_info').src = '/static/img/button_obs_info.png';
+    document.getElementById('id_obs_map').src = '/static/img/button_obs_map.png';
     var mapViewPort = document.getElementsByClassName('olMapViewport');
     mapViewPort[0].style.cursor = 'url(/static/img/target.cur),crosshair';
     var msg = 'Click a site on the map.<br />' + navMsg;
@@ -106,6 +506,7 @@ function dataFromMap(){
     userFunction = 'dataclick';
     dataClick.activate();
     infoClick.deactivate();
+    mapClick.deactivate();
     if (infoWindow.hidden == false) infoWindow.hide();
   } else {
     document.getElementById('id_site_map').src = '/static/img/button_site_map.png';
@@ -280,6 +681,106 @@ function loadSelectedObs(selectedSite,store){
       }
     });
 
+  }
+}
+
+function resetInputForm(){
+/* This function clears all the inputs on the data input form
+   when the user clicks the Cancel button.
+*/
+  var divDataPanel = document.getElementById('data_panel');
+
+  // Reset all the text and checkbox elements
+  var inputArray = divDataPanel.getElementsByTagName('input');
+  for (var i=0; i < inputArray.length; i++) {
+    if (inputArray[i].getAttribute('type')=='text') inputArray[i].value='';
+    if (inputArray[i].getAttribute('type')=='checkbox') inputArray[i].checked=false;
+  }
+
+  // Reset all the textarea elements
+  var textArray = divDataPanel.getElementsByTagName('textarea');
+  for (var j=0; j < textArray.length; j++) textArray[j].value='';
+
+  // Reset all the select elements
+  var selectArray = divDataPanel.getElementsByTagName('select');
+  for (var k=0; k < selectArray.length; k++) selectArray[k].selectedIndex=0;
+
+  // Reset the radio buttons
+  document.getElementById('id_hem_s').checked = 'checked';
+  document.getElementById('id_hem_e').checked = 'checked';
+  document.getElementById('id_decimal').checked = 'checked';
+  coords('Decimal');
+
+  // Reset the totals and score
+  updateInputForm('');
+
+  // Enable the controls for site input variables
+  editSite = true;
+  enableEditSite(editSite)
+  document.getElementById('id_edit_site').value = 'true';
+
+  // Erase the observation link to the site id
+  document.getElementById('id_site').value = '1';
+
+}
+
+function enableEditSite(enable){
+/* This function enables or disables editing of site-related variables
+   in the data input form.
+*/
+  document.getElementById('id_river_name').disabled = !enable;
+  document.getElementById('id_site_name').disabled = !enable;
+  document.getElementById('id_description').disabled = !enable;
+  document.getElementById('id_river_cat').disabled = !enable;
+  document.getElementById('id_latitude').disabled = !enable;
+  document.getElementById('id_lat_d').disabled = !enable;
+  document.getElementById('id_lat_m').disabled = !enable;
+  document.getElementById('id_lat_s').disabled = !enable;
+  document.getElementById('id_longitude').disabled = !enable;
+  document.getElementById('id_lon_d').disabled = !enable;
+  document.getElementById('id_lon_m').disabled = !enable;
+  document.getElementById('id_lon_s').disabled = !enable;
+  document.getElementById('id_hem_n').disabled = !enable;
+  document.getElementById('id_hem_s').disabled = !enable;
+  document.getElementById('id_hem_e').disabled = !enable;
+  document.getElementById('id_hem_w').disabled = !enable;
+}
+
+function loadSelectedSite(selectedSite,store){
+/* This function loads the data from the selected site into the
+   fields of the data input form and then disables editing of these
+   fields.
+*/
+  if (selectedSite != '') {
+    resetInputForm();
+    var siteRecord = store.getAt(store.find('site_gid',selectedSite));
+
+    // Add the site data to the Data Input form
+    document.getElementById('id_river_name').value = siteRecord.get('river_name');
+    document.getElementById('id_site_name').value = siteRecord.get('site_name');
+    document.getElementById('id_description').value = siteRecord.get('description');
+    if (siteRecord.get('river_cat') == 'rocky'){
+      document.getElementById('id_river_cat').selectedIndex = 1;
+    } else if (siteRecord.get('river_cat') == 'sandy'){
+      document.getElementById('id_river_cat').selectedIndex = 2;
+    } else document.getElementById('id_river_cat').selectedIndex = 0;
+    document.getElementById('id_latitude').value = siteRecord.get('latitude').toFixed(6);
+    document.getElementById('id_longitude').value = siteRecord.get('longitude').toFixed(6);
+    if (siteRecord.get('latitude').toFixed(6) < 0) document.getElementById('id_hem_s').checked = true
+    else document.getElementById('id_hem_n').checked = true;
+    if (siteRecord.get('longitude').toFixed(6) < 0) document.getElementById('id_hem_w').checked = true
+    else document.getElementById('id_hem_e').checked = true;
+
+    // Link the observation to the site id
+    document.getElementById('id_site').value = siteRecord.get('site_gid');
+
+    // Disable the site input controls and variables
+    editSite = false;
+    enableEditSite(editSite);
+    document.getElementById('id_edit_site').value = 'false';
+
+    // Zoom the map to the selected site
+    zoomToCoords();
   }
 }
 
@@ -458,8 +959,8 @@ Ext.onReady(function() {
     geoserverURL = 'http://localhost:8080/geoserver/miniSASS/wms';
     geoserverCachedURL = 'http://localhost:8080/geoserver/miniSASS/wms';
   } else {
-    geoserverURL = 'http://minisass.org:8080/geoserver/wms';
-    geoserverCachedURL = 'http://minisass.org:8080/geoserver/gwc/service/wms?TILED=true';
+    geoserverURL = 'https://minisass.org/geoserver/wms';
+    geoserverCachedURL = 'https://minisass.org/geoserver/gwc/service/wms?TILED=true';
   };
 
   // Define a store for holding data for sites
@@ -565,6 +1066,16 @@ Ext.onReady(function() {
   });
 
   // Setup up combo boxes for displaying a list of all sites
+  comboSitesNewObs = new Ext.form.ComboBox({
+    store:storeSites,
+    width:220,
+    listWidth:290,
+    displayField:'combo_name',
+    valueField:'site_gid',
+    typeAhead:true,
+    mode:'local',
+    emptyText:'Select a site...',
+  });
   comboSitesData = new Ext.form.ComboBox({
     store:storeSites,
     width:220,
@@ -638,8 +1149,24 @@ Ext.onReady(function() {
     }
   });
 
-  // Define a handler to display Feature Info from a map click
-  OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {
+  // Define a store for holding data for nearby sites
+  storeNearbySites = new Ext.data.ArrayStore({
+    fields:['site_gid','river_name','site_name','combo_name','description','river_cat','longitude','latitude']
+  });
+
+  // Setup up a combo box for displaying a list of nearby sites
+  comboNearbySites = new Ext.form.ComboBox({
+    store:storeNearbySites,
+    listWidth:290,
+    displayField:'combo_name',
+    valueField:'site_gid',
+    typeAhead:true,
+    mode:'local',
+    emptyText:'Nearby sites...',
+  });
+
+  // Define a handler for processing coordinates from a map click
+  OpenLayers.Control.MapClick = OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions:{
       'single':true,
       'double':false,
@@ -660,36 +1187,59 @@ Ext.onReady(function() {
         }, this.handlerOptions
       );
     },
-    trigger:function (e) {
-      obsTabPanel.removeAll();
-      infoWindow.show();
-      var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
-      Ext.Ajax.request({
-        url:'/map/wms/~'+geoserverURL.replace('http://','')+'~'+WMSParams+'~',
-        success:function(response,opts){
-          if (response.responseText.length > 1) {
-            // Split the observations into tabs and extract the dates
-            var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
-            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1)
-            var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
-            obsTabPanel.update(obsInfoText);
-            // Display the dates in descending date order
-            for (var i=obsInfoCount; i >= 1; i--) {
-              var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
-              if (!obsInfoDate) {obsInfoDate = 'No Observation';}
-              obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
-            }
-            obsTabPanel.setActiveTab(0);
-          } else { // No observations were found
-            var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
-            obsTabPanel.update(obsInfoText);
-            obsTabPanel.setActiveTab(0);
+    trigger:function(e) {
+
+      // Get the click coordinates and convert them to lon/lat
+      clickCoords = map.getLonLatFromPixel(e.xy);
+
+      // Look for existing sites close to the click point
+      var jsonData;
+      function requestSites(callback){
+        Ext.Ajax.request({
+          url:'/map/sites/'+clickCoords.lon+'/'+clickCoords.lat+'/' + searchRadius + '/',
+          success:function(response,opts){
+            jsonData = Ext.decode(response.responseText);
+            callback.call();
+          },
+          failure:function(response,opts){
+            callback.call();  // Fail silently
           }
-        },
-        failure:function(response,opts){
-          infoWindow.update('Error: Could not request site information');
-        }
-      });
+        });
+      };
+
+      var afterRequestSites = function(){
+        // If nearby sites have been found, add them to the combo box
+        storeNearbySites.removeAll();
+        comboNearbySites.reset();
+        if (jsonData){
+          for (var i=0; i<jsonData.features.length; i++){
+            storeNearbySites.add(new storeNearbySites.recordType({
+              'site_gid':jsonData.features[i].properties.gid,
+              'river_name':jsonData.features[i].properties.river_name,
+              'site_name':jsonData.features[i].properties.site_name,
+              'combo_name':jsonData.features[i].properties.combo_name,
+              'description':jsonData.features[i].properties.description,
+              'river_cat':jsonData.features[i].properties.river_cat,
+              'longitude':jsonData.features[i].geometry.coordinates[0],
+              'latitude':jsonData.features[i].geometry.coordinates[1]
+            }));
+          };
+        };
+
+        clickCoords.transform(proj3857, proj4326);
+        var lat = clickCoords.lat.toFixed(6);
+        var lon = clickCoords.lon.toFixed(6);
+        var msg = 'You clicked at:<br />&nbsp;&nbsp;'
+          + 'Latitude ' + lat + '&deg;<br />&nbsp;&nbsp;'
+          + 'Longitude ' + lon + '&deg;<br />'
+          + 'Do you want to create a new site and miniSASS observation at this location?';
+
+        Ext.getCmp('id_clicked_coords').body.update(msg);
+        mapClickWindow.show();
+      };
+
+      // Request nearby sites and then callback to afterRequestSites after the Ajax response
+      requestSites(afterRequestSites);
     }
   });
 
@@ -752,6 +1302,61 @@ Ext.onReady(function() {
     }
   });
 
+  // Define a handler to display Feature Info from a map click
+  OpenLayers.Control.InfoClick = OpenLayers.Class(OpenLayers.Control, {
+    defaultHandlerOptions:{
+      'single':true,
+      'double':false,
+      'pixelTolerance':0,
+      'stopSingle':false,
+      'stopDouble':false
+    },
+    initialize:function(options) {
+      this.handlerOptions = OpenLayers.Util.extend(
+        {}, this.defaultHandlerOptions
+      );
+      OpenLayers.Control.prototype.initialize.apply(
+        this, arguments
+      );
+      this.handler = new OpenLayers.Handler.Click(
+        this, {
+          'click':this.trigger
+        }, this.handlerOptions
+      );
+    },
+    trigger:function (e) {
+      obsTabPanel.removeAll();
+      infoWindow.show();
+      var WMSParams = getFeatureInfoParams(e.xy.x,e.xy.y,'text/html');
+      console.log(WMSParams);
+      Ext.Ajax.request({
+        url:geoserverURL+'?'+WMSParams,
+        success:function(response,opts){
+          if (response.responseText.length > 1) {
+            // Split the observations into tabs and extract the dates
+            var obsInfoCount = parseInt(response.responseText.substr(0,response.responseText.indexOf('#')));
+            var obsInfoText = response.responseText.slice(response.responseText.indexOf('#')+1);
+            var obsInfoDates = obsInfoText.split('<tr><td class="tdlabel">Date:</td><td class="tddata">');
+            obsTabPanel.update(obsInfoText);
+            // Display the dates in descending date order
+            for (var i=obsInfoCount; i >= 1; i--) {
+              var obsInfoDate = obsInfoDates[i].substring(0,obsInfoDates[i].indexOf('<'));
+              if (!obsInfoDate) {obsInfoDate = 'No Observation';}
+              obsTabPanel.add({contentEl:'id_obs_'+i, title:obsInfoDate});
+            }
+            obsTabPanel.setActiveTab(0);
+          } else { // No observations were found
+            var obsInfoText = '<p>No observations were found at the point you clicked.</p><p>Please click on a crab icon.</p>'
+            obsTabPanel.update(obsInfoText);
+          }
+        },
+        failure:function(response,opts){
+          infoWindow.update('Error: Could not request site information');
+        }
+      });
+    }
+  });
+
   // Define a new map
   map = new OpenLayers.Map(
     'map',{
@@ -763,11 +1368,14 @@ Ext.onReady(function() {
   );
 
   function mapBaseLayerChanged(event) {
-  // This functions toggles the Provinces layer on/off with the Google satellite layer
+    // Toggle the Provinces layer on/off with the Google satellite layer
     if (event.layer.name=='Google satellite') {
       map.getLayersByName('Provinces')[0].setVisibility(true);
     } else {
       map.getLayersByName('Provinces')[0].setVisibility(false);
+    }
+    if (exceededZoom != '') {
+      exceededZoom = '';
     }
   };
 
@@ -857,10 +1465,14 @@ Ext.onReady(function() {
   var layerStr = document.getElementById('id_layers').value;
   if (layerStr != ''){
     var layerArr = layerStr.split(',');
-    for (var i=0; i < layerArr.length; i++) {
-      if (layerArr[i]=='false') {map.layers[i].visibility = false;}
-      else {map.layers[i].visibility = true;}
-    }
+    // Set the miniSASS observations layer
+    if (layerArr[0]=='false') {map.layers[0].setVisibility(false);}
+    else {map.layers[0].setVisibility(true);}
+    // Set the Schools layers
+    if (layerArr[1]=='false') {map.layers[1].setVisibility(false);}
+    else {map.layers[1].setVisibility(true);}
+    // Set the base layer
+    map.setBaseLayer(map.getLayersByName(layerArr[2])[0]);
   };
 
   // Add a layerswitcher
@@ -880,6 +1492,10 @@ Ext.onReady(function() {
       return markup;
     },
   }));
+
+  // Add the map click controller
+  mapClick = new OpenLayers.Control.MapClick();
+  map.addControl(mapClick);
 
   // Add the info click controller
   infoClick = new OpenLayers.Control.InfoClick();
@@ -910,6 +1526,13 @@ Ext.onReady(function() {
     "Site Location",
     {projection:proj3857,displayInLayerSwitcher:false,renderers:renderer}
   );
+
+  // Create a control for moving the marker
+  modifyControl = new OpenLayers.Control.ModifyFeature(layerMarker);
+  map.addControl(modifyControl);
+
+  // Update the coordinates in the form when the marker is dragged
+  layerMarker.events.on({featuremodified:updateCoords});
 
   // Set a default marker style
   OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '5';
@@ -1002,6 +1625,52 @@ Ext.onReady(function() {
   });
   messagePanel.update(navMsg);
 
+  // Define the popup Data Input window
+  inputWindow = new Ext.Window({
+    applyTo:'data_window',
+    width:570,
+    height:560,
+    closeAction:'hide',
+    modal:false,
+    x:20,
+    items:new Ext.Panel({
+      applyTo:'data_panel',
+      border:false
+    }),
+    buttons:[{
+      text:'Save',
+      tooltip:'Save this observation and return to the map',
+      handler:function(){
+        if (canSubmit()) document.forms['dataform'].submit();
+      }
+    },{
+      text:'Close',
+      tooltip:'Close this window but keep any data that has been entered',
+      handler:function(){hideMarker();inputWindow.hide();}
+    },{
+      text:'Cancel',
+      tooltip:'Close this window and erase any data that has been entered',
+      handler:function(){hideMarker();resetInputForm();inputWindow.hide();}
+    }],
+    listeners:{
+      'hide':function(){hideMarker();},
+    },
+  });
+  editSite = (document.getElementById('id_edit_site').value === 'true');
+  updateInputForm('');
+
+  // Define a datepick widget
+  var today = new Date();
+  var todayString = today.getFullYear() + '-'
+    + ('0' + (today.getMonth()+1)).slice(-2) + '-'
+    + ('0' + today.getDate()).slice(-2);
+  var obsDate = new Ext.form.DateField({
+    applyTo:'id_obs_date',
+    editable:false,
+    format:'Y-m-d',
+    maxValue:todayString,
+  });
+
   // Define a tab panel for holding miniSASS observation information
   var obsTabPanel = new Ext.TabPanel({
     activeTab:0,
@@ -1014,7 +1683,21 @@ Ext.onReady(function() {
         text:'New observation',
         tooltip:'Add a new observation to this site',
         ctCls:'x-btn-over',
-        handler:function(event,toolEl,panel){redirectWindow.show(this);},
+        handler:function(event,toolEl,panel){
+          var selectedTab = obsTabPanel.items.indexOf(obsTabPanel.getActiveTab());
+          if (selectedTab >= 0){
+            // There are one or more observations displayed in the observation
+            // info window so work out which one is being displayed and then load
+            // it into the input form. The tabs are shown in descending date order
+            // so start counting from the last tab backwards.
+            var observation = obsTabPanel.items.length - selectedTab;
+            var selectedSite = document.getElementById('id_sites_gid_'+observation).value;
+            resetInputForm();
+            infoWindow.hide();
+            loadSelectedSite(selectedSite,storeSites);
+            inputWindow.show(this);
+          }
+        },
       }],
     }),
   });
@@ -1044,10 +1727,114 @@ Ext.onReady(function() {
     closeAction:'hide',
     modal:false,
     constrain:true,
-    items:[obsTabPanel]
+    items:[obsTabPanel],
   });
   infoWindow.show();
   infoWindow.hide();
+
+  // Define the popup Site Selection window
+  siteSelectWindow = new Ext.Window({
+    title:'Existing observation sites',
+    width:280,
+    height:200,
+    closeAction:'hide',
+    modal:true,
+    constrain:true,
+    items:new Ext.Panel({
+      border:false,
+      bodyStyle:'padding:5px;background:#dfe8f6;',
+      items:comboSitesNewObs,
+      html:'<br />Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created.'
+    }),
+    buttons:[{
+      text:'Use selected site',
+      tooltip:'Enter an observation at the selected site',
+      handler:function(){
+        resetInputForm();
+        siteSelectWindow.hide();
+        loadSelectedSite(comboSitesNewObs.getValue(),storeSites);
+        comboSitesNewObs.clearValue();
+        inputWindow.show(this);
+      }
+    },{
+      text:'Add a new site',
+      tooltip:'Enter an observation at a new site',
+      handler:function(){
+        resetInputForm();
+        siteSelectWindow.hide();
+        inputWindow.show(this);
+      }
+    },{
+      text:'Cancel',
+      tooltip:'Cancel this window and return to the map',
+      handler:function(){siteSelectWindow.hide();}
+    }]
+  });
+
+  // Define the popup Map Click window
+  mapClickWindow = new Ext.Window({
+    width:300,
+    height:300,
+    closeAction:'hide',
+    modal:true,
+    constrain:true,
+    items:[
+      new Ext.Panel({
+        id:'id_clicked_coords',
+        border:false,
+        title:'Map click position',
+        bodyStyle:'padding:5px;background:#dfe8f6;',
+        buttonAlign:'left',
+        buttons:[{
+          text:'Yes, create new site',
+          tooltip:'Create a new observation site',
+          handler:function(){
+            resetInputForm();
+            document.getElementById('id_latitude').value = clickCoords.lat.toFixed(6);
+            document.getElementById('id_longitude').value = clickCoords.lon.toFixed(6);
+            if (clickCoords.lat < 0) {
+              document.getElementById('id_hem_s').checked = true;
+            } else {
+              document.getElementById('id_hem_n').checked = true;
+            }
+            if (clickCoords.lon < 0) {
+              document.getElementById('id_hem_w').checked = true;
+            } else {
+              document.getElementById('id_hem_e').checked = true;
+            }
+            mapClickWindow.hide();
+            inputWindow.show(this);
+            zoomToCoords();
+          }
+        }]
+      }),
+      new Ext.Panel({
+        id:'id_nearby_sites',
+        border:false,
+        title:'Nearby sites (within '+searchRadius+' metres)',
+        bodyStyle:'padding:5px;background:#dfe8f6;',
+        items:comboNearbySites,
+        buttonAlign:'left',
+        buttons:[{
+          text:'Use nearby site',
+          tooltip:'Enter an observation at the selected nearby site',
+          handler:function(){
+            resetInputForm();
+            mapClickWindow.hide();
+            loadSelectedSite(comboNearbySites.getValue(),storeNearbySites);
+            inputWindow.show(this);
+          }
+        }]
+      })
+    ],
+    buttons:[{
+      text:'Cancel',
+      tooltip:'Cancel this window and return to the map',
+      handler:function(){mapClickWindow.hide();}
+    }]
+  });
+  mapClickWindow.show();
+  mapClickWindow.hide();
 
   // Define a window to display site details, observations and graphs
   dataWindow = new Ext.Window({
@@ -1274,41 +2061,6 @@ Ext.onReady(function() {
     },
   });
 
-  // Define a window redirecting users to the login or register views
-  redirectWindow = new Ext.Window({
-    title:'Not logged in',
-    width:240,
-    height:140,
-    closeAction:'hide',
-    modal:true,
-    constrain:true,
-    items:new Ext.Panel({
-      border:false,
-      bodyStyle:'padding:5px;background:#dfe8f6;',
-      html:'This tool is not active as you are not logged in. Please log in or register by clicking one of the buttons below.'
-    }),
-    buttons:[{
-      text:'Login',
-      tooltip:'Go to the Login page',
-      width:60,
-      handler:function(){
-        document.location.href = '/en/accounts/login/?next=/en/map/';
-      }
-    },{
-      text:'Register',
-      tooltip:'Go to the Register page',
-      width:60,
-      handler:function(){
-        document.location.href = '/en/accounts/register/';
-      }
-    },{
-      text:'Cancel',
-      tooltip:'Close this window and return to the map',
-      width:60,
-      handler:function(){redirectWindow.hide();}
-    }]
-  });
-
   // Link the Site Data Map Click input button
   var buttonMap = Ext.get('id_site_map');
   buttonMap.on('click', dataFromMap);
@@ -1324,15 +2076,15 @@ Ext.onReady(function() {
 
   // Link the Data Input button
   var buttonAdd = Ext.get('id_obs_add');
-  buttonAdd.on('click', function(){redirectWindow.show(this);});
+  buttonAdd.on('click', function(){inputWindow.show(this);});
 
   // Link the Map Click input button
   var buttonMap = Ext.get('id_obs_map');
-  buttonMap.on('click', function(){redirectWindow.show(this);});
+  buttonMap.on('click', inputFromMap);
 
   // Link the Site List input button
   var buttonList = Ext.get('id_obs_list');
-  buttonList.on('click', function(){redirectWindow.show(this);});
+  buttonList.on('click', function(){siteSelectWindow.show(this);});
 
   // Link the Filter Observations button
   var buttonFilter = Ext.get('id_obs_filter');
@@ -1344,6 +2096,25 @@ Ext.onReady(function() {
     if (filtered){filterRemove();filterWindow.hide();}
   });
 
+  // Create a button for checking user-entered coordinates
+  var buttonCheckCoords = new Ext.Button({
+    renderTo:'id_check_coords',
+    text:'Show on map',
+    tooltip:'Zoom the map to the latitude/longitude coordinates',
+    handler:function(){zoomToCoords();},
+  });
+
+  // Re-open the Data Input window if an error has been returned
+  if (document.getElementById('id_error').value == 'true'){
+    document.getElementById('id_error').value = 'false';
+    inputWindow.show(this);
+  };
+
+  // Display a confirmation window if an observation has been saved
+  if (document.getElementById('id_saved_obs').value == 'true'){
+    Ext.Msg.alert('Observation saved', 'Your observation has been saved. It still needs to be<br />verified and you may contacted in this regard.');
+  };
+
   // Define tooltips for the layer switcher
   document.querySelector('div.baseLayersDiv').id='id_baseLayersDiv';
   new Ext.ToolTip({
@@ -1354,5 +2125,29 @@ Ext.onReady(function() {
   new Ext.ToolTip({
     target:'id_dataLayersDiv',
     html:'Layers not within scale are greyed out'
+  });
+
+  // Define tooltips for the latitude/longitude input
+  new Ext.ToolTip({
+    target:'id_hem_s',
+    html:'Choose S for locations in Africa south of the Equator. This includes all countries in southern Africa.'
+  });
+  new Ext.ToolTip({
+    target:'id_hem_n',
+    html:'Choose N for locations in Africa north of the Equator. This includes all countries in north and west Africa.'
+  });
+  new Ext.ToolTip({
+    target:'id_hem_e',
+    html:'Choose E for all locations in Africa south of the Equator. This includes all countries in southern Africa.'
+  });
+  new Ext.ToolTip({
+    target:'id_hem_w',
+    html:'Choose W for locations in the extreme west of Africa.'
+  });
+
+  // Define a tooltip for the river category
+  new Ext.ToolTip({
+    target:'id_river_cat',
+    html:'If your river had no rocky habitats<br />that were sampled, select sandy'
   });
 });

@@ -1,0 +1,124 @@
+version: "3.9"
+
+volumes:
+  postgres_data:
+  certificates:
+services:
+  db:
+    image: kartoza/postgis:14-3.3
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./data:/data
+      - ./data/restore.sh:/docker-entrypoint-initdb.d/restore.sh
+      - ./deployment/extra.conf:/settings/extra.conf
+    environment:
+      - POSTGRES_DB=${POSTGIS_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
+      - POSTGRES_MULTIPLE_EXTENSIONS=${POSTGRES_MULTIPLE_EXTENSIONS}
+    restart: always
+    healthcheck:
+      test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d minisass"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  django:
+    build:
+      context: ./deployment/docker
+    volumes:
+      - ./django_project:/home/web/django_project
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - ALLOWED_HOSTS='*'
+      - SERVER_MODE=${SERVER_MODE}
+      - RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY}
+      - RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_EMAIL=${SMTP_EMAIL}
+      - SMTP_HOST_USER=${SMTP_HOST_USER}
+      - SMTP_HOST_PASSWORD=${SMTP_HOST_PASSWORD}
+      - SMTP_EMAIL_TLS=${SMTP_EMAIL_TLS}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+
+  letsencrypt:
+    build: ./deployment/letsencrypt/
+    environment:
+      - HTTPS_HOST=${HTTPS_HOST}
+      - HTTP_HOST=${HTTP_HOST}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - LETSENCRYPT_MODE=${LETSENCRYPT_MODE}
+    volumes:
+      - certificates:/certificates/
+    restart: always
+
+  geoserver:
+    image: kartoza/geoserver:${GS_VERSION}
+    volumes:
+      - ../deployment/geoserver_data:/opt/geoserver/data_dir
+    restart: on-failure
+    environment:
+      - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
+      - GEOSERVER_ADMIN_USER=admin
+      - EXISTING_DATA_DIR=true
+      - COMMUNITY_EXTENSIONS=${COMMUNITY_EXTENSIONS}
+      - HTTP_SCHEME=${HTTP_SCHEME}
+      - HTTP_PROXY_NAME=${HTTP_PROXY_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+
+  web:
+    build: ./deployment/nginx/
+    environment:
+      - HTTPS_HOST=${HTTPS_HOST}
+      - HTTP_HOST=${HTTP_HOST}
+      - HTTPS_PORT=${HTTPS_PORT}
+      - HTTP_PORT=${HTTP_PORT}
+      - LETSENCRYPT_MODE=${LETSENCRYPT_MODE}
+      - RESOLVER=${RESOLVER}
+    ports:
+      - "${HTTP_PORT}:80"
+      - "${HTTPS_PORT}:443"
+    volumes:
+      - ./django_project/minisass/static:/home/web/static
+      - ./django_project/minisass/media:/home/web/media
+      - certificates:/certificates/
+    restart: on-failure
+    depends_on:
+      - django
+      - db
+      - geoserver
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+
+
+
+    
