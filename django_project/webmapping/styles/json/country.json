@@ -1,0 +1,34 @@
+{
+    "version": 8,
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "name": "country",
+    "sources": {
+        "vector-source": {
+            "type": "vector",
+            "tiles": [
+                "https://minigauss/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=miniSASS:country&STYLE=&TILEMATRIX=EPSG:3857:{z}&TILEMATRIXSET=EPSG:3857&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}"
+            ],
+            "minZoom": 0,
+            "maxZoom": 20
+        }
+    },
+    "layers": [
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.7,
+                "line-opacity": 1.0,
+                "line-color": "#000000",
+                "line-dasharray": [
+                    5,
+                    2
+                ]
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "country",
+            "id": "country:(rule#0):0"
+        }
+    ],
+    "sprite": "spriteSheet"
+}

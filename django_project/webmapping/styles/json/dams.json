@@ -1,0 +1,68 @@
+{
+    "version": 8,
+    "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=cc4PpmmWZP73LjU1nsw3",
+    "name": "dams",
+    "sources": {
+        "vector-source": {
+            "type": "vector",
+            "tiles": [
+                "https://minigauss/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=miniSASS:dams&STYLE=&TILEMATRIX=EPSG:3857:{z}&TILEMATRIXSET=EPSG:3857&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}"
+            ],
+            "minZoom": 0,
+            "maxZoom": 20
+        }
+    },
+    "layers": [
+        {
+            "type": "fill",
+            "paint": {
+                "fill-opacity": 1.0,
+                "fill-color": "#d3e5f3"
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "dams",
+            "id": "dams:(rule#0)Dam-with-label:0",
+            "minzoom": 7.542161335390952,
+            "maxzoom": 24
+        },
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.1,
+                "line-opacity": 1.0,
+                "line-color": "#6998c9"
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "dams",
+            "id": "dams:(rule#0)Dam-with-label:1",
+            "minzoom": 7.542161335390952,
+            "maxzoom": 24
+        },
+        {
+            "type": "fill",
+            "paint": {
+                "fill-opacity": 1.0,
+                "fill-color": "#d3e5f3"
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "dams",
+            "id": "dams:(rule#1)Dam:0"
+        },
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.1,
+                "line-opacity": 1.0,
+                "line-color": "#6998c9"
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "dams",
+            "id": "dams:(rule#1)Dam:1"
+        }
+    ],
+    "sprite": "spriteSheet"
+}

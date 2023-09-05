@@ -1,0 +1,32 @@
+{
+    "version": 8,
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "name": "hca5",
+    "sources": {
+        "vector-source": {
+            "type": "vector",
+            "tiles": [
+                "https://minigauss/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=miniSASS:hca5&STYLE=&TILEMATRIX=EPSG:3857:{z}&TILEMATRIXSET=EPSG:3857&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}"
+            ],
+            "minZoom": 0,
+            "maxZoom": 20
+        }
+    },
+    "layers": [
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.1,
+                "line-opacity": 1.0,
+                "line-color": "#8a2be2"
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "hca5",
+            "id": "hca5:(rule#0)hca5:0",
+            "minzoom": 12.449051930999468,
+            "maxzoom": 24
+        }
+    ],
+    "sprite": "spriteSheet"
+}

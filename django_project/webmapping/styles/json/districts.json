@@ -1,0 +1,54 @@
+{
+    "version": 8,
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "name": "districts",
+    "sources": {
+        "vector-source": {
+            "type": "vector",
+            "tiles": [
+                "https://minigauss/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=miniSASS:districts&STYLE=&TILEMATRIX=EPSG:3857:{z}&TILEMATRIXSET=EPSG:3857&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}"
+            ],
+            "minZoom": 0,
+            "maxZoom": 20
+        }
+    },
+    "layers": [
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.86,
+                "line-opacity": 1.0,
+                "line-color": "#aaaa7f",
+                "line-dasharray": [
+                    5,
+                    2
+                ]
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "districts",
+            "id": "districts:(rule#0)District_municipalities_with_label:0",
+            "minzoom": 6.542161335390952,
+            "maxzoom": 8.864089430278314
+        },
+        {
+            "type": "line",
+            "paint": {
+                "line-width": 0.86,
+                "line-opacity": 1.0,
+                "line-color": "#aaaa7f",
+                "line-dasharray": [
+                    5,
+                    2
+                ]
+            },
+            "Z": 0,
+            "source": "vector-source",
+            "source-layer": "districts",
+            "id": "districts:(rule#1)District_municipalities:0",
+            "minzoom": 24,
+            "maxzoom": 8.864089430278314
+        }
+    ],
+    "sprite": "spriteSheet"
+}
