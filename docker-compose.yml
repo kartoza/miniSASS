@@ -3,12 +3,14 @@ version: "3.9"
 volumes:
   postgres_data:
   certificates:
+  geoserver_data:
 services:
   db:
     image: kartoza/postgis:14-3.3
     volumes:
       - postgres_data:/var/lib/postgresql
       - ./geodata:/data
+      # Activate the restore script when downloading and importing existing data
       - ./geodata/restore.sh:/docker-entrypoint-initdb.d/restore.sh
     environment:
       - POSTGRES_DB=${POSTGIS_DB}
@@ -68,12 +70,15 @@ services:
   geoserver:
     image: kartoza/geoserver:${GS_VERSION}
     volumes:
-      - ../deployment/geoserver_data:/opt/geoserver/data_dir
+      # Only use the custom path when you have an existing data directory and also set EXISTING_DATA_DIR=true
+      # if you are using the docker volume, make sure you have unset EXISTING_DATA_DIR variable
+      #- ../deployment/geoserver_data:/opt/geoserver/data_dir
+      - geoserver_data:/opt/geoserver/data_dir
     restart: on-failure
     environment:
-      - GEOSERVER_ADMIN_PASSWORD=myawesomegeoserver
-      - GEOSERVER_ADMIN_USER=admin
-      - EXISTING_DATA_DIR=true
+      - GEOSERVER_ADMIN_PASSWORD=${GEOSERVER_ADMIN_PASSWORD}
+      - GEOSERVER_ADMIN_USER=${GEOSERVER_ADMIN_USER}
+      #- EXISTING_DATA_DIR=${EXISTING_DATA_DIR}
       - COMMUNITY_EXTENSIONS=${COMMUNITY_EXTENSIONS}
       - HTTP_SCHEME=${HTTP_SCHEME}
       - HTTP_PROXY_NAME=${HTTP_PROXY_NAME}
