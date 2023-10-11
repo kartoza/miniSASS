@@ -1,0 +1,177 @@
+version: "3.7"
+volumes:
+  dbbackups:
+  postgis-data:
+  minio_data:
+  merging_sync_data:
+
+
+services:
+  db:
+    image: kartoza/postgis:16-3.4
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    volumes:
+      - postgis-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
+      - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
+      - RUN_AS_ROOT=${RUN_AS_ROOT}
+      - FORCE_SSL=${FORCE_SSL}
+    ports:
+      - "5432"
+    restart: always
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+    healthcheck:
+      test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+
+  redis:
+    image: redis
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    restart: always
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+  server:
+    image: lutraconsulting/merginmaps-backend:2023.2.0
+    container_name: ${COMPOSE_PROJECT_NAME}_server
+    restart: always
+    user: 901:999
+    volumes:
+      - ./projects:/data
+    env_file:
+      - .prod.env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+  web:
+    image: lutraconsulting/merginmaps-frontend:2023.2.0
+    container_name: ${COMPOSE_PROJECT_NAME}_web
+    restart: always
+    depends_on:
+      - server
+      - db
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+  dbsync:
+    image: lutraconsulting/mergin-db-sync
+    container_name: ${COMPOSE_PROJECT_NAME}_dbsync
+    volumes:
+      - merging_sync_data:/tmp
+    environment:
+      - DB_CONN_INFO='host=db dbname=${POSTGRES_DB} user=${POSTGRES_USER} password=${POSTGRES_PASS} sslmode=require'
+      - DB_SCHEMA_MODIFIED=${DB_SCHEMA_MODIFIED}
+      - DB_SCHEMA_BASE=${DB_SCHEMA_BASE}
+      - MERGIN__USERNAME=${MERGIN_USER}
+      - MERGIN__PASSWORD=${MERGIN_PASSWORD}
+      - MERGIN_PROJECT_NAME=${MERGIN_PROJECT_NAME}
+      - MERGIN_SYNC_FILE=${MERGIN_SYNC_FILE}
+    entrypoint: "/settings/config.yaml"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: ${COMPOSE_PROJECT_NAME}_minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    entrypoint: /bin/bash
+    command: -c 'minio server /data --console-address ":9001"'
+    volumes:
+      - minio_data:/mapproxy
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: always
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+  bucket:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add local http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc rm -r --force local/${BUCKET_NAME};
+      /usr/bin/mc mb -p local/${BUCKET_NAME};
+      /usr/bin/mc policy set download local/${BUCKET_NAME};
+      /usr/bin/mc policy set public local/${BUCKET_NAME};
+      /usr/bin/mc anonymous set upload local/${BUCKET_NAME};
+      /usr/bin/mc anonymous set download local/${BUCKET_NAME};
+      /usr/bin/mc anonymous set public local/${BUCKET_NAME};
+      exit 0;
+      "
+  mediasync:
+    image: mergin-media-sync
+    container_name: ${COMPOSE_PROJECT_NAME}_media_sync
+    volumes:
+      - merging_sync_data:/tmp
+    environment:
+      - MERGIN__USERNAME=${MERGIN_USER}
+      - MERGIN__PASSWORD=${MERGIN_PASSWORD}
+      - MERGIN__PROJECT_NAME=t${MERGIN_PROJECT_NAME}
+      - DRIVER=minio
+      - MINIO__ENDPOINT="http://minio:9000/"
+      - MINIO__ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO__SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - MINIO__BUCKET=${BUCKET_NAME}
+      - MINIO__SECRET=1
+      - OPERATION_MODE=copy
+      - REFERENCES="[{file='data.gpkg', table='notes', local_path_column='photo', driver_path_column='external_url'}]"
+    entrypoint: "python3 media_sync_daemon.py"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+  proxy:
+    image: nginx
+    container_name: ${COMPOSE_PROJECT_NAME}_proxy
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./projects:/data
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - ${COMPOSE_PROJECT_NETWORK}
+
+networks:
+  merginmaps:

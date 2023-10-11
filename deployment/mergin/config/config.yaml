@@ -1,0 +1,14 @@
+mergin:
+  url: https://app.merginmaps.com
+  username: ${MERGIN_USER}
+  password: ${MERGIN_PASSWORD}
+init_from: gpkg
+connections:
+   - driver: postgres
+     conn_info: "host=db dbname=${POSTGRES_DB} user=${POSTGRES_USER} password=${POSTGRES_PASS}"
+     modified: ${DB_SCHEMA_MODIFIED}
+     base: ${DB_SCHEMA_BASE}
+     mergin_project: ${MERGIN_PROJECT_NAME}
+     sync_file: ${MERGIN_SYNC_FILE}
+daemon:
+  sleep_time: 10
