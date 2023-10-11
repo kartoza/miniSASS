@@ -86,9 +86,9 @@ server {
         alias /home/web/archive;
         expires 21d; # cache for 6h
     }
-    location /geoserver {
+    location /tiles/ {
 
-        set $upstream geoserver:8080;
+        set $upstream vtiles:9000;
 
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -96,7 +96,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_hide_header X-Frame-Options;
 
-        proxy_pass http://$upstream;
+        proxy_pass http://$upstream/;
     }
     # Finally, send all non-media requests to the Django server.
     location / {
