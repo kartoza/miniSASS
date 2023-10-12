@@ -3,10 +3,9 @@ version: "3.9"
 volumes:
   postgres_data:
   certificates:
-  geoserver_data:
 services:
   db:
-    image: kartoza/postgis:14-3.3
+    image: kartoza/postgis:16-3.4
     volumes:
       - postgres_data:/var/lib/postgresql
       - ./geodata:/data
@@ -18,6 +17,9 @@ services:
       - POSTGRES_PASS=${POSTGRES_PASS}
       - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
       - POSTGRES_MULTIPLE_EXTENSIONS=${POSTGRES_MULTIPLE_EXTENSIONS}
+      - FORCE_SSL=${FORCE_SSL}
+    ports:
+      - "32769:5432"
     restart: always
     healthcheck:
       test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d minisass"
@@ -25,11 +27,27 @@ services:
       timeout: 10s
       retries: 30
 
+  mount:
+    image: kartoza/s3mount
+    build:
+      context: deployment/docker-s3-bucket
+    privileged: true
+    environment:
+      - AWS_ACCESS_KEY=minio_admin
+      - AWS_SECRET_ACCESS_KEY=secure_minio_secret
+      - S3_MOUNT_DIRECTORY=/web
+      - S3_BUCKET_NAME=mapproxy
+      # URL can be an amazon S3 bucket so that we can mount it
+      - MINIO_URL=http://minio:9000/
+    volumes:
+      - ./data_images:/web
   django:
     build:
       context: ./deployment/docker
     volumes:
       - ./django_project:/home/web/django_project
+      # Images on the platform will be stored here
+      - ./data_images:/web
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -67,26 +85,22 @@ services:
       - certificates:/certificates/
     restart: always
 
-  geoserver:
-    image: kartoza/geoserver:${GS_VERSION}
+  vtiles:
+    image: pramsey/pg_featureserv
     volumes:
-      # Only use the custom path when you have an existing data directory and also set EXISTING_DATA_DIR=true
-      # if you are using the docker volume, make sure you have unset EXISTING_DATA_DIR variable
-      #- ../deployment/geoserver_data:/opt/geoserver/data_dir
-      - geoserver_data:/opt/geoserver/data_dir
-    restart: on-failure
+      - ./deployment/config/pg_featureserv.toml:/etc/pg_featureserv.toml
+    restart: always
     environment:
-      - GEOSERVER_ADMIN_PASSWORD=${GEOSERVER_ADMIN_PASSWORD}
-      - GEOSERVER_ADMIN_USER=${GEOSERVER_ADMIN_USER}
-      #- EXISTING_DATA_DIR=${EXISTING_DATA_DIR}
-      - COMMUNITY_EXTENSIONS=${COMMUNITY_EXTENSIONS}
-      - HTTP_SCHEME=${HTTP_SCHEME}
-      - HTTP_PROXY_NAME=${HTTP_PROXY_NAME}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@${DATABASE_HOST}/${POSTGRES_DB}
+      - PGFS_SERVER_URLBASE=https://${HTTPS_HOST}/tiles
+      - PGFS_SERVER_BASEPATH=/
+    ports:
+      - "9000:9000"
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: curl --fail -s http://localhost:8080/ || exit 1
+      test: curl --fail -s http://localhost:9000/ || exit 1
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -116,7 +130,7 @@ services:
     depends_on:
       - django
       - db
-      - geoserver
+      - vtiles
     logging:
       driver: json-file
       options:

@@ -7,5 +7,3 @@ export PGPASSWORD="${POSTGRES_PASS}"
 psql -d minisass -p 5432 -U ${POSTGRES_USER} -h localhost -f /data/globals.sql
 
 pg_restore -d minisass -p 5432 -U ${POSTGRES_USER} -h localhost /data/minisass.dmp
-
-pg_restore -d minisass_data -p 5432 -U ${POSTGRES_USER} -h localhost /data/gis.dmp
