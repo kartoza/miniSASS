@@ -8,19 +8,19 @@ RUN apt-get update && \
     apt-get install -y libgdal-dev libcurl4-gnutls-dev librtmp-dev libssl-dev  binutils libproj-dev gdal-bin &&  \
     pip install uwsgi setuptools;pip uninstall -y wheel
 
-ADD requirements.txt /REQUIREMENTS.txt
+ADD deployment/docker/requirements.txt /REQUIREMENTS.txt
 RUN pip install --no-deps -r /REQUIREMENTS.txt
 
-ADD libgeos.py /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
-ADD trans_real.py /usr/local/lib/python2.7/site-packages/django/utils/translation/trans_real.py
+ADD deployment/docker/libgeos.py /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
+ADD deployment/docker/trans_real.py /usr/local/lib/python2.7/site-packages/django/utils/translation/trans_real.py
 #RUN sed -i 's/geos_version().decode()/geos_version().decode().split(\x27 \x27)/g' /usr/local/lib/python2.7/site-packages/django/contrib/gis/geos/libgeos.py
 #USER www-data
-#ADD ../django_project /home/web/django_project
+ADD django_project /home/web/django_project
 WORKDIR /home/web/django_project
 
 
-ADD uwsgi.conf /uwsgi.conf
-ADD run.sh /run.sh
+ADD deployment/docker/uwsgi.conf /uwsgi.conf
+ADD deployment/docker/run.sh /run.sh
 RUN chmod 0755 /run.sh
 
 
