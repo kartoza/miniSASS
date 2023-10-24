@@ -1,4 +1,4 @@
 images:
   - name: minisass
-    dockerfile: ./Dockerfile
-    buildPath: deployment/docker
+    dockerfile: deployment/docker/Dockerfile
+    buildPath: .
