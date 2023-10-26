@@ -43,7 +43,8 @@ services:
       - ./data_images:/web
   django:
     build:
-      context: ./deployment/docker
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile
     volumes:
       - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
