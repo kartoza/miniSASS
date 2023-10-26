@@ -39,7 +39,7 @@ RUN npm run build
 
 
 WORKDIR /home/web/django_project
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
 ADD ./deployment/docker/run.sh /run.sh
 RUN chmod 0755 /run.sh
