@@ -2,3 +2,6 @@ images:
   - name: minisass
     dockerfile: deployment/docker/Dockerfile
     buildPath: .
+  - name: minisass-s3mount
+    dockerfile: deployment/docker-s3-bucket/Dockerfile
+    buildPath: .
