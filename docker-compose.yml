@@ -43,7 +43,8 @@ services:
       - ./data_images:/web
   django:
     build:
-      context: ./deployment/docker
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile
     volumes:
       - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
@@ -123,8 +124,8 @@ services:
       - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"
     volumes:
-      - ./django_project/minisass/static:/home/web/static
-      - ./django_project/minisass/media:/home/web/media
+      - ${MEDIA_ROOT}:/home/web/media
+      - ${STATIC_ROOT}:/home/web/static
       - certificates:/certificates/
     restart: on-failure
     depends_on:
