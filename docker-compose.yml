@@ -124,8 +124,8 @@ services:
       - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"
     volumes:
-      - ${MEDIA_ROOT}:/home/web/media
-      - ${STATIC_ROOT}:/home/web/static
+      - ./django_project/minisass/static:/home/web/static
+      - ./django_project/minisass/media:/home/web/media
       - certificates:/certificates/
     restart: on-failure
     depends_on:
