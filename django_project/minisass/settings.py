@@ -65,13 +65,28 @@ MEDIA_URL = os.getenv('MEDIA_URL', DEFAULT_MEDIA_URL)
 STATIC_ROOT = os.getenv('STATIC_ROOT', DEFAULT_STATIC_ROOT)
 STATIC_URL = os.getenv('STATIC_URL', DEFAULT_STATIC_URL)
 
+# Define the BASE_DIR setting
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Go up three levels from the BASE_DIR to reach the parent directory
+PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
+
+# Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
+FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
+
+
+
+# Define the BASE_DIR setting
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Use BASE_DIR to construct MINISASS_FRONTEND_PATH
+MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(BASE_DIR, 'app'))
+
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    # os.path.join(PROJECT_PATH, 'static'),
+    os.path.join(FRONTEND_PATH, 'src', 'dist'),
+    os.path.join(FRONTEND_PATH, 'static')
 )
 
 # List of finder classes that know how to find static files in
@@ -128,6 +143,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_PATH, 'templates'),
+    os.path.join(FRONTEND_PATH, 'templates')
 )
 
 LANGUAGES = [
@@ -307,6 +323,7 @@ INSTALLED_APPS = (
     'reversion',
     'monitor',
     'minisass_registration',
+    'minisass_frontend'
 )
 
 # A sample logging configuration. The only tangible logging
