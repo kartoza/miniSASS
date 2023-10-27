@@ -53,11 +53,17 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# static files and media paths
-MEDIA_ROOT = os.getenv('MEDIA_ROOT',os.path.join(PROJECT_PATH, 'media'))
-MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
-STATIC_ROOT = os.getenv('STATIC_ROOT'),os.path.join(PROJECT_PATH, 'static')
-STATIC_URL = os.getenv('STATIC_URL','/static/')
+# Define the default paths
+DEFAULT_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+DEFAULT_MEDIA_URL = '/media/'
+DEFAULT_STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+DEFAULT_STATIC_URL = '/static/'
+
+# Get values from environment variables or use defaults
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
+MEDIA_URL = os.getenv('MEDIA_URL', DEFAULT_MEDIA_URL)
+STATIC_ROOT = os.getenv('STATIC_ROOT', DEFAULT_STATIC_ROOT)
+STATIC_URL = os.getenv('STATIC_URL', DEFAULT_STATIC_URL)
 
 
 # Additional locations of static files
