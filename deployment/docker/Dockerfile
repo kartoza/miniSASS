@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install -y libgdal-dev libcurl4-gnutls-dev librtmp-dev libssl-dev  binutils libproj-dev gdal-bin &&  \
     pip install uwsgi setuptools;pip uninstall -y wheel
 
+
 RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install nodejs -y
@@ -30,6 +31,7 @@ COPY ./django_project/minisass_frontend/package.json ./django_project/minisass_f
 
 # Install project dependencies
 RUN npm install
+
 
 # Copy the rest of the frontend source code to the container
 COPY ./django_project/minisass_frontend /app
