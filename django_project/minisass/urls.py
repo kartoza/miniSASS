@@ -34,8 +34,11 @@ urlpatterns += i18n_patterns('',
     url(r'^autocomplete/', include('minisass_registration.urls')),
     url(r'^accounts/', include('minisass_registration.backends.urls')),
 
-    # django-cms urls
-    url(r'^', include('cms.urls')),
+    # Main frontend URL
+    url(r'^$', TemplateView.as_view(template_name="react_base.html"), name="home"),
+
+    # CMS URL
+    url(r'^cms/', include('cms.urls')),
 
     # site map
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {
@@ -44,10 +47,6 @@ urlpatterns += i18n_patterns('',
             'blogentries': BlogSitemap
         }
     }),
-
-    # minisass frontend
-    url(r'^home$', TemplateView.as_view(template_name="react_base.html"), name="home"),
-
 )
 
 if settings.DEBUG:
