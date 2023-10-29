@@ -54,7 +54,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                 <div className="bg-blue-900 flex flex-col items-start justify-start w-auto">
                   <Img
                     className="h-[39px] md:h-auto object-cover w-[246px] sm:w-full"
-                    src={`${newURL}img_minisasstext2.png`}
+                    src={`${newURL}img_minisasstext1.png`}
                     alt="minisasstextTwo"
                   />
                 </div>
