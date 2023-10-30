@@ -1,3 +1,6 @@
+![Image Tag](https://img.shields.io/badge/Stage%20Image%20Tag:-0.0.0-blue.svg)
+![Jenkins Status](https://img.shields.io/badge/Stage%20Jenkins%20Status:-NA-green.svg)
+
 miniSASS
 ========
 
@@ -5,16 +8,16 @@ miniSASS
 
 # miniSASS Web Application and CMS
 
-Copyright (C) 2013-2014 Water Research Commission 
+Copyright (C) 2013-2014 Water Research Commission
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public 
-License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any 
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
 later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
 warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program. 
+You should have received a copy of the GNU General Public License along with this program.
 If not, see <http://www.gnu.org/licenses/>.
 
 Contact: `Frank Sokolic` `frank@gis-solutions.co.za`
@@ -36,4 +39,3 @@ please report the issues through [GitHub Issue Tracker](https://github.com/karto
 * Admire Nyakudya, Kartoza, 2013
 * Jurgen Blignaut, Webtide 2013
 * Simon Bruton, GroundTruth 2013-2014
-
