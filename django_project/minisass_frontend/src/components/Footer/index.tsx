@@ -1,6 +1,10 @@
 import React from "react";
 
 import { Img, Text } from "../../components";
+import ContactFormModal from '../../components/ContactFormModal';
+import { useState } from 'react';
+import { ContactFormData } from '../../components/ContactFormModal/types'; 
+
 
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -9,6 +13,23 @@ type FooterProps = React.DetailedHTMLProps<
   Partial<{}>;
 
 const Footer: React.FC<FooterProps> = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFormSubmit = (formData: ContactFormData) => {
+    // Handle form submission (formData) here
+    console.log(formData);
+
+    // Close the modal after submission
+    closeModal();
+  };
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
 
@@ -51,13 +72,14 @@ const Footer: React.FC<FooterProps> = (props) => {
           <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px] md:w-[105%] sm:w-[110%] w-full">
             <div className="flex flex-col items-center justify-start mt-8 w-[85%] md:w-full">
               <div className="flex flex-col gap-10 items-center justify-start w-auto md:w-full">
-                <div className="bg-blue-900 flex flex-col items-start justify-start w-auto">
+                <div className="bg-transparent flex flex-col items-start justify-start w-auto">
                   <Img
                     className="h-[39px] md:h-auto object-cover w-[246px] sm:w-full"
                     src={`${newURL}miniSASS_logo.svg`}
                     alt="minisasstextLogo"
                   />
                 </div>
+
                 <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list">
                   <li>
                     <a href="/howto">
@@ -100,13 +122,17 @@ const Footer: React.FC<FooterProps> = (props) => {
                     </a>
                   </li>
                   <li>
-                    <a href="/contact">
+                    <a>
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
                         size="txtRalewayExtraBold14WhiteA700"
+                        onClick={openModal}
                       >
                         Contact us
                       </Text>
+                      
+                      {/* ContactFormModal opens when isModalOpen is true */}
+                      <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit} />
                     </a>
                   </li>
                 </ul>

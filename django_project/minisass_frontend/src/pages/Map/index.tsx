@@ -35,9 +35,10 @@ const MapPage: React.FC = () => {
                   alt="minisasslogoOne"
                 />
               </div>
+              
               {/* navigation bar */}
-              <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[93%] md:w-full">
-                <NavigationBar activePage="map" />
+              <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
+                <NavigationBar activePage="home" />
               </div>
 
             </div>
@@ -91,7 +92,7 @@ const MapPage: React.FC = () => {
               </Text>
             </div>
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img className="h-6 w-7" src="images/img_alarm.svg" alt="alarm" />
+              <Img className="h-6 w-7" src={`${newURL}img_alarm.svg`} alt="alarm" />
               <Text
                 className="text-base text-black-900 w-auto"
                 size="txtRalewayRomanRegular16"
