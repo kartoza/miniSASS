@@ -2,13 +2,31 @@ import * as React from 'react';
 import { Button, Img, Text } from "../../components";
 import AuthenticationButtons from '../../components/AuthenticationButtons';
 import { useNavigate } from "react-router-dom";
-
-
+import ContactFormModal from '../../components/ContactFormModal';
+import { useState } from 'react';
+import { ContactFormData } from '../../components/ContactFormModal/types'; 
 
 
 function NavigationBar(props) {
   const { activePage } = props;
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFormSubmit = (formData: ContactFormData) => {
+    // Handle form submission (formData) here
+    console.log(formData);
+
+    // Close the modal after submission
+    closeModal();
+  };
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
@@ -76,10 +94,13 @@ function NavigationBar(props) {
             color={activePage === 'contact' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'contact' ? 'fill' : 'outline'}
-            onClick={() => navigate("/contact")}
+            onClick={openModal}
           >
             Contact us
           </Button>
+
+          {/* ContactFormModal opens when isModalOpen is true */}
+          <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit} />
       </div>
 
 
