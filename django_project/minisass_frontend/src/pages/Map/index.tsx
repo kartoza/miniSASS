@@ -25,25 +25,38 @@ const MapPage: React.FC = () => {
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full">
-        <div className="bg-white-A700 flex flex-col items-center justify-start pb-[17px] pl-[17px] rounded-bl-[65px] w-full">
-          <div className="flex flex-col items-center justify-start max-w-[1384px] mx-auto md:px-5 w-full">
-            <div className="flex md:flex-col flex-row gap-[30px] items-start justify-between w-full">
-              <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
-                <Img
-                  className="md:h-auto h-full object-cover md:relative md:top-2.5 w-full"
-                  src={`${newURL}img_minisasslogo1.png`}
-                  alt="minisasslogoOne"
-                />
-              </div>
-              
-              {/* navigation bar */}
-              <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
-                <NavigationBar activePage="home" />
-              </div>
 
+        <div className="h-[120px] md:px-5 relative w-full">
+
+            {/* header section */}
+            <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-53px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] w-full z-[1]">
+              <div className="flex flex-col items-center justify-start w-[98%] md:w-full">
+                <div className="flex md:flex-col flex-row gap-[30px] items-start justify-between w-full">
+
+                  {/* minisass logo */}
+                  <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
+                    <Img
+                      className="sm:bottom-[] md:h-auto h-full object-cover md:relative sm:right-[30px] sm:top-2.5 md:top-5 w-full"
+                      src={`${newURL}img_minisasslogo1.png`}
+                      alt="minisasslogoOne"
+                    />
+                  </div>
+                  
+
+                  {/* navigation bar */}
+                  <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
+                    <NavigationBar activePage="map" />
+                  </div>
+                </div>
+              </div>
             </div>
+            {/* end of section */}
+
+
+            
+
           </div>
-        </div>
+
         <div className="h-[1219px] md:px-5 relative md:w-[103.9%] w-full">
           <div className="flex flex-col h-full items-center justify-start m-auto w-full">
             <div className="flex flex-col items-center justify-start sm:w-[109%] w-full">
@@ -64,16 +77,6 @@ const MapPage: React.FC = () => {
                 ></Input>
               </div>
               <div className="h-[1155px] relative w-full">
-                {/* <Img
-                  className="h-[1155px] md:h-[] m-auto object-cover sm:overflow-auto w-full"
-                  src={`${newURL}img_image8.png`}
-                  alt="imageEight"
-                /> */}
-                {/* <Img
-                  className="absolute h-[71px] right-[1%] top-[1%]"
-                  src={`${newURL}img_minimize.svg`}
-                  alt="minimize"
-                /> */}
                 <Img
                   className="absolute bottom-[1%] h-9 left-[1%] w-11"
                   src={`${newURL}img_offer.svg`}
