@@ -54,86 +54,104 @@ const Footer: React.FC<FooterProps> = (props) => {
                 <div className="bg-blue-900 flex flex-col items-start justify-start w-auto">
                   <Img
                     className="h-[39px] md:h-auto object-cover w-[246px] sm:w-full"
-                    src={`${newURL}img_minisasstext1.png`}
-                    alt="minisasstextTwo"
+                    src={`${newURL}miniSASS_logo.svg`}
+                    alt="minisasstextLogo"
                   />
                 </div>
                 <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list">
                   <li>
-                    <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                      size="txtRalewayExtraBold14WhiteA700"
-                    >
-                      How to
-                    </Text>
+                    <a href="/howto">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        How to
+                      </Text>
+                    </a>
                   </li>
                   <li>
-                    <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                      size="txtRalewayExtraBold14WhiteA700"
-                    >
-                      Map
-                    </Text>
+                    <a href="/map">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Map
+                      </Text>
+                    </a>
                   </li>
                   <li>
-                    <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                      size="txtRalewayExtraBold14WhiteA700"
-                    >
-                      Downloads
-                    </Text>
+                    <a href="/downloads">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Downloads
+                      </Text>
+                    </a>
                   </li>
                   <li>
-                    <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                      size="txtRalewayExtraBold14WhiteA700"
-                    >
-                      Partners
-                    </Text>
+                    <a href="/partners">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Partners
+                      </Text>
+                    </a>
                   </li>
                   <li>
-                    <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                      size="txtRalewayExtraBold14WhiteA700"
-                    >
-                      Contact us
-                    </Text>
+                    <a href="/contact">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Contact us
+                      </Text>
+                    </a>
                   </li>
                 </ul>
+
                 <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1180px] w-full">
                   <Text
                     className="text-base text-white-A700 w-auto"
                     size="txtRalewayRomanRegular16WhiteA700"
                   >
                     <span className="text-white-A700 font-raleway text-left font-normal">
-                      © 2023 Water Research Commission. This is an open source
-                      project. Get the source code at{" "}
+                      © 2023 Water Research Commission. This is an open source project. Get the source code at{" "}
                     </span>
                     <a
-                      href="javascript:"
+                      href="https://github.com/kartoza/miniSASS"  // GitHub link
                       className="text-white-A700 font-raleway text-left font-normal underline"
+                      target="_blank" rel="noopener noreferrer"
                     >
                       Github
                     </a>
                   </Text>
                   <div className="flex flex-row gap-2.5 items-start justify-start w-auto">
-                    <Img
-                      className="h-6 w-6"
-                      src={`${newURL}img_icbaselinefacebook_white_a700.svg`}
-                      alt="icbaselinefaceb_One"
-                    />
-                    <Img
-                      className="h-6 w-6"
-                      src={`${newURL}img_riyoutubefill_white_a700.svg`}
-                      alt="riyoutubefill_One"
-                    />
-                    <Img
-                      className="h-6 w-6"
-                      src={`${newURL}img_formkitwordpress_white_a700.svg`}
-                      alt="formkitwordpres_One"
-                    />
+                    <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
+                      <Img
+                        className="h-6 w-6"
+                        src={`${newURL}img_icbaselinefacebook_white_a700.svg`}
+                        alt="icbaselinefaceb_One"
+                      />
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank" rel="noopener noreferrer">
+                      <Img
+                        className="h-6 w-6"
+                        src={`${newURL}img_riyoutubefill_white_a700.svg`}
+                        alt="riyoutubefill_One"
+                      />
+                    </a>
+                    <a href="https://minisassblog.wordpress.com" target="_blank" rel="noopener noreferrer">
+                      <Img
+                        className="h-6 w-6"
+                        src={`${newURL}img_formkitwordpress_white_a700.svg`}
+                        alt="formkitwordpres_One"
+                      />
+                    </a>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

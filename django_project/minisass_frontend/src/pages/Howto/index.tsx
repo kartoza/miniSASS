@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Img, List, Text } from "../../components";
 import Footer from "../../components/Footer";
+import NavigationBar from "../../components/NavigationBar";
+import YouTubeVideo from "../../components/YoutubeEmbedded";
 
 const HowtoPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,94 +37,12 @@ const HowtoPage: React.FC = () => {
                     alt="minisasslogoOne"
                   />
                 </div>
-                <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[93%] md:w-full">
-                  <div className="md:bottom-[121px] sm:bottom-[60px] flex sm:flex-col flex-row md:gap-10 items-start justify-between sm:left-[50px] md:left-[63px] md:relative sm:top-[] md:w-[90%] w-full">
-                    <Img
-                      className="h-[29px] sm:h-[] md:h-auto sm:mt-0 mt-[21px] object-cover"
-                      src={`${newURL}img_minisasstext1.png`}
-                      alt="minisasstextOne"
-                    />
-                    <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-                      <Button
-                        className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[105px] sm:relative sm:rounded-[] md:rounded-[] md:rounded-bl-[15px] md:rounded-br-[15px] text-base text-center w-full"
-                        shape="square"
-                        color="blue_900"
-                        size="xs"
-                        variant="fill"
-                      >
-                        login
-                      </Button>
-                      <Button
-                        className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[105px] sm:relative sm:right-[] sm:rounded-[] md:rounded-[] md:rounded-bl-[15px] md:rounded-br-[15px] text-base text-center w-full"
-                        shape="square"
-                        color="blue_900"
-                        size="xs"
-                        variant="fill"
-                      >
-                        register
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="md:bottom-[120px] flex md:flex-col flex-row md:gap-10 items-end justify-between md:relative sm:top-[] md:top-[] w-full">
-                    <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:left-[] md:mt-0 mt-[15px] md:relative md:right-[250px] w-auto sm:w-full">
-                      <Button
-                        className="common-pointer bg-transparent cursor-pointer font-extrabold leading-[normal] min-w-[85px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase"
-                        onClick={() => navigate("/home1")}
-                        size="xs"
-                      >
-                        Home
-                      </Button>
-                      <Button
-                        className="cursor-pointer font-extrabold leading-[normal] min-w-[102px] text-center text-sm tracking-[0.98px] uppercase"
-                        shape="round"
-                        color="gray_200"
-                        size="xs"
-                        variant="fill"
-                      >
-                        How to
-                      </Button>
-                      <Button
-                        className="common-pointer bg-transparent cursor-pointer font-extrabold leading-[normal] min-w-[73px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase"
-                        onClick={() => navigate("/")}
-                        size="xs"
-                      >
-                        Map
-                      </Button>
-                      <div className="flex flex-col items-center justify-center px-5 py-[7px] w-auto">
-                        <a
-                          href="javascript:"
-                          className="text-blue-900 text-sm tracking-[0.98px] uppercase w-auto"
-                        >
-                          <Text size="txtRalewayExtraBold14">Contact us</Text>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="md:bottom-[30px] flex md:flex-1 flex-row gap-[37px] items-center justify-between md:relative w-[22%] md:w-full">
-                      <div className="flex flex-row gap-4 items-start justify-start w-auto">
-                        <Img
-                          className="h-6 w-6"
-                          src={`${newURL}img_icbaselinefacebook.svg`}
-                          alt="icbaselinefaceb"
-                        />
-                        <Img
-                          className="h-6 w-6"
-                          src={`${newURL}img_riyoutubefill.svg`}
-                          alt="riyoutubefill"
-                        />
-                        <Img
-                          className="h-6 w-6"
-                          src={`${newURL}img_formkitwordpress.svg`}
-                          alt="formkitwordpres"
-                        />
-                      </div>
-                      <Img
-                        className="h-[45px] sm:h-[] md:h-[] object-cover"
-                        src={`${newURL}img_image3.png`}
-                        alt="imageThree"
-                      />
-                    </div>
-                  </div>
+
+                {/* navigation bar */}
+                <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
+                  <NavigationBar activePage="howto" />
                 </div>
+
               </div>
             </div>
           </div>
@@ -138,102 +58,109 @@ const HowtoPage: React.FC = () => {
           </div>
         </div>
 
+        {/* links section */}
         <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-4 h-32 sm:h-[] md:h-auto items-start justify-center max-w-[1179px] mt-[3px] mx-auto sm:overflow-auto md:px-5 relative top-23 sm:top-40 md:top-[145px] w-full">
-        <List
-            className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1179px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
-            orientation="horizontal"
-          >
-            <div
-              className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/")}
+          {/* the links for collect ,upload, are you ready, still empty TODO */}
+          <List
+              className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1179px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[80px] w-full"
+              orientation="horizontal"
             >
-              <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
-                <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
-                <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
-                  
-                  <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                    size="txtRalewayExtraBold14WhiteA700"
-                  >
-                    Collect sample
-                  </Text>
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/")}
+              >
+                <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
+                  <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
+                  <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
+                    
+                    <Text
+                      className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                      size="txtRalewayExtraBold14WhiteA700"
+                    >
+                      Collect sample
+                    </Text>
+                  </div>
                 </div>
-              </div>
-              <Img
-                className="absolute h-[72px] right-[0] top-[0] w-[71px]"
-                src="images/img_notov1crab.svg"
-                alt="notov1crab"
-              />
-            </div>
-            <div
-              className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/howto")}
-            >
-              <div className="h-28 ml-auto my-auto w-[95%]">
-                <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
-                  
-                  <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                    size="txtRalewayExtraBold14WhiteA700"
-                  >
-                    Upload result
-                  </Text>
-                </div>
-              </div>
-              <Img
-                className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
-                src={`${newURL}img_notov1crab_blue_gray_100.svg`}
-                alt="notov1crab"
-              />
-            </div>
-            <div
-              className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/")}
-            >
-              <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
-                <div className="bg-blue_gray-500 h-28 mt-auto mx-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
-                  <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                    size="txtRalewayExtraBold14WhiteA700"
-                  >
-                    Explore map
-                  </Text>
-                </div>
-              </div>
-              <Img
-                className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
-                alt="notov1crab"
-              />
-            </div>
-            <div
-              className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/howto")}
-            >
-              <div className="md:h-28 h-[110px] m-auto w-full">
-                <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
-                  
-                  <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                    size="txtRalewayExtraBold14WhiteA700"
-                  >
-                    Are you ready?
-                  </Text>
-                </div>
-              </div>
-              <Img
-                className="absolute h-[72px] right-[0] top-[0] w-[46px]"
-                src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
-                alt="notov1crab"
-              />
-            </div>
-          </List>
+                <Img
+                  className="absolute h-[72px] right-[0] top-[0] w-[71px]"
+                  src={`${newURL}img_notov1crab.svg`}
+                  alt="notov1crab"
+                  style={{ fill: 'yellow' }}
+                />
 
+              </div>
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/")}
+              >
+                <div className="h-28 ml-auto my-auto w-[95%]">
+                  <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                  <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
+                    
+                    <Text
+                      className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                      size="txtRalewayExtraBold14WhiteA700"
+                    >
+                      Upload result
+                    </Text>
+                  </div>
+                </div>
+                <Img
+                  className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
+                  src={`${newURL}img_notov1crab_blue_gray_100.svg`}
+                  alt="notov1crab"
+                  style={{ fill: 'blue' }}
+                />
+              </div>
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/map")}
+              >
+                <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
+                  <div className="bg-blue_gray-500 h-28 mt-auto mx-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                  <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
+                    <Text
+                      className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                      size="txtRalewayExtraBold14WhiteA700"
+                    >
+                      Explore map
+                    </Text>
+                  </div>
+                </div>
+                <Img
+                  className="absolute h-[72px] left-[0] top-[0] w-[72px]"
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
+                  alt="notov1crab"
+                  style={{ fill: 'yellow' }}
+                />
+              </div>
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/")}
+              >
+                <div className="md:h-28 h-[110px] m-auto w-full">
+                  <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                  <div className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
+                    
+                    <Text
+                      className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                      size="txtRalewayExtraBold14WhiteA700"
+                    >
+                      Are you ready?
+                    </Text>
+                  </div>
+                </div>
+                <Img
+                  className="absolute h-[72px] right-[0] top-[0] w-[46px]"
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
+                  alt="notov1crab"
+                />
+              </div>
+            </List>
         </div>
+        {/* end of section */}
         
+        {/* youtube player section */}
         <div className="flex flex-col gap-[46px] items-end justify-start max-w-[1179px] mt-[94px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] w-full">
           <Text
             className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
@@ -243,16 +170,29 @@ const HowtoPage: React.FC = () => {
           </Text>
           <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1175px] md:relative md:top-[50px] w-full">
             <div className="h-[336px] relative w-1/2 md:w-full">
-              <Img
+
+              {/* <Img
                 className="h-[336px] m-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full"
                 src={`${newURL}img_rectangle11.png`}
                 alt="rectangleEleven"
-              />
-              <Img
+              /> */}
+              {/* <Img
                 className="absolute h-[70px] inset-[0] justify-center m-auto w-[70px]"
                 src={`${newURL}img_carbonplayfilled.svg`}
                 alt="carbonplayfille"
-              />
+              /> */}
+
+              <div 
+                className="h-[336px] m-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full"
+                >
+                  <YouTubeVideo videoId="QdQBGD08rv4" height="400px" width="800px" playButtonColor="green" />
+
+
+              </div>
+                
+
+              
+
             </div>
             <Text
               className="leading-[136.40%] max-w-[474px] md:max-w-full text-base text-gray-800"
@@ -267,8 +207,9 @@ const HowtoPage: React.FC = () => {
                 </>
               </span>
               <a
-                href="javascript:"
+                href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" // Add the YouTube channel link here
                 className="text-blue-900 font-raleway text-left font-normal underline"
+                target="_blank" rel="noopener noreferrer"
               >
                 miniSASS
               </a>
@@ -279,8 +220,11 @@ const HowtoPage: React.FC = () => {
                 for more.
               </span>
             </Text>
+
           </div>
         </div>
+        {/* end of section */}
+
         <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1179px] mt-[136px] mx-auto md:px-5 w-full">
           <Text
             className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
