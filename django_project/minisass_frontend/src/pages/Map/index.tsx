@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "../../components";
 import Footer from "../../components/Footer";
+import NavigationBar from "../../components/NavigationBar";
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,94 +35,11 @@ const MapPage: React.FC = () => {
                   alt="minisasslogoOne"
                 />
               </div>
+              {/* navigation bar */}
               <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[93%] md:w-full">
-                <div className="md:bottom-[115px] flex sm:flex-col flex-row md:gap-10 items-start justify-between md:left-[63px] md:relative md:w-[90%] w-full">
-                  <Img
-                    className="h-[29px] md:h-auto sm:mt-0 mt-[21px] object-cover"
-                    src={`${newURL}img_minisasstext1.png`}
-                    alt="minisasstextOne"
-                  />
-                  <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-                    <Button
-                      className="sm:bottom-[220px] cursor-pointer font-semibold leading-[normal] sm:left-[150px] sm:relative sm:rounded-[] md:rounded-[] md:rounded-bl-[15px] md:rounded-br-[15px] text-base text-center w-full"
-                      shape="square"
-                      color="blue_900"
-                      size="xs"
-                      variant="fill"
-                    >
-                      login
-                    </Button>
-                    <Button
-                      className="sm:bottom-[220px] cursor-pointer font-semibold leading-[normal] sm:left-[155px] sm:relative sm:rounded-[] md:rounded-[] md:rounded-bl-[15px] md:rounded-br-[15px] text-base text-center w-full"
-                      shape="square"
-                      color="blue_900"
-                      size="xs"
-                      variant="fill"
-                    >
-                      register
-                    </Button>
-                  </div>
-                </div>
-                <div className="md:bottom-[100px] sm:bottom-[60px] flex md:flex-col flex-row md:gap-10 items-end justify-between md:relative md:top-[] w-full">
-                  <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:left-[] md:mt-0 mt-[15px] md:relative md:right-[250px] w-auto sm:w-full">
-                    <Button
-                      className="common-pointer bg-transparent cursor-pointer font-extrabold leading-[normal] min-w-[85px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase"
-                      onClick={() => navigate("/home1")}
-                      size="xs"
-                    >
-                      Home
-                    </Button>
-                    <Button
-                      className="common-pointer bg-transparent cursor-pointer font-extrabold leading-[normal] min-w-[102px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase"
-                      onClick={() => navigate("/howto")}
-                      size="xs"
-                    >
-                      How to
-                    </Button>
-                    <Button
-                      className="cursor-pointer font-extrabold leading-[normal] min-w-[73px] text-center text-sm tracking-[0.98px] uppercase"
-                      shape="round"
-                      color="gray_200"
-                      size="xs"
-                      variant="fill"
-                    >
-                      Map
-                    </Button>
-                    <div className="flex flex-col items-center justify-center px-5 py-[7px] w-auto">
-                      <a
-                        href="javascript:"
-                        className="text-blue-900 text-sm tracking-[0.98px] uppercase w-auto"
-                      >
-                        <Text size="txtRalewayExtraBold14">Contact us</Text>
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex md:flex-1 flex-row gap-[37px] items-center justify-between w-[22%] md:w-full">
-                    <div className="flex flex-row gap-4 items-start justify-start w-auto">
-                      <Img
-                        className="h-6 w-6"
-                        src={`${newURL}img_icbaselinefacebook.svg`}
-                        alt="icbaselinefaceb"
-                      />
-                      <Img
-                        className="h-6 w-6"
-                        src={`${newURL}img_riyoutubefill.svg`}
-                        alt="riyoutubefill"
-                      />
-                      <Img
-                        className="h-6 w-6"
-                        src={`${newURL}img_formkitwordpress.svg`}
-                        alt="formkitwordpres"
-                      />
-                    </div>
-                    <Img
-                      className="h-[45px] sm:h-[] md:h-[] object-cover"
-                      src={`${newURL}img_image3.png`}
-                      alt="imageThree"
-                    />
-                  </div>
-                </div>
+                <NavigationBar activePage="map" />
               </div>
+
             </div>
           </div>
         </div>
@@ -145,16 +63,16 @@ const MapPage: React.FC = () => {
                 ></Input>
               </div>
               <div className="h-[1155px] relative w-full">
-                <Img
+                {/* <Img
                   className="h-[1155px] md:h-[] m-auto object-cover sm:overflow-auto w-full"
                   src={`${newURL}img_image8.png`}
                   alt="imageEight"
-                />
-                <Img
+                /> */}
+                {/* <Img
                   className="absolute h-[71px] right-[1%] top-[1%]"
                   src={`${newURL}img_minimize.svg`}
                   alt="minimize"
-                />
+                /> */}
                 <Img
                   className="absolute bottom-[1%] h-9 left-[1%] w-11"
                   src={`${newURL}img_offer.svg`}
