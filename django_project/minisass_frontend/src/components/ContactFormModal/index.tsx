@@ -120,13 +120,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       >
         <label
           style={{
-            width: '158px',
-            height: '24px',
+            width: '10em',
+            height: '1.5em',
             fontFamily: 'Roboto',
             fontStyle: 'normal',
             fontWeight: 400,
-            fontSize: '18px',
-            lineHeight: '24px',
+            fontSize: '1.2em',
+            lineHeight: '2em',
             color: '#424242',
           }}
         >
@@ -152,17 +152,17 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           placeholder="Enter your name"
         />
         <label
-              style={{
-                width: '157px',
-                height: '24px',
-                fontFamily: 'Roboto',
-                fontStyle: 'normal',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '24px',
-                color: '#424242',
-              }}
-            >
+          style={{
+            width: '10em',
+            height: '1.5em',
+            fontFamily: 'Roboto',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '1.2em',
+            lineHeight: '2em',
+            color: '#424242',
+          }}
+        >
               Your Email
             </label>
         <input
@@ -186,13 +186,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
         />
         <label
           style={{
-            width: '209px',
-            height: '24px',
+            width: '10em',
+            height: '1.5em',
             fontFamily: 'Roboto',
             fontStyle: 'normal',
             fontWeight: 400,
-            fontSize: '18px',
-            lineHeight: '24px',
+            fontSize: '1.2em',
+            lineHeight: '2em',
             color: '#424242',
           }}
         >
@@ -219,13 +219,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
         />
         <label
           style={{
-            width: '197px',
-            height: '24px',
+            width: '10em',
+            height: '1.5em',
             fontFamily: 'Roboto',
             fontStyle: 'normal',
             fontWeight: 400,
-            fontSize: '18px',
-            lineHeight: '24px',
+            fontSize: '1.2em',
+            lineHeight: '2em',
             color: '#424242',
           }}
         >
