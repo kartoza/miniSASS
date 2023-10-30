@@ -148,7 +148,7 @@ const Home: React.FC = () => {
                   
 
                   {/* navigation bar */}
-                  <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[93%] md:w-full">
+                  <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
                     <NavigationBar activePage="home" />
                   </div>
                 </div>
@@ -169,7 +169,7 @@ const Home: React.FC = () => {
           >
             <div
               className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/map")}
             >
               <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                 <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
