@@ -42,7 +42,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
           maxWidth: '400px',
           background: 'white',
           border: 'none',
-          borderRadius: '15px',
+          borderRadius: '0px 25px 25px 25px',
         },
       }}
     >
