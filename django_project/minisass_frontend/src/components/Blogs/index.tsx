@@ -8,17 +8,27 @@ type DesktopTwoBloggriditemProps = Omit<
   | "tue07jan2020"
   | "newsletterdescription"
   | "learnmorebutton"
+  | "link"
 > &
   Partial<{
     newslettertext: JSX.Element | string;
     tue07jan2020: string;
     newsletterdescription: string;
     learnmorebutton: string;
+    link: string;
   }>;
 
 const Blogs: React.FC<DesktopTwoBloggriditemProps> = (
   props,
 ) => {
+  // Event handler for when the button is clicked
+  const handleButtonClick = () => {
+    if (props.link) {
+      // Open the link in a new tab or window
+      window.open(props.link, "_blank");
+    }
+  };
+
    // Get the current URL using window.location.href
    const currentURL = window.location.href;
 
@@ -67,6 +77,7 @@ const Blogs: React.FC<DesktopTwoBloggriditemProps> = (
           color="blue_gray_500"
           size="sm"
           variant="fill"
+          onClick={handleButtonClick} // Attach the event handler
         >
           <div className="font-raleway text-left text-lg tracking-[0.81px]">
             {props?.learnmorebutton}
@@ -85,8 +96,8 @@ Blogs.defaultProps = {
     </>
   ),
   tue07jan2020: "Tue, 07 Jan 2020 12:33 by miniSASS Team",
-  newsletterdescription:
-    "Maecenas et vulputate arcu, nec tincidunt erat. Aenean sagittis sollicitudin leo et pharetra. Praesent tempus leo non tempus egestas. Duis vitae sapien neque.",
+  newsletterdescription:"",
+  link: 'https://minisassblog.wordpress.com/2020/01/07/minisass-newsletter-january-2020/'
 };
 
 export default Blogs;
