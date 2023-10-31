@@ -28,10 +28,9 @@ class ObservationsView(View):
 
         for observation in latest:
             user_profile = UserProfile.objects.get(user=observation.user)
-            site = Sites.objects.get(site=observation.site)
 
             recent_observations.append({
-                'site': site.site_name,
+                'site': observation.site.site_name,
                 'username': user_profile.user.username,
                 'organisation': user_profile.organisation_name,
                 'time_stamp': observation.time_stamp,
