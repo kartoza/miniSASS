@@ -3,13 +3,7 @@ import ast
 import os
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
-
-if allowed_hosts_str is not None:
-    ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
-else:
-    # allow all for development
-    ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ast.literal_eval(os.getenv('ALLOWED_HOSTS'))
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
 TEMPLATE_DEBUG = DEBUG
 

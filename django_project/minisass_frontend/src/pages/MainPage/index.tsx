@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import Observations from "../../components/Observations";
 import Blogs from "../../components/Blogs";
 import NavigationBar from "../../components/NavigationBar";
 import Slideshow from "../../components/SlideShow";
-import axios from "axios"
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -17,66 +16,61 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const [blogsCurrentIndex, setBlogsCurrentIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [observations, setObservations] = useState([]);
-  const ObservationsPropList = [];
 
-
-  const FETCH_RECENT_OBSERVATIONS = `${window.location.href}api/observations/`;
-
-
-    useEffect(() => {
-        const fetchHomePageData = () => {
-            axios
-                .get(
-                    `${FETCH_RECENT_OBSERVATIONS}`
-                )
-                .then((response) => {
-                    if (response.data) {
-
-                        // Iterate through the response data and structure it as required by observations component
-                        response.data.forEach((item) => {
-                          // Convert the timestamp to a JavaScript Date object
-                          const timestampDate = new Date(item.time_stamp);
-                        
-                          // Define an array of month names
-                          const monthNames = [
-                            "January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"
-                          ];
-                        
-                          // Format the date
-                          const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
-                        
-                          const structuredItem = {
-                            usernamejimtaylOne: `Username: ${item.username}`,
-                            userimage: "",
-                            username: item.site,
-                            score1: JSON.stringify(item.score),
-                            organisation: `Organisation: ${item.organisation}`,
-                            dateadded: `Date added: ${formattedDate}`
-                          };
-                          ObservationsPropList.push(structuredItem);
-                        });
-                        setObservations(ObservationsPropList)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-
-        fetchHomePageData();
-    }, []);
-
+   // TODO Observations these values will come from the api
+   const ObservationsPropList = [
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Liesbeek-Upper Liesbeek",
+      score1: "5.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Liesbeek-Upper Liesbeek",
+      score1: "5.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Liesbeek-Upper Liesbeek",
+      score1: "5.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Tinashe",
+      score1: "3.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Amy",
+      score1: "7.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+    {
+      usernamejimtaylOne: "Username: S_Abrahams",
+      userimage: "http://localhost:8000/static/images/img_image2_24x30.png",
+      username: "Team",
+      score1: "9.57",
+      organisation: "Organisation: Centre For Conservation Education",
+    },
+  ];
 
   // Function to handle advancing to the next set of observations
   const handleNextObservations = () => {
     // Calculate the next index to display (looping back to 0 if necessary)
-    const nextIndex = (currentIndex + 4) % observations.length;
+    const nextIndex = (currentIndex + 4) % ObservationsPropList.length;
     setCurrentIndex(nextIndex);
   };
 
-
+   // TODO fetch blogs from api
     const BlogsPropList = [
       {
         tue07jan2020: "Thu, 23 May 2019 12:25 by miniSASS Team",
@@ -86,69 +80,29 @@ const Home: React.FC = () => {
             OCTOBER 2018
           </>
         ),
-        newsletterdescription: "",
-        link: "https://minisassblog.wordpress.com/2019/05/23/527/"
+        newsletterdescription: "testing"
       },
       {
         tue07jan2020: "Tue, 11 Oct 2016 11:53 by miniSASS Team",
         newslettertext: "MINISASS NEWSLETTER September 2016",
-        link: "https://minisassblog.wordpress.com/2016/10/11/minisass-newsletter-september-2016/"
       },
       {
-        tue07jan2020: "Thu, 30 Jun 2016 11:47 by miniSASS Team",
+        tue07jan2020: "Thu, 23 May 2019 12:25 by miniSASS Team",
         newslettertext: (
           <>
-            Mandela Day <br />
-            18 July 2016
+            MINISASS NEWSLETTER <br />
+            OCTOBER 2018
           </>
         ),
-        link: "https://minisassblog.wordpress.com/2016/06/30/mandela-day-18-july-2016/"
       },
       {
-        tue07jan2020: "Tue, 14 Jun 2016 09:25 by miniSASS Team",
+        tue07jan2020: "Thu, 23 May 2019 12:25 by miniSASS Team",
         newslettertext: (
           <>
-            miniSASS Newsletter: National Water Week Edition
+            MINISASS NEWSLETTER <br />
+            OCTOBER 2018
           </>
         ),
-        link: "https://minisassblog.wordpress.com/2016/06/14/minisass-newsletter-national-water-week-edition/"
-      },
-      {
-        tue07jan2020: "Tue, 15 March 2016 08:20 by miniSASS Team",
-        newslettertext: (
-          <>
-            miniSASS Newsletter March 2016 <br />
-            MARCH 2016
-          </>
-        ),
-        link: "https://minisassblog.wordpress.com/2016/03/15/minisass-newsletter-march-2016/"
-      },
-      {
-        tue07jan2020: "Tue, 08 March 2016 13:39 by miniSASS Team",
-        newslettertext: (
-          <>
-            National Water Week miniSASS competition 2016 
-          </>
-        ),
-        link: "https://minisassblog.wordpress.com/2016/03/08/national-water-week-minisass-competition-2016/"
-      },
-      {
-        tue07jan2020: "Fri, 31 July 2015 07:26 by miniSASS Team",
-        newslettertext: (
-          <>
-            miniSASS Newsletter July 2015
-          </>
-        ),
-        link: "https://minisassblog.wordpress.com/2015/07/31/minisass-newsletter-july-2015-2/"
-      },
-      {
-        tue07jan2020: "Thu, 08 Jan 2015 13:26 by miniSASS Team",
-        newslettertext: (
-          <>
-            YOUNG WATER AMBASSADORS USE MINISASS TO IDENTIFY SEWAGE POLLUTION IN  IN THE SWARTSPRUIT (RIETFONTEIN)!!
-          </>
-        ),
-        link: "https://minisassblog.wordpress.com/2015/01/08/young-water-ambassadors-use-minisass-to-identify-sewage-pollution-in-the-swartspruit-rietfontein/"
       },
     ];
 
@@ -425,7 +379,7 @@ const Home: React.FC = () => {
                   className="sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 sm:h-[60vh] md:h-[] md:justify-center justify-start sm:m-[] max-w-[1180px] sm:ml-[] mt-[51px] mx-auto sm:overflow-scroll md:px-5 sm:relative sm:top-5 w-full"
                   orientation="horizontal"
                 >
-                  {observations.slice(currentIndex, currentIndex + 4).map((props, index) => (
+                  {ObservationsPropList.slice(currentIndex, currentIndex + 4).map((props, index) => (
                     <React.Fragment key={`DesktopThreeColumnscore${index}`}>
                       <Observations
                         className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[237px] md:h-auto items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[280px]"
