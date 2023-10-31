@@ -83,7 +83,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[71px]"
-                  src={`${newURL}img_alarm_orange_a200.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
 
@@ -106,7 +106,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
-                  src={`${newURL}img_alarm.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
               </div>
@@ -127,7 +127,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_alarm_orange_a200.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
               </div>
