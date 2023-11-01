@@ -67,8 +67,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
           bottom: 'auto',
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
-          width: '80%',
-          maxWidth: '45vw',
+          width: '100%',
+          maxWidth: '43vw',
           background: 'white',
           border: 'none',
           borderRadius: '0px 25px 25px 25px',
@@ -80,7 +80,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             padding: '32px',
             gap: '18px',
             position: 'relative',
@@ -89,6 +89,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
           <div
             style={{
               display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              padding: '0px',
+              gap: '55%',
+              width: '40vw',
+              height: '33px',
             }}
           >
             <h3
@@ -96,6 +102,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
                 fontFamily: 'Raleway',
                 fontStyle: 'normal',
                 fontWeight: 700,
+                alignItems: 'flex-start',
                 fontSize: '24px',
                 lineHeight: '136.4%',
                 color: '#539987',
@@ -103,16 +110,18 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
             >
               Registration Form
             </h3>
-            <div
+            <button
               onClick={onClose}
               style={{
-                cursor: 'pointer',
-                fontSize: '24px',
-                marginLeft: '90%'
+                width: '24px',
+                height: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
               X
-            </div>
+            </button>
           </div>
 
 
@@ -125,79 +134,78 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
               gap: '10px',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Username:</label>
+                <label>Username:</label><br/>
                 <input
                   type="text"
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
                   placeholder="Username"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Email:</label>
+                <label>Email:</label><br/>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Email"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Name:</label>
+                <label>Name:</label><br/>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Surname:</label>
+                <label>Surname:</label><br/>
                 <input
                   type="text"
                   name="surname"
                   value={formData.surname}
                   onChange={handleInputChange}
                   placeholder="Surname"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Organisation Name:</label>
+                <label>Organisation Name:</label><br/>
                 <input
                   type="text"
                   name="organizationName"
                   value={formData.organizationName}
                   onChange={handleInputChange}
                   placeholder="Organization Name"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Organisation Type:</label>
+                <label>Organisation Type:</label><br/>
                 <select
                   name="organizationType"
                   value={formData.organizationType}
                   onChange={handleInputChange}
                   style={{
-                    width: '100%',
-                    maxWidth: '300px',
                     height: '40px',
                     border: '1px solid rgba(0, 0, 0, 0.23)',
                     borderRadius: '4px',
                     padding: '8px 12px',
+                    width: '16.5vw'
                   }}
                 >
                   <option value="">Select Organization Type</option>
@@ -212,27 +220,27 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
                 </select>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
               <div style={{ flex: 1 ,flexDirection: 'column'}}>
-                <label>Password:</label>
+                <label>Password:</label><br/>
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Password"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
               <div style={{ flex: 1,flexDirection: 'column' }}>
-                <label>Confirm Password:</label>
+                <label>Confirm Password:</label><br/>
                 <input
                   type="password"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="Confirm Password"
-                  style={{borderRadius: '4px'}}
+                  style={{borderRadius: '4px',width: '16.5vw'}}
                 />
               </div>
             </div>
@@ -240,14 +248,14 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
               display: 'flex', 
               flexDirection: 'column', 
               gap: '10px' ,
-              marginLeft: '-60%'
+              marginLeft: '-54%'
             }}>
               <label>Country:</label>
               <select
                 name="country"
                 value={formData.country}
                 onChange={handleInputChange}
-                style={{borderRadius: '4px'}}
+                style={{borderRadius: '4px',width: '16.5vw'}}
               >
                 <option value="">Select Country</option>
                 {/* Add country options here */}
@@ -258,7 +266,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{marginRight: "-65%"}}
+              style={{marginRight: "-70%"}}
               onClick={handleSubmit}
             >
               Register
