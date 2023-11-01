@@ -67,7 +67,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
             position: 'relative',
             width: '605px',
             height: '587px',
-            background: '#FFFFFF',
+            background: 'white',
             borderRadius: '0px 25px 25px 25px',
           }}
         >
@@ -118,19 +118,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           width: '541px',
         }}
       >
-        <label
-          style={{
-            width: '10em',
-            height: '1.5em',
-            fontFamily: 'Roboto',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            fontSize: '1.2em',
-            lineHeight: '2em',
-            color: '#424242',
-          }}
-        >
-          Your Name
+        <label>
+          Your Name:
         </label>
         <input
           type="text"
@@ -138,32 +127,14 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           value={formData.name}
           onChange={handleInputChange}
           style={{
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: '8px 12px',
-            gap: '10px',
             width: '541px',
             height: '40px',
-            border: '1px solid rgba(0, 0, 0, 0.23)',
             borderRadius: '4px',
           }}
           placeholder="Enter your name"
         />
-        <label
-          style={{
-            width: '10em',
-            height: '1.5em',
-            fontFamily: 'Roboto',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            fontSize: '1.2em',
-            lineHeight: '2em',
-            color: '#424242',
-          }}
-        >
-              Your Email
+        <label>
+              Your Email:
             </label>
         <input
           type="email"
@@ -171,32 +142,14 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           value={formData.email}
           onChange={handleInputChange}
           style={{
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: '8px 12px',
-            gap: '10px',
             width: '541px',
             height: '40px',
-            border: '1px solid rgba(0, 0, 0, 0.23)',
             borderRadius: '4px',
           }}
           placeholder="Enter your email"
         />
-        <label
-          style={{
-            width: '10em',
-            height: '1.5em',
-            fontFamily: 'Roboto',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            fontSize: '1.2em',
-            lineHeight: '2em',
-            color: '#424242',
-          }}
-        >
-          Phone Number
+        <label>
+          Phone Number:
         </label>
         <input
           type="tel"
@@ -204,47 +157,22 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           value={formData.phone}
           onChange={handleInputChange}
           style={{
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: '8px 12px',
-            gap: '10px',
             width: '541px',
             height: '40px',
-            border: '1px solid rgba(0, 0, 0, 0.23)',
             borderRadius: '4px',
           }}
           placeholder="Enter your phone number"
         />
-        <label
-          style={{
-            width: '10em',
-            height: '1.5em',
-            fontFamily: 'Roboto',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            fontSize: '1.2em',
-            lineHeight: '2em',
-            color: '#424242',
-          }}
-        >
-          Your Message
+        <label>
+          Your Message:
         </label>
         <textarea
           name="message"
           value={formData.message}
           onChange={handleInputChange}
           style={{
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            padding: '8px 12px',
-            gap: '10px',
             width: '541px',
             height: '123px',
-            border: '1px solid rgba(0, 0, 0, 0.23)',
             borderRadius: '4px',
           }}
           placeholder="Enter your message"
