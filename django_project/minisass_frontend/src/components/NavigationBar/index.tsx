@@ -58,7 +58,7 @@ function NavigationBar(props) {
             color={activePage === 'home' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/")}
           >
             Home
           </Button>
