@@ -20,7 +20,17 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
 
 
-  const FETCH_RECENT_OBSERVATIONS = `${window.location.href}api/observations/`;
+   // Get the current URL
+  const currentPath = window.location.href;
+
+  // Extract the protocol and hostname
+  const { protocol, hostname } = new URL(currentPath);
+
+  // Remove everything after the first forward slash
+  const path = currentPath.substring(protocol.length + 2); // +2 to skip the double slashes
+
+  // Construct the new URL
+  const FETCH_RECENT_OBSERVATIONS = `${protocol}//${hostname}/en/api/observations`;
 
 
     useEffect(() => {
