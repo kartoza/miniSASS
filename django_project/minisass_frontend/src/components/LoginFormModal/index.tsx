@@ -80,7 +80,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
               onClick={onClose}
               style={{
                 cursor: 'pointer',
-                marginLeft: '100%'
+                marginLeft: '100%',
               }}
             >
               X
@@ -131,11 +131,15 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{marginRight: "-40%"}}
+              style={{ marginRight: "-40%" }}
               onClick={handleSubmit}
             >
               Login
             </Button>
+            <p style={{ textAlign: 'center' }}>
+              <span style={{ color: 'gray' }}>Forgot your password? </span>
+              <span style={{ color: '#539987' }}>Click here</span>
+            </p>
           </form>
         </div>
       )}
