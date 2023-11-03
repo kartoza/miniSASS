@@ -20,20 +20,20 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
 
 
-    // Get the current URL
-    const currentPath = window.location.href;
-  
-    // Extract the protocol and hostname
-    const { protocol, hostname } = new URL(currentPath);
-  
-    // Check if the current protocol is "http," and if so, replace it with "https"
-    const newProtocol = protocol === "http:" ? "https:" : protocol;
-  
-    // Remove everything after the first forward slash
-    const path = currentPath.substring(protocol.length + 2); // +2 to skip the double slashes
-  
-    // Construct the new URL with the enforced "https" protocol
-    const FETCH_RECENT_OBSERVATIONS = `${newProtocol}//${hostname}/en/api/observations`;
+  // Get the current URL
+  const currentPath = window.location.href;
+
+  // Extract the protocol and hostname
+  const { protocol, hostname } = new URL(currentPath);
+
+  // Check if the current protocol is "http," and if so, replace it with "https"
+  const newProtocol = protocol === "http:" ? "https:" : protocol;
+
+  // Remove everything after the first forward slash
+  const path = currentPath.substring(protocol.length + 2); // +2 to skip the double slashes
+
+  // Construct the new URL with the enforced "https" protocol
+  const FETCH_RECENT_OBSERVATIONS = `${newProtocol}//${hostname}/en/api/observations`;
 
 
 
