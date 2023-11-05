@@ -13,23 +13,22 @@ else:
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
+ADMINS = [
     ('Gavin Fleming', 'gavin@kartoza.com'),
     ('Frank Sokolic', 'frank@gis-solutions.co.za'),
-    ('Ismail Sunni', 'ismail@kartoza.com')
-)
+    ('Ismail Sunni', 'ismail@kartoza.com'),
+]
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['POSTGRES_DB'],
         'USER': os.environ['POSTGRES_USER'],
         'PASSWORD': os.environ['POSTGRES_PASS'],
         'HOST': os.environ['DATABASE_HOST'],
         'PORT': os.environ['DATABASE_PORT'],
-        'OPTIONS': {'sslmode': 'require'}
     }
 }
 
@@ -80,8 +79,6 @@ PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
 FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
-
-
 # Define the BASE_DIR setting
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -92,7 +89,10 @@ MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(BASE_DIR, 'app'))
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static')
+    os.path.join(FRONTEND_PATH, 'static'),
+    os.path.join(PROJECT_PATH, 'minisass_authentication', 'static'),
+    os.path.join(PROJECT_PATH, 'monitor', 'static'),
+    os.path.join(PROJECT_PATH, 'minisass', 'static')
 )
 
 # List of finder classes that know how to find static files in
@@ -126,14 +126,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'sekizai.context_processors.sekizai',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.doc.XViewMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
@@ -145,11 +146,10 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, 'templates'),
-    os.path.join(FRONTEND_PATH, 'templates')
+    os.path.join(FRONTEND_PATH, 'templates'),
+    os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates'),
+    os.path.join(PROJECT_PATH, 'monitor', 'templates'),
+    os.path.join(PROJECT_PATH, 'minisass', 'templates')
 )
 
 LANGUAGES = [
@@ -327,10 +327,25 @@ INSTALLED_APPS = (
     'simple_translation',
     'tagging',
     'reversion',
-    'monitor',
-    'minisass_registration',
-    'minisass_frontend'
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'minisass_frontend',
+    'minisass_authentication',
+    'monitor'
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -360,3 +375,22 @@ LOGGING = {
         },
     }
 }
+
+# Password validation
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
