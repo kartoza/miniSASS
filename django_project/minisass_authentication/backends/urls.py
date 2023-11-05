@@ -2,7 +2,9 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 
 from registration.views import activate
-from minisass_registration.views import register
+from minisass_authentication.views import register
+from django.urls import include
+
 
 
 urlpatterns = patterns(

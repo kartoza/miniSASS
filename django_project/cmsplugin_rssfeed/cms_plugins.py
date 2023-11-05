@@ -1,13 +1,14 @@
 import requests
-import logging; logger = logging.getLogger('rss-feed-plugin')
-from xml.etree import ElementTree as ET
+import logging
 
+from xml.etree import ElementTree as ET
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from .models import RSSFeedConfig
 
+logger = logging.getLogger('rss-feed-plugin')
 
 class RSSFeedPlugin(CMSPluginBase):
     model = RSSFeedConfig
@@ -19,26 +20,23 @@ class RSSFeedPlugin(CMSPluginBase):
         feed = []
         try:
             response = requests.get(feed_url)
-            if response.status_code == requests.codes.ok:
-                root = ET.XML(response.text.encode('utf-8'))
+            if response.status_code == 200:
+                root = ET.XML(response.content)
                 items = root.find('channel').findall('item')
                 for item in items:
                     feed.append({
-                        'title' : item.find('title').text,
-                        'link' : item.find('link').text,
-                        'description' : item.find('description').text,
-                        'pub_date' : item.find('pubDate').text[:22],
-                        'creator' : item.find(
-                            '{http://purl.org/dc/elements/1.1/}creator').text
+                        'title': item.find('title').text,
+                        'link': item.find('link').text,
+                        'description': item.find('description').text,
+                        'pub_date': item.find('pubDate').text[:22],
+                        'creator': item.find('{http://purl.org/dc/elements/1.1/}creator').text
                     })
             else:
-                logger.error("Response Error: %s - %s", 
-                             response.status_code, 
-                             response.reason)
+                logger.error("Response Error: %s - %s", response.status_code, response.reason)
         except requests.exceptions.RequestException:
             logger.error("Could not connect to host %s", feed_url)
 
-        context.update({'feed':feed})
+        context['feed'] = feed
         return context
 
 plugin_pool.register_plugin(RSSFeedPlugin)

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Button, Img, Text } from '../../components';
+import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
+import { useAuth } from '../../AuthContext';
+import axios from 'axios';
 
-function AuthenticationButtons({ isLoggedIn }) {
+
+function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+
+  const { state, dispatch } = useAuth();
+  const isAuthenticated = state.isAuthenticated;
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -23,8 +29,56 @@ function AuthenticationButtons({ isLoggedIn }) {
     setRegisterModalOpen(false);
   };
 
+  const [error, setError] = useState(null); // Define an error state
+
   const handleLogout = () => {
-    // Implement your logout functionality here
+    dispatch({ type: 'LOGOUT' });
+    // Clear the stored state in local storage
+    localStorage.removeItem('authState');
+  };
+  const apiBaseUrl = window.location.href.split('/')[2];
+
+  const handleLogin = async (loginData: any) => {
+    try {
+      const response = await axios.post(`http://${apiBaseUrl}/authentication/api/authentication/api/login/`, loginData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 200) {
+        const userData = response.data;
+        dispatch({ type: 'LOGIN', payload: userData });
+        // Store the state in local storage
+        localStorage.setItem('authState', JSON.stringify({ userData }));
+        setError(null);
+        setLoginModalOpen(false)
+      } else {
+        setError('Invalid credentials. Please try again.');
+      }
+    } catch (error) {
+      setError('Invalid credentials. Please try again.');
+    }
+  };
+
+  const handleRegistration = async (registrationData) => {
+    const apiUrl = `http://${apiBaseUrl}/authentication/api/register/`;
+  
+    try {
+      const response = await axios.post(apiUrl, registrationData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 201) {
+        setError(null)
+      } else {
+        setError( JSON.stringify(response.data));
+      }
+    } catch (error) {
+      setError(JSON.stringify(error.message));
+    }
   };
 
    // Get the current URL using window.location.href
@@ -49,11 +103,11 @@ function AuthenticationButtons({ isLoggedIn }) {
         src={`${newURL}img_minisasstext1.png`}
         alt="minisasstextOne"
       />
-      <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-        {isLoggedIn ? (
+      <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]" >
+        {isAuthenticated ? (
           <Button
             onClick={handleLogout}
-            className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[100px] sm:relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+            className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[110px] sm:relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
             shape="square"
             color="blue_900"
             size="xs"
@@ -86,8 +140,8 @@ function AuthenticationButtons({ isLoggedIn }) {
           </>
         )}
       </div>
-      <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
-      <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} />
+      <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} onSubmit={handleLogin}  error_response={error}/>
+      <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={handleRegistration} error_response={error}/>
     </div>
   );
 }

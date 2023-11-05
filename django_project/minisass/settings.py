@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import ast
+from datetime import timedelta
 import os
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -100,7 +101,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -110,14 +110,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.i18n',
-    # 'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'django.core.context_processors.csrf',
     'django.core.context_processors.media',
@@ -158,25 +156,6 @@ LANGUAGES = [
 ADMIN_LANGUAGE_CODE = 'en'
 LANGUAGE_CODE = 'en'
 
-# Django CMS configuration settings
-# CMS_LANGUAGES = {
-#         '1': [
-#             {
-#                 'code': 'en',
-#                 'name': gettext('English'),
-#                 'fallbacks': [],
-#                 'public': True,
-#                 'hide_untranslated': True,
-#                 'redirect_on_fallback': False
-#                 }
-#             ],
-#         'default': {
-#             'fallbacks': ['en'],
-#             'redirect_on_fallback': True,
-#             'public': False,
-#             'hide_untranslated': False
-#             }
-#         }
 
 CMS_TEMPLATES = (
     ('site_page.html', 'Site Page'),
@@ -320,7 +299,6 @@ INSTALLED_APPS = (
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_video',
     'cms.plugins.twitter',
-    # 'cmsplugin_blog',
     'cmsplugin_contact',
     'cmsplugin_rssfeed',
     'djangocms_utils',

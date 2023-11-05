@@ -1,20 +1,14 @@
-# from django.db import models
-# Import separately
-from django.contrib.gis.db import models # defines geometry field types
-from django.contrib.auth.models import User # refers to auth_user table
+# Import models from django.db.models
+from django.db import models
+from django.contrib.auth.models import User
 from django.template.defaultfilters import escape
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 from dirtyfields import DirtyFieldsMixin
 
-# django-cms imports
-from cms.models import CMSPlugin
-
-# Python imports
-from datetime import datetime
-
-# Create your models here.
+# Import Geo-related fields from django.contrib.gis.db.models
+from django.contrib.gis.db import models as gis_models
 
 
 class Organisations(models.Model):
@@ -35,20 +29,21 @@ class Organisations(models.Model):
         return self.org_name
 
 
+# Update Schools model
 class Schools(models.Model):
     gid = models.AutoField(primary_key=True, editable=False)
-    the_geom = models.PointField()
+    the_geom = gis_models.PointField()
     natemis = models.IntegerField()
     school = models.CharField(max_length=255)
     province = models.CharField(max_length=15)
     phase = models.CharField(max_length=12)
-    objects = models.GeoManager()
+    objects = gis_models.GeoManager()  # Update GeoManager here
 
     class Meta:
-        db_table = u'schools'
-        managed=False
+        db_table = 'schools'
+        managed = False  # No need for a u before the string
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -209,11 +204,6 @@ class ArchivedObservations(models.Model, DirtyFieldsMixin):
 class ObservationPlugin(CMSPlugin):
     """ This is a Django CMS plugin for the above Observations monitor model class
     """
-#     observation = models.ForeignKey(Observations, related_name='plugins')
-#
-#     def __unicode__(self):
-#         return self.observation.site.name
-
 
 def send_confirmation_email(observation):
     """Helper function to send email content based on observation.

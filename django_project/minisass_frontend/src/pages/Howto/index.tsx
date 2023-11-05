@@ -6,9 +6,6 @@ import { Button, Img, List, Text } from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
-import { Link, Element } from 'react-scroll';
-
-
 
 const HowtoPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,13 +22,6 @@ const HowtoPage: React.FC = () => {
 
   // Construct the new URL with the replacement path
   const newURL = baseUrl + '/' + replacementPath;
-
-  function scrollFunction(targetId) {
-    Link.scrollTo(targetId, {
-      duration: 800,
-      smooth: 'easeInOutQuint',
-    });
-  }
 
   return (
     <>
@@ -75,12 +65,10 @@ const HowtoPage: React.FC = () => {
               className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1179px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[80px] w-full"
               orientation="horizontal"
             >
-                <Link
-                  className="common-pointer h-full relative w-full"
-                  to="CollectSampleSection"  // Provide the ID of the target section
-                  smooth={true}
-                  duration={800}  // Set the duration of the scrolling animation
-                >
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/")}
+              >
                 <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                   <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
                   <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
@@ -95,18 +83,15 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[71px]"
-                  src={`${newURL}img_notov1crab.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
-                  style={{ fill: 'yellow' }}
                 />
 
-              </Link>
-              <Link
-                  className="common-pointer h-full relative w-full"
-                  to="UploadResultSection"  // Provide the ID of the target section
-                  smooth={true}
-                  duration={800}  // Set the duration of the scrolling animation
-                >
+              </div>
+              <div
+                className="common-pointer h-full relative w-full"
+                onClick={() => navigate("/")}
+              >
                 <div className="h-28 ml-auto my-auto w-[95%]">
                   <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
                   <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
@@ -121,11 +106,10 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
-                  style={{ fill: 'blue' }}
                 />
-              </Link>
+              </div>
               <div
                 className="common-pointer h-full relative w-full"
                 onClick={() => navigate("/map")}
@@ -143,16 +127,13 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
-                  style={{ fill: 'yellow' }}
                 />
               </div>
-              <Link
+              <div
                 className="common-pointer h-full relative w-full"
-                to="AreYouReadySection"  // Provide the ID of the target section
-                smooth={true}
-                duration={800}  // Set the duration of the scrolling animation
+                onClick={() => navigate("/")}
               >
                 <div className="md:h-28 h-[110px] m-auto w-full">
                   <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
@@ -171,7 +152,7 @@ const HowtoPage: React.FC = () => {
                   src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
-              </Link>
+              </div>
             </List>
         </div>
         {/* end of section */}
@@ -199,11 +180,12 @@ const HowtoPage: React.FC = () => {
               /> */}
 
               <div 
-                className="h-[336px] m-auto object-cover rounded-bl-[55px] rounded-br-[25px] rounded-tl-[25px] w-full"
-              >
-                <YouTubeVideo videoId="QdQBGD08rv4" height="400px" width="800px" playButtonColor="green" />
-              </div>
+                className="h-[336px] m-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full"
+                >
+                  <YouTubeVideo videoId="QdQBGD08rv4" height="400px" width="800px" playButtonColor="green" />
 
+
+              </div>
                 
 
               
@@ -413,7 +395,7 @@ const HowtoPage: React.FC = () => {
                 src={`${newURL}img_rectangle15.png`}
                 alt="rectangleFifteen"
               />
-              <div id='CollectSampleSection' className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
+              <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
                 <Text
                   className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto"
                   size="txtRalewayBold24"
@@ -836,7 +818,7 @@ const HowtoPage: React.FC = () => {
             </div>
           </List>
         </div>
-        <div id='UploadResultSection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
+        <div className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
           <Text
             className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
@@ -1083,7 +1065,7 @@ const HowtoPage: React.FC = () => {
             </Text>
           </div>
         </div>
-        <div id='AreYouReadySection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
+        <div className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
           <div className="border-b border-blue_gray-100 border-solid flex flex-col items-center justify-between max-w-[1179px] w-full">
             <Text
               className="sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"

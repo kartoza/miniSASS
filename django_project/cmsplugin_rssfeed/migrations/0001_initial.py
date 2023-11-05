@@ -1,53 +1,57 @@
-# -*- coding: utf-8 -*-
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from django.db import models, migrations
 
+class Migration(migrations.Migration):
 
-class Migration(SchemaMigration):
+    dependencies = []
 
-    def forwards(self, orm):
-        # Adding model 'RSSFeedConfig'
-        db.create_table('cmsplugin_rssfeedconfig', (
-            ('cmsplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['cms.CMSPlugin'], unique=True, primary_key=True)),
-            ('feed_url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-        ))
-        db.send_create_signal('cmsplugin_rssfeed', ['RSSFeedConfig'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'RSSFeedConfig'
-        db.delete_table('cmsplugin_rssfeedconfig')
-
-
-    models = {
-        'cms.cmsplugin': {
-            'Meta': {'object_name': 'CMSPlugin'},
-            'changed_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '15', 'db_index': 'True'}),
-            'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cms.CMSPlugin']", 'null': 'True', 'blank': 'True'}),
-            'placeholder': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cms.Placeholder']", 'null': 'True'}),
-            'plugin_type': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'position': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
-        },
-        'cms.placeholder': {
-            'Meta': {'object_name': 'Placeholder'},
-            'default_width': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'slot': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'})
-        },
-        'cmsplugin_rssfeed.rssfeedconfig': {
-            'Meta': {'object_name': 'RSSFeedConfig', 'db_table': "'cmsplugin_rssfeedconfig'", '_ormbases': ['cms.CMSPlugin']},
-            'cmsplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['cms.CMSPlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'feed_url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        }
-    }
-
-    complete_apps = ['cmsplugin_rssfeed']
+    operations = [
+        migrations.CreateModel(
+            name='CMSPlugin',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('changed_date', models.DateTimeField(auto_now=True, blank=True)),
+                ('creation_date', models.DateTimeField(default=datetime.datetime.now)),
+                ('language', models.CharField(max_length=15, db_index=True)),
+                ('level', models.PositiveIntegerField(db_index=True)),
+                ('lft', models.PositiveIntegerField(db_index=True)),
+                ('parent', models.ForeignKey(to='cms.CMSPlugin', null=True, blank=True)),
+                ('placeholder', models.ForeignKey(to='cms.Placeholder', null=True)),
+                ('plugin_type', models.CharField(max_length=50, db_index=True)),
+                ('position', models.PositiveSmallIntegerField(null=True, blank=True)),
+                ('rght', models.PositiveIntegerField(db_index=True)),
+                ('tree_id', models.PositiveIntegerField(db_index=True)),
+            ],
+            options={
+                'db_table': 'cms_cmsplugin',
+            },
+        ),
+        migrations.CreateModel(
+            name='Placeholder',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID')),
+                ('default_width', models.PositiveSmallIntegerField(null=True)),
+                ('slot', models.CharField(max_length=50, db_index=True)),
+            ],
+            options={
+                'db_table': 'cms_placeholder',
+            },
+        ),
+        migrations.CreateModel(
+            name='RSSFeedConfig',
+            fields=[
+                ('cmsplugin_ptr', models.OneToOneField(
+                    to='cms.CMSPlugin',
+                    on_delete=models.CASCADE,
+                    primary_key=True,
+                    serialize=False,
+                    auto_created=True,
+                )),
+                ('feed_url', models.URLField(max_length=200)),
+            ],
+            options={
+                'db_table': 'cmsplugin_rssfeedconfig',
+            },
+            bases=('cms.cmsplugin',),
+        ),
+    ]
