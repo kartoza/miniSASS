@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./styles/index.css";
 import "./styles/tailwind.css";
-import { AuthProvider } from 'AuthContext';
+import { AuthProvider } from './AuthContext';
 
 ReactDOM.render(
   <AuthProvider>
