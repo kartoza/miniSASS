@@ -22,7 +22,7 @@ const Home: React.FC = () => {
 
 
   const apiBaseUrl = window.location.href.split('/')[2];
-  const FETCH_RECENT_OBSERVATIONS = `${apiBaseUrl}/api/observations/`;
+  const FETCH_RECENT_OBSERVATIONS = `https://${apiBaseUrl}/api/observations/`
 
 
 
