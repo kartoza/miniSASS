@@ -21,8 +21,20 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
 
 
-  const apiBaseUrl = window.location.href.split('/')[2];
-  const FETCH_RECENT_OBSERVATIONS = `https://${apiBaseUrl}/api/observations/`
+  // Get the current URL using window.location.href
+  const currentURL = window.location.href;
+
+  // Extract the base URL (everything up to the first single forward slash '/')
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+
+  // Define the replacement path
+  const replacementPath = 'static/images/';
+
+  // Construct the new URL with the replacement path
+  const newURL = baseUrl + '/' + replacementPath;
+  const apiBaseUrl = baseUrl + '/en/api/observations/';
+  const FETCH_RECENT_OBSERVATIONS = apiBaseUrl;
 
 
 
@@ -159,19 +171,6 @@ const Home: React.FC = () => {
       const nextIndex = (blogsCurrentIndex + 3) % BlogsPropList.length;
       setBlogsCurrentIndex(nextIndex);
     };
-
-    // Get the current URL using window.location.href
-    const currentURL = window.location.href;
-
-    // Extract the base URL (everything up to the first single forward slash '/')
-    const parts = currentURL.split('/');
-    const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-    // Define the replacement path
-    const replacementPath = 'static/images/';
-
-    // Construct the new URL with the replacement path
-    const newURL = baseUrl + '/' + replacementPath;
 
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
