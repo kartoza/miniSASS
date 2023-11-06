@@ -1,6 +1,7 @@
 
  @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/RalewayRomanSemiBold.ttf"); font-family : "Raleway"; font-weight : 600;  }
  @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/RalewayExtraBold.ttf"); font-family : "Raleway"; font-weight : 800;  }
+ @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/MulishRomanBold.ttf"); font-family : "Mulish"; font-weight : 700;  }
  @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/RalewayRomanRegular.ttf"); font-family : "Raleway"; font-weight : 400;  }
  @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/RalewayRomanBold.ttf"); font-family : "Raleway"; font-weight : 700;  }
  @font-face { font-display: swap; font-style : normal; src: url("../../public/assets/fonts/RalewayBold.ttf"); font-family : "Raleway"; font-weight : 700;  }

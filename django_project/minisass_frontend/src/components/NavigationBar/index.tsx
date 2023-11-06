@@ -42,14 +42,12 @@ function NavigationBar(props) {
   const newURL = baseUrl + '/' + replacementPath;
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
-      <div className="sm:bottom-[100px] md:bottom-[180px] flex sm:flex-col flex-row md:gap-10 items-start justify-between sm:left-[50px] md:left-[75px] md:relative md:right-[] sm:top-[] md:w-[90%] w-full">
-          <AuthenticationButtons /> 
-      </div>
+    <>
+      <AuthenticationButtons /> 
                   
 
-      <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative md:top-[] w-full">
-        <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0 mt-[15px] md:relative md:right-[380px] w-auto sm:w-full">
+      <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
+        <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0 mt-[15px] md:relative md:right-[400px] w-auto sm:w-full">
           <Button
             className={`common-pointer cursor-pointer font-extrabold leading-[normal] min-w-[102px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase ${
               activePage === 'home' ? 'bg-gray-200' : 'bg-transparent'
@@ -99,13 +97,13 @@ function NavigationBar(props) {
             Contact us
           </Button>
 
-          {/* ContactFormModal opens when isModalOpen is true */}
+          
           <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit} />
       </div>
 
 
-        <div className="flex md:flex-1 flex-row gap-[37px] items-center justify-between w-[22%] md:w-full">
-          <div className="flex flex-row gap-4 items-start justify-start w-auto">
+      <div className="md:bottom-5 sm:bottom-[30px] flex sm:flex-1 flex-row gap-[37px] items-center justify-between left-2.5 relative w-[22%] md:w-[30%] sm:w-full">
+        <div className="flex flex-row gap-4 items-start justify-start w-auto">
             <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
               <Img
                 className="h-6 w-6"
@@ -137,7 +135,7 @@ function NavigationBar(props) {
 
                       
       </div>
-    </div>
+    </>
   );
 }
 
