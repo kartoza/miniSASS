@@ -1,14 +1,12 @@
 from django.http import HttpResponse
-from django.views.generic import TemplateView
-from django.utils import simplejson
-from django.views.generic.base import View
-from monitor.models import Observations
-from minisass_registration.models import UserProfile
-from monitor.models import Sites
+from django.views.generic import View
 from decimal import Decimal
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.translation import ugettext as _
 
+# Comment out the UserProfile and Observations imports
+# from monitor.models import Observations
+# from minisass_authentication.models import UserProfile
 
 class DecimalEncoder(DjangoJSONEncoder):
     def default(self, o):
@@ -16,27 +14,10 @@ class DecimalEncoder(DjangoJSONEncoder):
             return float(o)
         return super(DecimalEncoder, self).default(o)
 
-
-class ReactHomeView(TemplateView):
-    template_name = "home.html"
-
 class ObservationsView(View):
     def get(self, request, *args, **kwargs):
-        latest = Observations.objects.all().order_by('-time_stamp')[:15]
-
+        # Return an empty array
         recent_observations = []
-
-        for observation in latest:
-            user_profile = UserProfile.objects.get(user=observation.user)
-
-            recent_observations.append({
-                'site': observation.site.site_name,
-                'username': user_profile.user.username,
-                'organisation': user_profile.organisation_name,
-                'time_stamp': observation.time_stamp,
-                'score': observation.score,
-            })
-        
 
         json_data = simplejson.dumps(recent_observations, cls=DecimalEncoder)
         return HttpResponse(json_data, content_type='application/json')
