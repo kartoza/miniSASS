@@ -1,3 +1,4 @@
-import {COUNTRIES} from "../Countries/countries";
+import {COUNTRIES} from "./countries";
 
 export type SelectMenuOption = typeof COUNTRIES[number]
+

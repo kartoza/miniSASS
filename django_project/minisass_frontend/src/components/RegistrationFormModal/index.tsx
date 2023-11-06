@@ -239,7 +239,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   };
 
   return (
-    <div>
+    <>
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
@@ -527,7 +527,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
       <p>Please check your email for an activation link.</p>
     </div>
   </Modal>
-  </div>
+  </>
   );
 };
 

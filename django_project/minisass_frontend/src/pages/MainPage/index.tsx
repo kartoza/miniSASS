@@ -9,6 +9,7 @@ import Blogs from "../../components/Blogs";
 import NavigationBar from "../../components/NavigationBar";
 import Slideshow from "../../components/SlideShow";
 import axios from "axios"
+import UploadModal from "../../components/UploadFormModal";
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,8 +21,21 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
 
 
-  const apiBaseUrl = window.location.href.split('/')[2];
-  const FETCH_RECENT_OBSERVATIONS = `${apiBaseUrl}/api/observations/`;
+  // Get the current URL using window.location.href
+  const currentURL = window.location.href;
+
+  // Extract the base URL (everything up to the first single forward slash '/')
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+
+  // Define the replacement path
+  const replacementPath = 'static/images/';
+
+  // Construct the new URL with the replacement path
+  const newURL = baseUrl + '/' + replacementPath;
+  const apiBaseUrl = baseUrl + '/en/api/observations/';
+  const FETCH_RECENT_OBSERVATIONS = apiBaseUrl;
+
 
 
     useEffect(() => {
@@ -52,6 +66,7 @@ const Home: React.FC = () => {
                             userimage: "",
                             username: item.site,
                             score1: JSON.stringify(item.score),
+                            score: JSON.stringify(item.score),
                             organisation: `Organisation: ${item.organisation}`,
                             dateadded: `Date added: ${formattedDate}`
                           };
@@ -158,35 +173,32 @@ const Home: React.FC = () => {
       setBlogsCurrentIndex(nextIndex);
     };
 
-    // Get the current URL using window.location.href
-    const currentURL = window.location.href;
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
-    // Extract the base URL (everything up to the first single forward slash '/')
-    const parts = currentURL.split('/');
-    const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+    const openUploadModal = () => {
+      setIsUploadModalOpen(true);
+    };
 
-    // Define the replacement path
-    const replacementPath = 'static/images/';
-
-    // Construct the new URL with the replacement path
-    const newURL = baseUrl + '/' + replacementPath;
+    const closeUploadModal = () => {
+      setIsUploadModalOpen(false);
+    };
 
 
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto pb-[5px] w-full">
-        <div className="flex flex-col items-center justify-start w-full">
+        <div className="flex flex-col items-center justify-start sm:static w-full">
           <div className="h-[537px] md:px-5 relative w-full">
 
             {/* header section */}
-            <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-53px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] w-full z-[1]">
+            <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-53px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] sm:static w-full z-[1]">
               <div className="flex flex-col items-center justify-start w-[98%] md:w-full">
-                <div className="flex md:flex-col flex-row gap-[30px] items-start justify-between w-full">
+                <div className="flex md:flex-col flex-row gap-[30px] items-start justify-between sm:static w-full">
 
                   {/* minisass logo */}
                   <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
                     <Img
-                      className="sm:bottom-[] md:h-auto h-full object-cover md:relative sm:right-[30px] sm:top-2.5 md:top-5 w-full"
+                      className="sm:bottom-[] md:h-1/5 sm:h-auto h-full object-cover md:relative sm:right-[30px] md:top-5 w-full"
                       src={`${newURL}img_minisasslogo1.png`}
                       alt="minisasslogoOne"
                     />
@@ -194,9 +206,10 @@ const Home: React.FC = () => {
                   
 
                   {/* navigation bar */}
-                  <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
+                  <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 relative w-[93%] md:w-full">
                     <NavigationBar activePage="home" />
                   </div>
+
                 </div>
               </div>
             </div>
@@ -210,7 +223,7 @@ const Home: React.FC = () => {
 
           {/* more links section */}
           <List
-            className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1179px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
+            className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
             orientation="horizontal"
           >
             <div
@@ -218,15 +231,15 @@ const Home: React.FC = () => {
               onClick={() => navigate("/map")}
             >
               <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
-                <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
+                <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
                 <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                   <Img
-                    className="h-8 w-8"
+                    className="bottom-5 h-8 relative w-8"
                     src={`${newURL}img_bxmapalt.svg`}
                     alt="bxmapalt"
                   />
                   <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                    className="bottom-5 mt-1 relative text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                     size="txtRalewayExtraBold14WhiteA700"
                   >
                     Explore the map
@@ -244,10 +257,10 @@ const Home: React.FC = () => {
               onClick={() => navigate("/howto")}
             >
               <div className="h-28 ml-auto my-auto w-[95%]">
-                <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                <div className="bg-blue_gray-500 h-28 ml-auto my-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
                 <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
                   <Img
-                    className="h-8 w-8"
+                    className="h-8 relative w-8"
                     src={`${newURL}img_bxbookreader.svg`}
                     alt="bxbookreader"
                   />
@@ -267,18 +280,18 @@ const Home: React.FC = () => {
             </div>
             <div
               className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/")}
+              onClick={openUploadModal}
             >
               <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
-                <div className="bg-blue_gray-500 h-28 mt-auto mx-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                <div className="bg-blue_gray-500 h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
                 <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
                   <Img
-                    className="h-8 w-8"
+                    className="bottom-5 h-8 relative w-8"
                     src={`${newURL}img_bxbong.svg`}
                     alt="bxbong"
                   />
                   <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                    className="bottom-5 mt-1 relative text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                     size="txtRalewayExtraBold14WhiteA700"
                   >
                     Submit results
@@ -319,8 +332,10 @@ const Home: React.FC = () => {
             </div>
           </List>
 
+          <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
+
           {/* introduction section */}
-          <div className="bg-gray-200 flex sm:flex-col flex-row gap-[49px] items-start justify-start max-w-[1179px] mt-5 mx-auto p-[43px] md:px-5 relative rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:top-[145px] sm:top-[200px] top-[30px] sm:w-[90%] md:w-[98%] w-full">
+          <div className="bg-gray-200 flex sm:flex-col flex-row gap-[49px] items-start justify-start max-w-[1450px] mt-5 mx-auto p-[43px] md:px-5 relative rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:top-[145px] sm:top-[200px] top-[30px] sm:w-[90%] md:w-[98%] w-full">
             <Text
               className="sm:flex-1 ml-2 sm:ml-[0] sm:mt-0 mt-[3px] sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 w-[28%] sm:w-full"
               size="txtRalewayRomanBold42"
@@ -338,7 +353,7 @@ const Home: React.FC = () => {
               quality in that river.
             </Text>
           </div>
-          <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-2 items-center justify-start max-w-[1179px] mt-[86px] mx-auto md:px-5 md:relative md:top-20 sm:top-[130px] w-full">
+          <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-2 items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
             <Img
               className="sm:flex-1 h-[380px] md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[380px] sm:w-full"
               src={`${newURL}img_rectangle1.png`}
@@ -403,8 +418,8 @@ const Home: React.FC = () => {
           <div className="flex flex-col md:gap-10 gap-28 items-center justify-start mt-28 w-full">
 
              {/* observations */}
-            <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1180px] mx-auto md:px-5 sm:relative sm:top-[45px] w-full">
-              <div className="flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1179px] mt-[66px] mx-auto md:px-5 md:relative md:top-[15px] sm:top-[60px] w-full">
+             <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
+              <div className="sm:bottom-[] flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1179px] sm:relative sm:top-[50px] w-full">
                 <Text
                   className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                   size="txtRalewayRomanBold40"
@@ -422,7 +437,7 @@ const Home: React.FC = () => {
                   </Button>
                 </div>
                 <List
-                  className="sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 sm:h-[60vh] md:h-[] md:justify-center justify-start sm:m-[] max-w-[1180px] sm:ml-[] mt-[51px] mx-auto sm:overflow-scroll md:px-5 sm:relative sm:top-5 w-full"
+                  className="flex-col sm:flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 sm:h-[50vh] items-baseline justify-around overflow-auto relative w-auto md:w-full"
                   orientation="horizontal"
                 >
                   {observations.slice(currentIndex, currentIndex + 4).map((props, index) => (
@@ -500,7 +515,7 @@ const Home: React.FC = () => {
           {/* end of section */}
 
           {/* articles and blogs section */}
-          <div className="flex flex-col gap-[58px] items-center justify-start max-w-[1179px] mt-28 mx-auto md:px-5 w-full">
+          <div className="flex flex-col gap-[58px] items-center justify-start max-w-[1450px] mt-28 mx-auto md:px-5 w-full">
             <div className="flex flex-row md:gap-10 items-center justify-between max-w-[1179px] w-full">
               <Text
                 className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"

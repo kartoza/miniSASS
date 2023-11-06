@@ -49,24 +49,29 @@ const Footer: React.FC<FooterProps> = (props) => {
         <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full">
           <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full">
             <Img
-              className="h-[100px] md:h-auto object-cover w-64"
-              src={`${newURL}img_image4.png`}
-              alt="imageFour"
-            />
-            <Img
-              className="h-[100px] md:h-auto object-cover w-[54px]"
-              src={`${newURL}img_image5.png`}
-              alt="imageFive"
-            />
-            <Img
-              className="h-[100px] md:h-auto object-cover w-[218px]"
+              className="h-[100px] md:h-auto object-contain"
               src={`${newURL}img_image6.png`}
-              alt="imageSix"
+              alt="patners"
             />
             <Img
-              className="h-[100px] md:h-auto object-cover w-[117px]"
-              src={`${newURL}img_image7.png`}
-              alt="imageSeven"
+              className="h-[100px] md:h-auto object-contain"
+              src={`${newURL}patners_logo_2.png`}
+              alt="patners"
+            />
+            <Img
+              className="h-[100px] md:h-auto object-contain"
+              src={`${newURL}patners_logo_3.png`}
+              alt="patners"
+            />
+            <Img
+              className="h-[100px] md:h-auto object-contain"
+              src={`${newURL}patners_logo_4.png`}
+              alt="patners"
+            />
+            <Img
+              className="h-[100px] md:h-auto object-contain"
+              src={`${newURL}patners_logo_5.png`}
+              alt="patners"
             />
           </div>
           <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px] md:w-[105%] sm:w-[110%] w-full">
@@ -98,26 +103,6 @@ const Footer: React.FC<FooterProps> = (props) => {
                         size="txtRalewayExtraBold14WhiteA700"
                       >
                         Map
-                      </Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/downloads">
-                      <Text
-                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                        size="txtRalewayExtraBold14WhiteA700"
-                      >
-                        Downloads
-                      </Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/partners">
-                      <Text
-                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                        size="txtRalewayExtraBold14WhiteA700"
-                      >
-                        Partners
                       </Text>
                     </a>
                   </li>

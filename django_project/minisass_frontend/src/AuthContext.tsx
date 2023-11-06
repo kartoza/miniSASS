@@ -113,4 +113,3 @@ const tokenRefresh = (dispatch: React.Dispatch<AuthAction>) => {
 };
 
 export { AuthProvider, useAuth, login, logout, register, resetPassword, tokenRefresh };
-

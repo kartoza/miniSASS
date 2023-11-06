@@ -97,17 +97,17 @@ function AuthenticationButtons() {
  
 
   return (
-    <div className="sm:bottom-20 md:bottom-[119px] flex sm:flex-col flex-row md:gap-10 sm:h-[] items-start justify-between sm:left-[50px] md:left-[63px] md:relative sm:right-[] md:right-[] sm:top-[] md:w-[100%] w-full">
+    <div className="sm:bottom-20 md:bottom-[119px] flex sm:flex-col flex-row md:gap-10 sm:h-[] items-start justify-between md:left-[50px] md:relative sm:right-[] md:right-[] sm:top-[] md:w-[90%] w-full">
       <Img
-        className="h-[29px] sm:h-[50px] md:h-auto sm:mt-0 mt-[21px] object-cover"
+        className="sm:bottom-[] h-[29px] sm:h-[50px] md:h-auto sm:mt-0 mt-[21px] object-cover sm:relative sm:top-5"
         src={`${newURL}img_minisasstext1.png`}
         alt="minisasstextOne"
       />
-      <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]" >
+      <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
         {isAuthenticated ? (
           <Button
             onClick={handleLogout}
-            className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[110px] sm:relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+            className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
             shape="square"
             color="blue_900"
             size="xs"
@@ -119,7 +119,7 @@ function AuthenticationButtons() {
           <>
             <Button
               onClick={openLoginModal}
-              className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[100px] sm:relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[100px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
               shape="square"
               color="blue_900"
               size="xs"
@@ -129,7 +129,7 @@ function AuthenticationButtons() {
             </Button>
             <Button
               onClick={openRegisterModal}
-              className="sm:bottom-[125px] cursor-pointer font-semibold leading-[normal] sm:left-[110px] sm:relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
               shape="square"
               color="blue_900"
               size="xs"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { Img, Text } from "../../components";
 import "react-circular-progressbar/dist/styles.css";
@@ -37,18 +37,41 @@ type DesktopTwoColumnscoreProps = Omit<
   const newURL = baseUrl + '/' + replacementPath;
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
-  const isRedProgressBar = parseFloat(props.score1 || "0") < 6;
-  const progressBarColor = isRedProgressBar ? "red" : "green";
-  const titleColor = isRedProgressBar ? "text-red-600" : "text-green-800";
-  const renderCrab = isRedProgressBar
-    ? `${newURL}img_image2_24x30.png`
-    : `${newURL}img_image2.png`;
+  const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
+  const [titleColor, setTitleColor] = useState<string>('');
+  const [progressBarColor, setProgressBarColor] = useState<string>('');
+  const [renderCrab, setRenderCrab] = useState<string>('');
+  
+
+  useEffect(() => {
+    if(parseFloat(props.score || "0") < 6){
+      setIsRedProgressBar(true)
+      setTitleColor("text-red-600")
+      setProgressBarColor("red")
+      setRenderCrab(`${newURL}img_image2_24x30.png`)
+    }else {
+      console.log('score more')
+      setIsRedProgressBar(false)
+      setTitleColor("text-green-800")
+      setProgressBarColor("green")
+      setRenderCrab(`${newURL}img_image2.png`)
+    }
+      
+
+  }, [props.score]);
+
+  // const isRedProgressBar = parseFloat(props.score1 || "0") < 6;
+  // const progressBarColor = isRedProgressBar ? "red" : "green";
+  // const titleColor = isRedProgressBar ? "text-red-600" : "text-green-800";
+  // const renderCrab = isRedProgressBar
+  //   ? `${newURL}img_image2_24x30.png`
+  //   : `${newURL}img_image2.png`;
 
   return (
     <div className={props.className}>
       <div className="flex flex-col gap-2 items-start justify-start w-full">
         <Text
-          className={`text-green-800 text-lg w-full ${titleColor}`}
+          className={`${titleColor} text-lg w-full`}
           size="txtRalewayBold18Green800"
         >
           {props?.username}
@@ -75,11 +98,10 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
         </div>
       </div>
       <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
-        <Text
+      <Text
           className="flex-1 text-base w-auto"
           size="txtRalewayRomanSemiBold16Green800"
         >
-          {props?.score}
         </Text>
         <div className="h-[68px] relative w-[68px]">
           <div className="h-[68px] m-auto w-[68px]">

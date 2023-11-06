@@ -16,7 +16,6 @@ class DecimalEncoder(DjangoJSONEncoder):
 
 class ObservationsView(View):
     def get(self, request, *args, **kwargs):
-        # Return an empty array
         recent_observations = []
 
         json_data = simplejson.dumps(recent_observations, cls=DecimalEncoder)
