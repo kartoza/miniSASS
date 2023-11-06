@@ -22,7 +22,7 @@ class ReactHomeView(TemplateView):
 
 class ObservationsView(View):
     def get(self, request, *args, **kwargs):
-        latest = Observations.objects.all().order_by('-time_stamp')[:15]
+        latest = Observations.objects.all().order_by('-time_stamp')[:20]
 
         recent_observations = []
 
