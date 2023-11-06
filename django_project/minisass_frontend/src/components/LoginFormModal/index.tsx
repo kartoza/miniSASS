@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 import { Button } from "../../components";
 
@@ -6,24 +6,39 @@ interface LoginFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: { username: string; password: string }) => void;
+  error_response: string | null;
 }
 
-const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubmit, error_response }) => {
   const [formData, setFormData] = useState<{ username: string; password: string }>({
     username: '',
     password: '',
   });
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (error_response === null) {
+      // Close the modal if login is successful
+      onClose();
+      
+    }
+  }, [error_response]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setError(null)
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
-    setFormData({ username: '', password: '' });
-    onClose();
+    if (formData.username && formData.password) {
+      setError(null);
+      onSubmit(formData);
+      setFormData({ username: '', password: '' });
+    } else {
+      setError('Please enter both username and password.');
+    }
   };
 
   return (
@@ -126,6 +141,12 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
                 padding: '8px 12px',
               }}
             />
+            {error && (
+              <div style={{ color: 'red' }}>{error}</div>
+            )}
+            {error_response && (
+              <div style={{ color: 'red' }}>{error_response}</div>
+            )}
             <Button
               className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
               color="blue_gray_500"
