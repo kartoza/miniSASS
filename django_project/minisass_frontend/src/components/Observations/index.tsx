@@ -48,7 +48,7 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
     <div className={props.className}>
       <div className="flex flex-col gap-2 items-start justify-start w-full">
         <Text
-          className={`text-green-800 text-lg w-full ${titleColor}`}
+          className={`text-lg w-full ${titleColor}`}
           size="txtRalewayBold18Green800"
         >
           {props?.username}
