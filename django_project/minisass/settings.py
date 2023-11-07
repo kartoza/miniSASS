@@ -50,10 +50,6 @@ PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
 FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
-# Define the BASE_DIR setting
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
