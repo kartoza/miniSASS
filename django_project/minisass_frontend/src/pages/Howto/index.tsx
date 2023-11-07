@@ -402,7 +402,7 @@ const HowtoPage: React.FC = () => {
             </div>
           </List>
         </div>
-        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1180px] mt-28 mx-auto md:px-5  sm:w-[144%] w-full">
+        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mt-28 mx-auto md:px-5  sm:w-[144%] w-full">
           <Text
             className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
