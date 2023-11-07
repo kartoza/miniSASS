@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -6,13 +6,15 @@ import { Button, Img, List, Text } from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
-import { Link, Element } from 'react-scroll';
+import { Link } from 'react-scroll';
 import MiniSASSResources from "../../components/minisassResources";
+import RegistrationFormModal from "../../components/RegistrationFormModal";
 
 
 
 const HowtoPage: React.FC = () => {
   const navigate = useNavigate();
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
@@ -27,12 +29,22 @@ const HowtoPage: React.FC = () => {
   // Construct the new URL with the replacement path
   const newURL = baseUrl + '/' + replacementPath;
 
-  function scrollFunction(targetId) {
-    Link.scrollTo(targetId, {
-      duration: 800,
-      smooth: 'easeInOutQuint',
-    });
-  }
+  const items = [
+    "Net/Sieve",
+    "Life Jacket",
+    "Ice Cream Tub / White Tray",
+    "Gumboots / Waders",
+    "Cap/Hat/Sunscreen",
+    "Soap/Handwash",
+  ];
+
+  const openRegisterModal = () => {
+    setRegisterModalOpen(true);
+  };
+
+  const closeRegisterModal = () => {
+    setRegisterModalOpen(false);
+  };
 
   return (
     <>
@@ -84,7 +96,7 @@ const HowtoPage: React.FC = () => {
                 >
                 <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                   <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
-                  <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
+                  <div className="absolute bottom-[45%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                     
                     <Text
                       className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
@@ -110,7 +122,7 @@ const HowtoPage: React.FC = () => {
                 >
                 <div className="h-28 ml-auto my-auto w-[95%]">
                   <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                  <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
+                  <div className="absolute bottom-[10%] flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
                     
                     <Text
                       className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
@@ -133,7 +145,7 @@ const HowtoPage: React.FC = () => {
               >
                 <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                   <div className="bg-blue_gray-500 h-28 mt-auto mx-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                  <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
+                  <div className="absolute bottom-[45%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
                     <Text
                       className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                       size="txtRalewayExtraBold14WhiteA700"
@@ -157,7 +169,7 @@ const HowtoPage: React.FC = () => {
               >
                 <div className="md:h-28 h-[110px] m-auto w-full">
                   <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                  <div className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
+                  <div className="absolute bottom-[10%] flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
                     
                     <Text
                       className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
@@ -270,42 +282,15 @@ const HowtoPage: React.FC = () => {
                 </Text>
               </div>
               <div className="flex flex-col gap-3.5 items-start justify-start w-[203px]">
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Net/Sieve
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Life Jacket
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Ice Cream Tub / White Tray
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Gumboots / Waders
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Cap/Hat/Sunscreen
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Soap/Handwash
-                </Text>
+                {items.map((item, index) => (
+                  <Text
+                    key={index}
+                    className="text-base text-gray-800 w-auto"
+                    size="txtRalewayRomanRegular16Gray800"
+                  >
+                    {item}
+                  </Text>
+                ))}
               </div>
             </div>
             <div className="flex flex-col gap-[46px] items-start justify-start w-[380px] sm:w-full">
@@ -316,42 +301,15 @@ const HowtoPage: React.FC = () => {
                 Do miniSASS
               </Text>
               <div className="flex flex-col gap-3.5 items-start justify-start w-[203px]">
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Net/Sieve
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Life Jacket
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Ice Cream Tub / White Tray
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Gumboots / Waders
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Cap/Hat/Sunscreen
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Soap/Handwash
-                </Text>
+                  {items.map((item, index) => (
+                    <Text
+                      key={index}
+                      className="text-base text-gray-800 w-auto"
+                      size="txtRalewayRomanRegular16Gray800"
+                    >
+                      {item}
+                    </Text>
+                  ))}
               </div>
             </div>
             <div className="flex flex-col gap-[46px] items-start justify-start w-[376px] sm:w-full">
@@ -362,42 +320,15 @@ const HowtoPage: React.FC = () => {
                 Upload data on the website
               </Text>
               <div className="flex flex-col gap-3.5 items-start justify-start w-[203px]">
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Net/Sieve
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Life Jacket
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Ice Cream Tub / White Tray
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Gumboots / Waders
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Cap/Hat/Sunscreen
-                </Text>
-                <Text
-                  className="text-base text-gray-800 w-auto"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  Soap/Handwash
-                </Text>
+                  {items.map((item, index) => (
+                    <Text
+                      key={index}
+                      className="text-base text-gray-800 w-auto"
+                      size="txtRalewayRomanRegular16Gray800"
+                    >
+                      {item}
+                    </Text>
+                  ))}
               </div>
             </div>
           </List>
@@ -479,6 +410,7 @@ const HowtoPage: React.FC = () => {
                 alt="rectangleSixteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
+               <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={null} error_response={null}/>
                 <Text
                   className="leading-[136.40%] max-w-[480px] md:max-w-full text-2xl md:text-[22px] text-blue-900 sm:text-xl"
                   size="txtRalewayBold24"
@@ -488,7 +420,7 @@ const HowtoPage: React.FC = () => {
                 <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
                   <li>
                     <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
-                      <span className="underline">Register</span>
+                      <span className="underline" onClick={openRegisterModal}>Register</span>
                       <span className="text-gray-800 font-raleway text-left font-normal">
                         {" "}on the website.
                       </span>
@@ -498,7 +430,7 @@ const HowtoPage: React.FC = () => {
                   <li>
                     <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
                       <span>Play and explore the </span>
-                      <span className="underline">map</span>
+                      <span className="underline" onClick={() => navigate("/map")}>map</span>
                       <span className="text-gray-800 font-raleway text-left font-normal">
                       {" "}page
                     </span>
