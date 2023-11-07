@@ -7,6 +7,7 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
 import { Link, Element } from 'react-scroll';
+import MiniSASSResources from "../../components/minisassResources";
 
 
 
@@ -56,7 +57,7 @@ const HowtoPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gray-200 flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5 relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[104%] w-full">
+          <div className="bg-gray-200 flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5 relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full">
             <div className="flex flex-col items-center justify-start md:ml-[0] ml-[79px] mt-[61px]">
               <Text
                 className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900"
@@ -69,10 +70,10 @@ const HowtoPage: React.FC = () => {
         </div>
 
         {/* links section */}
-        <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-4 h-32 sm:h-[] md:h-auto items-start justify-center max-w-[1179px] mt-[3px] mx-auto sm:overflow-auto md:px-5 relative top-23 sm:top-40 md:top-[145px] w-full">
+        <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-4 h-32 sm:h-[] md:h-auto items-start justify-center max-w-[1450px] mt-[3px] mx-auto sm:overflow-auto md:px-5 relative top-23 sm:top-40 md:top-[145px]  w-full">
           {/* the links for collect ,upload, are you ready, still empty TODO */}
           <List
-              className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1179px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[80px] w-full"
+              className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[80px] w-full"
               orientation="horizontal"
             >
                 <Link
@@ -94,7 +95,7 @@ const HowtoPage: React.FC = () => {
                   </div>
                 </div>
                 <Img
-                  className="absolute h-[72px] right-[0] top-[0] w-[71px]"
+                  className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                   src={`${newURL}img_notov1crab.svg`}
                   alt="notov1crab"
                   style={{ fill: 'yellow' }}
@@ -120,7 +121,7 @@ const HowtoPage: React.FC = () => {
                   </div>
                 </div>
                 <Img
-                  className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
+                  className="absolute bottom-[0] h-[72px] left-[0] w-[72px]"
                   src={`${newURL}img_notov1crab_blue_gray_100.svg`}
                   alt="notov1crab"
                   style={{ fill: 'blue' }}
@@ -167,7 +168,7 @@ const HowtoPage: React.FC = () => {
                   </div>
                 </div>
                 <Img
-                  className="absolute h-[72px] right-[0] top-[0] w-[46px]"
+                  className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                   src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
@@ -177,15 +178,15 @@ const HowtoPage: React.FC = () => {
         {/* end of section */}
         
         {/* youtube player section */}
-        <div className="flex flex-col gap-[46px] items-end justify-start max-w-[1179px] mt-[94px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] w-full">
+        <div className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[94px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
           <Text
-            className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
           >
             miniSASS website Video
           </Text>
-          <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1175px] md:relative md:top-[50px] w-full">
-            <div className="h-[336px] relative w-1/2 md:w-full">
+          <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px] md:relative md:top-[50px] w-full">
+            <div className="h-[336px] relative w-1/2 md:w-full" >
 
               {/* <Img
                 className="h-[336px] m-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full"
@@ -200,8 +201,9 @@ const HowtoPage: React.FC = () => {
 
               <div 
                 className="h-[336px] m-auto object-cover rounded-bl-[55px] rounded-br-[25px] rounded-tl-[25px] w-full"
+                
               >
-                <YouTubeVideo videoId="QdQBGD08rv4" height="400px" width="800px" playButtonColor="green" />
+                <YouTubeVideo videoId="QdQBGD08rv4" height="336px" width="90%" playButtonColor="green" />
               </div>
 
                 
@@ -212,6 +214,7 @@ const HowtoPage: React.FC = () => {
             <Text
               className="leading-[136.40%] max-w-[474px] md:max-w-full text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
+              style={{marginRight: '10%'}}
             >
               <span className="text-gray-800 font-raleway text-left font-normal">
                 Subscribe to our Youtube Channel{" "}
@@ -240,9 +243,9 @@ const HowtoPage: React.FC = () => {
         </div>
         {/* end of section */}
 
-        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1179px] mt-[136px] mx-auto md:px-5 w-full">
+        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mt-[136px] mx-auto md:px-5 sm:w-[144%] w-full">
           <Text
-            className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
           >
             miniSASS on the go
@@ -399,9 +402,9 @@ const HowtoPage: React.FC = () => {
             </div>
           </List>
         </div>
-        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1180px] mt-28 mx-auto md:px-5 w-full">
+        <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1180px] mt-28 mx-auto md:px-5  sm:w-[144%] w-full">
           <Text
-            className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
           >
             How to do miniSASS
@@ -413,79 +416,60 @@ const HowtoPage: React.FC = () => {
                 src={`${newURL}img_rectangle15.png`}
                 alt="rectangleFifteen"
               />
-              <div id='CollectSampleSection' className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
+              <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
                 <Text
                   className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto"
                   size="txtRalewayBold24"
                 >
                   Collect a miniSASS sample
                 </Text>
-                <Text
-                  className="leading-[136.40%] text-base text-gray-800"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    Gather all the field sheets and{" "}
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    equipment
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      !<br />
+                <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
+                  <li>
+                    
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
+                    <span className="text-gray-800 font-raleway text-left font-normal">
+                      Gather all the field sheets and{" "}
+                    </span>
+                    <span className="underline">
+                      equipment
+                    </span>
+                      <span>!</span>
+                    </a>
+                  </li>
+                  <li>
+                    <span className="text-gray-800 font-raleway text-left font-normal">
                       Go to a river and collect bugs.
-                      <br />
-                      Count and identify all the bugs you have collected. Use
-                      the{" "}
-                    </>
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Dichotomous Key
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    {" "}
-                    and
-                  </span>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    {" "}
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Identification guide
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      .<br />
-                      Score them using the (
-                    </>
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Version 2.0 November 2011
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      ) and find your river health!!
-                      <br />
-                    </>
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Read more on preparing for miniSASS...
-                  </a>
-                </Text>
+                    </span>
+                  </li>
+                  <li>
+                    
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
+                    <span className="text-gray-800 font-raleway text-left font-normal">
+                      Count and identify all the bugs you have collected. Use the{" "}
+                    </span>
+                    <span className="underline">Dichotomous Key</span>
+                    <span>
+                      {" "}and{" "}
+                    </span>
+                      <span className="underline">
+                        Identification guide.
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal ">
+                      <span>Score them using the (</span>
+                      <span className="underline">Version 2.0 November 2011</span>
+                      <span>) and find your river health!!</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal underline">
+                      Read more on preparing for miniSASS...
+                    </a>
+                  </li>
+                </ul>
+
               </div>
             </div>
             <div className="flex flex-col gap-9 items-start justify-start w-auto sm:w-full">
@@ -501,54 +485,50 @@ const HowtoPage: React.FC = () => {
                 >
                   Upload your miniSASS result to the database map
                 </Text>
-                <Text
-                  className="leading-[136.40%] text-base text-gray-800"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Register
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      {" "}
-                      on the website.
-                      <br />
-                      Play and explore the{" "}
-                    </>
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    map
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    {" "}
-                  </span>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      page
-                      <br />
+                <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
+                  <li>
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
+                      <span className="underline">Register</span>
+                      <span className="text-gray-800 font-raleway text-left font-normal">
+                        {" "}on the website.
+                      </span>
+                    </a>
+                    
+                  </li>
+                  <li>
+                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
+                      <span>Play and explore the </span>
+                      <span className="underline">map</span>
+                      <span className="text-gray-800 font-raleway text-left font-normal">
+                      {" "}page
+                    </span>
+                    </a>
+                    
+                  </li>
+                  <li>
+                    <span className="text-gray-800 font-raleway text-left font-normal">
                       Enter your data on the miniSASS Data Input window!
-                      <br />
-                      Check that is corresponds and correlates to your field
-                      result!
-                      <br />
-                      The result will pop up as a crab with a colour reflecting
-                      the ecological region that your river falls in.
-                    </>
-                  </span>
-                </Text>
+                    </span>
+                  </li>
+                  <li>
+                    <span className="text-gray-800 font-raleway text-left font-normal">
+                      {" "}Check that is corresponds and correlates to your field result!
+                    </span>
+                  </li>
+                  <li>
+                    <span className="text-gray-800 font-raleway text-left font-normal">
+                      The result will pop up as a crab with a colour reflecting the ecological region that your river falls in.
+                    </span>
+                  </li>
+                </ul>
+
               </div>
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
+        <div  id='CollectSampleSection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1450px] mt-28 mx-auto sm:overflow-auto md:px-5 sm:w-[144%] w-full">
           <Text
-            className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
           >
             How to collect a miniSASS Sample
@@ -570,38 +550,38 @@ const HowtoPage: React.FC = () => {
                 >
                   Tools you need
                 </Text>
-                <Text
-                  className="leading-[136.40%] text-base text-gray-800"
-                  size="txtRalewayRomanRegular16Gray800"
-                >
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    Score sheet
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      , or a piece of paper
-                      <br />
+                <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                  Check on this List:
+                  <ul style={{ listStyleType: 'disc', paddingLeft: '1rem' }}>
+                    <li>
+                      <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal ">
+                       <span className="underline">Score sheet</span>
+                        <span className="text-gray-800 font-raleway text-left font-normal">
+                        , or a piece of paper
+                      </span>
+                      </a>
+                      
+                    </li>
+                    <li>
                       Pen / Pencil
-                      <br />
-                      Sieve / net (
-                    </>
-                  </span>
-                  <a
-                    href="javascript:"
-                    className="text-blue-900 font-raleway text-left font-normal underline"
-                  >
-                    You can make your own Net
-                  </a>
-                  <span className="text-gray-800 font-raleway text-left font-normal">
-                    <>
-                      )<br />
+                    </li>
+                    <li>
+                      
+                      <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
+                        <span>
+                          Sieve / net (
+                        </span>
+                       <span className="underline"> You can make your own Net</span>
+                       <span>)</span>
+                      </a>
+                      
+                    </li>
+                    <li>
                       White Tray / Ice cream container
-                    </>
-                  </span>
+                    </li>
+                  </ul>
                 </Text>
+
                 <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
                   <Text
                     className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-full"
@@ -836,14 +816,14 @@ const HowtoPage: React.FC = () => {
             </div>
           </List>
         </div>
-        <div id='UploadResultSection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
+        <div id='UploadResultSection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1450px] mt-28 mx-auto sm:overflow-auto md:px-5 sm:w-[144%] w-full">
           <Text
-            className="border-b border-blue_gray-100 border-solid max-w-[1179px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="border-b border-blue_gray-100 border-solid max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] pt-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
           >
             How to upload your miniSASS result to the database map
           </Text>
-          <div className="flex flex-col items-start justify-start max-w-[1179px] w-full">
+          <div className="flex flex-col items-start justify-start max-w-[1450px] w-full">
             <div className="flex flex-col items-start justify-start max-w-[1132px] w-full">
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto md:w-full">
                 <a
@@ -1002,13 +982,13 @@ const HowtoPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-center justify-start mt-28 p-[103px] md:px-10 sm:px-5 w-full">
+        <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-center justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
           <Img
             className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-1/4 md:w-full"
             src={`${newURL}img_rectangle6.png`}
             alt="rectangleSix"
           />
-          <div className="flex flex-1 flex-col gap-[26px] items-start justify-start max-w-[783px] md:mt-0 mt-0.5 w-full">
+          <div className="flex flex-1 flex-col gap-[26px] items-start justify-start max-w-[783px] md:mt-0 mt-0.5  w-full">
             <Text
               className="leading-[136.40%] max-w-[783px] md:max-w-full text-2xl md:text-[22px] text-white-A700 sm:text-xl"
               size="txtRalewayBold24WhiteA700"
@@ -1083,8 +1063,8 @@ const HowtoPage: React.FC = () => {
             </Text>
           </div>
         </div>
-        <div id='AreYouReadySection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1179px] mt-28 mx-auto sm:overflow-auto md:px-5 w-full">
-          <div className="border-b border-blue_gray-100 border-solid flex flex-col items-center justify-between max-w-[1179px] w-full">
+        <div id='AreYouReadySection' className="flex flex-col gap-[58px] sm:h-[70vh] items-start justify-start max-w-[1450px] mt-28 mx-auto sm:overflow-auto md:px-5 sm:w-[144%] w-full">
+          <div className="border-b border-blue_gray-100 border-solid flex flex-col items-center justify-between max-w-[1450px] w-full">
             <Text
               className="sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
               size="txtRalewayRomanBold40"
@@ -1099,7 +1079,7 @@ const HowtoPage: React.FC = () => {
             Before you go out to explore, first make sure you have all of the
             below:
           </Text>
-          <div className="flex flex-col items-start justify-start max-w-[1179px] w-full">
+          <div className="flex flex-col items-start justify-start max-w-[1450px] w-full">
             <div className="flex flex-col items-start justify-start max-w-[1132px] w-full">
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto md:w-full">
                 <Text
@@ -1131,31 +1111,53 @@ const HowtoPage: React.FC = () => {
                   >
                     Check on this List:
                   </Text>
-                  <Text
-                    className="leading-[136.40%] text-base text-gray-800"
-                    size="txtRalewayRomanRegular16Gray800"
-                  >
-                    <>
-                      Life jacket (Especially if you cannot swim or when
-                      sampling from rivers with a strong current)
-                      <br />
-                      Soap / Hand wash
-                      <br />
-                      Cap/Hat/Sunscreen
-                      <br />
-                      Gumboots/Waders/Wellingtons
-                      <br />
-                      Net / Sieve (See Below for how to make your own)
-                      <br />
-                      Pencil/Pen
-                      <br />
-                      Timer (Remember you can only sample for 5 min)
-                      <br />
-                      Magnifying glass
-                      <br />
-                      Ice cream Container / white tray
-                    </>
-                  </Text>
+                  <ul style={{ listStyleType: 'disc', paddingLeft: '1rem' }}>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Life jacket (Especially if you cannot swim or when sampling from rivers with a strong current)
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Soap / Hand wash
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Cap/Hat/Sunscreen
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Gumboots/Waders/Wellingtons
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Net / Sieve (See Below for how to make your own)
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Pencil/Pen
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Timer (Remember you can only sample for 5 min)
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Magnifying glass
+                      </Text>
+                    </li>
+                    <li>
+                      <Text className="leading-[136.40%] text-base text-gray-800" size="txtRalewayRomanRegular16Gray800">
+                        Ice cream Container / white tray
+                      </Text>
+                    </li>
+                  </ul>
                 </div>
                 <div className="flex md:flex-col flex-row md:gap-10 gap-[119px] items-start justify-between w-auto md:w-full">
                   <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
@@ -1219,164 +1221,18 @@ const HowtoPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 w-full">
+
+        {/* resources for download section */}
+        <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
           <Img
             className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-1/4 md:w-full"
             src={`${newURL}img_rectangle6_280x303.png`}
             alt="rectangleSix_One"
           />
-          <div className="flex flex-1 flex-col gap-[26px] items-start justify-start max-w-[783px] md:mt-0 mt-0.5 w-full">
-            <Text
-              className="text-2xl md:text-[22px] text-white-A700 sm:text-xl w-full"
-              size="txtRalewayBold24WhiteA700"
-            >
-              miniSASS resources for download
-            </Text>
-            <div className="flex flex-col gap-3 items-start justify-start w-auto md:w-full">
-              <Text
-                className="text-lg text-white-A700 w-auto"
-                size="txtRalewayBold18WhiteA700"
-              >
-                miniSASS field sheets
-              </Text>
-              <Text
-                className="leading-[136.40%] text-base text-white-A700"
-                size="txtRalewayRomanRegular16WhiteA700"
-              >
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Dichotomous Key{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    (804.6 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Method information{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    (443.2 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Background information
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    {" "}
-                    (317.1 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS macroinvertebrate Groups{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  (599.5 KB)
-                </a>
-              </Text>
-            </div>
-            <div className="flex flex-col gap-3 items-start justify-start w-auto md:w-full">
-              <Text
-                className="text-lg text-white-A700 w-auto"
-                size="txtRalewayBold18WhiteA700"
-              >
-                miniSASS Newsletters
-              </Text>
-              <Text
-                className="leading-[136.40%] text-base text-white-A700"
-                size="txtRalewayRomanRegular16WhiteA700"
-              >
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Dichotomous Key{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    (804.6 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Method information{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    (443.2 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS Background information
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  <>
-                    {" "}
-                    (317.1 KB)
-                    <br />
-                  </>
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-yellow-400 font-raleway text-left font-normal underline"
-                >
-                  miniSASS macroinvertebrate Groups{" "}
-                </a>
-                <a
-                  href="javascript:"
-                  className="text-white-A700 font-raleway text-left font-normal underline"
-                >
-                  (599.5 KB)
-                </a>
-              </Text>
-            </div>
-          </div>
+          <MiniSASSResources />
         </div>
-        <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
+
+        <Footer className="flex items-center justify-center mt-28 md:px-5 sm:w-[144%] w-full" />
       </div>
     </>
   );
