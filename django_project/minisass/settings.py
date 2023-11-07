@@ -38,20 +38,33 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 STATIC_ROOT = os.getenv('STATIC_ROOT', 'static/')
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-MINISASS_FRONTEND_PATH = BASE_DIR / 'app'
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-STATICFILES_DIRS = [
-    MINISASS_FRONTEND_PATH / 'src' / 'dist',
-    MINISASS_FRONTEND_PATH / 'static'
-]
+# Define the BASE_DIR setting
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Go up three levels from the BASE_DIR to reach the parent directory
+PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
+
+# Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
+FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
+
+# Define the BASE_DIR setting
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.path.join(FRONTEND_PATH, 'src', 'dist'),
+    os.path.join(FRONTEND_PATH, 'static')
+)
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            MINISASS_FRONTEND_PATH / 'templates'
+            os.path.join(FRONTEND_PATH, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -121,3 +134,28 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
