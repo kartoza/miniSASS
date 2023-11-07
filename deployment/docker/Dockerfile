@@ -23,9 +23,9 @@ ADD ./deployment/docker/requirements.txt /REQUIREMENTS.txt
 # Install Python dependencies from requirements.txt
 RUN pip install --no-deps -r /REQUIREMENTS.txt
 
-# Copy necessary files to the appropriate locations
-ADD ./deployment/docker/libgeos.py /usr/local/lib/python3.11/site-packages/django/contrib/gis/geos/libgeos.py
-ADD ./deployment/docker/trans_real.py /usr/local/lib/python3.11/site-packages/django/utils/translation/trans_real.py
+# Copy necessary files to the appropriate locations this was to handle compatibility issues on earlier versions of django
+# ADD ./deployment/docker/libgeos.py /usr/local/lib/python3.11/site-packages/django/contrib/gis/geos/libgeos.py
+# ADD ./deployment/docker/trans_real.py /usr/local/lib/python3.11/site-packages/django/utils/translation/trans_real.py
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -44,15 +44,11 @@ RUN npm run build
 
 WORKDIR /home/web/django_project
 
-# Add uwsgi configuration and run script
+# Add uwsgi configuration
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
-ADD ./deployment/docker/run.sh /run.sh
-
-# Make the run.sh script executable
-RUN chmod 0755 /run.sh
 
 # Expose port 8080 as uwsgi will be running on that port
 EXPOSE 8080
 
-# Set the command to run your application
-CMD ["/bin/bash", "/run.sh"]
+# Set the command to run uWSGI with the configuration file
+CMD ["uwsgi", "--ini", "/uwsgi.conf"]
