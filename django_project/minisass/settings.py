@@ -9,7 +9,6 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'True'
 
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
