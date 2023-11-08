@@ -2,11 +2,6 @@ asgiref==3.7.2
 certifi==2023.7.22
 cffi==1.16.0
 charset-normalizer==3.3.2
-cmsplugin-blog==1.1.2
-cmsplugin-contact==1.1.3
-cmsplugin-filer==1.1.3
-cmsplugin-nivoslider==0.5.9
-cmsplugin-plaintext==0.1.1a2
 confusable-homoglyphs==3.2.0
 cryptography==41.0.5
 cssselect2==0.7.0
@@ -15,7 +10,6 @@ distro==1.8.0
 Django==4.2.7
 django-appconf==1.0.5
 django-classy-tags==4.1.0
-django-cms==3.11.4
 django-dirtyfields==1.9.2
 django-filer==3.1.0
 django-formtools==2.4.1
