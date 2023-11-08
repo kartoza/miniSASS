@@ -7,7 +7,7 @@ interface YouTubeVideoProps {
   playButtonColor?: 'red' | 'green' | 'transparent'; // Custom play button color
 }
 
-const YouTubeVideo: React.FC<YouTubeVideoProps> = ({ videoId, height = '400px', width = '600px', playButtonColor }) => {
+const YouTubeVideo: React.FC<YouTubeVideoProps> = ({ videoId, height, width, playButtonColor }) => {
   const colorParam = playButtonColor ? `&color=${playButtonColor}` : '';
   const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0${colorParam}`;
 
@@ -19,6 +19,9 @@ const YouTubeVideo: React.FC<YouTubeVideoProps> = ({ videoId, height = '400px', 
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
+        style={{
+          borderRadius: '25px 0px 25px 25px'
+        }}
         height={height}
         width={width}
       ></iframe>
