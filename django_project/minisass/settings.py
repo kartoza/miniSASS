@@ -1,31 +1,32 @@
-import os
-import ast
+from datetime import timedelta
 from pathlib import Path
+import os
 
 
-gettext = lambda s: s
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
-SECRET_KEY = os.environ.get('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
-DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
-ADMINS = [
-    ('Gavin Fleming', 'gavin@kartoza.com'),
-    ('Frank Sokolic', 'frank@gis-solutions.co.za'),
-    ('Ismail Sunni', 'ismail@kartoza.com')
-]
+ALLOWED_HOSTS = ['*']
+
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'True'
+
+SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASS'],
-        'HOST': os.environ['DATABASE_HOST'],
-        'PORT': os.environ['DATABASE_PORT'],
+        'NAME': os.getenv('POSTGRES_DB',''),
+        'USER': os.getenv('POSTGRES_USER',''),
+        'PASSWORD': os.getenv('POSTGRES_PASS',''),
+        'HOST': os.getenv('DATABASE_HOST',''),
+        'PORT': os.getenv('DATABASE_PORT',22),
         'OPTIONS': {'sslmode': 'require'}
     }
 }
 
 TIME_ZONE = 'Africa/Johannesburg'
+LANGUAGES = [
+    ('en', 'English')
+]
+ADMIN_LANGUAGE_CODE = 'en'
 LANGUAGE_CODE = 'en'
 SITE_ID = 1
 
@@ -39,12 +40,12 @@ STATIC_ROOT = os.getenv('STATIC_ROOT', 'static/')
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 
 
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+PROJECT_PATH = Path(__file__).resolve().parent.parent
 
 # Define the BASE_DIR setting
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Go up three levels from the BASE_DIR to reach the parent directory
+# Go up three levels from the BASE_DIR to reach the parent directory for container
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
@@ -53,68 +54,25 @@ FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static')
+    os.path.join(FRONTEND_PATH, 'static'),
+    os.path.join(PROJECT_PATH, 'minisass', 'static'),
 )
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(FRONTEND_PATH, 'templates')
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.common.CommonMiddleware',
-]
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
 
-ROOT_URLCONF = 'minisass.urls'
-
-WSGI_APPLICATION = 'minisass.wsgi.application'
-
-EMAIL_HOST = os.environ['SMTP_HOST']
-EMAIL_PORT = os.environ['SMTP_PORT']
-DEFAULT_FROM_EMAIL = os.environ['SMTP_EMAIL']
-EMAIL_HOST_USER = os.environ['SMTP_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['SMTP_HOST_PASSWORD']
-EMAIL_USE_TLS = ast.literal_eval(os.environ['SMTP_EMAIL_TLS'])
-
-ACCOUNT_ACTIVATION_DAYS = 7
-LOGIN_REDIRECT_URL = '/'
-AUTH_PROFILE_MODULE = "minisass_authentication.UserProfile"
-
-INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.gis',
-    'django.contrib.sitemaps',
-    # custom apps here:
-    'minisass_frontend',
-    'minisass_authentication',
-    'rest_framework',
-    'rest_framework_simplejwt',
-]
-
+# Password validation
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,26 +90,56 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(FRONTEND_PATH, 'templates'),
+            os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates')
+        ],
+        'OPTIONS': {
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
         },
-    }
-}
+    },
+]
+
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+ROOT_URLCONF = 'minisass.urls'
+
+WSGI_APPLICATION = 'minisass.wsgi.application'
+
+INSTALLED_APPS = [
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    # custom apps here:
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'minisass_frontend',
+    'minisass_authentication'
+]
