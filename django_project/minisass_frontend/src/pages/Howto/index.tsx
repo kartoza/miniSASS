@@ -11,6 +11,7 @@ import MiniSASSResources from "../../components/minisassResources";
 import RegistrationFormModal from "../../components/RegistrationFormModal";
 
 
+
 const HowtoPage: React.FC = () => {
   const navigate = useNavigate();
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
@@ -87,10 +88,12 @@ const HowtoPage: React.FC = () => {
               className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[80px] w-full"
               orientation="horizontal"
             >
-              <div
-                className="common-pointer h-full relative w-full"
-                onClick={() => navigate("/")}
-              >
+                <Link
+                  className="common-pointer h-full relative w-full"
+                  to="CollectSampleSection"  // Provide the ID of the target section
+                  smooth={true}
+                  duration={800}  // Set the duration of the scrolling animation
+                >
                 <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                   <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto sm:relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
                   <div className="absolute bottom-[45%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
@@ -107,13 +110,16 @@ const HowtoPage: React.FC = () => {
                   className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                   src={`${newURL}img_notov1crab.svg`}
                   alt="notov1crab"
+                  style={{ fill: 'yellow' }}
                 />
 
-              </div>
-              <div
-                className="common-pointer h-full relative w-full"
-                onClick={() => navigate("/")}
-              >
+              </Link>
+              <Link
+                  className="common-pointer h-full relative w-full"
+                  to="UploadResultSection"  // Provide the ID of the target section
+                  smooth={true}
+                  duration={800}  // Set the duration of the scrolling animation
+                >
                 <div className="h-28 ml-auto my-auto w-[95%]">
                   <div className="bg-blue_gray-500 h-28 ml-auto my-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
                   <div className="absolute bottom-[10%] flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
@@ -130,8 +136,9 @@ const HowtoPage: React.FC = () => {
                   className="absolute bottom-[0] h-[72px] left-[0] w-[72px]"
                   src={`${newURL}img_notov1crab_blue_gray_100.svg`}
                   alt="notov1crab"
+                  style={{ fill: 'blue' }}
                 />
-              </div>
+              </Link>
               <div
                 className="common-pointer h-full relative w-full"
                 onClick={() => navigate("/map")}
@@ -149,13 +156,16 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
+                  src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
                   alt="notov1crab"
+                  style={{ fill: 'yellow' }}
                 />
               </div>
-              <div
+              <Link
                 className="common-pointer h-full relative w-full"
-                onClick={() => navigate("/")}
+                to="AreYouReadySection"  // Provide the ID of the target section
+                smooth={true}
+                duration={800}  // Set the duration of the scrolling animation
               >
                 <div className="md:h-28 h-[110px] m-auto w-full">
                   <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
@@ -174,7 +184,7 @@ const HowtoPage: React.FC = () => {
                   src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="notov1crab"
                 />
-              </div>
+              </Link>
             </List>
         </div>
         {/* end of section */}
@@ -203,11 +213,11 @@ const HowtoPage: React.FC = () => {
 
               <div 
                 className="h-[336px] m-auto object-cover rounded-bl-[55px] rounded-br-[25px] rounded-tl-[25px] w-full"
+                
               >
                 <YouTubeVideo videoId="QdQBGD08rv4" height="336px" width="90%" playButtonColor="green" />
               </div>
 
-              </div>
                 
 
               
