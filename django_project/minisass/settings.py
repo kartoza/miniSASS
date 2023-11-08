@@ -114,14 +114,13 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(FRONTEND_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'templates'),
-            os.path.join(PROJECT_PATH, 'minisass_authentication','templates')
+            os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -133,10 +132,12 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.csrf',
             ],
         },
     },
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -165,5 +166,3 @@ INSTALLED_APPS = [
     'minisass_frontend',
     'minisass_authentication'
 ]
-
-
