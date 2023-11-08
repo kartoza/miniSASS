@@ -43,12 +43,11 @@ COPY ./django_project/minisass_frontend /app
 RUN npm run build
 
 WORKDIR /home/web/django_project
-
-# Add uwsgi configuration
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
+ADD ./deployment/docker/run.sh /run.sh
+RUN chmod 0755 /run.sh
 
-# Expose port 8080 as uwsgi will be running on that port
+# Open port 8080 as we will be running our uwsgi socket on that
 EXPOSE 8080
 
-# Set the command to run uWSGI with the configuration file
-CMD ["uwsgi", "--ini", "/uwsgi.conf"]
+CMD ["/bin/bash", "/run.sh"]
