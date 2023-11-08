@@ -1,13 +1,21 @@
+# import ast
 from datetime import timedelta
 from pathlib import Path
 import os
 
 
+# allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
+
+# if allowed_hosts_str is not None:
+#     ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
+# else:
+#     # allow all for development
 ALLOWED_HOSTS = ['*']
 
-DEBUG = os.getenv('DEBUG', 'True').lower() == 'True'
+DEBUG = os.getenv('DEBUG', 'True')
 
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
+
 
 DATABASES = {
     'default': {
@@ -33,15 +41,22 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_ROOT = os.getenv('MEDIA_ROOT', 'media/')
-MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
-STATIC_ROOT = os.getenv('STATIC_ROOT', 'static/')
-STATIC_URL = os.getenv('STATIC_URL', '/static/')
 
+PROJECT_PATH = Path(__file__).resolve().parent
 
-PROJECT_PATH = Path(__file__).resolve().parent.parent
+# Define the default paths
+DEFAULT_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+DEFAULT_MEDIA_URL = '/media/'
+DEFAULT_STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+DEFAULT_STATIC_URL = '/static/'
 
-# Define the BASE_DIR setting
+# Get values from environment variables or use defaults
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
+MEDIA_URL = os.getenv('MEDIA_URL', DEFAULT_MEDIA_URL)
+STATIC_ROOT = os.getenv('STATIC_ROOT', DEFAULT_STATIC_ROOT)
+STATIC_URL = os.getenv('STATIC_URL', DEFAULT_STATIC_URL)
+
+# Define the BASE_DIR setting TODO this is likely the correct static root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Go up three levels from the BASE_DIR to reach the parent directory for container
@@ -54,7 +69,13 @@ FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
     os.path.join(FRONTEND_PATH, 'static'),
-    os.path.join(PROJECT_PATH, 'minisass', 'static'),
+)
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 REST_FRAMEWORK = {
@@ -88,19 +109,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(FRONTEND_PATH, 'templates'),
-            os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates')
+            os.path.join(PROJECT_PATH, 'templates'),
+            os.path.join(PROJECT_PATH, 'minisass_authentication','templates')
         ],
+        'APP_DIRS': True,
         'OPTIONS': {
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -113,7 +137,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,3 +165,5 @@ INSTALLED_APPS = [
     'minisass_frontend',
     'minisass_authentication'
 ]
+
+
