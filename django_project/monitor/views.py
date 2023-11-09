@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 import requests
 from django.db.models import F
-from django.db.models.functions import SQRT
+from django.db.models.functions import Sqrt
 import csv
 from django.utils.encoding import smart_str
 from django.db import connection
@@ -137,7 +137,7 @@ def get_closest_site(request, x, y, d):
     xy_point = 'POINT(' + x + ' ' + y + ')'
 
     sites = Sites.objects.annotate(
-        distance=SQRT(
+        distance=Sqrt(
             F('the_geom').transform(3857, output_field=Value('GEOMETRY')),
             F('the_geom').transform(3857, output_field=Value('GEOMETRY'))
         ).distance(xy_point)
