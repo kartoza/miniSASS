@@ -80,7 +80,7 @@ const Blogs: React.FC<DesktopTwoBloggriditemProps> = (
           onClick={handleButtonClick} // Attach the event handler
         >
           <div className="font-raleway text-left text-lg tracking-[0.81px]">
-            {props?.learnmorebutton}
+            {props?.learnmorebutton}Learn More
           </div>
         </Button>
       </div>
