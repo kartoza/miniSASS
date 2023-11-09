@@ -10,7 +10,12 @@ import os
 #     ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
 # else:
 #     # allow all for development
+
+
 ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = ['*']
+
 
 DEBUG = os.getenv('DEBUG', 'True')
 
@@ -164,5 +169,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'minisass_frontend',
-    'minisass_authentication'
+    'minisass_authentication',
+    'monitor'
 ]

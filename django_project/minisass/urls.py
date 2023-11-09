@@ -4,6 +4,7 @@ from django.conf import settings
 from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
+from minisass_frontend.views import ObservationsView
 
 admin.autodiscover()
 
@@ -19,6 +20,12 @@ urlpatterns = [
 
     # Include authentication URLs
     path('authentication/', include('minisass_authentication.urls')),
+
+    # Indlude monitor URLs
+    path('monitor/', include('monitor.urls')),
+
+    # get observations
+    path('api/observations/', ObservationsView.as_view(), name='observations-api'),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sites, Observations, ArchivedSites, ArchivedObservations
+from .models import Sites, Observations
 
 def make_verified(modeladmin, request, queryset):
     for observation in queryset:
@@ -26,18 +26,6 @@ class ObservationsAdmin(admin.ModelAdmin):
     list_filter = ('flag',)
     actions = [make_verified, make_unverified]
 
-@admin.register(ArchivedObservations)
-class ArchivedObservationsAdmin(admin.ModelAdmin):
-    list_display = (
-        'gid',
-        'user_id',
-        'site_id',
-        'obs_date',
-        'score',
-        'flag'
-    )
-    list_filter = ('flag',)
-
 @admin.register(Sites)
 class SitesAdmin(admin.ModelAdmin):
     list_max_show_all = 1000
@@ -46,13 +34,3 @@ class SitesAdmin(admin.ModelAdmin):
         'user',
         'river_name',
     )
-
-@admin.register(ArchivedSites)
-class ArchivedSitesAdmin(admin.ModelAdmin):
-    list_display = (
-        'gid',
-        'site_name',
-        'river_name',
-    )
-
-# Register the models with the admin site

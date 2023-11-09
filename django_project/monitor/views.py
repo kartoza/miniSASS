@@ -1,24 +1,16 @@
 from django.http import Http404, HttpResponse
 from django.utils.translation import gettext_lazy as _
-from monitor.forms import *
-from monitor.models import Sites, Observations, Schools
+from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
+from monitor.models import Schools, Sites, Observations
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
-from django.contrib import messages  # For displaying messages to the user
-from django.shortcuts import render, get_object_or_404
-from monitor.models import Observations  # Import your model class
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 import requests
 from django.db.models import F
 from django.db.models.functions import SQRT
-from django.shortcuts import render
 import csv
 from django.utils.encoding import smart_str
 from django.db import connection
-from monitor.models import Observations, Sites
-from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
-
-
-
 
 
 def get_email_content(observation, new_site=False):
@@ -60,9 +52,7 @@ def send_email_observation(observation, new_site=False):
 
     send_mail(email_subject, email_content, email_sender, [observation.user.email])
 
-
 def index(request):
-    # Initialize form instances
     site_form = SiteForm()
     observation_form = ObservationForm(initial={'site': '1', 'score': '0.0'})
     coords_form = CoordsForm()
@@ -76,35 +66,24 @@ def index(request):
 
         if site_form.is_valid() and observation_form.is_valid() and coords_form.is_valid():
             if request.POST.get('edit_site') == 'false':
-                # Save the observation only
                 observation = observation_form.save()
-
-                # Send email to the user.
                 send_email_observation(observation, new_site=False)
             else:
-                # Save both the site and observation
                 current_site = site_form.save()
                 current_observation = observation_form.save(commit=False)
                 current_observation.site = current_site
                 current_observation.save()
-
-                # Send email to the user.
                 send_email_observation(current_observation, new_site=True)
 
-            # Clear forms and display a success message
             site_form = SiteForm()
             observation_form = ObservationForm(initial={'site': '1', 'score': '0.0'})
             coords_form = CoordsForm()
             map_form = MapForm({'zoom_level': '6', 'centre_X': '2747350', 'centre_Y': '-3333950', 'edit_site': 'true', 'error': 'false', 'saved_obs': 'true'})
 
-            # Show a success message
             messages.success(request, 'Observation saved successfully.')
-
-            # Redirect back to the map page
-            return redirect('monitor_index')  # Replace 'monitor_index' with your actual URL name
+            return redirect('monitor_index')
 
         else:
-            # If forms are invalid, display an error message
             messages.error(request, 'Please correct the errors in the form.')
 
     return render(request, 'monitor/index.html', {
@@ -114,52 +93,28 @@ def index(request):
         'map_form': map_form
     })
 
-
 def observations(request):
-    """ Will display the list of most current miniSASS observation reports
-    """
-
     observations = Observations.objects.order_by('-time_stamp')[:10]
-
     return render(request, 'monitor/observations.html', {'observations': observations})
 
 def detail(request, monitor_id):
-    """ miniSASS observation detail view
-    """
     observation = get_object_or_404(Observations, pk=monitor_id)
-
     return render(request, 'monitor/detail.html', {'observation': observation})
 
-
 def wms_get_feature_info(request, wms_url, wms_params):
-    """ Request information from GeoServer via a WMS GetFeatureInfo call
-    """
-    # Construct the URL with the provided wms_url
     url = 'http://' + wms_url
-
-    # Send a GET request to the WMS server with the provided parameters
     response = requests.get(url, params=wms_params)
 
     if response.status_code == 200:
-        # If the request was successful, return the response content as an HTTP response
-        return HttpResponse(response.content, content_type='text/xml')  # Adjust content type if necessary
+        return HttpResponse(response.content, content_type='text/xml')
     else:
-        # Handle the case where the request was not successful
         return HttpResponse('Error in WMS request', status=500)
 
-
 def get_sites(request, x, y, d):
-    """ Request all sites within a distance (d) of x;y. Use a distance of -9
-        to request all sites.
-    """
-    from django.db import connection
-
-    # Define SQL queries
     select_query = '''
         SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y, river_name, site_name, description, river_cat, date(time_stamp) AS time_stamp
         FROM sites
     '''
-
     order_query = ' ORDER BY river_name, site_name, time_stamp ASC'
 
     if d == '-9':
@@ -170,30 +125,17 @@ def get_sites(request, x, y, d):
             WHERE ST_DWithin(ST_Transform(sites.the_geom, 3857), ST_MakeEnvelope(%s, 3857), %s)
         ''' % (query_envelope, d)
 
-    # Construct the final SQL query
     sql_query = select_query + where_query + order_query
 
     with connection.cursor() as cursor:
-        # Execute the raw SQL query
         cursor.execute(sql_query)
-
-        # Fetch the results
         sites_returned = cursor.fetchall()
 
-    # Return the results using the render function
     return render(request, 'monitor/sites.html', {'sites': sites_returned})
 
-
 def get_closest_site(request, x, y, d):
-    """ Requests the closest site within a distance (d) of x;y.
-    """
-    from django.db.models import Value
-    from django.db.models.functions import Concat
-    from django.db.models import Min
-
     xy_point = 'POINT(' + x + ' ' + y + ')'
 
-    # Calculate the Euclidean distance between the site coordinates and the input point
     sites = Sites.objects.annotate(
         distance=SQRT(
             F('the_geom').transform(3857, output_field=Value('GEOMETRY')),
@@ -201,53 +143,33 @@ def get_closest_site(request, x, y, d):
         ).distance(xy_point)
     )
 
-    # Find the closest site based on the distance
     closest_site = sites.filter(distance__lte=d).order_by('distance').first()
 
     return render(request, 'monitor/closest_site.html', {'site': closest_site})
 
 
 def get_unique(request, field):
-    """ Request all unique values for a specified field.
-    """
     values_returned = Sites.objects.values(field).distinct()
     unique_values = [value[field] for value in values_returned]
-
     return render(request, 'monitor/unique_values.html', {'values': unique_values})
 
-
 def get_schools(request):
-    """ Request all schools with names starting with the letters in the search_str.
-    """
     search_str = request.GET.get('query', '')  # Use get() method to provide a default value
     schools_returned = Schools.objects.filter(school__istartswith=search_str).order_by('school')
-
     return render(request, 'monitor/schools.html', {'schools': schools_returned})
 
-
-
 def get_observations(request, site_id):
-    """ Request all observations for the requested site ID.
-    """
-    observations = Observations.objects.filter(site_id=site_id).order_by('obs_date')
-
+    observations = Observations.objects.filter(site=site_id).order_by('obs_date')
     return render(request, 'monitor/site_observations.html', {'observations': observations})
 
-
-
 def download_observations(request, site_id):
-    """ Download all observations for the requested site ID in csv format.
-    """
-    # Get the site's observations
-    observations = Observations.objects.filter(site_id=site_id)
+    observations = Observations.objects.filter(site=site_id)
 
-    # Get the site coordinates
     select_clause = 'SELECT gid, ST_X(the_geom) as x, ST_Y(the_geom) as y FROM sites WHERE gid = ' + str(site_id)
     site_coords = Sites.objects.raw(select_clause)
 
-    # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="observations.csv'
+    response['Content-Disposition'] = 'attachment; filename="observations.csv"'
     writer = csv.writer(response)
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
@@ -290,9 +212,9 @@ def download_observations(request, site_id):
             flag = 'Unverified'
         writer.writerow([
             smart_str(obs.pk),
-            smart_str(obs.user.username),  # Use the username instead of the user object
+            smart_str(obs.user.username),
             smart_str(obs.obs_date),
-            smart_str(obs.site.site_name),  # Use the site's site_name instead of the site object
+            smart_str(obs.site.site_name),
             smart_str(obs.site.river_name),
             smart_str(obs.site.river_cat),
             smart_str(site_coords[0].y),
@@ -323,20 +245,14 @@ def download_observations(request, site_id):
         ])
     return response
 
-
 def download_observations_filtered(request, filter_string):
-    """ Download all observations for the requested filter string in csv format.
-    """
-    # Get the site's observations
     select_clause = 'SELECT * FROM minisass_observations WHERE ' + filter_string.replace("+", " ")
     with connection.cursor() as cursor:
         cursor.execute(select_clause)
 
-        # Construct a dictionary of the observations
         fieldnames = [name[0] for name in cursor.description]
         observations = [dict(zip(fieldnames, row)) for row in cursor.fetchall()]
 
-    # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="observations.csv"'
     writer = csv.writer(response)
@@ -414,8 +330,6 @@ def download_observations_filtered(request, filter_string):
         ])
     return response
 
-
-
 def zoom_observation(request, obs_id):
     try:
         observation = Observations.objects.get(pk=obs_id)
@@ -423,7 +337,6 @@ def zoom_observation(request, obs_id):
     except (Observations.DoesNotExist, Sites.DoesNotExist):
         raise Http404("Observation does not exist")
 
-    # Convert coordinates to Google projection
     x = site.the_geom.coords[0]
     y = site.the_geom.coords[1]
 
@@ -444,6 +357,3 @@ def zoom_observation(request, obs_id):
         'coords_form': coords_form,
         'map_form': map_form
     })
-
-
-
