@@ -47,7 +47,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     <>
       <footer className={props.className}>
         <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full">
-          <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full">
+          <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full" style={{marginLeft: '-5%'}}>
             <Img
               className="h-[100px] md:h-auto object-contain"
               src={`${newURL}img_image6.png`}
