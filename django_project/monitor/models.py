@@ -53,7 +53,7 @@ class Sites(models.Model):
     description = models.CharField(max_length=255, blank=True)
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+    time_stamp = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
     class Meta:
@@ -119,7 +119,7 @@ class Observations(models.Model, DirtyFieldsMixin):
     snails = models.BooleanField(default=False)
     score = models.DecimalField(max_digits=4, decimal_places=2)
     site = models.ForeignKey(Sites, on_delete=models.CASCADE, related_name='observation')
-    time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+    time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, blank=True)
     obs_date = models.DateField()
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)

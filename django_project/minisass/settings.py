@@ -11,11 +11,11 @@ import os
 # else:
 #     # allow all for development
 
-
+# this is for testing on the dev server TODO set allowed from env var
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['*']
-
+# this is for testing on the dev server TODO set allowed from env var
+CSRF_TRUSTED_ORIGINS = []
 
 DEBUG = os.getenv('DEBUG', 'True')
 
@@ -126,6 +126,7 @@ TEMPLATES = [
             os.path.join(FRONTEND_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates'),
+            # os.path.join(PROJECT_PATH, 'monitor', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -165,6 +166,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    # 'django.contrib.gis',
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
@@ -172,3 +174,5 @@ INSTALLED_APPS = [
     'minisass_authentication',
     'monitor'
 ]
+
+
