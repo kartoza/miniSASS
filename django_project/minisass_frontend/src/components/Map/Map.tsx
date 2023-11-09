@@ -3,7 +3,8 @@ import maplibregl, { AddLayerObject, SourceSpecification } from 'maplibre-gl';
 
 import LayerSelector from "./Layer/Selector";
 import { BasemapConfiguration } from "./Layer/Basemap"
-import { removeLayer, removeSource } from "./utils"
+import { layerConfiguration } from "./Layer/Overlay";
+import { hasSource, removeLayer, removeSource } from "./utils"
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -12,6 +13,7 @@ const BASEMAP_ID = `basemap`
 
 interface Interface {
   basemaps: Array<BasemapConfiguration>,
+  overlayLayers: Array<layerConfiguration>,
 }
 
 
@@ -53,19 +55,34 @@ export default function Map(props: Interface) {
     }
   }, []);
 
-  /*** Render layer to maplibre */
-  const renderLayer = (id: string, source: SourceSpecification, layer: AddLayerObject, before: string = null) => {
+  /*** Show layer to maplibre */
+  const showLayer = (
+    id: string, source: SourceSpecification, layer: AddLayerObject,
+    before: string = null, rerender: boolean = false
+  ) => {
     removeLayer(map, id)
-    removeSource(map, id)
-    map.addSource(id, source)
-    return map.addLayer(layer, before);
+    if (!hasSource(map, id) || rerender) {
+      removeSource(map, id)
+      map.addSource(id, source)
+    }
+    map.addLayer(layer, before);
+  }
+
+  /*** Hide layer to maplibre */
+  const hideLayer = (id: string) => {
+    removeLayer(map, id)
   }
 
   return <div id="map" className="w-full h-full bg-slate-200">
     {
       map ?
         <LayerSelector
-          map={map} basemaps={props.basemaps} renderLayer={renderLayer}/> :
+          map={map}
+          basemaps={props.basemaps}
+          overlayLayers={props.overlayLayers}
+          showLayer={showLayer}
+          hideLayer={hideLayer}
+        /> :
         null
     }
   </div>

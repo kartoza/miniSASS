@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import 'maplibre-gl/dist/maplibre-gl.css';
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 export interface BasemapConfiguration {

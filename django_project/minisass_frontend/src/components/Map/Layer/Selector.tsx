@@ -3,13 +3,19 @@ import maplibregl, { AddLayerObject, SourceSpecification } from 'maplibre-gl';
 import LayersIcon from "../../../static/icons/LayersIcon";
 
 import Basemap, { BasemapConfiguration } from "./Basemap"
+import Overlay, { layerConfiguration } from "./Overlay"
 
 import "./style.css"
 
 interface Interface {
   map: maplibregl.Map,
-  renderLayer: (id: string, source: SourceSpecification, layer: AddLayerObject, before: string) => void,
   basemaps: Array<BasemapConfiguration>,
+  overlayLayers: Array<layerConfiguration>,
+
+  showLayer: (
+    id: string, source: SourceSpecification, layer: AddLayerObject, before: string, rerender: boolean
+  ) => void,
+  hideLayer: (id: string) => void,
 }
 
 const BASEMAP_ID = `basemap`
@@ -37,7 +43,7 @@ export default function Selector(props: Interface) {
         basemapChanged={(basemapConfig) => {
           const layers = props.map.getStyle().layers.filter(layer => layer.id !== BASEMAP_ID)
           const config = basemapConfig.config
-          props.renderLayer(
+          props.showLayer(
             BASEMAP_ID,
             config,
             {
@@ -46,11 +52,43 @@ export default function Selector(props: Interface) {
               "source": "basemap",
               ...config,
             },
-            layers[0]?.id
+            layers[0]?.id,
+            true
           )
         }}
         items={props.basemaps}
       />
+      <br/>
+      <div className="font-bold mb-[0.5rem]">Overlay Layer</div>
+      {
+        props.overlayLayers.map(
+          (layerConfig, idx) => {
+            const id = 'overlay-' + idx
+            return <Overlay
+              key={id}
+              show={(layerConfig, rerender) => {
+                const config = layerConfig.config
+                const layers = props.map.getStyle().layers.filter(layer => layer.id.includes('overlay-') && layer.id > id)
+                props.showLayer(
+                  id,
+                  config,
+                  {
+                    "type": "raster",
+                    "id": id,
+                    "source": id,
+                    ...config,
+                  },
+                  layers[layers.length - 1]?.id,
+                  rerender
+                )
+              }}
+              hide={() => {
+                props.hideLayer(id)
+              }}
+              layerConfig={layerConfig}/>
+          }
+        )
+      }
     </div>
   </div>
 }
