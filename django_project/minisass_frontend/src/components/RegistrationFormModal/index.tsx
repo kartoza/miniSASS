@@ -43,7 +43,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const [formErrors, setFormErrors] = useState<Partial<RegistrationFormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
-  const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
+  const [country, setCountry] = useState('');
 
   useEffect(() => {
     if (error_response === null) {
@@ -98,43 +98,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
       width: '16.5vw',
     }),
   };
-
-
-
-  // const CountrySelect = () => {
-    
-  //   // useEffect(() => {
-  //   //   fetch(
-  //   //     "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
-  //   //   )
-  //   //     .then((response) => response.json())
-  //   //     .then((data) => {
-  //   //       if(!fetchedCountries){
-  //   //         setCountries(data.countries);
-  //   //         setSelectedCountry(data.userSelectValue);
-  //   //         setFormData({ ...formData, country: data.userSelectValue });
-  //   //         setFetchedCountries(true)
-  //   //       }
-  //   //     });
-  //   // }, []);
-
-  //   const handleCountryChange = (selectedOption: any) => {
-  //     console.log('selected country ',selectedOption)
-  //     setSelectedCountry(selectedOption);
-  //     setFormData({ ...formData, country: selectedOption });
-  //   };
-
-  //   return (
-  //     // <div style={{zIndex: 9,position: 'absolute'}}>
-  //     <Select
-  //       options={countries}
-  //       value={selectedCountry}
-  //       onChange={handleCountryChange}
-  //       styles={customStyles}
-  //     />
-  //     // </div>
-  //   );
-  // };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -237,6 +200,36 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
       setSuccessModalOpen(true)
     }
   };
+
+  // Use the effect to set the user's country based on geolocation
+  useEffect(() => {
+    if (isOpen) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Get user's latitude and longitude
+          const { latitude, longitude } = position.coords;
+
+          // Use reverse geocoding to get the country based on coordinates
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.address && data.address.country_code) {
+                const userCountryCode = data.address.country_code.toUpperCase();
+                setCountry(userCountryCode);
+              }
+            })
+            .catch((error) => {
+              console.error('Error fetching user location:', error);
+            });
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+          // Set default country ,if geoLocation fails
+          setCountry('ZA');
+        }
+      );
+    }
+  }, [isOpen]);
 
   return (
     <>
