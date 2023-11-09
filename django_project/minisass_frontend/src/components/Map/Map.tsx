@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from "react";
-import maplibregl from 'maplibre-gl';
+import maplibregl, { AddLayerObject, SourceSpecification } from 'maplibre-gl';
+
+import LayerSelector from "./Layer/Selector";
+import { BasemapConfiguration } from "./Layer/Basemap"
+import { removeLayer, removeSource } from "./utils"
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-interface MapInterface {
+
+const BASEMAP_ID = `basemap`
+
+interface Interface {
+  basemaps: Array<BasemapConfiguration>,
 }
 
+
 /**
- * Map component that using maplibre
+ * Map component using maplibre
  * @param props
  * @constructor
  */
-export default function Map(props: MapInterface) {
+export default function Map(props: Interface) {
   const [map, setMap] = useState<maplibregl.Map>(null);
 
   /** First initiate */
@@ -26,8 +35,8 @@ export default function Map(props: MapInterface) {
             layers: [],
             glyphs: "/static/fonts/{fontstack}/{range}.pbf"
           },
-          center: [0, 0],
-          zoom: 1,
+          center: [24.679864950000024, -28.671882886975247],
+          zoom: 5.3695883239884745,
           attributionControl: false
         }
       ).addControl(
@@ -35,10 +44,29 @@ export default function Map(props: MapInterface) {
       );
       newMap.once("load", () => {
         setMap(newMap)
+        newMap.fitBounds([
+          [16.4679158, -34.8344038],
+          [32.8918141, -22.1246704]
+        ]);
       })
       newMap.addControl(new maplibregl.NavigationControl(), 'top-right');
     }
   }, []);
 
-  return <div id="map" className="w-full h-full bg-slate-200"></div>
+  /*** Render layer to maplibre */
+  const renderLayer = (id: string, source: SourceSpecification, layer: AddLayerObject, before: string = null) => {
+    removeLayer(map, id)
+    removeSource(map, id)
+    map.addSource(id, source)
+    return map.addLayer(layer, before);
+  }
+
+  return <div id="map" className="w-full h-full bg-slate-200">
+    {
+      map ?
+        <LayerSelector
+          map={map} basemaps={props.basemaps} renderLayer={renderLayer}/> :
+        null
+    }
+  </div>
 }

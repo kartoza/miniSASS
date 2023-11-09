@@ -7,6 +7,8 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { Map } from "../../components/Map"
 
+import basemapsData from './basemaps.config.json';
+
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -77,12 +79,14 @@ const MapPage: React.FC = () => {
               ></Input>
             </div>
             <div className="grow relative w-full">
-              <Map/>
-              <Img
-                className="absolute bottom-[1%] h-9 left-[1%] w-11"
-                src={`${newURL}img_offer.svg`}
-                alt="offer"
-              />
+              <Map basemaps={
+                basemapsData.map(data => {
+                  return {
+                    name: data.name,
+                    config: data
+                  }
+                })
+              }/>
             </div>
           </div>
           <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[13px] left-[13px]">
