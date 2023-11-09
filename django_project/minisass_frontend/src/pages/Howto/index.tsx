@@ -108,9 +108,8 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab.svg`}
-                  alt="notov1crab"
-                  style={{ fill: 'yellow' }}
+                  src={`${newURL}img_yellow_crab.svg`}
+                  alt="crab_placeholder"
                 />
 
               </Link>
@@ -133,10 +132,9 @@ const HowtoPage: React.FC = () => {
                   </div>
                 </div>
                 <Img
-                  className="absolute bottom-[0] h-[72px] left-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100.svg`}
-                  alt="notov1crab"
-                  style={{ fill: 'blue' }}
+                  className="absolute bottom-[0] h-[72px] left-[0] w-[72px] rotate-[85deg]"
+                  src={`${newURL}img_blue_crab.svg`}
+                  alt="crab_placeholder"
                 />
               </Link>
               <div
@@ -155,10 +153,9 @@ const HowtoPage: React.FC = () => {
                   </div>
                 </div>
                 <Img
-                  className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
-                  alt="notov1crab"
-                  style={{ fill: 'yellow' }}
+                  className="absolute h-[72px] left-[0] top-[0] w-[72px] rotate-[90deg]"
+                  src={`${newURL}img_yellow_crab.svg`}
+                  alt="crab_placeholder"
                 />
               </div>
               <Link
@@ -182,7 +179,7 @@ const HowtoPage: React.FC = () => {
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                   src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
-                  alt="notov1crab"
+                  alt="crab_placeholder"
                 />
               </Link>
             </List>
