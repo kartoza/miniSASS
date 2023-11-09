@@ -256,9 +256,9 @@ const Home: React.FC = () => {
               className="common-pointer h-full relative w-full"
               onClick={() => navigate("/howto")}
             >
-              <div className="h-28 ml-auto my-auto w-[95%]">
-                <div className="bg-blue_gray-500 h-28 ml-auto my-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
+              <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
+                <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
+                  <div className="absolute bottom-[30%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                   <Img
                     className="h-8 relative w-8"
                     src={`${newURL}img_bxbookreader.svg`}
