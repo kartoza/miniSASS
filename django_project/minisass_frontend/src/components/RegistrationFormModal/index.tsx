@@ -43,7 +43,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const [formErrors, setFormErrors] = useState<Partial<RegistrationFormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
 
   useEffect(() => {
     if (error_response === null) {
