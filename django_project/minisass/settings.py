@@ -15,7 +15,7 @@ import os
 ALLOWED_HOSTS = ['*']
 
 # this is for testing on the dev server TODO set allowed from env var
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['https://minisass.dev.do.kartoza.com']
 
 DEBUG = os.getenv('DEBUG', 'True')
 
