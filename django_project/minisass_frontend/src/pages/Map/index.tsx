@@ -7,8 +7,8 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { Map } from "../../components/Map"
 
-import basemapsData from './basemaps.config.json';
-import overlayLayersData from './overlay.config.json';
+import basemapsData from './config/basemaps.config.json';
+import overlayLayersData from './config/overlay.config.json';
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
@@ -93,7 +93,7 @@ const MapPage: React.FC = () => {
                   overlayLayersData.map(data => {
                     return {
                       name: data.name,
-                      isActive: data.isActive,
+                      activeByDefault: data.activeByDefault,
                       config: data,
                     }
                   })

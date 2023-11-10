@@ -5,7 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 export interface layerConfiguration {
   name: string,
   config: Object,
-  isActive: boolean
+  activeByDefault: boolean
 }
 
 interface Interface {
@@ -20,7 +20,7 @@ interface Interface {
  * @constructor
  */
 export default function OverlayLayer(props: Interface) {
-  const [active, setActive] = useState<boolean>(props.layerConfig.isActive);
+  const [active, setActive] = useState<boolean>(props.layerConfig.activeByDefault);
   const disabled = false
 
   /** First initiate */
