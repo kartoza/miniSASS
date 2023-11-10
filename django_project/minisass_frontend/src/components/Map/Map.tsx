@@ -56,7 +56,8 @@ export const Map = forwardRef((props: Interface, ref) => {
             },
             center: [24.679864950000024, -28.671882886975247],
             zoom: 5.3695883239884745,
-            attributionControl: false
+            attributionControl: false,
+            maxZoom: 17
           }
         ).addControl(
           new maplibregl.AttributionControl({ compact: true })
@@ -125,7 +126,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             paint: {
               'circle-color': `black`,
               'circle-opacity': 0,
-              'circle-radius': 10,
+              'circle-radius': 12,
               'circle-stroke-color': HIGHLIGHT_COLOR,
               'circle-stroke-opacity': HIGHLIGHT_OPACITY,
               'circle-stroke-width': HIGHLIGHT_WIDTH
@@ -162,7 +163,8 @@ export const Map = forwardRef((props: Interface, ref) => {
         )
         var bounds = bbox(geojson);
         map.fitBounds(bounds, {
-          padding: 50
+          padding: 50,
+          duration: 3000
         });
       } catch (e) {
 

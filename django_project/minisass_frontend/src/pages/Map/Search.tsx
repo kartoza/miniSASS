@@ -22,6 +22,7 @@ interface Interface {
 }
 
 const NOMINATIM = 'nominatim'
+const SITES = 'sites'
 let lastQuery = ''
 let lastValue = ''
 
@@ -33,12 +34,51 @@ export default function Search(props: Interface) {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingData, setLoadingData] = useState<boolean>(false);
 
+  // This is sites data
+  const [sites, setSites] = useState<PlaceType[]>(null);
+
+  /**
+   * This function removes newline characters from a string.
+   */
+  function escape(str) {
+    return str
+      .replace(/[\n]/g, " ")
+      .replace(/[\r]/g, " ");
+  }
+
+  /** Fetch sites data at first time */
+  useEffect(() => {
+    (
+      async () => {
+        try {
+          const response = await fetch('https://minisass.org' + '/map/sites/-9/-9/-9/');
+          const text = await response.text();
+          const json = JSON.parse(escape(text))
+          const results: PlaceType[] = []
+          json.features.map(row => {
+            const properties = row.properties
+            results.push({
+              value: properties.gid,
+              source: SITES,
+              label: properties.combo_name,
+              data: row
+            })
+          })
+          setSites(results)
+        } catch (error) {
+
+        }
+      }
+    )()
+  }, []);
+
   // Fetching results
   const fetchResults = React.useMemo(
     () =>
       debounce(
         (
           query: string,
+          sites: PlaceType[],
           callback: (query: string, results?: readonly PlaceType[],) => void,
         ) => {
           setLoading(true);
@@ -48,7 +88,7 @@ export default function Search(props: Interface) {
               try {
                 const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json`);
                 const json = await response.json();
-                const results: PlaceType[] = []
+                let results: PlaceType[] = []
                 json.map(row => {
                   results.push({
                     value: row.place_id,
@@ -57,6 +97,9 @@ export default function Search(props: Interface) {
                     data: row
                   })
                 })
+                if (sites) {
+                  results = results.concat(sites.filter(site => site.label.includes(query)))
+                }
                 callback(query, results)
               } catch (error) {
 
@@ -79,7 +122,7 @@ export default function Search(props: Interface) {
       return undefined;
     }
 
-    fetchResults(inputValue, (query: string, results?: readonly PlaceType[]) => {
+    fetchResults(inputValue, sites, (query: string, results?: readonly PlaceType[]) => {
       if (query !== lastQuery) {
         return
       }
@@ -116,6 +159,11 @@ export default function Search(props: Interface) {
               }
             }
           )()
+          break
+        }
+        case SITES: {
+          props.searchEntityChanged(value.data);
+          setLoadingData(false);
           break
         }
       }
