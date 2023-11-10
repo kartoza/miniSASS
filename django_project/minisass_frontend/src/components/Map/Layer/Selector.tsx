@@ -9,8 +9,8 @@ import "./style.css"
 
 interface Interface {
   map: maplibregl.Map,
-  basemaps: Array<BasemapConfiguration>,
-  overlayLayers: Array<layerConfiguration>,
+  basemaps: BasemapConfiguration[],
+  overlayLayers: layerConfiguration[],
 
   showLayer: (
     id: string, source: SourceSpecification, layer: AddLayerObject, before: string, rerender: boolean
@@ -68,7 +68,7 @@ export default function Selector(props: Interface) {
               key={id}
               show={(layerConfig, rerender) => {
                 const config = layerConfig.config
-                const layers = props.map.getStyle().layers.filter(layer => layer.id.includes('overlay-') && layer.id > id)
+                const layers = props.map.getStyle().layers.filter(layer => (layer.id.includes('overlay') && layer.id > id) || layer.id.includes('highlight'))
                 props.showLayer(
                   id,
                   config,

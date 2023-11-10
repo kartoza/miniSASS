@@ -8,7 +8,7 @@ export interface BasemapConfiguration {
 
 interface Interface {
   basemapChanged: (BasemapConfiguration) => void,
-  items: Array<BasemapConfiguration>,
+  items: BasemapConfiguration[],
 }
 
 /**

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -7,10 +7,15 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { Map } from "../../components/Map"
 
+import Search from './Search';
 import basemapsData from './config/basemaps.config.json';
 import overlayLayersData from './config/overlay.config.json';
 
+import "./style.css"
+
 const MapPage: React.FC = () => {
+  const mapRef = useRef(null);
+
   const navigate = useNavigate();
 
   // Get the current URL using window.location.href
@@ -63,7 +68,7 @@ const MapPage: React.FC = () => {
 
         <div className="grow md:px-5 relative md:w-[103.9%] w-full relative">
           <div className="flex flex-col h-full items-center justify-start m-auto w-full">
-            <div className="bg-blue-900 sm:bottom-[50px] flex flex-row gap-[17px] items-center justify-end p-[13px] sm:relative sm:top-[] w-full">
+            <div className="bg-blue-900 sm:bottom-[50px] flex flex-row gap-[17px] justify-end p-[13px] sm:relative sm:top-[] w-full">
               <Button
                 className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
                 color="blue_gray_500"
@@ -72,12 +77,7 @@ const MapPage: React.FC = () => {
               >
                 Add Record
               </Button>
-              <Input
-                name="frameThirtyFour"
-                placeholder="Search"
-                className="font-bold md:h-auto p-0 placeholder:text-black-900 sm:h-auto text-base text-left w-full"
-                wrapClassName="mr-[3px] w-1/4"
-              ></Input>
+              <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
             </div>
             <div className="grow relative w-full">
               <Map
@@ -98,6 +98,7 @@ const MapPage: React.FC = () => {
                     }
                   })
                 }
+                ref={mapRef}
               />
             </div>
           </div>
