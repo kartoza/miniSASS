@@ -6,7 +6,7 @@ LABEL maintainer="Admire Nyakudya <admire@kartoza.com>"
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y libgdal-dev libcurl4-gnutls-dev librtmp-dev libssl-dev binutils libproj-dev gdal-bin && \
+    apt-get install -y postgresql-client nano libgdal-dev libcurl4-gnutls-dev librtmp-dev libssl-dev binutils libproj-dev gdal-bin && \
     pip install uwsgi setuptools && pip uninstall -y wheel
 
 # Install Node.js and npm
