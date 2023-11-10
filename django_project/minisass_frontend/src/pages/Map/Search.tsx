@@ -51,7 +51,7 @@ export default function Search(props: Interface) {
     (
       async () => {
         try {
-          const response = await fetch('https://minisass.org' + '/map/sites/-9/-9/-9/');
+          const response = await fetch('/map/sites/-9/-9/-9/');
           const text = await response.text();
           const json = JSON.parse(escape(text))
           const results: PlaceType[] = []
