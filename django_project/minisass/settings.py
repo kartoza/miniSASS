@@ -15,7 +15,7 @@ import os
 ALLOWED_HOSTS = ['*']
 
 # this is for testing on the dev server TODO set allowed from env var
-CSRF_TRUSTED_ORIGINS = ['https://minisass.dev.do.kartoza.com']
+CSRF_TRUSTED_ORIGINS = ['https://minisass.dev.do.kartoza.com' ,'minisass.sta.do.kartoza.com']
 
 DEBUG = os.getenv('DEBUG', 'True')
 
@@ -24,13 +24,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.getenv('POSTGRES_DB',''),
         'USER': os.getenv('POSTGRES_USER',''),
         'PASSWORD': os.getenv('POSTGRES_PASS',''),
         'HOST': os.getenv('DATABASE_HOST',''),
-        'PORT': os.getenv('DATABASE_PORT',22),
-        'OPTIONS': {'sslmode': 'require'}
+        'PORT': os.getenv('DATABASE_PORT',5432),
+        'OPTIONS': {'sslmode': 'allow'}
     }
 }
 
