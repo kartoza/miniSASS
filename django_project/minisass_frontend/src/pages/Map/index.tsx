@@ -5,9 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { Button, Img, Input, Text } from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
+import Sidebar from "../../components/Sidebar";
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = () => {
+    setSidebarOpen((prev) => !prev);
+  };
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
@@ -66,6 +72,7 @@ const MapPage: React.FC = () => {
                   color="blue_gray_500"
                   size="xs"
                   variant="fill"
+                  onClick={handleSidebarToggle}
                 >
                   Add Record
                 </Button>
@@ -75,6 +82,12 @@ const MapPage: React.FC = () => {
                   className="font-bold md:h-auto p-0 placeholder:text-black-900 sm:h-auto text-base text-left w-full"
                   wrapClassName="mr-[3px] w-1/4"
                 ></Input>
+                <Img
+                  className=" h-[48px] w-[48px] common-pointer"
+                  src={`${newURL}sidebar_icon.png`}
+                  alt="sidebar"
+                  onClick={handleSidebarToggle}
+                />
               </div>
               <div className="h-[1155px] relative w-full">
                 <Img
