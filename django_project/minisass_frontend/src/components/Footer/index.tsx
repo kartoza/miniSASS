@@ -47,7 +47,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     <>
       <footer className={props.className}>
         <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full">
-          <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full">
+          <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full" style={{marginLeft: '-5%'}}>
             <Img
               className="h-[100px] md:h-auto object-contain"
               src={`${newURL}img_image6.png`}
@@ -80,13 +80,13 @@ const Footer: React.FC<FooterProps> = (props) => {
                 <div className="bg-transparent flex flex-col items-start justify-start w-auto">
                   <Img
                     className="h-[39px] md:h-auto object-cover w-[246px] sm:w-full"
-                    src={`${newURL}miniSASS_logo.svg`}
+                    src={`${newURL}replacement_logo.png`}
                     alt="minisasstextLogo"
                   />
                 </div>
 
                 <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list">
-                  <li>
+                  <li style={{ whiteSpace: 'nowrap' }}>
                     <a href="/howto">
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       </Text>
                     </a>
                   </li>
-                  <li>
+                  <li style={{ whiteSpace: 'nowrap' }}>
                     <a href="/map">
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
@@ -106,7 +106,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       </Text>
                     </a>
                   </li>
-                  <li>
+                  <li style={{ whiteSpace: 'nowrap' }}>
                     <a>
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
@@ -122,6 +122,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   </li>
                 </ul>
 
+
                 <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1180px] w-full">
                   <Text
                     className="text-base text-white-A700 w-auto"
@@ -134,6 +135,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       href="https://github.com/kartoza/miniSASS"  // GitHub link
                       className="text-white-A700 font-raleway text-left font-normal underline"
                       target="_blank" rel="noopener noreferrer"
+                      style={{ marginRight: '5rem' }} // Add this style for spacing
                     >
                       Github
                     </a>
@@ -162,6 +164,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                     </a>
                   </div>
                 </div>
+
 
               </div>
             </div>

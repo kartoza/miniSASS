@@ -221,7 +221,7 @@ const Home: React.FC = () => {
 
           </div>
 
-          {/* more links section */}
+{/* more links section */}
           <List
             className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
             orientation="horizontal"
@@ -247,18 +247,18 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <Img
-                className="absolute h-[72px] right-[0] top-[0] w-[71px]"
+                className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                 src={`${newURL}img_notov1crab.svg`}
-                alt="notov1crab"
+                alt="crab_placeholder"
               />
             </div>
             <div
               className="common-pointer h-full relative w-full"
               onClick={() => navigate("/howto")}
             >
-              <div className="h-28 ml-auto my-auto w-[95%]">
-                <div className="bg-blue_gray-500 h-28 ml-auto my-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[15%] w-[64%]">
+              <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
+                <div className="bg-blue_gray-500 sm:bottom-[] h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:top-[] w-full"></div>
+                  <div className="absolute bottom-[30%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                   <Img
                     className="h-8 relative w-8"
                     src={`${newURL}img_bxbookreader.svg`}
@@ -273,9 +273,9 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <Img
-                className="absolute bottom-[0] h-[70px] left-[0] w-[72px]"
+                className="absolute bottom-[0] h-[72px] left-[0] w-[72px]"
                 src={`${newURL}img_notov1crab_blue_gray_100.svg`}
-                alt="notov1crab"
+                alt="crab_placeholder"
               />
             </div>
             <div
@@ -301,7 +301,7 @@ const Home: React.FC = () => {
               <Img
                 className="absolute h-[72px] left-[0] top-[0] w-[72px]"
                 src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
-                alt="notov1crab"
+                alt="crab_placeholder"
               />
             </div>
             <div
@@ -325,9 +325,9 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <Img
-                className="absolute h-[72px] right-[0] top-[0] w-[46px]"
+                className="absolute h-[72px] right-[0] top-[0] w-[72px]"
                 src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
-                alt="notov1crab"
+                alt="crab_placeholder"
               />
             </div>
           </List>
@@ -353,6 +353,7 @@ const Home: React.FC = () => {
               quality in that river.
             </Text>
           </div>
+          
           <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-2 items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
             <Img
               className="sm:flex-1 h-[380px] md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[380px] sm:w-full"
@@ -360,7 +361,7 @@ const Home: React.FC = () => {
               alt="rectangleOne"
             />
             <Text
-              className="md:h-[45vh] sm:h-[50vh] leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
+              className="h-[380px] md:h-auto leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanSemiBold16"
             >
               <span className="text-gray-800 font-raleway text-left font-normal">
@@ -370,7 +371,7 @@ const Home: React.FC = () => {
                   bug groups and score whether they were found. The score then
                   tells you the health class of the river, ranging across five
                   categories from natural to very poor.
-                  <br />
+                  <br /><br/><br/>
                   Have a look at the{" "}
                 </>
               </span>
@@ -384,13 +385,13 @@ const Home: React.FC = () => {
                   about rivers, monitor the water quality of rivers within your
                   community, and explore reasons why the water quality may not
                   be as clean as everyone would like.
-                  <br />
+                  <br /><br /><br/>
                   The most important feature of the new website is the miniSASS{" "}
                 </>
               </span>
               <a
-                href="javascript:"
-                className="text-blue-900 font-raleway text-left font-normal underline"
+                className="common-pointer text-blue-900 font-raleway text-left font-normal underline"
+                onClick={() => navigate("/map")}
               >
                 Map
               </a>
@@ -401,7 +402,7 @@ const Home: React.FC = () => {
                   miniSASS results! The map also lets you explore your catchment
                   to see the land uses and activites that might be improving or
                   worsening water quality.
-                  <br />
+                  <br /><br /><br/>
                   Get your community, school or family and friends involved in
                   monitoring a selection of your streams and rivers. In this way
                   a map of river health across Southern Africa will develop.
@@ -419,7 +420,7 @@ const Home: React.FC = () => {
 
              {/* observations */}
              <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
-              <div className="sm:bottom-[] flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1179px] sm:relative sm:top-[50px] w-full">
+              <div className="sm:bottom-[] flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
                 <Text
                   className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                   size="txtRalewayRomanBold40"
@@ -453,7 +454,7 @@ const Home: React.FC = () => {
 
             {/* map */}
             <div className="bg-blue-900 flex flex-col items-start justify-start max-w-full mt-28 pl-[53px] pr-[134px] md:px-10 sm:px-5 py-[103px] w-full">
-              <div className="flex md:flex-col flex-row md:gap-10 gap-[89px] items-center justify-start max-w-[1700px] mx-auto w-full">
+              <div className="flex md:flex-col flex-row md:gap-10 gap-[89px] items-center justify-start max-w-[1350px] mx-auto w-full">
                 <Img
                   className="md:flex-1 h-[280px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-[303px] md:w-full"
                   src={`${newURL}img_rectangle6.png`}
@@ -502,7 +503,7 @@ const Home: React.FC = () => {
                     size="sm"
                     variant="fill"
                   >
-                    <div className="text-left text-lg tracking-[0.81px]">
+                    <div className="text-left text-lg tracking-[0.81px]" onClick={() => navigate("/map")}>
                       See the map
                     </div>
                   </Button>
@@ -516,7 +517,7 @@ const Home: React.FC = () => {
 
           {/* articles and blogs section */}
           <div className="flex flex-col gap-[58px] items-center justify-start max-w-[1450px] mt-28 mx-auto md:px-5 w-full">
-            <div className="flex flex-row md:gap-10 items-center justify-between max-w-[1179px] w-full">
+            <div className="flex flex-row md:gap-10 items-center justify-between max-w-[1450px] w-full">
               <Text
                 className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                 size="txtRalewayRomanBold40"
@@ -535,7 +536,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* blogs */}
-            <div className="flex flex-col gap-8 sm:h-[50vh] items-start justify-start sm:overflow-auto w-auto md:w-full">
+            <div className="flex flex-col gap-8 sm:h-[50vh] items-start justify-start sm:overflow-auto w-auto md:w-full" style={{marginLeft:'-18%'}}>
               <div className="flex md:flex-col flex-row gap-[23px] items-start justify-start w-auto md:w-full">
                 <Img
                   className="h-[406px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[780px] md:w-full"
