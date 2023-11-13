@@ -10,7 +10,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from cms.sitemaps import CMSSitemap
 from cmsplugin_blog.sitemaps import BlogSitemap
 from django.views.generic import TemplateView
-from minisass_frontend.views import ObservationsView
+from minisass_frontend.views import ObservationsView, ReactHomeView
 
 admin.autodiscover()
 
@@ -36,7 +36,7 @@ urlpatterns += i18n_patterns('',
     url(r'^accounts/', include('minisass_registration.backends.urls')),
 
     # Main frontend URL
-    url(r'^$', TemplateView.as_view(template_name="react_base.html"), name="home"),
+    url(r'^$', ReactHomeView.as_view(), name="home"),
 
     url(r'^api/observations/$', ObservationsView.as_view(), name='observations-api'),
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import maplibregl, { AddLayerObject, SourceSpecification } from 'maplibre-gl';
-import LayersIcon from "../../../static/icons/LayersIcon";
+import LayersIcon from "../../../../static/icons/LayersIcon";
 
 import Basemap, { BasemapConfiguration } from "./Basemap"
 import Overlay, { layerConfiguration } from "./Overlay"
