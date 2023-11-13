@@ -45,6 +45,7 @@ RUN npm run build
 WORKDIR /home/web/django_project
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
 ADD ./deployment/docker/run.sh /run.sh
+ADD ./deployment/docker/migrate.sh /migrate.sh
 RUN chmod 0755 /run.sh
 
 # Open port 8080 as we will be running our uwsgi socket on that
