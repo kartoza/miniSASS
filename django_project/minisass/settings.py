@@ -25,7 +25,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DJANGO_DB',''),
+        'NAME': os.getenv('POSTGRES_DB',''),
         'USER': os.getenv('POSTGRES_USER',''),
         'PASSWORD': os.getenv('POSTGRES_PASS',''),
         'HOST': os.getenv('DATABASE_HOST',''),
