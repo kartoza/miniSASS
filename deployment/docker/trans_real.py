@@ -6,13 +6,14 @@ import re
 import sys
 import gettext as gettext_module
 from threading import local
+import io  # Updated import for StringIO
 
 try:
-    from cStringIO import StringIO
+    from cStringIO import StringIO  # Deprecated in Python 3
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO  # Use io.StringIO in Python 3
 
-from django.utils.importlib import import_module
+from importlib import import_module
 from django.utils.safestring import mark_safe, SafeData
 
 

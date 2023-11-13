@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
-# from minisass_frontend.views import ObservationsView
+from minisass_frontend.views import ObservationsView
 
 admin.autodiscover()
 
@@ -19,13 +19,18 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="react_base.html"), name="home"),
 
     # Include authentication URLs
-    # path('authentication/', include('minisass_authentication.urls')),
+    path('authentication/', include('minisass_authentication.urls')),
 
     # Indlude monitor URLs
-    # path('monitor/', include('monitor.urls')),
+    path('monitor/', include('monitor.urls')),
 
     # get observations
-    # path('api/observations/', ObservationsView.as_view(), name='observations-api'),
+    path('api/observations/', ObservationsView.as_view(), name='observations-api'),
+
+    # map frontend urls to backend
+    path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),
+    path("password-reset/", TemplateView.as_view(template_name="react_base.html"), name="password_reset"),
+    path("howto/", TemplateView.as_view(template_name="react_base.html"), name="how_to"),
 ]
 
 if settings.DEBUG:

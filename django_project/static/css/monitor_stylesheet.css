@@ -1,0 +1,251 @@
+/* Styling for the map */
+#map {
+  float:left;
+}
+
+#map img {
+  margin:0px;
+}
+
+/* Styling for the side panel */
+#sidepanel {
+  clear:both;
+  float:left;
+  font-family:Verdana,Arial,sans-serif;
+  font-size:0.7em;
+}
+
+/* Styling for the layer switcher */
+#layerswitcher .baseLbl, .dataLbl {
+  margin-top:3px;
+  margin-left:3px;
+  margin-bottom:3px;
+  font-weight:bold;
+}
+
+/* Styling for the map coordinates */
+.olControlMousePosition {
+  position:absolute;
+  right:0px;
+  top:0px;
+  height:15px;
+  width:135px;
+  text-align:center;
+  color:#000000;
+  background-color:#dddddd;
+  padding:1px 2px 1px 2px;
+}
+
+/* Styling for the map legend */
+#legend_table {
+  font-family:Verdana,Arial,sans-serif;
+  font-size:1em;
+  color:black;
+  font-weight:normal;
+}
+
+#legend_table .legend_header {
+  font-weight:bold;
+}
+
+#legend_table img {
+  margin:2px;
+}
+
+/* Styling for the zoom panel */
+#zoompanel img {
+  margin:0px;
+}
+
+/* Styling for the function buttons */
+.cl_input_buttons {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.cl_input_buttons td {
+  width:89px;
+  text-align:center;
+  vertical-align:text-top;
+  font-size:0.8em;
+}
+
+.cl_input_buttons img {
+  margin:2px;
+}
+
+/* Styling for the data input window */
+#data_panel td, th {
+  padding:1px;
+}
+
+#data_panel img {
+  margin:0px;
+}
+
+#data_table_left {
+  margin:5px;
+  text-align:left;
+}
+
+#data_table_left textarea {
+  width:170px;
+}
+
+#id_site_name, #id_river_name {
+  width:80px;
+}
+
+#id_latitude, #id_longitude {
+  width:70px;
+}
+
+#id_lat_d, #id_lat_m, #id_lat_s, #id_lon_d, #id_lon_m, #id_lon_s {
+  width:30px;
+}
+
+#id_obs_date {
+  width:100px;
+}
+
+#id_water_clarity,#id_water_temp,#id_ph,#id_diss_oxygen,#id_elec_cond {
+  width:50px;
+}
+#id_diss_oxygen_unit,#id_elec_cond_unit {
+  width:70px;
+}
+
+#data_table_right {
+  margin:5px;
+}
+
+#data_table_right .tdtotal {
+  text-align:center;
+  font-weight:bold;
+}
+
+#data_table_right th {
+  text-align:center;
+  font-weight:bold;
+}
+
+#data_table_right .tdlabel {
+  text-align:left;
+}
+
+#data_table_right .tdscore {
+  text-align:center;
+  font-weight:normal;
+  color:#a9a9a9;
+}
+
+#id_average_score, #id_crab_cell {
+  background-color:#cbd4ff;
+}
+
+#id_health_class {
+  text-align:center;
+  font-weight:bold;
+  background-color:#cbd4ff;
+}
+
+/* Styling for the observation information window */
+#obs_table_left {
+  margin:5px;
+}
+
+#obs_table_left td {
+  margin:0px;
+  padding:2px;
+  text-align:left;
+  vertical-align:text-top;
+}
+
+#obs_site_details, #obs_groups {
+  vertical-align:text-top;
+}
+
+#obs_table_left .section_header {
+  color:blue;
+  text-align:left;
+  font-weight:bold;
+  text-decoration:underline;
+}
+
+#obs_table_left .tddata {
+  width:160px;
+}
+
+#obs_table_left .tdlabel {
+  font-weight:bold;
+}
+
+#obs_table_right th {
+  color:blue;
+  text-align:center;
+  font-weight:bold;
+  text-decoration:underline;
+}
+
+#obs_table_right td {
+  margin:0px;
+  padding:2px;
+  vertical-align:text-top;
+}
+
+#obs_table_right .tddata {
+  text-align:center;
+}
+
+#obs_table_right .tdlabel {
+  font-weight:bold;
+}
+
+#obs_table_right .tdtotal {
+  text-align:center;
+  font-weight:bold;
+  background-color:#cbd4ff;
+}
+
+/* Styling for the map zoom controls */
+#map .olControlZoom {
+  left:8px;
+  top:30px;
+}
+
+#customZoom {
+  z-index:1001;
+  position:relative;
+  top:5px;
+  left:10px;
+}
+
+#customZoom img {
+  position:absolute;
+  margin:0px;
+  padding:2px;
+  cursor:pointer;
+}
+
+/* Fix for width of popup date menu in IE */
+.x-date-menu > ul{
+  display:inline;
+}
+
+.x-date-menu > ul li{
+  display:inline;
+}
+
+/* Text formatting */
+.clAlignTop {
+  vertical-align:text-top;
+}
+
+.clAlignLeft {
+  text-align:left;
+}
+
+.clBold {
+  font-weight:bold;
+}
+

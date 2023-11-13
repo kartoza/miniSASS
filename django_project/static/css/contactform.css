@@ -1,0 +1,36 @@
+/* contact form styling */
+div.minisass-contactform-content {
+    width: 100%;
+}
+
+.minisass-contactform-content th {
+    text-align: left;
+    vertical-align: bottom;
+}
+.minisass-contactform-content th.contact_field {
+    vertical-align: top;
+}
+.minisass-contactform-content td {
+    vertical-align: bottom;
+}
+ul.errorlist {
+    display: block;
+    -webkit-padding-start: 0px;
+    -webkit-margin-after: 0.3em;
+    padding: 0;
+}
+ul.errorlist li {
+    float: right;
+    background: yellow;
+    border: 1px solid red;
+    color: red;
+    list-style-type: none;
+    padding: 3px;
+}
+p.errorlist {
+    background: yellow;
+    border: 1px solid red;
+    color: red;
+    padding: 3px;
+}
+

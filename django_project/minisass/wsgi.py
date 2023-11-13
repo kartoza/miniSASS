@@ -14,34 +14,9 @@ framework.
 
 """
 import os
-import sys
 from django.core.wsgi import get_wsgi_application
 
-# sys.path.append("/home/django/sites/miniSASS/miniSASS")
-# sys.path.append("/home/web/django_project")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'minisass.settings')
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings")
+application = get_wsgi_application()
 
-# This application object is used by any WSGI server configured to use this
-# file. This includes Django's development server, if the WSGI_APPLICATION
-# setting points here.
-
-_application = get_wsgi_application()
-
-
-def application(environ, start_response):
-    """Factory for the application instance.
-
-    :param environ: os environment passed in by web server.
-    :type environ: dict
-
-    :param start_response: ?
-    :type start_response: ?
-
-    Places env vars defined in apache conf into a context accessible by django.
-    """
-    return _application(environ, start_response)
-
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)

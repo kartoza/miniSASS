@@ -30,7 +30,8 @@ services:
   mount:
     image: kartoza/s3mount
     build:
-      context: deployment/docker-s3-bucket
+      context: .
+      dockerfile: ./deployment/docker-s3-bucket/Dockerfile
     privileged: true
     environment:
       - AWS_ACCESS_KEY=minio_admin

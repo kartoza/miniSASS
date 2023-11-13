@@ -1,31 +1,31 @@
+# import ast
 from datetime import timedelta
 from pathlib import Path
 import os
+
+
+# allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
+
+# if allowed_hosts_str is not None:
+#     ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
+# else:
+#     # allow all for development
 
 # this is for testing on the dev server TODO set allowed from env var
 ALLOWED_HOSTS = ['*']
 
 # this is for testing on the dev server TODO set allowed from env var
-CSRF_TRUSTED_ORIGINS = ['https://minisass.dev.do.kartoza.com' ,'minisass.sta.do.kartoza.com']
+CSRF_TRUSTED_ORIGINS = []
 
 DEBUG = os.getenv('DEBUG', 'True')
 
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
 
-# TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    ('Gavin Fleming', 'gavin@kartoza.com'),
-    ('Frank Sokolic', 'frank@gis-solutions.co.za'),
-    ('Ismail Sunni', 'ismail@kartoza.com')
-)
-
-MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DJANGO_DB',''),
+        'NAME': os.getenv('POSTGRES_DB',''),
         'USER': os.getenv('POSTGRES_USER',''),
         'PASSWORD': os.getenv('POSTGRES_PASS',''),
         'HOST': os.getenv('DATABASE_HOST',''),
@@ -33,7 +33,6 @@ DATABASES = {
         'OPTIONS': {'sslmode': 'allow'}
     }
 }
-
 
 TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGES = [
@@ -43,10 +42,10 @@ ADMIN_LANGUAGE_CODE = 'en'
 LANGUAGE_CODE = 'en'
 SITE_ID = 1
 
-
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
 
 PROJECT_PATH = Path(__file__).resolve().parent
 
@@ -62,10 +61,10 @@ MEDIA_URL = os.getenv('MEDIA_URL', DEFAULT_MEDIA_URL)
 STATIC_ROOT = os.getenv('STATIC_ROOT', DEFAULT_STATIC_ROOT)
 STATIC_URL = os.getenv('STATIC_URL', DEFAULT_STATIC_URL)
 
-# Define the BASE_DIR setting
+# Define the BASE_DIR setting TODO this is likely the correct static root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Go up three levels from the BASE_DIR to reach the parent directory
+# Go up three levels from the BASE_DIR to reach the parent directory for container
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
@@ -74,7 +73,7 @@ FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static')
+    os.path.join(FRONTEND_PATH, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -127,7 +126,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(FRONTEND_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'templates'),
-            # os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates'),
+            os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates'),
             # os.path.join(PROJECT_PATH, 'monitor', 'templates'),
         ],
         'APP_DIRS': True,
@@ -146,6 +145,7 @@ TEMPLATES = [
     },
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -157,9 +157,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'minisass.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'minisass.wsgi.application'
-
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -174,6 +172,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'minisass_frontend',
-    #'minisass_authentication',
-    #'monitor'
+    'minisass_authentication',
+    'monitor'
 ]
+
+

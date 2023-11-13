@@ -42,7 +42,6 @@ COPY ./django_project/minisass_frontend /app
 # Build the frontend
 RUN npm run build
 
-
 WORKDIR /home/web/django_project
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
 ADD ./deployment/docker/run.sh /run.sh

@@ -31,16 +31,30 @@ function AuthenticationButtons() {
 
   const [error, setError] = useState(null); // Define an error state
 
+  // Get the current URL using window.location.href
+  const currentURL = window.location.href;
+
+  // Extract the base URL (everything up to the first single forward slash '/')
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+  
+  // Define the replacement path
+  const replacementPath = 'static/images/';
+  
+  // Construct the new URL with the replacement path
+  const newURL = baseUrl + '/' + replacementPath;
+  const LOGIN_API = baseUrl + '/authentication/api/login/';
+  const REGISTRATION_API = baseUrl + '/authentication/api/register/';
+
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
     // Clear the stored state in local storage
     localStorage.removeItem('authState');
   };
-  const apiBaseUrl = window.location.href.split('/')[2];
 
   const handleLogin = async (loginData: any) => {
     try {
-      const response = await axios.post(`http://${apiBaseUrl}/authentication/api/authentication/api/login/`, loginData, {
+      const response = await axios.post(`${LOGIN_API}`, loginData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -62,7 +76,7 @@ function AuthenticationButtons() {
   };
 
   const handleRegistration = async (registrationData) => {
-    const apiUrl = `http://${apiBaseUrl}/authentication/api/register/`;
+    const apiUrl = `${REGISTRATION_API}`;
   
     try {
       const response = await axios.post(apiUrl, registrationData, {
@@ -80,21 +94,6 @@ function AuthenticationButtons() {
       setError(JSON.stringify(error.message));
     }
   };
-
-   // Get the current URL using window.location.href
-   const currentURL = window.location.href;
-
-   // Extract the base URL (everything up to the first single forward slash '/')
-   const parts = currentURL.split('/');
-   const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
- 
-   // Define the replacement path
-   const replacementPath = 'static/images/';
- 
-   // Construct the new URL with the replacement path
-   const newURL = baseUrl + '/' + replacementPath;
-   
- 
 
   return (
     <div className="sm:bottom-20 md:bottom-[119px] flex sm:flex-col flex-row md:gap-10 sm:h-[] items-start justify-between md:left-[50px] md:relative sm:right-[] md:right-[] sm:top-[] md:w-[90%] w-full">

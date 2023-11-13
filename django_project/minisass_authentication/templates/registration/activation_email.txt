@@ -1,0 +1,18 @@
+Welcome!
+
+You, or someone using this email address, have registered on the 
+
+http://{{ site }} website. 
+
+If this is correct, then please activate your account by clicking on the link 
+below:
+
+http://{{ site }}/accounts/activate/{{ activation_key }}
+
+You have {{ expiration_days }} days to activate your account.
+
+If it was not you, you can safely ignore this message. If you have any queries, 
+please email us at info@minisass.org .
+
+Kind regards,
+The miniSASS team.

@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block "minisass_page_title" %}miniSASS Observations Map{% endblock %}
+
+{% block "minisass_css" %}
+{% addtoblock "css" %}<link href="{{STATIC_URL}}css/minisass-menu.css" media="screen, print" rel="stylesheet">{% endaddtoblock %}
+{% addtoblock "css" %}<link href="{{ STATIC_URL }}js/ext-3.4.0/resources/css/ext-all.css" rel="stylesheet"/>{% endaddtoblock %}
+{% addtoblock "css" %}<link href="{{ STATIC_URL }}css/monitor_stylesheet.css" rel="stylesheet"/>{% endaddtoblock %}
+{% endblock %}
+
+{% block "minisass_js" %}
+{% addtoblock "js" %}<script src="https://code.jquery.com/jquery-1.6.4.min.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{{STATIC_URL}}js/jqueryslidemenu.js"></script>{% endaddtoblock %}
+
+{% addtoblock "js" %}<script src="{{ STATIC_URL }}openlayers/OpenLayers.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="https://maps.google.com/maps/api/js?key=AIzaSyBJ6KImokjxuCTgVFYV0RIwr3m6XplhGmc&v=3&sensor=false"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{{ STATIC_URL }}js/ext-3.4.0/adapter/ext/ext-base.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{{ STATIC_URL }}js/ext-3.4.0/ext-all.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{{ STATIC_URL }}js/GeoExt/lib/GeoExt.js"></script>{% endaddtoblock %}
+{% if user.is_authenticated %}
+  {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass.js"></script>{% endaddtoblock %}
+{% else %}
+  {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass_map.js"></script>{% endaddtoblock %}
+{% endif %}
+{% endblock %}
+ 
+{% block "minisass_page_content" %}
+    <div id=sidepanel>
+      <div id="legend">
+        <table id="legend_table">
+          <tr>
+            <td colspan="4" id="id_legend_header" class="legend_header">miniSASS Observations</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_n.png" id="legend_icon1" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">Unmodified<br />(NATURAL condition)</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_g.png" id="legend_icon2" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">Largely natural/few modifications<br />(GOOD condition)</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_f.png" id="legend_icon3" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">Moderately modified<br />(FAIR condition)</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_p.png" id="legend_icon4" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">Largely modified<br />(POOR condition)</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_v.png" id="legend_icon5" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">Seriously/critically modified<br />(VERY POOR condition)</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u.png" id="legend_icon6" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text">No groups present</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_crab_u_dirty.png" id="legend_icon6" alt="" title=""/></td>
+            <td colspan="3" class="map_legend_text"> Exclamation mark: unverified</td>
+          </tr>
+          <tr>
+            <td colspan="4" class="legend_header">Schools</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_pri.png" id="legend_icon7" alt="" title=""/></td>
+            <td class="map_legend_text">Primary</td>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_int.png" id="legend_icon8" alt="" title=""/></td>
+            <td class="map_legend_text">Intermediate</td>
+          </tr>
+          <tr>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_com.png" id="legend_icon9" alt="" title=""/></td>
+            <td class="map_legend_text">Combined</td>
+            <td class="map_legend_icon"><img src="{{ STATIC_URL }}img/icon_school_sec.png" id="legend_icon10" alt="" title=""/></td>
+            <td class="map_legend_text">Secondary</td>
+          </tr>
+        </table>
+      </div> <!--legend-->
+      <div id="layers">
+        <div id="layerswitcher"></div> <!--layerswitcher-->
+      </div> <!--layers-->
+      <div id="zoompanel"></div> <!--zoompanel-->
+      <div id="site_data">
+        <table id="site_data_buttons" class="cl_input_buttons">
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_site_map.png" alt="" id="id_site_map" title="Display site data and graphs by clicking the site on the map" style="cursor:pointer;"/><br />
+              Click site on map
+            </td>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_site_list.png" alt="" id="id_site_list" title="Display site data and graphs by selecting the site from a list" style="cursor:pointer;"/><br />
+              Select site from list
+            </td>
+          </tr>
+        </table> <!--site_data_buttons-->
+      </div> <!--site_data-->
+      <div id="input_obs">
+        <table id="input_buttons" class="cl_input_buttons">
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_info.png" alt="" id="id_obs_info" title="Click a crab symbol on the map for details of the observation" style="cursor:pointer;"/><br />
+              Observation details
+            </td>
+            <td>
+            {% if user.is_authenticated %}
+              <img src="{{ STATIC_URL }}img/button_obs_add.png" alt="" id="id_obs_add" title="Enter a miniSASS observation at a new site using coordinates" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_add_disabled.png" alt="" id="id_obs_add" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
+              Enter observation
+            </td>
+          </tr>
+          <tr>
+            <td>
+            {% if user.is_authenticated %}
+              <img src="{{ STATIC_URL }}img/button_obs_map.png" alt="" id="id_obs_map" title="Enter a miniSASS observation by clicking on a new site on the map" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_map_disabled.png" alt="" id="id_obs_map" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
+              Click site on map
+            </td>
+            <td>
+            {% if user.is_authenticated %}
+              <img src="{{ STATIC_URL }}img/button_obs_list.png" alt="" id="id_obs_list" title="Enter a miniSASS observation by selecting a site from a list" style="cursor:pointer;"/><br />
+            {% else %}
+              <img src="{{ STATIC_URL }}img/button_obs_list_disabled.png" alt="" id="id_obs_list" title="Please register and/or log in to activate this tool" style="cursor:pointer;"/><br />
+            {% endif %}
+              Select site from list
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_filter.png" alt="" id="id_obs_filter" title="Filter observations by date, score, river category and group" style="cursor:pointer;"/><br />
+              Filter observations
+            </td>
+            <td>
+              <img src="{{ STATIC_URL }}img/button_obs_filter_clear_disabled.png" alt="" id="id_obs_filter_clear" title="Remove the filter that has been applied to the observations" style="cursor:pointer;"/><br />
+              Remove filter
+            </td>
+          </tr>
+        </table> <!--input_buttons-->
+      </div> <!--input_obs-->
+      <div id="messages"></div> <!--messages-->
+        {% if site_form.errors %}
+          {% for error in site_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+        {% endif %}
+        {% if coords_form.errors %}
+          {% for error in coords_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+        {% endif %}
+        {% if observation_form.errors %}
+          {% for error in observation_form.errors %}
+            Error: {{ error }}<br />
+          {% endfor %}
+        {% endif %}
+    </div> <!--sidepanel-->
+    <div id="map">
+       <div id="customZoom">
+         <img src="{{ STATIC_URL }}img/zoom_full.png" alt="Home" title="Home" onclick="zoomFull()"/>
+      </div>
+    </div> <!--map-->
+    <div id="data_window" class="x-hidden">
+      <div class="x-window-header">miniSASS Data Input</div>
+      <div id="data_panel">
+        <form action="{% url monitor_index %}" method="post" id="dataform">{% csrf_token %}
+        {% if user.is_authenticated %}
+          <table>
+            <tr>
+              <td class="clAlignTop">
+                <table id="data_table_left">
+                  <tr><td class="clBold clAlignLeft" colspan="2">Site Details</td></tr>
+                  <tr><td><label for="id_river_name">River name:</label></td><td>{{ site_form.river_name }} Max 15 characters</td></tr>
+                  <tr><td><label for="id_site_name">Site name:</label></td><td>{{ site_form.site_name }} Max 15 characters</td></tr>
+                  <tr><td><label for="id_description">Site description:</label></td><td>{{ site_form.description }}</td></tr>
+                  <tr><td><label for="id_latitude">Latitude:</label></td>
+                    <td>
+                      {{ coords_form.latitude }}
+                      <input type="text" name="lat_d" id="id_lat_d" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lat_m" id="id_lat_m" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lat_s" id="id_lat_s" style="display: none;" size="3" onchange="coordsChanged();"/>
+                      <input type="radio" name="hem_ns" id="id_hem_s" checked="checked" value="S"/>S
+                      <input type="radio" name="hem_ns" id="id_hem_n" value="N"/>N
+                    </td>
+                  </tr>
+                  <tr><td><label for="id_longitude">Longitude:</label></td>
+                    <td>
+                      {{ coords_form.longitude }}
+                      <input type="text" name="lon_d" id="id_lon_d" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lon_m" id="id_lon_m" style="display: none;" size="2" onchange="coordsChanged();"/>
+                      <input type="text" name="lon_s" id="id_lon_s" style="display: none;" size="3" onchange="coordsChanged();"/>
+                      <input type="radio" name="hem_ew" id="id_hem_e" checked="checked" value="E"/>E
+                      <input type="radio" name="hem_ew" id="id_hem_w" value="W"/>W
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span id="id_check_coords"></span>
+                    </td>
+                    <td>
+                      <input type="radio" name="coord_format" id="id_decimal" value="Decimal" onclick="coords('Decimal');" checked="checked"/>Decimal degrees
+                      <br />
+                      <input type="radio" name="coord_format" id="id_DMS" value="DMS" onclick="coords('DMS');"/>Degrees/Minutes/Seconds
+                    </td>
+                  </tr>
+                  <tr><td><label for="id_river_cat">Were there rocks<br /> where you sampled?</label></td>
+                    <td>
+                      {{ site_form.river_cat }}
+                    </td>
+                  </tr>
+                  <tr><td class="clBold clAlignLeft" colspan="2"><br />Observation Details</td></tr>
+                  <tr><td><label for="id_obs_date">Date:</label></td><td>{{ observation_form.obs_date }}</td></tr>
+                  <tr><td>Collector&apos;s name:</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
+                  <tr><td><label for="id_comment">Comments/notes:</label></td><td>{{ observation_form.comment }}</td></tr>
+                </table>
+              </td>
+              <td class="clAlignTop">
+                <table>
+                  <tr><td class="clBold clAlignLeft" colspan="2">Measured Parameters</td></tr>
+                  <tr><td><label for="id_water_clarity">Water clarity:</label></td><td>{{ observation_form.water_clarity }}cm</td></tr>
+                  <tr><td><label for="id_water_temp">Water temperature:</label></td><td>{{ observation_form.water_temp }}&deg;C</td></tr>
+                  <tr><td><label for="id_ph">pH:</label></td><td>{{ observation_form.ph }}</td></tr>
+                  <tr><td><label for="id_diss_oxygen">Dissolved oxygen:</label></td><td>{{ observation_form.diss_oxygen }}{{ observation_form.diss_oxygen_unit }}</td></tr>
+                  <tr><td><label for="id_elec_cond">Electrical conductivity:</label></td><td>{{ observation_form.elec_cond }}{{ observation_form.elec_cond_unit }}</td></tr>
+                </table>
+
+                <table id="data_table_right">
+                  <tr><th></th><th>Groups</th><th>Sensitivity<br />Score</th><th></th></tr>
+                  <tr><td>{{ observation_form.flatworms }}</td><td class="tdlabel"><label for="id_flatworms">{{ observation_form.flatworms.label }}:</label></td><td id="flatworms" class="tdscore">3</td><td></td></tr>
+                  <tr><td>{{ observation_form.worms }}</td><td class="tdlabel"><label for="id_worms">{{ observation_form.worms.label }}:</label></td><td id="worms" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.leeches }}</td><td class="tdlabel"><label for="id_leeches">{{ observation_form.leeches.label }}:</label></td><td id="leeches" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.crabs_shrimps }}</td><td class="tdlabel"><label for="id_crabs_shrimps">{{ observation_form.crabs_shrimps.label }}:</label></td><td id="crabs_shrimps" class="tdscore">6</td><td></td></tr>
+                  <tr><td>{{ observation_form.stoneflies }}</td><td class="tdlabel"><label for="id_stoneflies">{{ observation_form.stoneflies.label }}:</label></td><td id="stoneflies" class="tdscore">17</td><td></td></tr>
+                  <tr><td>{{ observation_form.minnow_mayflies }}</td><td class="tdlabel"><label for="id_minnow_mayflies">{{ observation_form.minnow_mayflies.label }}:</label></td><td id="minnow_mayflies" class="tdscore">5</td><td></td></tr>
+                  <tr><td>{{ observation_form.other_mayflies }}</td><td class="tdlabel"><label for="id_other_mayflies">{{ observation_form.other_mayflies.label }}:</label></td><td id="other_mayflies" class="tdscore">11</td><td></td></tr>
+                  <tr><td>{{ observation_form.damselflies }}</td><td class="tdlabel"><label for="id_damselflies">{{ observation_form.damselflies.label }}:</label></td><td id="damselflies" class="tdscore">4</td><td></td></tr>
+                  <tr><td>{{ observation_form.dragonflies }}</td><td class="tdlabel"><label for="id_dragonflies">{{ observation_form.dragonflies.label }}:</label></td><td id="dragonflies" class="tdscore">6</td><td></td></tr>
+                  <tr><td>{{ observation_form.bugs_beetles }}</td><td class="tdlabel"><label for="id_bugs_beetles">{{ observation_form.bugs_beetles.label }}:</label></td><td id="bugs_beetles" class="tdscore">5</td><td></td></tr>
+                  <tr><td>{{ observation_form.caddisflies }}</td><td class="tdlabel"><label for="id_caddisflies">{{ observation_form.caddisflies.label }}:</label></td><td id="caddisflies" class="tdscore">9</td><td></td></tr>
+                  <tr><td>{{ observation_form.true_flies }}</td><td class="tdlabel"><label for="id_true_flies">{{ observation_form.true_flies.label }}:</label></td><td id="true_flies" class="tdscore">2</td><td></td></tr>
+                  <tr><td>{{ observation_form.snails }}</td><td class="tdlabel"><label for="id_snails">{{ observation_form.snails.label }}:</label></td><td id="snails" class="tdscore">4</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Total score:</td><td id="id_total_score" class="tdtotal">0</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Number of groups:</td><td id="id_groups" class="tdtotal">0</td><td></td></tr>
+                  <tr><td></td><td class="tdlabel">Average score:</td><td id="id_average_score" class="tdtotal">0.0</td>
+                      <td id="id_crab_cell"><img src="{{ STATIC_URL }}img/icon_crab_u_large.png" alt="crab" id="id_crab"/></td></tr>
+                  <tr><td></td><td></td><td id="id_health_class" colspan="2">&nbsp;</td></tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        {% endif %}
+          {{ site_form.the_geom.as_hidden }}
+          <input type="hidden" name="user" value="{{ request.user.id }}" id="id_user" />
+          {{ observation_form.flag.as_hidden }}
+          {{ observation_form.site.as_hidden }}
+          {{ map_form.zoom_level.as_hidden }}
+          {{ map_form.centre_X.as_hidden }}
+          {{ map_form.centre_Y.as_hidden }}
+          {{ map_form.layers.as_hidden }}
+          {{ map_form.edit_site.as_hidden }}
+          {{ map_form.error.as_hidden }}
+          {{ map_form.saved_obs.as_hidden }}
+        </form> <!--dataform-->
+      </div>  <!--data_panel-->
+    </div> <!--data_window-->
+{% endblock %}
+
+{% block minisass_right_column %}
+{% comment %}
+There should be nothing here
+{% endcomment %}
+{% endblock %}

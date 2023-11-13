@@ -6,7 +6,6 @@ const Home = React.lazy(() => import("./pages/MainPage"));
 const Map = React.lazy(() => import("./pages/Map"));
 const DebugLinks = React.lazy(() => import("./pages/Home"));
 const DataInputForm = React.lazy(() => import("./pages/DataInputForm"));
-const PasswordResetPage = React.lazy(() => import("./pages/PasswordReset"));
 
 const ProjectRoutes = () => {
   return (
@@ -20,7 +19,6 @@ const ProjectRoutes = () => {
           <Route path="/map" element={<Map />} />
           <Route path="/links" element={<DebugLinks />} />
           <Route path="/data-input-form" element={<DataInputForm />} />
-          <Route path="/password-reset" element={<PasswordResetPage />} />
         </Routes>
       </Router>
     </React.Suspense>

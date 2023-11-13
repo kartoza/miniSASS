@@ -1,0 +1,42 @@
+/* registration pages styling */
+div.minisass-registration-content {
+    width: auto;
+    margin: 10px;
+}
+
+.minisass-registration-content th {
+    text-align: left;
+    vertical-align: bottom;
+    min-width: 30%;
+    width: 30%;
+}
+.minisass-registration-content td {
+    vertical-align: bottom;
+}
+.minisass-registration-content td br {
+    display: none;
+}
+.minisass-registration-content td span.helptext {
+    font-size: smaller;
+    color: grey;
+    margin-left: 10px;
+}
+ul.errorlist {
+    display: block;
+    -webkit-padding-start: 0px;
+    -webkit-margin-after: 0.3em;
+    padding: 0;
+}
+ul.errorlist li {
+    background: yellow;
+    border: 1px solid red;
+    color: red;
+    list-style-type: none;
+    padding: 3px;
+}
+p.errorlist {
+    background: yellow;
+    border: 1px solid red;
+    color: red;
+    padding: 3px;
+}

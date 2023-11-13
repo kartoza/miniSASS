@@ -1,0 +1,473 @@
+body {
+    font-family: Arial, Verdana, sans;
+    font-size: medium;
+    background: #38b;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Coming Soon', serif;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* page layout styles */
+.minisass-container {
+    width: 1024px;
+    height: auto;
+    margin: 0 auto 0 auto;
+    overflow: hidden;
+    -webkit-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -moz-box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    box-shadow: 10px 10px 10px rgba(0,0,30,0.4);
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.minisass-box {
+    padding: 15px 0;
+    overflow: hidden;
+}
+
+.minisass-page {
+    width: 100%;
+    float: left;
+    background: white;
+}
+
+.minisass-page-content {
+    width: 795px;
+    float: left;
+    background: white;
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+/* Styling for the header elements. These are placed in divs with the
+ * following classes/IDs:
+ *   minisass-heading (the container for the header elements)
+ *   minisass-logo (container for the miniSASS logo)
+ *   minisass-text (container for the miniSASS text)
+ *   minisass-button-links (container for the link buttons)
+ *   registration-links (container for login, logout, etc.)
+ *   social-media-links (container for social media links)
+ *   news-ticker (container for scrolling news ticker)
+ *   myslidemenu (container for the menu)
+ */
+
+.minisass-heading {
+    width: 100%;
+    float: left;
+    background: white;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.minisass-heading-space {
+    float: left;
+    height: 127px;
+    width: 685px;
+    margin: 0 0 0 10px;
+}
+
+.minisass-logo {
+    float: left;
+    margin: 0;
+    padding: 4px 10px 4px 10px;
+}
+
+.minisass-logo img {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.minisass-text {
+    margin: 0;
+    padding: 4px;
+    text-align:center;
+}
+
+.minisass-button-links {
+    margin: 0;
+    padding: 2px 24px 2px 24px;
+}
+
+.minisass-button-links img {
+    border: 0;
+    padding: 0;
+    margin: 0px 4px 0px 4px;
+}
+
+div.registration-links {
+    width: 200px;
+}
+
+.registration-links a:hover,
+.registration-links a:visited,
+.registration-links a:active,
+.registration-links a {
+    color: #3168b8;
+}
+
+.registration-links p{
+    float: right;
+    margin: 5px 15px 0 0;
+    font-size: smaller;
+}
+
+.social-media-links {
+    width: 200px;
+}
+
+.social-media-links p{
+    float: right;
+    margin: 10px 10px 0 0;
+    text-align: right;
+}
+
+.social-media-links a{
+    text-decoration: none;
+}
+
+.social-media-links img{
+    margin: 0px 0px 0px 4px;
+}
+
+.news-ticker {
+    float: left;
+    height: 30px;
+    width: 790px;
+    border: 1px solid #bbbbbb;
+    margin: 5px 10px 5px 0px;
+    overflow: hidden;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#myslidemenu {
+    float: left;
+    margin: 0;
+    padding: 8px 0px 0px 0px;
+}
+
+.blue-line {
+    height: 12px;
+    float: left;
+    width: 100%;
+    background: #3168b8;
+    border: none;
+}
+/* End of styling for the header elements */
+
+.minisass-right-column {
+    width: 220px;
+    float: left;
+}
+
+.minisass-bottom {
+    clear: both;
+    width: 100%;
+    float: left;
+    background: #3168b8;
+    color: white;
+    font-size: smaller;
+}
+
+/* breadcrumb styling */
+.minisass-breadcrumbs {
+    float: right;
+    background: white;
+    font-size: small;
+}
+.minisass-breadcrumbs li {
+    display: block;
+}
+
+/* map page styling */
+.minisass-map-content {
+    width: 100%;
+    float: left;
+}
+
+/* recent observations plugin stylin */
+div.recent-observations {
+    width: 100%;
+    background: #adf;
+    font-size: small;
+    margin-left: 4px;
+    margin-top: 4px;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+.recent-observations section {
+    margin: 8px;
+}
+.recent-observations h1 {
+    font-size: 1.1em;
+    background-color: #3168b8;
+    padding: 4px;
+    text-align: center;
+    color: white;
+    margin: 0 0 0.67em 0;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+.recent-observations h2 a:visited,
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover,
+.recent-observations h2 a {
+    color: white;
+    text-decoration: none;
+}
+.recent-observations h2 a:active,
+.recent-observations h2 a:hover {
+    text-decoration: underline;
+}
+.recent-observations section h2 {
+    font-size: 1.0em;
+    background-color: #68d;
+    color: white;
+    padding: 2px;
+}
+.recent-observations section p {
+    padding-bottom: 3px;
+    border-bottom: 1px dotted white;
+}
+.recent-observations label {
+    font-weight: bold;
+}
+
+/* right column links plugin */
+div.minisass-rc-links {
+    width: 100%;
+    background: #7ce;
+    font-size: small;
+    margin-left: 4px;
+    padding-bottom: 8px;
+}
+.minisass-rc-links section {
+    margin: 8px 0 8px 0;
+}
+.minisass-rc-links section heading h1 {
+    font-size: 1.1em;
+    background-color: #47c;
+    padding: 4px;
+    text-align: center;
+}
+.minisass-rc-links section p.plugin_link {
+    margin: 8px;
+}
+
+div.blog-leader {
+    border-bottom: 1px dotted lightgray;
+    margin-bottom: 1.5em;
+    margin-top: 0.5em;
+}
+span.blog-heading {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Oswald', Tahoma, Geneva, sans-serif;
+    font-weight: bold;
+    color: #ff6633;
+    line-height: 1.15em;
+    margin
+}
+.blog-heading a:active,
+.blog-heading a:hover,
+.blog-heading a:visited {
+    color: #ff6633;
+}
+
+/* main content blog include list styling */
+div.minisass-blog-content {
+    float: left;
+    width: 100%;
+}
+div.minisass-blog-content h1 {
+    font-size: 2em;
+    margin: 0.47em 0 0 0;
+}
+div.minisass-blog-content p {
+    margin: 0.67em 0 0 0;
+}
+div.minisass-blog-content .cmsplugin-blog-include-list {
+    background: white;
+    font-size 0.8em;
+}
+div.minisass-blog-content .cmsplugin-blog-include-list section heading h1 {
+    display: none;
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list {
+    background: white;
+    font-size 0.8em;
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list section p {
+}
+div.minisass-blog-content div.cmsplugin-blog-include-list section p a {
+    font-weight: bold;
+}
+
+/* blog entries for blog latest styling */
+div.blog-entries-latest {
+    float: left;
+    width: 860px;
+}
+/* blog entries for blog latest, date and tags styling */
+div.blog-entries-author-date-tag {
+    float: right;
+    width: 150px;
+    border: 1px solid grey;
+    padding: 4px;
+    background-color: #eee;
+}
+div.blog-entries-author-date-tag h1 {
+    font-size: 1.1em;
+}
+
+/* right column blog include list styling */
+div.minisass-right-column .cmsplugin-blog-include-list section h1 {
+    background: #47c;
+    font-size: 0.9em;
+}
+div.minisass-right-column .cmsplugin-blog-include-list {
+    width: 100%;
+    background: #8ce;
+    margin-left: 4px;
+    padding-bottom: 8px;
+}
+div.minisass-right-column .cmsplugin-blog-include-list section heading h1 {
+    background-color: #47c;
+    padding: 4px;
+    text-align: center;
+}
+div.minisass-right-column .cmsplugin-blog-include-list section p {
+    margin: 8px;
+    font-size: 0.8em;
+}
+div.minisass-right-column .cmsplugin-blog-include-list section p a {
+    display: block;
+    padding: 2px;
+    font-weight: bold;
+    background-color: #45a;
+    color: white;
+    text-align: center;
+}
+
+/* right column action links styling */
+div.minisass-right-column address p.plugin_link {
+    background: #45a;
+    margin: 0.7em;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    border-top: 2px solid #abd;
+    border-left: 2px solid #abd;
+    border-right: 2px solid #24d;
+    border-bottom: 2px solid #129;
+}
+
+div.minisass-right-column address p.plugin_link a {
+    display: block;
+    padding: 1em;
+    color: white;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* image plugin styling */
+img.left {
+    float: left;
+    border: 1px solid lightgray;
+    padding: 3px;
+    margin: 3px;
+}
+span.title {
+    clear: both;
+    display: block;
+    float: left;
+    margin: 0 7px 7px 0;
+    font-size: smaller;
+}
+
+/* bottom links */
+.minisass-bottom div {
+    width: 100%;
+    float: left;
+    margin-top: 15px;
+}
+.minisass-bottom p {
+    margin: 10px 40px 10px 40px;
+}
+.minisass-bottom a {
+    color: white;
+    margin: 10px 40px 10px 0px;
+}
+.minisass-bottom a:hover,
+.minisass-bottom a:visited,
+.minisass-bottom a:active {
+    color: white;
+}
+.minisass-bottom-logos {
+    clear: both;
+    width: 100%;
+    float: left;
+    background: #eef;
+    color: #aab;
+    font-size: smaller;
+    text-align: center;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.minisass-bottom-logos img {
+    margin: 5px 15px 5px 15px;
+    border: 0;
+    padding: 0;
+}
+
+div.minisass-page-content h1 {
+    background-color: #68d;
+    color: white;
+    text-align: center;
+}
+
+div.minisass-page-content p {
+    margin: 0.5em 1em;
+}
+div.cmsplugin_filer_folder_slidshow {
+    height: 235px !important;
+}
+
+/* general styling */
+.float_left {
+    float:left;
+}
+
+.float_right {
+    float: right;
+}

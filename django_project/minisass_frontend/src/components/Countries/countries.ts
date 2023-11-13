@@ -1,7 +1,7 @@
 export const COUNTRIES = [
   {
     title: 'Afghanistan',
-    value: 'AF', 
+    value: 'AF',
   },
   {
     title: 'Albania',

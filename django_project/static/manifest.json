@@ -1,0 +1,127 @@
+{
+  "../public/assets/fonts/MulishRomanBold.ttf": {
+    "file": "assets/MulishRomanBold-358bcb15.ttf",
+    "src": "../public/assets/fonts/MulishRomanBold.ttf"
+  },
+  "../public/assets/fonts/RalewayBold.ttf": {
+    "file": "assets/RalewayBold-82e3992e.ttf",
+    "src": "../public/assets/fonts/RalewayBold.ttf"
+  },
+  "../public/assets/fonts/RalewayExtraBold.ttf": {
+    "file": "assets/RalewayExtraBold-728412e7.ttf",
+    "src": "../public/assets/fonts/RalewayExtraBold.ttf"
+  },
+  "../public/assets/fonts/RalewayRomanBold.ttf": {
+    "file": "assets/RalewayBold-82e3992e.ttf",
+    "src": "../public/assets/fonts/RalewayBold.ttf"
+  },
+  "../public/assets/fonts/RalewayRomanRegular.ttf": {
+    "file": "assets/RalewayRomanRegular-931e37a2.ttf",
+    "src": "../public/assets/fonts/RalewayRomanRegular.ttf"
+  },
+  "../public/assets/fonts/RalewayRomanSemiBold.ttf": {
+    "file": "assets/RalewayRomanSemiBold-5aff4f5b.ttf",
+    "src": "../public/assets/fonts/RalewayRomanSemiBold.ttf"
+  },
+  "_index-59d9f8e3.js": {
+    "file": "assets/index-59d9f8e3.js",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_index-7780f0ac.js": {
+    "file": "assets/index-7780f0ac.js",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_index-f01188d9.js": {
+    "file": "assets/index-f01188d9.js",
+    "imports": [
+      "index.html",
+      "_index-59d9f8e3.js"
+    ]
+  },
+  "index.css": {
+    "file": "assets/index-6bdbe6f4.css",
+    "src": "index.css"
+  },
+  "index.html": {
+    "assets": [
+      "assets/RalewayRomanSemiBold-5aff4f5b.ttf",
+      "assets/RalewayExtraBold-728412e7.ttf",
+      "assets/MulishRomanBold-358bcb15.ttf",
+      "assets/RalewayRomanRegular-931e37a2.ttf",
+      "assets/RalewayBold-82e3992e.ttf"
+    ],
+    "css": [
+      "assets/index-6bdbe6f4.css"
+    ],
+    "dynamicImports": [
+      "pages/Howto/index.tsx",
+      "pages/MainPage/index.tsx",
+      "pages/Map/index.tsx",
+      "pages/Home.tsx",
+      "pages/DataInputForm/index.tsx"
+    ],
+    "file": "assets/index-f2509023.js",
+    "isEntry": true,
+    "src": "index.html"
+  },
+  "pages/DataInputForm/index.tsx": {
+    "file": "assets/index-fbdec289.js",
+    "imports": [
+      "index.html",
+      "_index-59d9f8e3.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/DataInputForm/index.tsx"
+  },
+  "pages/Home.tsx": {
+    "file": "assets/Home-2324b963.js",
+    "imports": [
+      "index.html"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/Home.tsx"
+  },
+  "pages/Howto/index.tsx": {
+    "file": "assets/index-a40d6d11.js",
+    "imports": [
+      "index.html",
+      "_index-59d9f8e3.js",
+      "_index-7780f0ac.js",
+      "_index-f01188d9.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/Howto/index.tsx"
+  },
+  "pages/MainPage/index.css": {
+    "file": "assets/index-55a6a47c.css",
+    "src": "pages/MainPage/index.css"
+  },
+  "pages/MainPage/index.tsx": {
+    "css": [
+      "assets/index-55a6a47c.css"
+    ],
+    "file": "assets/index-24da8489.js",
+    "imports": [
+      "index.html",
+      "_index-59d9f8e3.js",
+      "_index-7780f0ac.js",
+      "_index-f01188d9.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/MainPage/index.tsx"
+  },
+  "pages/Map/index.tsx": {
+    "file": "assets/index-36e1667c.js",
+    "imports": [
+      "index.html",
+      "_index-59d9f8e3.js",
+      "_index-f01188d9.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/Map/index.tsx"
+  }
+}

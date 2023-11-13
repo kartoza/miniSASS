@@ -18,6 +18,8 @@ django-missing==1.1.0
 django-mptt==0.15.0
 django-polymorphic==3.1.0
 django-registration==3.4
+django-reversion==5.0.6
+django-sekizai==4.1.0
 django-staticfiles==1.2.1
 django-tagging==0.5.0
 django-tinymce==3.6.1
@@ -25,6 +27,7 @@ django-treebeard==4.7
 djangocms-admin-style==3.2.6
 djangocms-attributes-field==3.0.0
 djangocms-utils==0.9.5
+easy-thumbnails==2.8.5
 filelock==3.13.1
 html5lib==1.1
 httplib2==0.22.0
@@ -48,6 +51,7 @@ requests==2.31.0
 simple-translation==0.8.6
 simplejson==3.19.2
 six==1.16.0
+South==1.0.2
 sqlparse==0.4.4
 svglib==1.5.1
 tinycss2==1.2.1

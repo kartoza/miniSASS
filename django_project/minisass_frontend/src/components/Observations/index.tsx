@@ -99,10 +99,9 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
       </div>
       <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
       <Text
-          className={`${titleColor} flex-1 text-base w-auto`}
+          className="flex-1 text-base w-auto"
           size="txtRalewayRomanSemiBold16Green800"
         >
-          Score:
         </Text>
         <div className="h-[68px] relative w-[68px]">
           <div className="h-[68px] m-auto w-[68px]">

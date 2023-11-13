@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 import { Button } from "../../components";
-import { useNavigate } from 'react-router-dom';
 
 interface LoginFormModalProps {
   isOpen: boolean;
@@ -16,7 +15,6 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
     password: '',
   });
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (error_response === null) {
@@ -161,7 +159,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
             </Button>
             <p style={{ textAlign: 'center' }}>
               <span style={{ color: 'gray' }}>Forgot your password? </span>
-              <span className="common-pointer" style={{ color: '#539987' }} onClick={() => navigate("/password-reset")}>Click here</span>
+              <span style={{ color: '#539987' }}>Click here</span>
             </p>
           </form>
         </div>
