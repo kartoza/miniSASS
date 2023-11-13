@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Button, FloatingInput, Img, Input, SelectBox, Text } from "../../components";
+import Tooltip from '@mui/material/Tooltip';
+import UploadModal from "../../components/UploadFormModal";
+import { Instance } from '@popperjs/core';
+
+
 
 type DataInputFormProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -57,15 +62,104 @@ type DataInputFormProps = Omit<
   }>;
 
 const inputOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Rocky", value: "rocky" },
+  { label: "Sandy", value: "sandy" },
+];
+
+const inputOxygenUnitsList = [
+  { label: "mg/l", value: "mg/l" },
+  { label: "%DO", value: "%DO" },
+  { label: "PPM", value: "PPM" },
+  { label: "Unknown", value: "uknown" },
+];
+
+const inputElectricConductivityUnitsList = [
+  { label: "S/m", value: "S/m" },
+  { label: "µS/cm", value: "µS/cm" },
+  { label: "m S/m", value: "m S/m" },
+  { label: "Unknown", value: "uknown" },
 ];
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
+
+  // TODO still need to get units and river categories and save data to db
+
+  // State to store form values
+  const [formValues, setFormValues] = useState({
+    riverName: '',
+    siteName: '',
+    siteDescription: '',
+    rivercategory: '',
+    sitelocation: '',
+    selectKnownSite: '',
+    selectOnMap: '',
+    typeInCoordinates: '',
+    observationdetaOne: '',
+    date: '',
+    collectorsname: '',
+    notes: '',
+    measurements: '',
+    waterclaritycm: '',
+    watertemperaturOne: '',
+    ph: '',
+    dissolvedoxygenOne: '',
+    electricalconduOne: '',
+    dissolvedoxygenOneUnit: '',
+    electricalconduOneUnit: '',
+  });
+
+  const positionRef = React.useRef<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const popperRef = React.useRef<Instance>(null);
+  const areaRef = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    positionRef.current = { x: event.clientX, y: event.clientY };
+
+    if (popperRef.current != null) {
+      popperRef.current.update();
+    }
+  };
+
+
+  // Function to handle form submission
+  const handleSubmit = () => {
+    console.log('Form Values:', formValues);
+  };
+
+  // Get the current URL using window.location.href
+  const currentURL = window.location.href;
+
+  // Extract the base URL (everything up to the first single forward slash '/')
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+
+  // Define the replacement path
+  const replacementPath = 'static/images/';
+
+  // Construct the new URL with the replacement path
+  const staticPath = baseUrl + '/' + replacementPath;
+
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+    const openUploadModal = () => {
+      setIsUploadModalOpen(true);
+    };
+
+    const closeUploadModal = () => {
+      setIsUploadModalOpen(false);
+    };
+
+  
   return (
     <>
-      <div className={props.className}>
+      <div className={props.className} style={{
+        height: '95vh',
+        overflowY: 'auto',
+        overflowX: 'auto',
+      }}>
         <Text
           className="text-2xl md:text-[22px] text-blue-900 sm:text-xl"
           size="txtRalewayBold24"
@@ -85,9 +179,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             color="blue_gray_500"
             size="xs"
             variant="fill"
+            onClick={openUploadModal}
           >
             {props?.uploadSiteImages}
           </Button>
+          <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
+
+          {/* rivername input */}
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -104,8 +202,24 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.riverName}
+              onChange={(e) => {
+                setFormValues({ ...formValues, riverName: e });
+              }}
+              
             ></Input>
           </div>
+
+          {/* sitename input  */}
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -116,14 +230,27 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             <Input
               name="inputslot_One"
               placeholder="Site name"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+              className="!placeholder:text-black-900_99 !text-black-900_99 border-solid font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
               wrapClassName="sm:w-full"
               shape="round"
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.siteName}
+              onChange={(e) => setFormValues({ ...formValues, siteName: e })} 
             ></Input>
           </div>
+
+          {/* description input  */}
           <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -131,43 +258,70 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             >
               {props?.sitedescriptionOne}
             </Text>
-            <div className="border border-black-900_3a border-solid flex flex-col h-[75px] md:h-auto items-start justify-start px-3 py-2 rounded w-[300px]">
-              <div className="flex flex-col items-center justify-start w-full">
-                <Text
-                  className="leading-[24.00px] max-w-[215px] md:max-w-full text-base text-black-900_99 tracking-[0.15px]"
-                  size="txtRalewayRomanRegular16"
-                >
-                  {props?.defaultslotOne}
-                </Text>
-              </div>
-            </div>
+            
+                <textarea
+                  name="message"
+                  style={{
+                    width: '300px',
+                    maxWidth: '300px',
+                    height: '80px',
+                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                    borderRadius: '4px',
+                    padding: '8px 12px',
+                  }}
+                  placeholder="e.g. downstream of industry.             Max 255 characters"
+                  value={formValues.siteDescription}
+                  onChange={(e) => setFormValues({ ...formValues, siteDescription: e.target.value })} 
+                />
+              
+            
           </div>
+
+          {/* river category input */}
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <div className="flex flex-row gap-1 items-start justify-start w-auto">
-              <Text
-                className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                size="txtRalewayRomanRegular18"
+
+              {/* Tooltip */}
+              <Tooltip
+                title="River category description comes here"
+                placement="top"
+                arrow
+                PopperProps={{
+                  popperRef,
+                  anchorEl: {
+                    getBoundingClientRect: () => {
+                      return new DOMRect(
+                        positionRef.current.x,
+                        areaRef.current!.getBoundingClientRect().y,
+                        0,
+                        0,
+                      );
+                    },
+                  },
+                }}
               >
-                {props?.rivercategory}
-              </Text>
-              <Img
-                className="h-3.5 w-3.5"
-                src="images/img_mdiinformation.svg"
-                alt="mdiinformation"
-              />
-            </div>
+                 <div className="flex flex-row gap-1 items-start justify-start w-auto"
+                  ref={areaRef}
+                  onMouseMove={handleMouseMove}
+                >
+                  <Text
+                    className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                    size="txtRalewayRomanRegular18"
+                  >
+                    {props?.rivercategory}
+                  </Text>
+                  {/* Information icon */}
+                  <Img
+                    className="h-3.5 w-3.5 cursor-pointer"
+                    src={`${staticPath}information.png`}
+                    alt="Information Icon"
+                  />
+                </div>
+              </Tooltip>
             <div className="flex flex-col items-start justify-start w-[300px]">
               <div className="flex flex-col items-start justify-start w-full">
                 <SelectBox
                   className="!text-black-900_99 font-raleway text-base text-left tracking-[0.15px] w-full"
                   placeholderClassName="!text-black-900_99"
-                  indicator={
-                    <Img
-                      className="h-6 w-6"
-                      src="images/img_arrowdropdownfilled.svg"
-                      alt="ArrowDropDownFilled"
-                    />
-                  }
                   isMulti={false}
                   name="input"
                   options={inputOptionsList}
@@ -177,11 +331,19 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   color="black_900_3a"
                   size="xs"
                   variant="outline"
+                  value={formValues.rivercategory}
+                  onChange={(selectedOption) =>{
+                    setFormValues({ ...formValues, rivercategory: selectedOption })
+
+                  } }
                 />
               </div>
             </div>
           </div>
+          
         </div>
+        
+        {/* buttons to adjust input fields */}
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
           <Text
             className="text-blue-900 text-lg w-auto"
@@ -219,6 +381,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             </Button>
           </div>
         </div>
+
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
           <Text
             className="text-blue-900 text-lg w-auto"
@@ -226,6 +389,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {props?.observationdetaOne}
           </Text>
+
+          {/* date input */}
           <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -234,23 +399,31 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               {props?.date}
             </Text>
             <Input
+              type="date" 
               name="dateslot"
-              placeholder="01.01.2024"
+              placeholder="01.01.2024" 
               className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
               wrapClassName="flex md:h-auto w-[300px]"
-              suffix={
-                <Img
-                  className="h-6 ml-[35px] my-auto"
-                  src="images/img_icbaselinecalendarmonth.svg"
-                  alt="ic:baseline-calendar-month"
-                />
-              }
               shape="round"
               color="black_900_3a"
               size="xs"
               variant="outline"
-            ></Input>
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.date}
+              onChange={(e) => setFormValues({ ...formValues, date: e })} 
+            />
           </div>
+
+
+          {/* collectors name input */}
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -267,8 +440,21 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.collectorsname}
+              onChange={(e) => setFormValues({ ...formValues, collectorsname: e })} 
             ></Input>
           </div>
+
+          {/* notes input */}
           <div className="flex flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -276,18 +462,25 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             >
               {props?.notes}
             </Text>
-            <div className="border border-black-900_3a border-solid flex flex-col h-[75px] md:h-auto items-start justify-start px-3 py-2 rounded w-[300px]">
-              <div className="flex flex-col items-center justify-start w-full">
-                <Text
-                  className="leading-[24.00px] max-w-[215px] md:max-w-full text-base text-black-900_99 tracking-[0.15px]"
-                  size="txtRalewayRomanRegular16"
-                >
-                  {props?.defaultslotOne}
-                </Text>
-              </div>
-            </div>
+            <textarea
+              name="message"
+              style={{
+                    width: '300px',
+                    maxWidth: '300px',
+                    height: '80px',
+                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                    borderRadius: '4px',
+                    padding: '8px 12px',
+                  }}
+                  placeholder="e.g. downstream of industry.             Max 255 characters"
+                  value={formValues.notes}
+                  onChange={(e) => setFormValues({ ...formValues, notes: e.target.value })} 
+              />
+
           </div>
+
         </div>
+        {/* measurements section */}
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
           <Text
             className="text-blue-900 text-lg w-auto"
@@ -295,6 +488,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {props?.measurements}
           </Text>
+
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -311,8 +505,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.waterclaritycm}
+              onChange={(e) => setFormValues({ ...formValues, waterclaritycm: e })} 
             ></Input>
           </div>
+
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -329,8 +535,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.watertemperaturOne}
+              onChange={(e) => setFormValues({ ...formValues, watertemperaturOne: e })} 
             ></Input>
           </div>
+
           <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -347,8 +565,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               color="black_900_3a"
               size="xs"
               variant="outline"
+              style={{
+                width: '300px',
+                maxWidth: '300px',
+                height: '40px',
+                border: '1px solid rgba(0, 0, 0, 0.23)',
+                borderRadius: '4px',
+                padding: '8px 12px',
+                marginRight: '-10px'
+              }}
+              value={formValues.ph}
+              onChange={(e) => setFormValues({ ...formValues, ph: e })} 
             ></Input>
           </div>
+
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -357,7 +587,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               {props?.dissolvedoxygenOne}
             </Text>
             <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-              <div className="flex flex-col items-center justify-start w-[77%] sm:w-full">
+              <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
                 <Input
                   name="inputslot_Six"
                   placeholder="0.000000"
@@ -367,29 +597,38 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   color="black_900_3a"
                   size="xs"
                   variant="outline"
-                ></Input>
-              </div>
-              <div className="flex flex-col items-start justify-start w-[71px] sm:w-full">
-                <FloatingInput
-                  wrapClassName="bg-transparent border border-black-900_3a border-solid flex pl-3 pr-[35px] py-2.5 rounded top-[0] w-full"
-                  className="font-roboto p-0 placeholder:bg-white-A700 placeholder:left-3 placeholder:text-black-900_99 placeholder:top-[0] sm:pr-5 text-black-900_99 text-left text-xs tracking-[0.15px] w-full"
-                  name="label_One"
-                  labelClasses="bg-white-A700 left-3 top-[0] text-black-900_99"
-                  focusedClasses="translate-y-[10px] scale-[1]"
-                  wrapperClasses="w-full top-[0]"
-                  labelText="unit"
-                  defaultText="unit"
-                  suffix={
-                    <Img
-                      className="top-[0] my-auto"
-                      src="images/img_arrowdropdownfilled.svg"
-                      alt="ArrowDropDownFilled"
-                    />
-                  }
-                ></FloatingInput>
+                  style={{
+                    width: '180px',
+                    maxWidth: '180px',
+                    height: '40px',
+                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                    borderRadius: '4px',
+                    padding: '8px 12px',
+                    marginRight: '-45px'
+                  }}
+                  value={formValues.dissolvedoxygenOne}
+                  onChange={(e) => setFormValues({ ...formValues, dissolvedoxygenOne: e })} 
+                />
+                <SelectBox
+                  className="!text-black-900_99 font-raleway text-base text-left  w-[155px]"
+                  placeholderClassName="!text-black-900_99"
+                  isMulti={false}
+                  name="input"
+                  options={inputOxygenUnitsList}
+                  isSearchable={false}
+                  placeholder=""
+                  shape="round"
+                  color="black_900_3a"
+                  size="xs"
+                  variant="outline"
+                  value={formValues.dissolvedoxygenOneUnit}  // Set the value from state
+                  onChange={(selectedOption) => setFormValues({ ...formValues, dissolvedoxygenOneUnit: selectedOption })}
+                />
               </div>
             </div>
+
           </div>
+
           <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
             <Text
               className="text-gray-800 text-lg tracking-[0.15px] w-auto"
@@ -398,9 +637,9 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               {props?.electricalconduOne}
             </Text>
             <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-              <div className="flex flex-col items-center justify-start w-[77%] sm:w-full">
+              <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
                 <Input
-                  name="inputslot_Seven"
+                  name="inputslot_Six"
                   placeholder="0.000000"
                   className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
                   wrapClassName="w-full"
@@ -408,44 +647,54 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   color="black_900_3a"
                   size="xs"
                   variant="outline"
-                ></Input>
-              </div>
-              <div className="flex flex-col items-start justify-start w-[71px] sm:w-full">
-                <FloatingInput
-                  wrapClassName="bg-transparent border border-black-900_3a border-solid flex pl-3 pr-[35px] py-2.5 rounded top-[0] w-full"
-                  className="font-roboto p-0 placeholder:bg-white-A700 placeholder:left-3 placeholder:text-black-900_99 placeholder:top-[0] sm:pr-5 text-black-900_99 text-left text-xs tracking-[0.15px] w-full"
-                  name="label_One"
-                  labelClasses="bg-white-A700 left-3 top-[0] text-black-900_99"
-                  focusedClasses="translate-y-[10px] scale-[1]"
-                  wrapperClasses="w-full top-[0]"
-                  labelText="unit"
-                  defaultText="unit"
-                  suffix={
-                    <Img
-                      className="top-[0] my-auto"
-                      src="images/img_arrowdropdownfilled.svg"
-                      alt="ArrowDropDownFilled"
-                    />
-                  }
-                ></FloatingInput>
+                  style={{
+                    width: '180px',
+                    maxWidth: '180px',
+                    height: '40px',
+                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                    borderRadius: '4px',
+                    padding: '8px 12px',
+                    marginRight: '-45px'
+                  }}
+                  value={formValues.electricalconduOne}
+                  onChange={(e) => setFormValues({ ...formValues, electricalconduOne: e })} 
+                />
+                <SelectBox
+                  className="!text-black-900_99 font-raleway text-base text-left  w-[155px]"
+                  placeholderClassName="!text-black-900_99"
+                  isMulti={false}
+                  name="input"
+                  options={inputElectricConductivityUnitsList}
+                  isSearchable={false}
+                  placeholder=""
+                  shape="round"
+                  color="black_900_3a"
+                  size="xs"
+                  variant="outline"
+                  value={formValues.electricalconduOneUnit}  // Set the value from state
+                  onChange={(selectedOption) => setFormValues({ ...formValues, electricalconduOneUnit: selectedOption })}
+                />
               </div>
             </div>
           </div>
         </div>
+
         <Button
           className="!text-white-A700 cursor-pointer font-raleway mb-[33px] text-center text-lg tracking-[0.81px] w-[141px]"
           shape="round"
           color="blue_gray_500"
           size="xs"
           variant="fill"
+          onClick={() => handleSubmit()}
         >
-          {props?.next}
+          next
         </Button>
       </div>
     </>
   );
 };
 
+// TODO make form dynamic 
 DataInputForm.defaultProps = {
   datainputform: "Data Input Form",
   sitedetails: "Site Details",
