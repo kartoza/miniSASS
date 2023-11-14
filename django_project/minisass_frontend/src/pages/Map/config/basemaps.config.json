@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Default",
+    "tiles": [
+      "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png?noWrap=true"
+    ],
+    "type": "raster",
+    "maxNativeZoom": 19,
+    "maxZoom": 24,
+    "noWrap": "true",
+    "tileSize": 256
+  },
+  {
+    "name": "Satellite",
+    "tiles": [
+      "https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg?access_token=pk.eyJ1IjoiYWxla29yIiwiYSI6ImNqdGZwc2FoaDBkNjAzeXJ1b3B6bzR6Z2IifQ.m6OQgD-IfmhaVS3Xh5XNoQ"
+    ],
+    "type": "raster",
+    "maxNativeZoom": 19,
+    "maxZoom": 24,
+    "noWrap": "true",
+    "tileSize": 256
+  },
+  {
+    "name": "Rivers and Catchments",
+    "tiles": [
+      "https://minisass.org/geoserver/gwc/service/wms?TILED=true&LAYERS=miniSASS%3AminiSASS_base&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG:3857&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256"
+    ],
+    "type": "raster",
+    "maxNativeZoom": 19,
+    "maxZoom": 24,
+    "noWrap": "true",
+    "tileSize": 256
+  }
+]

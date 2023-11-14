@@ -1,5 +1,6 @@
 dist
 src
+!django_project/minisass_frontend/src
 *.~
 *~
 *.pyc
@@ -37,3 +38,5 @@ django_project/minisass/wsgi-jurgen.py
 tags
 .idea/
 data
+
+.env
