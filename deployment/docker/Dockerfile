@@ -43,11 +43,12 @@ RUN npm run build
 WORKDIR /home/web/django_project
 # RUN python manage.py collectstatic --noinput
 ADD ./deployment/docker/uwsgi.conf /uwsgi.conf
-ADD ./deployment/docker/run.sh /run.sh
-RUN chmod 0755 /run.sh
+ADD ./deployment/docker/entrypoint.sh /entrypoint.sh
+RUN chmod 0755 /entrypoint.sh
 
 
 # Open port 8080 as we will be running our uwsgi socket on that
 EXPOSE 8080
 
-CMD ["/bin/bash", "/run.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["uwsgi", "--ini", "/uwsgi.conf"]
