@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import ast
 import os
+
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
@@ -290,6 +291,15 @@ EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS')
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = '/'
 AUTH_PROFILE_MODULE = "minisass_registration.UserProfile"
+
+SENTRY_KEY = os.environ.get('SENTRY_KEY', '')
+if SENTRY_KEY != '':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(
+        dsn=SENTRY_KEY,
+        integrations=[DjangoIntegration()]
+    )
 
 # Installed applications
 INSTALLED_APPS = (
