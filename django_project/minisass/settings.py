@@ -81,19 +81,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
-FRONTEND_PATH = FRONTEND_DIST_ROOT
+FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
-# Define the BASE_DIR setting
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Use BASE_DIR to construct MINISASS_FRONTEND_PATH
-MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
     os.path.join(FRONTEND_PATH, 'static'),
-    os.path.join(MINISASS_FRONTEND_PATH, 'static')
+    DEFAULT_STATIC_ROOT
 )
 
 # List of finder classes that know how to find static files in
