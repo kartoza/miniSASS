@@ -35,8 +35,11 @@ urlpatterns += i18n_patterns('',
     url(r'^autocomplete/', include('minisass_registration.urls')),
     url(r'^accounts/', include('minisass_registration.backends.urls')),
 
-    # Main frontend URL
+    # frontend urls
     url(r'^$', ReactHomeView.as_view(), name="home"),
+    url(r'^map/', ReactHomeView.as_view(), name="map"),
+    url(r'^password-reset/', ReactHomeView.as_view(), name="password_reset"),
+    url(r'^howto/', ReactHomeView.as_view(), name="how_to"),
 
     url(r'^api/observations/$', ObservationsView.as_view(), name='observations-api'),
 
