@@ -88,7 +88,6 @@ FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
     os.path.join(FRONTEND_PATH, 'static'),
-    DEFAULT_STATIC_ROOT
 )
 
 # List of finder classes that know how to find static files in
