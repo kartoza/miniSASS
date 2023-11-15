@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -6,8 +6,17 @@ import { Button, Img, Input, Text } from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import Sidebar from "../../components/Sidebar";
+import { Map } from "../../components/Map"
+
+import Search from './Search';
+import basemapsData from './config/basemaps.config.json';
+import overlayLayersData from './config/overlay.config.json';
+
+import "./style.css"
 
 const MapPage: React.FC = () => {
+  const mapRef = useRef(null);
+
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -30,7 +39,7 @@ const MapPage: React.FC = () => {
 
   return (
     <>
-      <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full">
+      <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full h-screen">
 
         <div className="h-[120px] md:px-5 relative w-full">
 
@@ -47,7 +56,7 @@ const MapPage: React.FC = () => {
                       alt="minisasslogoOne"
                     />
                   </div>
-                  
+
 
                   {/* navigation bar */}
                   <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
@@ -59,46 +68,54 @@ const MapPage: React.FC = () => {
             {/* end of section */}
 
 
-            
+
 
           </div>
 
-        <div className="h-[1219px] md:px-5 relative md:w-[103.9%] w-full">
+        <div className="grow md:px-5 relative md:w-[103.9%] w-full relative">
           <div className="flex flex-col h-full items-center justify-start m-auto w-full">
-            <div className="flex flex-col items-center justify-start sm:w-[109%] w-full">
-              <div className="bg-blue-900 sm:bottom-[50px] flex flex-row gap-[17px] items-center justify-end p-[13px] sm:relative sm:top-[] w-full">
-                <Button
-                  className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
-                  color="blue_gray_500"
-                  size="xs"
-                  variant="fill"
-                  onClick={handleSidebarToggle}
-                >
-                  Add Record
-                </Button>
-                <Input
-                  name="frameThirtyFour"
-                  placeholder="Search"
-                  className="font-bold md:h-auto p-0 placeholder:text-black-900 sm:h-auto text-base text-left w-full"
-                  wrapClassName="mr-[3px] w-1/4"
-                ></Input>
-                <Img
+            <div className="bg-blue-900 sm:bottom-[50px] flex flex-row gap-[17px] justify-end p-[13px] sm:relative sm:top-[] w-full">
+              <Button
+                className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+                color="blue_gray_500"
+                size="xs"
+                variant="fill"
+                onClick={handleSidebarToggle}
+              >
+                Add Record
+              </Button>
+              <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
+              <Img
                   className=" h-[48px] w-[48px] common-pointer"
                   src={`${newURL}sidebar_icon.png`}
                   alt="sidebar"
                   onClick={handleSidebarToggle}
                 />
-              </div>
-              <div className="h-[1155px] relative w-full">
-                <Img
-                  className="absolute bottom-[1%] h-9 left-[1%] w-11"
-                  src={`${newURL}img_offer.svg`}
-                  alt="offer"
-                />
-              </div>
+            </div>
+            <div className="grow relative w-full">
+              <Map
+                basemaps={
+                  basemapsData.map(data => {
+                    return {
+                      name: data.name,
+                      config: data
+                    }
+                  })
+                }
+                overlayLayers={
+                  overlayLayersData.map(data => {
+                    return {
+                      name: data.name,
+                      activeByDefault: data.activeByDefault,
+                      config: data,
+                    }
+                  })
+                }
+                ref={mapRef}
+              />
             </div>
           </div>
-          <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[1%] sm:top-[25px] w-auto">
+          <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[13px] left-[13px]">
             <div className="flex flex-col items-center justify-center w-auto">
               <Text
                 className="text-base text-black-900 w-auto"
@@ -196,8 +213,8 @@ const MapPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
       </div>
+      <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
     </>
   );
 };

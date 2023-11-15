@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "pages/NotFound";
 const Howto = React.lazy(() => import("./pages/Howto"));
 const Home = React.lazy(() => import("./pages/MainPage"));

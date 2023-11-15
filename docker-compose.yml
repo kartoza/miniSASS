@@ -12,12 +12,12 @@ services:
       # Activate the restore script when downloading and importing existing data
       - ./geodata/restore.sh:/docker-entrypoint-initdb.d/restore.sh
     environment:
-      - POSTGRES_DB=${POSTGIS_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASS=${POSTGRES_PASS}
-      - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
-      - POSTGRES_MULTIPLE_EXTENSIONS=${POSTGRES_MULTIPLE_EXTENSIONS}
-      - FORCE_SSL=${FORCE_SSL}
+      - POSTGRES_DB=${POSTGIS_DB:-minisass}
+      - POSTGRES_USER=${POSTGRES_USER:-docker}
+      - POSTGRES_PASS=${POSTGRES_PASS:-docker}
+      - ALLOW_IP_RANGE=${ALLOW_IP_RANGE:-0.0.0.0/0}
+      - POSTGRES_MULTIPLE_EXTENSIONS=${POSTGRES_MULTIPLE_EXTENSIONS:-postgis,hstore,postgis_topology,postgis_raster,pgrouting}
+      - FORCE_SSL=${FORCE_SSL:-FALSE}
     ports:
       - "32769:5432"
     restart: always
@@ -50,21 +50,13 @@ services:
       # Images on the platform will be stored here
       - ./data_images:/web
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASS=${POSTGRES_PASS}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
+      - POSTGRES_DB=${POSTGIS_DB:-minisass}
+      - POSTGRES_USER=${POSTGRES_USER:-docker}
+      - POSTGRES_PASS=${POSTGRES_PASS:-docker}
+      - DATABASE_HOST=${DATABASE_HOST:-db}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - SENTRY_KEY=${SENTRY_KEY:-}
       - ALLOWED_HOSTS='*'
-      - SERVER_MODE=${SERVER_MODE}
-      - RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY}
-      - RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY}
-      - SMTP_HOST=${SMTP_HOST}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_EMAIL=${SMTP_EMAIL}
-      - SMTP_HOST_USER=${SMTP_HOST_USER}
-      - SMTP_HOST_PASSWORD=${SMTP_HOST_PASSWORD}
-      - SMTP_EMAIL_TLS=${SMTP_EMAIL_TLS}
     depends_on:
       db:
         condition: service_healthy
