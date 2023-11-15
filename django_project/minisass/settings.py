@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
 import ast
 import os
+
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-ALLOWED_HOSTS = ast.literal_eval(os.getenv('ALLOWED_HOSTS'))
-DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
+allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
+
+if allowed_hosts_str is not None:
+    ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
+else:
+    # allow all for development
+    ALLOWED_HOSTS = ['*']
+
+DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -18,11 +26,11 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASS'],
-        'HOST': os.environ['DATABASE_HOST'],
-        'PORT': os.environ['DATABASE_PORT'],
+        'NAME': os.getenv('POSTGRES_DB', ''),
+        'USER': os.getenv('POSTGRES_USER', ''),
+        'PASSWORD': os.getenv('POSTGRES_PASS', ''),
+        'HOST': os.getenv('DATABASE_HOST', ''),
+        'PORT': os.getenv('DATABASE_PORT', ''),
         'OPTIONS': {'sslmode': 'require'}
     }
 }
@@ -58,6 +66,7 @@ DEFAULT_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 DEFAULT_MEDIA_URL = '/media/'
 DEFAULT_STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 DEFAULT_STATIC_URL = '/static/'
+FRONTEND_DIST_ROOT = PROJECT_PATH.replace('/minisass', '/minisass_frontend')
 
 # Get values from environment variables or use defaults
 MEDIA_ROOT = os.getenv('MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
@@ -72,21 +81,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
 
 # Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
-FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
-
-
+FRONTEND_PATH = FRONTEND_DIST_ROOT
 
 # Define the BASE_DIR setting
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Use BASE_DIR to construct MINISASS_FRONTEND_PATH
-MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(BASE_DIR, 'app'))
-
+MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static')
+    os.path.join(FRONTEND_PATH, 'static'),
+    os.path.join(MINISASS_FRONTEND_PATH, 'static')
 )
 
 # List of finder classes that know how to find static files in
@@ -260,8 +267,8 @@ THUMBNAIL_PROCESSORS = (
 # JQUERY_UI_CSS = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css'
 
 # reCAPTCHA keys for minisass.org
-RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
-RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 
 # tiny-MCE settings
 TINYMCE_DEFAULT_CONFIG = {
@@ -273,17 +280,26 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 # email settings
-EMAIL_HOST = os.environ['SMTP_HOST']
-EMAIL_PORT = os.environ['SMTP_PORT']
-DEFAULT_FROM_EMAIL = os.environ['SMTP_EMAIL']
-EMAIL_HOST_USER = os.environ['SMTP_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['SMTP_HOST_PASSWORD']
-EMAIL_USE_TLS = os.environ['SMTP_EMAIL_TLS']
+EMAIL_HOST = os.getenv('SMTP_HOST')
+EMAIL_PORT = os.getenv('SMTP_PORT')
+DEFAULT_FROM_EMAIL = os.getenv('SMTP_EMAIL')
+EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS')
 
 # django registration/auth settings
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = '/'
 AUTH_PROFILE_MODULE = "minisass_registration.UserProfile"
+
+SENTRY_KEY = os.environ.get('SENTRY_KEY', '')
+if SENTRY_KEY != '':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(
+        dsn=SENTRY_KEY,
+        integrations=[DjangoIntegration()]
+    )
 
 # Installed applications
 INSTALLED_APPS = (
