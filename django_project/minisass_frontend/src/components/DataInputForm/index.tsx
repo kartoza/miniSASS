@@ -4,7 +4,7 @@ import { Button, FloatingInput, Img, Input, SelectBox, Text } from "../../compon
 import Tooltip from '@mui/material/Tooltip';
 import UploadModal from "../../components/UploadFormModal";
 import { Instance } from '@popperjs/core';
-
+import { Formik, Form, Field } from 'formik';
 
 
 type DataInputFormProps = Omit<
@@ -82,7 +82,7 @@ const inputElectricConductivityUnitsList = [
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
-  // TODO still need to get units and river categories and save data to db
+  // TODO still need to save data to db
 
   // State to store form values
   const [formValues, setFormValues] = useState({
@@ -125,8 +125,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
 
   // Function to handle form submission
-  const handleSubmit = () => {
-    console.log('Form Values:', formValues);
+  const handleSubmit = (values) => {
+    console.log('Form Values:', values);
   };
 
   // Get the current URL using window.location.href
@@ -151,7 +151,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     const closeUploadModal = () => {
       setIsUploadModalOpen(false);
     };
-
   
   return (
     <>
@@ -185,514 +184,549 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           </Button>
           <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
 
-          {/* rivername input */}
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.rivername}
-            </Text>
-            <Input
-              name="inputslot"
-              placeholder="River name"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="sm:w-full"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.riverName}
-              onChange={(e) => {
-                setFormValues({ ...formValues, riverName: e });
-              }}
-              
-            ></Input>
-          </div>
+          <Formik
+            initialValues={formValues}
+            onSubmit={(values) => {
+              handleSubmit(values)
+            }}
+          >
+            {({ values, handleChange }) => (
+              <Form>
 
-          {/* sitename input  */}
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.sitename}
-            </Text>
-            <Input
-              name="inputslot_One"
-              placeholder="Site name"
-              className="!placeholder:text-black-900_99 !text-black-900_99 border-solid font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="sm:w-full"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.siteName}
-              onChange={(e) => setFormValues({ ...formValues, siteName: e })} 
-            ></Input>
-          </div>
-
-          {/* description input  */}
-          <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.sitedescriptionOne}
-            </Text>
-            
-                <textarea
-                  name="message"
-                  style={{
-                    width: '300px',
-                    maxWidth: '300px',
-                    height: '80px',
-                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                    borderRadius: '4px',
-                    padding: '8px 12px',
-                  }}
-                  placeholder="e.g. downstream of industry.             Max 255 characters"
-                  value={formValues.siteDescription}
-                  onChange={(e) => setFormValues({ ...formValues, siteDescription: e.target.value })} 
-                />
-              
-            
-          </div>
-
-          {/* river category input */}
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-
-              {/* Tooltip */}
-              <Tooltip
-                title="River category description comes here"
-                placement="top"
-                arrow
-                PopperProps={{
-                  popperRef,
-                  anchorEl: {
-                    getBoundingClientRect: () => {
-                      return new DOMRect(
-                        positionRef.current.x,
-                        areaRef.current!.getBoundingClientRect().y,
-                        0,
-                        0,
-                      );
-                    },
-                  },
-                }}
-              >
-                 <div className="flex flex-row gap-1 items-start justify-start w-auto"
-                  ref={areaRef}
-                  onMouseMove={handleMouseMove}
-                >
+                {/* rivername input */}
+                <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
                   <Text
                     className="text-gray-800 text-lg tracking-[0.15px] w-auto"
                     size="txtRalewayRomanRegular18"
                   >
-                    {props?.rivercategory}
+                    {props?.rivername}
                   </Text>
-                  {/* Information icon */}
-                  <Img
-                    className="h-3.5 w-3.5 cursor-pointer"
-                    src={`${staticPath}information.png`}
-                    alt="Information Icon"
+                  <Field
+                    name="riverName"
+                    placeholder="River name"
+                    className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                    wrapClassName="sm:w-full"
+                    shape="round"
+                    color="black_900_3a"
+                    size="xs"
+                    variant="outline"
+                    style={{
+                      width: '300px',
+                      maxWidth: '300px',
+                      height: '40px',
+                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                      marginRight: '-2%',
+                      marginBottom: '2%'
+                    }}
+                    value={values.riverName}
+                    onChange={handleChange}
                   />
                 </div>
-              </Tooltip>
-            <div className="flex flex-col items-start justify-start w-[300px]">
-              <div className="flex flex-col items-start justify-start w-full">
-                <SelectBox
-                  className="!text-black-900_99 font-raleway text-base text-left tracking-[0.15px] w-full"
-                  placeholderClassName="!text-black-900_99"
-                  isMulti={false}
-                  name="input"
-                  options={inputOptionsList}
-                  isSearchable={false}
-                  placeholder="Rocky"
-                  shape="round"
-                  color="black_900_3a"
-                  size="xs"
-                  variant="outline"
-                  value={formValues.rivercategory}
-                  onChange={(selectedOption) =>{
-                    setFormValues({ ...formValues, rivercategory: selectedOption })
 
-                  } }
-                />
-              </div>
-            </div>
-          </div>
-          
+                {/* sitename input  */}
+                <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                  <Text
+                    className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                    size="txtRalewayRomanRegular18"
+                  >
+                    {props?.sitename}
+                  </Text>
+                  <Field
+                    name="siteName"
+                    placeholder="Site name"
+                    className="!placeholder:text-black-900_99 !text-black-900_99 border-solid font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                    wrapClassName="sm:w-full"
+                    shape="round"
+                    color="black_900_3a"
+                    size="xs"
+                    variant="outline"
+                    style={{
+                      width: '300px',
+                      maxWidth: '300px',
+                      height: '40px',
+                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                      marginRight: '-2%',
+                      marginBottom: '4.5%'
+                    }}
+                    value={values.siteName}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* description input  */}
+                <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
+                  <Text
+                    className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                    size="txtRalewayRomanRegular18"
+                  >
+                    {props?.sitedescriptionOne}
+                  </Text>
+                  
+                      <Field
+                        name="siteDescription"
+                        style={{
+                          width: '300px',
+                          maxWidth: '300px',
+                          height: '80px',
+                          border: '1px solid rgba(0, 0, 0, 0.23)',
+                          borderRadius: '4px',
+                          padding: '8px 12px',
+                          marginRight: '-2%',
+                          marginBottom: '4%'
+                        }}
+                        placeholder="e.g. downstream of industry."
+                        value={values.siteDescription}
+                        onChange={handleChange}
+                      />
+                </div>
+
+                {/* river category input */}
+                <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full" style={{marginBottom: '2%'}}>
+
+                  {/* Tooltip */}
+                  <Tooltip
+                    title="River category description comes here"
+                    placement="top"
+                    arrow
+                    PopperProps={{
+                      popperRef,
+                      anchorEl: {
+                        getBoundingClientRect: () => {
+                          return new DOMRect(
+                            positionRef.current.x,
+                            areaRef.current!.getBoundingClientRect().y,
+                            0,
+                            0,
+                          );
+                        },
+                      },
+                    }}
+                  >
+                    <div className="flex flex-row gap-1 items-start justify-start w-auto"
+                      ref={areaRef}
+                      onMouseMove={handleMouseMove}
+                    >
+                      <Text
+                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {props?.rivercategory}
+                      </Text>
+                      {/* Information icon */}
+                      <Img
+                        className="h-3.5 w-3.5 cursor-pointer"
+                        src={`${staticPath}information.png`}
+                        alt="Information Icon"
+                      />
+                    </div>
+                  </Tooltip>
+                  <div className="flex flex-col items-start justify-start w-[300px]" style={{ marginRight: '-2%'}}>
+                    <div className="flex flex-col items-start justify-start w-full" >
+                    <Field as="select" name="rivercategory" className="!text-black-900_99 font-raleway text-base text-left tracking-[0.15px] w-full"
+                        placeholderClassName="!text-black-900_99"
+                        placeholder="Rocky"
+                        shape="round"
+                        color="black_900_3a"
+                        size="xs"
+                        variant="outline"
+                        style={{
+                          width: '300px',
+                          maxWidth: '300px',
+                          border: '1px solid rgba(0, 0, 0, 0.23)',
+                          borderRadius: '4px',
+                          padding: '8px 12px',
+                          marginBottom: '2%'
+                        }}
+                        
+                      >
+                      {inputOptionsList.map((option) => (
+                        <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Field>
+                    </div>
+                  </div>
+                </div>
+
+
+                {/* buttons to adjust input fields */}
+                <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{ marginBottom: '4%'}}>
+                  <Text
+                    className="text-blue-900 text-lg w-auto"
+                    size="txtRalewayBold18"
+                  >
+                    {props?.sitelocation}
+                  </Text>
+                  <div className="flex sm:flex-col flex-row gap-3 items-start justify-start w-auto sm:w-full">
+                    <Button
+                      className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
+                      shape="round"
+                      color="blue_gray_500"
+                      size="xs"
+                      variant="fill"
+                    >
+                      {props?.selectKnownSite}
+                    </Button>
+                    <Button
+                      className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
+                      shape="round"
+                      color="blue_gray_500"
+                      size="xs"
+                      variant="fill"
+                    >
+                      {props?.selectOnMap}
+                    </Button>
+                    <Button
+                      className="!text-white-A700 cursor-pointer font-raleway min-w-[201px] text-center text-lg tracking-[0.81px]"
+                      shape="round"
+                      color="blue_gray_500"
+                      size="xs"
+                      variant="fill"
+                    >
+                      {props?.typeInCoordinates}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
+                  <Text
+                    className="text-blue-900 text-lg w-auto"
+                    size="txtRalewayBold18"
+                  >
+                    {props?.observationdetaOne}
+                  </Text>
+
+                  {/* date input */}
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.date}
+                    </Text>
+                    <Field
+                      type="date" 
+                      name="date"
+                      placeholder="01.01.2024" 
+                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
+                      wrapClassName="flex md:h-auto w-[300px]"
+                      shape="round"
+                      color="black_900_3a"
+                      size="xs"
+                      variant="outline"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '40px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-10px'
+                      }}
+                      value={values.date}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+
+                  {/* collectors name input */}
+                  <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.collectorsname}
+                    </Text>
+                    <Field
+                      name="collectorsname"
+                      placeholder="Collectors name:"
+                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                      wrapClassName="sm:w-full"
+                      shape="round"
+                      color="black_900_3a"
+                      size="xs"
+                      variant="outline"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '40px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-10px'
+                      }}
+                      value={values.collectorsname}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* notes input */}
+                  <div className="flex flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.notes}
+                    </Text>
+                    <Field
+                      name="notes"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '80px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-2%',
+                      }}
+                      placeholder="e.g. downstream of industry."
+                      value={values.notes}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+
+
+                {/* measurements section */}
+                <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{ marginTop: '2%'}}>
+                  <Text
+                    className="text-blue-900 text-lg w-auto"
+                    size="txtRalewayBold18"
+                  >
+                    {props?.measurements}
+                  </Text>
+
+                  <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.waterclaritycm}
+                    </Text>
+                    <Field
+                      name="waterclaritycm"
+                      placeholder="Water clarity (cm):"
+                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                      wrapClassName="sm:w-full"
+                      shape="round"
+                      color="black_900_3a"
+                      size="xs"
+                      variant="outline"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '40px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-10px'
+                      }}
+                      value={values.waterclaritycm}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.watertemperaturOne}
+                    </Text>
+                    <Field
+                      name="watertemperaturOne"
+                      placeholder="Water temperature (°C):"
+                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                      wrapClassName="sm:w-full"
+                      shape="round"
+                      color="black_900_3a"
+                      size="xs"
+                      variant="outline"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '40px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-10px'
+                      }}
+                      value={values.watertemperaturOne}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.ph}
+                    </Text>
+                    <Field
+                      name="ph"
+                      placeholder="pH:"
+                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
+                      wrapClassName=""
+                      shape="round"
+                      color="black_900_3a"
+                      size="xs"
+                      variant="outline"
+                      style={{
+                        width: '300px',
+                        maxWidth: '300px',
+                        height: '40px',
+                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                        borderRadius: '4px',
+                        padding: '8px 12px',
+                        marginRight: '-10px'
+                      }}
+                      value={values.ph}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.dissolvedoxygenOne}
+                    </Text>
+                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                        <Field
+                          name="dissolvedoxygenOne"
+                          placeholder="0.000000"
+                          className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
+                          wrapClassName="w-full"
+                          shape="round"
+                          color="black_900_3a"
+                          size="xs"
+                          variant="outline"
+                          style={{
+                            width: '215px',
+                            maxWidth: '215px',
+                            height: '40px',
+                            border: '1px solid rgba(0, 0, 0, 0.23)',
+                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            marginRight: '-44px'
+                          }}
+                          value={values.dissolvedoxygenOne}
+                          onChange={handleChange}
+                        />
+                        <Field as="select" name="dissolvedoxygenOneUnit" className="!text-black-900_99 font-raleway text-base text-left"
+                            placeholderClassName="!text-black-900_99"
+                            placeholder=""
+                            shape="round"
+                            color="black_900_3a"
+                            size="xs"
+                            variant="outline"
+                            style={{
+                              width: '120px',
+                              maxWidth: '120px',
+                              height: '40px',
+                              border: '1px solid rgba(0, 0, 0, 0.23)',
+                              borderRadius: '4px',
+                              padding: '8px 12px',
+                              marginLeft: '17%'
+                            }}
+                          >
+                          {inputOxygenUnitsList.map((option) => (
+                            <option key={option.value} value={option.value} selected={option.value === values.dissolvedoxygenOneUnit}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </Field>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {props?.electricalconduOne}
+                    </Text>
+                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
+                        <Field
+                          name="electricalconduOne"
+                          placeholder="0.000000"
+                          className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
+                          wrapClassName="w-full"
+                          shape="round"
+                          color="black_900_3a"
+                          size="xs"
+                          variant="outline"
+                          style={{
+                            width: '215px',
+                            maxWidth: '215px',
+                            height: '40px',
+                            border: '1px solid rgba(0, 0, 0, 0.23)',
+                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            marginRight: '-44px'
+                          }}
+                          value={values.electricalconduOne}
+                          onChange={handleChange}
+                        />
+                        <Field as="select" name="electricalconduOneUnit" className="!text-black-900_99 font-raleway text-base text-left  w-[155px]"
+                            placeholderClassName="!text-black-900_99"
+                            placeholder=""
+                            shape="round"
+                            color="black_900_3a"
+                            size="xs"
+                            variant="outline"
+                            style={{
+                              width: '120px',
+                              maxWidth: '120px',
+                              height: '40px',
+                              border: '1px solid rgba(0, 0, 0, 0.23)',
+                              borderRadius: '4px',
+                              padding: '8px 12px',
+                              marginLeft: '17%'
+                            }}
+                          >
+                          {inputElectricConductivityUnitsList.map((option) => (
+                            <option key={option.value} value={option.value} selected={option.value === values.electricalconduOneUnit}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  className="!text-white-A700 cursor-pointer font-raleway mb-[33px] text-center text-lg tracking-[0.81px] w-[141px]"
+                  shape="round"
+                  color="blue_gray_500"
+                  size="xs"
+                  variant="fill"
+                  type="submit"
+                >
+                  next
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </div>
-        
-        {/* buttons to adjust input fields */}
-        <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-          <Text
-            className="text-blue-900 text-lg w-auto"
-            size="txtRalewayBold18"
-          >
-            {props?.sitelocation}
-          </Text>
-          <div className="flex sm:flex-col flex-row gap-3 items-start justify-start w-auto sm:w-full">
-            <Button
-              className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
-              shape="round"
-              color="blue_gray_500"
-              size="xs"
-              variant="fill"
-            >
-              {props?.selectKnownSite}
-            </Button>
-            <Button
-              className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
-              shape="round"
-              color="blue_gray_500"
-              size="xs"
-              variant="fill"
-            >
-              {props?.selectOnMap}
-            </Button>
-            <Button
-              className="!text-white-A700 cursor-pointer font-raleway min-w-[201px] text-center text-lg tracking-[0.81px]"
-              shape="round"
-              color="blue_gray_500"
-              size="xs"
-              variant="fill"
-            >
-              {props?.typeInCoordinates}
-            </Button>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-          <Text
-            className="text-blue-900 text-lg w-auto"
-            size="txtRalewayBold18"
-          >
-            {props?.observationdetaOne}
-          </Text>
-
-          {/* date input */}
-          <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.date}
-            </Text>
-            <Input
-              type="date" 
-              name="dateslot"
-              placeholder="01.01.2024" 
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="flex md:h-auto w-[300px]"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.date}
-              onChange={(e) => setFormValues({ ...formValues, date: e })} 
-            />
-          </div>
-
-
-          {/* collectors name input */}
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.collectorsname}
-            </Text>
-            <Input
-              name="inputslot_Two"
-              placeholder="Collectors name:"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="sm:w-full"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.collectorsname}
-              onChange={(e) => setFormValues({ ...formValues, collectorsname: e })} 
-            ></Input>
-          </div>
-
-          {/* notes input */}
-          <div className="flex flex-row gap-3 h-[75px] md:h-auto items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.notes}
-            </Text>
-            <textarea
-              name="message"
-              style={{
-                    width: '300px',
-                    maxWidth: '300px',
-                    height: '80px',
-                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                    borderRadius: '4px',
-                    padding: '8px 12px',
-                  }}
-                  placeholder="e.g. downstream of industry.             Max 255 characters"
-                  value={formValues.notes}
-                  onChange={(e) => setFormValues({ ...formValues, notes: e.target.value })} 
-              />
-
-          </div>
-
-        </div>
-        {/* measurements section */}
-        <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-          <Text
-            className="text-blue-900 text-lg w-auto"
-            size="txtRalewayBold18"
-          >
-            {props?.measurements}
-          </Text>
-
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.waterclaritycm}
-            </Text>
-            <Input
-              name="inputslot_Three"
-              placeholder="Water clarity (cm):"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="sm:w-full"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.waterclaritycm}
-              onChange={(e) => setFormValues({ ...formValues, waterclaritycm: e })} 
-            ></Input>
-          </div>
-
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.watertemperaturOne}
-            </Text>
-            <Input
-              name="inputslot_Four"
-              placeholder="Water temperature (°C):"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName="sm:w-full"
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.watertemperaturOne}
-              onChange={(e) => setFormValues({ ...formValues, watertemperaturOne: e })} 
-            ></Input>
-          </div>
-
-          <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.ph}
-            </Text>
-            <Input
-              name="inputslot_Five"
-              placeholder="pH:"
-              className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
-              wrapClassName=""
-              shape="round"
-              color="black_900_3a"
-              size="xs"
-              variant="outline"
-              style={{
-                width: '300px',
-                maxWidth: '300px',
-                height: '40px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                padding: '8px 12px',
-                marginRight: '-10px'
-              }}
-              value={formValues.ph}
-              onChange={(e) => setFormValues({ ...formValues, ph: e })} 
-            ></Input>
-          </div>
-
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.dissolvedoxygenOne}
-            </Text>
-            <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-              <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
-                <Input
-                  name="inputslot_Six"
-                  placeholder="0.000000"
-                  className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
-                  wrapClassName="w-full"
-                  shape="round"
-                  color="black_900_3a"
-                  size="xs"
-                  variant="outline"
-                  style={{
-                    width: '180px',
-                    maxWidth: '180px',
-                    height: '40px',
-                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                    borderRadius: '4px',
-                    padding: '8px 12px',
-                    marginRight: '-45px'
-                  }}
-                  value={formValues.dissolvedoxygenOne}
-                  onChange={(e) => setFormValues({ ...formValues, dissolvedoxygenOne: e })} 
-                />
-                <SelectBox
-                  className="!text-black-900_99 font-raleway text-base text-left  w-[155px]"
-                  placeholderClassName="!text-black-900_99"
-                  isMulti={false}
-                  name="input"
-                  options={inputOxygenUnitsList}
-                  isSearchable={false}
-                  placeholder=""
-                  shape="round"
-                  color="black_900_3a"
-                  size="xs"
-                  variant="outline"
-                  value={formValues.dissolvedoxygenOneUnit}  // Set the value from state
-                  onChange={(selectedOption) => setFormValues({ ...formValues, dissolvedoxygenOneUnit: selectedOption })}
-                />
-              </div>
-            </div>
-
-          </div>
-
-          <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-            <Text
-              className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-              size="txtRalewayRomanRegular18"
-            >
-              {props?.electricalconduOne}
-            </Text>
-            <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-              <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
-                <Input
-                  name="inputslot_Six"
-                  placeholder="0.000000"
-                  className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
-                  wrapClassName="w-full"
-                  shape="round"
-                  color="black_900_3a"
-                  size="xs"
-                  variant="outline"
-                  style={{
-                    width: '180px',
-                    maxWidth: '180px',
-                    height: '40px',
-                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                    borderRadius: '4px',
-                    padding: '8px 12px',
-                    marginRight: '-45px'
-                  }}
-                  value={formValues.electricalconduOne}
-                  onChange={(e) => setFormValues({ ...formValues, electricalconduOne: e })} 
-                />
-                <SelectBox
-                  className="!text-black-900_99 font-raleway text-base text-left  w-[155px]"
-                  placeholderClassName="!text-black-900_99"
-                  isMulti={false}
-                  name="input"
-                  options={inputElectricConductivityUnitsList}
-                  isSearchable={false}
-                  placeholder=""
-                  shape="round"
-                  color="black_900_3a"
-                  size="xs"
-                  variant="outline"
-                  value={formValues.electricalconduOneUnit}  // Set the value from state
-                  onChange={(selectedOption) => setFormValues({ ...formValues, electricalconduOneUnit: selectedOption })}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Button
-          className="!text-white-A700 cursor-pointer font-raleway mb-[33px] text-center text-lg tracking-[0.81px] w-[141px]"
-          shape="round"
-          color="blue_gray_500"
-          size="xs"
-          variant="fill"
-          onClick={() => handleSubmit()}
-        >
-          next
-        </Button>
       </div>
     </>
   );
 };
+
 
 // TODO make form dynamic 
 DataInputForm.defaultProps = {
