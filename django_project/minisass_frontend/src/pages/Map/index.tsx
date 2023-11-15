@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Img, Input, Text } from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
+import Sidebar from "../../components/Sidebar";
 import { Map } from "../../components/Map"
 
 import Search from './Search';
@@ -17,6 +18,11 @@ const MapPage: React.FC = () => {
   const mapRef = useRef(null);
 
   const navigate = useNavigate();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = () => {
+    setSidebarOpen((prev) => !prev);
+  };
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
@@ -74,10 +80,17 @@ const MapPage: React.FC = () => {
                 color="blue_gray_500"
                 size="xs"
                 variant="fill"
+                onClick={handleSidebarToggle}
               >
                 Add Record
               </Button>
               <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
+              <Img
+                  className=" h-[48px] w-[48px] common-pointer"
+                  src={`${newURL}sidebar_icon.png`}
+                  alt="sidebar"
+                  onClick={handleSidebarToggle}
+                />
             </div>
             <div className="grow relative w-full">
               <Map
