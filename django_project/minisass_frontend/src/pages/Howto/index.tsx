@@ -223,7 +223,7 @@ const HowtoPage: React.FC = () => {
             <Text
               className="leading-[136.40%] max-w-[474px] md:max-w-full text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '10%'}}
+              style={{marginRight: '20%'}}
             >
               <span className="text-gray-800 font-raleway text-left font-normal">
                 Subscribe to our Youtube Channel{" "}
