@@ -1,0 +1,1 @@
+import{b as n,j as i,L as e}from"./index-f256b669.js";const o=()=>n("div",{className:"dhiwise-navigation",children:[i("h1",{children:"Links Page for debugging"}),n("ul",{children:[i("li",{children:i(e,{to:"/map",children:"Map"})}),i("li",{children:i(e,{to:"/home",children:"Home"})}),i("li",{children:i(e,{to:"/howto",children:"Howto"})})]})]});export{o as default};

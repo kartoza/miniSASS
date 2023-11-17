@@ -1,6 +1,7 @@
-dist
-src
-!django_project/minisass_frontend/src
+#dist
+#src
+#!django_project/minisass_frontend/src
+#assets
 *.~
 *~
 *.pyc
@@ -13,7 +14,6 @@ django_project/minisass/wsgi.py
 *.swo
 django_project/minisass/media/livetracks/*
 .DS_Store
-assets
 django_project/minisass/*.txt
 django_project/minisass/smedia
 django_project/minisass/media
