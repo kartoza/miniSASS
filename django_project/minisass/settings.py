@@ -62,9 +62,9 @@ USE_L10N = True
 USE_TZ = True
 
 # Define the default paths
-DEFAULT_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+DEFAULT_MEDIA_ROOT = '/home/web/media'
 DEFAULT_MEDIA_URL = '/media/'
-DEFAULT_STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+DEFAULT_STATIC_ROOT = '/home/web/static'
 DEFAULT_STATIC_URL = '/static/'
 FRONTEND_DIST_ROOT = PROJECT_PATH.replace('/minisass', '/minisass_frontend')
 
