@@ -95,7 +95,7 @@ MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 STATICFILES_DIRS = (
     absolute_path('minisass', 'static'),
     absolute_path('minisass_frontend', 'static'),
-    absolute_path('minisass_frontend', 'src', 'dist'),
+    # absolute_path('minisass_frontend', 'src', 'dist'),
     absolute_path('minisass_registration', 'static'),
 )
 
