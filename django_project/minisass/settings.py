@@ -2,6 +2,8 @@
 import ast
 import os
 
+from minisass.utils import absolute_path
+
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
@@ -91,9 +93,10 @@ MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static'),
-    os.path.join(MINISASS_FRONTEND_PATH, 'static')
+    absolute_path('minisass', 'static'),
+    absolute_path('minisass_frontend', 'static'),
+    absolute_path('minisass_frontend', 'src', 'dist'),
+    absolute_path('minisass_registration', 'static'),
 )
 
 # List of finder classes that know how to find static files in
