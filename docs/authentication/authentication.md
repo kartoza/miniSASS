@@ -18,7 +18,9 @@ to refresh the token for example a function to constantly check and determine if
 ![Login Api](./img/user_login_options.png)
 
 This API is used for loggin in a user.
-This API only allows 2 methods: 1. POST 2. OPTIONS
+This API only allows 2 methods: 
+1. POST
+2. OPTIONS
 
  **POST**: used to submit user credentials . The credenitals are accepted in the form of:
     i. application/json
@@ -57,7 +59,7 @@ This API only allows 2 methods: 1. POST 2. OPTIONS
 
 ### 3. https://{current_domain}/authentication/api/refresh/
 
-![Token Refresh Api](./img/token_refresh_api.png)
+![Token Refresh Api](./img/refresh_token_api.png)
 
     example usage: 
     {
@@ -71,7 +73,7 @@ This API only allows 2 methods: 1. POST 2. OPTIONS
 
 ### 4. https://{current_domain}/authentication/api/register/
 
-![Register Api](./img/register_api.png)
+![Register Api](./img/registration_api.png)
 
 This API is used for registering a user.
 This API only allows 2 methods 1. POST 2. OPTIONS
@@ -112,7 +114,7 @@ This API only allows 2 methods 1. POST 2. OPTIONS
 
 ### 5. https://{current_domain}/authentication/api/request-reset
 
-![Register Api](./img/register_api.png)
+![Register Api](./img/request_password_reset.png)
 
     This API enables the user to reset their forgotten password from the frontend.
 
