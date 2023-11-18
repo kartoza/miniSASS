@@ -214,6 +214,7 @@ const MapPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Sidebar isOpen={isSidebarOpen} />
       <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
     </>
   );
