@@ -15,7 +15,7 @@ to refresh the token for example a function to constantly check and determine if
 ### 1. https://{current_domain}/authentication/api/login
 
 
-![Login Api](./img/login_api.png)
+![Login Api](./img/user_login_options.png)
 
 This API is used for loggin in a user.
 This API only allows 2 methods: 1. POST 2. OPTIONS
