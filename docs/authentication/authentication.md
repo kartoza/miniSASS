@@ -59,7 +59,7 @@ This API only allows 2 methods:
 
 ### 3. https://{current_domain}/authentication/api/refresh/
 
-![Token Refresh Api](./img/refresh_token_api.png)
+![Token Refresh Api](./img/token_refresh.png)
 
     example usage: 
     {
