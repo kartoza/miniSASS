@@ -117,6 +117,8 @@ This API only allows 2 methods
     This API is also interactive, returns errors for example 
     400 bad request ie `enter a valid email`.
 
+![Register Api Errors](./img/registration_errors.png)
+
 
 **Requesting Password Reset**:
 
@@ -140,4 +142,4 @@ This API only allows 2 methods
 
 ### Summary
 
-The `Authentication API`, is responsible for login , register , password reset.
+The `Authentication API`, is responsible for login , register and password reset.
