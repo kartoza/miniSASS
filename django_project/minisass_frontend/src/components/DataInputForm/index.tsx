@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, FloatingInput, Img, Input, SelectBox, Text } from "../../components";
 import Tooltip from '@mui/material/Tooltip';
@@ -6,6 +6,7 @@ import UploadModal from "../../components/UploadFormModal";
 import { Instance } from '@popperjs/core';
 import { Formik, Form, Field } from 'formik';
 import ScoreForm from "../../components/ScoreForm";
+import axios from "axios";
 
 
 type DataInputFormProps = Omit<
@@ -117,7 +118,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     latitude: '',
     latitudeUnit: 'N',
     longitude: '',
-    longitudeUnit: 'N'
+    longitudeUnit: 'N',
+    selectedSite: ''
   });
 
   const positionRef = React.useRef<{ x: number; y: number }>({
@@ -143,16 +145,9 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
   const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const staticPath = baseUrl + '/' + replacementPath;
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
@@ -165,9 +160,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   };
 
   const [showCoordinatesFields, setShowCoordinatesFields] = useState(false);
+  const [showSelectKnownSiteField, setShowSelectKnownSiteField] = useState(false);
 
   const handleSelectOnMapClick = () => {
     setShowCoordinatesFields(true);
+    setShowSelectKnownSiteField(false);
   };
 
   const handleShowScoreForm = () => {
@@ -181,6 +178,41 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [showScoreForm, setShowScoreForm] = useState(false);
   
+  function handleSelectKnownSite(): void {
+    setShowSelectKnownSiteField(true);
+    setShowCoordinatesFields(false);
+  }
+
+  const [sites, setSitesList] = useState([]);
+
+  const FETCH_SITES = baseUrl + '/sites/api/list/';
+  
+  const getSites = async () => {
+    try {
+      const response = await axios.get(`${FETCH_SITES}`);
+  
+      if (response.status === 200) {
+        setSitesList(response.data)
+      } else {
+        setSitesList([
+          { label: "site1", value: "siteID1" },
+          { label: "site2", value: "siteID2" },
+          { label: "site3", value: "siteID3" },
+        ])
+      }
+    } catch (error) {
+      setSitesList([
+        { label: "site1", value: "siteID1" },
+        { label: "site2", value: "siteID2" },
+        { label: "site3", value: "siteID3" },
+      ])
+    }
+  };
+
+  useEffect(() => {
+    getSites()
+  }, [showSelectKnownSiteField]);
+
   return (
     <>
       {!showScoreForm ? (
@@ -400,6 +432,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       color="blue_gray_500"
                       size="xs"
                       variant="fill"
+                      onClick={handleSelectKnownSite}
                     >
                       {props?.selectKnownSite}
                     </Button>
@@ -427,6 +460,46 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     </Button>
                   </div>
                 </div>
+
+                {/* Additional field for select known site */}
+                {showSelectKnownSiteField && (
+                  <div>
+                    {/* known site */}
+                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                      <Text
+                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {`Sites:`}
+                      </Text>
+                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                        <Field as="select" name="selectedSite" className="!text-black-900_99 font-raleway text-base text-left"
+                            placeholderClassName="!text-black-900_99"
+                            placeholder=""
+                            shape="round"
+                            color="black_900_3a"
+                            size="xs"
+                            variant="outline"
+                            style={{
+                              width: '300px',
+                              maxWidth: '300px',
+                              height: '40px',
+                              border: '1px solid rgba(0, 0, 0, 0.23)',
+                              borderRadius: '4px',
+                              padding: '8px 12px',
+                              marginLeft: '40%'
+                            }}
+                          >
+                          {sites.map((option) => (
+                            <option key={option.value} value={option.value} selected={option.value === values.selectedSite}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Additional fields for longitude and latitude */}
                 {showCoordinatesFields && (
