@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Button, Img, List, Text } from "../../components";
 import Modal from 'react-modal';
@@ -45,6 +45,29 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
   function saveImages(): void {
     throw new Error("Function not implemented.");
   }
+
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setUploadedFiles([...uploadedFiles, ...Array.from(files)]);
+    }
+  };
+
+  const handleRemoveFile = (index: number) => {
+    const updatedFiles = [...uploadedFiles];
+    updatedFiles.splice(index, 1);
+    setUploadedFiles(updatedFiles);
+  };
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleBrowseClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Trigger the file input
+    }
+  };
 
   return (
     <Modal
@@ -106,7 +129,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
                 </div>
               ))}
               {/* Upload image section */}
-              <div className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
+              <div className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full" onClick={handleBrowseClick}>
                 <div className="bg-white-A700 border border-blue_gray-500 border-dashed flex flex-col h-28 items-center justify-start p-11 md:px-10 sm:px-5 w-28">
                   <Img
                     className="h-6 w-6"
@@ -114,6 +137,21 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
                     alt="mdiimageplusout"
                   />
                 </div>
+                <input
+                  id="fileInput"
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                  multiple
+                />
+                {/* Hidden input element for file selection */}
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                  multiple
+                  ref={fileInputRef}
+                />
               </div>
             </List>
 
