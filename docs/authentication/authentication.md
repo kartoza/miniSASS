@@ -142,4 +142,4 @@ This API only allows 2 methods
 
 ### Summary
 
-The `Authentication API`, is responsible for login , register and password reset.
+The `Authentication API`, is responsible for login , registration and password reset.
