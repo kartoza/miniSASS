@@ -1,6 +1,5 @@
-import React, {useRef} from "react";
-
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "../../components";
 import Footer from "../../components/Footer";
@@ -19,23 +18,32 @@ const MapPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isObservationDetails, setIsObservationDetails] = useState(false);
 
   const handleSidebarToggle = () => {
+    setIsObservationDetails(false)
     setSidebarOpen((prev) => !prev);
   };
 
-  // Get the current URL using window.location.href
   const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
   const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
 
-  // Define the replacement path
-  const replacementPath = 'static/images/';
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const details = params.get("details");
 
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
+  useEffect(() => {
+
+    if(details){
+      window.scrollTo(0, 0); 
+      setIsObservationDetails(true)
+      setSidebarOpen((prev) => !prev);
+    }
+    
+
+  }, [details]);
 
   return (
     <>
@@ -52,7 +60,7 @@ const MapPage: React.FC = () => {
                   <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
                     <Img
                       className="sm:bottom-[] md:h-auto h-full object-cover md:relative sm:right-[30px] sm:top-2.5 md:top-5 w-full"
-                      src={`${newURL}img_minisasslogo1.png`}
+                      src={`${staticPath}img_minisasslogo1.png`}
                       alt="minisasslogoOne"
                     />
                   </div>
@@ -87,7 +95,7 @@ const MapPage: React.FC = () => {
               <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
               <Img
                   className=" h-[48px] w-[48px] common-pointer"
-                  src={`${newURL}sidebar_icon.png`}
+                  src={`${staticPath}sidebar_icon.png`}
                   alt="sidebar"
                   onClick={handleSidebarToggle}
                 />
@@ -125,7 +133,7 @@ const MapPage: React.FC = () => {
               </Text>
             </div>
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img className="h-6 w-7" src={`${newURL}img_alarm.svg`} alt="alarm" />
+              <Img className="h-6 w-7" src={`${staticPath}img_alarm.svg`} alt="alarm" />
               <Text
                 className="text-base text-black-900 w-auto"
                 size="txtRalewayRomanRegular16"
@@ -136,7 +144,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_alarm_green_400.svg`}
+                src={`${staticPath}img_alarm_green_400.svg`}
                 alt="alarm_One"
               />
               <Text
@@ -149,7 +157,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_alarm_orange_a200.svg`}
+                src={`${staticPath}img_alarm_orange_a200.svg`}
                 alt="alarm_Two"
               />
               <Text
@@ -162,7 +170,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_twitter.svg`}
+                src={`${staticPath}img_twitter.svg`}
                 alt="twitter"
               />
               <Text
@@ -175,7 +183,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_alarm_deep_purple_400.svg`}
+                src={`${staticPath}img_alarm_deep_purple_400.svg`}
                 alt="alarm_Three"
               />
               <Text
@@ -188,7 +196,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_settings.svg`}
+                src={`${staticPath}img_settings.svg`}
                 alt="settings"
               />
               <Text
@@ -201,7 +209,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${newURL}img_arrowdown.svg`}
+                src={`${staticPath}img_arrowdown.svg`}
                 alt="arrowdown"
               />
               <Text
@@ -214,6 +222,7 @@ const MapPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Sidebar isOpen={isSidebarOpen} isObservationDetails={isObservationDetails} setSidebarOpen={setSidebarOpen} />
       <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
     </>
   );
