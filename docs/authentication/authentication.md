@@ -39,6 +39,8 @@ This API only allows 2 methods:
     The api is interactive and will usually return an error message provided the credentials 
     are invalid for example 401 unauthorized etc.
 
+![Login Api unauthorized](./img/invalid_credentials.png)
+
 **Obtaining a token**:
     All users that are authenticated require a token inorder to be able to make 
     successful request to the API.
