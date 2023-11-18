@@ -55,6 +55,8 @@ This API only allows 2 methods:
 
     This will return an access token as well as a refresh token for the user.
 
+![Token Api Success](./img/success_response_for_token_obtain.png)
+
 **Refreshing the token**:
 
 ### 3. https://{current_domain}/authentication/api/refresh/
@@ -68,6 +70,8 @@ This API only allows 2 methods:
 
     returns a success response 200 with the access token.
 
+![Token Refresh Success](./img/success_response_token_obtain.png)
+
 
 **Registering a user**:
 
@@ -76,7 +80,9 @@ This API only allows 2 methods:
 ![Register Api](./img/registration_api.png)
 
 This API is used for registering a user.
-This API only allows 2 methods 1. POST 2. OPTIONS
+This API only allows 2 methods 
+1. POST
+2.  OPTIONS
 
 **POST**: used to submit user details. The details are accepted in the form of:
     i. application/json
