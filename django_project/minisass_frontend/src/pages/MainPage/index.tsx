@@ -87,8 +87,18 @@ const Home: React.FC = () => {
   // Function to handle advancing to the next set of observations
   const handleNextObservations = () => {
     // Calculate the next index to display (looping back to 0 if necessary)
-    const nextIndex = (currentIndex + 4) % observations.length;
+    const nextIndex = (currentIndex + 5) % observations.length;
     setCurrentIndex(nextIndex);
+  };
+
+  const handlePrevObservations = () => {
+    // Calculate the previous index to display
+    let prevIndex = currentIndex - 5;
+    if (prevIndex < 0) {
+      // Ensure it loops back to the last set when at the beginning
+      prevIndex = observations.length - (observations.length % 5);
+    }
+    setCurrentIndex(prevIndex);
   };
 
 
@@ -427,29 +437,45 @@ const Home: React.FC = () => {
                 >
                   Recent Observations
                 </Text>
-                <Button
-                  className="flex h-10 sm:hidden items-center justify-center rounded-[5px] w-10"
-                  color="blue_gray_500"
-                  size="sm"
-                  variant="fill"
-                  onClick={handleNextObservations}
+                {currentIndex > 0 && ( // Hide left arrow if at the beginning
+                  <Button
+                    className="flex h-10 sm:hidden items-center justify-center rounded-[5px] w-10"
+                    color="blue_gray_500"
+                    size="sm"
+                    variant="fill"
+                    onClick={handlePrevObservations}
+                    style={{
+                      marginRight: '1%'
+                    }}
+                  >
+                    <Img src={`${newURL}img_arrowleft.svg`} alt="arrowleft" />
+                  </Button>
+                )}
+                {currentIndex + 5 < observations.length && ( // Hide right arrow if at the end
+                  <Button
+                    className="flex h-10 sm:hidden items-center justify-center rounded-[5px] w-10"
+                    color="blue_gray_500"
+                    size="sm"
+                    variant="fill"
+                    onClick={handleNextObservations}
                   >
                     <Img src={`${newURL}img_arrowright.svg`} alt="arrowright" />
                   </Button>
-                </div>
-                <List
-                  className="flex-col sm:flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 sm:h-[50vh] items-baseline justify-around overflow-auto relative w-auto md:w-full"
-                  orientation="horizontal"
-                >
-                  {observations.slice(currentIndex, currentIndex + 4).map((props, index) => (
-                    <React.Fragment key={`DesktopThreeColumnscore${index}`}>
-                      <Observations
-                        className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[237px] md:h-auto items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[280px]"
-                        {...props}
-                      />
-                    </React.Fragment>
-                  ))}
-                </List>
+                )}
+              </div>
+              <List
+                className="flex-col sm:flex-row gap-3 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-5 sm:h-[50vh] items-baseline justify-around overflow-auto relative w-auto md:w-full"
+                orientation="horizontal"
+              >
+                {observations.slice(currentIndex, currentIndex + 5).map((props, index) => (
+                  <React.Fragment key={`DesktopThreeColumnscore${index}`}>
+                    <Observations
+                      className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[237px] md:h-auto items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[280px]"
+                      {...props}
+                    />
+                  </React.Fragment>
+                ))}
+              </List>
             </div>
 
             {/* map */}

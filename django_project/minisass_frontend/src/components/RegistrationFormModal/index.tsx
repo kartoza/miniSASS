@@ -231,6 +231,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
     }
   }, [isOpen]);
 
+  const currentURL = window.location.href;
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
+
+
   return (
     <>
     <Modal
@@ -288,18 +294,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
             >
               Registration Form
             </h3>
-            <button
-              onClick={onClose}
-              style={{
-                width: '24px',
-                height: '24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              X
-            </button>
+            <Img
+                className="h-6 w-6 common-pointer"
+                src={`${staticPath}img_icbaselineclose.svg`}
+                alt="close"
+                onClick={onClose}
+                style={{marginLeft: '30px'}}
+              />
           </div>
 
           <form
@@ -447,7 +448,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginRight: "-70%" }}
+              style={{ marginRight: "-80%" }}
               onClick={handleSubmit}
             >
               Register

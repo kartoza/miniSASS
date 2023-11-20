@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { Img, Text } from "../../components";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 
 type DesktopTwoColumnscoreProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -25,16 +26,9 @@ type DesktopTwoColumnscoreProps = Omit<
 
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
   const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
   const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
@@ -48,24 +42,19 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
       setIsRedProgressBar(true)
       setTitleColor("text-red-600")
       setProgressBarColor("red")
-      setRenderCrab(`${newURL}img_image2_24x30.png`)
+      setRenderCrab(`${staticPath}img_image2_24x30.png`)
     }else {
       console.log('score more')
       setIsRedProgressBar(false)
       setTitleColor("text-green-800")
       setProgressBarColor("green")
-      setRenderCrab(`${newURL}img_image2.png`)
+      setRenderCrab(`${staticPath}img_image2.png`)
     }
       
 
   }, [props.score]);
 
-  // const isRedProgressBar = parseFloat(props.score1 || "0") < 6;
-  // const progressBarColor = isRedProgressBar ? "red" : "green";
-  // const titleColor = isRedProgressBar ? "text-red-600" : "text-green-800";
-  // const renderCrab = isRedProgressBar
-  //   ? `${newURL}img_image2_24x30.png`
-  //   : `${newURL}img_image2.png`;
+  const navigate = useNavigate();
 
   return (
     <div className={props.className}>
@@ -94,6 +83,13 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
             size="txtRalewayRomanRegular16"
           >
             {props?.dateadded}
+          </Text>
+          <Text
+            className="text-blue-900 font-raleway text-left font-normal underline common-pointer"
+            size="txtRalewayRomanRegular16"
+            onClick={() => navigate("/map?details=1")}
+          >
+            {`view details`}
           </Text>
         </div>
       </div>

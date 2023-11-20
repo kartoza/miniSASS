@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
-import { Button } from "../../components";
+import { Button ,Img } from "../../components";
 import { useNavigate } from 'react-router-dom';
 
 interface LoginFormModalProps {
@@ -43,6 +43,11 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
     }
   };
 
+  const currentURL = window.location.href;
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
+
   return (
     <Modal
       isOpen={isOpen}
@@ -78,6 +83,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              marginLeft: '80px',
             }}
           >
             <h3
@@ -93,14 +99,18 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
             >
               Login
             </h3>
+            
             <div
-              onClick={onClose}
               style={{
-                cursor: 'pointer',
-                marginLeft: '100%',
+                marginLeft: '80px',
               }}
             >
-              X
+              <Img
+                className="h-6 w-6 common-pointer"
+                src={`${staticPath}img_icbaselineclose.svg`}
+                alt="close"
+                onClick={onClose}
+              />
             </div>
           </div>
 
