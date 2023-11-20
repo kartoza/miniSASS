@@ -6,7 +6,6 @@ from minisass.utils import absolute_path
 
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
 
 CSRF_TRUSTED_ORIGINS = []
 ALLOWED_HOSTS = ['*']
@@ -74,7 +73,6 @@ STATICFILES_DIRS = (
     absolute_path('minisass', 'static'),
     absolute_path('minisass_frontend', 'static'),
     absolute_path('minisass_frontend', 'src', 'dist'),
-    absolute_path('minisass_registration', 'static'),
 )
 
 # List of finder classes that know how to find static files in
