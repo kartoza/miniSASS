@@ -110,17 +110,16 @@ def register(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            user.set_password(request.data['password'])
-            user.first_name = request.data.get('name')
-            user.last_name = request.data.get('surname')
-            user.save()
+            user.first_name = request.data.get('first_name')
+            user.last_name = request.data.get('last_name')
+            
             
             # Create a User Profile
-            firstname = request.data.get('name')
-            lastname = request.data.get('surname')
+            org_name = request.data.get('organizationName')
+            user_country = request.data.get('country')
             organisation_type_description = request.data.get('organizationType')
             
-            if firstname and lastname:
+            if org_name and user_country and organisation_type_description:
                 # Retrieve the Lookup object based on the description.
                 # This assumes that the 'description' field in the Lookup model is unique.
                 try:
@@ -136,8 +135,9 @@ def register(request):
                     country=request.data.get('country', None)
                 )
                 user_profile.save()
+                user.save()
             else:
-                return Response({'error': 'Missing required fields for User Profile creation.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -147,7 +147,6 @@ def register(request):
 @api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
-        print('request ', request.data)
 
         username = request.data.get('username')
         password = request.data.get('password')
