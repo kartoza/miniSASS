@@ -107,7 +107,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full" 
         style={{
-          height: '70vh',
+          height: '75vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
