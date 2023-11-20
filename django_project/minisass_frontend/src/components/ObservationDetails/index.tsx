@@ -144,12 +144,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
     <div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
       <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
         <Text
-          className={`${titleColor} text-lg w-[127px]`}
+          className={`${titleColor} text-lg w-[140px]`}
           size="txtRalewayBold18"
         >
           Average score:
         </Text>
-        <div className="flex flex-row gap-2.5 items-center justify-start w-auto">
+        <div className="flex flex-row gap-2.5 items-center justify-start w-auto" style={{marginLeft: '50%'}}>
           <div className="h-[68px] relative w-[68px]">
             <div className="h-[68px] m-auto w-[68px]">
 
