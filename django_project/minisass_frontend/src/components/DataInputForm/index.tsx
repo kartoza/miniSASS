@@ -217,7 +217,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     <>
       {!showScoreForm ? (
       <div className={props.className} style={{
-        height: '70vh',
+        height: '75vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}>
