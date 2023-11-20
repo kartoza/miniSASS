@@ -134,6 +134,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         src={`${staticPath}img_icbaselineclose.svg`}
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
+        style={{marginRight: '6%'}}
       />
     </div>
 
