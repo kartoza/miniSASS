@@ -121,8 +121,11 @@ const MapPage: React.FC = () => {
                 }
                 ref={mapRef}
               />
+              {/* Sidebar */}
+              <Sidebar isOpen={isSidebarOpen} isObservationDetails={isObservationDetails} setSidebarOpen={setSidebarOpen} />
             </div>
           </div>
+          
           <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[13px] left-[13px]">
             <div className="flex flex-col items-center justify-center w-auto">
               <Text
@@ -222,7 +225,6 @@ const MapPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Sidebar isOpen={isSidebarOpen} isObservationDetails={isObservationDetails} setSidebarOpen={setSidebarOpen} />
       <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
     </>
   );
