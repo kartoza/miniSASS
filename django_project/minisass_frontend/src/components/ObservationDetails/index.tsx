@@ -109,7 +109,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   return (
     <div className={classname}
     style={{
-        height: '95vh',
+        height: '75vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}
@@ -228,7 +228,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitename}
           </Text>
         </div>
-         <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
+        <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
           <Text
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
             size="txtRalewayRomanRegular18"
@@ -242,6 +242,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitedescription}
           </Text>
         </div>
+
         <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
           <Text
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
