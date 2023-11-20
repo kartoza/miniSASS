@@ -228,7 +228,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitename}
           </Text>
         </div>
-         <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full">
+         <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
           <Text
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
             size="txtRalewayRomanRegular18"
