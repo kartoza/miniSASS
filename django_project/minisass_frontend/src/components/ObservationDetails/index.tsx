@@ -228,15 +228,15 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitename}
           </Text>
         </div>
-        <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full">
+         <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full">
           <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
             size="txtRalewayRomanRegular18"
           >
             Site description:
           </Text>
           <Text
-            className="leading-[24.00px] max-w-[300px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px]"
+            className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
             size="txtRalewayRomanRegular18"
           >
             {observationDetails.sitedescription}
