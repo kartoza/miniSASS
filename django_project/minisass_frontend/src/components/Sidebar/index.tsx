@@ -15,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSide
     <div
       className={`absolute ${
         isOpen ? "right-0" : "-right-full"
-      } bg-white-A700 flex flex-col  items-start justify-center py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[6.5%] sm:top-[25px] w-auto transition-all duration-300`}
+      } bg-white-A700 flex flex-col  items-start justify-center py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[5.2%] sm:top-[25px] w-auto transition-all duration-300`}
     >
       {isObservationDetails ? (
         <ObservationDetails 
