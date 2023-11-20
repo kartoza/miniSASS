@@ -2,6 +2,8 @@
 import ast
 import os
 
+from minisass.utils import absolute_path
+
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 allowed_hosts_str = os.getenv('ALLOWED_HOSTS')
@@ -62,9 +64,9 @@ USE_L10N = True
 USE_TZ = True
 
 # Define the default paths
-DEFAULT_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+DEFAULT_MEDIA_ROOT = '/home/web/media'
 DEFAULT_MEDIA_URL = '/media/'
-DEFAULT_STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+DEFAULT_STATIC_ROOT = '/home/web/static'
 DEFAULT_STATIC_URL = '/static/'
 FRONTEND_DIST_ROOT = PROJECT_PATH.replace('/minisass', '/minisass_frontend')
 
@@ -91,9 +93,10 @@ MINISASS_FRONTEND_PATH = os.path.abspath(os.path.join(PARENT_DIR, 'app'))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(FRONTEND_PATH, 'src', 'dist'),
-    os.path.join(FRONTEND_PATH, 'static'),
-    os.path.join(MINISASS_FRONTEND_PATH, 'static')
+    absolute_path('minisass', 'static'),
+    absolute_path('minisass_frontend', 'static'),
+    absolute_path('minisass_frontend', 'src', 'dist'),
+    absolute_path('minisass_registration', 'static'),
 )
 
 # List of finder classes that know how to find static files in
