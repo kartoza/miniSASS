@@ -59,13 +59,7 @@ MEDIA_URL = os.getenv('MEDIA_URL', DEFAULT_MEDIA_URL)
 STATIC_ROOT = os.getenv('STATIC_ROOT', DEFAULT_STATIC_ROOT)
 STATIC_URL = os.getenv('STATIC_URL', DEFAULT_STATIC_URL)
 
-# Define the BASE_DIR setting
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Go up three levels from the BASE_DIR to reach the parent directory
-PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
-
-# Use PARENT_DIR to construct MINISASS_FRONTEND_PATH
+# Frontend path to be used in vite template
 FRONTEND_PATH = FRONTEND_DIST_ROOT
 
 # Additional locations of static files
