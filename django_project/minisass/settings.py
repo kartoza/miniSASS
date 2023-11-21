@@ -159,12 +159,12 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
-# EMAIL_HOST = os.getenv('SMTP_HOST')
-# EMAIL_PORT = os.getenv('SMTP_PORT')
-# DEFAULT_FROM_EMAIL = os.getenv('SMTP_EMAIL')
-# EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD')
-# EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS')
+EMAIL_HOST = os.getenv('SMTP_HOST','')
+EMAIL_PORT = os.getenv('SMTP_PORT','')
+DEFAULT_FROM_EMAIL = os.getenv('SMTP_EMAIL','')
+EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER','')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD','')
+EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS','')
 
 # django registration/auth settings
 # ACCOUNT_ACTIVATION_DAYS = 7
