@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
-import { Button } from "../../components";
+import { Button , Img} from "../../components";
 import Select from "react-select";
 import CountrySelector from "../../components/Countries/selector";
 import { COUNTRIES } from "../../components/Countries/countries";
