@@ -120,6 +120,7 @@ TEMPLATES = [
             os.path.join(FRONTEND_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates', 'registration'),
+            os.path.join(PROJECT_PATH, 'monitor' , 'templates' , 'monitor')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -153,12 +154,18 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
-EMAIL_HOST = os.getenv('SMTP_HOST','')
-EMAIL_PORT = os.getenv('SMTP_PORT','')
-DEFAULT_FROM_EMAIL = os.getenv('SMTP_EMAIL','')
-EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER','')
-EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD','')
-EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS','')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp')
+EMAIL_PORT = ast.literal_eval(os.environ.get('EMAIL_PORT', '25'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'noreply@kartoza.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'docker')
+EMAIL_USE_TLS = ast.literal_eval(os.environ.get('EMAIL_USE_TLS', 'False'))
+EMAIL_USE_SSL = ast.literal_eval(os.environ.get('EMAIL_USE_SSL', 'False'))
+
+SERVER_EMAIL = os.environ.get('ADMIN_EMAIL', 'noreply@kartoza.com')
+DEFAULT_FROM_EMAIL = os.environ.get(
+    'DEFAULT_FROM_EMAIL', 'noreply@kartoza.com'
+)
 
 # django registration/auth settings
 # ACCOUNT_ACTIVATION_DAYS = 7
