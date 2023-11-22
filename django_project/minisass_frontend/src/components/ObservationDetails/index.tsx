@@ -82,25 +82,32 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
 
   // this will be dynamic based on the observation data available
   const tabsData = [
-    { id: 'tab1', label: 'Tab 1', content: (
-      <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle91.png`}
-          alt="img_placeholder"
-        />
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle92.png`}
-          alt="img_placeholder"
-        />
-      </div>
-    )
-  },
+  //   { id: 'tab1', label: 'Tab 1', content: (
+  //     <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
+  //       <Img
+  //         className="h-[152px] md:h-auto object-cover w-[164px]"
+  //         src={`${staticPath}img_rectangle91.png`}
+  //         alt="img_placeholder"
+  //       />
+  //       <Img
+  //         className="h-[152px] md:h-auto object-cover w-[164px]"
+  //         src={`${staticPath}img_rectangle92.png`}
+  //         alt="img_placeholder"
+  //       />
+  //     </div>
+  //   )
+  // },
+    { 
+      id: 'tab1', 
+      label: 'Tab 1', 
+      content: <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '7%'}}>
+        Empty Tab
+      </div> 
+    },
     { 
       id: 'tab2', 
       label: 'Tab 2', 
-      content: <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
+      content: <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '7%'}}>
         Empty Tab
       </div> 
     },
@@ -134,7 +141,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         src={`${staticPath}img_icbaselineclose.svg`}
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
-        style={{marginRight: '6%'}}
       />
     </div>
 
