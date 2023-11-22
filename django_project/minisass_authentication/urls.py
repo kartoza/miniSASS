@@ -12,8 +12,7 @@ from minisass_authentication.views import (
     request_password_reset,
     user_logout,
     verify_reset_token,
-    reset_password,
-    contact_us
+    reset_password
 )
 
 
@@ -29,7 +28,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/login/', user_login, name='user_login'),
     path('api/register/', register, name='register'),
-    path('api/contact-us', contact_us, name='contact_us'),
     path('api/logout/', user_logout, name='user-logout'),
     path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
 ]
