@@ -91,7 +91,7 @@ function AuthenticationButtons() {
         alt="minisasstextOne"
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-        {isAuthenticated ? (
+        {state.isAuthenticated ? (
           <Button
             onClick={handleLogout}
             className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
