@@ -1,7 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
-import { Button } from "../../components";
+import { Button ,Img } from "../../components";
 import Modal from 'react-modal';
+import axios from 'axios'
+import { globalVariables } from '../../utils';
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -24,14 +26,46 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData); // Log form data
+    console.log(formData);
+    SendContactUsEmail(formData)
     setFormData({
       name: '',
       email: '',
       phone: '',
       message: '',
     });
-    onClose(); // Close the modal after submitting
+  };
+
+  const [response_message, setResponseMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [showHeading, setShowHeading] = useState(false);
+
+  
+  const CONTACT_US_API = globalVariables.baseUrl + '/en//authentication/api/contact-us/'
+
+  const SendContactUsEmail = async (formData) => {
+
+    try {
+      const response = await axios.post(CONTACT_US_API, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 200) {
+        setResponseMessage('Email sent ,hang in there we will contact you back soon.')
+        setIsError(false)
+        setShowHeading(false)
+      } else {
+        setIsError(true)
+        setShowHeading(false)
+        setResponseMessage( JSON.stringify(response.data));
+      }
+    } catch (error) {
+      setIsError(true)
+      setShowHeading(false)
+      setResponseMessage(JSON.stringify(error.message));
+    }
   };
 
 
@@ -51,7 +85,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           height: '587px',
           borderRadius: '0px 25px 25px 25px',
           border: 'none',
-          background: 'none',
+          background: 'white',
           padding: 0,
         },
       }}
@@ -93,31 +127,44 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
                 flex: '1',
               }}
             >
-              Contact Form
+              {
+                isError ? (
+                  <div className="bg-red-100 text-red-600 p-4 rounded">{response_message}</div>
+                ): (
+                  showHeading ? (
+                   <div>Contact Form</div> 
+
+                  ): (
+                    <div className="bg-green-100 text-green-600 p-4 rounded">{response_message}</div>
+                  )
+
+                )
+              }
             </h3>
-            <button
-              onClick={onClose}
-              style={{
-                width: '24px',
-                height: '24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              X
-            </button>
+            <Img
+                className="h-6 w-6 common-pointer"
+                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                alt="close"
+                onClick={onClose}
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
           </div>
           <form
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: '6px',
-          width: '541px',
-        }}
-      >
+            onSubmit={handleSubmit}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: '6px',
+              width: '541px',
+            }}
+          >
         <label>
           Your Name:
         </label>
