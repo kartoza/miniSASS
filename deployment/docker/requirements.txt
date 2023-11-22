@@ -1,4 +1,4 @@
-Django==1.4
+Django==2.2.28
 #GnuPGInterface==0.3.2
 #Landscape-Client==13.07.3
 #PAM==0.4.2
