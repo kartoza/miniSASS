@@ -4,7 +4,6 @@ from django.conf import settings
 from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
-from minisass_frontend.views import ObservationsView
 
 admin.autodiscover()
 
@@ -24,8 +23,6 @@ urlpatterns = [
     # Indlude monitor URLs
     path('monitor/', include('monitor.urls')),
 
-    # get observations
-    path('api/observations/', ObservationsView.as_view(), name='observations-api'),
 
     # map frontend urls to backend
     path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),
