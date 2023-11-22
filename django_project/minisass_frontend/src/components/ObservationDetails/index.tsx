@@ -280,7 +280,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
             size="txtRalewayRomanRegular18"
           >
-            {`APR 2020`}
+            {observationDetails.date}
           </Text>
         </div>
         <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -294,7 +294,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
             size="txtRalewayRomanRegular18"
           >
-            {`Marko`}
+            {observationDetails.collectorsname}
           </Text>
         </div>
         <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -308,7 +308,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
             size="txtRalewayRomanRegular18"
           >
-            {`NGO`}
+            {observationDetails.organisationtype}
           </Text>
         </div>
       </div>
