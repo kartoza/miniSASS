@@ -1,4 +1,5 @@
-import axios, { AxiosResponse, Method } from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import React from 'react';
 
 
 export const handleSectionNavigation = (id: string) => {
@@ -27,12 +28,23 @@ export const globalVariables = {
 };
 
 export const apiCall = async <T>(
-  method: Method,
+  method: string,
   url: string,
   data?: any
 ): Promise<AxiosResponse<T>> => {
   try {
-    const response = await axios({ method, url, data });
+    const validMethods = ['get', 'post', 'put', 'delete'];
+
+    if (!validMethods.includes(method.toLowerCase())) {
+      throw new Error('Invalid HTTP method');
+    }
+
+    const response = await axios({
+      method: method.toLowerCase(),
+      url,
+      data,
+    });
+
     return response;
   } catch (error) {
     console.error('API call error:', error);
