@@ -32,8 +32,8 @@ function AuthenticationButtons() {
 
   const [error, setError] = useState(null);
 
-  const LOGIN_API = globalVariables.baseUrl + '/en/authentication/api/login/';
-  const REGISTER_API = globalVariables.baseUrl + '/en//authentication/api/register/'
+  const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
+  const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
