@@ -149,6 +149,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'minisass.urls'
 
+# Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
@@ -159,6 +160,10 @@ EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER','')
 EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD','')
 EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS','')
 
+# django registration/auth settings
+# ACCOUNT_ACTIVATION_DAYS = 7
+# LOGIN_REDIRECT_URL = '/'
+# AUTH_PROFILE_MODULE = "minisass_authentication.UserProfile"
 
 SENTRY_KEY = os.environ.get('SENTRY_KEY', '')
 if SENTRY_KEY != '':
@@ -177,6 +182,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    # 'django.contrib.gis',
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
