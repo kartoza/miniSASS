@@ -1,19 +1,17 @@
-from django.conf.urls import *
-from django.conf import settings
+from django.urls import path
+from monitor.views import index, wms_get_feature_info, get_sites, get_closest_site, get_unique, zoom_observation, get_observations, download_observations, download_observations_filtered, get_schools, detail
 
-# urlconfs for views on the miniSASS app will be added here
-urlpatterns = patterns('monitor.views',
-
-    # Monitor app
-    url(r'^$', 'index', {}, name='monitor_index'),
-    url(r'^wms/~(?P<wms_url>[^~]+)~(?P<wms_params>[^~]+)', 'wms_get_feature_info'),
-    url(r'^sites/(?P<x>[^/]+)/(?P<y>[^/]+)/(?P<d>[^/]+)/','get_sites'),
-    url(r'^closest_site/(?P<x>[^/]+)/(?P<y>[^/]+)/(?P<d>[^/]+)/','get_closest_site'),
-    url(r'^unique/(?P<field>[^/]+)/','get_unique'),
-    url(r'^observation/(?P<obs_id>\d+)/$','zoom_observation'),
-    url(r'^observations/(?P<site_id>\d+)/$','get_observations'),
-    url(r'^observations/download/(?P<site_id>\d+)/$','download_observations'),
-    url(r'^observations/download/filtered/~(?P<filter_string>[^~]+)','download_observations_filtered'),
-    url(r'^schools/','get_schools'),
-    url(r'^(?P<monitor_id>\d+)/$', 'detail', {}, name='monitor_detail'),
-        )
+# URL patterns for the miniSASS app
+urlpatterns = [
+    path('', index, name='monitor_index'),
+    path('wms/~<str:wms_url>~<str:wms_params>', wms_get_feature_info),
+    path('sites/<str:x>/<str:y>/<str:d>/', get_sites),
+    path('closest_site/<str:x>/<str:y>/<str:d>/', get_closest_site),
+    path('unique/<str:field>/', get_unique),
+    path('observation/<int:obs_id>/', zoom_observation),
+    path('observations/<int:site_id>/', get_observations),
+    path('observations/download/<int:site_id>/', download_observations),
+    path('observations/download/filtered/~<str:filter_string>', download_observations_filtered),
+    path('schools/', get_schools),
+    path('<int:monitor_id>/', detail, name='monitor_detail'),
+]

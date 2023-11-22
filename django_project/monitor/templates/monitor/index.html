@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load cms_tags sekizai_tags %}
 
 {% block "minisass_page_title" %}miniSASS Observations Map{% endblock %}
 
@@ -24,7 +23,7 @@
   {% addtoblock "js" %}<script src="{{ STATIC_URL }}js/minisass_map.js"></script>{% endaddtoblock %}
 {% endif %}
 {% endblock %}
-
+ 
 {% block "minisass_page_content" %}
     <div id=sidepanel>
       <div id="legend">
