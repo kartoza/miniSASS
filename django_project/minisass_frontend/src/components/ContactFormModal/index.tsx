@@ -38,10 +38,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
 
   const [response_message, setResponseMessage] = useState(null);
   const [isError, setIsError] = useState(false);
-  const [showHeading, setShowHeading] = useState(false);
+  const [showHeading, setShowHeading] = useState(true);
 
   
-  const CONTACT_US_API = globalVariables.baseUrl + '/en//authentication/api/contact-us/'
+  const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us/'
 
   const SendContactUsEmail = async (formData) => {
 
@@ -129,13 +129,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
             >
               {
                 isError ? (
-                  <div className="bg-red-100 text-red-600 p-4 rounded">{response_message}</div>
+                  <div className="bg-red-100 text-red-600 p-2 rounded">{response_message}</div>
                 ): (
                   showHeading ? (
                    <div>Contact Form</div> 
 
                   ): (
-                    <div className="bg-green-100 text-green-600 p-4 rounded">{response_message}</div>
+                    <div className="bg-green-100 text-green-600 p-2 rounded">{response_message}</div>
                   )
 
                 )
