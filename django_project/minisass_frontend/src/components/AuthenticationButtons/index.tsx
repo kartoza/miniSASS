@@ -12,7 +12,7 @@ function AuthenticationButtons() {
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const { state, dispatch } = useAuth();
-  const isAuthenticated = state.isAuthenticated;
+  const [isAuthenticated, setIsAuthenticated ] = useState(state.isAuthenticated);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -38,6 +38,7 @@ function AuthenticationButtons() {
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
     localStorage.removeItem('authState');
+    setIsAuthenticated(false);
   };
 
   const handleLogin = async (loginData: any) => {
@@ -54,11 +55,14 @@ function AuthenticationButtons() {
         localStorage.setItem('authState', JSON.stringify({ userData }));
         setError(null);
         setLoginModalOpen(false)
+        setIsAuthenticated(true)
       } else {
         setError('Invalid credentials. Please try again.');
+        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
+      setIsAuthenticated(false)
     }
   };
 
@@ -91,7 +95,7 @@ function AuthenticationButtons() {
         alt="minisasstextOne"
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-        {state.isAuthenticated ? (
+        {isAuthenticated ? (
           <Button
             onClick={handleLogout}
             className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
