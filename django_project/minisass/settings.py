@@ -155,12 +155,12 @@ WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('SMTP_HOST', 'smtp')
-EMAIL_PORT = ast.literal_eval(os.environ.get('SMTP_PORT', '25'))
-EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', 'noreply@kartoza.com')
-EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', 'docker')
-EMAIL_USE_TLS = ast.literal_eval(os.environ.get('SMTP_EMAIL_TLS', 'False'))
-EMAIL_USE_SSL = ast.literal_eval(os.environ.get('SMTP_EMAIL_TLS', 'False'))
+EMAIL_HOST = os.getenv('SMTP_HOST', 'smtp')
+EMAIL_PORT = os.getenv('SMTP_PORT', '25')
+EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER', 'noreply@kartoza.com')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD', 'docker')
+EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS', 'False')
+EMAIL_USE_SSL = os.getenv('SMTP_EMAIL_TLS', 'False')
 
 SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
 
