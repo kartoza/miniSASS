@@ -15,7 +15,7 @@ python manage.py collectstatic --clear --noinput
 python manage.py migrate
 
 # Load data from fixture files
-echo 'Loading fixture data.'
+# echo 'Loading fixture data.'
 # python manage.py loaddata --ignore fixtures/*.json
 
 echo "-----------------------------------------------------"
