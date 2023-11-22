@@ -119,7 +119,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(FRONTEND_PATH, 'templates'),
             os.path.join(PROJECT_PATH, 'templates'),
-            os.path.join(PROJECT_PATH, 'minisass_authentication', 'templates', 'registration'),
+            os.path.join(PROJECT_PATH.replace('/minisass', '/minisass_authentication'), 'templates', 'registration'),
             os.path.join(PROJECT_PATH, 'monitor' , 'templates' , 'monitor')
         ],
         'APP_DIRS': True,
