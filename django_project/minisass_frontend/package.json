@@ -85,7 +85,7 @@
     "html-inline-css-webpack-plugin": "^1.11.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "postcss": "8.4.6",
+    "postcss": "8.4.31",
     "postcss-import": "^14.1.0",
     "postcss-loader": "^7.0.1",
     "react-hot-loader": "^4.13.0",
