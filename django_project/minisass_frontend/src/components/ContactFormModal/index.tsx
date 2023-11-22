@@ -41,7 +41,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
   const [showHeading, setShowHeading] = useState(true);
 
   
-  const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us/'
+  const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us'
 
   const SendContactUsEmail = async (formData) => {
 
