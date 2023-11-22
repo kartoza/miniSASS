@@ -159,5 +159,9 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return Response(status=status.HTTP_200_OK)
+            user_data = {
+                'username': user.username,
+                'email': user.email
+            }
+            return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
