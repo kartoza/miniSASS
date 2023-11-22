@@ -1,0 +1,2412 @@
+[
+  {
+    "pk": 1, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": null, 
+      "description": "Organisation Type", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "NGO", 
+      "rank": 1
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Conservancy", 
+      "rank": 2
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Government Department", 
+      "rank": 4
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Private Individual", 
+      "rank": 3
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "School", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": null, 
+      "description": "Country", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "South Africa", 
+      "rank": 1
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Namibia", 
+      "rank": 5
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Lesotho", 
+      "rank": 3
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Swaziland", 
+      "rank": 6
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Botswana", 
+      "rank": 12
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Zimbabwe", 
+      "rank": 4
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mozambique", 
+      "rank": 11
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Angola", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Malawi", 
+      "rank": 9
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mauritania", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Malaysia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 240, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Consultancy", 
+      "rank": 5
+    }
+  }, 
+  {
+    "pk": 241, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "University", 
+      "rank": 6
+    }
+  }, 
+  {
+    "pk": 242, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 1, 
+      "description": "Other", 
+      "rank": 7
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Andorra", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "United Arab Emirates", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Afghanistan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Antigua and Barbuda", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 116, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kuwait", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 117, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kazakhstan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 118, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Laos", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 119, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Lebanon", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 120, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Liechtenstein", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 121, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Sri Lanka", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 122, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Liberia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 123, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Lithuania", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 124, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Luxembourg", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 125, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Latvia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 126, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Libya", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 127, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Morocco", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 128, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Monaco", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 129, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Moldova", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 130, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Montenegro", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 131, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Myanmar", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 132, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mongolia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 133, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mexico", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 134, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Nigeria", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 135, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Netherlands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 136, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Norway", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 137, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Nepal", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 138, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "New Zealand", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 139, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Oman", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 140, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Peru", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 141, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Papua New Guinea", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 142, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Philippines", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 143, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Pakistan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 144, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Poland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 145, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Palestine", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 146, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Portugal", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 147, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Palau", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 148, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Paraguay", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 149, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Qatar", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 150, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Romania", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 151, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Serbia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 152, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Russia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 153, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Rwanda", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 154, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Sudan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 155, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Sweden", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 156, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Singapore", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 157, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Slovenia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 158, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Chad", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 159, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Suriname", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 160, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Syria", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 161, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Thailand", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 162, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tajikistan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 163, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "East Timor", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 164, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Turkmenistan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 165, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tunisia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 166, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Turkey", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 167, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Indonesia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 168, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Taiwan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 169, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tanzania", 
+      "rank": 8
+    }
+  }, 
+  {
+    "pk": 170, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ukraine", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 171, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Uganda", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 172, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "United States", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 173, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Uruguay", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 174, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Uzbekistan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 175, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Venezuela", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 176, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Vietnam", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 177, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Samoa", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 178, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kosovo", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 179, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Yemen", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 180, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mayotte", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 181, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Zambia", 
+      "rank": 10
+    }
+  }, 
+  {
+    "pk": 182, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Democratic Republic of the Congo", 
+      "rank": 7
+    }
+  }, 
+  {
+    "pk": 183, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Iceland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 184, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Kitts and Nevis", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 185, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cayman Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 186, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Lucia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 187, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Martin", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 188, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Madagascar", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 189, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Marshall Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 190, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Macedonia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 191, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mali", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 192, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Macao", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 193, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Northern Mariana Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 194, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Martinique", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 195, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mauritania", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 196, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Montserrat", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 197, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Malta", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 198, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Mauritius", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 199, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Maldives", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 200, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "New Caledonia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 201, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Norfolk Island", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 202, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Nicaragua", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 203, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Nauru", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 204, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Niue", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 205, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Panama", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 206, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "French Polynesia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 207, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Pierre and Miquelon", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 208, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Pitcairn Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 209, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Puerto Rico", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 210, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "R\u00e9union", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 211, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saudi Arabia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Anguilla", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Albania", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Armenia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Antarctica", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Argentina", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "American Samoa", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Austria", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Australia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Aruba", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "\u00c5land", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Azerbaijan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bosnia and Herzegovina", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Barbados", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bangladesh", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Belgium", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Burkina Faso", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bulgaria", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bahrain", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Burundi", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Benin", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Barth\u00e9lemy", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bermuda", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 46, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Brunei", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 47, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bolivia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 48, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bonaire", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 49, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Brazil", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 50, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bahamas", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 51, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bhutan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 52, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Bouvet Island", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 53, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Belarus", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 54, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Belize", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 55, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Canada", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 56, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cocos", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 57, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Republic of the Congo", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 58, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Central African Republic", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 59, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Switzerland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 60, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ivory Coast", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 61, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cook Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 62, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Chile", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 63, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cameroon", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 64, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "China", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 65, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Colombia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 66, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Costa Rica", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 67, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cuba", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 68, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cape Verde", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 69, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cyprus", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 70, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Czech Republic", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 71, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Germany", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 72, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Djibouti", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 73, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Denmark", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 74, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Dominica", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 75, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Algeria", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 76, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ecuador", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 77, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Estonia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 78, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Egypt", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 79, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Western Sahara", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 80, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Eritrea", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 81, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Spain", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 82, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ethiopia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 83, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Finland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 84, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Fiji", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 85, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "France", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 86, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Gabon", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 87, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "United Kingdom", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 88, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Grenada", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 89, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Georgia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 90, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Guernsey", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 91, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ghana", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 92, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Gibraltar", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 93, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Greenland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 94, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Gambia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 95, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Guinea", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 96, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Guadeloupe", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 97, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Greece", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 98, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Hungary", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 99, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Ireland", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 100, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Israel", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 101, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "India", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 102, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Iraq", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 103, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Iran", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 104, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Italy", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 105, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Jersey", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 106, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Jamaica", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 107, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Jordan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 108, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Japan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 109, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kenya", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 110, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kyrgyzstan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 111, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Cambodia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 112, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Kiribati", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 113, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Comoros", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 114, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "North Korea", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 115, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "South Korea", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 212, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Solomon Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 213, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Seychelles", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 214, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Helena", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 215, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Svalbard and Jan Mayen", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 216, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Slovakia", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 217, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Sierra Leone", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 218, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "San Marino", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 219, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Senegal", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 220, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "South Sudan", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 221, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "S\u00e3o Tom\u00e9 and Pr\u00edncipe", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 222, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "El Salvador", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 223, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Sint Maarten", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 224, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Turks and Caicos Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 225, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Chad", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 226, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "French Southern Territories", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 227, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Togo", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 228, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tokelau", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 229, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tonga", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 230, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Trinidad and Tobago", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 231, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Tuvalu", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 232, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "U.S. Minor Outlying Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 233, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Vatican City", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 234, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Saint Vincent and the Grenadines", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 235, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "British Virgin Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 236, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "U.S. Virgin Islands", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 237, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Vanuatu", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 238, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Wallis and Futuna", 
+      "rank": 0
+    }
+  }, 
+  {
+    "pk": 239, 
+    "model": "minisass_authentication.lookup", 
+    "fields": {
+      "active": true, 
+      "container": 8, 
+      "description": "Other", 
+      "rank": 2
+    }
+  }
+]
