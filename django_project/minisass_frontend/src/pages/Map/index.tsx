@@ -13,6 +13,8 @@ import overlayLayersData from './config/overlay.config.json';
 
 import "./style.css"
 
+import { globalVariables } from "../../utils";
+
 const MapPage: React.FC = () => {
   const mapRef = useRef(null);
 
@@ -24,11 +26,6 @@ const MapPage: React.FC = () => {
     setIsObservationDetails(false)
     setSidebarOpen((prev) => !prev);
   };
-
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -60,7 +57,7 @@ const MapPage: React.FC = () => {
                   <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
                     <Img
                       className="sm:bottom-[] md:h-auto h-full object-cover md:relative sm:right-[30px] sm:top-2.5 md:top-5 w-full"
-                      src={`${staticPath}img_minisasslogo1.png`}
+                      src={`${globalVariables.staticPath}img_minisasslogo1.png`}
                       alt="minisasslogoOne"
                     />
                   </div>
@@ -74,10 +71,6 @@ const MapPage: React.FC = () => {
               </div>
             </div>
             {/* end of section */}
-
-
-
-
           </div>
 
         <div className="grow md:px-5 relative md:w-[103.9%] w-full relative">
@@ -116,7 +109,12 @@ const MapPage: React.FC = () => {
                 ref={mapRef}
               />
               {/* Sidebar */}
-              <Sidebar isOpen={isSidebarOpen} isObservationDetails={isObservationDetails} setSidebarOpen={setSidebarOpen} />
+              <Sidebar 
+                isOpen={isSidebarOpen} 
+                isObservationDetails={isObservationDetails} 
+                setSidebarOpen={setSidebarOpen} 
+                observation={details}
+              />
             </div>
           </div>
           
@@ -130,7 +128,7 @@ const MapPage: React.FC = () => {
               </Text>
             </div>
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img className="h-6 w-7" src={`${staticPath}img_alarm.svg`} alt="alarm" />
+              <Img className="h-6 w-7" src={`${globalVariables.staticPath}img_alarm.svg`} alt="alarm" />
               <Text
                 className="text-base text-black-900 w-auto"
                 size="txtRalewayRomanRegular16"
@@ -141,7 +139,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_alarm_green_400.svg`}
+                src={`${globalVariables.staticPath}img_alarm_green_400.svg`}
                 alt="alarm_One"
               />
               <Text
@@ -154,7 +152,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_alarm_orange_a200.svg`}
+                src={`${globalVariables.staticPath}img_alarm_orange_a200.svg`}
                 alt="alarm_Two"
               />
               <Text
@@ -167,7 +165,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_twitter.svg`}
+                src={`${globalVariables.staticPath}img_twitter.svg`}
                 alt="twitter"
               />
               <Text
@@ -180,7 +178,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_alarm_deep_purple_400.svg`}
+                src={`${globalVariables.staticPath}img_alarm_deep_purple_400.svg`}
                 alt="alarm_Three"
               />
               <Text
@@ -193,7 +191,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_settings.svg`}
+                src={`${globalVariables.staticPath}img_settings.svg`}
                 alt="settings"
               />
               <Text
@@ -206,7 +204,7 @@ const MapPage: React.FC = () => {
             <div className="flex flex-row gap-3 items-center justify-center w-auto">
               <Img
                 className="h-6 w-7"
-                src={`${staticPath}img_arrowdown.svg`}
+                src={`${globalVariables.staticPath}img_arrowdown.svg`}
                 alt="arrowdown"
               />
               <Text
