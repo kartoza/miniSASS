@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from django.core.mail import send_mail
 
 
 @api_view(['POST'])
@@ -30,12 +31,13 @@ def contact_us(request):
         'contact': phone,
         'message': message,
     })
-    email = EmailMessage(
+    send_mail(
         mail_subject,
-        message,
-        to=[settings.CONTACT_US_RECEPIENT_EMAIL]
+        None,
+        settings.CONTACT_US_RECEPIENT_EMAIL,
+        [email],
+        html_message=message
     )
-    email.send()
     
     return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
