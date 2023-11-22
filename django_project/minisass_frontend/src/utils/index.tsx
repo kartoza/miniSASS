@@ -1,3 +1,6 @@
+import axios, { AxiosResponse, Method } from 'axios';
+
+
 export const handleSectionNavigation = (id: string) => {
   const element = document.getElementById(id);
   const offset = 45;
@@ -11,3 +14,29 @@ export const handleSectionNavigation = (id: string) => {
     behavior: "smooth",
   });
 };
+
+const currentURL = window.location.href;
+const parts = currentURL.split('/');
+const baseUrl = parts[0] + '//' + parts[2];
+const staticPath = baseUrl + '/static/images/';
+
+export const globalVariables = {
+  currentURL,
+  baseUrl,
+  staticPath,
+};
+
+export const apiCall = async <T>(
+  method: Method,
+  url: string,
+  data?: any
+): Promise<AxiosResponse<T>> => {
+  try {
+    const response = await axios({ method, url, data });
+    return response;
+  } catch (error) {
+    console.error('API call error:', error);
+    throw error;
+  }
+};
+
