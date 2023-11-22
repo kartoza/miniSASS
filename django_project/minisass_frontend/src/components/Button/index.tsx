@@ -10,7 +10,6 @@ const variants = {
     gray_200: "bg-gray-200 text-blue-900",
     blue_gray_500: "bg-blue_gray-500 text-white-A700",
     blue_900: "bg-blue-900 text-white-A700",
-    red_500: "bg-red-500 text-white-A700",
   },
 } as const;
 const sizes = { xs: "p-2", sm: "p-3" } as const;

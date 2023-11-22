@@ -69,7 +69,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             [32.8918141, -22.1246704]
           ]);
         })
-        newMap.addControl(new maplibregl.NavigationControl(), 'top-left');
+        newMap.addControl(new maplibregl.NavigationControl(), 'top-right');
       }
     }, []);
 

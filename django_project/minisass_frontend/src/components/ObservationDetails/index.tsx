@@ -109,7 +109,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   return (
     <div className={classname}
     style={{
-        height: '75vh',
+        height: '95vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}
@@ -134,7 +134,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         src={`${staticPath}img_icbaselineclose.svg`}
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
-        style={{marginRight: '6%'}}
       />
     </div>
 
@@ -144,12 +143,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
     <div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
       <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
         <Text
-          className={`${titleColor} text-lg w-[140px]`}
+          className={`${titleColor} text-lg w-[127px]`}
           size="txtRalewayBold18"
         >
           Average score:
         </Text>
-        <div className="flex flex-row gap-2.5 items-center justify-start w-auto" style={{marginLeft: '50%'}}>
+        <div className="flex flex-row gap-2.5 items-center justify-start w-auto">
           <div className="h-[68px] relative w-[68px]">
             <div className="h-[68px] m-auto w-[68px]">
 
@@ -229,7 +228,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitename}
           </Text>
         </div>
-        <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
+         <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
           <Text
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
             size="txtRalewayRomanRegular18"
@@ -243,7 +242,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             {observationDetails.sitedescription}
           </Text>
         </div>
-
         <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
           <Text
             className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"

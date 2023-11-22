@@ -20,5 +20,16 @@
     "maxZoom": 24,
     "noWrap": "true",
     "tileSize": 256
+  },
+  {
+    "name": "Rivers and Catchments",
+    "tiles": [
+      "https://minisass.org/geoserver/gwc/service/wms?TILED=true&LAYERS=miniSASS%3AminiSASS_base&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG:3857&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256"
+    ],
+    "type": "raster",
+    "maxNativeZoom": 19,
+    "maxZoom": 24,
+    "noWrap": "true",
+    "tileSize": 256
   }
 ]
