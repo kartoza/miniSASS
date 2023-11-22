@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, pre_delete
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from dirtyfields import DirtyFieldsMixin
 from django.contrib.gis.db import models as geometry_fields
@@ -115,58 +115,6 @@ class Observations(models.Model, DirtyFieldsMixin):
     def __str__(self):
         return str(self.obs_date) + ': ' + self.site.site_name
 
-
-# class ArchivedObservations(models.Model, DirtyFieldsMixin):
-#     FLAG_CATS = (
-#         (u'dirty', u'Dirty'),
-#         (u'clean', u'Clean')
-#     )
-#     UNIT_DO_CATS = (
-#         (u'mgl', u'mg/l'),
-#         (u'%DO', u'%DO'),
-#         (u'PPM', u'PPM'),
-#         (u'na', u'Unknown')
-#     )
-#     UNIT_EC_CATS = (
-#         (u'S/m', u'S/m'),
-#         (u'\u00B5S/cm', u'\u00B5S/cm'),
-#         (u'mS/m', u'mS/m'),
-#         (u'na', u'Unknown')
-#     )
-#     gid = models.AutoField(primary_key=True, editable=False)
-#     user_id = models.IntegerField(default=0)
-#     flatworms = models.BooleanField(default=False)
-#     worms = models.BooleanField(default=False)
-#     leeches = models.BooleanField(default=False)
-#     crabs_shrimps = models.BooleanField(default=False)
-#     stoneflies = models.BooleanField(default=False)
-#     minnow_mayflies = models.BooleanField(default=False)
-#     other_mayflies = models.BooleanField(default=False)
-#     damselflies = models.BooleanField(default=False)
-#     dragonflies = models.BooleanField(default=False)
-#     bugs_beetles = models.BooleanField(default=False)
-#     caddisflies = models.BooleanField(default=False)
-#     true_flies = models.BooleanField(default=False)
-#     snails = models.BooleanField(default=False)
-#     score = models.DecimalField(max_digits=4, decimal_places=2)
-#     site_id = models.IntegerField(default=0)
-#     time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
-#     comment = models.CharField(max_length=255, blank=True)
-#     obs_date = models.DateField()
-#     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
-#     water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
-#     water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True)
-#     ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
-#     diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True, nullTrue)
-#     diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
-#     elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-#     elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mSm', blank=True)
-
-#     class Meta:
-#         db_table = 'archived_observations'
-
-#     def __str__(self):
-#         return str(self.obs_date)
 
 
 # Helper function to send email content based on observation
