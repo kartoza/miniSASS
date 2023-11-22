@@ -1,0 +1,36 @@
+{% extends "registration/registration_base.html" %}
+
+{% block "minisass_css" %}
+{% addtoblock "css" %}
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+{% endaddtoblock %}
+{{ block.super }}
+{% endblock %}
+
+{% block "minisass_js" %}
+{% addtoblock "js" %}<script src="http://code.jquery.com/ui/1.8.24/jquery-ui.min.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{{STATIC_URL}}js/registration.js"></script>{% endaddtoblock %}
+{% endblock %}
+
+
+{% block "registration_page_content" %}
+<h1>Register to submit your miniSASS results.</h1>
+<p>
+Please provide the following information and click the register button.
+</p>
+{% if form.errors %}
+<p class=errorlist>Please correct the errors indicated below</p>
+{% endif %}
+<form action="" method="post">
+    <table>
+        {% csrf_token %}
+        {{ form.as_table }}
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Register">
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

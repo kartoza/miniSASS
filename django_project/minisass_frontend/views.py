@@ -1,20 +1,19 @@
 from django.http import HttpResponse
-from django.views.generic import TemplateView
-from django.utils import simplejson
-from django.views.generic.base import View
+from django.views.generic import TemplateView, View
 from monitor.models import Observations
-from minisass_registration.models import UserProfile
+from minisass_authentication.models import UserProfile
+from monitor.models import Sites
 from decimal import Decimal
+import json  # Import the 'json' module instead of 'simplejson'
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils.translation import gettext as _
 from django.conf import settings
-
 
 class DecimalEncoder(DjangoJSONEncoder):
     def default(self, o):
         if isinstance(o, Decimal):
             return float(o)
         return super(DecimalEncoder, self).default(o)
-
 
 class ReactHomeView(TemplateView):
     template_name = "react_base.html"
@@ -25,7 +24,6 @@ class ReactHomeView(TemplateView):
         )
         ctx['dev_mode'] = settings.DEBUG
         return ctx
-
 
 class ObservationsView(View):
     def get(self, request, *args, **kwargs):
@@ -44,6 +42,5 @@ class ObservationsView(View):
                 'score': observation.score,
             })
 
-        json_data = simplejson.dumps(
-            recent_observations, cls=DecimalEncoder)
+        json_data = json.dumps(recent_observations, cls=DecimalEncoder)
         return HttpResponse(json_data, content_type='application/json')

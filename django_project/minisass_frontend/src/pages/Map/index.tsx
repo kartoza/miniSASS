@@ -93,12 +93,6 @@ const MapPage: React.FC = () => {
                 Add Record
               </Button>
               <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
-              <Img
-                  className=" h-[48px] w-[48px] common-pointer"
-                  src={`${staticPath}sidebar_icon.png`}
-                  alt="sidebar"
-                  onClick={handleSidebarToggle}
-                />
             </div>
             <div className="grow relative w-full">
               <Map
@@ -126,7 +120,7 @@ const MapPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[13px] left-[13px]">
+          <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[6%] left-[13px]">
             <div className="flex flex-col items-center justify-center w-auto">
               <Text
                 className="text-base text-black-900 w-auto"

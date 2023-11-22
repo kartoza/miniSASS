@@ -54,7 +54,7 @@ services:
       # Images on the platform will be stored here
       - ./data_images:/web
     environment:
-      - POSTGRES_DB=${POSTGIS_DB:-minisass}
+      - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
       - POSTGRES_PASS=${POSTGRES_PASS:-docker}
       - DATABASE_HOST=${DATABASE_HOST:-db}
