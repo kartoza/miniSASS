@@ -129,13 +129,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
             >
               {
                 isError ? (
-                  <div className="bg-red-100 text-red-600 p-2 rounded">{response_message}</div>
+                  <div className="bg-red-100 text-red-600 p-1 rounded">{response_message}</div>
                 ): (
                   showHeading ? (
                    <div>Contact Form</div> 
 
                   ): (
-                    <div className="bg-green-100 text-green-600 p-2 rounded">{response_message}</div>
+                    <div className="bg-green-100 text-green-600 p-1 rounded">{response_message}</div>
                   )
 
                 )
