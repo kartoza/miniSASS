@@ -13,30 +13,31 @@ from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
+from django.conf import settings
 
 
-# from django.http import HttpResponse
-# from django.utils import simplejson as json
-# from django.shortcuts import redirect
-# from django.shortcuts import render_to_response
-# from django.template import RequestContext
+@api_view(['POST'])
+def contact_us(request):
+    email = request.data.get('email')
+    name = request.data.get('name')
+    phone = request.data.get('phone')
+    message = request.data.get('message')
 
-# from registration.backends import get_backend
-
-# from monitor.models import Schools
-
-
-# def school_names(request):
-#     """ Return school names matching the string passed in
-#     """
-#     result = []
-#     query = request.GET.get('term')
-#     if query:
-#         qs = Schools.objects.filter(school__istartswith=query).values('school')
-#         result = [itm['school'] for itm in qs]
-#     content = json.dumps(result)
-#     return HttpResponse(content, 
-#                         content_type="application/json; charset=utf-8")
+    mail_subject = 'Contact Us'
+    message = render_to_string('contact_us.html', {
+        'from': email,
+        'name': name,
+        'contact': phone,
+        'message': message,
+    })
+    email = EmailMessage(
+        mail_subject,
+        message,
+        to=[settings.CONTACT_US_RECEPIENT_EMAIL]
+    )
+    email.send()
+    
+    return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
