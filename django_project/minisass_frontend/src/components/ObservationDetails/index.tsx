@@ -86,12 +86,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle91.png`}
+          src={`${staticPath}img_rectangle97.png`}
           alt="img_placeholder"
         />
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle92.png`}
+          src={`${staticPath}img_rectangle97.png`}
           alt="img_placeholder"
         />
       </div>
@@ -134,7 +134,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         src={`${staticPath}img_icbaselineclose.svg`}
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
-        style={{marginRight: '6%'}}
       />
     </div>
 
