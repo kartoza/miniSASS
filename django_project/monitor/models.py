@@ -63,28 +63,6 @@ class Sites(models.Model):
         return self.site_name
 
 
-# class ArchivedSites(models.Model):
-#     RIVER_CATS = (
-#         (u'rocky', u'Rocky'),
-#         (u'sandy', u'Sandy')
-#     )
-#     gid = models.AutoField(primary_key=True, editable=False)
-#     the_geom = models.PointField()
-#     site_name = models.CharField(max_length=15, blank=False)
-#     river_name = models.CharField(max_length=15, blank=False)
-#     description = models.CharField(max_length=255, blank=True)
-#     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
-#     user_id = models.IntegerField(default=0)
-#     time_stamp = models.DateTimeField(auto_now=True, auto_now_add=True)
-#     objects = models.Manager()
-
-#     class Meta:
-#         db_table = 'archived_sites'
-
-#     def __str__(self):
-#         return self.site_name
-
-
 class Observations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
@@ -230,51 +208,3 @@ def send_email_to_user(sender, instance, **kwargs):
     # state == clean)
     if dirty_fields.get('flag') == 'dirty' and instance.flag == 'clean':
         send_confirmation_email(instance)
-
-# # Signal receiver to archive a site when it is deleted
-# @receiver(pre_delete, sender=Sites)
-# def archive_site(sender, instance, using, **kwargs):
-#     archived_site = ArchivedSites()
-
-#     archived_site.the_geom = instance.the_geom
-#     archived_site.site_name = instance.site_name
-#     archived_site.river_name = instance.river_name
-#     archived_site.description = instance.description
-#     archived_site.river_cat = instance.river_cat
-#     archived_site.user = instance.user.id
-#     archived_site.time_stamp = instance.time_stamp
-#     archived_site.save()
-
-# # Signal receiver to archive an observation when it is deleted
-# @receiver(pre_delete, sender=Observations)
-# def archive_observation(sender, instance, using, **kwargs):
-#     archived_observation = ArchivedObservations()
-
-#     archived_observation.user_id = instance.user.id
-#     archived_observation.flatworms = instance.flatworms
-#     archived_observation.worms = instance.worms
-#     archived_observation.leeches = instance.leeches
-#     archived_observation.crabs_shrimps = instance.crabs_shrimps
-#     archived_observation.stoneflies = instance.stoneflies
-#     archived_observation.minnow_mayflies = instance.minnow_mayflies
-#     archived_observation.other_mayflies = instance.other_mayflies
-#     archived_observation.damselflies = instance.damselflies
-#     archived_observation.dragonflies = instance.dragonflies
-#     archived_observation.bugs_beetles = instance.bugs_beetles
-#     archived_observation.caddisflies = instance.caddisflies
-#     archived_observation.true_flies = instance.true_flies
-#     archived_observation.snails = instance.snails
-#     archived_observation.score = instance.score
-#     archived_observation.site_id = instance.site.gid
-#     archived_observation.time_stamp = instance.time_stamp
-#     archived_observation.comment = instance.comment
-#     archived_observation.obs_date = instance.obs_date
-#     archived_observation.flag = instance.flag
-#     archived_observation.water_clarity = instance.water_clarity
-#     archived_observation.water_temp = instance.water_temp
-#     archived_observation.ph = instance.ph
-#     archived_observation.diss_oxygen = instance.diss_oxygen
-#     archived_observation.diss_oxygen_unit = instance.diss_oxygen_unit
-#     archived_observation.elec_cond = instance.elec_cond
-#     archived_observation.elec_cond_unit = instance.elec_cond_unit
-#     archived_observation.save()
