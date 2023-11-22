@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import Modal from 'react-modal';
-import { Button, Img, List, Text } from "../../components";
-import { FaTrash } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { Img, Text } from "../../components";
 import { CircularProgressbar } from "react-circular-progressbar";
 import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
+import { globalVariables } from "../../utils";
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,14 +18,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   };
 
   
-  // Decalre api endpoints
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
-  const GET_OBSERVATION = baseUrl + '/observations/api/observation'
+  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/${observation_id}/`
 
-  // fetch observation TODO
 
   const [observationDetails, setObservationDetails] = useState({});
   const [titleColor, setTitleColor] = useState<string>('');
@@ -44,33 +37,16 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         if(parseFloat(response.data.average_score) < 6){
             setTitleColor("text-red-600")
             setProgressBarColor("red")
-            setRenderCrab(`${staticPath}img_image2_24x30.png`)
+            setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
           }else {
             setTitleColor("text-green-800")
             setProgressBarColor("green")
-            setRenderCrab(`${staticPath}img_image2.png`)
+            setRenderCrab(`${globalVariables.staticPath}img_image2.png`)
           }
 
       } else { }
     } catch (error) {
-      setTitleColor("text-red-600")
-      setProgressBarColor("red")
-      setRenderCrab(`${staticPath}img_image2_24x30.png`)
-      setObservationDetails({
-        "average_score": "3.50",
-        "rivername": "Groot Marico",
-        "sitename": "A3GMAR-RIVER",
-        "sitedescription": "At River Still Guest Farm on Vergenoegd 289JP, owner Jaques duPlessisis 0823418898",
-        "rivercategory": "sandy",
-        "longitude": "26.41319",
-        "latitude": "-26.413",
-        "observationdetails": {
-          "date": " Apr 15, 10",
-          "collectorsname": "MolemaneMatela",
-          "oganisationtype":" Government Department"
-        }
-
-      })
+      console.log(error.message)
      }
   };
 
@@ -86,12 +62,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle97.png`}
+          src={`${globalVariables.staticPath}img_rectangle97.png`}
           alt="img_placeholder"
         />
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${staticPath}img_rectangle97.png`}
+          src={`${globalVariables.staticPath}img_rectangle97.png`}
           alt="img_placeholder"
         />
       </div>
@@ -125,13 +101,13 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         </Text>
         <Img
           className="h-6 w-6"
-          src={`${staticPath}img_mdidownloadcircleoutline.svg`}
+          src={`${globalVariables.staticPath}img_mdidownloadcircleoutline.svg`}
           alt="mdidownloadcirc"
         />
       </div>
       <Img
         className="h-6 w-6"
-        src={`${staticPath}img_icbaselineclose.svg`}
+        src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
       />
@@ -157,7 +133,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
             >
               <CircularProgressbar
                 className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible ${progressBarColor}`}
-                value={parseFloat(observationDetails.average_score || "0") * 10}
+                value={parseFloat(observationDetails.score || "0") * 10}
                 strokeWidth={3}
                 styles={{
                   trail: { strokeWidth: 3, stroke: "gray" },
