@@ -80,7 +80,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     // Check the user's authentication status
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(`${globalVariables.baseUrl}/en/authentication/api/check-auth-status/`);
+        const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`);
         const { is_authenticated, username, email } = response.data;
         
         if (is_authenticated) {
