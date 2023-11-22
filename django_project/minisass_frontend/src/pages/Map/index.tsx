@@ -93,12 +93,6 @@ const MapPage: React.FC = () => {
                 Add Record
               </Button>
               <Search searchEntityChanged={geojson => mapRef?.current?.updateHighlighGeojson(geojson)}/>
-              <Img
-                  className=" h-[48px] w-[48px] common-pointer"
-                  src={`${staticPath}sidebar_icon.png`}
-                  alt="sidebar"
-                  onClick={handleSidebarToggle}
-                />
             </div>
             <div className="grow relative w-full">
               <Map

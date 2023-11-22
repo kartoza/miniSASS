@@ -1,0 +1,157 @@
+import json
+from minisass_authentication.serializers import UserSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate, login
+from minisass_authentication.models import UserProfile, Lookup
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.contrib.sites.shortcuts import get_current_site
+
+
+# from django.http import HttpResponse
+# from django.utils import simplejson as json
+# from django.shortcuts import redirect
+# from django.shortcuts import render_to_response
+# from django.template import RequestContext
+
+# from registration.backends import get_backend
+
+# from monitor.models import Schools
+
+
+# def school_names(request):
+#     """ Return school names matching the string passed in
+#     """
+#     result = []
+#     query = request.GET.get('term')
+#     if query:
+#         qs = Schools.objects.filter(school__istartswith=query).values('school')
+#         result = [itm['school'] for itm in qs]
+#     content = json.dumps(result)
+#     return HttpResponse(content, 
+#                         content_type="application/json; charset=utf-8")
+
+
+@api_view(['POST'])
+def request_password_reset(request):
+    email = request.data.get('email')
+    User = get_user_model()
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Create a unique token
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    
+    # Create a reset link to use this to route to a password reset page
+
+    # Get the current site's domain
+    current_site = get_current_site(request)
+    domain = current_site.domain
+    reset_link = f'https://{domain}/authentication/api/reset-password/{uid}/{token}/'
+
+    # Send a password reset email to the user
+    current_site = get_current_site(request)
+    mail_subject = 'Password Reset'
+    message = render_to_string('password_reset_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'reset_link': reset_link,
+    })
+    email = EmailMessage(mail_subject, message, to=[user.email])
+    email.send()
+    
+    return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def verify_reset_token(request, uidb64, token):
+    try:
+        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        # Token is valid
+        return Response({'message': 'Token is valid'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def reset_password(request, uidb64, token):
+    try:
+        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        new_password = request.data.get('new_password')
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def register(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            user.first_name = request.data.get('first_name')
+            user.last_name = request.data.get('last_name')
+            
+            
+            # Create a User Profile
+            org_name = request.data.get('organizationName')
+            user_country = request.data.get('country')
+            organisation_type_description = request.data.get('organizationType')
+            
+            if org_name and user_country and organisation_type_description:
+                # Retrieve the Lookup object based on the description.
+                # This assumes that the 'description' field in the Lookup model is unique.
+                try:
+                    organisation_type = Lookup.objects.get(description__iexact=organisation_type_description)
+                except Lookup.DoesNotExist:
+                    # If no match is found, use the default description "Organisation Type".
+                    organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
+                
+                user_profile = UserProfile.objects.create(
+                    user=user,
+                    organisation_type=organisation_type,
+                    organisation_name=request.data.get('organizationName', ''),
+                    country=request.data.get('country', None)
+                )
+                user_profile.save()
+                user.save()
+            else:
+                return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['POST'])
+def user_login(request):
+    if request.method == 'POST':
+
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
