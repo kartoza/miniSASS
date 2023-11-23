@@ -42,7 +42,7 @@ const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthSt
       };
     case 'LOGOUT':
       try {
-          await axios.post(`${globalVariables.baseUrl}/en//authentication/api/logout/`);
+          await axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
           return {
             ...state,
             user: null,
