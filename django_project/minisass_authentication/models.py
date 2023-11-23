@@ -21,7 +21,7 @@ class UserProfile(models.Model):
     organisation_type = models.ForeignKey(
         Lookup, 
         limit_choices_to={'container__description': 'Organisation Type'}, 
-        blank=False,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL
     )
