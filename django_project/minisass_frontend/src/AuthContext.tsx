@@ -2,15 +2,17 @@ import React, { createContext, useContext, useReducer, ReactNode, useEffect } fr
 import axios from 'axios';
 import { globalVariables } from '../src/utils';
 
-// Define user type
+// user type
 type User = {
   username: string;
+  email: string;
 };
 
-// Define the context state and actions
+// context state and actions
 type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
+  refreshToken: null;
 };
 
 type AuthAction =
@@ -20,10 +22,11 @@ type AuthAction =
   | { type: 'RESET_PASSWORD' }
   | { type: 'TOKEN_REFRESH' };
 
-// Define your initial state
+
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
+  refreshToken: null,
 };
 
 // Create the context
@@ -52,14 +55,27 @@ const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthSt
         console.error('Logout error:', error);
       }
     case 'REGISTER':
-      // Handle the registration action here.
+      // Handle the registration action here. TODO
       return state;
     case 'RESET_PASSWORD':
-      // Handle the reset password action here.
+      // Handle the reset password action here. TODO
       return state;
     case 'TOKEN_REFRESH':
-      // Handle the token refresh action here.
-      return state;
+      try {
+        const response = await axios.post(`${globalVariables.baseUrl}/token/refresh/`, {
+          refresh: state.refreshToken,
+        });
+
+        const newAccessToken = response.data.access;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+        return {
+          ...state,
+        };
+      } catch (error) {
+        console.error('Token refresh error:', error);
+        return state;
+      }
     default:
       return state;
   }
@@ -92,6 +108,20 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     checkAuthStatus();
+
+    // Set up an interval to periodically refresh the token (10 mins)
+    const intervalInMilliseconds = 10 * 60 * 1000;
+    const tokenRefreshInterval = setInterval(() => {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        tokenRefresh(dispatch, refreshToken);
+      }
+    }, intervalInMilliseconds);
+
+    return () => {
+      clearInterval(tokenRefreshInterval);
+    };
+
   }, []); // Only run this effect on mount
 
   return (
@@ -125,8 +155,12 @@ const resetPassword = (dispatch: React.Dispatch<AuthAction>) => {
   dispatch({ type: 'RESET_PASSWORD' });
 };
 
-const tokenRefresh = (dispatch: React.Dispatch<AuthAction>) => {
-  dispatch({ type: 'TOKEN_REFRESH' });
+const tokenRefresh = async (dispatch: React.Dispatch<AuthAction>, refreshToken: string) => {
+  try {
+    dispatch({ type: 'TOKEN_REFRESH' });
+  } catch (error) {
+    console.error('Token refresh error:', error);
+  }
 };
 
 export { AuthProvider, useAuth, login, logout, register, resetPassword, tokenRefresh };
