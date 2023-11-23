@@ -187,7 +187,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    # 'django.contrib.gis',
+    'django.contrib.gis',
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
