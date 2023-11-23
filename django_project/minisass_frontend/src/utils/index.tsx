@@ -1,6 +1,4 @@
 import React from 'react';
-import axios from 'axios';
-
 
 export const handleSectionNavigation = (id: string) => {
   const element = document.getElementById(id);
@@ -26,30 +24,3 @@ export const globalVariables = {
   baseUrl,
   staticPath,
 };
-
-export const checkAuthStatus = async () => {
-  try {
-    const storedState = localStorage.getItem('authState');
-    if (storedState) {
-      const parsedState = JSON.parse(storedState);
-      const accessToken = parsedState.userData.access_token;
-
-      const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
-    
-    const { is_authenticated, username, email } = response.data;
-
-    if (is_authenticated === 'true') {
-      return true
-    }
-    }
-  } catch (error) {
-    console.error('Check auth status error:', error);
-    return false
-  }
-  return false
-};
-
