@@ -37,13 +37,16 @@ class ObservationListCreateView(generics.ListCreateAPIView):
             recent_observations = []
 
             for observation in latest:
-                user_profile = UserProfile.objects.get(user=observation.user)
+                try:
+                    user_profile = UserProfile.objects.get(user=observation.user)
+                except UserProfile.DoesNotExist:
+                    user_profile = None
 
                 recent_observations.append({
                     'observation': observation.pk,
                     'site': observation.site.site_name,
-                    'username': user_profile.user.username,
-                    'organisation': user_profile.organisation_name,
+                    'username': user_profile.user.username if user_profile else "",
+                    'organisation': user_profile.organisation_name if user_profile else "",
                     'time_stamp': observation.time_stamp,
                     'score': observation.score,
                 })
