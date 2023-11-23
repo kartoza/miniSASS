@@ -4,18 +4,24 @@ import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
 import { useAuth } from '../../AuthContext';
 import axios from 'axios';
-import { globalVariables } from '../../utils';
+import { globalVariables, checkAuthStatus } from '../../utils';
 
 
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { checkAuthStatus,state, dispatch  } = useAuth();
+  const { dispatch  } = useAuth();
   const [isAuthenticated, setIsAuthenticated ] = useState(false);
 
   useEffect(() => {
-    setIsAuthenticated(checkAuthStatus)
+    const getAuthStatus = async () => {
+      const flag = await checkAuthStatus();
+      setIsAuthenticated(flag)
+    }
+
+    getAuthStatus()
+  
   }, []);
 
   const openLoginModal = () => {
