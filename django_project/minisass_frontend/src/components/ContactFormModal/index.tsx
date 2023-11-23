@@ -26,7 +26,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     SendContactUsEmail(formData)
     setFormData({
       name: '',
@@ -53,7 +52,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       });
   
       if (response.status === 200) {
-        setResponseMessage('Email sent ,hang in there we will contact you back soon.')
+        setResponseMessage('Email sent. Hang in there, we will contact you back soon.')
         setIsError(false)
         setShowHeading(false)
       } else {
