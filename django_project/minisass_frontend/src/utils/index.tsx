@@ -1,3 +1,6 @@
+import React from 'react';
+
+
 export const handleSectionNavigation = (id: string) => {
   const element = document.getElementById(id);
   const offset = 45;
@@ -11,3 +14,15 @@ export const handleSectionNavigation = (id: string) => {
     behavior: "smooth",
   });
 };
+
+const currentURL = window.location.href;
+const parts = currentURL.split('/');
+const baseUrl = parts[0] + '//' + parts[2];
+const staticPath = baseUrl + '/static/images/';
+
+export const globalVariables = {
+  currentURL,
+  baseUrl,
+  staticPath,
+};
+
