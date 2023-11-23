@@ -92,11 +92,33 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   // Load the state from local storage (if available)
   useEffect(() => {
-    const storedState = localStorage.getItem('authState');
-    if (storedState) {
-      const parsedState = JSON.parse(storedState);
-      dispatch({ type: 'LOGIN', payload: parsedState.userData });
-    }
+
+    const checkAuthStatus = async () => {
+      try {
+        const storedState = localStorage.getItem('authState');
+        if (storedState) {
+          const parsedState = JSON.parse(storedState);
+          const accessToken = parsedState.userData.access_token;
+    
+          const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+
+          if(response.status == 200) {
+            console.log('response is ok');
+            dispatch({ type: 'LOGIN', payload: parsedState.userData });
+          }
+        
+        
+        }
+      } catch (error) {
+        console.error('Check auth status error:', error);
+      }
+    };
+
+   checkAuthStatus();
 
 
     // Set up an interval to periodically refresh the token (10 mins)
