@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
                 ('caddisflies', models.BooleanField(default=False)),
                 ('true_flies', models.BooleanField(default=False)),
                 ('snails', models.BooleanField(default=False)),
-                ('score', models.DecimalField(max_digits=4, decimal_places=2)),
+                ('score', models.DecimalField(max_digits=4, decimal_places=2, default=0)),
                 ('site', models.ForeignKey(related_name='observation',on_delete=models.CASCADE, db_column='site', to='monitor.Sites')),
                 ('time_stamp', models.DateTimeField(auto_now=True, blank=True)),
                 ('comment', models.CharField(max_length=255, blank=True)),
