@@ -81,7 +81,7 @@ class Observations(models.Model, DirtyFieldsMixin):
         (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)
