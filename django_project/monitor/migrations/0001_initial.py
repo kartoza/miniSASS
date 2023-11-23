@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             name='Observations',
             fields=[
                 ('gid', models.AutoField(primary_key=True)),
-                ('user', models.ForeignKey(to='auth.User', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to='auth.User', on_delete=models.CASCADE, blank=True, null=True)),
                 ('flatworms', models.BooleanField(default=False)),
                 ('worms', models.BooleanField(default=False)),
                 ('leeches', models.BooleanField(default=False)),
