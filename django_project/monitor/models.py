@@ -99,7 +99,7 @@ class Observations(models.Model, DirtyFieldsMixin):
     site = models.ForeignKey(Sites, on_delete=models.CASCADE, related_name='observation')
     time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, blank=True)
-    obs_date = models.DateField()
+    obs_date = models.DateField(blank=True, null=True)
     flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
     water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
     water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
