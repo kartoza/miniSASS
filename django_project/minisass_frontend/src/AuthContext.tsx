@@ -1,16 +1,16 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import axios from 'axios';
+import { globalVariables } from '../src/utils';
 
-// Define your user type
+// Define user type
 type User = {
   username: string;
-  // Add other user-related fields
 };
 
 // Define the context state and actions
 type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
-  // You can add other relevant fields here, such as tokens, user data, etc.
 };
 
 type AuthAction =
@@ -24,7 +24,6 @@ type AuthAction =
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  // You can initialize other state fields here.
 };
 
 // Create the context
@@ -33,7 +32,7 @@ const AuthContext = createContext<{ state: AuthState; dispatch: React.Dispatch<A
 );
 
 // Define the reducer function
-const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthState> => {
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -42,22 +41,24 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isAuthenticated: true,
       };
     case 'LOGOUT':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-      };
+      try {
+          await axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
+          return {
+            ...state,
+            user: null,
+            isAuthenticated: false,
+          };
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
     case 'REGISTER':
       // Handle the registration action here.
-      // You can update the state based on the registration logic.
       return state;
     case 'RESET_PASSWORD':
       // Handle the reset password action here.
-      // You can update the state based on the reset password logic.
       return state;
     case 'TOKEN_REFRESH':
       // Handle the token refresh action here.
-      // You can update the state based on the token refresh logic.
       return state;
     default:
       return state;
@@ -75,6 +76,22 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const parsedState = JSON.parse(storedState);
       dispatch({ type: 'LOGIN', payload: parsedState.user });
     }
+
+    // Check the user's authentication status
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`);
+        const { is_authenticated, username, email } = response.data;
+        
+        if (is_authenticated) {
+          dispatch({ type: 'LOGIN', payload: { username, email } });
+        }
+      } catch (error) {
+        console.error('Check auth status error:', error);
+      }
+    };
+
+    checkAuthStatus();
   }, []); // Only run this effect on mount
 
   return (
@@ -82,7 +99,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-// Create hooks and functions for using the context
+// hooks and functions for using the context
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -91,7 +108,7 @@ const useAuth = () => {
   return context;
 };
 
-// Implement functions to dispatch actions
+// functions to dispatch actions
 const login = (dispatch: React.Dispatch<AuthAction>, user: User) => {
   dispatch({ type: 'LOGIN', payload: user });
 };

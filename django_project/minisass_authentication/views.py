@@ -1,20 +1,47 @@
 import json
 from minisass_authentication.serializers import UserSerializer
+from minisass_authentication.models import UserProfile, Lookup
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.contrib.auth import authenticate, login
-from minisass_authentication.models import UserProfile, Lookup
-from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import (
+    api_view,
+    permission_classes
+)
+from django.contrib.auth import (
+    authenticate,
+    login,
+    get_user_model, 
+    logout
+)
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
-from django.core.mail import send_mail
+from django.http import JsonResponse
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def user_logout(request):
+    logout(request)
+    return JsonResponse({'message': 'Logout successful'}, status=200)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_authentication_status(request):
+    user_data = {
+        'is_authenticated': request.user.is_authenticated,
+        'username': request.user.username if request.user.is_authenticated else None,
+        'email': request.user.email if request.user.is_authenticated else None,
+    }
+    return JsonResponse(user_data, status=200)
 
 
 @api_view(['POST'])
@@ -156,5 +183,9 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return Response(status=status.HTTP_200_OK)
+            user_data = {
+                'username': user.username,
+                'email': user.email
+            }
+            return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
