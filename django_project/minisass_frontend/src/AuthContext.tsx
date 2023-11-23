@@ -95,7 +95,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const storedState = localStorage.getItem('authState');
     if (storedState) {
       const parsedState = JSON.parse(storedState);
-      dispatch({ type: 'LOGIN', payload: parsedState.user });
+      dispatch({ type: 'LOGIN', payload: parsedState.userData });
     }
 
     // Check the user's authentication status
@@ -104,7 +104,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         const storedState = localStorage.getItem('authState');
         if (storedState) {
           const parsedState = JSON.parse(storedState);
-          const accessToken = parsedState.access_token;
+          const accessToken = parsedState.userData.access_token;
 
           const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
             headers: {
