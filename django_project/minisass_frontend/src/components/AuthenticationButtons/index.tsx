@@ -4,25 +4,14 @@ import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
 import { useAuth } from '../../AuthContext';
 import axios from 'axios';
-import { globalVariables, checkAuthStatus } from '../../utils';
+import { globalVariables } from '../../utils';
 
 
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { dispatch  } = useAuth();
-  const [isAuthenticated, setIsAuthenticated ] = useState(false);
-
-  useEffect(() => {
-    const getAuthStatus = async () => {
-      const flag = await checkAuthStatus();
-      setIsAuthenticated(flag)
-    }
-
-    getAuthStatus()
-  
-  }, []);
+  const { dispatch, state  } = useAuth();
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -106,7 +95,7 @@ function AuthenticationButtons() {
         alt="minisasstextOne"
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-        {isAuthenticated ? (
+        {state.isAuthenticated ? (
           <Button
             onClick={handleLogout}
             className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
