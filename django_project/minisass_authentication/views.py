@@ -192,6 +192,7 @@ def user_login(request):
                 'email': user.email,
                 'access_token': str(access_token),
                 'refresh_token': str(RefreshToken.for_user(user)),
+                'is_authenticated': True
             }
 
             return Response(user_data, status=status.HTTP_200_OK)
