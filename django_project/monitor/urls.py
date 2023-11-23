@@ -1,5 +1,5 @@
 from django.urls import path
-from monitor.views.observation_views import (
+from monitor.views.observation import (
     ObservationListCreateView, 
     ObservationRetrieveUpdateDeleteView
 )
