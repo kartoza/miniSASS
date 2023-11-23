@@ -20,10 +20,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
 from django.http import JsonResponse
-
 
 
 
@@ -43,6 +43,30 @@ def check_authentication_status(request):
     }
     return JsonResponse(user_data, status=200)
 
+
+@api_view(['POST'])
+def contact_us(request):
+    email = request.data.get('email')
+    name = request.data.get('name')
+    phone = request.data.get('phone')
+    message = request.data.get('message')
+
+    mail_subject = 'Contact Us'
+    message = render_to_string('contact_us.html', {
+        'from': email,
+        'name': name,
+        'contact': phone,
+        'message': message,
+    })
+    send_mail(
+        mail_subject,
+        None,
+        settings.CONTACT_US_RECEPIENT_EMAIL,
+        [email],
+        html_message=message
+    )
+    
+    return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
