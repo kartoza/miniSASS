@@ -6,7 +6,10 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 import requests
-from django.db.models import F
+from django.db.models import (
+    F,
+    Value
+)
 from django.db.models.functions import Sqrt
 import csv
 from django.utils.encoding import smart_str
