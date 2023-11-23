@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
@@ -11,8 +11,12 @@ function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { state, dispatch } = useAuth();
-  const [isAuthenticated, setIsAuthenticated ] = useState(state.isAuthenticated);
+  const { checkAuthStatus,state, dispatch  } = useAuth();
+  const [isAuthenticated, setIsAuthenticated ] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(checkAuthStatus)
+  }, []);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
