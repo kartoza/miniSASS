@@ -113,9 +113,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           });
         
         const { is_authenticated, username, email } = response.data;
+
+        console.log('data ',response.data, 'is authenticated ',is_authenticated)
     
-        if (is_authenticated === 'true') {
-          console.log('dispatching login')
+        if (is_authenticated === 'True') {
           dispatch({ type: 'LOGIN', payload: { username, email } });
         }
         }
