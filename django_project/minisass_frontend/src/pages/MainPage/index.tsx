@@ -10,6 +10,7 @@ import NavigationBar from "../../components/NavigationBar";
 import Slideshow from "../../components/SlideShow";
 import axios from "axios"
 import UploadModal from "../../components/UploadFormModal";
+import { globalVariables } from "../../utils";
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,23 +21,7 @@ const Home: React.FC = () => {
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
 
-
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
-  const apiBaseUrl = baseUrl + '/en/api/observations/';
-  const FETCH_RECENT_OBSERVATIONS = apiBaseUrl;
-
-
+  const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/?recent_only=true';
 
     useEffect(() => {
         const fetchHomePageData = () => {
@@ -62,6 +47,7 @@ const Home: React.FC = () => {
                           const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
                         
                           const structuredItem = {
+                            observation: item.observation,
                             usernamejimtaylOne: `Username: ${item.username}`,
                             userimage: "",
                             username: item.site,
@@ -84,9 +70,8 @@ const Home: React.FC = () => {
     }, []);
 
 
-  // Function to handle advancing to the next set of observations
+  // handle advancing to the next set of observations
   const handleNextObservations = () => {
-    // Calculate the next index to display (looping back to 0 if necessary)
     const nextIndex = (currentIndex + 5) % observations.length;
     setCurrentIndex(nextIndex);
   };
@@ -95,7 +80,6 @@ const Home: React.FC = () => {
     // Calculate the previous index to display
     let prevIndex = currentIndex - 5;
     if (prevIndex < 0) {
-      // Ensure it loops back to the last set when at the beginning
       prevIndex = observations.length - (observations.length % 5);
     }
     setCurrentIndex(prevIndex);
@@ -209,7 +193,7 @@ const Home: React.FC = () => {
                   <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
                     <Img
                       className="sm:bottom-[] md:h-1/5 sm:h-auto h-full object-cover md:relative sm:right-[30px] md:top-5 w-full"
-                      src={`${newURL}img_minisasslogo1.png`}
+                      src={`${globalVariables.staticPath}img_minisasslogo1.png`}
                       alt="minisasslogoOne"
                     />
                   </div>
@@ -231,7 +215,7 @@ const Home: React.FC = () => {
 
           </div>
 
-{/* more links section */}
+        {/* more links section */}
           <List
             className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
             orientation="horizontal"
@@ -245,7 +229,7 @@ const Home: React.FC = () => {
                 <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                   <Img
                     className="bottom-5 h-8 relative w-8"
-                    src={`${newURL}img_bxmapalt.svg`}
+                    src={`${globalVariables.staticPath}img_bxmapalt.svg`}
                     alt="bxmapalt"
                   />
                   <Text
@@ -258,7 +242,7 @@ const Home: React.FC = () => {
               </div>
               <Img
                 className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                src={`${newURL}img_notov1crab.svg`}
+                src={`${globalVariables.staticPath}img_notov1crab.svg`}
                 alt="crab_placeholder"
               />
             </div>
@@ -271,7 +255,7 @@ const Home: React.FC = () => {
                   <div className="absolute bottom-[30%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[51%]">
                   <Img
                     className="h-8 relative w-8"
-                    src={`${newURL}img_bxbookreader.svg`}
+                    src={`${globalVariables.staticPath}img_bxbookreader.svg`}
                     alt="bxbookreader"
                   />
                   <Text
@@ -284,7 +268,7 @@ const Home: React.FC = () => {
               </div>
               <Img
                 className="absolute bottom-[0] h-[72px] left-[0] w-[72px]"
-                src={`${newURL}img_notov1crab_blue_gray_100.svg`}
+                src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100.svg`}
                 alt="crab_placeholder"
               />
             </div>
@@ -297,7 +281,7 @@ const Home: React.FC = () => {
                 <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
                   <Img
                     className="bottom-5 h-8 relative w-8"
-                    src={`${newURL}img_bxbong.svg`}
+                    src={`${globalVariables.staticPath}img_bxbong.svg`}
                     alt="bxbong"
                   />
                   <Text
@@ -310,7 +294,7 @@ const Home: React.FC = () => {
               </div>
               <Img
                 className="absolute h-[72px] left-[0] top-[0] w-[72px]"
-                src={`${newURL}img_notov1crab_blue_gray_100_72x72.svg`}
+                src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100_72x72.svg`}
                 alt="crab_placeholder"
               />
             </div>
@@ -323,7 +307,7 @@ const Home: React.FC = () => {
                 <div className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
                   <Img
                     className="h-8 w-8"
-                    src={`${newURL}img_bxclouddownload.svg`}
+                    src={`${globalVariables.staticPath}img_bxclouddownload.svg`}
                     alt="bxclouddownload"
                   />
                   <Text
@@ -336,7 +320,7 @@ const Home: React.FC = () => {
               </div>
               <Img
                 className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
+                src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100_72x46.svg`}
                 alt="crab_placeholder"
               />
             </div>
@@ -367,7 +351,7 @@ const Home: React.FC = () => {
           <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-2 items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
             <Img
               className="sm:flex-1 h-[380px] md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[380px] sm:w-full"
-              src={`${newURL}img_rectangle1.png`}
+              src={`${globalVariables.staticPath}img_rectangle1.png`}
               alt="rectangleOne"
             />
             <Text
@@ -448,7 +432,7 @@ const Home: React.FC = () => {
                       marginRight: '1%'
                     }}
                   >
-                    <Img src={`${newURL}img_arrowleft.svg`} alt="arrowleft" />
+                    <Img src={`${globalVariables.staticPath}img_arrowleft.svg`} alt="arrowleft" />
                   </Button>
                 )}
                 {currentIndex + 5 < observations.length && ( // Hide right arrow if at the end
@@ -459,7 +443,7 @@ const Home: React.FC = () => {
                     variant="fill"
                     onClick={handleNextObservations}
                   >
-                    <Img src={`${newURL}img_arrowright.svg`} alt="arrowright" />
+                    <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright" />
                   </Button>
                 )}
               </div>
@@ -483,7 +467,7 @@ const Home: React.FC = () => {
               <div className="flex md:flex-col flex-row md:gap-10 gap-[89px] items-center justify-start max-w-[1350px] mx-auto w-full">
                 <Img
                   className="md:flex-1 h-[280px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-[303px] md:w-full"
-                  src={`${newURL}img_rectangle6.png`}
+                  src={`${globalVariables.staticPath}img_rectangle6.png`}
                   alt="rectangleSix"
                 />
                 <div className="flex md:flex-1 flex-col items-start justify-start w-[67%] md:w-full">
@@ -520,7 +504,7 @@ const Home: React.FC = () => {
                     rightIcon={
                       <Img
                         className="h-[18px] mt-px mb-[3px] ml-2.5"
-                        src={`${newURL}img_arrowright_white_a700.svg`}
+                        src={`${globalVariables.staticPath}img_arrowright_white_a700.svg`}
                         alt="arrow_right"
                       />
                     }
@@ -557,7 +541,7 @@ const Home: React.FC = () => {
                 variant="fill"
                 onClick={handleNextBlogs}
               >
-                <Img src={`${newURL}img_arrowright.svg`} alt="arrowright_One" />
+                <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright_One" />
               </Button>
             </div>
 
@@ -566,7 +550,7 @@ const Home: React.FC = () => {
               <div className="flex md:flex-col flex-row gap-[23px] items-start justify-start w-auto md:w-full">
                 <Img
                   className="h-[406px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[780px] md:w-full"
-                  src={`${newURL}img_rectangle18.png`}
+                  src={`${globalVariables.staticPath}img_rectangle18.png`}
                   alt="rectangleEighteen"
                 />
                 <Blogs className="flex flex-col gap-4 items-start justify-start w-auto" />
