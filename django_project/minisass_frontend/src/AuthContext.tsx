@@ -104,7 +104,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         const storedState = localStorage.getItem('authState');
         if (storedState) {
           const parsedState = JSON.parse(storedState);
-          const accessToken = parsedState.access_token;
+          const accessToken = parsedState.userData.access_token;
+          console.log(accessToken)
 
           const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
             headers: {
@@ -133,7 +134,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const storedState = localStorage.getItem('authState');
       if (storedState) {
         const parsedState = JSON.parse(storedState);
-        const refreshToken = parsedState.refresh_token;
+        const refreshToken = parsedState.userData.refresh_token;
         
         // Check if the user is authenticated before attempting to refresh the token
         if (parsedState.is_authenticated && refreshToken) {
