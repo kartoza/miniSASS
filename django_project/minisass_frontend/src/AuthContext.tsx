@@ -129,16 +129,22 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     // Set up an interval to periodically refresh the token (10 mins)
     const intervalInMilliseconds = 10 * 60 * 1000;
-    const tokenRefreshInterval = setInterval(() => {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        tokenRefresh(dispatch, refreshToken);
+    const tokenRefreshInterval = setInterval(async () => {
+      const storedState = localStorage.getItem('authState');
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        const refreshToken = parsedState.refresh_token;
+        
+        // Check if the user is authenticated before attempting to refresh the token
+        if (parsedState.is_authenticated && refreshToken) {
+          try {
+            await tokenRefresh(dispatch, refreshToken);
+          } catch (error) {
+            console.error('Token refresh error:', error);
+          }
+        }
       }
     }, intervalInMilliseconds);
-
-    return () => {
-      clearInterval(tokenRefreshInterval);
-    };
 
   }, []); // Only run this effect on mount
 
