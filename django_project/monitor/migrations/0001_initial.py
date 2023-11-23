@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('site', models.ForeignKey(related_name='observation',on_delete=models.CASCADE, db_column='site', to='monitor.Sites')),
                 ('time_stamp', models.DateTimeField(auto_now=True, blank=True)),
                 ('comment', models.CharField(max_length=255, blank=True)),
-                ('obs_date', models.DateField()),
+                ('obs_date', models.DateField(blank=True, null=True)),
                 ('flag', models.CharField(default='dirty', max_length=5)),
                 ('water_clarity', models.DecimalField(max_digits=8, decimal_places=1, blank=True)),
                 ('water_temp', models.DecimalField(max_digits=5, decimal_places=1, blank=True)),
