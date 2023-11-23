@@ -69,9 +69,14 @@ const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthSt
         const newAccessToken = response.data.access;
         axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
-        return {
+        const newAuthState = {
           ...state,
+          access_token: newAccessToken,
         };
+    
+        localStorage.setItem('authState', JSON.stringify(newAuthState));
+    
+        return newAuthState;
       } catch (error) {
         console.error('Token refresh error:', error);
         return state;
