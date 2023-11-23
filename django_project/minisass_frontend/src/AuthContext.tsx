@@ -107,11 +107,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           });
 
           if(response.status == 200) {
-            console.log('response is ok');
             dispatch({ type: 'LOGIN', payload: parsedState.userData });
           }
-        
-        
+
         }
       } catch (error) {
         console.error('Check auth status error:', error);
