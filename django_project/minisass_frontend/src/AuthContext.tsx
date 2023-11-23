@@ -105,7 +105,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         if (storedState) {
           const parsedState = JSON.parse(storedState);
           const accessToken = parsedState.userData.access_token;
-          console.log(accessToken)
 
           const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
             headers: {
@@ -115,7 +114,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         
         const { is_authenticated, username, email } = response.data;
     
-        if (is_authenticated) {
+        if (is_authenticated === 'true') {
+          console.log('dispatching login')
           dispatch({ type: 'LOGIN', payload: { username, email } });
         }
         }
@@ -125,7 +125,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     checkAuthStatus();
-
 
 
     // Set up an interval to periodically refresh the token (10 mins)
