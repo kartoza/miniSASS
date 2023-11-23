@@ -53,6 +53,7 @@ function AuthenticationButtons() {
         const userData = response.data;
         dispatch({ type: 'LOGIN', payload: userData });
         localStorage.setItem('authState', JSON.stringify({ userData }));
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
         setError(null);
         setLoginModalOpen(false)
         setIsAuthenticated(true)
