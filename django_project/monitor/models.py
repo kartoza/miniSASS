@@ -95,7 +95,7 @@ class Observations(models.Model, DirtyFieldsMixin):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
-    score = models.DecimalField(max_digits=4, decimal_places=2)
+    score = models.DecimalField(max_digits=4, decimal_places=2,default=0)
     site = models.ForeignKey(Sites, on_delete=models.CASCADE, related_name='observation')
     time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, blank=True)
