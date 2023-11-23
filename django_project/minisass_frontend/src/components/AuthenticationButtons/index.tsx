@@ -37,7 +37,6 @@ function AuthenticationButtons() {
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
     localStorage.removeItem('authState');
-    setIsAuthenticated(false);
   };
 
   const handleLogin = async (loginData: any) => {
@@ -55,14 +54,12 @@ function AuthenticationButtons() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
         setError(null);
         setLoginModalOpen(false)
-        setIsAuthenticated(true)
+        state.isAuthenticated = true
       } else {
         setError('Invalid credentials. Please try again.');
-        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
-      setIsAuthenticated(false)
     }
   };
 
