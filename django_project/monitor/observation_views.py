@@ -48,55 +48,27 @@ class RecentObservationListView(generics.ListAPIView):
                 'score': recent_observation.score,
             })
 
-        json_data = json.dumps(recent_observations,cls=DecimalEncoder)
+        json_data = json.dumps(recent_observations, cls=DecimalEncoder)
         return HttpResponse(json_data, content_type='application/json')
 
 
-class ObservationListCreateView(generics.ListCreateAPIView):
+class ObservationRetrieveView(generics.RetrieveAPIView):
+    queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
-    # permission_classes = [IsAuthenticated] TODO will enable this once functionality is working correctly
+    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        site_id = self.kwargs.get('site_id', None)
-        recent_only = self.request.query_params.get('recent_only', False)
-        observation = self.kwargs.get('observation_id', None)
-
-
-        if recent_only:
-            latest = Observations.objects.all().order_by('-time_stamp')[:20]
-
-            recent_observations = []
-
-            for recent_observation in latest:
-                try:
-                    user_profile = UserProfile.objects.get(user=recent_observation.user)
-                except UserProfile.DoesNotExist:
-                    user_profile = None
-
-                print("GID:", recent_observation.gid)
-
-                recent_observations.append({
-                    'observation': recent_observation.gid,
-                    'site': recent_observation.site.site_name,
-                    'username': user_profile.user.username if user_profile else "",
-                    'organisation': user_profile.organisation_name if user_profile else "",
-                    'time_stamp': recent_observation.time_stamp,
-                    'score': recent_observation.score,
-                })
-
-            json_data = json.dumps(recent_observations, cls=DecimalEncoder)
-            return HttpResponse(json_data, content_type='application/json')
-        elif site_id is not None:
-            return Observations.objects.filter(site_id=site_id)
-        elif observation is not None:
+    def retrieve(self, request, *args, **kwargs):
+        observation_id = self.kwargs.get('observation_id', None)
+        if observation_id is not None:
             try:
-                observation = Observations.objects.get(pk=observation)
+                observation = Observations.objects.get(pk=observation_id)
                 try:
                     user_profile = UserProfile.objects.get(user=observation.user)
                 except UserProfile.DoesNotExist:
                     user_profile = None
-
-                return {
+                
+                
+                observation_data = {
                     'sitename': observation.site.site_name,
                     'rivername': observation.site.river_name,
                     'sitedescription': observation.site.description,
@@ -129,8 +101,25 @@ class ObservationListCreateView(generics.ListCreateAPIView):
                     'elec_cond': observation.elec_cond,
                     'elec_cond_unit': observation.elec_cond_unit
                 }
+
+                json_data = json.dumps(observation_data, cls=DecimalEncoder)
+                return HttpResponse(json_data, content_type='application/json')
+                
             except Observations.DoesNotExist:
                 raise Http404("Observation not found")
+
+        raise Http404("Observation ID not provided")
+
+
+class ObservationListCreateView(generics.ListCreateAPIView):
+    serializer_class = ObservationsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        site_id = self.kwargs.get('site_id', None)
+        
+        if site_id is not None:
+            return Observations.objects.filter(site_id=site_id)
         else:
             return Observations.objects.all()
 
@@ -149,4 +138,4 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 class ObservationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
