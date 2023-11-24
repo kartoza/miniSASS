@@ -55,7 +55,6 @@ class RecentObservationListView(generics.ListAPIView):
 class ObservationRetrieveView(generics.RetrieveAPIView):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
-    permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         observation_id = self.kwargs.get('observation_id', None)
