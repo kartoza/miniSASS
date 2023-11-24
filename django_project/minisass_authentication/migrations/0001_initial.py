@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('organisation_name', models.CharField(blank=True, max_length=255)),
                 ('country', models.ForeignKey(blank=True, limit_choices_to={'container__description': 'Country'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='country_lookup', to='minisass_authentication.lookup')),
-                ('organisation_type', models.ForeignKey(limit_choices_to={'container__description': 'Organisation Type'}, null=True, on_delete=django.db.models.deletion.SET_NULL, to='minisass_authentication.lookup')),
+                ('organisation_type', models.CharField(choices=[('School', 'School'), ('NGO', 'NGO'), ('Other', 'Other'), ('University', 'University'), ('Conservancy', 'Conservancy'), ('Private Individual', 'Private Individual'), ('Consultancy', 'Consultancy'), ('Government Department', 'Government Department')], default='Other', max_length=50)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
