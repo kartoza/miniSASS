@@ -15,9 +15,4 @@ class Migration(migrations.Migration):
             name='container',
             field=models.ForeignKey(blank=True, limit_choices_to={'active': True, 'container': None}, null=True, on_delete=django.db.models.deletion.SET_NULL, to='minisass_authentication.lookup'),
         ),
-        migrations.AlterField(
-            model_name='userprofile',
-            name='organisation_type',
-            field=models.ForeignKey(limit_choices_to={'container__description': 'Organisation Type'}, null=True, on_delete=django.db.models.deletion.SET_NULL, to='minisass_authentication.lookup'),
-        ),
     ]
