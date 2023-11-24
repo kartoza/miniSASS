@@ -66,7 +66,13 @@ class ObservationRetrieveView(generics.RetrieveAPIView):
                     user_profile = UserProfile.objects.get(user=observation.user)
                 except UserProfile.DoesNotExist:
                     user_profile = None
-                
+
+                # Combine first name and last name
+                collectors_name = (
+                    f"{user_profile.user.first_name} {user_profile.user.last_name}"
+                    if user_profile and user_profile.user.first_name and user_profile.user.last_name
+                    else user_profile.user.username if user_profile else ""
+                )
                 
                 observation_data = {
                     'sitename': observation.site.site_name,
@@ -76,7 +82,7 @@ class ObservationRetrieveView(generics.RetrieveAPIView):
                     'longitude': observation.site.the_geom.x,
                     'latitude': observation.site.the_geom.y,
                     'date': observation.obs_date,
-                    'collectorsname': user_profile.user.username if user_profile else "",
+                    'collectorsname': collectors_name,
                     'organisationtype': user_profile.organisation_type if user_profile else "",
                     'average_score': observation.score,
                     'flatworms': observation.flatworms,
@@ -104,7 +110,7 @@ class ObservationRetrieveView(generics.RetrieveAPIView):
 
                 json_data = json.dumps(observation_data, cls=DecimalEncoder)
                 return HttpResponse(json_data, content_type='application/json')
-                
+
             except Observations.DoesNotExist:
                 raise Http404("Observation not found")
 
