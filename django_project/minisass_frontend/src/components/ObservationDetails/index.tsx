@@ -18,7 +18,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   };
 
   
-  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/${observation_id}/`
+  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations-details/${observation_id}/`
 
 
   const [observationDetails, setObservationDetails] = useState({});
