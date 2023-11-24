@@ -2,6 +2,7 @@ from django.urls import path
 from monitor.observation_views import (
     ObservationListCreateView, 
     ObservationRetrieveUpdateDeleteView,
+    ObservationRetrieveView,
     RecentObservationListView
 )
 from monitor.views import (
@@ -37,16 +38,28 @@ urlpatterns = [
         ObservationListCreateView.as_view(), 
         name='observation-list-create'
     ),
+    
     path(
         'observations/<int:pk>/', 
         ObservationRetrieveUpdateDeleteView.as_view(), 
         name='observation-retrieve-update-delete'
     ),
+    
     path(
         'observations/site/<int:site_id>/', 
         ObservationListCreateView.as_view(), 
         name='observation-list-by-site'
     ),
 
-    path('recent-observations/', RecentObservationListView.as_view(), name='recent-observation-list')
+    path(
+        'observations/recent-observations/', 
+        RecentObservationListView.as_view(), 
+        name='recent-observation-list'
+    ),
+    
+    path(
+        'observations/observation-details/<int:pk>/', 
+        ObservationRetrieveView.as_view(),
+        name='observation-details'
+    ),
 ]
