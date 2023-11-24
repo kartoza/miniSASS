@@ -20,6 +20,35 @@ class DecimalEncoder(DjangoJSONEncoder):
             return float(o)
         return super(DecimalEncoder, self).default(o)
 
+class RecentObservationListView(generics.ListAPIView):
+    serializer_class = ObservationsSerializer
+
+    def get_queryset(self):
+        return Observations.objects.all().order_by('-time_stamp')[:20]
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        recent_observations = []
+
+        for recent_observation in queryset:
+            try:
+                user_profile = UserProfile.objects.get(user=recent_observation.user)
+            except UserProfile.DoesNotExist:
+                user_profile = None
+
+            recent_observations.append({
+                'observation': recent_observation.gid,
+                'site': recent_observation.site.site_name,
+                'username': user_profile.user.username if user_profile else "",
+                'organisation': user_profile.organisation_name if user_profile else "",
+                'time_stamp': recent_observation.time_stamp,
+                'score': recent_observation.score,
+            })
+
+        json_data = json.dumps(recent_observations)
+        return HttpResponse(json_data, content_type='application/json')
+
 
 class ObservationListCreateView(generics.ListCreateAPIView):
     serializer_class = ObservationsSerializer
