@@ -1,6 +1,11 @@
 from django.urls import path
 from monitor.views import index, wms_get_feature_info, get_sites, get_closest_site, get_unique, zoom_observation, get_observations, download_observations, download_observations_filtered, get_schools, detail
 
+from monitor.site_views import (
+    SitesListCreateView, 
+    SiteRetrieveUpdateDestroyView
+)
+
 # URL patterns for the miniSASS app
 urlpatterns = [
     path('', index, name='monitor_index'),
@@ -14,4 +19,15 @@ urlpatterns = [
     path('observations/download/filtered/~<str:filter_string>', download_observations_filtered),
     path('schools/', get_schools),
     path('<int:monitor_id>/', detail, name='monitor_detail'),
+    
+    path(
+        'sites/', 
+        SitesListCreateView.as_view(), 
+        name='sites-list-create'
+    ),
+    path(
+        'sites/<int:pk>/', 
+        SiteRetrieveUpdateDestroyView.as_view(), 
+        name='site-retrieve-update-destroy'
+    ),
 ]
