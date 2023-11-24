@@ -57,9 +57,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
 
   }, [observation_id]);
 
-  // this will be dynamic based on the observation data available
+  // this will be dynamic based on the observation data available TODO
   const tabsData = [
-    { id: 'tab1', label: `${observationDetails.obs_date}`, content: (
+    { id: 'tab1', label: `${observationDetails.date}`, content: (
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
@@ -74,13 +74,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       </div>
     )
   },
-    { 
-      id: 'tab2', 
-      label: 'Tab 2', 
-      content: <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
-        Empty Tab
-      </div> 
-    },
   ];
 
   return (
