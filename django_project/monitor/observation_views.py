@@ -13,11 +13,12 @@ from decimal import Decimal
 import json
 from django.http import Http404
 
-
 class DecimalEncoder(DjangoJSONEncoder):
     def default(self, o):
         if isinstance(o, Decimal):
             return float(o)
+        elif isinstance(o, datetime):
+            return o.strftime('%Y-%m-%dT%H:%M:%S')
         return super(DecimalEncoder, self).default(o)
 
 class RecentObservationListView(generics.ListAPIView):
@@ -46,7 +47,7 @@ class RecentObservationListView(generics.ListAPIView):
                 'score': recent_observation.score,
             })
 
-        json_data = json.dumps(recent_observations)
+        json_data = json.dumps(recent_observations,cls=DecimalEncoder)
         return HttpResponse(json_data, content_type='application/json')
 
 
