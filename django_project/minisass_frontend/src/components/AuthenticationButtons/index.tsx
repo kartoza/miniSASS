@@ -4,6 +4,7 @@ import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
 import { useAuth } from '../../AuthContext';
 import axios from 'axios';
+import { globalVariables } from '../../utils';
 
 
 function AuthenticationButtons() {
@@ -11,7 +12,7 @@ function AuthenticationButtons() {
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const { state, dispatch } = useAuth();
-  const isAuthenticated = state.isAuthenticated;
+  const [isAuthenticated, setIsAuthenticated ] = useState(state.isAuthenticated);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -29,18 +30,20 @@ function AuthenticationButtons() {
     setRegisterModalOpen(false);
   };
 
-  const [error, setError] = useState(null); // Define an error state
+  const [error, setError] = useState(null);
+
+  const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
+  const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    // Clear the stored state in local storage
     localStorage.removeItem('authState');
+    setIsAuthenticated(false);
   };
-  const apiBaseUrl = window.location.href.split('/')[2];
 
   const handleLogin = async (loginData: any) => {
     try {
-      const response = await axios.post(`http://${apiBaseUrl}/authentication/api/authentication/api/login/`, loginData, {
+      const response = await axios.post(`${LOGIN_API}`, loginData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -49,23 +52,24 @@ function AuthenticationButtons() {
       if (response.status === 200) {
         const userData = response.data;
         dispatch({ type: 'LOGIN', payload: userData });
-        // Store the state in local storage
         localStorage.setItem('authState', JSON.stringify({ userData }));
         setError(null);
         setLoginModalOpen(false)
+        setIsAuthenticated(true)
       } else {
         setError('Invalid credentials. Please try again.');
+        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
+      setIsAuthenticated(false)
     }
   };
 
   const handleRegistration = async (registrationData) => {
-    const apiUrl = `http://${apiBaseUrl}/authentication/api/register/`;
-  
+
     try {
-      const response = await axios.post(apiUrl, registrationData, {
+      const response = await axios.post(REGISTER_API, registrationData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -80,19 +84,6 @@ function AuthenticationButtons() {
       setError(JSON.stringify(error.message));
     }
   };
-
-   // Get the current URL using window.location.href
-   const currentURL = window.location.href;
-
-   // Extract the base URL (everything up to the first single forward slash '/')
-   const parts = currentURL.split('/');
-   const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
- 
-   // Define the replacement path
-   const replacementPath = 'static/images/';
- 
-   // Construct the new URL with the replacement path
-   const newURL = baseUrl + '/' + replacementPath;
    
  
 
@@ -100,7 +91,7 @@ function AuthenticationButtons() {
     <div className="sm:bottom-20 md:bottom-[119px] flex sm:flex-col flex-row md:gap-10 sm:h-[] items-start justify-between md:left-[50px] md:relative sm:right-[] md:right-[] sm:top-[] md:w-[90%] w-full">
       <Img
         className="sm:bottom-[] h-[29px] sm:h-[50px] md:h-auto sm:mt-0 mt-[21px] object-cover sm:relative sm:top-5"
-        src={`${newURL}img_minisasstext1.png`}
+        src={`${globalVariables.staticPath}img_minisasstext1.png`}
         alt="minisasstextOne"
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
