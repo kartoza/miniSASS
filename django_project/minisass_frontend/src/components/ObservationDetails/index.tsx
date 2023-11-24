@@ -18,7 +18,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   };
 
   
-  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/${observation_id}/`
+  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observation_id}/`
 
   const [loading, setLoading] = useState(true);
   const [observationDetails, setObservationDetails] = useState({});
@@ -28,7 +28,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
 
   const fetchObservation = async (observation: any) => {
     try {
-      const response = await axios.get(`${GET_OBSERVATION}`, observation);
+      const response = await axios.get(`${GET_OBSERVATION}`);
       
   
       if (response.status === 200) {
