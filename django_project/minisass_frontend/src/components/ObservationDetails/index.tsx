@@ -32,6 +32,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       
   
       if (response.status === 200) {
+        setLoading(false);
         setObservationDetails(response.data);
 
         if(parseFloat(response.data.average_score) < 6){
