@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
 
-  const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/?recent_only=true';
+  const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
     useEffect(() => {
         const fetchHomePageData = () => {
