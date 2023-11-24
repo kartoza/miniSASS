@@ -57,63 +57,59 @@ class ObservationRetrieveView(generics.RetrieveAPIView):
     serializer_class = ObservationsSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        observation_id = self.kwargs.get('observation_id', None)
-        if observation_id is not None:
+        try:
+            observation = self.get_object()
             try:
-                observation = Observations.objects.get(pk=observation_id)
-                try:
-                    user_profile = UserProfile.objects.get(user=observation.user)
-                except UserProfile.DoesNotExist:
-                    user_profile = None
+                user_profile = UserProfile.objects.get(user=observation.user)
+            except UserProfile.DoesNotExist:
+                user_profile = None
 
-                # Combine first name and last name
-                collectors_name = (
-                    f"{user_profile.user.first_name} {user_profile.user.last_name}"
-                    if user_profile and user_profile.user.first_name and user_profile.user.last_name
-                    else user_profile.user.username if user_profile else ""
-                )
-                
-                observation_data = {
-                    'sitename': observation.site.site_name,
-                    'rivername': observation.site.river_name,
-                    'sitedescription': observation.site.description,
-                    'rivercategory': observation.site.river_cat,
-                    'longitude': observation.site.the_geom.x,
-                    'latitude': observation.site.the_geom.y,
-                    'date': observation.obs_date,
-                    'collectorsname': collectors_name,
-                    'organisationtype': user_profile.organisation_type if user_profile else "",
-                    'average_score': observation.score,
-                    'flatworms': observation.flatworms,
-                    'worms': observation.worms,
-                    'leeches': observation.leeches,
-                    'crabs_shrimps': observation.crabs_shrimps,
-                    'stoneflies': observation.stoneflies,
-                    'minnow_mayflies': observation.minnow_mayflies,
-                    'other_mayflies': observation.other_mayflies,
-                    'damselflies': observation.damselflies,
-                    'dragonflies': observation.dragonflies,
-                    'bugs_beetles': observation.bugs_beetles,
-                    'caddisflies': observation.caddisflies,
-                    'true_flies': observation.true_flies,
-                    'snails': observation.snails,
-                    'score': observation.score,
-                    'water_clarity': observation.water_clarity,
-                    'water_temp': observation.water_temp,
-                    'ph': observation.ph,
-                    'diss_oxygen': observation.diss_oxygen,
-                    'diss_oxygen_unit': observation.diss_oxygen_unit,
-                    'elec_cond': observation.elec_cond,
-                    'elec_cond_unit': observation.elec_cond_unit
-                }
+            # Combine first name and last name
+            collectors_name = (
+                f"{user_profile.user.first_name} {user_profile.user.last_name}"
+                if user_profile and user_profile.user.first_name and user_profile.user.last_name
+                else user_profile.user.username if user_profile else ""
+            )
+            
+            observation_data = {
+                'sitename': observation.site.site_name,
+                'rivername': observation.site.river_name,
+                'sitedescription': observation.site.description,
+                'rivercategory': observation.site.river_cat,
+                'longitude': observation.site.the_geom.x,
+                'latitude': observation.site.the_geom.y,
+                'date': observation.obs_date,
+                'collectorsname': collectors_name,
+                'organisationtype': user_profile.organisation_type if user_profile else "",
+                'average_score': observation.score,
+                'flatworms': observation.flatworms,
+                'worms': observation.worms,
+                'leeches': observation.leeches,
+                'crabs_shrimps': observation.crabs_shrimps,
+                'stoneflies': observation.stoneflies,
+                'minnow_mayflies': observation.minnow_mayflies,
+                'other_mayflies': observation.other_mayflies,
+                'damselflies': observation.damselflies,
+                'dragonflies': observation.dragonflies,
+                'bugs_beetles': observation.bugs_beetles,
+                'caddisflies': observation.caddisflies,
+                'true_flies': observation.true_flies,
+                'snails': observation.snails,
+                'score': observation.score,
+                'water_clarity': observation.water_clarity,
+                'water_temp': observation.water_temp,
+                'ph': observation.ph,
+                'diss_oxygen': observation.diss_oxygen,
+                'diss_oxygen_unit': observation.diss_oxygen_unit,
+                'elec_cond': observation.elec_cond,
+                'elec_cond_unit': observation.elec_cond_unit
+            }
 
-                json_data = json.dumps(observation_data, cls=DecimalEncoder)
-                return HttpResponse(json_data, content_type='application/json')
+            json_data = json.dumps(observation_data, cls=DecimalEncoder)
+            return HttpResponse(json_data, content_type='application/json')
 
-            except Observations.DoesNotExist:
-                raise Http404("Observation not found")
-
-        raise Http404("Observation ID not provided")
+        except Observations.DoesNotExist:
+            raise Http404("Observation not found")
 
 
 class ObservationListCreateView(generics.ListCreateAPIView):
