@@ -36,19 +36,21 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
             recent_observations = []
 
-            for observation in latest:
+            for recent_observation in latest:
                 try:
-                    user_profile = UserProfile.objects.get(user=observation.user)
+                    user_profile = UserProfile.objects.get(user=recent_observation.user)
                 except UserProfile.DoesNotExist:
                     user_profile = None
 
+                print("GID:", recent_observation.gid)
+
                 recent_observations.append({
-                    'observation': observation.pk,
-                    'site': observation.site.site_name,
+                    'observation': recent_observation.gid,
+                    'site': recent_observation.site.site_name,
                     'username': user_profile.user.username if user_profile else "",
                     'organisation': user_profile.organisation_name if user_profile else "",
-                    'time_stamp': observation.time_stamp,
-                    'score': observation.score,
+                    'time_stamp': recent_observation.time_stamp,
+                    'score': recent_observation.score,
                 })
 
             json_data = json.dumps(recent_observations, cls=DecimalEncoder)
@@ -58,7 +60,10 @@ class ObservationListCreateView(generics.ListCreateAPIView):
         elif observation is not None:
             try:
                 observation = Observations.objects.get(pk=observation)
-                user_profile = UserProfile.objects.get(user=observation.user)
+                try:
+                    user_profile = UserProfile.objects.get(user=observation.user)
+                except UserProfile.DoesNotExist:
+                    user_profile = None
 
                 return {
                     'sitename': observation.site.site_name,
@@ -68,8 +73,8 @@ class ObservationListCreateView(generics.ListCreateAPIView):
                     'longitude': observation.site.the_geom.x,
                     'latitude': observation.site.the_geom.y,
                     'date': observation.obs_date,
-                    'collectorsname': user_profile.user.username,
-                    'organisationtype': user_profile.organisation_type,
+                    'collectorsname': user_profile.user.username if user_profile else "",
+                    'organisationtype': user_profile.organisation_type if user_profile else "",
                     'average_score': observation.score,
                     'flatworms': observation.flatworms,
                     'worms': observation.worms,
