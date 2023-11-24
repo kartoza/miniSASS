@@ -1,7 +1,8 @@
 from django.urls import path
 from monitor.observation_views import (
     ObservationListCreateView, 
-    ObservationRetrieveUpdateDeleteView
+    ObservationRetrieveUpdateDeleteView,
+    RecentObservationListView
 )
 from monitor.views import (
     index, 
@@ -46,4 +47,6 @@ urlpatterns = [
         ObservationListCreateView.as_view(), 
         name='observation-list-by-site'
     ),
+
+    path('recent-observations/', RecentObservationListView.as_view(), name='recent-observation-list')
 ]
