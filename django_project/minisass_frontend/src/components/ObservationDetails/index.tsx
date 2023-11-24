@@ -18,9 +18,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   };
 
   
-  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations-details/${observation_id}/`
+  const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/${observation_id}/`
 
-
+  const [loading, setLoading] = useState(true);
   const [observationDetails, setObservationDetails] = useState({});
   const [titleColor, setTitleColor] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
@@ -32,10 +32,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       
   
       if (response.status === 200) {
-        console.log(response.data)
-        setObservationDetails(response);
+        setObservationDetails(response.data);
 
-        if(parseFloat(response.average_score) < 6){
+        if(parseFloat(response.data.average_score) < 6){
             setTitleColor("text-red-600")
             setProgressBarColor("red")
             setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
@@ -59,7 +58,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
 
   // this will be dynamic based on the observation data available
   const tabsData = [
-    { id: 'tab1', label: 'Tab 1', content: (
+    { id: 'tab1', label: `${observationDetails.obs_date}`, content: (
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
@@ -114,207 +113,208 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       />
     </div>
 
-    {/* this should define the tabs */}
-    <TabbedContent tabsData={tabsData} />;
+    {loading ? (
+        <div className="text-center mt-4">
+          <p>Loading...</p>
+        </div>
+      ) : (
+    <><TabbedContent tabsData={tabsData} /><div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
+            <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
+              <Text
+                className={`${titleColor} text-lg w-[140px]`}
+                size="txtRalewayBold18"
+              >
+                Average score:
+              </Text>
+              <div className="flex flex-row gap-2.5 items-center justify-start w-auto" style={{ marginLeft: '50%' }}>
+                <div className="h-[68px] relative w-[68px]">
+                  <div className="h-[68px] m-auto w-[68px]">
 
-    <div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
-      <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
-        <Text
-          className={`${titleColor} text-lg w-[140px]`}
-          size="txtRalewayBold18"
-        >
-          Average score:
-        </Text>
-        <div className="flex flex-row gap-2.5 items-center justify-start w-auto" style={{marginLeft: '50%'}}>
-          <div className="h-[68px] relative w-[68px]">
-            <div className="h-[68px] m-auto w-[68px]">
+                    <div
+                      className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible bg-${progressBarColor}`}
+                    >
+                      <CircularProgressbar
+                        className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible ${progressBarColor}`}
+                        value={parseFloat(observationDetails.score || "0") * 10}
+                        strokeWidth={3}
+                        styles={{
+                          trail: { strokeWidth: 3, stroke: "gray" },
+                          path: {
+                            strokeLinecap: "square",
+                            height: "100%",
+                            transformOrigin: "center",
+                            transform: "rotate(0deg)",
+                            stroke: progressBarColor,
+                          },
+                        }}
+                      ></CircularProgressbar>
+                    </div>
 
-            <div
-              className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible bg-${progressBarColor}`}
-            >
-              <CircularProgressbar
-                className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible ${progressBarColor}`}
-                value={parseFloat(observationDetails.score || "0") * 10}
-                strokeWidth={3}
-                styles={{
-                  trail: { strokeWidth: 3, stroke: "gray" },
-                  path: {
-                    strokeLinecap: "square",
-                    height: "100%",
-                    transformOrigin: "center",
-                    transform: "rotate(0deg)",
-                    stroke: progressBarColor,
-                  },
-                }}
-              ></CircularProgressbar>
+                    <Img
+                      className="absolute h-6 inset-x-[0] mx-auto object-cover top-[19%] w-[45%]"
+                      src={renderCrab}
+                      alt="rendercrab" />
+                  </div>
+                  <Text
+                    className={`${titleColor} absolute bottom-[18%] inset-x-[0] mx-auto text-base w-max`}
+                    size="txtRalewayRomanSemiBold16"
+                  >
+                    {observationDetails.average_score}
+                  </Text>
+                </div>
+                <Text
+                  className={`${titleColor} text-base w-auto`}
+                  size="txtRalewayRomanSemiBold16"
+                >
+                  {progressBarColor === 'green' ? (`Good`) : (`Poor`)}
+                </Text>
+              </div>
             </div>
+            <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
+              <Text
+                className="text-blue-900 text-lg w-auto"
+                size="txtRalewayBold18Blue900"
+              >
+                Site Details
+              </Text>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  River name:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.rivername}
+                </Text>
+              </div>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Site name:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.sitename}
+                </Text>
+              </div>
+              <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%' }}>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Site description:
+                </Text>
+                <Text
+                  className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.sitedescription}
+                </Text>
+              </div>
 
-              <Img
-                className="absolute h-6 inset-x-[0] mx-auto object-cover top-[19%] w-[45%]"
-                src={renderCrab}
-                alt="rendercrab"
-              />
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Latitude:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.latitude}
+                </Text>
+              </div>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Longitude:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.longitude}
+                </Text>
+              </div>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  River category:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.rivercategory}
+                </Text>
+              </div>
             </div>
-            <Text
-              className={`${titleColor} absolute bottom-[18%] inset-x-[0] mx-auto text-base w-max`}
-              size="txtRalewayRomanSemiBold16"
-            >
-              {observationDetails.average_score}
-            </Text>
-          </div>
-          <Text
-            className={`${titleColor} text-base w-auto`}
-            size="txtRalewayRomanSemiBold16"
-          >
-            {progressBarColor === 'green' ? (`Good`): (`Poor`)}
-          </Text>
-        </div>
-      </div>
-      <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-        <Text
-          className="text-blue-900 text-lg w-auto"
-          size="txtRalewayBold18Blue900"
-        >
-          Site Details
-        </Text>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            River name:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.rivername}
-          </Text>
-        </div>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Site name:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.sitename}
-          </Text>
-        </div>
-        <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%'}}>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
-            size="txtRalewayRomanRegular18"
-          >
-            Site description:
-          </Text>
-          <Text
-            className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.sitedescription}
-          </Text>
-        </div>
-
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Latitude:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-             {observationDetails.latitude}
-          </Text>
-        </div>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Longitude:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.longitude}
-          </Text>
-        </div>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            River category:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.rivercategory}
-          </Text>
-        </div>
-      </div>
-      <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-        <Text
-          className="text-blue-900 text-lg w-auto"
-          size="txtRalewayBold18Blue900"
-        >
-          Observation details
-        </Text>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Date:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.date}
-          </Text>
-        </div>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Collectors name:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.collectorsname}
-          </Text>
-        </div>
-        <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            Organisation type:
-          </Text>
-          <Text
-            className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-            size="txtRalewayRomanRegular18"
-          >
-            {observationDetails.organisationtype}
-          </Text>
-        </div>
-      </div>
-    </div>
-
+            <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
+              <Text
+                className="text-blue-900 text-lg w-auto"
+                size="txtRalewayBold18Blue900"
+              >
+                Observation details
+              </Text>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Date:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.date}
+                </Text>
+              </div>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Collectors name:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.collectorsname}
+                </Text>
+              </div>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Organisation type:
+                </Text>
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  {observationDetails.organisationtype}
+                </Text>
+              </div>
+            </div>
+          </div></>
+          )}
   </div>
   );
 };
