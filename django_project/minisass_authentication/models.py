@@ -18,7 +18,13 @@ class Lookup(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
-    organisation_type = models.CharField(max_length=255, null=True, blank=True)
+    organisation_type = models.ForeignKey(
+        Lookup, 
+        limit_choices_to={'container__description': 'Organisation Type'}, 
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL
+    )
     organisation_name = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True, null=True)
 
