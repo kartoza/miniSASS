@@ -185,27 +185,22 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [sites, setSitesList] = useState([]);
 
-  const FETCH_SITES = baseUrl + '/sites/api/list/';
+  const FETCH_SITES = baseUrl + 'monitor/sites/';
   
   const getSites = async () => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
   
       if (response.status === 200) {
-        setSitesList(response.data)
-      } else {
-        setSitesList([
-          { label: "site1", value: "siteID1" },
-          { label: "site2", value: "siteID2" },
-          { label: "site3", value: "siteID3" },
-        ])
+          const sitesList = response.data.map(site => ({
+            label: site.site_name,
+            value: site.gid.toString(),
+          }));
+    
+          setSitesList(sitesList);
       }
     } catch (error) {
-      setSitesList([
-        { label: "site1", value: "siteID1" },
-        { label: "site2", value: "siteID2" },
-        { label: "site3", value: "siteID3" },
-      ])
+      console.log(error.message)
     }
   };
 
