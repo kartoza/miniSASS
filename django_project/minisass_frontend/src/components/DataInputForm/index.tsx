@@ -7,6 +7,7 @@ import { Instance } from '@popperjs/core';
 import { Formik, Form, Field } from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
+import { globalVariables } from "../../utils";
 
 
 type DataInputFormProps = Omit<
@@ -143,12 +144,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     console.log('Form Values:', values);
   };
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
-
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const openUploadModal = () => {
@@ -185,7 +180,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [sites, setSitesList] = useState([]);
 
-  const FETCH_SITES = baseUrl + 'monitor/sites/';
+  const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
   
   const getSites = async () => {
     try {
@@ -376,7 +371,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       {/* Information icon */}
                       <Img
                         className="h-3.5 w-3.5 cursor-pointer"
-                        src={`${staticPath}information.png`}
+                        src={`${globalVariables.staticPath}information.png`}
                         alt="Information Icon"
                       />
                     </div>
