@@ -13,7 +13,7 @@ function AuthenticationButtons() {
 
   const { dispatch, state  } = useAuth();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(state.isAuthenticated);
 
   useEffect(() => {
     const storedState = localStorage.getItem('authState');
