@@ -1158,7 +1158,130 @@ const HowtoPage: React.FC = () => {
             src={`${newURL}img_rectangle6_280x303.png`}
             alt="rectangleSix_One"
           />
-          <MiniSASSResources />
+          <div className="scrolling-container">
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/hRgO80-427w"
+              title="Introduction to miniSASS"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/yGbi7P8RYoU"
+              title="Safety concerns for miniSASS"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/XJLcJMutXP8"
+              title="What is in your miniSASS kit "
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/_-L-Xs4QJRg"
+              title="What do you need to put together a miniSASS kit at home"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/WX_DkYyfnmk"
+              title="Choosing your site for miniSASS"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/XY_p8usHx4Q"
+              title="how to take a sample "
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src=" https://www.youtube.com/embed/8RATZXY2jyo"
+              title="Cleaning your sample"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/hKdPiSSVL0s"
+              title="Using the dichotomous key "
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/O_deXdCQIfM"
+              title="How to calculate your score"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/uUJTrkZKL6U"
+              title="Uploading your miniSASS score "
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/uU7hOj4zjG0"
+              title="Using miniSASS for monitoring"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+
+          <div className="VideoTile">
+            <iframe
+              className="VideoEmbed"
+              src="https://www.youtube.com/embed/illWM9BhL-0"
+              title="miniSASS in summary "
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          </div>
         </div>
 
         <Footer className="flex items-center justify-center mt-28 md:px-5 sm:w-[144%] w-full" />
