@@ -45,6 +45,12 @@ const MapPage: React.FC = () => {
 
   }, [details]);
 
+  const [showLegend, setShowLegend] = useState(true);
+
+  const toggleLegend = () => {
+    setShowLegend(prev => !prev);
+  };
+
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full h-screen">
@@ -120,104 +126,122 @@ const MapPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[6%] left-[13px]">
-            <div className="flex flex-col items-center justify-center w-auto">
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanBold16"
-              >
-                Legend
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img className="h-6 w-7" src={`${staticPath}img_alarm.svg`} alt="alarm" />
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanRegular16"
-              >
-                Unmodified (NATURAL condition)
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_alarm_green_400.svg`}
-                alt="alarm_One"
-              />
-              <Text
-                className="leading-[136.40%] max-w-[243px] md:max-w-full text-base text-black-900"
-                size="txtRalewayRomanRegular16"
-              >
-                Largely natural/few modifications (GOOD condition)
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_alarm_orange_a200.svg`}
-                alt="alarm_Two"
-              />
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanRegular16"
-              >
-                Moderately modified (FAIR condition)
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_twitter.svg`}
-                alt="twitter"
-              />
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanRegular16"
-              >
-                Largely modified (POOR condition)
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_alarm_deep_purple_400.svg`}
-                alt="alarm_Three"
-              />
-              <Text
-                className="leading-[136.40%] max-w-[268px] md:max-w-full text-base text-black-900"
-                size="txtRalewayRomanRegular16"
-              >
-                Seriously/critically modified(VERY POOR condition)
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_settings.svg`}
-                alt="settings"
-              />
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanRegular16"
-              >
-                No groups present
-              </Text>
-            </div>
-            <div className="flex flex-row gap-3 items-center justify-center w-auto">
-              <Img
-                className="h-6 w-7"
-                src={`${staticPath}img_arrowdown.svg`}
-                alt="arrowdown"
-              />
-              <Text
-                className="text-base text-black-900 w-auto"
-                size="txtRalewayRomanRegular16"
-              >
-                Exclamation mark: unverified
-              </Text>
-            </div>
-          </div>
+          {/* Toggle button to show legend */}
+        <div
+          className="absolute top-0 left-0 m-4 p-2 bg-white top-[10%] rounded-md cursor-pointer"
+          onClick={toggleLegend}
+          style={{
+            transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
+            backgroundColor: 'white'
+          }}
+        >
+          <svg
+            width="12"
+            height="16"
+            viewBox="0 0 12 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={`transform ${showLegend ? 'rotate-180' : ''}`} // Apply rotation conditionally
+          >
+            <path
+              d="M11 2L5 8L11 14"
+              stroke="#000"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          L
         </div>
+
+      <div
+        className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[17%] sm:top-[25px] w-auto transition-opacity duration-300 ${
+          showLegend ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        
+          <Text className="text-base text-black-900" size="txtRalewayRomanBold16">
+            Legend
+          </Text>
+
+                    {showLegend && (
+            <><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                <Img className="h-6 w-7" src={`${staticPath}img_alarm.svg`} alt="alarm" />
+                <Text
+                  className="text-base text-black-900 w-auto"
+                  size="txtRalewayRomanRegular16"
+                >
+                  Unmodified (NATURAL condition)
+                </Text>
+              </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_alarm_green_400.svg`}
+                    alt="alarm_One" />
+                  <Text
+                    className="leading-[136.40%] max-w-[243px] md:max-w-full text-base text-black-900"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    Largely natural/few modifications (GOOD condition)
+                  </Text>
+                </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_alarm_orange_a200.svg`}
+                    alt="alarm_Two" />
+                  <Text
+                    className="text-base text-black-900 w-auto"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    Moderately modified (FAIR condition)
+                  </Text>
+                </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_twitter.svg`}
+                    alt="twitter" />
+                  <Text
+                    className="text-base text-black-900 w-auto"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    Largely modified (POOR condition)
+                  </Text>
+                </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_alarm_deep_purple_400.svg`}
+                    alt="alarm_Three" />
+                  <Text
+                    className="leading-[136.40%] max-w-[268px] md:max-w-full text-base text-black-900"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    Seriously/critically modified(VERY POOR condition)
+                  </Text>
+                </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_settings.svg`}
+                    alt="settings" />
+                  <Text
+                    className="text-base text-black-900 w-auto"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    No groups present
+                  </Text>
+                </div><div className="flex flex-row gap-3 items-center justify-center w-auto">
+                  <Img
+                    className="h-6 w-7"
+                    src={`${staticPath}img_arrowdown.svg`}
+                    alt="arrowdown" />
+                  <Text
+                    className="text-base text-black-900 w-auto"
+                    size="txtRalewayRomanRegular16"
+                  >
+                    Exclamation mark: unverified
+                  </Text>
+                </div></>
+                    )}
+          </div>
       </div>
       <Footer className="flex items-center justify-center mt-[107px] md:px-5 w-full" />
     </>
