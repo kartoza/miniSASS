@@ -11,9 +11,10 @@ interface AdditionalData {
 interface ScoreFormProps {
   onCancel: () => void;
   additionalData: AdditionalData;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
+const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
 
   // TODO populate with values from api
   const ScoreList = [
@@ -103,6 +104,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     setIsManageImagesModalOpen(false);
   };
 
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full" 
@@ -113,9 +118,22 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         }}
       >
         <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
-          <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
-            Score
-          </Text>
+          <div
+            className="flex flex-row gap-80 w-auto sm:w-full"
+          >
+            <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
+              Score
+            </Text>
+            <Img
+              className="h-6 w-6 common-pointer"
+              src={`${staticPath}img_icbaselineclose.svg`}
+              alt="close"
+              style={{
+                marginLeft: '118px'
+              }}
+              onClick={handleCloseSidebar}
+            />
+          </div>
           <div className="flex flex-row items-center justify-between w-[71%] md:w-full">
             <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
               Groups
