@@ -10,6 +10,8 @@ import { Link } from 'react-scroll';
 import MiniSASSResources from "../../components/minisassResources";
 import RegistrationFormModal from "../../components/RegistrationFormModal";
 
+import "./style.css"
+
 
 
 const HowtoPage: React.FC = () => {
