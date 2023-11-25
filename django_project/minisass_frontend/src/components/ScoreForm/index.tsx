@@ -108,11 +108,16 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     setSidebarOpen(false);
   };
 
+  const currentURL = window.location.href;
+  const parts = currentURL.split('/');
+  const baseUrl = parts[0] + '//' + parts[2];
+  const staticPath = baseUrl + '/static/images/';
+
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full" 
         style={{
-          height: '68vh',
+          height: '70vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
