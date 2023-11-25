@@ -42,7 +42,7 @@ const Slideshow = () => {
   return (
     <div>
       <Img
-        className="h-[464px] sm:left-[] mt-auto mx-auto object-cover relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full"
+        className="h-[464px] sm:left-[] mt-auto mx-auto object-contain relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full"
         src={slideshowImages[currentImageIndex]}
         alt="intrestedcitize"
       />
