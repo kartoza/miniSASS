@@ -152,7 +152,9 @@ const MapPage: React.FC = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            L
+            <Text className="text-base text-black-900" size="txtRalewayRomanBold16">
+              L
+            </Text>
           </div>
 
         <div
