@@ -35,6 +35,7 @@ type DataInputFormProps = Omit<
   | "dissolvedoxygenOne"
   | "electricalconduOne"
   | "next"
+  | "setSidebarOpen"
 > &
   Partial<{
     datainputform: string;
@@ -61,6 +62,7 @@ type DataInputFormProps = Omit<
     dissolvedoxygenOne: string;
     electricalconduOne: string;
     next: string;
+    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   }>;
 
 const inputOptionsList = [
@@ -90,6 +92,10 @@ const inputDirectionUnitsList = [
 ];
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
+
+  const handleCloseSidebar = () => {
+    props.setSidebarOpen(false);
+  };
 
   // TODO still need to save data to db
 
@@ -221,12 +227,25 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
         overflowY: 'auto',
         overflowX: 'auto',
       }}>
-        <Text
-          className="text-2xl md:text-[22px] text-blue-900 sm:text-xl"
-          size="txtRalewayBold24"
-        >
-          {props?.datainputform}
-        </Text>
+        <div
+            className="flex flex-row gap-80 items-start justify-start w-auto sm:w-full"
+          >
+          <Text
+            className="text-2xl md:text-[22px] text-blue-900 sm:text-xl"
+            size="txtRalewayBold24"
+          >
+            {props?.datainputform}
+          </Text>
+          <Img
+            className="h-6 w-6 common-pointer"
+            src={`${staticPath}img_icbaselineclose.svg`}
+            alt="close"
+            style={{
+              marginLeft: '35px'
+            }}
+            onClick={handleCloseSidebar}
+          />
+        </div>
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
           <Text
             className="text-blue-900 text-lg w-auto"
@@ -957,7 +976,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
         </div>
       </div>
       ): (
-        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} />
+        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} />
       )};
     </>
   );
