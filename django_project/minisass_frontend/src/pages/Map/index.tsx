@@ -128,7 +128,7 @@ const MapPage: React.FC = () => {
           
           {/* Toggle button to show legend */}
         <div
-          className="absolute top-0 left-0 m-4 p-2 bg-white top-[10%] rounded-md cursor-pointer"
+          className="absolute top-0 left-0 m-4 p-2 bg-white top-[20%] rounded-md cursor-pointer"
           onClick={toggleLegend}
           style={{
             transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
@@ -155,7 +155,7 @@ const MapPage: React.FC = () => {
         </div>
 
       <div
-        className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[17%] sm:top-[25px] w-auto transition-opacity duration-300 ${
+        className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[25%] sm:top-[25px] w-auto transition-opacity duration-300 ${
           showLegend ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
