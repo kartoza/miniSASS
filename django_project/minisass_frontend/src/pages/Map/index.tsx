@@ -132,7 +132,7 @@ const MapPage: React.FC = () => {
             onClick={toggleLegend}
             style={{
               transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
-              backgroundColor: 'white'
+              backgroundColor: 'white',
               marginLeft: '-1px'
             }}
           >
@@ -156,10 +156,10 @@ const MapPage: React.FC = () => {
           </div>
 
         <div
-          className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[30%] sm:top-[25px] w-auto transition-opacity duration-300 ${
+          className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[25%] sm:top-[25px] w-auto transition-opacity duration-300 ${
             showLegend ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
-          style={{ marginLeft: '-1px' }}
+          style={{ marginLeft: '-2px' }}
         >
         
           <Text className="text-base text-black-900" size="txtRalewayRomanBold16">
