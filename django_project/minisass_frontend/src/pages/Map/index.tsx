@@ -42,7 +42,6 @@ const MapPage: React.FC = () => {
       setSidebarOpen((prev) => !prev);
     }
     
-
   }, [details]);
 
   return (
