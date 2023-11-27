@@ -40,7 +40,7 @@
 
     Replace `COMPUTER_HOSTNAME` with the actual name of the host (type `hostname` in the terminal to get it and assign it to the `HTTPS_HOST` variable).
 
-8. Optional: You might need to adjust the build context of the S3 mount. In case it fails to build, replace lines 32-36 with the following:
+8. Optional: You might need to adjust the build context of the S3 mount. In case it fails to build, replace lines 32-36 in docker-compose.yml with the following:
 
     ```yaml
     mount:
