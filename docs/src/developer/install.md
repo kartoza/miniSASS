@@ -134,4 +134,5 @@
     npm run build
     ```
 
-    Execute the `collectstatic` command on the Django container, execute the restart command on the Django container, and access the web app from the local URL https://${COMPUTER_HOSTNAME}/.
+5. Execute the `collectstatic` command on the Django container.
+6. Execute the restart command on the Django container, and access the web app from the local URL https://${COMPUTER_HOSTNAME}/
