@@ -1,36 +1,137 @@
-# Installing miniSASS Django-CMS project
+# Setting up a Local Development Environment
 
-This is currently a basic Django-CMS site. No extra Django applications have been added yet. 
-To install the pre-requisites needed for this site to run, do the following:
+## Prerequisites
 
-## Docker Deployments
+- Any Linux distribution for the operating system
+- Docker installed on the local machine
+- Visual Studio Code for the editor (or any preferred)
 
-* Clone the repository
+## Installation Steps
 
-    ```bash
-     git clone git@github.com:kartoza/miniSASS.git
-     cd miniSASS
-    ```
+1. Open the terminal.
 
-* Copy the `.example.env` file and adjust the environment variables to match your requirements.
+2. Create a directory:
 
     ```bash
-    cp .example.env .env
+    mkdir name_of_directory
     ```
 
-* Prepare the sample data to load into your PostgreSQL database. If you need to load
-the data when initialising the containers you need to update the `docker-compose.yml`
-so that you can mount the `import-data.sh` script instead of the `restore.sh`
-script as per the instruction of running scripts in [docker-postgis](https://github.com/kartoza/docker-postgis#running-sql-scripts-on-container-startup)
-* Bring the services up by running:
+3. Clone the minisass repository:
 
     ```bash
-    docker compose up -d
+    git clone https://github.com/kartoza/miniSASS.git
     ```
 
-* Publish the PostGIS layers to GeoServer either using the rest api or the GUI.
+4. Once cloned, navigate into the repo directory:
 
-**Note:** If you have a database dump of the previous running instance of the platform
-and GeoServer data directory. You need to add your database dumps into `data`
-folder and also do a dump and restore for GeoServer using the
-`GeoServer backup and restore plugin`.
+    ```bash
+    cd miniSASS
+    ```
+
+5. Open the directory with VSCode (assuming you have VSCode installed) or open the repository directory in any editor of your choice.
+
+6. Locate the `template.env` file and rename it to `.env`.
+
+7. Adjust the following variables in the `.env` file:
+
+    ```env
+    HTTPS_HOST=${COMPUTER_HOSTNAME}
+    ```
+
+    Replace `COMPUTER_HOSTNAME` with the actual name of the host (type `hostname` in the terminal to get it and assign it to the `HTTPS_HOST` variable).
+
+8. Optional: You might need to adjust the build context of the S3 mount. In case it fails to build, replace lines 32-36 with the following:
+
+    ```yaml
+    mount:
+      image: kartoza/s3mount
+      build:
+        context: .
+        dockerfile: ./deployment/docker-s3-bucket/Dockerfile
+    ```
+
+9. After these changes, you're ready to build the container. Type:
+
+    ```bash
+    docker compose build
+    ```
+
+10. Upon successful completion, type:
+
+    ```bash
+    docker compose up -d db;sleep 180;docker compose up -d
+    ```
+
+11. This will start the containers, and you should be able to access the web application from https://${COMPUTER_HOSTNAME}/.
+
+## Local Development (Backend)
+
+- The local database will be empty; fixture files need to be manually loaded for some test data.
+
+### Useful Commands on the Backend Container
+
+- Creating a superuser:
+
+    ```bash
+    docker exec -it name_of_django_container python manage.py createsuperuser
+    ```
+
+- Accessing the container:
+
+    ```bash
+    docker exec -it name_of_django_container bash
+    ```
+
+- To reflect saved changes (for the backend only):
+
+    ```bash
+    docker restart name_of_django_container
+    ```
+
+- To stop all running containers:
+
+    ```bash
+    docker down -v
+    ```
+
+## Frontend Development
+
+- The frontend uses React + TypeScript + Tailwind CSS.
+
+- To locally work on the frontend:
+
+1. Navigate into the frontend directory:
+
+    ```bash
+    cd minisass_frontend
+    ```
+
+2. Type:
+
+    ```bash
+    npm install
+    ```
+
+    Ensure you have Node.js version 16 and upwards installed on your system. If you are using an older Node version, use:
+
+    ```bash
+    npm install --legacy-peer-deps
+    ```
+
+    (not recommended)
+
+3. After a successful `npm install`, type:
+
+    ```bash
+    npm run start
+    ```
+
+    This will expose a URL to access in the web browser. Making changes and saving them will automatically trigger the browser to refresh. In development mode, static files will not be available since they're being served from the Django container.
+
+4. Alternatively, if you prefer, you can:
+
+    ```bash
+    npm run build
+    ```
+
+    Execute the `collectstatic` command on the Django container, execute the restart command on the Django container, and access the web app from the local URL https://${COMPUTER_HOSTNAME}/.
