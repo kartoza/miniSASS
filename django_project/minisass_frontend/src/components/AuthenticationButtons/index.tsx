@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
@@ -11,8 +11,18 @@ function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { state, dispatch } = useAuth();
-  const [isAuthenticated, setIsAuthenticated ] = useState(state.isAuthenticated);
+  const { dispatch, state  } = useAuth();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(state.isAuthenticated);
+
+  useEffect(() => {
+    const storedState = localStorage.getItem('authState');
+    if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        if(parsedState.userData.is_authenticated == 'true')
+          setIsAuthenticated(true)
+    }
+  }, []);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -53,16 +63,15 @@ function AuthenticationButtons() {
         const userData = response.data;
         dispatch({ type: 'LOGIN', payload: userData });
         localStorage.setItem('authState', JSON.stringify({ userData }));
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
         setError(null);
         setLoginModalOpen(false)
         setIsAuthenticated(true)
       } else {
         setError('Invalid credentials. Please try again.');
-        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
-      setIsAuthenticated(false)
     }
   };
 

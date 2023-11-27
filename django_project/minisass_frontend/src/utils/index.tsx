@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export const handleSectionNavigation = (id: string) => {
   const element = document.getElementById(id);
   const offset = 45;
@@ -25,4 +24,3 @@ export const globalVariables = {
   baseUrl,
   staticPath,
 };
-
