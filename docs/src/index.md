@@ -1,5 +1,7 @@
 # Welcome to MiniSASS
 
+![Landing Page](./img/landing_page.png)
+
 [![Join the chat at https://gitter.im/sokolic/miniSASS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sokolic/miniSASS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## miniSASS Web Application and CMS
