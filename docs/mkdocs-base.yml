@@ -1,0 +1,48 @@
+site_name: SAWPS
+site_description: "SANBI WPS technical and user documentation."
+site_author: "Kartoza"
+docs_dir: ./src
+site_dir: ./site
+repo_name: "SANBI WPS"
+repo_url: "https://github.com/kartoza/sawps/"
+edit_uri: "https://github.com/kartoza/sawps/blob/main/docs/"
+
+copyright: Kartoza and Contributors
+
+markdown_extensions:
+        - attr_list # lets us resize images see https://github.com/mkdocs/mkdocs/issues/1678#issuecomment-455500757
+        - sane_lists # needed to keep numbers in ordered lists correct
+        - pymdownx.highlight:
+                  anchor_linenums: true
+        - pymdownx.inlinehilite
+        #- mdx_truly_sane_lists
+        - toc:
+                  permalink: true
+                   #slugify: !!python/name:pymdownx.slugs.slugify
+        - pymdownx.snippets:
+                  base_path: .
+        - admonition
+        - tables
+        - pymdownx.details
+        - pymdownx.caret
+        - pymdownx.keys
+        - pymdownx.mark
+        - pymdownx.tilde
+        - pymdownx.superfences:
+                  custom_fences:
+                          - name: mermaid
+                            class: mermaid
+                            format: !!python/name:pymdownx.superfences.fence_code_format
+        - pymdownx.emoji:
+                  emoji_generator: !!python/name:materialx.emoji.to_svg
+                  emoji_index: !!python/name:materialx.emoji.twemoji
+
+nav:
+        - Home:
+                  - Home: index.md
+        - Developer:
+                  - developer/index.md
+                  - Installation: developer/install.md
+                  - Authentication: developer/authentication.md
+        - About:
+                  - License: about/license.md
