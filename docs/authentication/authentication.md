@@ -74,10 +74,35 @@ This API only allows 2 methods:
 
 ![Token Refresh Success](./img/success_response_token_obtain.png)
 
+**Checking the Authentication status**:
+
+### 4. https://{current_domain}/authentication/api/check-auth-status/
+
+![Check Auth Api](./img/check_auth_status.png)
+
+This API is used to confirm if the user is logged in.
+
+    example usage: 
+    A get request to the above url.
+
+    returns a success response 200 with the with an object containing user details e.g. is_authenticated variable.
+
+**Logging out a user**:
+
+### 5. https://{current_domain}/authentication/api/logout/
+
+![Logout API](./img/logout_user_api.png)
+
+This API is used to logout the user aganist the authentication backend.
+Any action from the frontend that triggers the logout of a user should also call this api. This ensures the user is logged out
+
+    example usage: 
+    A post request to the above url
+
 
 **Registering a user**:
 
-### 4. https://{current_domain}/authentication/api/register/
+### 6. https://{current_domain}/authentication/api/register/
 
 ![Register Api](./img/registration_api.png)
 
