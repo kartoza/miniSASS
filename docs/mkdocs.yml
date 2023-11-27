@@ -4,7 +4,7 @@ site_author: "Kartoza"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "miniSASS"
-repo_url: "https://github.com/jeremy-jrior/minisass"
+repo_url: "https://github.com/jeremy-prior/minisass"
 edit_uri: "https://github.com/jeremy-prior/minisass/blob/main/docs/"
 
 copyright: Kartoza and Contributors
@@ -50,7 +50,7 @@ nav:
 # Configuration
 theme:
   name: material
-  logo: img/SANBI-logo.jpg
+  logo: 
   language: en
   direction: ltr
   include_search_page: false

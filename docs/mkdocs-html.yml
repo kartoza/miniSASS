@@ -2,7 +2,7 @@
 # Configuration
 theme:
   name: material
-  logo: img/SANBI-logo.jpg
+  logo: 
   language: en
   direction: ltr
   include_search_page: false
