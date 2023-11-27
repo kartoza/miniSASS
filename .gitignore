@@ -40,3 +40,4 @@ tags
 data
 
 .env
+docs/mkdocs.yml
