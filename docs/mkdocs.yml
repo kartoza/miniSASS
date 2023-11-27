@@ -1,11 +1,11 @@
-site_name: SAWPS
-site_description: "SANBI WPS technical and user documentation."
+site_name: MiniSASS
+site_description: "MiniSASS documentation."
 site_author: "Kartoza"
 docs_dir: ./src
 site_dir: ./site
-repo_name: "SANBI WPS"
-repo_url: "https://github.com/kartoza/sawps/"
-edit_uri: "https://github.com/kartoza/sawps/blob/main/docs/"
+repo_name: "miniSASS"
+repo_url: "https://github.com/kartoza/miniSASS"
+edit_uri: "https://github.com/kartoza/miniSASS/blob/main/docs/"
 
 copyright: Kartoza and Contributors
 
