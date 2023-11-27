@@ -4,8 +4,8 @@ site_author: "Kartoza"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "miniSASS"
-repo_url: "https://github.com/kartoza/miniSASS"
-edit_uri: "https://github.com/kartoza/miniSASS/blob/main/docs/"
+repo_url: "https://github.com/jeremy-jrior/minisass"
+edit_uri: "https://github.com/jeremy-prior/minisass/blob/main/docs/"
 
 copyright: Kartoza and Contributors
 
