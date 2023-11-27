@@ -4,8 +4,8 @@ site_author: "Kartoza"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "miniSASS"
-repo_url: "https://github.com/jeremy-prior/minisass"
-edit_uri: "https://github.com/jeremy-prior/minisass/blob/main/docs/"
+repo_url: "https://github.com/kartoza/minisass"
+edit_uri: "https://github.com/kartoza/minisass/blob/main/docs/"
 
 copyright: Kartoza and Contributors
 
@@ -40,9 +40,12 @@ markdown_extensions:
 nav:
         - Home:
                   - Home: index.md
+                  - Developer Documentation: developer/index.md
+                  - About: about/index.md
         - Developer:
                   - developer/index.md
                   - Installation: developer/install.md
                   - Authentication: developer/authentication.md
         - About:
+                  - about/index.md
                   - License: about/license.md

@@ -29,10 +29,6 @@ You can deploy your own instance by following instructions in [installation](./d
 If you experience issues when interacting with the platform or setting up your own instance
 please report the issues through [GitHub Issue Tracker](https://github.com/kartoza/miniSASS/issues)
 
-## Credits
+## About
 
-* Frank Sokolic, GIS-Solutions 2013-2014
-* Gavin Fleming, Afrispatial 2013, Kartoza 2014
-* Admire Nyakudya, Kartoza, 2013
-* Jurgen Blignaut, Webtide 2013
-* Simon Bruton, GroundTruth 2013-2014
+Please visit the [About](./about/index.md) page for more information regarding contributors.

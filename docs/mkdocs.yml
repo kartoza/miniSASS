@@ -40,11 +40,14 @@ markdown_extensions:
 nav:
         - Home:
                   - Home: index.md
+                  - Developer Documentation: developer/index.md
+                  - About: about/index.md
         - Developer:
                   - developer/index.md
                   - Installation: developer/install.md
                   - Authentication: developer/authentication.md
         - About:
+                  - about/index.md
                   - License: about/license.md
 
 # Configuration
@@ -73,14 +76,14 @@ theme:
     - toc.follow
   palette:
     - scheme: default
-      primary: green
-      accent: custom
+      primary: indigo
+      accent: teal
       toggle:
         icon: material/brightness-4
         name: Switch to dark mode
     - scheme: slate
-      primary: green
-      accent: custom
+      primary: indigo
+      accent: teal
       toggle:
         icon: material/brightness-6
         name: Switch to light mode
