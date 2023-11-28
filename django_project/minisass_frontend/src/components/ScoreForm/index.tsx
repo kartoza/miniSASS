@@ -1,8 +1,9 @@
-import React, { useState, FC } from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Button, Img, List, Text } from "../../components";
 import UploadModal from "../../components/UploadFormModal";
 import ManageImagesModal from "../../components/ManageImagesModal";
+import { globalVariables } from "../../utils";
 
 interface AdditionalData {
   dataFormInput: string;
@@ -13,36 +14,33 @@ interface ScoreFormProps {
   additionalData: AdditionalData;
 }
 
-const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
+  const [scoreGroups, setScoreGroups] = useState([]);
 
-  // TODO populate with values from api
-  const ScoreList = [
-    { groups: "Worms", sensetivityScore: "2.43", id: "1" },
-    { groups: "Leeches", sensetivityScore: "2.43", id: "2" },
-    { groups: "Crabs or Shrimps", sensetivityScore: "2.43", id: "3" },
-    { groups: "Stoneflies", sensetivityScore: "3.43", id: "4" },
-    { groups: "Minnow mayflies", sensetivityScore: "2", id: "5" },
-    { groups: "Other Mayflies", sensetivityScore: "2.313", id: "6" },
-    { groups: "Damselflies", sensetivityScore: "2.43", id: "7" },
-    { groups: "Dragonflies", sensetivityScore: "2.43", id: "8" },
-    { groups: "Bugs or beetles", sensetivityScore: "2.3", id: "9" },
-    { groups: "Caddisflies", sensetivityScore: "7.43", id: "10" },
-    { groups: "True flies", sensetivityScore: "12.43", id: "11" },
-    { groups: "Snails", sensetivityScore: "1.343", id: "12" },
-  ];
+  useEffect(() => {
+    const fetchScoreGroups = async () => {
+      try {
+        const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
+        setScoreGroups(response.data);
+      } catch (error) {
+        console.error('Error fetching score groups:', error);
+      }
+    };
+
+    fetchScoreGroups();
+  }, []);
 
   const [manageImagesModalData, setManageImagesModalData] = useState({
     groups: '',
     sensetivityScore: '',
     id: '',
   });
-  
 
   const [selectedButton, setSelectedButton] = useState(null);
 
-  const [buttonStates, setButtonStates] = useState(ScoreList.map(score => ({ id: score.id, showManageImages: false })));
+  const [buttonStates, setButtonStates] = useState(scoreGroups.map(score => ({ id: score.id, showManageImages: false })));
 
-  const handleButtonClick  = (id) => {
+  const handleButtonClick = (id) => {
     const updatedButtonStates = buttonStates.map(buttonState => {
       if (buttonState.id === id) {
         return { ...buttonState, showManageImages: !buttonState.showManageImages };
@@ -54,17 +52,17 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   };
 
   const [checkboxStates, setCheckboxStates] = useState(
-    ScoreList.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
+    scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-  const totalScore = ScoreList.reduce((acc, curr) => acc + parseFloat(curr.sensetivityScore), 0);
-  const numberOfGroups = ScoreList.length;
+  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivityScore), 0);
+  const numberOfGroups = scoreGroups.length;
   const averageScore = totalScore / numberOfGroups;
 
   // Function to log the state of checkboxes
   const handleSave = () => {
     console.log(checkboxStates); // Log the state of checkboxes
-    console.log('values ',additionalData);
+    console.log('values ', additionalData);
     console.log(`Total Score: ${totalScore}`);
     console.log(`Number of Groups: ${numberOfGroups}`);
     console.log(`Average Score: ${averageScore}`);
@@ -91,7 +89,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
   const openManageImagesModal = (id, groups, sensetivityScore) => {
     setIsManageImagesModalOpen(true);
-    console.log('assigning ',groups, ' ',sensetivityScore, ' ', ' ',id)
+    console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id)
     setManageImagesModalData({
       'groups': groups,
       'sensetivityScore': sensetivityScore,
@@ -105,7 +103,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
   return (
     <>
-      <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full" 
+      <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
           height: '75vh',
           overflowY: 'auto',
@@ -120,25 +118,25 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
             <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
               Groups
             </Text>
-            <Text className="text-blue-900 text-lg" size="txtRalewayBold18" style={{marginRight: "10%"}}>
+            <Text className="text-blue-900 text-lg" size="txtRalewayBold18" style={{ marginRight: "10%" }}>
               Sensitivity Score
             </Text>
           </div>
 
           {/* Tabular-like structure */}
           <div className="sm:gap-5 items-start justify-start overflow-x-auto w-full">
-            {ScoreList.map((props, index) => (
+            {scoreGroups.map((props, index) => (
               <div key={`Row${index}`} className="flex flex-row items-center justify-between w-full">
                 {/* Column 1 - Groups with Information Modal */}
                 <div className="flex items-center justify-start w-[200px]">
                   <div className="flex flex-col items-center justify-start w-[42px]">
                     <div className="flex flex-col items-start justify-start p-[9px] w-[42px]">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         id={`checkbox-${props.id}`}
                         checked={checkboxStates[props.id]}
                         onChange={() => handleCheckboxChange(props.id)}
-                        style={{ borderRadius: '4px'}}
+                        style={{ borderRadius: '4px' }}
                       ></input>
                     </div>
                   </div>
@@ -160,7 +158,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                 </div>
 
                 {/* Column 3 - Select or Manage Images Button */}
-                <div className="flex sm:flex-1 flex-col font-raleway gap-2 items-start justify-start w-[210px]" style={{marginBottom:'2%'}}>
+                <div className="flex sm:flex-1 flex-col font-raleway gap-2 items-start justify-start w-[210px]" style={{ marginBottom: '2%' }}>
                   {buttonStates.map((buttonState, btnIndex) => {
                     if (buttonState.id === props.id) {
                       return (
@@ -187,7 +185,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
-                              onClick={()=> openManageImagesModal(props.id, props.groups, props.sensetivityScore)}
+                              onClick={() => openManageImagesModal(props.id, props.groups, props.sensetivityScore)}
                             >
                               Manage Images
                             </Button>
@@ -201,9 +199,6 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
               </div>
             ))}
           </div>
-
-
-
 
           {/* Display calculated values */}
           <div className="flex flex-row gap-[17px] items-start justify-start w-auto">
@@ -257,14 +252,14 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
         </div>
         <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
-        <ManageImagesModal 
-          title={manageImagesModalData.groups} 
-          isOpen={isManageImagesModalOpen} 
-          onClose={closeManageImagesModal} 
-          onSubmit={null} 
+        <ManageImagesModal
+          title={manageImagesModalData.groups}
+          isOpen={isManageImagesModalOpen}
+          onClose={closeManageImagesModal}
+          onSubmit={null}
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
-          aiScore={'1.0'} // Adjust this as needed
+          aiScore={'1.0'} // TODO this will be dynamic
         />
       </div>
     </>
