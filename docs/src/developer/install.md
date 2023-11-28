@@ -81,10 +81,6 @@ This is likely to be caused by static staticfiles, follow these steps:
     ```bash
     python manage.py collectstatic --noinput
     ```
-7. **Restart the Django container:**
-    ```bash
-    docker restart name_of_django_container
-    ```
 
 ### Other Issues
 
