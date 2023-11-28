@@ -29,7 +29,6 @@ class ObservationsModelTest(TestCase):
             crabs_shrimps=False,
             site=self.site,
             score=4.5,
-            comment='test comment',
             obs_date=date.today(),
             flag='clean',
             water_clarity=7.5,
