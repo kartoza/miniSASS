@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSide
           setSidebarOpen={setSidebarOpen}
         />
       ):( isOpen &&
-        <DataInputForm className="bg-white-A700 flex flex-col gap-6 items-start justify-start pb-3 px-3 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-full" />
+        <DataInputForm className="bg-white-A700 flex flex-col gap-6 items-start justify-start pb-3 px-3 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-full" setSidebarOpen={setSidebarOpen} />
       )}
       
     </div>
