@@ -305,7 +305,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {`observationDetails.organisationtype.description`}
+                  {observationDetails.organisationtype}
                 </Text>
               </div>
             </div>
