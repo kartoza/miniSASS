@@ -5,10 +5,13 @@ from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 from minisass_frontend.views import ObservationsView
+from minisass.views import VideoListView
 
 admin.autodiscover()
 
 urlpatterns = [
+    path('videos/', VideoListView.as_view(), name='video-list'),
+    
     path('jsi18n/<str:packages>/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Use JavaScriptCatalog directly
     path('admin/', admin.site.urls),
     
