@@ -20,7 +20,7 @@ class ObservationsSerializer(serializers.ModelSerializer):
     longitude = serializers.FloatField(source='site.the_geom.x')
     latitude = serializers.FloatField(source='site.the_geom.y')
     collectorsname = serializers.SerializerMethodField()
-    organisationtype = LookupSerializer(source='user.profile.organisation_type')
+    organisationtype = serializers.SerializerMethodField()
 
     class Meta:
         model = Observations
@@ -37,3 +37,16 @@ class ObservationsSerializer(serializers.ModelSerializer):
             if user_profile and user_profile.user.first_name and user_profile.user.last_name
             else user_profile.user.username if user_profile else ""
         )
+
+    def get_organisationtype(self, obj):
+        try:
+            user_profile = UserProfile.objects.get(user=obj.user)
+        except UserProfile.DoesNotExist:
+            user_profile = None
+
+        if user_profile:
+            organisation_type = user_profile.organisation_type
+            serialized_organisation_type = LookupSerializer(organisation_type).data
+            return serialized_organisation_type
+        else:
+            return None
