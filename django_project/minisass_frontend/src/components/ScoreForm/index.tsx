@@ -105,15 +105,29 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
-          height: '75vh',
+          height: '72vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
       >
+        
         <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
-          <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
-            Score
-          </Text>
+          <div
+            className="flex flex-row gap-80 w-auto sm:w-full"
+          >
+            <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
+              Score
+            </Text>
+            <Img
+              className="h-6 w-6 common-pointer"
+              src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+              alt="close"
+              style={{
+                marginLeft: '118px'
+              }}
+              onClick={handleCloseSidebar}
+            />
+          </div>
           <div className="flex flex-row items-center justify-between w-[71%] md:w-full">
             <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
               Groups
