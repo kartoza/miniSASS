@@ -1,7 +1,7 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
-# TODO might remove this as it is no longer neccessary
+
 class Lookup(models.Model):
     container = models.ForeignKey(
         'self', 
@@ -17,7 +17,7 @@ class Lookup(models.Model):
         return self.description
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False)
     organisation_type = models.ForeignKey(
         Lookup,
         blank=True,
