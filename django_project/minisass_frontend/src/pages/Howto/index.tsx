@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -7,8 +7,9 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
 import { Link } from 'react-scroll';
-import MiniSASSResources from "../../components/minisassResources";
 import RegistrationFormModal from "../../components/RegistrationFormModal";
+import { globalVariables } from "../../utils";
+import axios from "axios"
 
 import "./style.css"
 
@@ -17,19 +18,17 @@ import "./style.css"
 const HowtoPage: React.FC = () => {
   const navigate = useNavigate();
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [videos, setVideos] = useState([]);
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
+  useEffect(() => {
+    axios.get(`${globalVariables.baseUrl}/videos/`)
+      .then(response => {
+        setVideos(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching videos:', error);
+      });
+  }, []);
 
   const items = [
     "Net/Sieve",
@@ -58,7 +57,7 @@ const HowtoPage: React.FC = () => {
                 <div className="bg-white-A700 flex flex-col h-[92px] md:h-auto items-start justify-start md:mt-0 mt-[17px] w-[77px]">
                   <Img
                     className="md:h-auto h-full object-cover md:relative sm:right-[30px] md:top-2.5 w-full"
-                    src={`${newURL}img_minisasslogo1.png`}
+                    src={`${globalVariables.staticPath}img_minisasslogo1.png`}
                     alt="minisasslogoOne"
                   />
                 </div>
@@ -110,7 +109,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_yellow_crab.svg`}
+                  src={`${globalVariables.staticPath}img_yellow_crab.svg`}
                   alt="crab_placeholder"
                 />
 
@@ -135,7 +134,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute bottom-[0] h-[72px] left-[0] w-[72px] rotate-[85deg]"
-                  src={`${newURL}img_blue_crab.svg`}
+                  src={`${globalVariables.staticPath}img_blue_crab.svg`}
                   alt="crab_placeholder"
                 />
               </Link>
@@ -156,7 +155,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] left-[0] top-[0] w-[72px] rotate-[90deg]"
-                  src={`${newURL}img_yellow_crab.svg`}
+                  src={`${globalVariables.staticPath}img_yellow_crab.svg`}
                   alt="crab_placeholder"
                 />
               </div>
@@ -180,7 +179,7 @@ const HowtoPage: React.FC = () => {
                 </div>
                 <Img
                   className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                  src={`${newURL}img_notov1crab_blue_gray_100_72x46.svg`}
+                  src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100_72x46.svg`}
                   alt="crab_placeholder"
                 />
               </Link>
@@ -201,12 +200,12 @@ const HowtoPage: React.FC = () => {
 
               {/* <Img
                 className="h-[336px] m-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full"
-                src={`${newURL}img_rectangle11.png`}
+                src={`${globalVariables.staticPath}img_rectangle11.png`}
                 alt="rectangleEleven"
               /> */}
               {/* <Img
                 className="absolute h-[70px] inset-[0] justify-center m-auto w-[70px]"
-                src={`${newURL}img_carbonplayfilled.svg`}
+                src={`${globalVariables.staticPath}img_carbonplayfilled.svg`}
                 alt="carbonplayfille"
               /> */}
 
@@ -343,7 +342,7 @@ const HowtoPage: React.FC = () => {
             <div className="flex flex-col gap-9 items-start justify-start w-auto sm:w-full">
               <Img
                 className="h-[332px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] w-[580px] md:w-full"
-                src={`${newURL}img_rectangle15.png`}
+                src={`${globalVariables.staticPath}img_rectangle15.png`}
                 alt="rectangleFifteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
@@ -405,7 +404,7 @@ const HowtoPage: React.FC = () => {
             <div className="flex flex-col gap-9 items-start justify-start w-auto sm:w-full">
               <Img
                 className="h-[332px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] w-[580px] md:w-full"
-                src={`${newURL}img_rectangle16.png`}
+                src={`${globalVariables.staticPath}img_rectangle16.png`}
                 alt="rectangleSixteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
@@ -471,7 +470,7 @@ const HowtoPage: React.FC = () => {
             <div className="flex flex-col gap-9 items-start justify-start w-[580px] sm:w-full">
               <Img
                 className="h-[332px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[480px] md:w-full"
-                src={`${newURL}img_rectangle15_332x480.png`}
+                src={`${globalVariables.staticPath}img_rectangle15_332x480.png`}
                 alt="rectangleFifteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
@@ -716,7 +715,7 @@ const HowtoPage: React.FC = () => {
               </div>
               <Img
                 className="h-[332px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[480px] md:w-full"
-                src={`${newURL}img_rectangle15_1.png`}
+                src={`${globalVariables.staticPath}img_rectangle15_1.png`}
                 alt="rectangleFifteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
@@ -854,7 +853,7 @@ const HowtoPage: React.FC = () => {
                   </div>
                   <Img
                     className="h-[242px] sm:h-auto object-cover w-[533px] md:w-full"
-                    src={`${newURL}img_rectangle19.png`}
+                    src={`${globalVariables.staticPath}img_rectangle19.png`}
                     alt="rectangleNineteen"
                   />
                 </div>
@@ -916,7 +915,7 @@ const HowtoPage: React.FC = () => {
         <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-center justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
           <Img
             className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-1/4 md:w-full"
-            src={`${newURL}img_rectangle6.png`}
+            src={`${globalVariables.staticPath}img_rectangle6.png`}
             alt="rectangleSix"
           />
           <div className="flex flex-1 flex-col gap-[26px] items-start justify-start max-w-[783px] md:mt-0 mt-0.5  w-full">
@@ -1116,7 +1115,7 @@ const HowtoPage: React.FC = () => {
                   </div>
                   <Img
                     className="h-[338px] sm:h-auto object-cover w-[533px] md:w-full"
-                    src={`${newURL}img_rectangle19_338x533.png`}
+                    src={`${globalVariables.staticPath}img_rectangle19_338x533.png`}
                     alt="rectangleNineteen_One"
                   />
                 </div>
@@ -1157,132 +1156,21 @@ const HowtoPage: React.FC = () => {
         <div className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
           <Img
             className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-1/4 md:w-full"
-            src={`${newURL}img_rectangle6_280x303.png`}
+            src={`${globalVariables.staticPath}img_rectangle6_280x303.png`}
             alt="rectangleSix_One"
           />
           <div className="scrolling-container">
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/hRgO80-427w"
-              title="Introduction to miniSASS"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/yGbi7P8RYoU"
-              title="Safety concerns for miniSASS"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/XJLcJMutXP8"
-              title="What is in your miniSASS kit "
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/_-L-Xs4QJRg"
-              title="What do you need to put together a miniSASS kit at home"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/WX_DkYyfnmk"
-              title="Choosing your site for miniSASS"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/XY_p8usHx4Q"
-              title="how to take a sample "
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src=" https://www.youtube.com/embed/8RATZXY2jyo"
-              title="Cleaning your sample"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/hKdPiSSVL0s"
-              title="Using the dichotomous key "
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/O_deXdCQIfM"
-              title="How to calculate your score"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/uUJTrkZKL6U"
-              title="Uploading your miniSASS score "
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/uU7hOj4zjG0"
-              title="Using miniSASS for monitoring"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-
-          <div className="VideoTile">
-            <iframe
-              className="VideoEmbed"
-              src="https://www.youtube.com/embed/illWM9BhL-0"
-              title="miniSASS in summary "
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
+            {videos.map(video => (
+              <div key={video.id} className="VideoTile">
+                <iframe
+                  className="VideoEmbed"
+                  src={video.embed_code}
+                  title={video.title}
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ))}
           </div>
         </div>
 
