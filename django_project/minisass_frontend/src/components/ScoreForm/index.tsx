@@ -12,9 +12,10 @@ interface AdditionalData {
 interface ScoreFormProps {
   onCancel: () => void;
   additionalData: AdditionalData;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
+const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
 
   useEffect(() => {
