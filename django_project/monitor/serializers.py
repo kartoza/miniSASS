@@ -1,3 +1,4 @@
+from minisass_authentication.serializers import LookupSerializer
 from minisass_authentication.models import UserProfile
 from rest_framework import serializers
 from monitor.models import (
@@ -11,13 +12,7 @@ class SitesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ObservationsSerializer(serializers.ModelSerializer):
-    site = SitesSerializer()
-    sitename = serializers.CharField(source='site.site_name')
-    rivername = serializers.CharField(source='site.river_name')
-    sitedescription = serializers.CharField(source='site.description')
-    rivercategory = serializers.CharField(source='site.river_cat')
-    longitude = serializers.FloatField(source='site.the_geom.x')
-    latitude = serializers.FloatField(source='site.the_geom.y')
+    site = serializers.SerializerMethodField()
     collectorsname = serializers.SerializerMethodField()
     organisationtype = serializers.SerializerMethodField()
 
@@ -25,12 +20,18 @@ class ObservationsSerializer(serializers.ModelSerializer):
         model = Observations
         fields = '__all__'
 
-    def get_collectorsname(self, obj):
-        try:
-            user_profile = UserProfile.objects.get(user=obj.user)
-        except UserProfile.DoesNotExist:
-            user_profile = None
+    def get_site(self, obj):
+        return {
+            'sitename': obj.site.site_name,
+            'rivername': obj.site.river_name,
+            'sitedescription': obj.site.description,
+            'rivercategory': obj.site.river_cat,
+            'longitude': obj.site.the_geom.x,
+            'latitude': obj.site.the_geom.y,
+        }
 
+    def get_collectorsname(self, obj):
+        user_profile = self.get_user_profile(obj)
         return (
             f"{user_profile.user.first_name} {user_profile.user.last_name}"
             if user_profile and user_profile.user.first_name and user_profile.user.last_name
@@ -38,9 +39,11 @@ class ObservationsSerializer(serializers.ModelSerializer):
         )
 
     def get_organisationtype(self, obj):
-        try:
-            user_profile = UserProfile.objects.get(user=obj.user)
-        except UserProfile.DoesNotExist:
-            user_profile = None
+        user_profile = self.get_user_profile(obj)
+        return LookupSerializer(user_profile.organisation_type).data if user_profile else ""
 
-        return user_profile.organisation_type if user_profile else ""
+    def get_user_profile(self, obj):
+        try:
+            return UserProfile.objects.get(user=obj.user)
+        except UserProfile.DoesNotExist:
+            return None
