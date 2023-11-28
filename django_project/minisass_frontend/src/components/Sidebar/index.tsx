@@ -8,9 +8,10 @@ interface SidebarProps {
   isOpen: boolean;
   isObservationDetails: boolean;
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  observation: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSidebarOpen }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSidebarOpen , observation}) => {
   return (
     <div
       className={`absolute ${
@@ -20,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSide
       {isObservationDetails ? (
         <ObservationDetails 
           classname="bg-white-A700 flex flex-col gap-6 items-start justify-start pb-3 px-3 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-full" 
-          observation_id={`1`}
+          observation_id={observation}
           setSidebarOpen={setSidebarOpen}
         />
       ):( isOpen &&

@@ -92,8 +92,6 @@ const inputDirectionUnitsList = [
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
-  // TODO still need to save data to db
-
   // State to store form values
   const [formValues, setFormValues] = useState({
     riverName: '',
