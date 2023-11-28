@@ -1,0 +1,177 @@
+{
+  "crab_f": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1160,
+    "y": 0
+  },
+  "crab_f_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1200,
+    "y": 0
+  },
+  "crab_f_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1240,
+    "y": 0
+  },
+  "crab_f_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1272,
+    "y": 0
+  },
+  "crab_g": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1304,
+    "y": 0
+  },
+  "crab_g_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1344,
+    "y": 0
+  },
+  "crab_g_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1384,
+    "y": 0
+  },
+  "crab_g_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1416,
+    "y": 0
+  },
+  "crab_n": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1448,
+    "y": 0
+  },
+  "crab_n_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1488,
+    "y": 0
+  },
+  "crab_n_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1528,
+    "y": 0
+  },
+  "crab_n_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1560,
+    "y": 0
+  },
+  "crab_p": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1592,
+    "y": 0
+  },
+  "crab_p_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1632,
+    "y": 0
+  },
+  "crab_p_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1672,
+    "y": 0
+  },
+  "crab_p_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1704,
+    "y": 0
+  },
+  "crab_sm": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1736,
+    "y": 0
+  },
+  "crab_sm_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1776,
+    "y": 0
+  },
+  "crab_sm_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1816,
+    "y": 0
+  },
+  "crab_sm_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1848,
+    "y": 0
+  },
+  "crab_u": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1880,
+    "y": 0
+  },
+  "crab_u_dirty": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 40,
+    "x": 1920,
+    "y": 0
+  },
+  "crab_u_dirty_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1960,
+    "y": 0
+  },
+  "crab_u_old": {
+    "height": 32,
+    "pixelRatio": 2,
+    "width": 32,
+    "x": 1992,
+    "y": 0
+  },
+  "education_school": {
+    "height": 1160,
+    "pixelRatio": 2,
+    "width": 1160,
+    "x": 0,
+    "y": 0
+  }
+}
