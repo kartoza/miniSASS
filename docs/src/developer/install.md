@@ -2,9 +2,10 @@
 
 ## Prerequisites
 
-- Any Linux distribution for the operating system
-- Docker installed on the local machine
-- Visual Studio Code for the editor (or any preferred)
+- Any Linux distribution for the operating system.
+- Docker installed on the local machine.
+- [Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04) installed on the local machine.
+- Visual Studio Code for the editor (or any preferred editor).
 
 ## Installation Steps
 
@@ -20,7 +21,7 @@
     git clone https://github.com/kartoza/miniSASS.git
     ```
 
-4. **Navigate into the repo directory:**
+4. **Navigate into the repository directory:**
     ```bash
     cd miniSASS
     ```
@@ -54,12 +55,8 @@
     - Navigate to minisass frontend folder `cd minisass_frontend`
     - Run `npm install`
     - Run `npm run build`
-    - Exit the container with 'exit'
-    - Execute the collect static command on the container:
-        ```bash
-        docker exec -it <container_id_or_name> python manage.py collectstatic --noinput
-        ```
-    - Restart the container with `docker restart name_of_django_container`
+    - Navigate to the main directory `cd ..`
+    - Execute the collect static command: `python manage.py collectstatic --noinput`
 
 10. **Access the web application:**
     Visit 'http://localhost:61122/'
@@ -87,7 +84,7 @@
 
 - **To stop all running containers:**
     ```bash
-    docker down -v
+    docker compose down -v
     ```
 
 ## Frontend Development outside the Container
