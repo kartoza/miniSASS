@@ -1,7 +1,7 @@
 # admin.py
 
 from django.contrib import admin
-from monitor.models import Video
+from minisass.models import Video
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
