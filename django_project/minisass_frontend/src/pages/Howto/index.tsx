@@ -11,7 +11,7 @@ import RegistrationFormModal from "../../components/RegistrationFormModal";
 import { globalVariables } from "../../utils";
 import axios from "axios"
 
-import "./style.css"
+import "../../styles.css"
 
 
 
