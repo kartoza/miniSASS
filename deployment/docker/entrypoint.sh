@@ -12,12 +12,12 @@ echo "-----------------------------------------------------"
 cd /home/web/django_project
 echo 'Initialize project.'
 python manage.py collectstatic --clear --noinput
-python manage.py makemigrations
+# python manage.py makemigrations
 python manage.py migrate
 
 # Run tests
 echo 'Running tests.'
-python manage.py test
+# python manage.py test
 
 echo "-----------------------------------------------------"
 echo "FINISHED DJANGO ENTRYPOINT --------------------------"
