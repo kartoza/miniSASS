@@ -12,7 +12,7 @@ echo "-----------------------------------------------------"
 cd /home/web/django_project
 echo 'Initialize project.'
 python manage.py collectstatic --clear --noinput
-# python manage.py makemigrations
+python manage.py makemigrations
 python manage.py migrate
 
 # Run tests
