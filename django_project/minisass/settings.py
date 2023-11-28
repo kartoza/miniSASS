@@ -160,7 +160,6 @@ EMAIL_PORT = os.getenv('SMTP_PORT', '25')
 EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER', 'noreply@kartoza.com')
 EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD', 'docker')
 EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS', 'False')
-EMAIL_USE_SSL = os.getenv('SMTP_EMAIL_SSL', 'False')
 
 SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
 CONTACT_US_RECEPIENT_EMAIL = 'amy@kartoza.com'
@@ -193,7 +192,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'minisass_frontend',
     'minisass_authentication',
-    'monitor'
+    'monitor',
+    'minisass'
 ]
 
 
