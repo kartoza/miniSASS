@@ -228,7 +228,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           </Text>
           <Img
             className="h-6 w-6 common-pointer"
-            src={`${staticPath}img_icbaselineclose.svg`}
+            src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
             alt="close"
             style={{
               marginLeft: '35px'
