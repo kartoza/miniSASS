@@ -48,17 +48,7 @@
     docker compose up -d db; sleep 180; docker compose up -d
     ```
 
-9. **Access the Django container:**
-    ```bash
-    docker exec -it name_of_django_container bash
-    ```
-    - Navigate to minisass frontend folder `cd minisass_frontend`
-    - Run `npm install`
-    - Run `npm run build`
-    - Navigate to the main directory `cd ..`
-    - Execute the collect static command: `python manage.py collectstatic --noinput`
-
-10. **Access the web application:**
+9. **Access the web application:**
     Visit 'http://localhost:61122/'
 
 ## Troubleshooting
