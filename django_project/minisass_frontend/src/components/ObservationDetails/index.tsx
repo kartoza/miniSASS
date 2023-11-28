@@ -35,7 +35,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         setLoading(false);
         setObservationDetails(response.data);
 
-        if(parseFloat(response.data.average_score) < 6){
+        if(parseFloat(response.data.score) < 6){
             setTitleColor("text-red-600")
             setProgressBarColor("red")
             setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
@@ -153,7 +153,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                     className={`${titleColor} absolute bottom-[18%] inset-x-[0] mx-auto text-base w-max`}
                     size="txtRalewayRomanSemiBold16"
                   >
-                    {observationDetails.average_score}
+                    {observationDetails.score}
                   </Text>
                 </div>
                 <Text
