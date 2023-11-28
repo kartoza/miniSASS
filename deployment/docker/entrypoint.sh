@@ -15,8 +15,8 @@ python manage.py collectstatic --clear --noinput
 python manage.py migrate
 
 # Run tests
-# echo 'Running tests.'
-# python manage.py test
+echo 'Running tests.'
+python manage.py test
 
 echo "-----------------------------------------------------"
 echo "FINISHED DJANGO ENTRYPOINT --------------------------"
