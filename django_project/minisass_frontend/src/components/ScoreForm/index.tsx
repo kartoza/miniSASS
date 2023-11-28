@@ -101,6 +101,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     setIsManageImagesModalOpen(false);
   };
 
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+  
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
