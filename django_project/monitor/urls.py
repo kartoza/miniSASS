@@ -5,6 +5,10 @@ from monitor.observation_views import (
     ObservationRetrieveView,
     RecentObservationListView
 )
+from monitor.site_views import (
+    SitesListCreateView, 
+    SiteRetrieveUpdateDestroyView
+)
 from monitor.views import (
     index, 
     wms_get_feature_info, 
@@ -26,7 +30,7 @@ urlpatterns = [
     path('sites/<str:x>/<str:y>/<str:d>/', get_sites),
     path('closest_site/<str:x>/<str:y>/<str:d>/', get_closest_site),
     path('unique/<str:field>/', get_unique),
-    path('observation/<int:obs_id>/', zoom_observation),
+    path('observation-old/<int:obs_id>/', zoom_observation),
     path('observations-old/<int:site_id>/', get_observations),
     path('observations/download/<int:site_id>/', download_observations),
     path('observations/download/filtered/~<str:filter_string>', download_observations_filtered),
@@ -34,21 +38,25 @@ urlpatterns = [
     path('<int:monitor_id>/', detail, name='monitor_detail'),
 
     path(
-        'observations/', 
-        ObservationListCreateView.as_view(), 
+        'observations/',
+        ObservationListCreateView.as_view(),
         name='observation-list-create'
     ),
-    
     path(
-        'observations/<int:pk>/', 
-        ObservationRetrieveUpdateDeleteView.as_view(), 
+        'observations/<int:pk>/',
+        ObservationRetrieveUpdateDeleteView.as_view(),
         name='observation-retrieve-update-delete'
     ),
-    
+
     path(
-        'observations/site/<int:site_id>/', 
-        ObservationListCreateView.as_view(), 
-        name='observation-list-by-site'
+        'sites/', 
+        SitesListCreateView.as_view(), 
+        name='sites-list-create'
+    ),
+    path(
+        'sites/<int:pk>/', 
+        SiteRetrieveUpdateDestroyView.as_view(), 
+        name='site-retrieve-update-destroy'
     ),
 
     path(
@@ -62,4 +70,5 @@ urlpatterns = [
         ObservationRetrieveView.as_view(),
         name='observation-details'
     ),
+
 ]

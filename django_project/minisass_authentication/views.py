@@ -1,42 +1,73 @@
 import json
 from minisass_authentication.serializers import UserSerializer
+from minisass_authentication.models import UserProfile, Lookup
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.contrib.auth import authenticate, login
-from minisass_authentication.models import UserProfile, Lookup
-from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import (
+    api_view,
+    permission_classes
+)
+from django.contrib.auth import (
+    authenticate,
+    login,
+    get_user_model, 
+    logout
+)
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
+from django.conf import settings
+from django.http import JsonResponse
 
 
-# from django.http import HttpResponse
-# from django.utils import simplejson as json
-# from django.shortcuts import redirect
-# from django.shortcuts import render_to_response
-# from django.template import RequestContext
 
-# from registration.backends import get_backend
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def user_logout(request):
+    logout(request)
+    return JsonResponse({'message': 'Logout successful'}, status=200)
 
-# from monitor.models import Schools
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_authentication_status(request):
+    user_data = {
+        'is_authenticated': request.user.is_authenticated,
+        'username': request.user.username if request.user.is_authenticated else None,
+        'email': request.user.email if request.user.is_authenticated else None,
+    }
+    return JsonResponse(user_data, status=200)
 
 
-# def school_names(request):
-#     """ Return school names matching the string passed in
-#     """
-#     result = []
-#     query = request.GET.get('term')
-#     if query:
-#         qs = Schools.objects.filter(school__istartswith=query).values('school')
-#         result = [itm['school'] for itm in qs]
-#     content = json.dumps(result)
-#     return HttpResponse(content, 
-#                         content_type="application/json; charset=utf-8")
+@api_view(['POST'])
+def contact_us(request):
+    email = request.data.get('email')
+    name = request.data.get('name')
+    phone = request.data.get('phone')
+    message = request.data.get('message')
+
+    mail_subject = 'Contact Us'
+    message = render_to_string('contact_us.html', {
+        'from': email,
+        'name': name,
+        'contact': phone,
+        'message': message,
+    })
+    send_mail(
+        mail_subject,
+        None,
+        settings.CONTACT_US_RECEPIENT_EMAIL,
+        [email],
+        html_message=message
+    )
+    
+    return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -153,5 +184,16 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return Response(status=status.HTTP_200_OK)
+            
+            access_token = RefreshToken.for_user(user).access_token
+
+            user_data = {
+                'username': user.username,
+                'email': user.email,
+                'access_token': str(access_token),
+                'refresh_token': str(RefreshToken.for_user(user)),
+                'is_authenticated': True
+            }
+
+            return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

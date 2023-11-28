@@ -4,6 +4,7 @@ from monitor.models import (
     Observations,
     Sites
 )
+
 class SitesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sites

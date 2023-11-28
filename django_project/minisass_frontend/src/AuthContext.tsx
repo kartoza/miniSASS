@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import axios from 'axios';
+import { globalVariables } from '../src/utils';
 
-// Define your user type
+// user type
 type User = {
   username: string;
-  // Add other user-related fields
+  email: string;
 };
 
-// Define the context state and actions
+// context state and actions
 type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
-  // You can add other relevant fields here, such as tokens, user data, etc.
+  refreshToken: null;
 };
 
 type AuthAction =
@@ -20,11 +22,11 @@ type AuthAction =
   | { type: 'RESET_PASSWORD' }
   | { type: 'TOKEN_REFRESH' };
 
-// Define your initial state
+
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  // You can initialize other state fields here.
+  refreshToken: null,
 };
 
 // Create the context
@@ -33,7 +35,7 @@ const AuthContext = createContext<{ state: AuthState; dispatch: React.Dispatch<A
 );
 
 // Define the reducer function
-const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthState> => {
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -42,23 +44,43 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isAuthenticated: true,
       };
     case 'LOGOUT':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-      };
+      try {
+          await axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
+          return {
+            ...state,
+            user: null,
+            isAuthenticated: false,
+          };
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
     case 'REGISTER':
-      // Handle the registration action here.
-      // You can update the state based on the registration logic.
+      // Handle the registration action here. TODO
       return state;
     case 'RESET_PASSWORD':
-      // Handle the reset password action here.
-      // You can update the state based on the reset password logic.
+      // Handle the reset password action here. TODO
       return state;
     case 'TOKEN_REFRESH':
-      // Handle the token refresh action here.
-      // You can update the state based on the token refresh logic.
-      return state;
+      try {
+        const response = await axios.post(`${globalVariables.baseUrl}/token/refresh/`, {
+          refresh: state.refreshToken,
+        });
+
+        const newAccessToken = response.data.access;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+        const newAuthState = {
+          ...state,
+          access_token: newAccessToken,
+        };
+    
+        localStorage.setItem('authState', JSON.stringify(newAuthState));
+    
+        return newAuthState;
+      } catch (error) {
+        console.error('Token refresh error:', error);
+        return state;
+      }
     default:
       return state;
   }
@@ -70,11 +92,52 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   // Load the state from local storage (if available)
   useEffect(() => {
-    const storedState = localStorage.getItem('authState');
-    if (storedState) {
-      const parsedState = JSON.parse(storedState);
-      dispatch({ type: 'LOGIN', payload: parsedState.user });
-    }
+
+    const checkAuthStatus = async () => {
+      try {
+        const storedState = localStorage.getItem('authState');
+        if (storedState) {
+          const parsedState = JSON.parse(storedState);
+          const accessToken = parsedState.userData.access_token;
+    
+          const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+
+          if(response.status == 200) {
+            dispatch({ type: 'LOGIN', payload: parsedState.userData });
+          }
+
+        }
+      } catch (error) {
+        console.error('Check auth status error:', error);
+      }
+    };
+
+   checkAuthStatus();
+
+
+    // Set up an interval to periodically refresh the token (10 mins)
+    const intervalInMilliseconds = 10 * 60 * 1000;
+    const tokenRefreshInterval = setInterval(async () => {
+      const storedState = localStorage.getItem('authState');
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        const refreshToken = parsedState.userData.refresh_token;
+        
+        // Check if the user is authenticated before attempting to refresh the token
+        if (parsedState.is_authenticated && refreshToken) {
+          try {
+            await tokenRefresh(dispatch, refreshToken);
+          } catch (error) {
+            console.error('Token refresh error:', error);
+          }
+        }
+      }
+    }, intervalInMilliseconds);
+
   }, []); // Only run this effect on mount
 
   return (
@@ -82,7 +145,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-// Create hooks and functions for using the context
+// hooks and functions for using the context
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -91,7 +154,7 @@ const useAuth = () => {
   return context;
 };
 
-// Implement functions to dispatch actions
+// functions to dispatch actions
 const login = (dispatch: React.Dispatch<AuthAction>, user: User) => {
   dispatch({ type: 'LOGIN', payload: user });
 };
@@ -108,8 +171,12 @@ const resetPassword = (dispatch: React.Dispatch<AuthAction>) => {
   dispatch({ type: 'RESET_PASSWORD' });
 };
 
-const tokenRefresh = (dispatch: React.Dispatch<AuthAction>) => {
-  dispatch({ type: 'TOKEN_REFRESH' });
+const tokenRefresh = async (dispatch: React.Dispatch<AuthAction>, refreshToken: string) => {
+  try {
+    dispatch({ type: 'TOKEN_REFRESH' });
+  } catch (error) {
+    console.error('Token refresh error:', error);
+  }
 };
 
 export { AuthProvider, useAuth, login, logout, register, resetPassword, tokenRefresh };

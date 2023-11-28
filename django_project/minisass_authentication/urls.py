@@ -1,22 +1,23 @@
 from django.urls import path
 
-# from minisass_authentication.views import school_names
 from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,  # for obtaining the access token
-    TokenRefreshView,     # for refreshing the access token
+    TokenObtainPairView,
+    TokenRefreshView,
 )
 from minisass_authentication.views import (
+    check_authentication_status,
     user_login, 
     register,
     request_password_reset,
+    user_logout,
     verify_reset_token,
-    reset_password
+    reset_password,
+    contact_us
 )
 
 
 urlpatterns = [
-    # path('school_names/', school_names, name='school_names'),
     path('api/request-reset/', request_password_reset, name='request_password_reset'),
     path('api/reset/<str:uidb64>/<str:token>/', verify_reset_token, name='verify_reset_token'),
     path('api/reset/<str:uidb64>/<str:token>/confirm/', reset_password, name='reset_password'),
@@ -28,4 +29,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/login/', user_login, name='user_login'),
     path('api/register/', register, name='register'),
+    path('api/logout/', user_logout, name='user-logout'),
+    path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
+    path('api/contact-us', contact_us, name='contact_us')
 ]

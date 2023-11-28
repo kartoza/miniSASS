@@ -7,6 +7,7 @@ import { Instance } from '@popperjs/core';
 import { Formik, Form, Field } from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
+import { globalVariables } from "../../utils";
 
 
 type DataInputFormProps = Omit<
@@ -141,12 +142,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     console.log('Form Values:', values);
   };
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
-
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const openUploadModal = () => {
@@ -183,27 +178,22 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [sites, setSitesList] = useState([]);
 
-  const FETCH_SITES = baseUrl + '/sites/api/list/';
+  const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
   
   const getSites = async () => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
   
       if (response.status === 200) {
-        setSitesList(response.data)
-      } else {
-        setSitesList([
-          { label: "site1", value: "siteID1" },
-          { label: "site2", value: "siteID2" },
-          { label: "site3", value: "siteID3" },
-        ])
+          const sitesList = response.data.map(site => ({
+            label: site.site_name,
+            value: site.gid.toString(),
+          }));
+    
+          setSitesList(sitesList);
       }
     } catch (error) {
-      setSitesList([
-        { label: "site1", value: "siteID1" },
-        { label: "site2", value: "siteID2" },
-        { label: "site3", value: "siteID3" },
-      ])
+      console.log(error.message)
     }
   };
 
@@ -379,7 +369,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       {/* Information icon */}
                       <Img
                         className="h-3.5 w-3.5 cursor-pointer"
-                        src={`${staticPath}information.png`}
+                        src={`${globalVariables.staticPath}information.png`}
                         alt="Information Icon"
                       />
                     </div>
