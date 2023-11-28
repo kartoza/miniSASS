@@ -28,6 +28,7 @@ class ObservationsModelTest(TestCase):
             leeches=False,
             crabs_shrimps=False,
             site=self.site,
+            comment='test_comment',
             score=4.5,
             obs_date=date.today(),
             flag='clean',
