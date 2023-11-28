@@ -61,55 +61,45 @@
 10. **Access the web application:**
     Visit 'http://localhost:61122/'
 
-## Local Development (Backend)
+## Troubleshooting
 
-- The local database will be empty; fixture files need to be manually loaded for some test data.
+### Empty Page
 
-### Useful Commands on the Backend Container
+This is likely to be caused by static staticfiles, follow these steps:
 
-- **Creating a superuser:**
-    ```bash
-    docker exec -it name_of_django_container python manage.py createsuperuser
-    ```
-
-- **Accessing the container:**
+1. **Access the Django container:**
     ```bash
     docker exec -it name_of_django_container bash
     ```
-
-- **To reflect saved changes (for the backend only):**
+2. **Navigate to the frontend directory:**
+    ```bash
+    cd minisass_frontend
+    ```
+3. **Install dependencies:**
+    ```bash
+    npm install
+    ```
+4. **Build the frontend:**
+    ```bash
+    npm run build
+    ```
+5. **Navigate to the main directory:**
+    ```bash
+    cd ..
+    ```
+6. **Execute the collect static command:**
+    ```bash
+    python manage.py collectstatic --noinput
+    ```
+7. **Restart the Django container:**
     ```bash
     docker restart name_of_django_container
     ```
 
-- **To stop all running containers:**
-    ```bash
-    docker compose down -v
-    ```
+### Other Issues
 
-## Frontend Development outside the Container
-
-- The frontend uses React + TypeScript + Tailwind CSS.
-
-- **To locally work on the frontend:**
-
-1. **Navigate into the frontend directory:**
-    ```bash
-    cd minisass_frontend
-    ```
-
-2. **Install dependencies:**
-    ```bash
-    npm install
-    ```
-    - Ensure you have Node.js version 16 and upwards installed on your system. If you are using an older Node version, use:
-    ```bash
-    npm install --legacy-peer-deps
-    ```
-    (not recommended)
-
-3. **Start the development server:**
-    ```bash
-    npm run start
-    ```
-    - This will expose a URL to access in the web browser. Making changes and saving them will automatically trigger the browser to refresh. In development mode, static files will not be available since they're being served from the Django container.
+If you encounter any other issues, consider checking the logs, inspecting containers, and reviewing Docker Compose configurations.
+```bash
+docker compose logs
+docker compose ps
+docker compose config
