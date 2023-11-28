@@ -12,7 +12,6 @@ function AuthenticationButtons() {
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const { dispatch, state  } = useAuth();
-
   const [isAuthenticated, setIsAuthenticated] = useState(state.isAuthenticated);
 
   useEffect(() => {
@@ -69,9 +68,11 @@ function AuthenticationButtons() {
         setIsAuthenticated(true)
       } else {
         setError('Invalid credentials. Please try again.');
+        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
+      setIsAuthenticated(false)
     }
   };
 
