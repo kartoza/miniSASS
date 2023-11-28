@@ -55,7 +55,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivityScore), 0);
+  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivity_score), 0);
   const numberOfGroups = scoreGroups.length;
   const averageScore = totalScore / numberOfGroups;
 
@@ -145,7 +145,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                       className="text-base text-gray-800 tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular16"
                     >
-                      {props?.groups}
+                      {props?.name}
                     </Text>
                   </div>
                 </div>
@@ -153,7 +153,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                 {/* Column 2 - Sensitivity Score */}
                 <div className="flex sm:flex-1 flex-col font-roboto gap-4 items-start justify-start w-[100px]">
                   <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
-                    {props.sensetivityScore}
+                    {props.sensetivity_score}
                   </Text>
                 </div>
 
@@ -185,7 +185,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
-                              onClick={() => openManageImagesModal(props.id, props.groups, props.sensetivityScore)}
+                              onClick={() => openManageImagesModal(props.id, props.name, props.sensetivity_score)}
                             >
                               Manage Images
                             </Button>
