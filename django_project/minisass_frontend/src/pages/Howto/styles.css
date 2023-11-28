@@ -1,0 +1,33 @@
+.scrolling-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px; /* Adjust the gap between tiles */
+  padding: 20px 0; /* Adjust padding as needed */
+}
+
+.video-tile {
+  display: inline-block;
+  min-width: 200px; /* Adjust the minimum width of each tile */
+  padding: 15px;
+  background-color: #f0f0f0; /* Background color of the tile */
+  border-radius: 8px; /* Adjust border radius */
+  text-decoration: none;
+  color: #333; /* Text color */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis for long titles */
+  height: 200px;
+}
+
+
+/* styles.css */
+.VideoTile {
+  min-width: 320px; /* Adjust the width of each tile */
+  border-radius: 8px; /* Adjust border radius */
+  overflow: hidden;
+}
+
+.VideoEmbed {
+  width: 100%;
+  height: 180px; /* Adjust height of the embedded video */
+}
