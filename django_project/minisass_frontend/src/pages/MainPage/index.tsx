@@ -51,8 +51,8 @@ const Home: React.FC = () => {
                             usernamejimtaylOne: `Username: ${item.username}`,
                             userimage: "",
                             username: item.site,
-                            score1: JSON.stringify(item.score),
-                            score: JSON.stringify(item.score),
+                            score1: item.score,
+                            score: item.score,
                             organisation: `Organisation: ${item.organisation}`,
                             dateadded: `Date added: ${formattedDate}`
                           };
