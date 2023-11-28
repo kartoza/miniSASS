@@ -8,43 +8,27 @@
 
 ## Installation Steps
 
-1. Open the terminal.
+1. **Open the terminal.**
 
-2. Create a directory:
-
+2. **Create a directory:**
     ```bash
     mkdir name_of_directory
     ```
 
-3. Clone the minisass repository:
-
+3. **Clone the minisass repository:**
     ```bash
     git clone https://github.com/kartoza/miniSASS.git
     ```
 
-4. Once cloned, navigate into the repo directory:
-
+4. **Navigate into the repo directory:**
     ```bash
     cd miniSASS
     ```
 
-5. Open the directory with VSCode (assuming you have VSCode installed) or open the repository directory in any editor of your choice.
+5. **Open the directory with VSCode (assuming you have VSCode installed) or open the repository directory in any editor of your choice.**
 
-6. Locate the `template.env` file and rename it to `.env`.
-
-7. Adjust the following variables in the `.env` file:
-
-    ```env
-    HTTPS_HOST=${COMPUTER_HOSTNAME}
-    ```
-
-    Replace `COMPUTER_HOSTNAME` with the actual name of the host (type `hostname` in the terminal to get it and assign it to the `HTTPS_HOST` variable).
-
-8. Optional: You might need to adjust the build context of the S3 mount.
-    In case it fails to build, 
-    replace lines 32-36 in 
-    `docker-compose.yml` file with the following:
-
+6. **Optional: Adjust the build context of the S3 mount.**
+    In case of build failure, replace lines 32-36 in the `docker-compose.yml` file with the following:
     ```yaml
     mount:
       image: kartoza/s3mount
@@ -53,19 +37,32 @@
         dockerfile: ./deployment/docker-s3-bucket/Dockerfile
     ```
 
-9. After these changes, you're ready to build the container. Type:
-
+7. **Build the container:**
     ```bash
     docker compose build
     ```
 
-10. Upon successful completion, type:
-
+8. **Start the containers:**
     ```bash
-    docker compose up -d db;sleep 180;docker compose up -d
+    docker compose up -d db; sleep 180; docker compose up -d
     ```
 
-11. This will start the containers, and you should be able to access the web application from https://${COMPUTER_HOSTNAME}/.
+9. **Access the Django container:**
+    ```bash
+    docker exec -it name_of_django_container bash
+    ```
+    - Navigate to minisass frontend folder `cd minisass_frontend`
+    - Run `npm install`
+    - Run `npm run build`
+    - Exit the container with 'exit'
+    - Execute the collect static command on the container:
+        ```bash
+        docker exec -it <container_id_or_name> python manage.py collectstatic --noinput
+        ```
+    - Restart the container with `docker restart name_of_django_container`
+
+10. **Access the web application:**
+    Visit 'http://localhost:61122/'
 
 ## Local Development (Backend)
 
@@ -73,69 +70,49 @@
 
 ### Useful Commands on the Backend Container
 
-- Creating a superuser:
-
+- **Creating a superuser:**
     ```bash
     docker exec -it name_of_django_container python manage.py createsuperuser
     ```
 
-- Accessing the container:
-
+- **Accessing the container:**
     ```bash
     docker exec -it name_of_django_container bash
     ```
 
-- To reflect saved changes (for the backend only):
-
+- **To reflect saved changes (for the backend only):**
     ```bash
     docker restart name_of_django_container
     ```
 
-- To stop all running containers:
-
+- **To stop all running containers:**
     ```bash
     docker down -v
     ```
 
-## Frontend Development
+## Frontend Development outside the Container
 
 - The frontend uses React + TypeScript + Tailwind CSS.
 
-- To locally work on the frontend:
+- **To locally work on the frontend:**
 
-1. Navigate into the frontend directory:
-
+1. **Navigate into the frontend directory:**
     ```bash
     cd minisass_frontend
     ```
 
-2. Type:
-
+2. **Install dependencies:**
     ```bash
     npm install
     ```
-
-    Ensure you have Node.js version 16 and upwards installed on your system. If you are using an older Node version, use:
-
+    - Ensure you have Node.js version 16 and upwards installed on your system. If you are using an older Node version, use:
     ```bash
     npm install --legacy-peer-deps
     ```
-
     (not recommended)
 
-3. After a successful `npm install`, type:
-
+3. **Start the development server:**
     ```bash
     npm run start
     ```
-
-    This will expose a URL to access in the web browser. Making changes and saving them will automatically trigger the browser to refresh. In development mode, static files will not be available since they're being served from the Django container.
-
-4. Alternatively, if you prefer, you can:
-
-    ```bash
-    npm run build
-    ```
-
-5. Execute the `collectstatic` command on the Django container.
-6. Execute the restart command on the Django container, and access the web app from the local URL https://${COMPUTER_HOSTNAME}/
+    - This will expose a URL to access in the web browser. Making changes and saving them will automatically trigger the browser to refresh. In development mode, static files will not be available since they're being served from the Django container.
