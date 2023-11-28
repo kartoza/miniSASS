@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('score', models.DecimalField(max_digits=4, decimal_places=2, default=0)),
                 ('site', models.ForeignKey(related_name='observation',on_delete=models.CASCADE, db_column='site', to='monitor.Sites',blank=True, null=True)),
                 ('time_stamp', models.DateTimeField(auto_now=True,null=True, blank=True)),
-                ('comment', models.CharField(max_length=255, blank=True)),
+                ('comment', models.CharField(max_length=255,null=True, blank=True)),
                 ('obs_date', models.DateField(blank=True, null=True)),
                 ('flag', models.CharField(default='dirty', max_length=5)),
                 ('water_clarity', models.DecimalField(max_digits=8, decimal_places=1, blank=True)),
