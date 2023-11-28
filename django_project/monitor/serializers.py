@@ -37,7 +37,3 @@ class ObservationsSerializer(serializers.ModelSerializer):
             if user_profile and user_profile.user.first_name and user_profile.user.last_name
             else user_profile.user.username if user_profile else ""
         )
-
-    def get_organisationtype(self, obj):
-        user_profile = self.get_user_profile(obj)
-        return LookupSerializer(user_profile.organisation_type).data if user_profile else ""
