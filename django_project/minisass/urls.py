@@ -27,8 +27,6 @@ urlpatterns = [
     # Indlude monitor URLs
     path('monitor/', include('monitor.urls')),
 
-    # get observations
-    path('api/observations/', ObservationsView.as_view(), name='observations-api'),
 
     # map frontend urls to backend
     path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),

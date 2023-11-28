@@ -3,6 +3,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import { Img, Text } from "../../components";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+import { globalVariables } from "../../utils";
 
 type DesktopTwoColumnscoreProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -24,11 +25,6 @@ type DesktopTwoColumnscoreProps = Omit<
     score1: string;
   }>;
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
   const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
@@ -42,19 +38,24 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
       setIsRedProgressBar(true)
       setTitleColor("text-red-600")
       setProgressBarColor("red")
-      setRenderCrab(`${staticPath}img_image2_24x30.png`)
+      setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
     }else {
       console.log('score more')
       setIsRedProgressBar(false)
       setTitleColor("text-green-800")
       setProgressBarColor("green")
-      setRenderCrab(`${staticPath}img_image2.png`)
+      setRenderCrab(`${globalVariables.staticPath}img_image2.png`)
     }
       
 
   }, [props.score]);
 
   const navigate = useNavigate();
+
+  const navigateToMap = () => {
+    // Navigate to the map page with details set to the observation's primary key
+    navigate(`/map?details=${props?.observation}`);
+  };
 
   return (
     <div className={props.className}>
@@ -87,7 +88,7 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
           <Text
             className="text-blue-900 font-raleway text-left font-normal underline common-pointer"
             size="txtRalewayRomanRegular16"
-            onClick={() => navigate("/map?details=1")}
+            onClick={navigateToMap}
           >
             {`view details`}
           </Text>

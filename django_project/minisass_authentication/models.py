@@ -19,9 +19,8 @@ class Lookup(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
     organisation_type = models.ForeignKey(
-        Lookup, 
-        limit_choices_to={'container__description': 'Organisation Type'}, 
-        blank=False,
+        Lookup,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL
     )

@@ -4,6 +4,7 @@ from minisass_authentication.models import UserProfile, Lookup
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import (
     api_view,
     permission_classes
@@ -183,9 +184,16 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
+            
+            access_token = RefreshToken.for_user(user).access_token
+
             user_data = {
                 'username': user.username,
-                'email': user.email
+                'email': user.email,
+                'access_token': str(access_token),
+                'refresh_token': str(RefreshToken.for_user(user)),
+                'is_authenticated': True
             }
+
             return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

@@ -3,26 +3,27 @@
 ## Our system uses the Django Rest Framework Authentication Package
 
 ## Description
-Uses JSON Web Tokens, which are encoded tokens containing user information. 
+
+Uses JSON Web Tokens, which are encoded tokens containing user information.
 With every request made, the token will be validated for the logged in user.
 The token expires after a certain interval ,which means on the frontend there should be a mechanism
 to refresh the token for example a function to constantly check and determine if the user is still logged in, if so refresh the token.
 
-## How to use:
+## How to use
 
-### current_domain: https://minisass.sta.do.kartoza.com/ 
+### current_domain: https://minisass.sta.do.kartoza.com/
 
 ### 1. https://{current_domain}/authentication/api/login
 
-
 ![Login Api](./img/login_api.png)
 
-This API is used for loggin in a user.
-This API only allows 2 methods: 
+This API is used for logging in a user.
+This API only allows 2 methods:
+
 1. POST
 2. OPTIONS
 
- **POST**: used to submit user credentials . The credenitals are accepted in the form of:
+ **POST**: used to submit user credentials . The credentials are accepted in the form of:
     i. application/json
     ii. application/x-www-form-urlencoded
     iii. multipart/form-data
@@ -35,14 +36,14 @@ This API only allows 2 methods:
 
  **OPTIONS**: Returns the documentation available for the login api (basic description).
 
-**Additonal Info**:
-    The api is interactive and will usually return an error message provided the credentials 
+**Additional Info**:
+    The api is interactive and will usually return an error message provided the credentials
     are invalid for example 401 unauthorized etc.
 
 ![Login Api unauthorized](./img/invalid_credentials.png)
 
 **Obtaining a token**:
-    All users that are authenticated require a token inorder to be able to make 
+    All users that are authenticated require a token in order to be able to make
     successful request to the API.
 
 ### 2. https://{current_domain}/authentication/api/token/
@@ -74,17 +75,42 @@ This API only allows 2 methods:
 
 ![Token Refresh Success](./img/success_response_token_obtain.png)
 
+**Checking the Authentication status**:
+
+### 4. https://{current_domain}/authentication/api/check-auth-status/
+
+![Check Auth Api](./img/check_auth_status.png)
+
+This API is used to confirm if the user is logged in.
+
+    example usage: 
+    A get request to the above url.
+
+    returns a success response 200 with the with an object containing user details e.g. is_authenticated variable.
+
+**Logging out a user**:
+
+### 5. https://{current_domain}/authentication/api/logout/
+
+![Logout API](./img/logout_user_api.png)
+
+This API is used to logout the user against the authentication backend.
+Any action from the frontend that triggers the logout of a user should also call this api. This ensures the user is logged out
+
+    example usage: 
+    A post request to the above url
 
 **Registering a user**:
 
-### 4. https://{current_domain}/authentication/api/register/
+### 6. https://{current_domain}/authentication/api/register/
 
 ![Register Api](./img/registration_api.png)
 
 This API is used for registering a user.
-This API only allows 2 methods 
+This API only allows 2 methods
+
 1. POST
-2.  OPTIONS
+2. OPTIONS
 
 **POST**: used to submit user details. The details are accepted in the form of:
     i. application/json
@@ -101,7 +127,7 @@ This API only allows 2 methods
         "organizationType": "NGO",
         "organizationName": "test",
         "country": "South Africa",
-        "additonal_fields": "additional_data"
+        "additional_fields": "additional_data"
     }
 
     returns success response 201 created.
@@ -113,12 +139,11 @@ This API only allows 2 methods
     iii.country
     These fields are mandatory on registration or a 400 bad request error is returned.
 
-**Additonal Info**:
-    This API is also interactive, returns errors for example 
+**Additional Info**:
+    This API is also interactive, returns errors for example
     400 bad request ie `enter a valid email`.
 
 ![Register Api Errors](./img/registration_errors.png)
-
 
 **Requesting Password Reset**:
 
@@ -135,10 +160,8 @@ This API only allows 2 methods
 
     returns a success message and a 200 ok.
 
-**Additonal Info**:
-    The user will receive an email with the insrtuctions on how to reset their forgotten password.
-
-
+**Additional Info**:
+    The user will receive an email with the instructions on how to reset their forgotten password.
 
 ### Summary
 
