@@ -16,6 +16,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [buttonStates, setButtonStates] = useState([]);
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -30,6 +31,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
       try {
         const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
         setScoreGroups(response.data);
+        setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })))
       } catch (error) {
         console.error('Error fetching score groups:', error);
       }
@@ -45,8 +47,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   });
 
   const [selectedButton, setSelectedButton] = useState(null);
-
-  const [buttonStates, setButtonStates] = useState(scoreGroups.map(score => ({ id: score.id, showManageImages: false })));
 
   const handleButtonClick = (id) => {
     const updatedButtonStates = buttonStates.map(buttonState => {
