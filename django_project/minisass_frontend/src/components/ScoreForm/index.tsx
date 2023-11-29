@@ -73,7 +73,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
       // Create an object with the data to be saved
       const observationsData = {
-        worms :checkboxStates['1'],
+        flatworms :checkboxStates['1'],
         leeches:checkboxStates['2'],
         crabs_shrimps :checkboxStates['3'],
         stoneflies :checkboxStates['4'],
@@ -85,6 +85,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         caddisflies:checkboxStates['10'],
         true_flies:checkboxStates['11'],
         snails:checkboxStates['12'],
+        score:totalScore,
         datainput: additionalData.dataFormInput,
       };
   
