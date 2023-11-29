@@ -1,3 +1,4 @@
+from minisass_authentication.serializers import LookupSerializer
 from minisass_authentication.models import UserProfile
 from rest_framework import serializers
 from monitor.models import (
@@ -43,4 +44,9 @@ class ObservationsSerializer(serializers.ModelSerializer):
         except UserProfile.DoesNotExist:
             user_profile = None
 
-        return user_profile.organisation_type if user_profile else ""
+        if user_profile:
+            organisation_type = user_profile.organisation_type
+            serialized_organisation_type = LookupSerializer(organisation_type).data
+            return serialized_organisation_type
+        else:
+            return None

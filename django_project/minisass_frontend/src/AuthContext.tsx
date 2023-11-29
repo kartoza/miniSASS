@@ -1,6 +1,15 @@
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer
+} from 'react';
 import axios from 'axios';
 import { globalVariables } from '../src/utils';
+
+export type ActionTypes = 'OPEN_LOGIN_MODAL';
+export const OPEN_LOGIN_MODAL: ActionTypes = 'OPEN_LOGIN_MODAL';
 
 // user type
 type User = {
@@ -13,6 +22,7 @@ type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
   refreshToken: null;
+  openLoginModal: boolean;
 };
 
 type AuthAction =
@@ -20,13 +30,15 @@ type AuthAction =
   | { type: 'LOGOUT' }
   | { type: 'REGISTER' }
   | { type: 'RESET_PASSWORD' }
-  | { type: 'TOKEN_REFRESH' };
+  | { type: 'TOKEN_REFRESH'; payload: string }
+  | { type: ActionTypes; payload: boolean };
 
 
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   refreshToken: null,
+  openLoginModal: false
 };
 
 // Create the context
@@ -35,7 +47,7 @@ const AuthContext = createContext<{ state: AuthState; dispatch: React.Dispatch<A
 );
 
 // Define the reducer function
-const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthState> => {
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -45,12 +57,11 @@ const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthSt
       };
     case 'LOGOUT':
       try {
-          await axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
-          return {
-            ...state,
-            user: null,
-            isAuthenticated: false,
-          };
+        return {
+          ...state,
+          user: null,
+          isAuthenticated: false,
+        };
       } catch (error) {
         console.error('Logout error:', error);
       }
@@ -61,26 +72,17 @@ const authReducer = async (state: AuthState, action: AuthAction): Promise<AuthSt
       // Handle the reset password action here. TODO
       return state;
     case 'TOKEN_REFRESH':
-      try {
-        const response = await axios.post(`${globalVariables.baseUrl}/token/refresh/`, {
-          refresh: state.refreshToken,
-        });
-
-        const newAccessToken = response.data.access;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-
-        const newAuthState = {
-          ...state,
-          access_token: newAccessToken,
-        };
-    
-        localStorage.setItem('authState', JSON.stringify(newAuthState));
-    
-        return newAuthState;
-      } catch (error) {
-        console.error('Token refresh error:', error);
-        return state;
-      }
+      const newAuthState = {
+        ...state,
+        access_token: action.payload,
+      };
+      localStorage.setItem('authState', JSON.stringify(newAuthState));
+      return newAuthState;
+    case OPEN_LOGIN_MODAL:
+      return {
+        ...state,
+        openLoginModal: action.payload,
+      };
     default:
       return state;
   }
@@ -99,14 +101,14 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         if (storedState) {
           const parsedState = JSON.parse(storedState);
           const accessToken = parsedState.userData.access_token;
-    
+
           const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
             },
           });
 
-          if(response.status == 200) {
+          if (response.status == 200) {
             dispatch({ type: 'LOGIN', payload: parsedState.userData });
           }
 
@@ -116,7 +118,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
 
-   checkAuthStatus();
+    checkAuthStatus();
 
 
     // Set up an interval to periodically refresh the token (10 mins)
@@ -126,7 +128,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       if (storedState) {
         const parsedState = JSON.parse(storedState);
         const refreshToken = parsedState.userData.refresh_token;
-        
+
         // Check if the user is authenticated before attempting to refresh the token
         if (parsedState.is_authenticated && refreshToken) {
           try {
@@ -141,7 +143,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []); // Only run this effect on mount
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ state, dispatch }}>{children}</AuthContext.Provider>
   );
 };
 
@@ -160,7 +163,9 @@ const login = (dispatch: React.Dispatch<AuthAction>, user: User) => {
 };
 
 const logout = (dispatch: React.Dispatch<AuthAction>) => {
+  localStorage.removeItem('authState');
   dispatch({ type: 'LOGOUT' });
+  axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
 };
 
 const register = (dispatch: React.Dispatch<AuthAction>) => {
@@ -173,10 +178,24 @@ const resetPassword = (dispatch: React.Dispatch<AuthAction>) => {
 
 const tokenRefresh = async (dispatch: React.Dispatch<AuthAction>, refreshToken: string) => {
   try {
-    dispatch({ type: 'TOKEN_REFRESH' });
+    const response = await axios.post(`${globalVariables.baseUrl}/token/refresh/`, {
+      refresh: refreshToken,
+    });
+
+    const newAccessToken = response.data.access;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+    dispatch({ type: 'TOKEN_REFRESH', payload: newAccessToken });
   } catch (error) {
     console.error('Token refresh error:', error);
   }
 };
 
-export { AuthProvider, useAuth, login, logout, register, resetPassword, tokenRefresh };
+export {
+  AuthProvider,
+  useAuth,
+  login,
+  logout,
+  register,
+  resetPassword,
+  tokenRefresh
+};

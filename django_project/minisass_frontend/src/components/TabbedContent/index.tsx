@@ -13,7 +13,7 @@ const TabbedContent = ({ tabsData }) => {
         {tabsData.map((tab) => (
           <button
             key={tab.id}
-            className={`cursor-pointer min-w-[126px] text-base text-center ${selectedTab === tab.id && 'active'}`}
+            className={`cursor-pointer min-w-[126px] text-base text-center focus:outline-none ${selectedTab === tab.id ? 'border-b-4 border-blue-900 text-blue-900' : ''}`}
             onClick={() => handleTabChange(tab.id)}
           >
             {tab.label}

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
-import { useAuth } from '../../AuthContext';
-import axios from 'axios';
+import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 
 
@@ -11,17 +12,17 @@ function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { dispatch, state  } = useAuth();
-  const [isAuthenticated, setIsAuthenticated] = useState(state.isAuthenticated);
+  const { dispatch, state } = useAuth();
 
+  /** Open login modal based on context ***/
   useEffect(() => {
-    const storedState = localStorage.getItem('authState');
-    if (storedState) {
-        const parsedState = JSON.parse(storedState);
-        if(parsedState.userData.is_authenticated == 'true')
-          setIsAuthenticated(true)
-    }
-  }, []);
+    setLoginModalOpen(state.openLoginModal)
+  }, [state.openLoginModal]);
+
+  /** Update context based on login modal open/not. ***/
+  useEffect(() => {
+    dispatch({ type: OPEN_LOGIN_MODAL, payload: isLoginModalOpen });
+  }, [isLoginModalOpen]);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -45,9 +46,7 @@ function AuthenticationButtons() {
   const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
 
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT' });
-    localStorage.removeItem('authState');
-    setIsAuthenticated(false);
+    logout(dispatch)
   };
 
   const handleLogin = async (loginData: any) => {
@@ -65,14 +64,11 @@ function AuthenticationButtons() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
         setError(null);
         setLoginModalOpen(false)
-        setIsAuthenticated(true)
       } else {
         setError('Invalid credentials. Please try again.');
-        setIsAuthenticated(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
-      setIsAuthenticated(false)
     }
   };
 
@@ -105,7 +101,7 @@ function AuthenticationButtons() {
         alt="minisasstextOne"
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
-        {isAuthenticated ? (
+        { state.isAuthenticated ? (
           <Button
             onClick={handleLogout}
             className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
