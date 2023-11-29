@@ -296,8 +296,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         </div>
         {/* Success Modal */}
         {isSuccessModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white' ,borderRadius: '0px 25px 25px 25px',}}>
-            <div className=" p-8 rounded-md shadow-md">
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
+            <div className="absolute bg-white p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-green-500">
                 Your data was successfully captured.
               </Text>
@@ -314,11 +315,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
             </div>
           </div>
         )}
-
+        
         {/* Error Modal */}
         {isErrorModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white',borderRadius: '0px 25px 25px 25px',}}>
-            <div className=" p-8 rounded-md shadow-md">
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
+            <div className="absolute bg-white p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-red-500">
                 {errorMessage}
               </Text>
@@ -335,6 +337,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
             </div>
           </div>
         )}
+
         <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
         <ManageImagesModal
           title={manageImagesModalData.groups}
