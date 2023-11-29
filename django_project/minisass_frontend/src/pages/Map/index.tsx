@@ -10,6 +10,7 @@ import { Map } from "../../components/Map"
 import Search from './Search';
 import basemapsData from './config/basemaps.config.json';
 import overlayLayersData from './config/overlay.config.json';
+import { useAuth, OPEN_LOGIN_MODAL } from "../../AuthContext";
 
 import "./style.css"
 
@@ -18,14 +19,30 @@ import { globalVariables } from "../../utils";
 const MapPage: React.FC = () => {
   const mapRef = useRef(null);
 
+  const { dispatch, state  } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isObservationDetails, setIsObservationDetails] = useState(false);
+  const [isLoginFromThis, setIsLoginFromThis] = useState(false);
 
   const handleSidebarToggle = () => {
-    setIsObservationDetails(false)
-    setSidebarOpen((prev) => !prev);
+    if (state.isAuthenticated) {
+      setIsObservationDetails(false)
+      setSidebarOpen((prev) => !prev);
+    } else {
+      setIsLoginFromThis(true)
+      dispatch({ type: OPEN_LOGIN_MODAL, payload: true });
+    }
   };
+
+  useEffect(() => {
+    if (state.isAuthenticated && isLoginFromThis) {
+      setSidebarOpen(true)
+      setIsLoginFromThis(false)
+    } else if(!state.isAuthenticated) {
+      setSidebarOpen(false)
+    }
+  }, [state.isAuthenticated]);
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -34,11 +51,11 @@ const MapPage: React.FC = () => {
   useEffect(() => {
 
     if(details){
-      window.scrollTo(0, 0); 
+      window.scrollTo(0, 0);
       setIsObservationDetails(true)
       setSidebarOpen((prev) => !prev);
     }
-    
+
   }, [details]);
 
   return (
@@ -108,15 +125,15 @@ const MapPage: React.FC = () => {
                 ref={mapRef}
               />
               {/* Sidebar */}
-              <Sidebar 
-                isOpen={isSidebarOpen} 
-                isObservationDetails={isObservationDetails} 
-                setSidebarOpen={setSidebarOpen} 
+              <Sidebar
+                isOpen={isSidebarOpen}
+                isObservationDetails={isObservationDetails}
+                setSidebarOpen={setSidebarOpen}
                 observation={details}
               />
             </div>
           </div>
-          
+
           <div className="absolute bg-white-A700 flex flex-col gap-2 items-start justify-center px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] w-auto top-[6%] left-[13px]">
             <div className="flex flex-col items-center justify-center w-auto">
               <Text
