@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "name": "MyCivitas",
+  "name": "miniSASS",
   "metadata": {"maputnik:renderer": "mbgljs"},
   "center": [25.2, -28.15],
   "zoom": 5,
