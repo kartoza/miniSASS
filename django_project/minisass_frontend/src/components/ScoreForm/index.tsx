@@ -97,16 +97,18 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         true_flies:checkboxStates['11'],
         snails:checkboxStates['12'],
         score:totalScore,
-        datainput: additionalData.dataFormInput,
+        datainput: additionalData,
       };
   
 
-      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
+      const response = await axios.post(`${globalVariables.baseUrl}/observations-create/`, observationsData);
+
+      if(response.status == 200){
+        setIsSuccessModalOpen(true);
+      }
   
-      console.log('Observation saved:', response.data);
-      setIsSuccessModalOpen(true);
+      
     } catch (error) {
-      console.error('Error saving observation:', error);
       setErrorMessage(error);
       setIsErrorModalOpen(true);
     }
@@ -297,7 +299,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         </div>
         {/* Success Modal */}
         {isSuccessModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white'}}>
             <div className="bg-white p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-green-500">
                 Success! Details were saved successfully.
@@ -318,7 +320,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
         {/* Error Modal */}
         {isErrorModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white'}}>
             <div className="bg-white p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-red-500">
                 {errorMessage}
