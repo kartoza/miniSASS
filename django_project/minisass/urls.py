@@ -4,10 +4,13 @@ from django.conf import settings
 from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
+from minisass.views import VideoListView
 
 admin.autodiscover()
 
 urlpatterns = [
+    path('videos/', VideoListView.as_view(), name='video-list'),
+    
     path('jsi18n/<str:packages>/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Use JavaScriptCatalog directly
     path('admin/', admin.site.urls),
     
@@ -22,7 +25,6 @@ urlpatterns = [
 
     # Indlude monitor URLs
     path('monitor/', include('monitor.urls')),
-
 
     # map frontend urls to backend
     path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),
