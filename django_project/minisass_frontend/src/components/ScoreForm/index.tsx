@@ -12,9 +12,11 @@ interface AdditionalData {
 interface ScoreFormProps {
   onCancel: () => void;
   additionalData: AdditionalData;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
+
+const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
 
   useEffect(() => {
@@ -55,7 +57,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivity_score), 0);
+
+  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
   const numberOfGroups = scoreGroups.length;
   const averageScore = totalScore / numberOfGroups;
 
@@ -101,19 +104,37 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     setIsManageImagesModalOpen(false);
   };
 
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+  
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
-          height: '75vh',
+          height: '72vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
       >
+        
         <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
-          <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
-            Score
-          </Text>
+          <div
+            className="flex flex-row gap-80 w-auto sm:w-full"
+          >
+            <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
+              Score
+            </Text>
+            <Img
+              className="h-6 w-6 common-pointer"
+              src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+              alt="close"
+              style={{
+                marginLeft: '118px'
+              }}
+              onClick={handleCloseSidebar}
+            />
+          </div>
           <div className="flex flex-row items-center justify-between w-[71%] md:w-full">
             <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
               Groups
@@ -153,7 +174,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                 {/* Column 2 - Sensitivity Score */}
                 <div className="flex sm:flex-1 flex-col font-roboto gap-4 items-start justify-start w-[100px]">
                   <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
-                    {props.sensetivity_score}
+                    {props.sensitivity_score}
                   </Text>
                 </div>
 
@@ -185,7 +206,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
-                              onClick={() => openManageImagesModal(props.id, props.name, props.sensetivity_score)}
+                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score)}
                             >
                               Manage Images
                             </Button>
@@ -219,9 +240,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
               size="txtRalewayRomanRegular18"
             >
               <>
-                {totalScore.toFixed(2)}<br />
+                {isNaN(totalScore) ? 0 : totalScore.toFixed(2)}<br />
                 {numberOfGroups}<br />
-                {averageScore.toFixed(2)}
+                {isNaN(averageScore) ? 0 : averageScore.toFixed(2)}
               </>
             </Text>
           </div>
