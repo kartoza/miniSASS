@@ -101,7 +101,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
       };
   
 
-      const response = await axios.post(`${globalVariables.baseUrl}/observations-create/`, observationsData);
+      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
 
       if(response.status == 200){
         setIsSuccessModalOpen(true);
