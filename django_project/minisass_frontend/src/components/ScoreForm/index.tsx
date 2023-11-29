@@ -299,10 +299,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         </div>
         {/* Success Modal */}
         {isSuccessModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white'}}>
-            <div className="bg-white p-8 rounded-md shadow-md">
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white' ,borderRadius: '0px 25px 25px 25px',}}>
+            <div className=" p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-green-500">
-                Success! Details were saved successfully.
+                Your data was successfully captured.
               </Text>
               <Button
                 className="mt-4 text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
@@ -320,8 +320,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
 
         {/* Error Modal */}
         {isErrorModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white'}}>
-            <div className="bg-white p-8 rounded-md shadow-md">
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center" style={{backgroundColor: 'white',borderRadius: '0px 25px 25px 25px',}}>
+            <div className=" p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-red-500">
                 {errorMessage}
               </Text>
