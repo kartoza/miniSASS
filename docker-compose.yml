@@ -5,14 +5,13 @@ volumes:
   certificates:
   static-data:
   media-data:
+  minio_data:
+  minio_images:
 services:
   db:
     image: kartoza/postgis:16-3.4
     volumes:
       - postgres_data:/var/lib/postgresql
-      - ./geodata:/data
-      # Activate the restore script when downloading and importing existing data
-      - ./geodata/restore.sh:/docker-entrypoint-initdb.d/restore.sh
     environment:
       - POSTGRES_DB=${POSTGIS_DB:-minisass}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
@@ -29,20 +28,55 @@ services:
       timeout: 10s
       retries: 30
 
+  minio:
+    image: quay.io/minio/minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    entrypoint: /bin/bash
+    command: -c 'minio server /data --console-address ":9001"'
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add minisass http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc rm -r --force minisass/${BUCKET};
+      /usr/bin/mc mb minisass/${BUCKET};
+      /usr/bin/mc policy download minisass/${BUCKET};
+      exit 0;
+      "
+
   mount:
     image: kartoza/s3mount
     build:
       context: deployment/docker-s3-bucket
     privileged: true
     environment:
-      - AWS_ACCESS_KEY=minio_admin
-      - AWS_SECRET_ACCESS_KEY=secure_minio_secret
+      - AWS_ACCESS_KEY=${MINIO_ROOT_USER}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
       - S3_MOUNT_DIRECTORY=/web
-      - S3_BUCKET_NAME=mapproxy
+      - S3_BUCKET_NAME=${BUCKET}
       # URL can be an amazon S3 bucket so that we can mount it
       - MINIO_URL=http://minio:9000/
     volumes:
-      - ./data_images:/web
+      - minio_images:/web
+    depends_on:
+      minio:
+        condition: service_started
   django:
     build:
       context: .
@@ -52,7 +86,7 @@ services:
       - media-data:/home/web/media
       - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
-      - ./data_images:/web
+      - minio_images:/web
     environment:
       - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
@@ -66,7 +100,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8888:8080"
+      - "8080"
     logging:
       driver: json-file
       options:
@@ -94,7 +128,7 @@ services:
       - PGFS_SERVER_URLBASE=https://${HTTPS_HOST}/tiles
       - PGFS_SERVER_BASEPATH=/
     ports:
-      - "9000:9000"
+      - "9000"
     depends_on:
       db:
         condition: service_healthy
