@@ -51,7 +51,7 @@ def create_observations(request):
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
             elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
-            site_id = datainput.get('selectedSite')
+            site_id = datainput.get('selectedSite',0)
             longitude = Decimal(str(datainput.get('longitude')))
             latitude = Decimal(str(datainput.get('latitude')))
             obs_date = datainput.get('date')
