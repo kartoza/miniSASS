@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
 from django.contrib.gis.geos import Point
+from decimal import Decimal
 
 @csrf_exempt
 @login_required
@@ -41,18 +42,18 @@ def create_observations(request):
             caddisflies = data.get('caddisflies', False)
             true_flies = data.get('true_flies', False)
             snails = data.get('snails', False)
-            score = datainput.get('score', 0)
+            score = Decimal(str(datainput.get('score', 0)))
             comment = datainput.get('notes', '')
-            water_clarity = datainput.get('waterclaritycm', '')
-            water_temp = datainput.get('watertemperatureOne', 0)
-            ph = datainput.get('ph', 0)
-            diss_oxygen=datainput.get('dissolvedoxygenOne', 0),
-            diss_oxygen_unit=datainput.get('dissolvedoxygenOneUnit', 'mgl')
-            elec_cond=datainput.get('electricalconduOne', 0)
-            elec_cond_unit=datainput.get('electricalconduOneUnit', 'mS/m')
+            water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
+            water_temp = Decimal(str(datainput.get('watertemperatureOne', 0)))
+            ph = Decimal(str(datainput.get('ph', 0)))
+            diss_oxygen = Decimal(str(datainput.get('dissolvedoxygenOne', 0)))
+            diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
+            elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
+            elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
             site_id = datainput.get('selectedSite')
-            longitude = datainput.get('longitude')
-            latitude = datainput.get('latitude')
+            longitude = Decimal(str(datainput.get('longitude')))
+            latitude = Decimal(str(datainput.get('latitude')))
             obs_date = datainput.get('date')
 
             # Get the user from the request object
