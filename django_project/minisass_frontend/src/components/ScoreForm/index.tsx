@@ -16,6 +16,17 @@ interface ScoreFormProps {
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchScoreGroups = async () => {
@@ -90,11 +101,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
       };
   
 
-      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
+      const response = await axios.post(`${globalVariables.baseUrl}/observations-create/`, observationsData);
   
       console.log('Observation saved:', response.data);
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error('Error saving observation:', error);
+      setErrorMessage(error);
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -135,7 +149,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
-          height: '75vh',
+          height: '73vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
@@ -281,6 +295,47 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
           </div>
 
         </div>
+        {/* Success Modal */}
+        {isSuccessModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-md shadow-md">
+              <Text size="txtRalewayBold18" className="text-green-500">
+                Success! Details were saved successfully.
+              </Text>
+              <Button
+                className="mt-4 text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="blue_gray_500"
+                size="xs"
+                variant="fill"
+                onClick={closeSuccessModal}
+              >
+                OK
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Error Modal */}
+        {isErrorModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-md shadow-md">
+              <Text size="txtRalewayBold18" className="text-red-500">
+                {errorMessage}
+              </Text>
+              <Button
+                className="mt-4 text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="red_500"
+                size="xs"
+                variant="fill"
+                onClick={closeErrorModal}
+              >
+                OK
+              </Button>
+            </div>
+          </div>
+        )}
         <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
         <ManageImagesModal
           title={manageImagesModalData.groups}
