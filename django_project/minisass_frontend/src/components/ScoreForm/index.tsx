@@ -60,12 +60,41 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   const averageScore = totalScore / numberOfGroups;
 
   // Function to log the state of checkboxes
-  const handleSave = () => {
-    console.log(checkboxStates); // Log the state of checkboxes
-    console.log('values ', additionalData);
-    console.log(`Total Score: ${totalScore}`);
-    console.log(`Number of Groups: ${numberOfGroups}`);
-    console.log(`Average Score: ${averageScore}`);
+  const handleSave = async () => {
+    
+
+    try {
+
+      console.log(checkboxStates); // Log the state of checkboxes
+      console.log('data from first form ', additionalData);
+      console.log(`Total Score: ${totalScore}`);
+      console.log(`Number of Groups: ${numberOfGroups}`);
+      console.log(`Average Score: ${averageScore}`);
+
+      // Create an object with the data to be saved
+      const observationsData = {
+        worms :checkboxStates['1'],
+        leeches:checkboxStates['2'],
+        crabs_shrimps :checkboxStates['3'],
+        stoneflies :checkboxStates['4'],
+        minnow_mayflies :checkboxStates['5'],
+        other_mayflies :checkboxStates['6'],
+        damselflies:checkboxStates['7'],
+        dragonflies:checkboxStates['8'],
+        bugs_beetles :checkboxStates['9'],
+        caddisflies:checkboxStates['10'],
+        true_flies:checkboxStates['11'],
+        snails:checkboxStates['12'],
+        datainput: additionalData.dataFormInput,
+      };
+  
+
+      const response = await axios.post(`${globalVariables.baseUrl}/observations-create/`, observationsData);
+  
+      console.log('Observation saved:', response.data);
+    } catch (error) {
+      console.error('Error saving observation:', error);
+    }
   };
 
   // Function to handle checkbox changes
