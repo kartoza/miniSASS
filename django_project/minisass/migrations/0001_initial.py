@@ -17,4 +17,12 @@ class Migration(migrations.Migration):
                 ('embed_code', models.TextField()),
             ],
         ),
+        migrations.CreateModel(
+            name='GroupScores',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=True, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
+                ('sensitivity_score', models.DecimalField(decimal_places=2, max_digits=5)),
+            ],
+        ),
     ]

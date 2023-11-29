@@ -1,0 +1,434 @@
+{
+  "version": 8,
+  "name": "miniSASS",
+  "metadata": {"maputnik:renderer": "mbgljs"},
+  "center": [25.2, -28.15],
+  "zoom": 5,
+  "sources": {
+    "OSM tiles": {
+      "type": "raster",
+      "tiles": ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      "minzoom": 0,
+      "maxzoom": 24
+    },
+    "MiniSASS Observations": {
+      "type": "vector",
+      "tiles": [
+        "https://minisass.dev.do.kartoza.com/tiles/public.minisass_observations/{z}/{x}/{y}.pbf"
+      ],
+      "minZoom": 0,
+      "maxZoom": 14
+    }
+  },
+  "sprite": "https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/icons/minisass_sprites",
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=cc4PpmmWZP73LjU1nsw3",
+  "layers": [
+    {
+      "id": "OSM Background",
+      "type": "raster",
+      "source": "OSM tiles",
+      "layout": {"visibility": "visible"},
+      "paint": {"raster-resampling": "linear"}
+    },
+    {
+      "id": "No invertebrates found - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": ["all", ["==", "score", "0"], ["==", "flag", "dirty"]],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_u_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "No invertebrates found - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": ["all", ["==", "score", "0"], ["==", "flag", "clean"]],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_u",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Seriously/critically modified (sandy) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "4.8"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_sm_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Seriously/critically modified (sandy) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "4.8"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_sm",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Seriously/critically modified (rocky) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "5.3"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_sm_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Seriously/critically modified (rocky) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "5.3"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_sm",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely modified (sandy) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "5.3"],
+        [">", "score", "4.8"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_p_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely modified (sandy) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "5.3"],
+        [">", "score", "4.8"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_p",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely modified(rocky) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "5.6"],
+        [">", "score", "5.3"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_p_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely modified(rocky) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "5.6"],
+        [">", "score", "5.3"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_p",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Moderately modified (sandy) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "5.8"],
+        [">", "score", "5.3"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_f_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Moderately modified (sandy) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "5.8"],
+        [">", "score", "5.3"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_f",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Moderately modified (rocky) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "6.1"],
+        [">", "score", "5.6"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_f_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Moderately modified (rocky) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "6.1"],
+        [">", "score", "5.6"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_f",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely natural/few modifications (sandy) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "6.8"],
+        [">", "score", "5.8"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_g_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely natural/few modifications (sandy) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        ["<=", "score", "6.8"],
+        [">", "score", "5.8"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_g",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely natural/few modifications (rocky) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "7.2"],
+        [">", "score", "6.1"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_g_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Largely natural/few modifications (rocky) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        ["<=", "score", "7.2"],
+        [">", "score", "6.1"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_g",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Unmodified (rocky) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        [">", "score", "7.2"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_n_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Unmodified (rocky) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "rocky"],
+        [">", "score", "7.2"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_n",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Unmodified (sandy) - dirty",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        [">", "score", "6.8"],
+        ["==", "flag", "dirty"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_n_dirty",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]}
+      }
+    },
+    {
+      "id": "Unmodified (sandy) - clean",
+      "type": "symbol",
+      "source": "MiniSASS Observations",
+      "source-layer": "public.minisass_observations",
+      "filter": [
+        "all",
+        ["==", "river_cat", "sandy"],
+        [">", "score", "6.8"],
+        ["==", "flag", "clean"]
+      ],
+      "layout": {
+        "text-field": "",
+        "icon-image": "crab_n",
+        "visibility": "visible",
+        "icon-size": {"stops": [[5, 1], [17, 3]]},
+        "icon-allow-overlap": false
+      }
+    }
+  ],
+  "id": "903to775d"
+}

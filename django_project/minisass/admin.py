@@ -1,7 +1,10 @@
-# admin.py
-
 from django.contrib import admin
-from minisass.models import Video
+from minisass.models import GroupScores,Video
+
+@admin.register(GroupScores)
+class GroupScoresAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):

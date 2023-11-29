@@ -4,11 +4,13 @@ from django.conf import settings
 from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
-from minisass.views import VideoListView
+from minisass.views import GroupScoresListView,VideoListView
+
 
 admin.autodiscover()
 
 urlpatterns = [
+    path('group-scores/', GroupScoresListView.as_view(), name='group-scores'),
     path('videos/', VideoListView.as_view(), name='video-list'),
     
     path('jsi18n/<str:packages>/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Use JavaScriptCatalog directly

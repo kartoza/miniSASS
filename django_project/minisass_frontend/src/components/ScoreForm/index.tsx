@@ -15,6 +15,7 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+
 const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
 
@@ -55,6 +56,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [checkboxStates, setCheckboxStates] = useState(
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
+
 
   const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
   const numberOfGroups = scoreGroups.length;
@@ -204,7 +206,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
-                              onClick={() => openManageImagesModal(props.id, props.groups, props.sensetivityScore)}
+                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score)}
                             >
                               Manage Images
                             </Button>
@@ -238,9 +240,9 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
               size="txtRalewayRomanRegular18"
             >
               <>
-                {totalScore.toFixed(2)}<br />
+                {isNaN(totalScore) ? 0 : totalScore.toFixed(2)}<br />
                 {numberOfGroups}<br />
-                {averageScore.toFixed(2)}
+                {isNaN(averageScore) ? 0 : averageScore.toFixed(2)}
               </>
             </Text>
           </div>
