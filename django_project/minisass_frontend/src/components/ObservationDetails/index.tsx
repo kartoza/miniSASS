@@ -59,7 +59,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
 
   // this will be dynamic based on the observation data available TODO
   const tabsData = [
-    { id: 'tab1', label: `${observationDetails.date}`, content: (
+    { id: 'tab1', label: `${observationDetails.obs_date}`, content: (
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
         <Img
           className="h-[152px] md:h-auto object-cover w-[164px]"
@@ -275,7 +275,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.date}
+                  {observationDetails.obs_date}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -303,7 +303,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.organisationtype}
+                  {observationDetails.organisationtype ? observationDetails.organisationtype.description : 'N/A'}
                 </Text>
               </div>
             </div>
