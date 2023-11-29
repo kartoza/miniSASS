@@ -95,7 +95,6 @@ def create_observations(request):
                 caddisflies = caddisflies,
                 true_flies = true_flies,
                 snails = snails,
-                score = score,
                 comment = comment,
                 water_clarity = water_clarity,
                 water_temp = water_temp,
@@ -112,6 +111,7 @@ def create_observations(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 
 
