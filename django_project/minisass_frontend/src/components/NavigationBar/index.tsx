@@ -102,8 +102,8 @@ function NavigationBar(props) {
       </div>
 
 
-      <div className="md:bottom-5 sm:bottom-[30px] flex sm:flex-1 flex-row gap-[37px] items-center justify-between left-2.5 relative w-[22%] md:w-[30%] sm:w-full">
-        <div className="flex flex-row gap-4 items-start justify-start w-auto">
+      <div className="md:bottom-5 sm:bottom-[30px] flex sm:flex-1 flex-row gap-[37px] items-center justify-between left-3.5 relative w-[22%] md:w-[30%] sm:w-full">
+        <div className="flex flex-row gap-4 items-start justify-start w-auto" style={{ marginLeft: '120px'}}>
             <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
               <Img
                 className="h-6 w-6"
