@@ -89,7 +89,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
       };
   
 
-      const response = await axios.post(`${globalVariables.baseUrl}/observations-create/`, observationsData);
+      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
   
       console.log('Observation saved:', response.data);
     } catch (error) {
