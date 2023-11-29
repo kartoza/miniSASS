@@ -1,5 +1,5 @@
 
-from monitor.models import Observations
+from monitor.models import Observations, Sites
 from minisass_authentication.models import UserProfile
 from monitor.serializers import ObservationsSerializer
 
@@ -10,6 +10,50 @@ from django.utils.translation import gettext as _
 
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def create_observations(request):
+    if request.method == 'POST':
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body.decode('utf-8'))
+
+            # Extract datainput from the payload
+            datainput = data.get('datainput', {})
+
+            # Extract other fields from the payload
+            flatworms = data.get('flatworms', False)
+            leeches = data.get('leeches', False)
+            crabs_shrimps = data.get('crabs_shrimps', False)
+            # Add other fields...
+
+            # Extract additional fields from datainput
+            score = datainput.get('score', 0)
+            site_id = datainput.get('site_id')
+
+            # Get the user from the request object
+            user = request.user
+
+            # Create a new Observations instance and save it
+            observation = Observations.objects.create(
+                score=score,
+                site=Sites.objects.get(gid=site_id),
+                user=user,
+                flatworms=flatworms,
+                leeches=leeches,
+                crabs_shrimps=crabs_shrimps,
+                # Add other fields...
+            )
+
+            return JsonResponse({'status': 'success', 'observation_id': observation.id})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
 class RecentObservationListView(generics.ListAPIView):
