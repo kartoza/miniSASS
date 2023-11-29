@@ -64,6 +64,23 @@ const MapPage: React.FC = () => {
     setShowLegend(prev => !prev);
   };
 
+  // navigate to any location on map with long/lat
+  const createGeoJSON = (longitude: number, latitude: number) => {
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [longitude, latitude],
+      },
+      properties: {},
+    };
+  };
+
+  const updateMapLocation = (longitude: number, latitude: number) => {
+    const geojson = createGeoJSON(longitude, latitude);
+    mapRef?.current?.updateHighlighGeojson(geojson);
+  };
+
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full h-screen">
@@ -131,12 +148,14 @@ const MapPage: React.FC = () => {
                 ref={mapRef}
               />
               {/* Sidebar */}
-              <Sidebar
-                isOpen={isSidebarOpen}
-                isObservationDetails={isObservationDetails}
-                setSidebarOpen={setSidebarOpen}
+              <Sidebar 
+                isOpen={isSidebarOpen} 
+                isObservationDetails={isObservationDetails} 
+                setSidebarOpen={setSidebarOpen} 
                 observation={details}
+                updateMapLocation={updateMapLocation}
               />
+            </div>
             </div>
           </div>
           
