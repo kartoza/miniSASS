@@ -8,10 +8,11 @@ import { globalVariables } from "../../utils";
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   observation_id: string;
-  classname: string
+  classname: string;
+  updateMapLocation: (longitude: number, latitude: number) => void;
 }
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, updateMapLocation }) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
@@ -34,6 +35,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
+        updateMapLocation(response.data.longitude, response.data.latitude);
 
         if(parseFloat(response.data.score) < 6){
             setTitleColor("text-red-600")
