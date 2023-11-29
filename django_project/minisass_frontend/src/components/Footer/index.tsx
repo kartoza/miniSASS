@@ -5,7 +5,6 @@ import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types'; 
 
-
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
