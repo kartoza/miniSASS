@@ -36,6 +36,7 @@ type DataInputFormProps = Omit<
   | "dissolvedoxygenOne"
   | "electricalconduOne"
   | "next"
+  | "setSidebarOpen"
 > &
   Partial<{
     datainputform: string;
@@ -62,6 +63,7 @@ type DataInputFormProps = Omit<
     dissolvedoxygenOne: string;
     electricalconduOne: string;
     next: string;
+    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   }>;
 
 const inputOptionsList = [
@@ -91,6 +93,12 @@ const inputDirectionUnitsList = [
 ];
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
+
+  const handleCloseSidebar = () => {
+    props.setSidebarOpen(false);
+  };
+
+  // TODO still need to save data to db
 
   // State to store form values
   const [formValues, setFormValues] = useState({
@@ -134,12 +142,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     if (popperRef.current != null) {
       popperRef.current.update();
     }
-  };
-
-
-  // Function to handle form submission
-  const handleSubmit = (values) => {
-    console.log('Form Values:', values);
   };
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -201,20 +203,34 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     getSites()
   }, [showSelectKnownSiteField]);
 
+
   return (
     <>
       {!showScoreForm ? (
       <div className={props.className} style={{
-        height: '75vh',
+        height: '72vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}>
-        <Text
-          className="text-2xl md:text-[22px] text-blue-900 sm:text-xl"
-          size="txtRalewayBold24"
-        >
-          {props?.datainputform}
-        </Text>
+        <div
+            className="flex flex-row gap-80 items-start justify-start w-auto sm:w-full"
+          >
+          <Text
+            className="text-2xl md:text-[22px] text-blue-900 sm:text-xl"
+            size="txtRalewayBold24"
+          >
+            {props?.datainputform}
+          </Text>
+          <Img
+            className="h-6 w-6 common-pointer"
+            src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+            alt="close"
+            style={{
+              marginLeft: '35px'
+            }}
+            onClick={handleCloseSidebar}
+          />
+        </div>
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
           <Text
             className="text-blue-900 text-lg w-auto"
@@ -237,10 +253,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           <Formik
             initialValues={formValues}
             onSubmit={(values) => {
-              handleSubmit(values)
+              setFormValues(values)
+              handleShowScoreForm()
             }}
           >
-            {({ values, handleChange }) => (
+            { ({ values, handleChange }) => (
               <Form>
 
                 {/* rivername input */}
@@ -271,7 +288,9 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginBottom: '2%'
                     }}
                     value={values.riverName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                   />
                 </div>
 
@@ -934,8 +953,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   color="blue_gray_500"
                   size="xs"
                   variant="fill"
-                  type="button"
-                  onClick={handleShowScoreForm}
+                  type="submit"
+                  // onClick={handleShowScoreForm}
                 >
                   next
                 </Button>
@@ -945,7 +964,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
         </div>
       </div>
       ): (
-        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} />
+        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} />
       )};
     </>
   );
