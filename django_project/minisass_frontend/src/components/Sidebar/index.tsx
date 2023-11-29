@@ -9,9 +9,10 @@ interface SidebarProps {
   isObservationDetails: boolean;
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   observation: string;
+  updateMapLocation: (longitude: number, latitude: number) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSidebarOpen , observation}) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSidebarOpen , observation, updateMapLocation}) => {
   return (
     <div
       className={`absolute ${
@@ -23,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isObservationDetails, setSide
           classname="bg-white-A700 flex flex-col gap-6 items-start justify-start pb-3 px-3 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-full" 
           observation_id={observation}
           setSidebarOpen={setSidebarOpen}
+          updateMapLocation={updateMapLocation}
         />
       ):( isOpen &&
         <DataInputForm className="bg-white-A700 flex flex-col gap-6 items-start justify-start pb-3 px-3 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-full" setSidebarOpen={setSidebarOpen} />
