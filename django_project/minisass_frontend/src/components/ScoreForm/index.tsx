@@ -5,13 +5,10 @@ import UploadModal from "../../components/UploadFormModal";
 import ManageImagesModal from "../../components/ManageImagesModal";
 import { globalVariables } from "../../utils";
 
-interface AdditionalData {
-  dataFormInput: string;
-}
 
 interface ScoreFormProps {
   onCancel: () => void;
-  additionalData: AdditionalData;
+  additionalData: {};
 }
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
