@@ -8,6 +8,7 @@ import { Formik, Form, Field } from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
 import { globalVariables } from "../../utils";
+import CoordinatesInputForm from "../CoordinatesInputForm";
 
 
 type DataInputFormProps = Omit<
@@ -83,13 +84,6 @@ const inputElectricConductivityUnitsList = [
   { label: "Unknown", value: "uknown" },
 ];
 
-const inputDirectionUnitsList = [
-  { label: "N", value: "N" },
-  { label: "E", value: "E" },
-  { label: "S", value: "S" },
-  { label: "W", value: "W" },
-];
-
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   // State to store form values
@@ -114,10 +108,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     electricalconduOne: '',
     dissolvedoxygenOneUnit: 'mg/l',
     electricalconduOneUnit: 'S/m',
-    latitude: '',
-    latitudeUnit: 'N',
-    longitude: '',
-    longitudeUnit: 'N',
+    latitude: 0,
+    longitude: 0,
     selectedSite: ''
   });
 
@@ -240,7 +232,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               handleSubmit(values)
             }}
           >
-            {({ values, handleChange }) => (
+            {({ values, handleChange, setFieldValue }) => (
               <Form>
 
                 {/* rivername input */}
@@ -315,7 +307,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   >
                     {props?.sitedescriptionOne}
                   </Text>
-                  
+
                       <Field
                         name="siteDescription"
                         style={{
@@ -391,7 +383,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           padding: '8px 12px',
                           marginBottom: '2%'
                         }}
-                        
+
                       >
                       {inputOptionsList.map((option) => (
                         <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
@@ -490,124 +482,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                {showCoordinatesFields && (
-                  <div>
-                    {/* Longitude */}
-                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-                      <Text
-                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {`longitude:`}
-                      </Text>
-                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{marginLeft:'20.5%'}}>
-                        <Field
-                          name="longitude"
-                          type="number"
-                          placeholder="0.000000"
-                          className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
-                          wrapClassName="w-full"
-                          shape="round"
-                          color="black_900_3a"
-                          size="xs"
-                          variant="outline"
-                          style={{
-                            width: '215px',
-                            maxWidth: '215px',
-                            height: '40px',
-                            border: '1px solid rgba(0, 0, 0, 0.23)',
-                            borderRadius: '4px',
-                            padding: '8px 12px',
-                            marginLeft: '14%'
-                          }}
-                          value={values.longitude}
-                          onChange={handleChange}
-                        />
-                        <Field as="select" name="longitudeUnit" className="!text-black-900_99 font-raleway text-base text-left"
-                            placeholderClassName="!text-black-900_99"
-                            placeholder=""
-                            shape="round"
-                            color="black_900_3a"
-                            size="xs"
-                            variant="outline"
-                            style={{
-                              width: '80px',
-                              maxWidth: '80px',
-                              height: '40px',
-                              border: '1px solid rgba(0, 0, 0, 0.23)',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              marginLeft: '1.5%'
-                            }}
-                          >
-                          {inputDirectionUnitsList.map((option) => (
-                            <option key={option.value} value={option.value} selected={option.value === values.longitudeUnit}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Field>
-                      </div>
-                    </div>
-
-                    {/* Latitude */}
-                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-                      <Text
-                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {`latitude:`}
-                      </Text>
-                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{marginLeft:'23.5%'}}>
-                        <Field
-                          name="latitude"
-                          type="number"
-                          placeholder="0.000000"
-                          className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
-                          wrapClassName="w-full"
-                          shape="round"
-                          color="black_900_3a"
-                          size="xs"
-                          variant="outline"
-                          style={{
-                            width: '215px',
-                            maxWidth: '215px',
-                            height: '40px',
-                            border: '1px solid rgba(0, 0, 0, 0.23)',
-                            borderRadius: '4px',
-                            padding: '8px 12px',
-                            marginLeft: '14%'
-                          }}
-                          value={values.latitude}
-                          onChange={handleChange}
-                        />
-                        <Field as="select" name="latitudeUnit" className="!text-black-900_99 font-raleway text-base text-left"
-                            placeholderClassName="!text-black-900_99"
-                            placeholder=""
-                            shape="round"
-                            color="black_900_3a"
-                            size="xs"
-                            variant="outline"
-                            style={{
-                              width: '80px',
-                              maxWidth: '80px',
-                              height: '40px',
-                              border: '1px solid rgba(0, 0, 0, 0.23)',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              marginLeft: '1.5%'
-                            }}
-                          >
-                          {inputDirectionUnitsList.map((option) => (
-                            <option key={option.value} value={option.value} selected={option.value === values.latitudeUnit}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Field>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                { showCoordinatesFields ?  <CoordinatesInputForm values={values} setFieldValue={setFieldValue}/> : null }
                 <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
                   <Text
                     className="text-blue-900 text-lg w-auto"
@@ -625,9 +500,9 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       {props?.date}
                     </Text>
                     <Field
-                      type="date" 
+                      type="date"
                       name="date"
-                      placeholder="01.01.2024" 
+                      placeholder="01.01.2024"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="flex md:h-auto w-[300px]"
                       shape="round"
