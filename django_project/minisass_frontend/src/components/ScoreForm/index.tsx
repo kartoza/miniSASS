@@ -294,11 +294,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
           </div>
 
         </div>
-        {/* Success Modal */}
         {isSuccessModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
-            <div className="absolute bg-white p-8 rounded-md shadow-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
+          <div className="fixed flex items-center justify-center w-full h-full">
+            <div className="bg-white p-8 rounded-md shadow-md">
               <Text size="txtRalewayBold18" className="text-green-500">
                 Your data was successfully captured.
               </Text>
@@ -314,13 +314,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
               </Button>
             </div>
           </div>
-        )}
+        </div>
+      )}
+
         
         {/* Error Modal */}
         {isErrorModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
-            <div className="absolute bg-white p-8 rounded-md shadow-md">
+            <div className="fixed inset-0 bg-black bg-opacity-40" style={{ backdropFilter: 'blur(4px)' }}></div>
+            <div className="absolute bg-white p-8 rounded-md shadow-md" style={{ backgroundColor: 'white' }}>
               <Text size="txtRalewayBold18" className="text-red-500">
                 {errorMessage}
               </Text>
