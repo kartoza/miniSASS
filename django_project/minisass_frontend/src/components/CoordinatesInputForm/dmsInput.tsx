@@ -36,6 +36,7 @@ function DmsInputSection(
     color="black_900_3a"
     size="xs"
     variant="outline"
+    step={0.01}
     min={min}
     max={max}
     placeholder="0.000000"

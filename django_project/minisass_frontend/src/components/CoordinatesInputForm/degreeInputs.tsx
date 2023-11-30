@@ -35,6 +35,7 @@ function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
       min={min}
       max={max}
       placeholder="0.000000"
+      step={0.0001}
       style={{
         width: '300px',
         maxWidth: '300px',

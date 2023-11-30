@@ -70,11 +70,8 @@ def create_observations(request):
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
                 river_cat = datainput.get('rivercategory', '')
-                # TODO still to merge with Irwan for saving location
-                # longitude = Decimal(datainput.get('longitude',0))
-                # latitude = Decimal(datainput.get('latitude',0))
-                
-                
+                longitude = datainput.get('longitude',0)
+                latitude = datainput.get('latitude',0)
 
                 # Save the new site
                 site = Sites.objects.create(
@@ -82,6 +79,7 @@ def create_observations(request):
                     river_name=river_name,
                     description=description,
                     river_cat=river_cat,
+                    the_geom=Point(x=longitude, y=latitude, srid=4326),
                     user=user
                 )
 
