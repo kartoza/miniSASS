@@ -111,7 +111,7 @@ def create_observations(request):
                 obs_date=obs_date
             )
 
-            return JsonResponse({'status': 'success', 'observation_id': observation.id})
+            return JsonResponse({'status': 'success', 'observation_id': observation.gid})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
