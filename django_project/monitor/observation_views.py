@@ -56,8 +56,6 @@ def create_observations(request):
                 site_id = int(site_id)
             except (ValueError, TypeError):
                 site_id = 0
-            longitude = Decimal(datainput.get('longitude',0))
-            latitude = Decimal(datainput.get('latitude',0))
             obs_date = datainput.get('date')
 
             # Get the user from the request object
@@ -72,6 +70,10 @@ def create_observations(request):
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
                 river_cat = datainput.get('rivercategory', '')
+                # longitude = Decimal(datainput.get('longitude',0))
+                # latitude = Decimal(datainput.get('latitude',0))
+                longitude = Decimal('30.12345')
+                latitude = Decimal('-25.67890')
 
                 # Save the new site
                 site = Sites.objects.create(
