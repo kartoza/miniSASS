@@ -18,13 +18,19 @@ from django.contrib.auth import (
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes,force_str
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
 from django.http import JsonResponse
+from minisass_authentication.email_verification_token import email_verification_token
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import models
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 
 
 
@@ -135,15 +141,35 @@ def reset_password(request, uidb64, token):
         return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def activate_account(self, request, uidb64, token, *args, **kwargs):
+    uid = force_str(urlsafe_base64_decode(uidb64))
+    try:
+        user = models.User.objects.get(pk=uid)
+    except models.User.DoesNotExist:
+        user = None
+
+    if user is not None and email_verification_token.check_token(
+        user, token
+    ):
+        user.is_active = True
+        user.save()
+
+        redirect_url = reverse('home') + '?activation_complete=true'
+        return HttpResponseRedirect(redirect_url)
+    
+    return Response({'error': 'Token has expired or is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 def register(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            user.first_name = request.data.get('first_name')
-            user.last_name = request.data.get('last_name')
-            
+            user.first_name = request.data.get('name')
+            user.last_name = request.data.get('surname')
+            user_email = request.data.get('email')
+            username = request.data.get('username')
             
             # Create a User Profile
             org_name = request.data.get('organizationName')
@@ -167,6 +193,35 @@ def register(request):
                 )
                 user_profile.save()
                 user.save()
+
+                current_site = get_current_site(request)
+                domain = current_site.domain
+                staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
+
+                 # Generate the reset token and UID
+                token = default_token_generator.make_token(user)
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                # Compose the reset link URL
+                activation_link = request.build_absolute_uri(
+                    reverse('activate-account', kwargs={
+                            'uidb64': uidb64, 'token': token})
+                )
+
+                mail_subject = 'Activate account on miniSASS'
+                message = render_to_string('activate_account.html', {
+                    'domain': domain,
+                    'logo': staticPath,
+                    'activation_link': activation_link,
+                    'name': username
+                })
+                send_mail(
+                    mail_subject,
+                    None,
+                    settings.CONTACT_US_RECEPIENT_EMAIL,
+                    [user_email],
+                    html_message=message
+                )
+
             else:
                 return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
             
