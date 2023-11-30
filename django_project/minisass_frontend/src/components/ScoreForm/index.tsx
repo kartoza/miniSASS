@@ -20,6 +20,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [buttonStates, setButtonStates] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState([]);
+  const [totalScore, setTotalScore] = useState(0);
+  const [numberOfGroups ,setNumberOfGroups] = useState(0);
+  const [averageScore, setAverageScore] = useState(0);
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -68,29 +72,23 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
 
   // Function to log the state of checkboxes
   const handleSave = async () => {
-    
-    try {
 
-      console.log(checkboxStates); // Log the state of checkboxes
-      console.log('data from first form ', additionalData);
-      console.log(`Total Score: ${totalScore}`);
-      console.log(`Number of Groups: ${numberOfGroups}`);
-      console.log(`Average Score: ${averageScore}`);
+    try {
 
       // Create an object with the data to be saved
       const observationsData = {
-        flatworms :checkboxStates['1'],
-        leeches:checkboxStates['2'],
-        crabs_shrimps :checkboxStates['3'],
-        stoneflies :checkboxStates['4'],
-        minnow_mayflies :checkboxStates['5'],
-        other_mayflies :checkboxStates['6'],
-        damselflies:checkboxStates['7'],
-        dragonflies:checkboxStates['8'],
-        bugs_beetles :checkboxStates['9'],
-        caddisflies:checkboxStates['10'],
-        true_flies:checkboxStates['11'],
-        snails:checkboxStates['12'],
+        flatworms: checkedGroups.find(group => group.name === 'flatworms') ? true : false,
+        leeches: checkedGroups.find(group => group.name === 'leeches') ? true : false,
+        crabs_shrimps: checkedGroups.find(group => group.name === 'crabs_shrimps') ? true : false,
+        stoneflies: checkedGroups.find(group => group.name === 'stoneflies') ? true : false,
+        minnow_mayflies: checkedGroups.find(group => group.name === 'minnow_mayflies') ? true : false,
+        other_mayflies: checkedGroups.find(group => group.name === 'other_mayflies') ? true : false,
+        damselflies: checkedGroups.find(group => group.name === 'damselflies') ? true : false,
+        dragonflies: checkedGroups.find(group => group.name === 'dragonflies') ? true : false,
+        bugs_beetles: checkedGroups.find(group => group.name === 'bugs_beetles') ? true : false,
+        true_flies: checkedGroups.find(group => group.name === 'true_flies') ? true : false,
+        caddisflies: checkedGroups.find(group => group.name === 'caddisflies') ? true : false,
+        snails: checkedGroups.find(group => group.name === 'snails') ? true : false,
         score:totalScore,
         datainput: additionalData,
       };
@@ -101,15 +99,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         setIsSuccessModalOpen(true);
       }
     } catch (error) {
-     setErrorMessage(error.message);
+      setErrorMessage(error.message);
       setIsErrorModalOpen(true);
     }
   };
-
-  let checkedGroups;
-  let totalScore = 0;
-  let numberOfGroups = 0;
-  let averageScore = 0;
 
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
@@ -119,16 +112,15 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         [id]: !prevState[id],
       };
 
-      checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
-      totalScore = checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivity_score), 0);
-      numberOfGroups = checkedGroups.length;
-      averageScore = totalScore / numberOfGroups;
+      const temp_checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
+      const temp_totalScore = temp_checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
+      const temp_numberOfGroups = temp_checkedGroups.length;
+      const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
-      // Log checked checkboxes and calculated values
-      console.log('Checked Checkboxes:', checkedGroups);
-      console.log(`Total Score: ${totalScore}`);
-      console.log(`Number of Groups: ${numberOfGroups}`);
-      console.log(`Average Score: ${averageScore}`);
+      setCheckedGroups(temp_checkedGroups)
+      setAverageScore(temp_averageScore)
+      setNumberOfGroups(temp_numberOfGroups)
+      setTotalScore(temp_totalScore)
 
       return updatedCheckboxStates;
     });
