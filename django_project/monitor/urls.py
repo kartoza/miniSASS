@@ -3,7 +3,8 @@ from monitor.observation_views import (
     ObservationListCreateView, 
     ObservationRetrieveUpdateDeleteView,
     ObservationRetrieveView,
-    RecentObservationListView
+    RecentObservationListView,
+    create_observations
 )
 from monitor.site_views import (
     SitesListCreateView, 
@@ -57,6 +58,11 @@ urlpatterns = [
         'sites/<int:pk>/', 
         SiteRetrieveUpdateDestroyView.as_view(), 
         name='site-retrieve-update-destroy'
+    ),
+    path(
+        'observations-create/', 
+        create_observations, 
+        name='create_observations'
     ),
 
     path(

@@ -17,6 +17,8 @@ export interface Interface {
   setFieldValue: (name: string, value: any) => void
 }
 
+const detailed = 10000
+
 /** Coordinates input form. **/
 export default function CoordinatesInputForm(
   { values, setFieldValue }: Interface
@@ -25,11 +27,13 @@ export default function CoordinatesInputForm(
 
   /** set latitude **/
   const setLatitude = (val) => {
+    val = Math.floor(val * detailed) / detailed
     setFieldValue('latitude', val)
   }
 
   /** set longitude **/
   const setLongitude = (val) => {
+    val = Math.floor(val * detailed) / detailed
     setFieldValue('longitude', val)
   }
 

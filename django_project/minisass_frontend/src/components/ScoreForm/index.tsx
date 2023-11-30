@@ -4,26 +4,37 @@ import { Button, Img, List, Text } from "../../components";
 import UploadModal from "../../components/UploadFormModal";
 import ManageImagesModal from "../../components/ManageImagesModal";
 import { globalVariables } from "../../utils";
+import Modal from 'react-modal';
 
-interface AdditionalData {
-  dataFormInput: string;
-}
 
 interface ScoreFormProps {
   onCancel: () => void;
-  additionalData: AdditionalData;
+  additionalData: {};
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
 const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [buttonStates, setButtonStates] = useState([]);
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchScoreGroups = async () => {
       try {
         const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
         setScoreGroups(response.data);
+        setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })))
       } catch (error) {
         console.error('Error fetching score groups:', error);
       }
@@ -39,8 +50,6 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   });
 
   const [selectedButton, setSelectedButton] = useState(null);
-
-  const [buttonStates, setButtonStates] = useState(scoreGroups.map(score => ({ id: score.id, showManageImages: false })));
 
   const handleButtonClick = (id) => {
     const updatedButtonStates = buttonStates.map(buttonState => {
@@ -63,12 +72,43 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const averageScore = totalScore / numberOfGroups;
 
   // Function to log the state of checkboxes
-  const handleSave = () => {
-    console.log(checkboxStates); // Log the state of checkboxes
-    console.log('values ', additionalData);
-    console.log(`Total Score: ${totalScore}`);
-    console.log(`Number of Groups: ${numberOfGroups}`);
-    console.log(`Average Score: ${averageScore}`);
+  const handleSave = async () => {
+    
+    try {
+
+      console.log(checkboxStates); // Log the state of checkboxes
+      console.log('data from first form ', additionalData);
+      console.log(`Total Score: ${totalScore}`);
+      console.log(`Number of Groups: ${numberOfGroups}`);
+      console.log(`Average Score: ${averageScore}`);
+
+      // Create an object with the data to be saved
+      const observationsData = {
+        flatworms :checkboxStates['1'],
+        leeches:checkboxStates['2'],
+        crabs_shrimps :checkboxStates['3'],
+        stoneflies :checkboxStates['4'],
+        minnow_mayflies :checkboxStates['5'],
+        other_mayflies :checkboxStates['6'],
+        damselflies:checkboxStates['7'],
+        dragonflies:checkboxStates['8'],
+        bugs_beetles :checkboxStates['9'],
+        caddisflies:checkboxStates['10'],
+        true_flies:checkboxStates['11'],
+        snails:checkboxStates['12'],
+        score:totalScore,
+        datainput: additionalData,
+      };
+  
+      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
+
+      if(response.status == 200){
+        setIsSuccessModalOpen(true);
+      }
+    } catch (error) {
+     setErrorMessage(error.message);
+      setIsErrorModalOpen(true);
+    }
   };
 
   // Function to handle checkbox changes
@@ -112,7 +152,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
-          height: '72vh',
+          height: '73vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}
@@ -272,6 +312,96 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
           </div>
 
         </div>
+        {/* Success Modal */}
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onRequestClose={closeSuccessModal}
+          style={{
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              maxWidth: '400px',
+              background: 'white',
+              border: 'none',
+              borderRadius: '0px 25px 25px 25px',
+            },
+          }}
+        >
+          {isSuccessModalOpen && (
+            <div>
+               <Img
+                    className="h-6 w-6 common-pointer"
+                    src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                    alt="close"
+                    onClick={closeSuccessModal}
+                    style={{ marginLeft: '340px'}}
+                  />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginLeft: '80px',
+                }}
+              >
+                <Text size="txtRalewayBold18" className="text-green-500">
+                Your data was successfully captured.
+              </Text>
+              </div>
+            </div>
+          )}
+        </Modal>
+        
+        {/* Error Modal */}
+        <Modal
+          isOpen={isErrorModalOpen}
+          onRequestClose={closeErrorModal}
+          style={{
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              maxWidth: '400px',
+              background: 'white',
+              border: 'none',
+              borderRadius: '0px 25px 25px 25px',
+            },
+          }}
+        >
+          {isErrorModalOpen && (
+            <div>
+               <Img
+                  className="h-6 w-6 common-pointer"
+                  src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                  alt="close"
+                  onClick={closeErrorModal}
+                  style={{ marginLeft: '340px'}}
+                />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginLeft: '80px',
+                }}
+              >
+                <Text size="txtRalewayBold18" className="text-red-500">
+                    {errorMessage}
+                  </Text>
+              </div>
+            </div>
+          )}
+        </Modal>
+
         <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
         <ManageImagesModal
           title={manageImagesModalData.groups}
