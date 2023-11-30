@@ -26,13 +26,9 @@ const MapPage: React.FC = () => {
   const [isLoginFromThis, setIsLoginFromThis] = useState(false);
 
   const handleSidebarToggle = () => {
-    if (state.isAuthenticated) {
       setIsObservationDetails(false)
       setSidebarOpen((prev) => !prev);
-    } else {
-      setIsLoginFromThis(true)
-      dispatch({ type: OPEN_LOGIN_MODAL, payload: true });
-    }
+    
   };
 
   useEffect(() => {
@@ -148,14 +144,13 @@ const MapPage: React.FC = () => {
                 ref={mapRef}
               />
               {/* Sidebar */}
-              <Sidebar 
-                isOpen={isSidebarOpen} 
-                isObservationDetails={isObservationDetails} 
-                setSidebarOpen={setSidebarOpen} 
+              <Sidebar
+                isOpen={isSidebarOpen}
+                isObservationDetails={isObservationDetails}
+                setSidebarOpen={setSidebarOpen}
                 observation={details}
                 updateMapLocation={updateMapLocation}
               />
-            </div>
             </div>
           </div>
           
