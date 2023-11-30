@@ -11,6 +11,7 @@ import LayerSelector from "./Layer/Selector";
 import { BasemapConfiguration } from "./Layer/Basemap"
 import { layerConfiguration } from "./Layer/Overlay";
 import { hasLayer, hasSource, removeLayer, removeSource } from "./utils"
+import { minisassObservationId } from "./Layer/MinisassLayer";
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -45,31 +46,45 @@ export const Map = forwardRef((props: Interface, ref) => {
     /** First initiate */
     useEffect(() => {
       if (!map) {
-        const newMap = new maplibregl.Map(
-          {
-            container: 'map',
-            style: {
-              version: 8,
-              sources: {},
-              layers: [],
-              glyphs: "/static/fonts/{fontstack}/{range}.pbf"
-            },
-            center: [24.679864950000024, -28.671882886975247],
-            zoom: 5.3695883239884745,
-            attributionControl: false,
-            maxZoom: 17
+        (
+          async () => {
+            const response = await fetch('https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/minisass_style_v1.json');
+            const styles = await response.json();
+            const urlTile = new URL(styles.sources[minisassObservationId].tiles[0])
+            const currUrl = new URL(window.location)
+            currUrl.pathname = urlTile.pathname
+            styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
+
+            // Just using 'MiniSASS Observations' source
+            for (const [key, value] of Object.entries(styles.sources)) {
+              if (key !== minisassObservationId) {
+                delete styles.sources[key]
+              }
+            }
+            styles.layers = styles.layers.filter(layer => layer.source === minisassObservationId)
+
+            const newMap = new maplibregl.Map(
+              {
+                container: 'map',
+                style: styles,
+                center: [24.679864950000024, -28.671882886975247],
+                zoom: 5.3695883239884745,
+                attributionControl: false,
+                maxZoom: 17
+              }
+            ).addControl(
+              new maplibregl.AttributionControl({ compact: true })
+            );
+            newMap.once("load", () => {
+              setMap(newMap)
+              newMap.fitBounds([
+                [16.4679158, -34.8344038],
+                [32.8918141, -22.1246704]
+              ]);
+            })
+            newMap.addControl(new maplibregl.NavigationControl(), 'top-left');
           }
-        ).addControl(
-          new maplibregl.AttributionControl({ compact: true })
-        );
-        newMap.once("load", () => {
-          setMap(newMap)
-          newMap.fitBounds([
-            [16.4679158, -34.8344038],
-            [32.8918141, -22.1246704]
-          ]);
-        })
-        newMap.addControl(new maplibregl.NavigationControl(), 'top-left');
+        )();
       }
     }, []);
 

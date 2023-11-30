@@ -26,6 +26,32 @@ export const removeLayer = (map: maplibregl.Map, id: string) => {
 }
 
 /**
+ * Show layer from map
+ * @param {Object} map Map
+ * @param {String} id of layer
+ */
+export const showLayer = (map: maplibregl.Map, id: string) => {
+  if (hasLayer(map, id)) {
+    map.setLayoutProperty(
+      id, 'visibility', 'visible'
+    );
+  }
+}
+
+/**
+ * Hide layer from map
+ * @param {Object} map Map
+ * @param {String} id of layer
+ */
+export const hideLayer = (map: maplibregl.Map, id: string) => {
+  if (hasLayer(map, id)) {
+    map.setLayoutProperty(
+      id, 'visibility', 'none'
+    );
+  }
+}
+
+/**
  * Return if source exist
  * @param {Object} map Map
  * @param {String} id of layer
