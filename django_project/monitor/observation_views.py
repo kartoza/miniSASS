@@ -56,8 +56,8 @@ def create_observations(request):
                 site_id = int(site_id)
             except (ValueError, TypeError):
                 site_id = 0
-            longitude = Decimal(str(datainput.get('longitude')))
-            latitude = Decimal(str(datainput.get('latitude')))
+            longitude = Decimal(datainput.get('longitude',0))
+            latitude = Decimal(datainput.get('latitude',0))
             obs_date = datainput.get('date')
 
             # Get the user from the request object
