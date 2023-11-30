@@ -66,11 +66,6 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-
-  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
-  const numberOfGroups = scoreGroups.length;
-  const averageScore = totalScore / numberOfGroups;
-
   // Function to log the state of checkboxes
   const handleSave = async () => {
     
@@ -111,12 +106,32 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     }
   };
 
+  let checkedGroups;
+  let totalScore = 0;
+  let numberOfGroups = 0;
+  let averageScore = 0;
+
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
-    setCheckboxStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setCheckboxStates((prevState) => {
+      const updatedCheckboxStates = {
+        ...prevState,
+        [id]: !prevState[id],
+      };
+
+      checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
+      totalScore = checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensetivity_score), 0);
+      numberOfGroups = checkedGroups.length;
+      averageScore = totalScore / numberOfGroups;
+
+      // Log checked checkboxes and calculated values
+      console.log('Checked Checkboxes:', checkedGroups);
+      console.log(`Total Score: ${totalScore}`);
+      console.log(`Number of Groups: ${numberOfGroups}`);
+      console.log(`Average Score: ${averageScore}`);
+
+      return updatedCheckboxStates;
+    });
   };
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
