@@ -4,6 +4,7 @@ import { Button, Img, List, Text } from "../../components";
 import UploadModal from "../../components/UploadFormModal";
 import ManageImagesModal from "../../components/ManageImagesModal";
 import { globalVariables } from "../../utils";
+import Modal from 'react-modal';
 
 
 interface ScoreFormProps {
@@ -70,7 +71,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
   // Function to log the state of checkboxes
   const handleSave = async () => {
     
-
     try {
 
       console.log(checkboxStates); // Log the state of checkboxes
@@ -97,16 +97,13 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
         datainput: additionalData,
       };
   
-
       const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
 
       if(response.status == 200){
         setIsSuccessModalOpen(true);
       }
-  
-      
     } catch (error) {
-      setErrorMessage(error);
+     setErrorMessage(error.message);
       setIsErrorModalOpen(true);
     }
   };
@@ -294,51 +291,95 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData }) => {
           </div>
 
         </div>
-        {isSuccessModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="fixed inset-0 bg-black bg-opacity-50" style={{ backdropFilter: 'blur(5px)' }}></div>
-          <div className="fixed flex items-center justify-center w-full h-full">
-            <div className="bg-white p-8 rounded-md shadow-md">
-              <Text size="txtRalewayBold18" className="text-green-500">
+        {/* Success Modal */}
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onRequestClose={closeSuccessModal}
+          style={{
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              maxWidth: '400px',
+              background: 'white',
+              border: 'none',
+              borderRadius: '0px 25px 25px 25px',
+            },
+          }}
+        >
+          {isSuccessModalOpen && (
+            <div>
+               <Img
+                    className="h-6 w-6 common-pointer"
+                    src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                    alt="close"
+                    onClick={closeSuccessModal}
+                    style={{ marginLeft: '340px'}}
+                  />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginLeft: '80px',
+                }}
+              >
+                <Text size="txtRalewayBold18" className="text-green-500">
                 Your data was successfully captured.
               </Text>
-              <Button
-                className="mt-4 text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-                shape="round"
-                color="blue_gray_500"
-                size="xs"
-                variant="fill"
-                onClick={closeSuccessModal}
-              >
-                OK
-              </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-
+          )}
+        </Modal>
         
         {/* Error Modal */}
-        {isErrorModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0 bg-black bg-opacity-40" style={{ backdropFilter: 'blur(4px)' }}></div>
-            <div className="absolute bg-white p-8 rounded-md shadow-md" style={{ backgroundColor: 'white' }}>
-              <Text size="txtRalewayBold18" className="text-red-500">
-                {errorMessage}
-              </Text>
-              <Button
-                className="mt-4 text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-                shape="round"
-                color="red_500"
-                size="xs"
-                variant="fill"
-                onClick={closeErrorModal}
+        <Modal
+          isOpen={isErrorModalOpen}
+          onRequestClose={closeErrorModal}
+          style={{
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              maxWidth: '400px',
+              background: 'white',
+              border: 'none',
+              borderRadius: '0px 25px 25px 25px',
+            },
+          }}
+        >
+          {isErrorModalOpen && (
+            <div>
+               <Img
+                  className="h-6 w-6 common-pointer"
+                  src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                  alt="close"
+                  onClick={closeErrorModal}
+                  style={{ marginLeft: '340px'}}
+                />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginLeft: '80px',
+                }}
               >
-                OK
-              </Button>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                    {errorMessage}
+                  </Text>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </Modal>
 
         <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
         <ManageImagesModal
