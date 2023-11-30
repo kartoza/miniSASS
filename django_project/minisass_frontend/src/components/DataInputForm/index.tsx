@@ -496,6 +496,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               padding: '8px 12px',
                               marginLeft: '40%'
                             }}
+                          value={values.selectedSite}
+                          onChange={handleChange}
                           >
                           {sites.map((option) => (
                             <option key={option.value} value={option.value} selected={option.value === values.selectedSite}>
@@ -558,6 +560,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               padding: '8px 12px',
                               marginLeft: '1.5%'
                             }}
+                          value={values.longitudeUnit}
+                          onChange={handleChange}
                           >
                           {inputDirectionUnitsList.map((option) => (
                             <option key={option.value} value={option.value} selected={option.value === values.longitudeUnit}>
@@ -615,6 +619,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               padding: '8px 12px',
                               marginLeft: '1.5%'
                             }}
+                          value={values.latitudeUnit}
+                          onChange={handleChange}
                           >
                           {inputDirectionUnitsList.map((option) => (
                             <option key={option.value} value={option.value} selected={option.value === values.latitudeUnit}>
@@ -876,6 +882,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               padding: '8px 12px',
                               marginLeft: '17%'
                             }}
+                          value={values.dissolvedoxygenOneUnit}
+                          onChange={handleChange}
                           >
                           {inputOxygenUnitsList.map((option) => (
                             <option key={option.value} value={option.value} selected={option.value === values.dissolvedoxygenOneUnit}>
@@ -935,6 +943,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               padding: '8px 12px',
                               marginLeft: '17%'
                             }}
+                          value={values.electricalconduOneUnit}
+                          onChange={handleChange}
                           >
                           {inputElectricConductivityUnitsList.map((option) => (
                             <option key={option.value} value={option.value} selected={option.value === values.electricalconduOneUnit}>
@@ -954,7 +964,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   size="xs"
                   variant="fill"
                   type="submit"
-                  // onClick={handleShowScoreForm}
                 >
                   next
                 </Button>
