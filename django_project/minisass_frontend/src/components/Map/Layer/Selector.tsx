@@ -4,6 +4,7 @@ import LayersIcon from "../../../../static/icons/LayersIcon";
 
 import Basemap, { BasemapConfiguration } from "./Basemap"
 import Overlay, { layerConfiguration } from "./Overlay"
+import MiniSassLayer from "./MinisassLayer";
 
 import "./style.css"
 
@@ -60,6 +61,7 @@ export default function Selector(props: Interface) {
       />
       <br/>
       <div className="font-bold mb-[0.5rem]">Overlay Layer</div>
+      <MiniSassLayer map={props.map}/>
       {
         props.overlayLayers.map(
           (layerConfig, idx) => {
