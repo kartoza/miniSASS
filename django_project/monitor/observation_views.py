@@ -72,6 +72,7 @@ def create_observations(request):
                 river_cat = datainput.get('rivercategory', '')
                 # longitude = Decimal(datainput.get('longitude',0))
                 # latitude = Decimal(datainput.get('latitude',0))
+                # TODO still to merge with Irwan for saving location
                 longitude = Decimal('30.12345')
                 latitude = Decimal('-25.67890')
 
