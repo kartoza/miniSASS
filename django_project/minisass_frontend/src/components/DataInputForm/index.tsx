@@ -7,7 +7,7 @@ import { Instance } from '@popperjs/core';
 import { Formik, Form, Field } from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
-import { globalVariables } from "../../utils";
+import { globalVariables, formatDate } from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
 
 
@@ -539,6 +539,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         padding: '8px 12px',
                         marginRight: '-10px'
                       }}
+                      min={'2010-01-01'}
+                      max={formatDate(new Date())}
                       value={values.date}
                       onChange={handleChange}
                     />

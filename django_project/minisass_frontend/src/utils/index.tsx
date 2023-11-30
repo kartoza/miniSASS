@@ -26,3 +26,19 @@ export const globalVariables = {
   staticPath,
 };
 
+/** Format date */
+export function formatDate(d, reverseDate = false) {
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2)
+    month = '0' + month;
+  if (day.length < 2)
+    day = '0' + day;
+  if (reverseDate) {
+    return [day, month, year].join('-');
+  } else {
+    return [year, month, day].join('-');
+  }
+}
