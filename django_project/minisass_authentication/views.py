@@ -62,8 +62,8 @@ def contact_us(request):
     send_mail(
         mail_subject,
         None,
-        settings.CONTACT_US_RECEPIENT_EMAIL,
-        [email],
+        email,
+        [settings.CONTACT_US_RECEPIENT_EMAIL],
         html_message=message
     )
     
