@@ -1,0 +1,21 @@
+.CoordinatesInputForm .MuiFormGroup-root {
+  margin-bottom: 1rem;
+}
+
+.CoordinatesInputForm .indicator {
+  height: 40px;
+  width: 30px;
+  margin-left: 3px;
+}
+
+.CoordinatesInputForm select {
+  background-image: none;
+}
+
+.dms-input {
+  width: 100px;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
