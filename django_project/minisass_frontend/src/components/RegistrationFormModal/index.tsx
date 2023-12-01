@@ -6,7 +6,6 @@ import CountrySelector from "../../components/Countries/selector";
 import { COUNTRIES } from "../../components/Countries/countries";
 import { SelectMenuOption } from "../../components/Countries/types";
 import { globalVariables } from '../../utils';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -60,8 +59,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
-  const [loading, setLoading] = useState(false);
-  const [registrationInProgress, setRegistrationInProgress] = useState(false);
 
   useEffect(() => {
     if (error_response === false) {
