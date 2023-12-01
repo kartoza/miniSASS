@@ -68,7 +68,10 @@ function AuthenticationButtons() {
         setError(null);
         setLoginModalOpen(false)
       } else {
-        setError('Invalid credentials. Please try again.');
+        if(!response.data.is_authenticated){
+          setError('Please complete registration to continue.');
+        }
+        else setError('Invalid credentials. Please try again.');
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
