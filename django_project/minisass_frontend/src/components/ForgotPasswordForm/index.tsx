@@ -14,7 +14,7 @@ export const ForgotPasswordForm: React.FC = () => {
     // Ensure the email is valid before sending the request
     if (isValidEmail) {
       axios
-        .post(`${window.location.origin}/authentication/api/reset-password`, {
+        .post(`${window.location.origin}/authentication/api/request-reset/`, {
           email: email,
         })
         .then((response) => {
