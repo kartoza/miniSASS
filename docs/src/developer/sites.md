@@ -14,9 +14,33 @@ The Sites API offers CRUD (Create, Read, Update, Delete) operations for managing
 
 #### Endpoint: `https://{current_domain}/monitor/sites/`
 
-- **GET**: Retrieve a list of all sites.
+- **GET METHOD**: Retrieve a list of all sites.
 
 Returns an HTTP 200 OK and an array of the sites stored in the database.
+- example output:
+```[
+    {
+        "gid": 1,
+        "the_geom": "SRID=4326;POINT (24.84165007535725 -30.47829136066817)",
+        "site_name": "test_sites",
+        "river_name": "test_river",
+        "description": "test",
+        "river_cat": "rocky",
+        "time_stamp": "2023-12-01T13:41:45.930873+02:00",
+        "user": 1
+    },
+    {
+        "gid": 3,
+        "the_geom": "SRID=4326;POINT (24.84165007535725 -30.47829136066817)",
+        "site_name": "testing",
+        "river_name": "testing",
+        "description": "testing",
+        "river_cat": "rocky",
+        "time_stamp": "2023-12-01T14:13:46.123655+02:00",
+        "user": 1
+    }
+]
+```
 
 ### 2. Create a Site
 
@@ -29,9 +53,10 @@ Fields required for site creation:
 - `description`: Description of the site (max length: 255)
 - `river_cat`: River category (choices: 'rocky', 'sandy')
 - `user`: User reference
+- `time_stamp`: Optional field ,if not provided current datetime is added to the site
 
-These should be attached to the post request as a json object.
-- **POST**: Create a new site.
+These fields should be attached to the post request as a json object.
+- **POST METHOD**: Create a new site.
   - Example Payload:
     ```json
     {
@@ -52,7 +77,7 @@ Returns an HTTP 201 Created.
 
 #### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
 
-- **GET**: Retrieve details of a specific site by its ID.
+- **GET METHOD**: Retrieve details of a specific site by its ID.
 
 Returns a JSON object:
 ```json
@@ -75,7 +100,7 @@ Returns a JSON object:
 
 any field can be updated on the site 
 
-- **PUT**: Update details of a specific site by its ID.
+- **PUT METHOD**: Update details of a specific site by its ID.
   - Example Payload:
     ```json
     {
@@ -88,7 +113,7 @@ any field can be updated on the site
 
 #### Endpoint: `/sites/<site_id>/`
 
-- **DELETE**: Delete a specific site by its ID.
+- **DELETE METHOD**: Delete a specific site by its ID.
 
 ## Summary
 
