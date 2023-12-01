@@ -18,15 +18,16 @@ from django.contrib.auth import (
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes,force_str
+from django.utils.encoding import force_bytes,force_str, force_text
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.http import JsonResponse
-from minisass_authentication.email_verification_token import email_verification_token
+from minisass_authentication.custom_token_generator import custom_token_generator
 from django.contrib.auth import models
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponseBadRequest
+from django.utils import timezone
 
 
 
@@ -144,21 +145,30 @@ def reset_password(request, uidb64, token):
 
 
 @api_view(['GET'])
-def activate_account(request, uidb64, token, *args, **kwargs):
-    uid = force_str(urlsafe_base64_decode(uidb64))
+def activate_account(request, uidb64, token):
     try:
-        user = models.User.objects.get(pk=uid)
-    except models.User.DoesNotExist:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and email_verification_token.check_token(user, token):
-        user.is_active = True
-        user.save()
+    if user is not None and default_token_generator.check_token(user, token):
+        # Check token expiration
+        if token_expiration_valid(token):
+            user.is_active = True
+            user.save()
+            redirect_url = reverse('home') + '?activation_complete=true'
+            return HttpResponseRedirect(redirect_url)
+        else:
+            user.delete()
+            return HttpResponseBadRequest('Token has expired')
+    else:
+        return HttpResponseBadRequest('Invalid token')
 
-        redirect_url = reverse('home') + '?activation_complete=true'
-        return HttpResponseRedirect(redirect_url)
-    
-    return Response({'error': 'Token has expired or is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+def token_expiration_valid(token):
+    # Get the token expiration time
+    expiration_time = default_token_generator._check_token_time(token)
+    return expiration_time > timezone.now()
 
 @api_view(['POST'])
 def register(request):
@@ -198,9 +208,13 @@ def register(request):
                 domain = current_site.domain
                 staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
 
-                 # Generate the reset token and UID
-                token = default_token_generator.make_token(user)
+                # Generate token
+                token_data = custom_token_generator.make_token(user)  # Default duration is days
+                token = token_data['token']
+
+                # Encode user ID for URL use
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                
                 # Compose the reset link URL
                 activation_link = request.build_absolute_uri(
                     reverse('activate-account', kwargs={
