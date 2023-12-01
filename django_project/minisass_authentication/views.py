@@ -23,7 +23,6 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.http import JsonResponse
-from minisass_authentication.custom_token_generator import custom_token_generator
 from django.contrib.auth import models
 from django.urls import reverse
 from django.http import HttpResponseRedirect,HttpResponseBadRequest
@@ -154,22 +153,14 @@ def activate_account(request, uidb64, token):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
-        # Check token expiration
-        if token_expiration_valid(token):
-            user.is_active = True
-            user.save()
-            redirect_url = reverse('home') + '?activation_complete=true'
-            return HttpResponseRedirect(redirect_url)
-        else:
-            user.delete()
-            return HttpResponseBadRequest('Token has expired')
+        user.is_active = True
+        user.save()
+        redirect_url = reverse('home') + '?activation_complete=true'
+        return HttpResponseRedirect(redirect_url)
     else:
-        return HttpResponseBadRequest('Invalid token')
+        user.delete()
+        return HttpResponseBadRequest('Invalid token or expired')
 
-def token_expiration_valid(token):
-    # Get the token expiration time
-    expiration_time = default_token_generator._check_token_time(token)
-    return expiration_time > timezone.now()
 
 @api_view(['POST'])
 def register(request):
@@ -210,8 +201,7 @@ def register(request):
                 staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
 
                 # Generate token
-                token_data = custom_token_generator.make_token(user)  # Default duration is days
-                token = token_data['token']
+                token = default_token_generator.make_token(user) 
 
                 # Encode user ID for URL use
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
