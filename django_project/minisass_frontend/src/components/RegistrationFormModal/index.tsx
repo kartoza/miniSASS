@@ -17,8 +17,6 @@ interface RegistrationFormModalProps {
   error_response: string | null | boolean;
   Registrationloading: boolean;
   registrationInProgress: boolean;
-  setLoading: (newValue: boolean) => void;
-  setRegistrationInProgress: (newValue: boolean) => void;
 }
 
 interface RegistrationFormData {
@@ -39,9 +37,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   onSubmit,
   error_response,
   Registrationloading,
-  registrationInProgress,
-  setLoading,
-  setRegistrationInProgress
+  registrationInProgress
  }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
@@ -206,8 +202,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
         password: '',
         confirmPassword: '',
       });
-      setLoading(false)
-      setRegistrationInProgress(false)
     }
   };
 
@@ -242,7 +236,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   }, [isOpen]);
 
   
-
 
   return (
     <>
