@@ -238,22 +238,28 @@ def register(request):
 @api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
-
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
+
         if user:
-            login(request, user)
-            
-            access_token = RefreshToken.for_user(user).access_token
+            if user.is_active:
+                login(request, user)
+                
+                access_token = RefreshToken.for_user(user).access_token
 
-            user_data = {
-                'username': user.username,
-                'email': user.email,
-                'access_token': str(access_token),
-                'refresh_token': str(RefreshToken.for_user(user)),
-                'is_authenticated': True
-            }
+                user_data = {
+                    'username': user.username,
+                    'email': user.email,
+                    'access_token': str(access_token),
+                    'refresh_token': str(RefreshToken.for_user(user)),
+                    'is_authenticated': True
+                }
 
-            return Response(user_data, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response(user_data, status=status.HTTP_200_OK)
+            else:
+                # Account not activated
+                return Response({'error': 'Account not activated'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            # Invalid credentials
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
