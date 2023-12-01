@@ -1,168 +1,102 @@
-# Authentication API
-
-## Our system uses the Django Rest Framework Authentication Package
+# Sites API
 
 ## Description
 
-Uses JSON Web Tokens, which are encoded tokens containing user information.
-With every request made, the token will be validated for the logged in user.
-The token expires after a certain interval ,which means on the frontend there should be a mechanism
-to refresh the token for example a function to constantly check and determine if the user is still logged in, if so refresh the token.
+The Sites API offers CRUD (Create, Read, Update, Delete) operations for managing site information.
 
-## How to use
+## How to Use
 
-### current_domain: https://minisass.sta.do.kartoza.com/
+**current_domain**: https://minisass.sta.do.kartoza.com/
 
-### 1. https://{current_domain}/authentication/api/login
+![Sites API](./img/sites_api.png)
 
-![Login Api](./img/login_api.png)
+### 1. Retrieve All Sites
 
-This API is used for logging in a user.
-This API only allows 2 methods:
+#### Endpoint: `https://{current_domain}/monitor/sites/`
 
-1. POST
-2. OPTIONS
+- **GET**: Retrieve a list of all sites.
 
- **POST**: used to submit user credentials . The credentials are accepted in the form of:
-    i. application/json
-    ii. application/x-www-form-urlencoded
-    iii. multipart/form-data
+Returns an HTTP 200 OK and an array of the sites stored in the database.
 
-    **example usage**:
+### 2. Create a Site
+
+#### Endpoint: `https://{current_domain}/monitor/sites/`
+
+Fields required for site creation:
+- `the_geom`: Geometric point field (e.g., SRID=4326;POINT (24.84165007535725 -30.47829136066817))
+- `site_name`: Name of the site (max length: 15, mandatory)
+- `river_name`: Name of the river (max length: 15, mandatory)
+- `description`: Description of the site (max length: 255)
+- `river_cat`: River category (choices: 'rocky', 'sandy')
+- `user`: User reference
+
+These should be attached to the post request as a json object.
+- **POST**: Create a new site.
+  - Example Payload:
+    ```json
     {
-        "username": "test_user",
-        "password": "test_password"
+        "the_geom": "SRID=4326;POINT (24.84165007535725 -30.47829136066817)",
+        "site_name": "test_site",
+        "river_name": "river_name",
+        "description": "description",
+        "river_cat": "rocky",
+        "user": 1
     }
+    ```
 
- **OPTIONS**: Returns the documentation available for the login api (basic description).
+Returns an HTTP 201 Created.
 
-**Additional Info**:
-    The api is interactive and will usually return an error message provided the credentials
-    are invalid for example 401 unauthorized etc.
+### 3. Retrieve a Site
 
-![Login Api unauthorized](./img/invalid_credentials.png)
+![Sites CRUD API](./img/site_crud_api.png)
 
-**Obtaining a token**:
-    All users that are authenticated require a token in order to be able to make
-    successful request to the API.
+#### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
 
-### 2. https://{current_domain}/authentication/api/token/
+- **GET**: Retrieve details of a specific site by its ID.
 
-![Token Api](./img/token_api.png)
+Returns a JSON object:
+```json
+{
+    "gid": 1,
+    "the_geom": "SRID=4326;POINT (24.84165007535725 -30.47829136066817)",
+    "site_name": "test_sites",
+    "river_name": "test_river",
+    "description": "test",
+    "river_cat": "rocky",
+    "time_stamp": "2023-12-01T13:41:45.930873+02:00",
+    "user": 1
+}
+```
 
-    example usage:
+
+### 4. Update a Site
+
+#### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
+
+any field can be updated on the site 
+
+- **PUT**: Update details of a specific site by its ID.
+  - Example Payload:
+    ```json
     {
-        "username": "test_user",
-        "password": "test_password"
+        "site_name": "Updated Site Name",
+        // Other fields to update
     }
+    ```
 
-    This will return an access token as well as a refresh token for the user.
+### 5. Delete a Site
 
-![Token Api Success](./img/success_response_for_token_obtain.png)
+#### Endpoint: `/sites/<site_id>/`
 
-**Refreshing the token**:
+- **DELETE**: Delete a specific site by its ID.
 
-### 3. https://{current_domain}/authentication/api/refresh/
+## Summary
 
-![Token Refresh Api](./img/token_refresh.png)
+This API allows:
+- Retrieving all sites (GET METHOD)
+- Retrieving a single site (GET METHOD WITH ID PARAMETER)
+- Updating a specific site (PUT METHOD WITH ID PARAMETER)
+- Creating a new site (POST METHOD WITH REQUIRED FIELDS)
+- Deleting a specific site (DELETE METHOD WITH REQUIRED FIELDS)
 
-    example usage: 
-    {
-        "refresh": "long_refresh_token_string"
-    }
-
-    returns a success response 200 with the access token.
-
-![Token Refresh Success](./img/success_response_token_obtain.png)
-
-**Checking the Authentication status**:
-
-### 4. https://{current_domain}/authentication/api/check-auth-status/
-
-![Check Auth Api](./img/check_auth_status.png)
-
-This API is used to confirm if the user is logged in.
-
-    example usage: 
-    A get request to the above url.
-
-    returns a success response 200 with the with an object containing user details e.g. is_authenticated variable.
-
-**Logging out a user**:
-
-### 5. https://{current_domain}/authentication/api/logout/
-
-![Logout API](./img/logout_user_api.png)
-
-This API is used to logout the user against the authentication backend.
-Any action from the frontend that triggers the logout of a user should also call this api. This ensures the user is logged out
-
-    example usage: 
-    A post request to the above url
-
-**Registering a user**:
-
-### 6. https://{current_domain}/authentication/api/register/
-
-![Register Api](./img/registration_api.png)
-
-This API is used for registering a user.
-This API only allows 2 methods
-
-1. POST
-2. OPTIONS
-
-**POST**: used to submit user details. The details are accepted in the form of:
-    i. application/json
-    ii. application/x-www-form-urlencoded
-    iii. multipart/form-data
-
-    example usage: 
-    {
-        "username": "test_user",
-        "first_name": "test_name",
-        "last_name": "test_lastname",
-        "email": "test@kartoza.com",
-        "password": "test_password",
-        "organizationType": "NGO",
-        "organizationName": "test",
-        "country": "South Africa",
-        "additional_fields": "additional_data"
-    }
-
-    returns success response 201 created.
-
-**Additional data** for the user is saved on their User Profile:
-    Currently, fields required:
-    i.organisation_type
-    ii.organisation_name
-    iii.country
-    These fields are mandatory on registration or a 400 bad request error is returned.
-
-**Additional Info**:
-    This API is also interactive, returns errors for example
-    400 bad request ie `enter a valid email`.
-
-![Register Api Errors](./img/registration_errors.png)
-
-**Requesting Password Reset**:
-
-### 5. https://{current_domain}/authentication/api/request-reset
-
-![Register Api](./img/request_password_reset.png)
-
-    This API enables the user to reset their forgotten password from the frontend.
-
-    example usage: 
-    {
-        "email": "users_email"
-    }
-
-    returns a success message and a 200 ok.
-
-**Additional Info**:
-    The user will receive an email with the instructions on how to reset their forgotten password.
-
-### Summary
-
-The `Authentication API`, is responsible for login , registration and password reset.
+The API is subject to changes and improvements, so always refer back to see any updates.
