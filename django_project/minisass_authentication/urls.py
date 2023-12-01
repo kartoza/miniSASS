@@ -33,5 +33,5 @@ urlpatterns = [
     path('api/logout/', user_logout, name='user-logout'),
     path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
     path('api/contact-us', contact_us, name='contact_us'),
-    path('api/activate/<str:uidb64>/<str:token>/', activate_account.as_view(), name='activate-account')
+    path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account')
 ]
