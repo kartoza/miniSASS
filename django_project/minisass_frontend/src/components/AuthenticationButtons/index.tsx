@@ -157,8 +157,6 @@ function AuthenticationButtons() {
         error_response={error}
         Registrationloading={Registrationloading}
         registrationInProgress={registrationInProgress}
-        setLoading={setLoading}
-        setRegistrationInProgress={setRegistrationInProgress}
         />
     </div>
   );
