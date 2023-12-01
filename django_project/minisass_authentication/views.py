@@ -139,16 +139,14 @@ def reset_password(request, uidb64, token):
 
 
 @api_view(['GET'])
-def activate_account(self, request, uidb64, token, *args, **kwargs):
+def activate_account(request, uidb64, token, *args, **kwargs):
     uid = force_str(urlsafe_base64_decode(uidb64))
     try:
         user = models.User.objects.get(pk=uid)
     except models.User.DoesNotExist:
         user = None
 
-    if user is not None and email_verification_token.check_token(
-        user, token
-    ):
+    if user is not None and email_verification_token.check_token(user, token):
         user.is_active = True
         user.save()
 
