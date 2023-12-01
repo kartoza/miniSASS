@@ -94,7 +94,7 @@ def request_password_reset(request):
     # Get the current site's domain
     current_site = get_current_site(request)
     domain = current_site.domain
-    reset_link = f'https://{domain}/authentication/api/reset-password/{uid}/{token}/'
+    reset_link = f'https://{domain}/authentication/api/verify-password-reset/{uid}/{token}/'
     staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
 
     # Send a password reset email to the user
@@ -116,35 +116,41 @@ def request_password_reset(request):
     
     return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def verify_reset_token(request, uidb64, token):
+@api_view(['GET'])
+def verify_password_reset(request, uidb64, token):
     try:
-        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
-        user = get_user_model().objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        # Token is valid
-        return Response({'message': 'Token is valid'}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+    if user and default_token_generator.check_token(user, token):
+        # Token and user are valid, redirect to 'home' with uid and token parameters
+        redirect_url = reverse('home') + f'?uid={uidb64}&token={token}'
+        return HttpResponseRedirect(redirect_url)
+    
+    return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
-def reset_password(request, uidb64, token):
+def update_password(request):
+    newPassword = request.data.get('newPassword')
+    uidb64 = request.data.get('uid')
+    token = request.data.get('token')
+
     try:
-        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
-        user = get_user_model().objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        new_password = request.data.get('new_password')
-        user.set_password(new_password)
+    if user and default_token_generator.check_token(user, token):
+        # Set the new password for the user
+        user.set_password(newPassword)
         user.save()
-        return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+    
+    return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])
