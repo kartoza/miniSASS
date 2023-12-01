@@ -38,6 +38,7 @@ function AuthenticationButtons() {
 
   const closeRegisterModal = () => {
     setRegisterModalOpen(false);
+    setError(null);
   };
 
   const [error, setError] = useState(null);
@@ -82,12 +83,12 @@ function AuthenticationButtons() {
       });
   
       if (response.status === 201) {
-        setError(null)
+        setError(false)
       } else {
         setError( JSON.stringify(response.data));
       }
     } catch (error) {
-      setError(JSON.stringify(error.message));
+      setError(error.message);
     }
   };
    
