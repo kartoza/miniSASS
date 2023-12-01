@@ -16,7 +16,10 @@ interface RegistrationFormModalProps {
   onClose: () => void;
   onSubmit: (data: RegistrationFormData) => void;
   error_response: string | null | boolean;
-  success: boolean;
+  Registrationloading: boolean;
+  registrationInProgress: boolean;
+  setLoading: (newValue: boolean) => void;
+  setRegistrationInProgress: (newValue: boolean) => void;
 }
 
 interface RegistrationFormData {
@@ -31,7 +34,16 @@ interface RegistrationFormData {
   confirmPassword: string;
 }
 
-const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, onClose, onSubmit ,error_response }) => {
+const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit,
+  error_response,
+  Registrationloading,
+  registrationInProgress,
+  setLoading,
+  setRegistrationInProgress
+ }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
     name: '',
@@ -66,12 +78,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         password: '',
         confirmPassword: '',
       });
-      setLoading(true);
-      // Simulate 2-second delay for registration process
-      setTimeout(() => {
-        setLoading(false);
-        setRegistrationInProgress(true);
-      }, 1100);
       onClose();
     }
   }, [error_response]);
@@ -262,7 +268,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         },
       }}
     >
-      {loading ? (
+      {Registrationloading ? (
         // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
         <LinearProgress color="success" />
       ) : registrationInProgress ? (
