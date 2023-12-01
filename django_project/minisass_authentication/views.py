@@ -52,12 +52,17 @@ def contact_us(request):
     phone = request.data.get('phone')
     message = request.data.get('message')
 
+    current_site = get_current_site(request)
+    domain = current_site.domain
+    staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
+
     mail_subject = 'Contact Us'
     message = render_to_string('contact_us.html', {
         'from': email,
         'name': name,
         'contact': phone,
         'message': message,
+        'domain': staticPath
     })
     send_mail(
         mail_subject,

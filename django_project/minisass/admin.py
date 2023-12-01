@@ -3,7 +3,7 @@ from minisass.models import GroupScores,Video
 
 @admin.register(GroupScores)
 class GroupScoresAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name','sensitivity_score',)
     search_fields = ('name',)
 
 @admin.register(Video)

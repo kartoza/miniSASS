@@ -12,12 +12,17 @@ interface ContactFormModalProps {
 }
 
 const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState<ContactFormData>({
+  const initialState: ContactFormData = {
     name: '',
     email: '',
     phone: '',
     message: '',
-  });
+  };
+
+  const [formData, setFormData] = useState<ContactFormData>(initialState);
+  const [responseMessage, setResponseMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [showHeading, setShowHeading] = useState<boolean>(true);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -33,11 +38,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       phone: '',
       message: '',
     });
-  };
-
-  const [response_message, setResponseMessage] = useState(null);
-  const [isError, setIsError] = useState(false);
-  const [showHeading, setShowHeading] = useState(true);
+  };;
 
   
   const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us'
@@ -52,26 +53,42 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       });
   
       if (response.status === 200) {
-        setResponseMessage('Email sent. Hang in there, we will contact you back soon.')
-        setIsError(false)
-        setShowHeading(false)
+        setResponseMessage('Email sent. Hang in there, we will contact you back soon.');
+        setIsError(false);
+        setShowHeading(false);
       } else {
-        setIsError(true)
-        setShowHeading(false)
-        setResponseMessage( JSON.stringify(response.data));
+        setIsError(true);
+        setShowHeading(false);
+        setResponseMessage(JSON.stringify(response.data));
       }
     } catch (error) {
-      setIsError(true)
-      setShowHeading(false)
-      setResponseMessage(JSON.stringify(error.message));
+      setIsError(true);
+      setShowHeading(false);
+      setResponseMessage(error.message);
     }
+  };
+
+  const resetForm = () => {
+    setFormData(initialState);
+    setShowHeading(true);
+    setResponseMessage(null);
+    setIsError(false);
+  };
+
+  const handleCloseModal = () => {
+    resetForm();
+    onClose();
+  };
+
+  const isFormValid = (): boolean => {
+    return formData.phone.length >= 10 && /\S+@\S+\.\S+/.test(formData.email) && formData.message.trim().length > 0;
   };
 
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={handleCloseModal}
       style={{
         content: {
           top: '50%',
@@ -126,25 +143,21 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
                 flex: '1',
               }}
             >
-              {
-                isError ? (
-                  <div className="bg-red-100 text-red-600 p-1 rounded">{response_message}</div>
-                ): (
-                  showHeading ? (
-                   <div>Contact Form</div> 
-
-                  ): (
-                    <div className="bg-green-100 text-green-600 p-1 rounded">{response_message}</div>
-                  )
-
+              {isError ? (
+                <div className="bg-red-100 text-red-600 p-1 rounded">{responseMessage}</div>
+              ) : (
+                showHeading ? (
+                  <div>Contact Form</div>
+                ) : (
+                  <div className="bg-green-100 text-green-600 p-1 rounded">{responseMessage}</div>
                 )
-              }
+              )}
             </h3>
             <Img
                 className="h-6 w-6 common-pointer"
                 src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
-                onClick={onClose}
+                onClick={handleCloseModal}
                 style={{
                   width: '24px',
                   height: '24px',
@@ -164,9 +177,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
               width: '541px',
             }}
           >
-        <label>
-          Your Name:
-        </label>
+        {showHeading && (
+              <label>
+                Your Name:
+              </label>
+        )}
         <input
           type="text"
           name="name"
@@ -224,26 +239,29 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           placeholder="Enter your message"
         />
       </form>
+          {/* Button with disabled attribute based on form validity */}
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              gap: '10px',
-              width: '541px',
-              height: '37px',
-            }}
-          >
-            <Button
-              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
-              color="blue_gray_500"
-              size="xs"
-              variant="fill"
-              onClick={handleSubmit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                gap: '10px',
+                width: '541px',
+                height: '37px',
+              }}
             >
-              Submit
-            </Button>
-          </div>
+              <Button
+                className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+                color="blue_gray_500"
+                size="xs"
+                variant="fill"
+                onClick={handleSubmit}
+                disabled={!isFormValid()} // Disable button if form is invalid
+                style={{ opacity: isFormValid() ? 1 : 0.5 }} // Reduce opacity when disabled
+              >
+                Submit
+              </Button>
+            </div>
         </div>
       )}
     </Modal>
