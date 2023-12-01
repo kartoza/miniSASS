@@ -259,7 +259,10 @@ def user_login(request):
                 return Response(user_data, status=status.HTTP_200_OK)
             else:
                 # Account not activated
-                return Response({'error': 'Account not activated'}, status=status.HTTP_401_UNAUTHORIZED)
+                user_data = {
+                    'is_authenticated': False
+                }
+                return Response(user_data, status=status.HTTP_401_UNAUTHORIZED)
         else:
             # Invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
