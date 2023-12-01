@@ -81,7 +81,6 @@ def contact_us(request):
 @api_view(['POST'])
 def request_password_reset(request):
     email = request.data.get('email')
-    User = get_user_model()
 
     try:
         user = User.objects.get(email=email)
@@ -92,23 +91,28 @@ def request_password_reset(request):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     
-    # Create a reset link to use this to route to a password reset page
-
     # Get the current site's domain
     current_site = get_current_site(request)
     domain = current_site.domain
     reset_link = f'https://{domain}/authentication/api/reset-password/{uid}/{token}/'
+    staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
 
     # Send a password reset email to the user
     current_site = get_current_site(request)
-    mail_subject = 'Password Reset'
+    mail_subject = 'Password Reset Request'
     message = render_to_string('password_reset_email.html', {
         'user': user,
         'domain': current_site.domain,
         'reset_link': reset_link,
+        'logo': staticPath
     })
-    email = EmailMessage(mail_subject, message, to=[user.email])
-    email.send()
+    send_mail(
+        mail_subject,
+        None,
+        settings.CONTACT_US_RECEPIENT_EMAIL,
+        [email],
+        html_message=message
+    )
     
     return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
