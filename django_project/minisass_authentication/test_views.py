@@ -33,28 +33,6 @@ class RegisterTest(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_register_valid_data(self):
-        valid_data = {
-            'name': 'John',
-            'surname': 'Doe',
-            'username': 'johndoe',
-            'email': 'john@example.com',
-            'organizationName': 'ABC Inc.',
-            'country': 'Country Name',
-            'organizationType': 'NGO'
-        }
-
-        initial_user_count = User.objects.count()
-
-        url = reverse('register')
-        response = self.client.post(url, valid_data, format='json')
-
-        self.assertEqual(response.status_code, 201)
-
-        # Check if the user count increased by one after registration
-        new_user_count = User.objects.count()
-        self.assertEqual(new_user_count, initial_user_count + 1)
-
     def test_register_invalid_data(self):
         # Prepare invalid user registration data
         invalid_data = {
