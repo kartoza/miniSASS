@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from "../Text";
 import { Field } from "formik";
 
@@ -11,8 +11,17 @@ export interface DegreeInputInterface {
 
 /** Degree input form. **/
 function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
+  const [currValue, setCurrValue] = useState(value)
   const min = label === 'Latitude' ? -90 : -180
   const max = -1 * min
+
+
+  useEffect(() => {
+    if (!isNaN(currValue)) {
+      onChange(currValue)
+    }
+  }, [currValue]);
+
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
     style={{ marginBottom: "2%" }}
@@ -24,7 +33,7 @@ function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
     </Text>
     <Field
       id={label}
-      value={value}
+      value={currValue}
       type="number"
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
       wrapClassName="sm:w-full"
@@ -46,13 +55,15 @@ function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
         marginRight: '-2%'
       }}
       onChange={(evt) => {
-        let value = parseFloat(evt.target.value)
-        if (value > max) {
-          value = max
-        } else if (value < min) {
-          value = min
+        let value = evt.target.value
+        if (!isNaN(parseFloat(evt.target.value))) {
+          if (value > max) {
+            value = max
+          } else if (value < min) {
+            value = min
+          }
         }
-        onChange(value)
+        setCurrValue(value)
       }}
     />
   </div>
