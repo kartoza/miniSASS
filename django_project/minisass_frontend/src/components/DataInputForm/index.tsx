@@ -38,6 +38,7 @@ type DataInputFormProps = Omit<
   | "electricalconduOne"
   | "next"
   | "setSidebarOpen"
+  | "updateMapLocation"
 > &
   Partial<{
     datainputform: string;
@@ -65,6 +66,7 @@ type DataInputFormProps = Omit<
     electricalconduOne: string;
     next: string;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    updateMapLocation: (longitude: number, latitude: number) => void;
   }>;
 
 const inputOptionsList = [
@@ -503,7 +505,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                { showCoordinatesFields ?  <CoordinatesInputForm values={values} setFieldValue={setFieldValue}/> : null }
+                { showCoordinatesFields ?  <CoordinatesInputForm updateMapLocation={props.updateMapLocation} values={values} setFieldValue={setFieldValue}/> : null }
                 <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
                   <Text
                     className="text-blue-900 text-lg w-auto"
