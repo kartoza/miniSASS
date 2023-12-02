@@ -10,10 +10,10 @@ interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   observation_id: string;
   classname: string;
-  updateMapLocation: (longitude: number, latitude: number) => void;
+  handleMapClick: (longitude: number, latitude: number) => void;
 }
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, updateMapLocation }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
@@ -38,7 +38,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         setObservationDetails(response.data);
         
         setTimeout(() => {
-          updateMapLocation(response.data.longitude, response.data.latitude);
+          handleMapClick(response.data.longitude, response.data.latitude);
         }, 1200);
 
         if(parseFloat(response.data.score) < 6){
