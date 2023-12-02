@@ -15,39 +15,40 @@ import "./style.css"
 export interface Interface {
   values: FormikValues,
   setFieldValue: (name: string, value: any) => void,
-  updateMapLocation: (longitude: number, latitude: number) => void
+  defaultType: string,
+  selectedCoordinates: {longitude: number, latitude: number},
+  handleMapClick: (longitude: number, latitude: number) => void;
+  selectOnMap: boolean;
 }
 
 const detailed = 10000
 
 /** Coordinates input form. **/
 export default function CoordinatesInputForm(
-  { values, setFieldValue,updateMapLocation }: Interface
+  { values, setFieldValue, defaultType, handleMapClick, selectedCoordinates, selectOnMap }: Interface
 ) {
-  const [type, setType] = useState<string>('DMS')
-
-  const [prev_lat, setPrevLat] = useState(0)
-  const [prev_long, setPrevLong] = useState(0)
+  const [type, setType] = useState<string>(defaultType)
 
   /** set latitude **/
   const setLatitude = (val) => {
     val = Math.floor(val * detailed) / detailed
     setFieldValue('latitude', val)
-    setPrevLat(val)
   }
 
   /** set longitude **/
   const setLongitude = (val) => {
     val = Math.floor(val * detailed) / detailed
     setFieldValue('longitude', val)
-    setPrevLong(val)
   }
 
   useEffect(() => {
-    updateMapLocation(prev_long,prev_lat)
-  }, [prev_lat,prev_long]);
+    setLatitude(selectedCoordinates.latitude)
+    setLongitude(selectedCoordinates.longitude)
+
+  }, [selectedCoordinates]);
 
   return <div className='CoordinatesInputForm'>
+    {!selectOnMap ? (
     <RadioGroup
       value={type}
       onChange={(evt) => setType(evt.target.value)}
@@ -56,26 +57,51 @@ export default function CoordinatesInputForm(
       <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
       <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
     </RadioGroup>
-    {
+    ): (
+      <RadioGroup
+      value={type}
+      onChange={(evt) => setType(evt.target.value)}
+      row
+    >
+      <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
+    </RadioGroup>
+
+    )}
+    {selectOnMap ?
+    (
+      
+      <DegreeInputs
+      latitude={values.latitude} 
+      longitude={values.longitude}
+      setLatitude={(value) => {
+        setFieldValue('latitude', value);
+        handleMapClick(Number(value), Number(values.longitude))
+      }}
+      setLongitude={(value) => {
+        setFieldValue('longitude', value);
+        handleMapClick(Number(values.latitude), Number(value))
+      }}
+    />) :
       type === 'Degree' ?
         <DegreeInputs
           latitude={values.latitude} 
           longitude={values.longitude}
           setLatitude={(value) => {
             setFieldValue('latitude', value);
-            updateMapLocation(values.latitude, Number(value)); // Call updateMapLocation here
+            handleMapClick(Number(value), Number(values.longitude))
           }}
           setLongitude={(value) => {
             setFieldValue('longitude', value);
-            updateMapLocation(values.longitude, Number(value)); // Call updateMapLocation here
+            handleMapClick(Number(values.latitude), Number(value))
           }}
-        /> :
+        />
+        :
         <DmsInputs
           latitude={convertToDMSLatitude(values.latitude)}
-          setLatitude={(values: ValueInterface) => {
+          setLatitude={(values_internal: ValueInterface) => {
             setLatitude(
               convertDmsToLatitude(
-                values.degrees, values.minutes, values.seconds, values.cardinal
+                values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
               )
             )
           }}
