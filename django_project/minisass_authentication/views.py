@@ -133,13 +133,11 @@ def verify_password_reset(request, uidb64, token):
 
 
 @api_view(['POST'])
-def update_password(request):
+def update_password(request, uid, token):
     newPassword = request.data.get('newPassword')
-    uidb64 = request.data.get('uid')
-    token = request.data.get('token')
 
     try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uid))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
@@ -149,8 +147,9 @@ def update_password(request):
         user.set_password(newPassword)
         user.save()
         return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
-    
+
     return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 @api_view(['GET'])
