@@ -36,6 +36,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         setLoading(false);
         setObservationDetails(response.data);
         updateMapLocation(response.data.longitude, response.data.latitude);
+        setTimeout(() => {
+          updateMapLocation(5, 20);
+        }, 5000);
 
         if(parseFloat(response.data.score) < 6){
             setTitleColor("text-red-600")
