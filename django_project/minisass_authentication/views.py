@@ -28,7 +28,7 @@ from django.contrib.auth import models
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
-
+User = get_user_model()
 
 
 @api_view(['POST'])
