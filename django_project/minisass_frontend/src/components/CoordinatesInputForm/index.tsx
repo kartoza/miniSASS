@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormikValues } from 'formik';
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import DegreeInputs from "./degreeInputs";
@@ -26,17 +26,26 @@ export default function CoordinatesInputForm(
 ) {
   const [type, setType] = useState<string>('DMS')
 
+  const [prev_lat, setPrevLat] = useState(0)
+  const [prev_long, setPrevLong] = useState(0)
+
   /** set latitude **/
   const setLatitude = (val) => {
     val = Math.floor(val * detailed) / detailed
     setFieldValue('latitude', val)
+    setPrevLat(val)
   }
 
   /** set longitude **/
   const setLongitude = (val) => {
     val = Math.floor(val * detailed) / detailed
     setFieldValue('longitude', val)
+    setPrevLong(val)
   }
+
+  useEffect(() => {
+    updateMapLocation(prev_long,prev_lat)
+  }, [prev_lat,prev_long]);
 
   return <div className='CoordinatesInputForm'>
     <RadioGroup
@@ -69,9 +78,6 @@ export default function CoordinatesInputForm(
                 values.degrees, values.minutes, values.seconds, values.cardinal
               )
             )
-            updateMapLocation(convertDmsToLatitude(
-              values.degrees, values.minutes, values.seconds, values.cardinal
-            ), 0)
           }}
           longitude={convertToDMSLongitude(values.longitude)}
           setLongitude={(values: ValueInterface) => {
@@ -80,9 +86,6 @@ export default function CoordinatesInputForm(
                 values.degrees, values.minutes, values.seconds, values.cardinal
               )
             )
-            updateMapLocation(0, convertDmsToLongitude(
-              values.degrees, values.minutes, values.seconds, values.cardinal
-            ))
           }}
         />
     }
