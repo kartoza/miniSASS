@@ -14,14 +14,15 @@ import "./style.css"
 
 export interface Interface {
   values: FormikValues,
-  setFieldValue: (name: string, value: any) => void
+  setFieldValue: (name: string, value: any) => void,
+  updateMapLocation: (longitude: number, latitude: number) => void
 }
 
 const detailed = 10000
 
 /** Coordinates input form. **/
 export default function CoordinatesInputForm(
-  { values, setFieldValue }: Interface
+  { values, setFieldValue,updateMapLocation }: Interface
 ) {
   const [type, setType] = useState<string>('DMS')
 
@@ -49,8 +50,16 @@ export default function CoordinatesInputForm(
     {
       type === 'Degree' ?
         <DegreeInputs
-          latitude={values.latitude} setLatitude={setLatitude}
-          longitude={values.longitude} setLongitude={setLongitude}
+          latitude={values.latitude} 
+          longitude={values.longitude}
+          setLatitude={(value) => {
+            setFieldValue('latitude', value);
+            updateMapLocation(values.latitude, Number(value)); // Call updateMapLocation here
+          }}
+          setLongitude={(value) => {
+            setFieldValue('longitude', value);
+            updateMapLocation(values.longitude, Number(value)); // Call updateMapLocation here
+          }}
         /> :
         <DmsInputs
           latitude={convertToDMSLatitude(values.latitude)}
@@ -60,6 +69,9 @@ export default function CoordinatesInputForm(
                 values.degrees, values.minutes, values.seconds, values.cardinal
               )
             )
+            updateMapLocation(convertDmsToLatitude(
+              values.degrees, values.minutes, values.seconds, values.cardinal
+            ), 0)
           }}
           longitude={convertToDMSLongitude(values.longitude)}
           setLongitude={(values: ValueInterface) => {
@@ -68,6 +80,9 @@ export default function CoordinatesInputForm(
                 values.degrees, values.minutes, values.seconds, values.cardinal
               )
             )
+            updateMapLocation(0, convertDmsToLongitude(
+              values.degrees, values.minutes, values.seconds, values.cardinal
+            ))
           }}
         />
     }
