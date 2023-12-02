@@ -16,7 +16,7 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
 
     try {
       const response = await axios.post(
-        `${window.location.origin}/authentication/api/update-password`,
+        `${window.location.origin}/authentication/api/update-password-reset`,
         { newPassword, uid, token }
       );
 
