@@ -38,7 +38,10 @@ type DataInputFormProps = Omit<
   | "electricalconduOne"
   | "next"
   | "setSidebarOpen"
-  | "updateMapLocation"
+  | "toggleMapSelection"
+  | "handleMapClick"
+  | "selectingOnMap"
+  | "selectedCoordinates"
 > &
   Partial<{
     datainputform: string;
@@ -66,7 +69,10 @@ type DataInputFormProps = Omit<
     electricalconduOne: string;
     next: string;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    updateMapLocation: (longitude: number, latitude: number) => void;
+    toggleMapSelection: () => void;
+    handleMapClick: (longitude: number, latitude: number) => void;
+    selectedCoordinates:{longitude: number, latitude: number};
+    selectingOnMap: boolean;
   }>;
 
 const inputOptionsList = [
@@ -152,6 +158,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [showSelectKnownSiteField, setShowSelectKnownSiteField] = useState(false);
 
   const handleSelectOnMapClick = () => {
+    
+    props.toggleMapSelection()
+    
+    setShowCoordinatesFields(true);
+    setShowSelectKnownSiteField(false);
+  };
+
+  const handleSelectOnTypeCoordinateClick = () => {
+    props.selectingOnMap = false
+    
     setShowCoordinatesFields(true);
     setShowSelectKnownSiteField(false);
   };
@@ -446,7 +462,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       variant="fill"
                       onClick={handleSelectOnMapClick}
                     >
-                      {props?.selectOnMap}
+                      {props?.selectingOnMap ? 'Disable' : props?.selectOnMap}
                     </Button>
                     <Button
                       type="button"
@@ -455,7 +471,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       color="blue_gray_500"
                       size="xs"
                       variant="fill"
-                      onClick={handleSelectOnMapClick}
+                      onClick={handleSelectOnTypeCoordinateClick}
                     >
                       {props?.typeInCoordinates}
                     </Button>
@@ -505,7 +521,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                { showCoordinatesFields ?  <CoordinatesInputForm updateMapLocation={props.updateMapLocation} values={values} setFieldValue={setFieldValue}/> : null }
+                { showCoordinatesFields ?  
+                  <CoordinatesInputForm
+                    values={values} 
+                    setFieldValue={setFieldValue} 
+                    defaultType={'Degree'}
+                    handleMapClick={props.handleMapClick}
+                    selectedCoordinates={props.selectedCoordinates}
+                    selectOnMap={props.selectingOnMap}
+                  /> : null 
+                }
                 <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
                   <Text
                     className="text-blue-900 text-lg w-auto"
