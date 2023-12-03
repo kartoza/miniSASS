@@ -6,7 +6,6 @@ import CountrySelector from "../../components/Countries/selector";
 import { COUNTRIES } from "../../components/Countries/countries";
 import { SelectMenuOption } from "../../components/Countries/types";
 import { globalVariables } from '../../utils';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -16,7 +15,8 @@ interface RegistrationFormModalProps {
   onClose: () => void;
   onSubmit: (data: RegistrationFormData) => void;
   error_response: string | null | boolean;
-  success: boolean;
+  Registrationloading: boolean;
+  registrationInProgress: boolean;
 }
 
 interface RegistrationFormData {
@@ -31,7 +31,14 @@ interface RegistrationFormData {
   confirmPassword: string;
 }
 
-const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, onClose, onSubmit ,error_response }) => {
+const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit,
+  error_response,
+  Registrationloading,
+  registrationInProgress
+ }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
     name: '',
@@ -48,8 +55,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
-  const [loading, setLoading] = useState(false);
-  const [registrationInProgress, setRegistrationInProgress] = useState(false);
 
   useEffect(() => {
     if (error_response === false) {
@@ -66,12 +71,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         password: '',
         confirmPassword: '',
       });
-      setLoading(true);
-      // Simulate 2-second delay for registration process
-      setTimeout(() => {
-        setLoading(false);
-        setRegistrationInProgress(true);
-      }, 1100);
       onClose();
     }
   }, [error_response]);
@@ -203,8 +202,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         password: '',
         confirmPassword: '',
       });
-      setLoading(false)
-      setRegistrationInProgress(false)
     }
   };
 
@@ -240,7 +237,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
 
   
 
-
   return (
     <>
     <Modal
@@ -262,7 +258,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         },
       }}
     >
-      {loading ? (
+      {Registrationloading ? (
         // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
         <LinearProgress color="success" />
       ) : registrationInProgress ? (

@@ -11,6 +11,8 @@ import { globalVariables } from '../../utils';
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [Registrationloading, setLoading] = useState(false);
+  const [registrationInProgress, setRegistrationInProgress] = useState(false);
 
   const { dispatch, state } = useAuth();
 
@@ -66,7 +68,10 @@ function AuthenticationButtons() {
         setError(null);
         setLoginModalOpen(false)
       } else {
-        setError('Invalid credentials. Please try again.');
+        if(!response.data.is_authenticated){
+          setError('Please complete registration to continue.');
+        }
+        else setError('Invalid credentials. Please try again.');
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
@@ -84,6 +89,12 @@ function AuthenticationButtons() {
   
       if (response.status === 201) {
         setError(false)
+        setLoading(true)
+        // Simulate 2-second delay for registration process
+        setTimeout(() => {
+          setLoading(false);
+          setRegistrationInProgress(true);
+        }, 1100);
       } else {
         setError( JSON.stringify(response.data));
       }
@@ -139,7 +150,14 @@ function AuthenticationButtons() {
         )}
       </div>
       <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} onSubmit={handleLogin}  error_response={error}/>
-      <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={handleRegistration} error_response={error}/>
+      <RegistrationFormModal 
+        isOpen={isRegisterModalOpen} 
+        onClose={closeRegisterModal} 
+        onSubmit={handleRegistration} 
+        error_response={error}
+        Registrationloading={Registrationloading}
+        registrationInProgress={registrationInProgress}
+        />
     </div>
   );
 }
