@@ -7,7 +7,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import (
     urlsafe_base64_encode
 )
-from minisass_authentication.email_verification_token import email_verification_token
+from django.contrib.auth.tokens import default_token_generator
 
 class ActivateAccountTestCase(TestCase):
     def setUp(self):
@@ -16,18 +16,23 @@ class ActivateAccountTestCase(TestCase):
             email='test@example.com',
             password='testpassword'
         )
+        # Generate token with a specific duration
+        self.token_info = default_token_generator.make_token(self.user)
+        self.token = self.token_info
         self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
-        self.token = email_verification_token.make_token(self.user)
         Lookup.objects.create(description='NGO')
         
 
-    def test_activate_account_valid(self):
-        url = reverse(
-            'activate-account',
-            kwargs={'uidb64': self.uidb64, 'token': self.token}
-        )
+    def test_activate_account_valid_token(self):
+        # Create the activation URL
+        url = reverse('activate-account', kwargs={'uidb64': self.uidb64, 'token': self.token})
+        
+        # Make a GET request to the activation URL
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+
+        # Asserts
+        self.assertEqual(response.status_code, 302)  # Assuming it redirects
+        self.assertIn('activation_complete=true', response.url)
 
 class RegisterTest(TestCase):
     def setUp(self):
