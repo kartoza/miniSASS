@@ -17,6 +17,7 @@ interface Interface {
     id: string, source: SourceSpecification, layer: AddLayerObject, before: string, rerender: boolean
   ) => void,
   hideLayer: (id: string) => void,
+  idxActive: number;
 }
 
 const BASEMAP_ID = `basemap`
@@ -44,6 +45,7 @@ export default function Selector(props: Interface) {
         basemapChanged={(basemapConfig) => {
           const layers = props.map.getStyle().layers.filter(layer => layer.id !== BASEMAP_ID)
           const config = basemapConfig.config
+          console.log('config ',config)
           props.showLayer(
             BASEMAP_ID,
             config,
@@ -58,6 +60,7 @@ export default function Selector(props: Interface) {
           )
         }}
         items={props.basemaps}
+        idxActive={props.idxActive}
       />
       <br/>
       <div className="font-bold mb-[0.5rem]">Overlay Layer</div>
