@@ -24,10 +24,12 @@ const MapPage: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isObservationDetails, setIsObservationDetails] = useState(false);
   const [isLoginFromThis, setIsLoginFromThis] = useState(false);
+  const [idxActive, setIdxActive] = useState(0);
 
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
     if (state.isAuthenticated) {
+      setIdxActive(1); //switch to satelite
       setSidebarOpen((prev) => !prev);
     } else {
       setIsLoginFromThis(true)
@@ -144,6 +146,7 @@ const MapPage: React.FC = () => {
                 handleSelect={handleMapClick} 
                 selectingOnMap={selectingOnMap}
                 selectedCoordinates={selectedCoordinates}
+                idxActive={idxActive}
               />
               {/* Sidebar */}
               <Sidebar
