@@ -21,6 +21,7 @@ interface Interface {
   handleSelect: (latitude: number, longitude: number) => void;
   selectingOnMap: boolean;
   selectedCoordinates: {latitude: number, longitude: number};
+  idxActive: number;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -342,6 +343,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             overlayLayers={props.overlayLayers}
             showLayer={showLayer}
             hideLayer={hideLayer}
+            idxActive={props.idxActive}
           /> :
           null
       }
