@@ -22,6 +22,10 @@ function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
     }
   }, [currValue]);
 
+  useEffect(() => {
+    setCurrValue(value)
+  }, [value]);
+
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
     style={{ marginBottom: "2%" }}
