@@ -20,16 +20,18 @@ export interface DegreeInputSectionInterface {
   min: number;
   max: number;
   onChange: (value: number) => void;
+  disabled?: boolean
 }
 
 /** Input Section **/
 function DmsInputSection(
-  { id, value, max, min, onChange }: DegreeInputSectionInterface
+  { id, value, max, min, onChange, disabled }: DegreeInputSectionInterface
 ) {
   return <Field
     id={id}
     value={value}
     type="number"
+    disabled={disabled}
     className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full dms-input"
     wrapClassName="sm:w-full"
     shape="round"
@@ -63,10 +65,11 @@ export interface DegreeInputInterface {
   label: string,
   value: ValueInterface;
   onChange: (values: ValueInterface) => void;
+  disabled?: boolean
 }
 
 /** Degree input form. **/
-function DmsInput({ label, value, onChange }: DegreeInputInterface) {
+function DmsInput({ label, value, onChange, disabled }: DegreeInputInterface) {
   const [currValue, setCurrValue] = useState(value)
   const { degrees, minutes, seconds, cardinal } = currValue
 
@@ -94,6 +97,7 @@ function DmsInput({ label, value, onChange }: DegreeInputInterface) {
     <DmsInputSection
       id={label + 'degrees'}
       value={degrees} min={0} max={18000}
+      disabled={disabled}
       onChange={(val) => {
         setCurrValue(
           {
@@ -106,6 +110,7 @@ function DmsInput({ label, value, onChange }: DegreeInputInterface) {
     <DmsInputSection
       id={label + 'minutes'}
       value={minutes} min={0} max={6000}
+      disabled={disabled}
       onChange={(val) => {
         setCurrValue(
           {
@@ -118,6 +123,7 @@ function DmsInput({ label, value, onChange }: DegreeInputInterface) {
     <DmsInputSection
       id={label + 'seconds'}
       value={seconds} min={0} max={7200}
+      disabled={disabled}
       onChange={(val) => {
         setCurrValue(
           {
@@ -137,6 +143,7 @@ function DmsInput({ label, value, onChange }: DegreeInputInterface) {
       size="xs"
       variant="outline"
       value={cardinal}
+      disabled={disabled}
       style={{
         width: '80px',
         maxWidth: '80px',
@@ -173,15 +180,17 @@ export interface DmsInputsInterface {
   setLatitude: (values: ValueInterface) => void;
   longitude: ValueInterface,
   setLongitude: (values: ValueInterface) => void;
+  disabled?: boolean
 }
 
 /** Degree input form. **/
 export default function DmsInputs(
-  { latitude, setLatitude, longitude, setLongitude }: DmsInputsInterface
+  { latitude, setLatitude, longitude, setLongitude, disabled }: DmsInputsInterface
 ) {
   return <>
     <DmsInput
       label='DMS latitude'
+      disabled={disabled}
       value={latitude}
       onChange={(val: ValueInterface) => {
         setLatitude(val)
@@ -189,6 +198,7 @@ export default function DmsInputs(
     />
     <DmsInput
       label='DMS longitude'
+      disabled={disabled}
       value={longitude}
       onChange={(val: ValueInterface) => {
         setLongitude(val)

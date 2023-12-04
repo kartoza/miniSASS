@@ -19,13 +19,14 @@ export interface Interface {
   selectedCoordinates: {longitude: number, latitude: number},
   handleMapClick: (longitude: number, latitude: number) => void;
   selectOnMap: boolean;
+  disabled?: boolean;
 }
 
 const detailed = 10000
 
 /** Coordinates input form. **/
 export default function CoordinatesInputForm(
-  { values, setFieldValue, defaultType, handleMapClick, selectedCoordinates, selectOnMap }: Interface
+  { values, setFieldValue, defaultType, handleMapClick, selectedCoordinates, selectOnMap, disabled }: Interface
 ) {
   const [type, setType] = useState<string>(defaultType)
 
@@ -69,10 +70,11 @@ export default function CoordinatesInputForm(
     )}
     {selectOnMap ?
     (
-      
+
       <DegreeInputs
-      latitude={values.latitude} 
+      latitude={values.latitude}
       longitude={values.longitude}
+      disabled={disabled}
       setLatitude={(value) => {
         setFieldValue('latitude', value);
         handleMapClick(Number(value), Number(values.longitude))
@@ -84,8 +86,9 @@ export default function CoordinatesInputForm(
     />) :
       type === 'Degree' ?
         <DegreeInputs
-          latitude={values.latitude} 
+          latitude={values.latitude}
           longitude={values.longitude}
+          disabled={disabled}
           setLatitude={(value) => {
             setFieldValue('latitude', value);
             handleMapClick(Number(value), Number(values.longitude))
@@ -98,6 +101,7 @@ export default function CoordinatesInputForm(
         :
         <DmsInputs
           latitude={convertToDMSLatitude(values.latitude)}
+          disabled={disabled}
           setLatitude={(values_internal: ValueInterface) => {
             setLatitude(
               convertDmsToLatitude(
