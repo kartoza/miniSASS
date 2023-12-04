@@ -7,11 +7,10 @@ export interface DegreeInputInterface {
   label: string,
   value: number;
   onChange: React.Dispatch<React.SetStateAction<number>>;
-  disabled?: boolean
 }
 
 /** Degree input form. **/
-function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface) {
+function DegreeInput({ label, value, onChange }: DegreeInputInterface) {
   const [currValue, setCurrValue] = useState(value)
   const min = label === 'Latitude' ? -90 : -180
   const max = -1 * min
@@ -40,7 +39,6 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       id={label}
       value={currValue}
       type="number"
-      disabled={disabled}
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
       wrapClassName="sm:w-full"
       shape="round"
@@ -80,25 +78,22 @@ export interface DegreeInputsInterface {
   setLatitude: React.Dispatch<React.SetStateAction<number>>;
   longitude: number,
   setLongitude: React.Dispatch<React.SetStateAction<number>>;
-  disabled?: boolean
 }
 
 /** Degree input form. **/
 export default function DegreeInputs(
-  { latitude, setLatitude, longitude, setLongitude, disabled }: DegreeInputsInterface
+  { latitude, setLatitude, longitude, setLongitude }: DegreeInputsInterface
 ) {
   return <>
     <DegreeInput
       label='Latitude'
       value={latitude}
       onChange={setLatitude}
-      disabled={disabled}
     />
     <DegreeInput
       label='Longitude'
       value={longitude}
       onChange={setLongitude}
-      disabled={disabled}
     />
   </>
 }

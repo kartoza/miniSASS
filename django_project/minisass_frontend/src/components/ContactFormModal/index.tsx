@@ -40,7 +40,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
     });
   };;
 
-
+  
   const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us'
 
   const SendContactUsEmail = async (formData) => {
@@ -51,7 +51,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (response.status === 200) {
         setResponseMessage('Email sent. Hang in there, we will contact you back soon.');
         setIsError(false);
@@ -232,7 +232,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           value={formData.message}
           onChange={handleInputChange}
           style={{
-            minHeight: '123px',
             width: '541px',
             height: '123px',
             borderRadius: '4px',
@@ -248,7 +247,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
                 alignItems: 'flex-end',
                 gap: '10px',
                 width: '541px',
-                height: '37px'
+                height: '37px',
               }}
             >
               <Button

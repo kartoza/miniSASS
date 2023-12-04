@@ -94,15 +94,6 @@ const inputElectricConductivityUnitsList = [
   { label: "Unknown", value: "uknown" },
 ];
 
-const SiteSelectionModes = {
-    SELECT_KNOWN_SITE: 'Select known site',
-    SELECT_ON_MAP: 'Select on map',
-    TYPE_IN_COORDINATES: 'Type in coordinates'
-} as const;
-
-type SiteSelectionMode = keyof typeof SiteSelectionModes;
-
-
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const handleCloseSidebar = () => {
@@ -154,7 +145,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   };
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
 
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
@@ -168,22 +158,18 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [showSelectKnownSiteField, setShowSelectKnownSiteField] = useState(false);
 
   const handleSelectOnMapClick = () => {
-    if (selectSiteMode === 'SELECT_ON_MAP') return;
+    
     props.toggleMapSelection()
-
+    
     setShowCoordinatesFields(true);
     setShowSelectKnownSiteField(false);
-    setSelectSiteMode("SELECT_ON_MAP");
   };
 
   const handleSelectOnTypeCoordinateClick = () => {
-      if (selectSiteMode === 'SELECT_ON_MAP') {
-          props.toggleMapSelection()
-      }
-
+    props.selectingOnMap = false
+    
     setShowCoordinatesFields(true);
     setShowSelectKnownSiteField(false);
-    setSelectSiteMode("TYPE_IN_COORDINATES");
   };
 
   const handleShowScoreForm = () => {
@@ -193,33 +179,29 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleHideScoreForm = () => {
     setShowScoreForm(false)
   }
-
+    
 
   const [showScoreForm, setShowScoreForm] = useState(false);
-
+  
   function handleSelectKnownSite(): void {
-      if (selectSiteMode === 'SELECT_ON_MAP') {
-          props.toggleMapSelection()
-      }
     setShowSelectKnownSiteField(true);
     setShowCoordinatesFields(false);
-    setSelectSiteMode("SELECT_KNOWN_SITE");
   }
 
   const [sites, setSitesList] = useState([]);
 
   const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
-
+  
   const getSites = async () => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
-
+  
       if (response.status === 200) {
           const sitesList = response.data.map(site => ({
             label: site.site_name,
             value: site.gid.toString(),
           }));
-
+    
           setSitesList(sitesList);
       }
     } catch (error) {
@@ -464,7 +446,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
+                      color="blue_gray_500"
                       size="xs"
                       variant="fill"
                       onClick={handleSelectKnownSite}
@@ -475,18 +457,18 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color={selectSiteMode === 'SELECT_ON_MAP' ? 'blue_900': 'blue_gray_500'}
+                      color="blue_gray_500"
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnMapClick}
                     >
-                      {props?.selectOnMap}
+                      {props?.selectingOnMap ? 'Disable' : props?.selectOnMap}
                     </Button>
                     <Button
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[201px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color={selectSiteMode === 'TYPE_IN_COORDINATES' ? 'blue_900': 'blue_gray_500'}
+                      color="blue_gray_500"
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnTypeCoordinateClick}
@@ -539,16 +521,15 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                { showCoordinatesFields ?
+                { showCoordinatesFields ?  
                   <CoordinatesInputForm
-                    values={values}
-                    setFieldValue={setFieldValue}
+                    values={values} 
+                    setFieldValue={setFieldValue} 
                     defaultType={'Degree'}
                     handleMapClick={props.handleMapClick}
                     selectedCoordinates={props.selectedCoordinates}
                     selectOnMap={props.selectingOnMap}
-                    disabled={selectSiteMode !== 'TYPE_IN_COORDINATES'}
-                  /> : null
+                  /> : null 
                 }
                 <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
                   <Text
@@ -893,13 +874,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       </div>
       ): (
         <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} />
-      )}
+      )};
     </>
   );
 };
 
 
-// TODO make form dynamic
+// TODO make form dynamic 
 DataInputForm.defaultProps = {
   datainputform: "Data Input Form",
   sitedetails: "Site Details",
@@ -915,9 +896,9 @@ DataInputForm.defaultProps = {
   ),
   rivercategory: "River category",
   sitelocation: "Site location",
-  selectKnownSite: SiteSelectionModes.SELECT_KNOWN_SITE,
-  selectOnMap: SiteSelectionModes.SELECT_ON_MAP,
-  typeInCoordinates: SiteSelectionModes.TYPE_IN_COORDINATES,
+  selectKnownSite: "Select known site",
+  selectOnMap: "Select on map",
+  typeInCoordinates: "Type in coordinates",
   observationdetaOne: "Observation details",
   date: "Date:",
   collectorsname: "Collectors name:",
