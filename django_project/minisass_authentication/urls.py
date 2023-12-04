@@ -11,17 +11,18 @@ from minisass_authentication.views import (
     user_login, 
     register,
     request_password_reset,
+    verify_password_reset,
+    update_password,
     user_logout,
-    verify_reset_token,
-    reset_password,
     contact_us
 )
 
 
 urlpatterns = [
     path('api/request-reset/', request_password_reset, name='request_password_reset'),
-    path('api/reset/<str:uidb64>/<str:token>/', verify_reset_token, name='verify_reset_token'),
-    path('api/reset/<str:uidb64>/<str:token>/confirm/', reset_password, name='reset_password'),
+    path('api/verify-password-reset/<uidb64>/<token>/', verify_password_reset, name='verify_password_reset'),
+    path('api/update-password-reset/<uid>/<token>/', update_password, name='update_password_reset'),
+    
     path('api/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('api/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('api/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

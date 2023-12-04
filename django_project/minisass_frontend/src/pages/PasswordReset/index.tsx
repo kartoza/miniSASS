@@ -4,40 +4,19 @@ import { Text } from "../../components";
 import Footer from "../../components/Footer";
 import { ForgotPasswordForm } from "../../components/ForgotPasswordForm";
 import PasswordResetForm from "../../components/PasswordResetForm";
-import axios from "axios";
 
-const validateToken = async (email, token) => {
-  try {
-    const response = await axios.post(
-      `${window.location.origin}/authentication/api/validate-token`,
-      { email, token }
-    );
-    return response.data.isValid;
-  } catch (error) {
-    console.error("Token validation error:", error);
-    return false;
-  }
-};
+
 
 const PasswordResetPage: React.FC = () => {
 
   // State to control which form to display
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const email = params.get("email");
+  const uid = params.get("uid");
   const token = params.get("token");
   const navigate = useNavigate();
 
-  const [isForgotPassword, setIsForgotPassword] = useState(!email && !token);
-  const [isValidToken, setIsValidToken] = useState(false);
-
-  useEffect(() => {
-    if (!isForgotPassword && email && token) {
-      validateToken(email, token).then((isValid) => {
-        setIsValidToken(isValid);
-      });
-    }
-  }, [isForgotPassword, email, token]);
+  const [isForgotPassword, setIsForgotPassword] = useState(!uid && !token);
 
 
   return (
@@ -62,10 +41,8 @@ const PasswordResetPage: React.FC = () => {
           {/* Display the appropriate form based on the state and token validation. */
           isForgotPassword ? (
             <ForgotPasswordForm />
-          ) : isValidToken ? (
-            <PasswordResetForm email={email} token={token} />
-          ) : (
-            <div className="bg-red-100 text-red-600 p-4 rounded">Token is invalid. Please request a new reset link.</div>
+          ) :  (
+            <PasswordResetForm uid={uid} token={token} />
           )}
         </div>
        

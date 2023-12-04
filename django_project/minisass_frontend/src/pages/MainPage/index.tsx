@@ -22,6 +22,8 @@ const Home: React.FC = () => {
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
 
+  const urlParams = new URLSearchParams(window.location.search);
+
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
     useEffect(() => {
@@ -66,6 +68,14 @@ const Home: React.FC = () => {
                     console.log(error);
                 });
         };
+
+        const uidParam = urlParams.get('uid');
+        const tokenParam = urlParams.get('token');
+    
+        if (uidParam && tokenParam) {
+          const pageName = `/password-reset?uid=${uidParam}&token=${tokenParam}`;
+          navigate(pageName);
+        } 
 
         fetchHomePageData();
     }, []);
