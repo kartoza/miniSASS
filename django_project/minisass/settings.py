@@ -1,3 +1,4 @@
+import ast
 from datetime import timedelta
 from pathlib import Path
 import os
@@ -10,7 +11,9 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 CSRF_TRUSTED_ORIGINS = []
 ALLOWED_HOSTS = ['*']
 
-DEBUG = os.getenv('DEBUG', 'True')
+INTERNAL_IPS = ['127.0.0.1']
+
+DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
 
 
