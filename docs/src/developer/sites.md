@@ -53,7 +53,7 @@ Fields required for site creation:
 - `description`: Description of the site (max length: 255)
 - `river_cat`: River category (choices: 'rocky', 'sandy')
 - `user`: User reference
-- `time_stamp`: Optional field ,if not provided current datetime is added to the site
+- `time_stamp`: Optional field, if not provided current datetime is added to the site
 
 These fields should be attached to the post request as a json object.
 - **POST METHOD**: Create a new site.
