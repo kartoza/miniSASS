@@ -13,12 +13,12 @@ class LookupAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active', 'container', )
 
-# @admin.register(UserProfile)
-# class UserProfileAdmin(admin.ModelAdmin):
-#     raw_id_fields = ('user',)
-#     list_display = ('user', 'organisation_type', 'organisation_name', 'country')
-#     search_fields = ('user__username', 'user__first_name', 'user__last_name',)
-#     list_filter = ('organisation_type', 'country',)
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    raw_id_fields = ('user',)
+    list_display = ('user', 'organisation_type', 'organisation_name', 'country')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name',)
+    list_filter = ('organisation_type', 'country','is_expert'),
 
 class UserProfileAdminForm(forms.ModelForm):
     class Meta:
