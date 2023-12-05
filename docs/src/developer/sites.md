@@ -98,7 +98,7 @@ Returns a JSON object:
 
 #### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
 
-any field can be updated on the site 
+Any field can be updated on the site
 
 - **PUT METHOD**: Update details of a specific site by its ID.
   - Example Payload:
