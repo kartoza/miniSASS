@@ -28,6 +28,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect,HttpResponseBadRequest
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
 User = get_user_model()
 
@@ -93,19 +94,19 @@ def request_password_reset(request):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     
     # Get the current site's domain
-    current_site = get_current_site(request)
-    domain = current_site.domain
-    reset_link = f'https://{domain}/authentication/api/verify-password-reset/{uid}/{token}/'
-    staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
+    domain = Site.objects.get_current().domain
+    reset_link = request.build_absolute_uri(
+        reverse('verify_password_reset', kwargs={
+        'uid': uid, 'token': token
+        })
+    )
 
     # Send a password reset email to the user
-    current_site = get_current_site(request)
     mail_subject = 'Password Reset Request'
     message = render_to_string('password_reset_email.html', {
         'user': user,
-        'domain': current_site.domain,
+        'domain': domain,
         'reset_link': reset_link,
-        'logo': staticPath
     })
     send_mail(
         mail_subject,
@@ -206,9 +207,8 @@ def register(request):
                 user.is_active = False
                 user.save()
 
-                current_site = get_current_site(request)
-                domain = current_site.domain
-                staticPath = f'https://{domain}/static/images/img_minisasslogo1.png'
+                # Get the current site's domain
+                domain = Site.objects.get_current().domain
 
                 # Generate token
                 token = default_token_generator.make_token(user) 
@@ -225,7 +225,6 @@ def register(request):
                 mail_subject = 'Activate account on miniSASS'
                 message = render_to_string('activate_account.html', {
                     'domain': domain,
-                    'logo': staticPath,
                     'activation_link': activation_link,
                     'name': username
                 })
