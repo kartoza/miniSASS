@@ -18,6 +18,7 @@ interface Interface {
   ) => void,
   hideLayer: (id: string) => void,
   idxActive: number;
+  setIdxActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const BASEMAP_ID = `basemap`
@@ -61,6 +62,7 @@ export default function Selector(props: Interface) {
         }}
         items={props.basemaps}
         idxActive={props.idxActive}
+        setIdxActive={props.setIdxActive}
       />
       <br/>
       <div className="font-bold mb-[0.5rem]">Overlay Layer</div>
