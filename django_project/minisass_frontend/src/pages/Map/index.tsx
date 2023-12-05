@@ -147,6 +147,7 @@ const MapPage: React.FC = () => {
                 selectingOnMap={selectingOnMap}
                 selectedCoordinates={selectedCoordinates}
                 idxActive={idxActive}
+                setIdxActive={setIdxActive}
               />
               {/* Sidebar */}
               <Sidebar
