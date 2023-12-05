@@ -21,6 +21,9 @@ const Home: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
+  const [activationComplete, setActivationComplete] = useState(false);
+  const [activationMessage, setActivationMessage] = useState('');
+
 
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -71,6 +74,13 @@ const Home: React.FC = () => {
 
         const uidParam = urlParams.get('uid');
         const tokenParam = urlParams.get('token');
+
+        const activation_complete  = urlParams.get('activation_complete');
+
+        if (activation_complete) {
+          setActivationComplete(true);
+          setActivationMessage('Your registration is complete. Please proceed to log in')
+        }
     
         if (uidParam && tokenParam) {
           const pageName = `/password-reset?uid=${uidParam}&token=${tokenParam}`;
@@ -187,19 +197,6 @@ const Home: React.FC = () => {
     const closeUploadModal = () => {
       setIsUploadModalOpen(false);
     };
-
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const [activationComplete, setActivationComplete] = useState(false);
-    const [activationMessage, setActivationMessage] = useState('');
-
-    useEffect(() => {
-      const isActivationComplete = searchParams.get('activation_complete');
-      if (isActivationComplete) {
-        setActivationComplete(true);
-        setActivationMessage('Your registration is complete. Please proceed to log in')
-      }
-    }, [searchParams]);
 
     const closeActivationModal = () => {
       setActivationComplete(false)
