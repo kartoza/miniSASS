@@ -3,6 +3,7 @@ from django.conf import settings
 
 # TODO might remove this as it is no longer neccessary
 class Lookup(models.Model):
+    id = models.AutoField(primary_key=True)
     container = models.ForeignKey(
         'self', 
         limit_choices_to={'active': True, 'container': None}, 
@@ -17,6 +18,7 @@ class Lookup(models.Model):
         return self.description
 
 class UserProfile(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
     organisation_type = models.ForeignKey(
         Lookup,
