@@ -43,6 +43,7 @@ const MapPage: React.FC = () => {
 
   useEffect(() => {
     if (state.isAuthenticated && isLoginFromThis) {
+      setIdxActive(1)
       setSidebarOpen(true)
       setIsLoginFromThis(false)
     } else if(!state.isAuthenticated) {
