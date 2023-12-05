@@ -55,7 +55,7 @@
 
 ### Empty Page
 
-This is likely to be caused by static staticfiles, follow these steps:
+This is likely to be caused by static files, follow these steps:
 
 1. **Access the Django container:**
     ```bash
