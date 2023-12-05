@@ -29,8 +29,12 @@ const MapPage: React.FC = () => {
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
     if (state.isAuthenticated) {
-      setIdxActive(1); //switch to satelite
-      setSidebarOpen((prev) => !prev);
+      setSidebarOpen(prev => {
+        if(prev === false){
+          setIdxActive(1)
+        }
+        return !prev;
+      });
     } else {
       setIsLoginFromThis(true)
       dispatch({ type: OPEN_LOGIN_MODAL, payload: true });
