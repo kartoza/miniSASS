@@ -22,6 +22,7 @@ interface Interface {
   selectingOnMap: boolean;
   selectedCoordinates: {latitude: number, longitude: number};
   idxActive: number;
+  setIdxActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -344,6 +345,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             showLayer={showLayer}
             hideLayer={hideLayer}
             idxActive={props.idxActive}
+            setIdxActive={props.setIdxActive}
           /> :
           null
       }
