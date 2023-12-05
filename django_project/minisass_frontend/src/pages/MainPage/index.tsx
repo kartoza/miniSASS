@@ -195,7 +195,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
       const isActivationComplete = searchParams.get('activation_complete');
-      if (isActivationComplete === 'true') {
+      if (isActivationComplete) {
         setActivationComplete(true);
         setActivationMessage('Your registration is complete. Please proceed to log in')
       }
