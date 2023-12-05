@@ -26,6 +26,7 @@ class UserProfile(models.Model):
     )
     organisation_name = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True, null=True)
+    is_expert = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.organisation_type}: {self.organisation_name or 'Unknown'}"
