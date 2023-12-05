@@ -7,6 +7,7 @@ from django.contrib.gis.db import models as geometry_fields
 
 
 class Organisations(models.Model):
+    id = models.AutoField(primary_key=True)
     ORG_CATS = (
         (u'school', u'School'),
         (u'ngo', u'NGO'),
