@@ -4,3 +4,4 @@ List of Developer documents:
 
 - [Installation](./install.md)
 - [Authentication](./authentication.md)
+- [Observations](./observations.md)
