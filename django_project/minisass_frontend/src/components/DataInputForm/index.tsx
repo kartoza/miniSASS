@@ -102,6 +102,7 @@ const SiteSelectionModes = {
 
 type SiteSelectionMode = keyof typeof SiteSelectionModes;
 
+const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
@@ -138,6 +139,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     selectedSite: ''
   });
 
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
+  const [sites, setSitesList] = useState([]);
+
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -152,10 +157,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       popperRef.current.update();
     }
   };
-
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
-
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
   };
@@ -164,25 +165,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     setIsUploadModalOpen(false);
   };
 
-  const [showCoordinatesFields, setShowCoordinatesFields] = useState(false);
-  const [showSelectKnownSiteField, setShowSelectKnownSiteField] = useState(false);
-
   const handleSelectOnMapClick = () => {
     if (selectSiteMode === 'SELECT_ON_MAP') return;
     props.toggleMapSelection()
-
-    setShowCoordinatesFields(true);
-    setShowSelectKnownSiteField(false);
     setSelectSiteMode("SELECT_ON_MAP");
   };
 
   const handleSelectOnTypeCoordinateClick = () => {
-      if (selectSiteMode === 'SELECT_ON_MAP') {
-          props.toggleMapSelection()
-      }
-
-    setShowCoordinatesFields(true);
-    setShowSelectKnownSiteField(false);
+    if (selectSiteMode === 'SELECT_ON_MAP') {
+      props.toggleMapSelection()
+    }
     setSelectSiteMode("TYPE_IN_COORDINATES");
   };
 
@@ -194,32 +186,23 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     setShowScoreForm(false)
   }
 
-
   const [showScoreForm, setShowScoreForm] = useState(false);
 
   function handleSelectKnownSite(): void {
-      if (selectSiteMode === 'SELECT_ON_MAP') {
-          props.toggleMapSelection()
-      }
-    setShowSelectKnownSiteField(true);
-    setShowCoordinatesFields(false);
+    if (selectSiteMode === 'SELECT_ON_MAP') {
+      props.toggleMapSelection()
+    }
     setSelectSiteMode("SELECT_KNOWN_SITE");
   }
-
-  const [sites, setSitesList] = useState([]);
-
-  const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
 
   const getSites = async () => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
-
       if (response.status === 200) {
           const sitesList = response.data.map(site => ({
             label: site.site_name,
             value: site.gid.toString(),
           }));
-
           setSitesList(sitesList);
       }
     } catch (error) {
@@ -228,9 +211,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   };
 
   useEffect(() => {
-    getSites()
-  }, [showSelectKnownSiteField]);
-
+    if (selectSiteMode === 'SELECT_KNOWN_SITE') {
+      getSites()
+    }
+  }, [selectSiteMode]);
 
   return (
     <>
@@ -497,7 +481,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 </div>
 
                 {/* Additional field for select known site */}
-                {showSelectKnownSiteField && (
+                {selectSiteMode === 'SELECT_KNOWN_SITE' && (
                   <div>
                     {/* known site */}
                     <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
@@ -539,7 +523,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                { showCoordinatesFields ?
+                { selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP' ?
                   <CoordinatesInputForm
                     values={values}
                     setFieldValue={setFieldValue}
