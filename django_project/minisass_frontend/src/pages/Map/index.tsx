@@ -24,10 +24,12 @@ const MapPage: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isObservationDetails, setIsObservationDetails] = useState(false);
   const [isLoginFromThis, setIsLoginFromThis] = useState(false);
+  const [idxActive, setIdxActive] = useState(0);
 
   const handleSidebarToggle = () => {
+    setIsObservationDetails(false);
     if (state.isAuthenticated) {
-      setIsObservationDetails(false)
+      setIdxActive(1); //switch to satelite
       setSidebarOpen((prev) => !prev);
     } else {
       setIsLoginFromThis(true)
@@ -64,21 +66,16 @@ const MapPage: React.FC = () => {
     setShowLegend(prev => !prev);
   };
 
-  // navigate to any location on map with long/lat
-  const createGeoJSON = (longitude: number, latitude: number) => {
-    return {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [longitude, latitude],
-      },
-      properties: {},
-    };
+  const [selectingOnMap, setSelectingOnMap] = useState(false);
+  const [selectedCoordinates, setSelectedCoordinates] = useState({ latitude: null, longitude: null });
+
+  const handleMapClick = (latitude, longitude) => {
+    setSelectedCoordinates({ latitude, longitude });
+    // console.log(selectedCoordinates) // for testing coordinates accuracy
   };
 
-  const updateMapLocation = (longitude: number, latitude: number) => {
-    const geojson = createGeoJSON(longitude, latitude);
-    mapRef?.current?.updateHighlighGeojson(geojson);
+  const toggleMapSelection = () => {
+    setSelectingOnMap((prev) => !prev);
   };
 
   return (
@@ -146,6 +143,10 @@ const MapPage: React.FC = () => {
                   })
                 }
                 ref={mapRef}
+                handleSelect={handleMapClick} 
+                selectingOnMap={selectingOnMap}
+                selectedCoordinates={selectedCoordinates}
+                idxActive={idxActive}
               />
               {/* Sidebar */}
               <Sidebar
@@ -153,7 +154,10 @@ const MapPage: React.FC = () => {
                 isObservationDetails={isObservationDetails}
                 setSidebarOpen={setSidebarOpen}
                 observation={details}
-                updateMapLocation={updateMapLocation}
+                toggleMapSelection={toggleMapSelection}
+                selectingOnMap={selectingOnMap}
+                handleMapClick={handleMapClick}
+                selectedCoordinates={selectedCoordinates}
               />
             </div>
           </div>

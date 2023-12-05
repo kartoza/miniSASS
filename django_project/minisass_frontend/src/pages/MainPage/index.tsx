@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Img, List, Text } from "../../components";
 import Footer from "../../components/Footer";
@@ -11,6 +11,7 @@ import Slideshow from "../../components/SlideShow";
 import axios from "axios"
 import UploadModal from "../../components/UploadFormModal";
 import { globalVariables } from "../../utils";
+import Modal from 'react-modal';
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,6 +21,8 @@ const Home: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
+
+  const urlParams = new URLSearchParams(window.location.search);
 
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
@@ -65,6 +68,14 @@ const Home: React.FC = () => {
                     console.log(error);
                 });
         };
+
+        const uidParam = urlParams.get('uid');
+        const tokenParam = urlParams.get('token');
+    
+        if (uidParam && tokenParam) {
+          const pageName = `/password-reset?uid=${uidParam}&token=${tokenParam}`;
+          navigate(pageName);
+        } 
 
         fetchHomePageData();
     }, []);
@@ -176,6 +187,23 @@ const Home: React.FC = () => {
     const closeUploadModal = () => {
       setIsUploadModalOpen(false);
     };
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const [activationComplete, setActivationComplete] = useState(false);
+    const [activationMessage, setActivationMessage] = useState('');
+
+    useEffect(() => {
+      const isActivationComplete = searchParams.get('activation_complete');
+      if (isActivationComplete === 'true') {
+        setActivationComplete(true);
+        setActivationMessage('Your registration is complete. Please proceed to log in')
+      }
+    }, [searchParams]);
+
+    const closeActivationModal = () => {
+      setActivationComplete(false)
+    }
 
 
   return (
@@ -575,6 +603,60 @@ const Home: React.FC = () => {
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
         </div>
       </div>
+      <Modal
+        isOpen={activationComplete}
+        onRequestClose={closeActivationModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            maxWidth: '400px',
+            background: 'white',
+            border: 'none',
+            borderRadius: '0px 25px 25px 25px',
+          },
+        }}
+      >
+      {activationComplete && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '32px',
+            gap: '18px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginLeft: '80px',
+            }}
+          >
+            <p>{activationMessage}</p>
+            <div
+              style={{
+                marginLeft: '80px',
+              }}
+            >
+              <Img
+                className="h-6 w-6 common-pointer"
+                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                alt="close"
+                onClick={closeActivationModal}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      </Modal>
     </>
   );
 };

@@ -47,6 +47,7 @@ nav:
                   - Installation: developer/install.md
                   - Authentication: developer/authentication.md
                   - Sites: developer/sites.md
+                  - Observations: developer/observations.md
         - About:
                   - about/index.md
                   - License: about/license.md
