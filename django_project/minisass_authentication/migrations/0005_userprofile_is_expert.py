@@ -4,7 +4,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('minisass_authentication'),
+        ('minisass_authentication','0004_alter_lookup_id_alter_userprofile_id'),
     ]
 
     operations = [
