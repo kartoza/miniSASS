@@ -10,6 +10,7 @@ interface Interface {
   basemapChanged: (BasemapConfiguration) => void,
   items: BasemapConfiguration[],
   idxActive: number;
+  setIdxActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
 /**
@@ -19,14 +20,20 @@ interface Interface {
  */
 export default function Basemap(props: Interface) {
 
-  const [idxActive, setIdxActive] = useState<number>(props.idxActive);
+  const [idxActive, setIdxActive] = useState<number>(0);
 
 
   /** First initiate */
   useEffect(() => {
     setIdxActive(props.idxActive)
-    props.basemapChanged(props.items[props.idxActive])
+    props.basemapChanged(props.items[props.idxActive])  
   }, [props.idxActive]);
+
+  useEffect(() => {
+    setIdxActive(idxActive)
+    props.setIdxActive(idxActive)
+    props.basemapChanged(props.items[idxActive]) 
+  }, [idxActive]);
 
   return <RadioGroup
     value={idxActive}
