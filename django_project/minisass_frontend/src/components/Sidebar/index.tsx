@@ -13,6 +13,7 @@ interface SidebarProps {
   handleMapClick: (longitude: number, latitude: number) => void;
   selectingOnMap: boolean;
   selectedCoordinates: {longitude: number, latitude: number};
+  resetMap: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -23,7 +24,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   toggleMapSelection, 
   handleMapClick,
   selectingOnMap,
-  selectedCoordinates
+  selectedCoordinates,
+  resetMap
 }) => {
   return (
     <div
@@ -37,6 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           observation_id={observation}
           setSidebarOpen={setSidebarOpen}
           handleMapClick={handleMapClick}
+          resetMap={resetMap}
         />
       ):( isOpen &&
         <DataInputForm 
