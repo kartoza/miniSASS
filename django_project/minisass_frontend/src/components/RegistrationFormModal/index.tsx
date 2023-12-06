@@ -306,7 +306,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "60%" }}
+              style={{ marginLeft: "65%" }}
               onClick={onClose}
             >
               Ok

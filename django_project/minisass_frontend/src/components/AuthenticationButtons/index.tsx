@@ -88,13 +88,12 @@ function AuthenticationButtons() {
       });
   
       if (response.status === 201) {
-        setError(false)
         setLoading(true)
         // Simulate 2-second delay for registration process
         setTimeout(() => {
           setLoading(false);
           setRegistrationInProgress(true);
-        }, 1100);
+        }, 1200);
       } else {
         setError( JSON.stringify(response.data));
       }
