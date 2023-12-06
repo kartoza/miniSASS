@@ -23,6 +23,7 @@ interface Interface {
   selectedCoordinates: {latitude: number, longitude: number};
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
+  resetMap: boolean;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -32,6 +33,15 @@ const HIGHLIGHT_WIDTH = 3
 const HIGHLIGHT_CIRCLE_ID = HIGHLIGHT_ID + '-circle'
 const HIGHLIGHT_LINE_ID = HIGHLIGHT_ID + '-line'
 const HIGHLIGHT_POLYGON_ID = HIGHLIGHT_ID + '-polygon'
+
+const initialMapConfig = {
+  container: 'map',
+  style: [],
+  center: [24.679864950000024, -28.671882886975247],
+  zoom: 5.3695883239884745,
+  attributionControl: false,
+  maxZoom: 17,
+};
 
 /**
  * Map component using maplibre
@@ -334,6 +344,20 @@ export const Map = forwardRef((props: Interface, ref) => {
         removeClickEventListener();
       };
     }, [props.handleSelect, props.selectingOnMap,props.selectedCoordinates]);
+
+
+    useEffect(() => {
+      if (props.resetMap === true) {
+        let mapInstance = map;
+        if (mapInstance) {
+          mapInstance.flyTo({
+            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
+            zoom: initialMapConfig.zoom,
+            essential: true,
+          });
+        }
+      }
+    }, [props.resetMap]);
 
     return <div id="map" className="w-full h-full bg-slate-200">
       {
