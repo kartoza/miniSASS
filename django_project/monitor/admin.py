@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Sites, Observations
+from .models import (
+    Sites, 
+    Observations, 
+    Assessment,
+    ImageData
+)
 
 def make_verified(modeladmin, request, queryset):
     for observation in queryset:
@@ -33,4 +38,23 @@ class SitesAdmin(admin.ModelAdmin):
         'site_name',
         'user',
         'river_name',
+        'miniSass_score',
+        'miniSass_ML_score',
+        'ml_model_version',
+        'ml_model_type',
+    )
+
+@admin.register(Assessment)
+class AssementAdmin(admin.ModelAdmin):
+    list_display = (
+        'assessment_id',
+    )
+
+@admin.register(ImageData)
+class ImageDataAdmin(admin.ModelAdmin):
+    list_display = (
+        'image_name',
+        'assessment',
+        'ml_prediction',
+        'user_choice',
     )
