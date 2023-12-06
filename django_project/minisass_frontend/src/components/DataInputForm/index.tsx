@@ -216,6 +216,12 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     }
   }, [selectSiteMode]);
 
+  // Helper function to format date
+  const formatDate = (date) => {
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  };
+
   return (
     <>
       {!showScoreForm ? (
@@ -544,37 +550,41 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
                   {/* date input */}
                   <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                    <Text
-                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                      size="txtRalewayRomanRegular18"
-                    >
-                      {props?.date}
-                    </Text>
-                    <Field
-                      type="date"
-                      name="date"
-                      placeholder="01.01.2024"
-                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
-                      wrapClassName="flex md:h-auto w-[300px]"
-                      shape="round"
-                      color="black_900_3a"
-                      size="xs"
-                      variant="outline"
-                      style={{
-                        width: '300px',
-                        maxWidth: '300px',
-                        height: '40px',
-                        border: '1px solid rgba(0, 0, 0, 0.23)',
-                        borderRadius: '4px',
-                        padding: '8px 12px',
-                        marginRight: '-10px'
-                      }}
-                      min={'2010-01-01'}
-                      max={formatDate(new Date())}
-                      value={values.date}
-                      onChange={handleChange}
-                    />
-                  </div>
+                      <Text className="text-gray-800 text-lg tracking-[0.15px] w-auto" size="txtRalewayRomanRegular18">
+                        {props?.date}
+                      </Text>
+                      <div>
+                        {values.date && (
+                          <Text className="text-gray-800 text-lg tracking-[0.15px] w-auto" size="txtRalewayRomanRegular18">
+                            {formatDate(new Date(values.date))}
+                          </Text>
+                        )}
+                        <Field
+                          type="date"
+                          name="date"
+                          placeholder="01.01.2024"
+                          className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
+                          wrapClassName="flex md:h-auto w-[300px]"
+                          shape="round"
+                          color="black_900_3a"
+                          size="xs"
+                          variant="outline"
+                          style={{
+                            width: '300px',
+                            maxWidth: '300px',
+                            height: '40px',
+                            border: '1px solid rgba(0, 0, 0, 0.23)',
+                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            marginRight: '-10px',
+                          }}
+                          min={'2010-01-01'}
+                          max={formatDate(new Date())}
+                          value={values.date}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
 
 
                   {/* collectors name input */}
