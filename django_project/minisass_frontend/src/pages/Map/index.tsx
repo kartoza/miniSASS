@@ -86,6 +86,7 @@ const MapPage: React.FC = () => {
   const [resetMapToDefault, setResetMap] = useState(false);
 
   function resetMap(): void {
+    setSelectedCoordinates({latitude: null, longitude: null})
     setResetMap(true)
   }
 
