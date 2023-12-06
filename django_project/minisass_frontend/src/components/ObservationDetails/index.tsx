@@ -11,12 +11,20 @@ interface ObservationDetailsProps {
   observation_id: string;
   classname: string;
   handleMapClick: (longitude: number, latitude: number) => void;
+  resetMap: () => void;
 }
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ 
+  setSidebarOpen, 
+  classname, 
+  observation_id, 
+  handleMapClick, 
+  resetMap 
+}) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
+    resetMap()
   };
 
   
