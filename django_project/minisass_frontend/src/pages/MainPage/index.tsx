@@ -12,6 +12,7 @@ import axios from "axios"
 import UploadModal from "../../components/UploadFormModal";
 import { globalVariables } from "../../utils";
 import Modal from 'react-modal';
+import Typography from '@mui/material/Typography';
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -612,7 +613,7 @@ const Home: React.FC = () => {
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
             width: '100%',
-            maxWidth: '400px',
+            maxWidth: '500px',
             background: 'white',
             border: 'none',
             borderRadius: '0px 25px 25px 25px',
@@ -620,38 +621,36 @@ const Home: React.FC = () => {
         }}
       >
       {activationComplete && (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '32px',
-            gap: '18px',
-          }}
-        >
-          <div
+        <div>
+        <h3
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginLeft: '80px',
+              fontFamily: 'Raleway',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              alignItems: 'flex-start',
+              fontSize: '24px',
+              lineHeight: '136.4%',
+              color: '#539987',
             }}
           >
-            <p>{activationMessage}</p>
-            <div
-              style={{
-                marginLeft: '80px',
-              }}
-            >
-              <Img
-                className="h-6 w-6 common-pointer"
-                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
-                alt="close"
-                onClick={closeActivationModal}
-              />
-            </div>
-          </div>
-        </div>
+            Registration successful
+          </h3>
+          <br />
+        <Typography>
+          You have been successfully registered. Please proceed with logging in.
+        </Typography>
+
+        <Button
+            className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+            color="blue_gray_500"
+            size="xs"
+            variant="fill"
+            style={{ marginLeft: "65%" }}
+            onClick={closeActivationModal}
+          >
+            Ok
+          </Button>
+      </div>
       )}
       </Modal>
     </>
