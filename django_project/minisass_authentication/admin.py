@@ -13,36 +13,15 @@ class LookupAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     list_filter = ('active', 'container', )
 
-# @admin.register(UserProfile)
-# class UserProfileAdmin(admin.ModelAdmin):
-#     raw_id_fields = ('user',)
-#     list_display = ('user', 'organisation_type', 'organisation_name', 'country')
-#     search_fields = ('user__username', 'user__first_name', 'user__last_name',)
-#     list_filter = ('organisation_type', 'country','is_expert',),
 
-class UserProfileAdminForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = '__all__'
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'organisation_name', 'organisation_type', 'is_expert','country',)
+    search_fields = ('user__username', 'user__first_name', 'user__last_name',)
+    list_filter = ('organisation_type', 'country','is_expert',)
 
-    def clean_is_expert(self):
-        # Ensure is_expert can only be changed by admin
-        if self.cleaned_data['is_expert'] != self.instance.is_expert and not self.instance.user.is_staff:
-            raise forms.ValidationError('is_expert can only be changed by an admin.')
-        return self.cleaned_data['is_expert']
-
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-    can_delete = False
-
-class CustomUserAdmin(UserAdmin):
-    inlines = (UserProfileInline,)
-
-    # Use the custom form for UserProfile
-    form = UserProfileAdminForm
-
-# Unregister the default UserAdmin
-admin.site.unregister(User)
-
-# Register UserAdmin with the custom form
-admin.site.register(User, CustomUserAdmin)
+    def get_readonly_fields(self, request, obj=None):
+        # Make 'is_expert' field read-only for non-admin users
+        if not request.user.is_superuser:
+            return self.readonly_fields + ('is_expert',)
+        return self.readonly_fields
