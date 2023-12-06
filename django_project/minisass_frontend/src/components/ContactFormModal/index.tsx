@@ -4,6 +4,8 @@ import { Button ,Img } from "../../components";
 import Modal from 'react-modal';
 import axios from 'axios'
 import { globalVariables } from '../../utils';
+import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -38,7 +40,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       phone: '',
       message: '',
     });
-  };;
+  };
+
+  const [SendingMessage, setSendingMessage] = useState(false);
+  const [MessageSent, setMessageSent] = useState(false);
 
 
   const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us'
@@ -46,6 +51,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
   const SendContactUsEmail = async (formData) => {
 
     try {
+      setSendingMessage(true)
       const response = await axios.post(CONTACT_US_API, formData, {
         headers: {
           'Content-Type': 'application/json',
@@ -53,9 +59,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       });
 
       if (response.status === 200) {
-        setResponseMessage('Email sent. Hang in there, we will contact you back soon.');
-        setIsError(false);
-        setShowHeading(false);
+        setSendingMessage(false)
+        setMessageSent(true)
       } else {
         setIsError(true);
         setShowHeading(false);
@@ -63,6 +68,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       }
     } catch (error) {
       setIsError(true);
+      setSendingMessage(false)
       setShowHeading(false);
       setResponseMessage(error.message);
     }
@@ -73,6 +79,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
     setShowHeading(true);
     setResponseMessage(null);
     setIsError(false);
+    setMessageSent(false)
+    setSendingMessage(false)
   };
 
   const handleCloseModal = () => {
@@ -83,6 +91,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
   const isFormValid = (): boolean => {
     return formData.phone.length >= 10 && /\S+@\S+\.\S+/.test(formData.email) && formData.message.trim().length > 0;
   };
+
+  
 
 
   return (
@@ -98,7 +108,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
           width: '605px',
-          height: '587px',
+          // height: '587px',
           borderRadius: '0px 25px 25px 25px',
           border: 'none',
           background: 'white',
@@ -106,7 +116,42 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
         },
       }}
     >
-      {isOpen && (
+
+      {SendingMessage ? (
+        <LinearProgress color="success" />
+      ) : MessageSent ? (
+      <div>
+        <h3
+            style={{
+              fontFamily: 'Raleway',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              alignItems: 'flex-start',
+              fontSize: '24px',
+              lineHeight: '136.4%',
+              color: '#539987',
+            }}
+          >
+            Hang in there!
+          </h3>
+          <br />
+        <Typography>
+          We will contact you back shortly.
+        </Typography>
+
+        <Button
+            className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+            color="blue_gray_500"
+            size="xs"
+            variant="fill"
+            style={{ marginLeft: "65%" }}
+            onClick={handleCloseModal}
+          >
+            Ok
+          </Button>
+      </div>
+      ) : (
+      isOpen && (
         <div
           style={{
             display: 'flex',
@@ -264,7 +309,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
               </Button>
             </div>
         </div>
-      )}
+      ))}
     </Modal>
   );
 };
