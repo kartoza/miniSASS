@@ -108,6 +108,11 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    const newPassword = { ...formData, [name]: value };
+
+    const remaining = validatePassword(newPassword.password, newPassword.confirmPassword);
+    setRemainingRequirements(remaining);
+
     setFormErrors({ ...formErrors, [name]: '' });
   };
 
@@ -116,8 +121,32 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     return emailRegex.test(email);
   };
 
-  const validatePassword = (password: string, confirmPassword: string) => {
-    return password === confirmPassword;
+  const [remainingRequirements, setRemainingRequirements] = useState({
+    uppercase: true,
+    lowercase: true,
+    digit: true,
+    specialCharacter: true,
+    length: true,
+  });
+
+  const validatePassword = (password, confirmPassword) => {
+    const requirements = {
+      uppercase: /^(?=.*[A-Z])/,
+      lowercase: /^(?=.*[a-z])/,
+      digit: /^(?=.*\d)/,
+      specialCharacter: /^(?=.*[@$!%*?&])/,
+      length: /^.{6,}$/,
+    };
+
+    const remainingRequirements = {
+      uppercase: !requirements.uppercase.test(password),
+      lowercase: !requirements.lowercase.test(password),
+      digit: !requirements.digit.test(password),
+      specialCharacter: !requirements.specialCharacter.test(password),
+      length: !requirements.length.test(password),
+    };
+
+    return remainingRequirements;
   };
 
  
@@ -130,10 +159,14 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   };
 
   const handlePasswordBlur = () => {
-    if (formData.password && formData.confirmPassword) {
-      if (!validatePassword(formData.password, formData.confirmPassword)) {
-        setFormErrors({ ...formErrors, password: 'Passwords do not match' });
-      }
+    if (!formData.password) {
+      setFormErrors({ ...formErrors, password: 'Password is required.' });
+    }
+    if (!formData.confirmPassword) {
+      setFormErrors({ ...formErrors, password: 'Confirm Password is required.' });
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setFormErrors({ ...formErrors, password: 'Passwords do not match.' });
     }
   };
 
@@ -145,13 +178,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       errors.email = 'This field is required';
     } else if (!validateEmail(formData.email)) {
       errors.email = 'Invalid email address';
-    }
-
-    // Validate passwords when they lose focus
-    if (!formData.password) {
-      errors.password = 'This field is required';
-    } else if (!validatePassword(formData.password, formData.confirmPassword)) {
-      errors.password = 'Passwords do not match';
     }
 
     // Check for other required fields
@@ -173,12 +199,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     if (!formData.country) {
       errors.country = 'Country is required';
     }
-    if (!formData.password) {
-      errors.password = 'Password is required';
-    }
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Confirm Password is required';
-    }
 
     setFormErrors(errors);
 
@@ -188,7 +208,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {
       onSubmit(formData);
       setFormErrors({});
       setFormData({
@@ -443,6 +463,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   placeholder="Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
+                <br />
+                {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
                 {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
               </div>
               <div style={{ flex: 1, flexDirection: 'column' }}>
@@ -456,6 +482,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   placeholder="Confirm Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
+                <br />
                 {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
