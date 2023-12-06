@@ -15,7 +15,7 @@ export const handleSectionNavigation = (id: string) => {
   });
 };
 
-const currentURL = window.location.href;
+const currentURL = 'http://0.0.0.0:61100/';
 const parts = currentURL.split('/');
 const baseUrl = parts[0] + '//' + parts[2];
 const staticPath = baseUrl + '/static/images/';

@@ -77,10 +77,12 @@ services:
     depends_on:
       minio:
         condition: service_started
+
   django:
     build:
       context: .
       dockerfile: ./deployment/docker/Dockerfile
+      target: prod
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media
@@ -95,12 +97,46 @@ services:
       - DATABASE_PORT=${DATABASE_PORT:-5432}
       - SENTRY_KEY=${SENTRY_KEY:-}
       - ALLOWED_HOSTS='*'
+#      - DEBUG=True
     depends_on:
       db:
         condition: service_healthy
     restart: always
     ports:
       - "8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+
+  dev:
+    build:
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile
+      target: dev
+    volumes:
+      - static-data:/home/web/static
+      - media-data:/home/web/media
+      - ./django_project:/home/web/django_project
+      # Images on the platform will be stored here
+      - minio_images:/web
+    environment:
+      - DJANGO_DB=${POSTGRES_DB:-minisass_data}
+      - POSTGRES_USER=${POSTGRES_USER:-docker}
+      - POSTGRES_PASS=${POSTGRES_PASS:-docker}
+      - DATABASE_HOST=${DATABASE_HOST:-db}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - SENTRY_KEY=${SENTRY_KEY:-}
+      - ALLOWED_HOSTS='*'
+      - DEBUG=True
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    entrypoint: []
+    ports:
+      - "61100:8080"
     logging:
       driver: json-file
       options:

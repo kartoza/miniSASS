@@ -9,7 +9,8 @@ from minisass.utils import absolute_path
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 CSRF_TRUSTED_ORIGINS = []
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '*']
+CORS_ALLOW_ALL_ORIGINS = True
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -148,6 +149,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
 
@@ -190,6 +192,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.gis',
+    'corsheaders',
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
