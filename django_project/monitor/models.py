@@ -42,6 +42,11 @@ class Schools(models.Model):
         return self.school
 
 
+class Assessment(models.Model):
+    assessment_id = models.AutoField(primary_key=True)
+    assessment_data = models.JSONField(blank=True,null=True)
+
+
 class Sites(models.Model):
     RIVER_CATS = (
         (u'rocky', u'Rocky'),
@@ -55,6 +60,12 @@ class Sites(models.Model):
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now=True)
+    assessment_id = models.ForeignKey(Assessment, on_delete=models.CASCADE,blank=True,null=True)
+    miniSass_score = models.FloatField(blank=True,null=True)
+    miniSass_ML_score = models.FloatField(blank=True,null=True)
+    ml_model_version = models.CharField(max_length=255,blank=True,null=True)
+    ml_model_type = models.CharField(max_length=255,blank=True,null=True)
+    site_image = models.ImageField(upload_to='site_images/',blank=True,null=True)
     objects = models.Manager()
 
     class Meta:
@@ -62,6 +73,14 @@ class Sites(models.Model):
 
     def __str__(self):
         return self.site_name
+
+# TODO this will be for Irwan for image uploads
+class ImageData(models.Model):
+    image_id = models.AutoField(primary_key=True)
+    ml_prediction = models.CharField(max_length=255,blank=True,null=True),
+    user_choice = models.CharField(max_length=255,blank=True,null=True)
+    image_name = models.CharField(max_length=255,blank=True,null=True)
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE,blank=True,null=True)
 
 
 class Observations(models.Model, DirtyFieldsMixin):
