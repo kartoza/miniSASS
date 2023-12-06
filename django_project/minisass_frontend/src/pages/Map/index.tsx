@@ -83,6 +83,12 @@ const MapPage: React.FC = () => {
     setSelectingOnMap((prev) => !prev);
   };
 
+  const [resetMapToDefault, setResetMap] = useState(false);
+
+  function resetMap(): void {
+    setResetMap(true)
+  }
+
   return (
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto w-full h-screen">
@@ -153,6 +159,7 @@ const MapPage: React.FC = () => {
                 selectedCoordinates={selectedCoordinates}
                 idxActive={idxActive}
                 setIdxActive={setIdxActive}
+                resetMap={resetMapToDefault}
               />
               {/* Sidebar */}
               <Sidebar
@@ -164,6 +171,7 @@ const MapPage: React.FC = () => {
                 selectingOnMap={selectingOnMap}
                 handleMapClick={handleMapClick}
                 selectedCoordinates={selectedCoordinates}
+                resetMap={resetMap}
               />
             </div>
           </div>
