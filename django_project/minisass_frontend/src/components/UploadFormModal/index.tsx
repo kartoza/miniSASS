@@ -6,10 +6,11 @@ import { FaTrash } from 'react-icons/fa';
 interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: any
+  onSubmit: any,
+  accept?: string
 }
 
-const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, accept= '.jpg, .jpeg, .png' }) => {
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
 
@@ -151,6 +152,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
                   type="file"
                   className="hidden"
                   onChange={handleFileUpload}
+                  accept={accept}
                   multiple
                 />
                   </div>
@@ -162,29 +164,30 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
                   className="text-center text-gray-700 text-xs w-auto"
                   size="txtRalewayRomanRegular12"
                 >
-                  Supported formates: JPEG, PNG, GIF, MP4, PDF, PSD, AI, Word,
-                  PPT
+                  Supported formates: <span style={{ textTransform: "uppercase" }}>{accept}</span>
                 </Text>
               </div>
             </div>
             <Button
-              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[100%] opacity-50 hover:opacity-100"
+              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[100%] opacity-50 hover:opacity-100 p-1"
               color="blue_gray_500"
               size="xl"
               variant="fill"
               style={{
-                height: '5vh',
                 fontWeight: 'bold',
               }}
-              onClick={handleBrowseClick} // Trigger the file input when clicked
+              onClick={() => {
+                onSubmit(uploadedFiles)
+              }}
             >
-              UPLOAD FILES
+              SELECT SELECTED FILES
             </Button>
 
             {/* Hidden input element for file selection */}
             <input
               type="file"
               className="hidden"
+              accept={accept}
               onChange={handleFileUpload}
               multiple
               ref={fileInputRef}
