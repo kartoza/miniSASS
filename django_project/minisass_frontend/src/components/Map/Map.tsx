@@ -12,6 +12,7 @@ import { BasemapConfiguration } from "./Layer/Basemap"
 import { layerConfiguration } from "./Layer/Overlay";
 import { hasLayer, hasSource, removeLayer, removeSource } from "./utils"
 import { minisassObservationId } from "./Layer/MinisassLayer";
+import { globalVariables } from "../../utils";
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
