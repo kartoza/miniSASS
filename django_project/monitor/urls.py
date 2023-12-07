@@ -18,7 +18,8 @@ from monitor.views import (
     get_unique, 
     zoom_observation, 
     get_observations, 
-    download_observations, 
+    download_observations,
+    DownloadObservations,
     download_observations_filtered, 
     get_schools, 
     detail
@@ -34,6 +35,11 @@ urlpatterns = [
     path('legacy/observation/<int:obs_id>/', zoom_observation),
     path('legacy/observations/<int:site_id>/', get_observations),
     path('observations/download/<int:site_id>/', download_observations),
+    path(
+        'observations/download-v2/<int:site_id>/',
+        DownloadObservations.as_view(),
+        name='download-observations'
+    ),
     path('observations/download/filtered/~<str:filter_string>', download_observations_filtered),
     path('schools/', get_schools),
     path('<int:monitor_id>/', detail, name='monitor_detail'),

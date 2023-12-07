@@ -1,4 +1,3 @@
-
 from monitor.models import Observations, Sites
 from minisass_authentication.models import UserProfile
 from monitor.serializers import ObservationsSerializer
@@ -17,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.contrib.gis.geos import Point
 from decimal import Decimal
+
 
 @csrf_exempt
 @login_required
@@ -70,8 +70,8 @@ def create_observations(request):
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
                 river_cat = datainput.get('rivercategory', '')
-                longitude = datainput.get('longitude',0)
-                latitude = datainput.get('latitude',0)
+                longitude = datainput.get('longitude', 0)
+                latitude = datainput.get('latitude', 0)
 
                 # Save the new site
                 site = Sites.objects.create(
@@ -91,19 +91,19 @@ def create_observations(request):
                 flatworms=flatworms,
                 leeches=leeches,
                 crabs_shrimps=crabs_shrimps,
-                stoneflies = stoneflies,
-                minnow_mayflies = minnow_mayflies,
-                other_mayflies = other_mayflies,
-                damselflies = damselflies,
-                dragonflies = dragonflies,
-                bugs_beetles = bugs_beetles,
-                caddisflies = caddisflies,
-                true_flies = true_flies,
-                snails = snails,
-                comment = comment,
-                water_clarity = water_clarity,
-                water_temp = water_temp,
-                ph = ph,
+                stoneflies=stoneflies,
+                minnow_mayflies=minnow_mayflies,
+                other_mayflies=other_mayflies,
+                damselflies=damselflies,
+                dragonflies=dragonflies,
+                bugs_beetles=bugs_beetles,
+                caddisflies=caddisflies,
+                true_flies=true_flies,
+                snails=snails,
+                comment=comment,
+                water_clarity=water_clarity,
+                water_temp=water_temp,
+                ph=ph,
                 diss_oxygen=diss_oxygen,
                 diss_oxygen_unit=diss_oxygen_unit,
                 elec_cond=elec_cond,
@@ -116,9 +116,6 @@ def create_observations(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
-
 
 
 class RecentObservationListView(generics.ListAPIView):
@@ -162,13 +159,12 @@ class ObservationRetrieveView(APIView):
         return Response(serializer.data)
 
 
-
 class ObservationListCreateView(generics.ListCreateAPIView):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
     permission_classes = [IsAuthenticated]
 
-    
+
 class ObservationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer

@@ -14,7 +14,7 @@ class VideoAPITestCase(APITestCase):
 
     def test_read_video_list(self):
         url = reverse('video-list')
-        response = self.client.get(url)
+        response = get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         serialized_data = VideoSerializer(Video.objects.all(), many=True).data
@@ -53,7 +53,7 @@ class GroupScoresAPITestCase(APITestCase):
 
     def test_read_group_scores_list(self):
         url = reverse('group-scores')
-        response = self.client.get(url)
+        response = get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         serialized_data = GroupScoresSerializer(GroupScores.objects.all(), many=True).data

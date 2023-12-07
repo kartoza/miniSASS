@@ -5,6 +5,7 @@ import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
+import DownloadObservationForm from '../../components/DownloadObservationModal/index'
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +28,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   const [titleColor, setTitleColor] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+
+  const closeDownloadModal = () => {
+    setIsDownloadModalOpen(false);
+  };
 
   const fetchObservation = async (observation: any) => {
     try {
@@ -90,7 +96,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         overflowX: 'auto',
       }}
     >
-          
     <div className="flex sm:flex-col flex-row gap-2.5 items-start justify-between w-full">
       <div className="flex sm:flex-1 sm:flex-col flex-row gap-3 items-center justify-start w-auto sm:w-full">
         <Text
@@ -103,7 +108,14 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
           className="h-6 w-6"
           src={`${globalVariables.staticPath}img_mdidownloadcircleoutline.svg`}
           alt="mdidownloadcirc"
+          onClick={() => {setIsDownloadModalOpen(true)}}
         />
+         <DownloadObservationForm
+           isOpen={isDownloadModalOpen}
+           onClose={closeDownloadModal}
+           defaultDate={observationDetails.obs_date}
+           siteId={observationDetails.site?.gid}
+         />
       </div>
       <Img
         className="h-6 w-6"

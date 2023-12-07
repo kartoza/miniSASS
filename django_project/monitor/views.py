@@ -1,19 +1,27 @@
-from django.http import Http404, HttpResponse
-from django.utils.translation import gettext_lazy as _
-from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
-from monitor.models import Schools, Sites, Observations
-from django.core.mail import send_mail
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+import csv
+import json
+from io import BytesIO as IO
+
 import requests
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.core.serializers import serialize
+from django.db import connection
 from django.db.models import (
     F,
     Value
 )
 from django.db.models.functions import Sqrt
-import csv
+from django.http import Http404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.utils.encoding import smart_str
-from django.db import connection
+from geopandas import GeoDataFrame
+from rest_framework.views import APIView
+
+from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
+from monitor.models import Schools, Sites, Observations
 
 
 def get_email_content(observation, new_site=False):
@@ -165,6 +173,135 @@ def get_observations(request, site_id):
     observations = Observations.objects.filter(site=site_id).order_by('obs_date')
     return render(request, 'monitor/site_observations.html', {'observations': observations})
 
+
+class DownloadObservations(APIView):
+    def get(self, request, site_id):
+        start_date = request.GET.get('start_date', timezone.now().strftime('%Y-%m-%d'))
+        end_date = request.GET.get('end_date', timezone.now().strftime('%Y-%m-%d'))
+        observations = Observations.objects.filter(
+            site=site_id,
+            obs_date__gte=start_date,
+            obs_date__lte=end_date
+        )
+        obs_list = []
+        headers = [
+            smart_str("Obs ID"),
+            smart_str("User name"),
+            smart_str("Obs Date"),
+            smart_str("Site name"),
+            smart_str("River name"),
+            smart_str("River category"),
+            smart_str("Latitude"),
+            smart_str("Longitude"),
+            smart_str("Flatworms"),
+            smart_str("Worms"),
+            smart_str("Leeches"),
+            smart_str("Crabs/shrimps"),
+            smart_str("Stoneflies"),
+            smart_str("Minnow mayflies"),
+            smart_str("Other mayflies"),
+            smart_str("Damselflies"),
+            smart_str("Dragonflies"),
+            smart_str("Bugs/beetles"),
+            smart_str("Caddisflies"),
+            smart_str("True flies"),
+            smart_str("Snails"),
+            smart_str("Score"),
+            smart_str("Status"),
+            smart_str("Water clarity"),
+            smart_str("Water temp"),
+            smart_str("pH"),
+            smart_str("Diss oxygen"),
+            smart_str("diss oxygen unit"),
+            smart_str("Elec cond"),
+            smart_str("Elec cond unit"),
+            smart_str("Comment"),
+        ]
+        for obs in observations:
+            if obs.flag == 'clean':
+                flag = 'Verified'
+            else:
+                flag = 'Unverified'
+            row = [
+                smart_str(obs.pk),
+                smart_str(obs.user.username),
+                smart_str(obs.obs_date),
+                smart_str(obs.site.site_name),
+                smart_str(obs.site.river_name),
+                smart_str(obs.site.river_cat),
+                smart_str(obs.site.the_geom.y),
+                smart_str(obs.site.the_geom.x),
+                smart_str(obs.flatworms),
+                smart_str(obs.worms),
+                smart_str(obs.leeches),
+                smart_str(obs.crabs_shrimps),
+                smart_str(obs.stoneflies),
+                smart_str(obs.minnow_mayflies),
+                smart_str(obs.other_mayflies),
+                smart_str(obs.damselflies),
+                smart_str(obs.dragonflies),
+                smart_str(obs.bugs_beetles),
+                smart_str(obs.caddisflies),
+                smart_str(obs.true_flies),
+                smart_str(obs.snails),
+                smart_str(obs.score),
+                smart_str(flag),
+                smart_str(obs.water_clarity),
+                smart_str(obs.water_temp),
+                smart_str(obs.ph),
+                smart_str(obs.diss_oxygen),
+                smart_str(obs.diss_oxygen_unit),
+                smart_str(obs.elec_cond),
+                smart_str(obs.elec_cond_unit),
+                smart_str(obs.comment),
+            ]
+            obs_list.append(row)
+
+        file_type = request.GET.get('type', 'csv')
+        if file_type == 'csv':
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="observations.csv"'
+            writer = csv.writer(response)
+            response.write(u'\ufeff'.encode('utf8'))
+            writer.writerow(headers)
+            for obs in obs_list:
+                writer.writerow(obs)
+        else:
+            sites = json.loads(
+                serialize(
+                    "geojson",
+                    Sites.objects.filter(gid=site_id),
+                    geometry_field="the_geom"
+                )
+            )
+            sites = {feature['id']: feature for feature in sites['features']}
+            observations = json.loads(serialize("geojson", observations, geometry_field="geom"))
+            users = {}
+            for obs in observations['features']:
+                site = sites[obs['properties']['site']]
+                if obs['properties']['user'] in users:
+                    username = users[obs['properties']['user']]
+                else:
+                    username = User.objects.get(id=obs['properties']['user']).username
+                    users[obs['properties']['user']] = username
+                prop = {'username': username}
+                prop.update(site['properties'])
+                prop.update(obs['properties'])
+                obs['geometry'] = site['geometry']
+                obs['properties'] = prop
+                del obs['properties']['time_stamp']
+
+            gpkg_file = IO()
+            dataframe = GeoDataFrame.from_features(observations)
+            dataframe.to_file(gpkg_file, layer='observations', driver="GPKG")
+            gpkg_file.seek(0)
+
+            response = HttpResponse(gpkg_file.read(),  content_type='application/x-sqlite3')
+            response['Content-Disposition'] = 'attachment; filename=observations.gpkg'
+
+        return response
+
+
 def download_observations(request, site_id):
     observations = Observations.objects.filter(site=site_id)
 
@@ -247,6 +384,7 @@ def download_observations(request, site_id):
             smart_str(obs.comment),
         ])
     return response
+
 
 def download_observations_filtered(request, filter_string):
     select_clause = 'SELECT * FROM minisass_observations WHERE ' + filter_string.replace("+", " ")
