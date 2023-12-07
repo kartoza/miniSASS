@@ -53,7 +53,7 @@ class ObservationsModelTest(TestCase):
 
     def test_recent_observation_view(self):
         url = reverse('recent-observation-list')
-        response = get(url)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         # Ensure the response contains the necessary fields
@@ -67,7 +67,7 @@ class ObservationsModelTest(TestCase):
     def test_observation_retrieve_view(self):
         observation = Observations.objects.first()
         url = reverse('observation-details', kwargs={'pk': observation.gid})
-        response = get(url)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         # Ensure the response contains the necessary fields

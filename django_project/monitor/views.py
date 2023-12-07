@@ -184,6 +184,8 @@ class DownloadObservations(APIView):
             obs_date__lte=end_date
         )
         obs_list = []
+
+        # TODO: Refactor these duplications
         headers = [
             smart_str("Obs ID"),
             smart_str("User name"),
