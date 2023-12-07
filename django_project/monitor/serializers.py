@@ -53,18 +53,17 @@ class ObservationsSerializer(serializers.ModelSerializer):
 
 class SitesWithObservationsSerializer(serializers.ModelSerializer):
     observations = ObservationsSerializer(many=True, read_only=True)
-    sitename = serializers.CharField(source='site.site_name')
-    rivername = serializers.CharField(source='site.river_name')
-    sitedescription = serializers.CharField(source='site.description')
-    rivercategory = serializers.CharField(source='site.river_cat')
-    longitude = serializers.FloatField(source='site.the_geom.x')
-    latitude = serializers.FloatField(source='site.the_geom.y')
-
+    sitename = serializers.CharField(source='site_name')
+    rivername = serializers.CharField(source='river_name')
+    sitedescription = serializers.CharField(source='description')
+    rivercategory = serializers.CharField(source='river_cat')
+    longitude = serializers.FloatField(source='the_geom.x')
+    latitude = serializers.FloatField(source='the_geom.y')
 
     class Meta:
         model = Sites
         fields = '__all__'
-        
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         # Combine the site information to the observations
@@ -77,6 +76,9 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
             },
             'observations': [],
         }
+
+        if 'observations' not in data:
+            data['observations'] = []
 
         for observation_data in data['observations']:
             user_profile = UserProfile.objects.filter(user=observation_data['user']).first()
