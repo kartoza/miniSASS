@@ -7,6 +7,7 @@ from monitor.serializers import (
     SitesWithObservationsSerializer
 )
 from rest_framework.views import APIView
+from django.contrib.gis.geos import Point
 
 class SitesListCreateView(generics.ListCreateAPIView):
     queryset = Sites.objects.all()
@@ -19,7 +20,9 @@ class SiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
-            site = Sites.objects.get(the_geom__equals=(latitude, longitude))
+            # Create a Point object from the latitude and longitude
+            site = Sites.objects.get(the_geom__equals=Point(float(longitude), float(latitude), srid=4326))
+
             serializer = SitesWithObservationsSerializer(site)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Sites.DoesNotExist:
