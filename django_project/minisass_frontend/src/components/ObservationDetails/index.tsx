@@ -11,15 +11,21 @@ interface ObservationDetailsProps {
   observation_id: string;
   classname: string;
   handleMapClick: (longitude: number, latitude: number) => void;
+  siteWithObservations: { site: {}, observations: []};
 }
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ 
+  setSidebarOpen, 
+  classname,
+  observation_id,
+  handleMapClick, 
+  siteWithObservations 
+}) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
 
-  
   const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observation_id}/`
 
   const [loading, setLoading] = useState(true);
@@ -28,11 +34,27 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
 
+  const [observations, setObservations] = useState([]);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+  const [siteDetails, setSiteDetails] = useState({});
+  const [tabsData, setTabsData] = useState({});
+
+  const updateScoreDisplay = (score) => {
+    if (parseFloat(score) < 6) {
+      setTitleColor("text-red-600");
+      setProgressBarColor("red");
+      setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+    } else {
+      setTitleColor("text-green-800");
+      setProgressBarColor("green");
+      setRenderCrab(`${globalVariables.staticPath}img_image2.png`);
+    }
+  };
+
   const fetchObservation = async (observation: any) => {
     try {
       const response = await axios.get(`${GET_OBSERVATION}`);
       
-  
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
@@ -41,15 +63,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
           handleMapClick(response.data.longitude, response.data.latitude);
         }, 1200);
 
-        if(parseFloat(response.data.score) < 6){
-            setTitleColor("text-red-600")
-            setProgressBarColor("red")
-            setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
-          }else {
-            setTitleColor("text-green-800")
-            setProgressBarColor("green")
-            setRenderCrab(`${globalVariables.staticPath}img_image2.png`)
-          }
+        updateScoreDisplay(response.data.score);
 
       } else { }
     } catch (error) {
@@ -58,29 +72,40 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   };
 
   useEffect(() => {
+    if (observation_id){
+      fetchObservation(observation_id)
+    }else {
 
-    fetchObservation(observation_id)
+        updateScoreDisplay(siteWithObservations.observations[0].score)
+        setObservationDetails(siteWithObservations.observations ?? [])
+        setObservations(siteWithObservations.observations ?? [])
+        setSiteDetails(siteWithObservations.site ?? {})
 
-  }, [observation_id]);
 
-  // this will be dynamic based on the observation data available TODO
-  const tabsData = [
-    { id: 'tab1', label: `${observationDetails.obs_date}`, content: (
-      <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${globalVariables.staticPath}img_rectangle97.png`}
-          alt="img_placeholder"
-        />
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${globalVariables.staticPath}img_rectangle97.png`}
-          alt="img_placeholder"
-        />
-      </div>
-    )
-  },
-  ];
+        // create tabs based on observations per site
+        setTabsData(siteWithObservations.observations.map((observation: any, index: number) => ({
+          id: `tab${index + 1}`,
+          label: observation.obs_date, // tab name
+          content: (
+            // Render content for each tab based on observation data This is an example of images per observation
+            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+              {/* iterate images for observation if any */}
+              {observation.observationImages.map((imageSrc, index) => (
+                <Img
+                  key={index}
+                  className="h-[152px] md:h-auto object-cover w-[164px]"
+                  src={imageSrc}
+                  alt={`img_placeholder_${index}`}
+                />
+                ))
+              }
+            </div>
+          ),
+        })))
+
+    }
+
+  }, [observation_id,siteWithObservations]);
 
   return (
     <div className={classname}
@@ -120,7 +145,18 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
           maxWidth: '350px',
         }}><LinearProgress color="success" /></div>
       ) : (
-    <><TabbedContent tabsData={tabsData} /><div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
+    <>
+      <TabbedContent
+        tabsData={tabsData}
+        activeTabIndex={activeTabIndex}
+        onTabChange={(index) => {
+          // update variables to reflect changes
+          updateScoreDisplay(observations[index].score);
+          setObservationDetails(observations[index])
+          setActiveTabIndex(index);
+        }}
+      />
+      <div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
             <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">
               <Text
                 className={`${titleColor} text-lg w-[140px]`}
@@ -137,7 +173,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                     >
                       <CircularProgressbar
                         className={`!w-[68px] border-solid h-[68px] m-auto overflow-visible ${progressBarColor}`}
-                        value={parseFloat(observationDetails.score || "0") * 10}
+                        value={parseFloat(observationDetails.score !== undefined && observationDetails.score !== null
+                          ? observationDetails.score
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].score
+                            : '0')) * 10}
                         strokeWidth={3}
                         styles={{
                           trail: { strokeWidth: 3, stroke: "gray" },
@@ -161,7 +201,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                     className={`${titleColor} absolute bottom-[18%] inset-x-[0] mx-auto text-base w-max`}
                     size="txtRalewayRomanSemiBold16"
                   >
-                    {observationDetails.score}
+                    {observationDetails.score !== undefined && observationDetails.score !== null
+                    ? observationDetails.score
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].score
+                      : '0')}
                   </Text>
                 </div>
                 <Text
@@ -233,7 +277,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.latitude}
+                  {observationDetails.latitude !== undefined && observationDetails.latitude !== null
+                    ? observationDetails.latitude
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].latitude
+                      : '0')}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -247,7 +295,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.longitude}
+                  {observationDetails.longitude !== undefined && observationDetails.longitude !== null
+                    ? observationDetails.longitude
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].longitude
+                      : '0')}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -283,7 +335,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.obs_date}
+                  {observationDetails.obs_date !== undefined && observationDetails.obs_date !== null
+                    ? observationDetails.obs_date
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].obs_date
+                      : 'dd/mm/yyyy')}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -297,7 +353,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.collectorsname}
+                  {observationDetails.collectorsname !== undefined && observationDetails.collectorsname !== null
+                    ? observationDetails.collectorsname
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].collectorsname
+                      : '')}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -311,7 +371,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.organisationtype ? observationDetails.organisationtype.description : 'N/A'}
+                  {observationDetails.organisationtype !== undefined && observationDetails.organisationtype !== null
+                    ? observationDetails.organisationtype.description
+                    : (siteWithObservations.observations.length > 0
+                      ? siteWithObservations.observations[0].organisationtype.description
+                      : 'N/A')}
                 </Text>
               </div>
             </div>
