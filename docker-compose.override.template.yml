@@ -2,15 +2,14 @@ version: '3.4'
 services:
   dev:
     build:
-      context: ../
-      dockerfile: deployment/docker/Dockerfile
-      target: dev
-    container_name: "${COMPOSE_PROJECT_NAME}_dev"
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile-dev
     volumes:
-      - ../django_project:/home/web/django_project
-      - ./volumes/static:/home/web/static
-      - ./volumes/media:/home/web/media
-      - ./volumes/cache:/home/web/cache
+      - static-data:/home/web/static
+      - media-data:/home/web/media
+      - ./django_project:/home/web/django_project
+      # Images on the platform will be stored here
+      - minio_images:/home/web/minio
     ports:
       # for django test server
       - "5000:8080"
