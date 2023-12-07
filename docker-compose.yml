@@ -82,7 +82,6 @@ services:
     build:
       context: .
       dockerfile: ./deployment/docker/Dockerfile
-      target: prod
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media

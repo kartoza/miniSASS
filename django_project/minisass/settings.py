@@ -9,6 +9,7 @@ from minisass.utils import absolute_path
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 CSRF_TRUSTED_ORIGINS = []
+ALLOWED_HOSTS = ['*']
 
 INTERNAL_IPS = ['127.0.0.1']
 
