@@ -74,7 +74,6 @@ class Sites(models.Model):
     def __str__(self):
         return self.site_name
 
-# TODO this will be for Irwan for image uploads
 class ImageData(models.Model):
     image_id = models.AutoField(primary_key=True)
     ml_prediction = models.CharField(max_length=255,blank=True,null=True),
