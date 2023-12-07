@@ -1,9 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+import os
+
 from dirtyfields import DirtyFieldsMixin
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geometry_fields
+from django.db import models
+from django.db.models.signals import pre_save, post_delete
+from django.dispatch import receiver
+
+from minisass.utils import delete_file_field
 
 
 class Organisations(models.Model):
@@ -63,6 +68,26 @@ class Sites(models.Model):
         return self.site_name
 
 
+def site_image_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.site_id}',
+        filename
+    )
+
+
+class SiteImage(models.Model):
+    """Image for a site."""
+    site = models.ForeignKey(Sites, on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to=site_image_path, storage=settings.MINION_STORAGE
+    )
+
+    def delete_image(self):
+        """delete image."""
+        delete_file_field(self.image)
+
+
 class Observations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
         (u'dirty', u'Dirty'),
@@ -116,6 +141,36 @@ class Observations(models.Model, DirtyFieldsMixin):
         return str(self.obs_date) + ': ' + self.site.site_name
 
 
+def observation_pest_image_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.observation.site_id}',
+        f'{instance.observation_id}',
+        filename
+    )
+
+
+class Pest(models.Model):
+    """Pest model."""
+    name = models.CharField(max_length=256, unique=True)
+
+    def __str__(self):
+        """Return the name."""
+        return self.name
+
+
+class ObservationPestImage(models.Model):
+    """Image for site and observation for a site."""
+    observation = models.ForeignKey(Observations, on_delete=models.CASCADE)
+    pest = models.ForeignKey(Pest, on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to=observation_pest_image_path, storage=settings.MINION_STORAGE
+    )
+
+    def delete_image(self):
+        """delete image."""
+        delete_file_field(self.image)
+
 
 # Helper function to send email content based on observation
 def send_confirmation_email(observation):
@@ -146,6 +201,7 @@ The miniSASS team.
 
     observation.user.email_user(email_subject, email_content, email_sender)
 
+
 # Signal receiver to send email to the user when an observation is verified
 @receiver(pre_save, sender=Observations)
 def send_email_to_user(sender, instance, **kwargs):
@@ -156,3 +212,9 @@ def send_email_to_user(sender, instance, **kwargs):
     # state == clean)
     if dirty_fields.get('flag') == 'dirty' and instance.flag == 'clean':
         send_confirmation_email(instance)
+
+
+@receiver(post_delete, sender=SiteImage)
+@receiver(post_delete, sender=ObservationPestImage)
+def send_email_to_user(sender, instance, **kwargs):
+    instance.delete_image()

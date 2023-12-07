@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Sites, Observations
+from .models import (
+    Sites, Observations, SiteImage, ObservationPestImage, Pest
+)
 
 def make_verified(modeladmin, request, queryset):
     for observation in queryset:
@@ -13,6 +15,10 @@ def make_unverified(modeladmin, request, queryset):
         observation.save()
 make_unverified.short_description = "Mark selected observations as unverified (dirty)"
 
+
+class ObservationPestImageInline(admin.TabularInline):
+    model = ObservationPestImage
+
 @admin.register(Observations)
 class ObservationsAdmin(admin.ModelAdmin):
     list_display = (
@@ -25,6 +31,12 @@ class ObservationsAdmin(admin.ModelAdmin):
     )
     list_filter = ('flag',)
     actions = [make_verified, make_unverified]
+    inlines = (ObservationPestImageInline,)
+
+
+class SiteImageInline(admin.TabularInline):
+    model = SiteImage
+
 
 @admin.register(Sites)
 class SitesAdmin(admin.ModelAdmin):
@@ -34,3 +46,7 @@ class SitesAdmin(admin.ModelAdmin):
         'user',
         'river_name',
     )
+    inlines = (SiteImageInline,)
+
+
+admin.site.register(Pest, admin.ModelAdmin)

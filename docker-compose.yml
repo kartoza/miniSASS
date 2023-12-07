@@ -85,7 +85,7 @@ services:
       - media-data:/home/web/media
       - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
-      - minio_images:/web
+      - minio_images:/home/web/minio
     environment:
       - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
@@ -93,7 +93,8 @@ services:
       - DATABASE_HOST=${DATABASE_HOST:-db}
       - DATABASE_PORT=${DATABASE_PORT:-5432}
       - SENTRY_KEY=${SENTRY_KEY:-}
-      - MINIO_FOLDER=/web/${BUCKET:-}
+      - MINIO_ROOT=/home/web/minio
+      - MINIO_BUCKET=${BUCKET:-demo}
       - ALLOWED_HOSTS='*'
     depends_on:
       db:
