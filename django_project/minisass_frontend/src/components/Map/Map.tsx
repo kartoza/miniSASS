@@ -18,6 +18,11 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 interface Interface {
   basemaps: BasemapConfiguration[],
   overlayLayers: layerConfiguration[],
+  handleSelect: (latitude: number, longitude: number) => void;
+  selectingOnMap: boolean;
+  selectedCoordinates: {latitude: number, longitude: number};
+  idxActive: number;
+  setIdxActive: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -186,6 +191,150 @@ export const Map = forwardRef((props: Interface, ref) => {
       }
     }
 
+    // navigating to different locations on the map
+    useEffect(() => {
+      let mapInstance = map;
+
+      const moveMapToCoordinates = (longitude, latitude) => {
+
+        const geojson = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [longitude, latitude]
+              },
+              properties: {
+                name: 'Selected Point'
+              }
+            }
+          ]
+        };
+      
+        if (map.getSource('selected-point')) {
+          map.getSource('selected-point').setData(geojson);
+        } else {
+          map.addSource('selected-point', {
+            type: 'geojson',
+            data: geojson
+          });
+          map.addLayer({
+            id: 'selected-point-layer',
+            type: 'circle',
+            source: 'selected-point',
+            paint: {
+              'circle-color': `#ff0000`,
+              'circle-opacity': 0,
+              'circle-radius': 12,
+              'circle-stroke-color': HIGHLIGHT_COLOR,
+              'circle-stroke-opacity': HIGHLIGHT_OPACITY,
+              'circle-stroke-width': HIGHLIGHT_WIDTH
+            }
+          });
+        }
+        
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: 10,
+          essential: true
+        });
+      };
+    
+      if (
+        props.selectedCoordinates.longitude !== null && 
+        props.selectedCoordinates.latitude !== null && 
+        props.selectedCoordinates.longitude !== 0 && 
+        props.selectedCoordinates.latitude !== 0
+      ) {
+        const { longitude, latitude } = props.selectedCoordinates;
+        moveMapToCoordinates(longitude, latitude);
+      }
+  
+      const handleSelectOnMapClick = (e) => {
+        const lngLat = e.lngLat;
+        const latitude = lngLat.lat;
+        const longitude = lngLat.lng;
+      
+        props.handleSelect(latitude, longitude);
+      
+        const geojson = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [longitude, latitude]
+              },
+              properties: {
+                name: 'Selected Point'
+              }
+            }
+          ]
+        };
+      
+        // Check if the source already exists
+        if (map.getSource('selected-point')) {
+          // Update the data of the existing source
+          map.getSource('selected-point').setData(geojson);
+        } else {
+          // Add a new source
+          map.addSource('selected-point', {
+            type: 'geojson',
+            data: geojson
+          });
+      
+          // Add a layer to display the selected point
+          map.addLayer({
+            id: 'selected-point-layer',
+            type: 'circle',
+            source: 'selected-point',
+            paint: {
+              'circle-color': `#ff0000`,
+              'circle-opacity': 0,
+              'circle-radius': 12,
+              'circle-stroke-color': HIGHLIGHT_COLOR,
+              'circle-stroke-opacity': HIGHLIGHT_OPACITY,
+              'circle-stroke-width': HIGHLIGHT_WIDTH
+            }
+          });
+        }
+
+        // Move the map's center to the selected point and adjust zoom level
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: 10,
+          essential: true // ensures a smooth transition
+        });
+      
+        map.getCanvas().style.cursor = '';
+      };
+      
+  
+      const addClickEventListener = () => {
+        if (mapInstance && props.selectingOnMap) {
+          
+          mapInstance.on('click', handleSelectOnMapClick);
+          mapInstance.getCanvas().style.cursor = 'crosshair';
+        }
+      };
+  
+      const removeClickEventListener = () => {
+        if (mapInstance) {
+          mapInstance.off('click', handleSelectOnMapClick);
+          mapInstance.getCanvas().style.cursor = '';
+        }
+      };
+  
+      addClickEventListener();
+  
+      return () => {
+        removeClickEventListener();
+      };
+    }, [props.handleSelect, props.selectingOnMap,props.selectedCoordinates]);
+
     return <div id="map" className="w-full h-full bg-slate-200">
       {
         map ?
@@ -195,6 +344,8 @@ export const Map = forwardRef((props: Interface, ref) => {
             overlayLayers={props.overlayLayers}
             showLayer={showLayer}
             hideLayer={hideLayer}
+            idxActive={props.idxActive}
+            setIdxActive={props.setIdxActive}
           /> :
           null
       }

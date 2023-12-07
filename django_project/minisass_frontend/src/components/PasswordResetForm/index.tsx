@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button } from "../../components/Button";
+import { globalVariables } from "../../utils";
 
-const PasswordResetForm = ({ email = "", token = "" }) => {
+
+const PasswordResetForm = ({ uid = "", token = "" }) => {
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [resetErrors, setResetErrors] = useState<string[]>([]);
   const [textColor, settextColor] = useState('');
+
+  const PASSWORD_RESET_API = globalVariables.baseUrl + '/authentication/api/update-password-reset/'
 
   const handleResetPassword = async () => {
     if (newPassword !== repeatPassword) {
@@ -16,8 +20,8 @@ const PasswordResetForm = ({ email = "", token = "" }) => {
 
     try {
       const response = await axios.post(
-        `${window.location.origin}/authentication/api/update-password`,
-        { newPassword, email, token }
+        `${PASSWORD_RESET_API}`,
+        { newPassword, uid, token }
       );
 
       if (response.status === 200) {

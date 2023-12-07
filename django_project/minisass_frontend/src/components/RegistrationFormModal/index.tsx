@@ -5,13 +5,18 @@ import Select from "react-select";
 import CountrySelector from "../../components/Countries/selector";
 import { COUNTRIES } from "../../components/Countries/countries";
 import { SelectMenuOption } from "../../components/Countries/types";
+import { globalVariables } from '../../utils';
+import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 interface RegistrationFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: RegistrationFormData) => void;
-  error_response: string | null;
+  error_response: string | null | boolean;
+  Registrationloading: boolean;
+  registrationInProgress: boolean;
 }
 
 interface RegistrationFormData {
@@ -26,8 +31,14 @@ interface RegistrationFormData {
   confirmPassword: string;
 }
 
-const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, onClose, onSubmit ,error_response }) => {
-  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false); // State for success modal
+const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit,
+  error_response,
+  Registrationloading,
+  registrationInProgress
+ }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
     name: '',
@@ -46,7 +57,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
 
   useEffect(() => {
-    if (error_response === null) {
+    if (error_response === false) {
       // Reset form data and close the registration modal
       setFormErrors({});
       setFormData({
@@ -61,10 +72,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         confirmPassword: '',
       });
       onClose();
-      
-    }
-    else {
-      setSuccessModalOpen(false)
     }
   }, [error_response]);
 
@@ -94,7 +101,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
     }),
     menu: (styles) => ({
       ...styles,
-      // zIndex: 9999,
       width: '16.5vw',
     }),
   };
@@ -102,6 +108,11 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    const newPassword = { ...formData, [name]: value };
+
+    const remaining = validatePassword(newPassword.password, newPassword.confirmPassword);
+    setRemainingRequirements(remaining);
+
     setFormErrors({ ...formErrors, [name]: '' });
   };
 
@@ -110,12 +121,35 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
     return emailRegex.test(email);
   };
 
-  const validatePassword = (password: string, confirmPassword: string) => {
-    return password === confirmPassword;
+  const [remainingRequirements, setRemainingRequirements] = useState({
+    uppercase: true,
+    lowercase: true,
+    digit: true,
+    specialCharacter: true,
+    length: true,
+  });
+
+  const validatePassword = (password, confirmPassword) => {
+    const requirements = {
+      uppercase: /^(?=.*[A-Z])/,
+      lowercase: /^(?=.*[a-z])/,
+      digit: /^(?=.*\d)/,
+      specialCharacter: /^(?=.*[@$!%*?&])/,
+      length: /^.{6,}$/,
+    };
+
+    const remainingRequirements = {
+      uppercase: !requirements.uppercase.test(password),
+      lowercase: !requirements.lowercase.test(password),
+      digit: !requirements.digit.test(password),
+      specialCharacter: !requirements.specialCharacter.test(password),
+      length: !requirements.length.test(password),
+    };
+
+    return remainingRequirements;
   };
 
  
-
   const handleEmailBlur = () => {
     if (formData.email) {
       if (!validateEmail(formData.email)) {
@@ -124,13 +158,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
     }
   };
 
-  const handlePasswordBlur = () => {
-    if (formData.password && formData.confirmPassword) {
-      if (!validatePassword(formData.password, formData.confirmPassword)) {
-        setFormErrors({ ...formErrors, password: 'Passwords do not match' });
-      }
+  useEffect(() => {
+    if (formData.password !== formData.confirmPassword) {
+      setFormErrors({ ...formErrors, confirmPassword: 'Passwords do not match.' });
+    } else {
+      setFormErrors({ ...formErrors, confirmPassword: '' });
     }
-  };
+  }, [formData.password, formData.confirmPassword]);
 
   const validateForm = () => {
     const errors: Partial<RegistrationFormData> = {};
@@ -140,13 +174,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
       errors.email = 'This field is required';
     } else if (!validateEmail(formData.email)) {
       errors.email = 'Invalid email address';
-    }
-
-    // Validate passwords when they lose focus
-    if (!formData.password) {
-      errors.password = 'This field is required';
-    } else if (!validatePassword(formData.password, formData.confirmPassword)) {
-      errors.password = 'Passwords do not match';
     }
 
     // Check for other required fields
@@ -183,7 +210,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {
       onSubmit(formData);
       setFormErrors({});
       setFormData({
@@ -197,7 +224,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
         password: '',
         confirmPassword: '',
       });
-      setSuccessModalOpen(true)
     }
   };
 
@@ -231,11 +257,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
     }
   }, [isOpen]);
 
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
-
+  
 
   return (
     <>
@@ -255,11 +277,47 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
           background: 'white',
           border: 'none',
           borderRadius: '0px 25px 25px 25px',
-          // height: '20vh'
         },
       }}
     >
-      {isOpen && (
+      {Registrationloading ? (
+        // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
+        <LinearProgress color="success" />
+      ) : registrationInProgress ? (
+        <div>
+          <h3
+              style={{
+                fontFamily: 'Raleway',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                alignItems: 'flex-start',
+                fontSize: '24px',
+                lineHeight: '136.4%',
+                color: '#539987',
+              }}
+            >
+              Registration in progress
+            </h3>
+            <br />
+          <Typography>
+            To finish registration, please click on the activation link sent to the email you registered with.
+          </Typography>
+
+          <Button
+              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+              color="blue_gray_500"
+              size="xs"
+              variant="fill"
+              style={{ marginLeft: "65%" }}
+              onClick={onClose}
+            >
+              Ok
+            </Button>
+        </div>
+      ) : (
+        
+      
+      isOpen && (
         <div
           style={{
             display: 'flex',
@@ -296,7 +354,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
             </h3>
             <Img
                 className="h-6 w-6 common-pointer"
-                src={`${staticPath}img_icbaselineclose.svg`}
+                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
                 style={{marginLeft: '30px'}}
@@ -403,11 +461,20 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  onBlur={handlePasswordBlur}
                   placeholder="Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
+                <br />
                 {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                {formData.password && (
+                  <div style={{ flex: 1, flexDirection: 'column' }}>
+                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                  </div>
+                )}
               </div>
               <div style={{ flex: 1, flexDirection: 'column' }}>
                 <label>Confirm Password:</label><br />
@@ -416,10 +483,10 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  onBlur={handlePasswordBlur}
                   placeholder="Confirm Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
+                <br />
                 {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
@@ -455,72 +522,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
             </Button>
           </form>
         </div>
+      )
       )}
     </Modal>
-
-    {/* Success Modal */}
-    <Modal
-    isOpen={isSuccessModalOpen}
-    onRequestClose={() => setSuccessModalOpen(false)}
-    style={{
-      content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100%',
-        maxWidth: '30vw',
-        background: 'white',
-        border: 'none',
-        borderRadius: '0px 25px 25px 25px',
-        // height: '20vh'
-      },
-    }}
-  >
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          padding: '0px',
-          gap: '55%',
-          width: '20vw',
-          height: '33px',
-        }}
-      >
-        <h3
-          style={{
-            fontFamily: 'Raleway',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            alignItems: 'flex-start',
-            fontSize: '24px',
-            lineHeight: '136.4%',
-            color: '#539987',
-          }}
-        >
-          Registration Successful
-        </h3>
-        <button
-          onClick={() => setSuccessModalOpen(false)}
-          style={{
-            width: '24px',
-            height: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          X
-        </button>
-      </div>
-      <br/><br/> 
-      <p>Please check your email for an activation link.</p>
-    </div>
-  </Modal>
   </>
   );
 };

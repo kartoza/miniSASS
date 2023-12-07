@@ -12,6 +12,7 @@ from minisass.utils import delete_file_field
 
 
 class Organisations(models.Model):
+    id = models.AutoField(primary_key=True)
     ORG_CATS = (
         (u'school', u'School'),
         (u'ngo', u'NGO'),

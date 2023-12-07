@@ -4,15 +4,16 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
+import LinearProgress from '@mui/material/LinearProgress';
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   observation_id: string;
   classname: string;
-  updateMapLocation: (longitude: number, latitude: number) => void;
+  handleMapClick: (longitude: number, latitude: number) => void;
 }
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, updateMapLocation }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
@@ -35,7 +36,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
-        updateMapLocation(response.data.longitude, response.data.latitude);
+        
+        setTimeout(() => {
+          handleMapClick(response.data.longitude, response.data.latitude);
+        }, 1200);
 
         if(parseFloat(response.data.score) < 6){
             setTitleColor("text-red-600")
@@ -110,9 +114,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
     </div>
 
     {loading ? (
-        <div className="text-center mt-4">
-          <p>Loading...</p>
-        </div>
+        <div style={{
+          marginLeft:'10px',
+          width: '100%',
+          maxWidth: '350px',
+        }}><LinearProgress color="success" /></div>
       ) : (
     <><TabbedContent tabsData={tabsData} /><div className="flex flex-col gap-6 h-[543px] md:h-auto items-start justify-start w-full">
             <div className="flex flex-row gap-1 items-center justify-start pt-2 w-full">

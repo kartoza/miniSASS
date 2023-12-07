@@ -18,14 +18,19 @@ from django.contrib.auth import (
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes,force_str
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.http import JsonResponse
+from django.contrib.auth import models
+from django.urls import reverse
+from django.http import HttpResponseRedirect,HttpResponseBadRequest
+from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
+User = get_user_model()
 
 
 @api_view(['POST'])
@@ -52,12 +57,15 @@ def contact_us(request):
     phone = request.data.get('phone')
     message = request.data.get('message')
 
+    domain = Site.objects.get_current().domain
+
     mail_subject = 'Contact Us'
     message = render_to_string('contact_us.html', {
         'from': email,
         'name': name,
         'contact': phone,
         'message': message,
+        'domain': domain
     })
     send_mail(
         mail_subject,
@@ -73,7 +81,6 @@ def contact_us(request):
 @api_view(['POST'])
 def request_password_reset(request):
     email = request.data.get('email')
-    User = get_user_model()
 
     try:
         user = User.objects.get(email=email)
@@ -84,55 +91,83 @@ def request_password_reset(request):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     
-    # Create a reset link to use this to route to a password reset page
-
     # Get the current site's domain
-    current_site = get_current_site(request)
-    domain = current_site.domain
-    reset_link = f'https://{domain}/authentication/api/reset-password/{uid}/{token}/'
+    domain = Site.objects.get_current().domain
+    reset_link = request.build_absolute_uri(
+        reverse('verify_password_reset', kwargs={
+        'uid': uid, 'token': token
+        })
+    )
 
     # Send a password reset email to the user
-    current_site = get_current_site(request)
-    mail_subject = 'Password Reset'
+    mail_subject = 'Password Reset Request'
     message = render_to_string('password_reset_email.html', {
         'user': user,
-        'domain': current_site.domain,
+        'domain': domain,
         'reset_link': reset_link,
     })
-    email = EmailMessage(mail_subject, message, to=[user.email])
-    email.send()
+    send_mail(
+        mail_subject,
+        None,
+        settings.CONTACT_US_RECEPIENT_EMAIL,
+        [email],
+        html_message=message
+    )
     
     return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def verify_reset_token(request, uidb64, token):
+@api_view(['GET'])
+def verify_password_reset(request, uidb64, token):
     try:
-        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
-        user = get_user_model().objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        # Token is valid
-        return Response({'message': 'Token is valid'}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+    if user and default_token_generator.check_token(user, token):
+        # Token and user are valid, redirect to 'home' with uid and token parameters
+        redirect_url = reverse('home') + f'?uid={uidb64}&token={token}'
+        return HttpResponseRedirect(redirect_url)
+    
+    return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
-def reset_password(request, uidb64, token):
+def update_password(request, uid, token):
+    newPassword = request.data.get('newPassword')
+
     try:
-        uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
-        user = get_user_model().objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        uid = force_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        new_password = request.data.get('new_password')
-        user.set_password(new_password)
+    if user and default_token_generator.check_token(user, token):
+        # Set the new password for the user
+        user.set_password(newPassword)
         user.save()
-        return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+
+    return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+@api_view(['GET'])
+def activate_account(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        redirect_url = reverse('home') + '?activation_complete=true'
+        return HttpResponseRedirect(redirect_url)
     else:
-        return Response({'error': 'Token is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+        user.delete()
+        return HttpResponseBadRequest('Invalid token or expired')
 
 
 @api_view(['POST'])
@@ -141,9 +176,10 @@ def register(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            user.first_name = request.data.get('first_name')
-            user.last_name = request.data.get('last_name')
-            
+            user.first_name = request.data.get('name')
+            user.last_name = request.data.get('surname')
+            user_email = request.data.get('email')
+            username = request.data.get('username')
             
             # Create a User Profile
             org_name = request.data.get('organizationName')
@@ -166,7 +202,38 @@ def register(request):
                     country=request.data.get('country', None)
                 )
                 user_profile.save()
+                user.is_active = False
                 user.save()
+
+                # Get the current site's domain
+                domain = Site.objects.get_current().domain
+
+                # Generate token
+                token = default_token_generator.make_token(user) 
+
+                # Encode user ID for URL use
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                # Compose the reset link URL
+                activation_link = request.build_absolute_uri(
+                    reverse('activate-account', kwargs={
+                            'uidb64': uidb64, 'token': token})
+                )
+
+                mail_subject = 'Activate account on miniSASS'
+                message = render_to_string('activate_account.html', {
+                    'domain': domain,
+                    'activation_link': activation_link,
+                    'name': username
+                })
+                send_mail(
+                    mail_subject,
+                    None,
+                    settings.CONTACT_US_RECEPIENT_EMAIL,
+                    [user_email],
+                    html_message=message
+                )
+
             else:
                 return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
             

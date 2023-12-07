@@ -1,36 +1,91 @@
-# Installing miniSASS Django-CMS project
+# Setting up a Local Development Environment
 
-This is currently a basic Django-CMS site. No extra Django applications have been added yet. 
-To install the pre-requisites needed for this site to run, do the following:
+## Prerequisites
 
-## Docker Deployments
+- Any Linux distribution for the operating system.
+- Docker installed on the local machine.
+- [Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04) installed on the local machine.
+- Visual Studio Code for the editor (or any preferred editor).
 
-* Clone the repository
+## Installation Steps
 
+1. **Open the terminal.**
+
+2. **Create a directory:**
     ```bash
-     git clone git@github.com:kartoza/miniSASS.git
-     cd miniSASS
+    mkdir name_of_directory
     ```
 
-* Copy the `.example.env` file and adjust the environment variables to match your requirements.
-
+3. **Clone the minisass repository:**
     ```bash
-    cp .example.env .env
+    git clone https://github.com/kartoza/miniSASS.git
     ```
 
-* Prepare the sample data to load into your PostgreSQL database. If you need to load
-the data when initialising the containers you need to update the `docker-compose.yml`
-so that you can mount the `import-data.sh` script instead of the `restore.sh`
-script as per the instruction of running scripts in [docker-postgis](https://github.com/kartoza/docker-postgis#running-sql-scripts-on-container-startup)
-* Bring the services up by running:
-
+4. **Navigate into the repository directory:**
     ```bash
-    docker compose up -d
+    cd miniSASS
     ```
 
-* Publish the PostGIS layers to GeoServer either using the rest api or the GUI.
+5. **Open the directory with VSCode (assuming you have VSCode installed) or open the repository directory in any editor of your choice.**
 
-**Note:** If you have a database dump of the previous running instance of the platform
-and GeoServer data directory. You need to add your database dumps into `data`
-folder and also do a dump and restore for GeoServer using the
-`GeoServer backup and restore plugin`.
+6. **Optional: Adjust the build context of the S3 mount.**
+    In case of build failure, replace lines 32-36 in the `docker-compose.yml` file with the following:
+    ```yaml
+    mount:
+      image: kartoza/s3mount
+      build:
+        context: .
+        dockerfile: ./deployment/docker-s3-bucket/Dockerfile
+    ```
+
+7. **Build the container:**
+    ```bash
+    docker compose build
+    ```
+
+8. **Start the containers:**
+    ```bash
+    docker compose up -d db; sleep 180; docker compose up -d
+    ```
+
+9. **Access the web application:**
+    Visit 'http://localhost:61122/'
+
+## Troubleshooting
+
+### Empty Page
+
+This is likely to be caused by static files, follow these steps:
+
+1. **Access the Django container:**
+    ```bash
+    docker exec -it name_of_django_container bash
+    ```
+2. **Navigate to the frontend directory:**
+    ```bash
+    cd minisass_frontend
+    ```
+3. **Install dependencies:**
+    ```bash
+    npm install
+    ```
+4. **Build the frontend:**
+    ```bash
+    npm run build
+    ```
+5. **Navigate to the main directory:**
+    ```bash
+    cd ..
+    ```
+6. **Execute the collect static command:**
+    ```bash
+    python manage.py collectstatic --noinput
+    ```
+
+### Other Issues
+
+If you encounter any other issues, consider checking the logs, inspecting containers, and reviewing Docker Compose configurations.
+```bash
+docker compose logs
+docker compose ps
+docker compose config

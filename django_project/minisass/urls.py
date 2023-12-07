@@ -5,22 +5,22 @@ from django.views.static import serve
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 from minisass.views import GroupScoresListView,VideoListView
-
+from minisass_frontend.views import ReactHomeView
 
 admin.autodiscover()
 
 urlpatterns = [
     path('group-scores/', GroupScoresListView.as_view(), name='group-scores'),
     path('videos/', VideoListView.as_view(), name='video-list'),
-    
+
     path('jsi18n/<str:packages>/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Use JavaScriptCatalog directly
     path('admin/', admin.site.urls),
-    
+
     # Serve static files
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 
     # Make the home path the default URL
-    path("", TemplateView.as_view(template_name="react_base.html"), name="home"),
+    path("", ReactHomeView.as_view(), name="home"),
 
     # Include authentication URLs
     path('authentication/', include('minisass_authentication.urls')),

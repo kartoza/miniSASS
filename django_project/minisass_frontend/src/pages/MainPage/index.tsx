@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Img, List, Text } from "../../components";
 import Footer from "../../components/Footer";
@@ -11,6 +11,8 @@ import Slideshow from "../../components/SlideShow";
 import axios from "axios"
 import UploadModal from "../../components/UploadFormModal";
 import { globalVariables } from "../../utils";
+import Modal from 'react-modal';
+import Typography from '@mui/material/Typography';
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,6 +22,11 @@ const Home: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [observations, setObservations] = useState([]);
   const ObservationsPropList = [];
+  const [activationComplete, setActivationComplete] = useState(false);
+  const [activationMessage, setActivationMessage] = useState('');
+
+
+  const urlParams = new URLSearchParams(window.location.search);
 
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
@@ -65,6 +72,21 @@ const Home: React.FC = () => {
                     console.log(error);
                 });
         };
+
+        const uidParam = urlParams.get('uid');
+        const tokenParam = urlParams.get('token');
+
+        const activation_complete  = urlParams.get('activation_complete');
+
+        if (activation_complete) {
+          setActivationComplete(true);
+          setActivationMessage('Your registration is complete. Please proceed to log in')
+        }
+    
+        if (uidParam && tokenParam) {
+          const pageName = `/password-reset?uid=${uidParam}&token=${tokenParam}`;
+          navigate(pageName);
+        } 
 
         fetchHomePageData();
     }, []);
@@ -176,6 +198,10 @@ const Home: React.FC = () => {
     const closeUploadModal = () => {
       setIsUploadModalOpen(false);
     };
+
+    const closeActivationModal = () => {
+      setActivationComplete(false)
+    }
 
 
   return (
@@ -575,6 +601,58 @@ const Home: React.FC = () => {
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
         </div>
       </div>
+      <Modal
+        isOpen={activationComplete}
+        onRequestClose={closeActivationModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            maxWidth: '500px',
+            background: 'white',
+            border: 'none',
+            borderRadius: '0px 25px 25px 25px',
+          },
+        }}
+      >
+      {activationComplete && (
+        <div>
+        <h3
+            style={{
+              fontFamily: 'Raleway',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              alignItems: 'flex-start',
+              fontSize: '24px',
+              lineHeight: '136.4%',
+              color: '#539987',
+            }}
+          >
+            Registration successful
+          </h3>
+          <br />
+        <Typography>
+          You have been successfully registered. Please proceed with logging in.
+        </Typography>
+
+        <Button
+            className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+            color="blue_gray_500"
+            size="xs"
+            variant="fill"
+            style={{ marginLeft: "65%" }}
+            onClick={closeActivationModal}
+          >
+            Ok
+          </Button>
+      </div>
+      )}
+      </Modal>
     </>
   );
 };

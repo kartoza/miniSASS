@@ -38,6 +38,10 @@ type DataInputFormProps = Omit<
   | "electricalconduOne"
   | "next"
   | "setSidebarOpen"
+  | "toggleMapSelection"
+  | "handleMapClick"
+  | "selectingOnMap"
+  | "selectedCoordinates"
 > &
   Partial<{
     datainputform: string;
@@ -65,6 +69,10 @@ type DataInputFormProps = Omit<
     electricalconduOne: string;
     next: string;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleMapSelection: () => void;
+    handleMapClick: (longitude: number, latitude: number) => void;
+    selectedCoordinates:{longitude: number, latitude: number};
+    selectingOnMap: boolean;
   }>;
 
 const inputOptionsList = [
@@ -85,6 +93,16 @@ const inputElectricConductivityUnitsList = [
   { label: "m S/m", value: "m S/m" },
   { label: "Unknown", value: "uknown" },
 ];
+
+const SiteSelectionModes = {
+    SELECT_KNOWN_SITE: 'Select known site',
+    SELECT_ON_MAP: 'Select on map',
+    TYPE_IN_COORDINATES: 'Type in coordinates'
+} as const;
+
+type SiteSelectionMode = keyof typeof SiteSelectionModes;
+
+const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
@@ -121,6 +139,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     selectedSite: ''
   });
 
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
+  const [sites, setSitesList] = useState([]);
+
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -135,9 +157,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       popperRef.current.update();
     }
   };
-
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
   };
@@ -146,12 +165,17 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     setIsUploadModalOpen(false);
   };
 
-  const [showCoordinatesFields, setShowCoordinatesFields] = useState(false);
-  const [showSelectKnownSiteField, setShowSelectKnownSiteField] = useState(false);
-
   const handleSelectOnMapClick = () => {
-    setShowCoordinatesFields(true);
-    setShowSelectKnownSiteField(false);
+    if (selectSiteMode === 'SELECT_ON_MAP') return;
+    props.toggleMapSelection()
+    setSelectSiteMode("SELECT_ON_MAP");
+  };
+
+  const handleSelectOnTypeCoordinateClick = () => {
+    if (selectSiteMode === 'SELECT_ON_MAP') {
+      props.toggleMapSelection()
+    }
+    setSelectSiteMode("TYPE_IN_COORDINATES");
   };
 
   const handleShowScoreForm = () => {
@@ -161,29 +185,24 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleHideScoreForm = () => {
     setShowScoreForm(false)
   }
-    
 
   const [showScoreForm, setShowScoreForm] = useState(false);
-  
+
   function handleSelectKnownSite(): void {
-    setShowSelectKnownSiteField(true);
-    setShowCoordinatesFields(false);
+    if (selectSiteMode === 'SELECT_ON_MAP') {
+      props.toggleMapSelection()
+    }
+    setSelectSiteMode("SELECT_KNOWN_SITE");
   }
 
-  const [sites, setSitesList] = useState([]);
-
-  const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
-  
   const getSites = async () => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
-  
       if (response.status === 200) {
           const sitesList = response.data.map(site => ({
             label: site.site_name,
             value: site.gid.toString(),
           }));
-    
           setSitesList(sitesList);
       }
     } catch (error) {
@@ -192,15 +211,22 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   };
 
   useEffect(() => {
-    getSites()
-  }, [showSelectKnownSiteField]);
+    if (selectSiteMode === 'SELECT_KNOWN_SITE') {
+      getSites()
+    }
+  }, [selectSiteMode]);
 
+  // Helper function to format date
+  const formatDate = (date) => {
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  };
 
   return (
     <>
       {!showScoreForm ? (
       <div className={props.className} style={{
-        height: '72vh',
+        height: '75vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}>
@@ -440,7 +466,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color="blue_gray_500"
+                      color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
                       size="xs"
                       variant="fill"
                       onClick={handleSelectKnownSite}
@@ -451,7 +477,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color="blue_gray_500"
+                      color={selectSiteMode === 'SELECT_ON_MAP' ? 'blue_900': 'blue_gray_500'}
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnMapClick}
@@ -462,10 +488,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[201px] text-center text-lg tracking-[0.81px]"
                       shape="round"
-                      color="blue_gray_500"
+                      color={selectSiteMode === 'TYPE_IN_COORDINATES' ? 'blue_900': 'blue_gray_500'}
                       size="xs"
                       variant="fill"
-                      onClick={handleSelectOnMapClick}
+                      onClick={handleSelectOnTypeCoordinateClick}
                     >
                       {props?.typeInCoordinates}
                     </Button>
@@ -473,7 +499,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 </div>
 
                 {/* Additional field for select known site */}
-                {showSelectKnownSiteField && (
+                {selectSiteMode === 'SELECT_KNOWN_SITE' && (
                   <div>
                     {/* known site */}
                     <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
@@ -515,7 +541,17 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                 )}
 
                 {/* Additional fields for longitude and latitude */}
-                { showCoordinatesFields ?  <CoordinatesInputForm values={values} setFieldValue={setFieldValue}/> : null }
+                { selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP' ?
+                  <CoordinatesInputForm
+                    values={values}
+                    setFieldValue={setFieldValue}
+                    defaultType={'Degree'}
+                    handleMapClick={props.handleMapClick}
+                    selectedCoordinates={props.selectedCoordinates}
+                    selectOnMap={props.selectingOnMap}
+                    disabled={selectSiteMode !== 'TYPE_IN_COORDINATES'}
+                  /> : null
+                }
                 <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full" style={{marginBottom: '2%'}}>
                   <Text
                     className="text-blue-900 text-lg w-auto"
@@ -526,37 +562,41 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
                   {/* date input */}
                   <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                    <Text
-                      className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                      size="txtRalewayRomanRegular18"
-                    >
-                      {props?.date}
-                    </Text>
-                    <Field
-                      type="date"
-                      name="date"
-                      placeholder="01.01.2024"
-                      className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
-                      wrapClassName="flex md:h-auto w-[300px]"
-                      shape="round"
-                      color="black_900_3a"
-                      size="xs"
-                      variant="outline"
-                      style={{
-                        width: '300px',
-                        maxWidth: '300px',
-                        height: '40px',
-                        border: '1px solid rgba(0, 0, 0, 0.23)',
-                        borderRadius: '4px',
-                        padding: '8px 12px',
-                        marginRight: '-10px'
-                      }}
-                      min={'2010-01-01'}
-                      max={formatDate(new Date())}
-                      value={values.date}
-                      onChange={handleChange}
-                    />
-                  </div>
+                      <Text className="text-gray-800 text-lg tracking-[0.15px] w-auto" size="txtRalewayRomanRegular18">
+                        {props?.date}
+                      </Text>
+                      <div>
+                        {values.date && (
+                          <Text className="text-gray-800 text-lg tracking-[0.15px] w-auto" size="txtRalewayRomanRegular18">
+                            {formatDate(new Date(values.date))}
+                          </Text>
+                        )}
+                        <Field
+                          type="date"
+                          name="date"
+                          placeholder="01.01.2024"
+                          className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway p-0 text-base text-left tracking-[0.50px] w-full"
+                          wrapClassName="flex md:h-auto w-[300px]"
+                          shape="round"
+                          color="black_900_3a"
+                          size="xs"
+                          variant="outline"
+                          style={{
+                            width: '300px',
+                            maxWidth: '300px',
+                            height: '40px',
+                            border: '1px solid rgba(0, 0, 0, 0.23)',
+                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            marginRight: '-10px',
+                          }}
+                          min={'2010-01-01'}
+                          max={formatDate(new Date())}
+                          value={values.date}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
 
 
                   {/* collectors name input */}
@@ -865,7 +905,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 };
 
 
-// TODO make form dynamic 
+// TODO make form dynamic
 DataInputForm.defaultProps = {
   datainputform: "Data Input Form",
   sitedetails: "Site Details",
@@ -881,9 +921,9 @@ DataInputForm.defaultProps = {
   ),
   rivercategory: "River category",
   sitelocation: "Site location",
-  selectKnownSite: "Select known site",
-  selectOnMap: "Select on map",
-  typeInCoordinates: "Type in coordinates",
+  selectKnownSite: SiteSelectionModes.SELECT_KNOWN_SITE,
+  selectOnMap: SiteSelectionModes.SELECT_ON_MAP,
+  typeInCoordinates: SiteSelectionModes.TYPE_IN_COORDINATES,
   observationdetaOne: "Observation details",
   date: "Date:",
   collectorsname: "Collectors name:",

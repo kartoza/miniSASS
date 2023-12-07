@@ -36,6 +36,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [buttonStates, setButtonStates] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState([]);
+  const [totalScore, setTotalScore] = useState(0);
+  const [numberOfGroups ,setNumberOfGroups] = useState(0);
+  const [averageScore, setAverageScore] = useState(0);
   const [openImagePestId, setOpenImagePestId] = useState(0);
   const [pestImages, setPestImages] = useState({});
 
@@ -84,22 +88,9 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-
-  const totalScore = scoreGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
-  const numberOfGroups = scoreGroups.length;
-  const averageScore = totalScore / numberOfGroups;
-
   // Function to log the state of checkboxes
   const handleSave = async () => {
-
     try {
-
-      console.log(checkboxStates); // Log the state of checkboxes
-      console.log('data from first form ', additionalData);
-      console.log(`Total Score: ${totalScore}`);
-      console.log(`Number of Groups: ${numberOfGroups}`);
-      console.log(`Average Score: ${averageScore}`);
-
       // Create an object with the data to be saved
       const observationsData = {
         score:totalScore,
@@ -135,17 +126,31 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         setIsSuccessModalOpen(true);
       }
     } catch (error) {
-     setErrorMessage(error.message);
+      setErrorMessage(error.message);
       setIsErrorModalOpen(true);
     }
   };
 
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
-    setCheckboxStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setCheckboxStates((prevState) => {
+      const updatedCheckboxStates = {
+        ...prevState,
+        [id]: !prevState[id],
+      };
+
+      const temp_checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
+      const temp_totalScore = temp_checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
+      const temp_numberOfGroups = temp_checkedGroups.length;
+      const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
+
+      setCheckedGroups(temp_checkedGroups)
+      setAverageScore(temp_averageScore)
+      setNumberOfGroups(temp_numberOfGroups)
+      setTotalScore(temp_totalScore)
+
+      return updatedCheckboxStates;
+    });
   };
 
   const [isManageImagesModalOpen, setIsManageImagesModalOpen] = useState(false);
@@ -175,7 +180,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
-          height: '73vh',
+          height: '75vh',
           overflowY: 'auto',
           overflowX: 'auto'
         }}

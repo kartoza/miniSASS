@@ -16,9 +16,11 @@ const newURL = baseUrl + '/' + replacementPath;
 
 // Define an array of images for the slideshow TODO get the images from the api
 const slideshowImages = [
-  `${newURL}img_intrestedcitizensfromduct.png`,
-  `${newURL}slideshow7.jpg`,
+  `${newURL}slideshow10.jpg`,
   `${newURL}slideshow8.jpg`,
+  `${newURL}slideshow7.jpg`,
+  `${newURL}slideshow9.jpg`,
+  `${newURL}img_intrestedcitizensfromduct.png`,
 ];
 
 const Slideshow = () => {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Password Reset Request</title>
+    <title>Activate Your Account</title>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 0;">
     <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -11,13 +11,12 @@
             <img src="https://{{ domain }}/static/images/img_minisasslogo1.png" alt="Company Logo" style="max-width: 200px; height: auto;">
         </div>
 
-        <h2>Password Reset Request</h2>
-        <p>Dear {{ user.username }},</p>
-        <p>You have requested a password reset. To proceed, please follow the link below:</p>
-        <p><a href="{{ reset_link }}" style="display: inline-block; padding: 10px 20px; background-color: #288b31; color: #fff; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
-        <p>If the button above doesn't work, you can also <a href="{{ reset_link }}" style="color: #007bff; text-decoration: none;">click here</a> or copy and paste the following link into your browser:</p>
-        <p>{{ reset_link }}</p>
-        <p>If you didn't request this, please ignore this email.</p>
+        <h2>Welcome to miniSASS!</h2>
+        <p>Dear {{ name }},</p>
+        <p>Thank you for registering with us. To activate your account, please click the button below:</p>
+        <p><a href="{{ activation_link }}" style="display: inline-block; padding: 10px 20px; background-color: #288b31; color: #fff; text-decoration: none; border-radius: 5px;">Activate Account</a></p>
+        <p>If the button above doesn't work, you can also <a href="{{ activation_link }}" style="color: #007bff; text-decoration: none;">click here</a> or copy and paste the following link into your browser:</p>
+        <p>{{ activation_link }}</p>
         <p>If you have any questions, feel free to contact us.</p>
         <p>Thank you,<br> The miniSASS Team</p>
     </div>
