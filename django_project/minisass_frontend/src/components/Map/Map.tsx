@@ -345,7 +345,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         removeClickEventListener();
       };
     
-    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates]);
+    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates,map]);
 
 
 
