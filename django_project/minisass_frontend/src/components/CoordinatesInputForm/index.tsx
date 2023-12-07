@@ -108,13 +108,27 @@ export default function CoordinatesInputForm(
                 values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
               )
             )
+            handleMapClick(
+              Number(values.latitude),
+              Number(
+                convertDmsToLatitude(
+                  values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
+                )
+              )
+            )
           }}
           longitude={convertToDMSLongitude(values.longitude)}
-          setLongitude={(values: ValueInterface) => {
+          setLongitude={(values_internal: ValueInterface) => {
             setLongitude(
               convertDmsToLongitude(
-                values.degrees, values.minutes, values.seconds, values.cardinal
+                values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
               )
+            )
+            handleMapClick(Number(values.longitude), 
+              Number(
+                convertDmsToLongitude(
+                values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
+              ))
             )
           }}
         />
