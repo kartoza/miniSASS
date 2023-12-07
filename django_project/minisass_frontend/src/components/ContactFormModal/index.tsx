@@ -42,8 +42,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
     });
   };
 
-  const [SendingMessage, setSendingMessage] = useState(false);
-  const [MessageSent, setMessageSent] = useState(false);
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [messageSent, setMessageSent] = useState(false);
 
 
   const CONTACT_US_API = globalVariables.baseUrl + '/authentication/api/contact-us'
