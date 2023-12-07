@@ -61,7 +61,7 @@ class Sites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now=True)
     assessment_id = models.ForeignKey(Assessment, on_delete=models.CASCADE,blank=True,null=True)
-    miniSass_score = models.FloatField(blank=True,null=True)
+    minisass_score = models.FloatField(blank=True,null=True)
     miniSass_ML_score = models.FloatField(blank=True,null=True)
     ml_model_version = models.CharField(max_length=255,blank=True,null=True)
     ml_model_type = models.CharField(max_length=255,blank=True,null=True)
