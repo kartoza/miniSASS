@@ -117,9 +117,9 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       }}
     >
 
-      {SendingMessage ? (
+      {sendingMessage ? (
         <LinearProgress color="success" />
-      ) : MessageSent ? (
+      ) : messageSent ? (
       <div>
         <h3
             style={{
