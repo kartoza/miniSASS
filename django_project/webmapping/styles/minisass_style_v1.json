@@ -40,7 +40,7 @@
         "text-field": "",
         "icon-image": "crab_u_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -53,7 +53,7 @@
         "text-field": "",
         "icon-image": "crab_u",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -71,7 +71,7 @@
         "text-field": "",
         "icon-image": "crab_sm_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -89,7 +89,7 @@
         "text-field": "",
         "icon-image": "crab_sm",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -107,7 +107,7 @@
         "text-field": "",
         "icon-image": "crab_sm_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -125,7 +125,7 @@
         "text-field": "",
         "icon-image": "crab_sm",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -144,7 +144,7 @@
         "text-field": "",
         "icon-image": "crab_p_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -163,7 +163,7 @@
         "text-field": "",
         "icon-image": "crab_p",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -182,7 +182,7 @@
         "text-field": "",
         "icon-image": "crab_p_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -201,7 +201,7 @@
         "text-field": "",
         "icon-image": "crab_p",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -220,7 +220,7 @@
         "text-field": "",
         "icon-image": "crab_f_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -239,7 +239,7 @@
         "text-field": "",
         "icon-image": "crab_f",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -258,7 +258,7 @@
         "text-field": "",
         "icon-image": "crab_f_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -277,7 +277,7 @@
         "text-field": "",
         "icon-image": "crab_f",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -296,7 +296,7 @@
         "text-field": "",
         "icon-image": "crab_g_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -315,7 +315,7 @@
         "text-field": "",
         "icon-image": "crab_g",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -334,7 +334,7 @@
         "text-field": "",
         "icon-image": "crab_g_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -353,7 +353,7 @@
         "text-field": "",
         "icon-image": "crab_g",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -371,7 +371,7 @@
         "text-field": "",
         "icon-image": "crab_n_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -389,7 +389,7 @@
         "text-field": "",
         "icon-image": "crab_n",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -407,7 +407,7 @@
         "text-field": "",
         "icon-image": "crab_n_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]}
+        "icon-size": {"stops": [[5, 1], [17, 4]]}
       }
     },
     {
@@ -425,7 +425,7 @@
         "text-field": "",
         "icon-image": "crab_n",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 3]]},
+        "icon-size": {"stops": [[5, 1], [17, 4]]},
         "icon-allow-overlap": false
       }
     }
