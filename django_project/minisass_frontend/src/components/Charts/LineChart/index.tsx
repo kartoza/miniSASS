@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Line} from "react-chartjs-2";
 import {CategoryScale} from "chart.js";
 import Chart from "chart.js/auto";
 import Box from '@mui/material/Box'
-import 'chartjs-adapter-date-fns';
 
 
 Chart.register(CategoryScale);
