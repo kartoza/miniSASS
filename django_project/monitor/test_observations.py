@@ -14,10 +14,9 @@ from rest_framework.test import APITestCase
 from monitor.models import Observations, Sites
 
 
-class ObservationsModelTest(TestCase):
+class ObservationsModelTest(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
-        self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
         self.site = Sites.objects.create(

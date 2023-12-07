@@ -5,7 +5,9 @@ import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
-import DownloadObservationForm from '../../components/DownloadObservationModal/index'
+import DownloadObservationForm from '../../components/DownloadObservationModal/index';
+import LineChart from '../Charts/LineChart';
+import dayjs from 'dayjs';
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +15,18 @@ interface ObservationDetailsProps {
   classname: string;
   handleMapClick: (longitude: number, latitude: number) => void;
 }
+
+interface Observation {
+  observation: number;
+  site: string;
+  username: string;
+  organisation: string;
+  time_stamp: string;
+  obs_date: string;
+  score: string;
+}
+
+const OBSERVATION_LIST_URL = globalVariables.baseUrl + '/monitor/observations/recent-observations'
 
 const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
 
@@ -29,6 +43,33 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+  const [isChartHidden, setIsChartHidden] = useState<boolean>(true);
+  const [observationList, setObservationList] = useState<Observation[]>([]);
+
+  let minDate = dayjs().format('YYYY-MM-DD');
+  let maxDate = dayjs().format('YYYY-MM-DD');
+  if (observationList.length == 1) {
+    minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+    maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+  } else if (observationList.length > 1) {
+    minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+    maxDate = dayjs(observationList[observationList.length - 1].obs_date).format('YYYY-MM-DD');
+  }
+
+  const fetchObservations = async () => {
+    const url = `${OBSERVATION_LIST_URL}/?site_id=${observationDetails.site.gid}&recent=False`
+    axios.get(url).then((response) => {
+      if (response.data) {
+          setObservationList(response.data as Observation[])
+      }
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
+
+  useEffect(() => {
+    fetchObservations();
+  }, [observationDetails]);
 
   const closeDownloadModal = () => {
     setIsDownloadModalOpen(false);
@@ -113,9 +154,15 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
          <DownloadObservationForm
            isOpen={isDownloadModalOpen}
            onClose={closeDownloadModal}
-           defaultDate={observationDetails.obs_date}
            siteId={observationDetails.site?.gid}
+           dateRange={[minDate, maxDate]}
          />
+          <Img
+          className="h-6 w-6"
+          src={`${globalVariables.staticPath}mdi_chart.svg`}
+          alt="mdichartimg"
+          onClick={() => {setIsChartHidden(!isChartHidden)}}
+        />
       </div>
       <Img
         className="h-6 w-6"
@@ -123,6 +170,15 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen 
         alt="icbaselineclose"
         onClick={handleCloseSidebar}
       />
+    </div>
+    <div style={{width: '100%'}}>
+      <LineChart
+         data={observationList.map((obs) => obs.score)}
+         labels={observationList.map((obs) => obs.obs_date)}
+         xLabel={'Date'}
+         yLabel={'Average Score'}
+         hidden={isChartHidden}
+       />
     </div>
 
     {loading ? (

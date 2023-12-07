@@ -121,8 +121,11 @@ def create_observations(request):
 class RecentObservationListView(generics.ListAPIView):
     serializer_class = ObservationsSerializer
 
-    def get_queryset(self):
-        return Observations.objects.all().order_by('-time_stamp')[:20]
+    def get_queryset(self, site_id=None, recent=True):
+        all_obs = Observations.objects.all().order_by('-time_stamp')
+        if site_id:
+            all_obs = all_obs.filter(site_id=site_id)
+        return all_obs[:20] if recent else all_obs
 
     def build_recent_observations(self, queryset):
         serialized_data = self.serializer_class(queryset, many=True).data
@@ -141,13 +144,17 @@ class RecentObservationListView(generics.ListAPIView):
                 'username': user_profile.user.username if user_profile else "",
                 'organisation': user_profile.organisation_name if user_profile else "",
                 'time_stamp': observation['time_stamp'],
+                'obs_date': observation['obs_date'],
                 'score': observation['score'],
             })
 
         return recent_observations
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        site_id = request.GET.get('site_id', None)
+        recent = request.GET.get('recent', 'True')
+        recent = recent in ['True', 'true', '1', 'yes']
+        queryset = self.get_queryset(site_id, recent)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
 

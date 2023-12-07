@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useState, useEffect} from 'react';
 import {DownloadObservationFormData} from '../../components/ContactFormModal/types';
 import {Button, Img} from "../../components";
 import Modal from 'react-modal';
@@ -9,7 +9,8 @@ import dayjs from 'dayjs';
 import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {DateField} from '@mui/x-date-pickers/DateField';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import "./index.css";
 
 export interface DownloadObservationFormData {
     type: string,
@@ -21,17 +22,19 @@ export interface DownloadObservationFormData {
 interface DownloadObservationFormProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultDate: string;
   siteId: number;
+  dateRange: string[];
 }
 
+const DOWNLOAD_OBSERVATIONS_URL = globalVariables.baseUrl + '/monitor/observations/download-v2'
+
 const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpen, onClose,
-                                                                           defaultDate, siteId}) => {
+                                                                           siteId, dateRange}) => {
   const initialState: DownloadObservationFormData = {
     type: 'csv',
     includeImage: false,
-    startDate: dayjs(defaultDate),
-    endDate: dayjs(defaultDate)
+    startDate: dayjs(dateRange[1]),
+    endDate: dayjs(dateRange[1])
   };
   const typeOptions = [
     { value: 'csv', label: 'CSV' },
@@ -43,22 +46,16 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
   const [isError, setIsError] = useState<boolean>(false);
   const [showHeading, setShowHeading] = useState<boolean>(true);
 
+  useEffect(() => {
+    setFormData({ ...formData, startDate: dayjs(dateRange[1]), endDate: dayjs(dateRange[1]) });
+  }, [dateRange]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     downloadFile()
-    setFormData({
-      type: 'csv',
-      includeImage: false,
-      startDate: dayjs(defaultDate),
-      endDate: dayjs(defaultDate)
-    });
   };
 
-
-  const DOWNLOAD_OBSERVATIONS_URL = globalVariables.baseUrl + '/monitor/observations/download-v2'
-
   const downloadFile = async () => {
-
     try {
       const startDate = formData.startDate.format('YYYY-MM-DD');
       const endDate = formData.endDate.format('YYYY-MM-DD');
@@ -216,8 +213,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
             option: (styles, { isFocused }) => ({
               ...styles,
               backgroundColor: isFocused ? '#539987' : 'white',
-              color: isFocused ? 'white' : 'black',
-              zIndex: 9999
+              color: isFocused ? 'white' : 'black'
             }),
             menu: (styles) => ({
               ...styles,
@@ -226,22 +222,27 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
           }}
         />
         <label>
-          Date Range:
+          Date Range (Inclusive):
         </label>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DateField', 'DateField']}>
-            <DateField
+          <DemoContainer components={['DatePicker', 'DatePicker']}>
+            <DatePicker
+              className={'start-date'}
               label="Start Date"
               format="DD-MM-YYYY"
               value={formData.startDate}
               onChange={(newValue) => setFormData({ ...formData, startDate: newValue })}
-              style={{zIndex: 0}}
+              style={{zIndex: '0!important'}}
+              minDate={dayjs(dateRange[0])}
+              maxDate={dayjs(dateRange[1])}
             />
-            <DateField
+            <DatePicker
               label="End Date"
               format="DD-MM-YYYY"
               value={formData.endDate}
               onChange={(newValue) => setFormData({ ...formData, endDate: newValue })}
+              minDate={dayjs(dateRange[0])}
+              maxDate={dayjs(dateRange[1])}
             />
           </DemoContainer>
         </LocalizationProvider>
