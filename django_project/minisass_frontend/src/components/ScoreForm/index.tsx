@@ -13,6 +13,22 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const PESTS = [
+  '-', // This is to skip idx 0
+  'flatworms',
+  'leeches',
+  'crabs_shrimps',
+  'stoneflies',
+  'minnow_mayflies',
+  'other_mayflies',
+  'damselflies',
+  'dragonflies',
+  'bugs_beetles',
+  'caddisflies',
+  'true_flies',
+  'snails'
+]
+
 
 const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
@@ -24,6 +40,8 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [totalScore, setTotalScore] = useState(0);
   const [numberOfGroups ,setNumberOfGroups] = useState(0);
   const [averageScore, setAverageScore] = useState(0);
+  const [openImagePestId, setOpenImagePestId] = useState(0);
+  const [pestImages, setPestImages] = useState({});
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -53,17 +71,17 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     id: '',
   });
 
-  const [selectedButton, setSelectedButton] = useState(null);
-
   const handleButtonClick = (id) => {
-    const updatedButtonStates = buttonStates.map(buttonState => {
-      if (buttonState.id === id) {
-        return { ...buttonState, showManageImages: !buttonState.showManageImages };
-      }
-      return buttonState;
-    });
-    setButtonStates(updatedButtonStates);
-    openUploadModal();
+    // TODO:
+    //  It should be used when image is already uploaded
+    // const updatedButtonStates = buttonStates.map(buttonState => {
+    //   if (buttonState.id === id) {
+    //     return { ...buttonState, showManageImages: !buttonState.showManageImages };
+    //   }
+    //   return buttonState;
+    // });
+    // setButtonStates(updatedButtonStates);
+    setOpenImagePestId(id);
   };
 
   const [checkboxStates, setCheckboxStates] = useState(
@@ -72,28 +90,37 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
 
   // Function to log the state of checkboxes
   const handleSave = async () => {
-
     try {
-
       // Create an object with the data to be saved
       const observationsData = {
-        flatworms: checkedGroups.find(group => group.name === 'flatworms') ? true : false,
-        leeches: checkedGroups.find(group => group.name === 'leeches') ? true : false,
-        crabs_shrimps: checkedGroups.find(group => group.name === 'crabs_shrimps') ? true : false,
-        stoneflies: checkedGroups.find(group => group.name === 'stoneflies') ? true : false,
-        minnow_mayflies: checkedGroups.find(group => group.name === 'minnow_mayflies') ? true : false,
-        other_mayflies: checkedGroups.find(group => group.name === 'other_mayflies') ? true : false,
-        damselflies: checkedGroups.find(group => group.name === 'damselflies') ? true : false,
-        dragonflies: checkedGroups.find(group => group.name === 'dragonflies') ? true : false,
-        bugs_beetles: checkedGroups.find(group => group.name === 'bugs_beetles') ? true : false,
-        true_flies: checkedGroups.find(group => group.name === 'true_flies') ? true : false,
-        caddisflies: checkedGroups.find(group => group.name === 'caddisflies') ? true : false,
-        snails: checkedGroups.find(group => group.name === 'snails') ? true : false,
         score:totalScore,
         datainput: additionalData,
       };
-  
-      const response = await axios.post(`${globalVariables.baseUrl}/monitor/observations-create/`, observationsData);
+      PESTS.map((pest,idx) => {
+        observationsData[pest] = checkboxStates['' + idx]
+      })
+
+      var form_data = new FormData();
+      additionalData?.images?.map((file, idx) => {
+        form_data.append('image_' + idx, file);
+      })
+      for (var key in pestImages) {
+        const pest = PESTS[key]
+        pestImages[key].map((file, idx) => {
+          form_data.append('pest_' + idx + ':' + pest, file);
+        })
+      }
+      form_data.append('data', JSON.stringify(observationsData));
+
+      const response = await axios.post(
+        `${globalVariables.baseUrl}/monitor/observations-create/`,
+        form_data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
 
       if(response.status == 200){
         setIsSuccessModalOpen(true);
@@ -126,15 +153,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     });
   };
 
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isManageImagesModalOpen, setIsManageImagesModalOpen] = useState(false);
 
-  const openUploadModal = () => {
-    setIsUploadModalOpen(true);
-  };
-
   const closeUploadModal = () => {
-    setIsUploadModalOpen(false);
+    setOpenImagePestId(0)
   };
 
   const openManageImagesModal = (id, groups, sensetivityScore) => {
@@ -154,7 +176,6 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
-  
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
@@ -164,7 +185,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
           overflowX: 'auto'
         }}
       >
-        
+
         <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
           <div
             className="flex flex-row gap-80 w-auto sm:w-full"
@@ -232,18 +253,31 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
                       return (
                         <React.Fragment key={`Button-${btnIndex}`}>
                           {!buttonState.showManageImages && (
-                            <Button
-                              id={`button-${props.id}`}
-                              type="button"
-                              className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                              shape="round"
-                              color="blue_gray_500"
-                              size="xs"
-                              variant="fill"
-                              onClick={() => handleButtonClick(props.id)}
-                            >
-                              Upload images
-                            </Button>
+                            <>
+                              <Button
+                                id={`button-${props.id}`}
+                                type="button"
+                                className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                                shape="round"
+                                color="blue_gray_500"
+                                size="xs"
+                                variant="fill"
+                                onClick={() => handleButtonClick(props.id)}
+                              >
+                                Upload images
+                                {pestImages[props.id]?.length ? <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images selected)</div> : null}
+                              </Button>
+                              <UploadModal
+                                key={`image-${props.id}`}
+                                isOpen={openImagePestId === props.id} onClose={closeUploadModal}
+                                onSubmit={
+                                  files => {
+                                    pestImages[props.id] = files
+                                    setPestImages({...pestImages})
+                                    setOpenImagePestId(0)
+                                  }
+                                }/>
+                              </>
                           )}
                           {buttonState.showManageImages && (
                             <Button
@@ -363,7 +397,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
             </div>
           )}
         </Modal>
-        
+
         {/* Error Modal */}
         <Modal
           isOpen={isErrorModalOpen}
@@ -408,8 +442,6 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
             </div>
           )}
         </Modal>
-
-        <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
         <ManageImagesModal
           title={manageImagesModalData.groups}
           isOpen={isManageImagesModalOpen}
