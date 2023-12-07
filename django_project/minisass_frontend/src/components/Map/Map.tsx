@@ -23,6 +23,7 @@ interface Interface {
   selectedCoordinates: {latitude: number, longitude: number};
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
+  openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -313,17 +314,24 @@ export const Map = forwardRef((props: Interface, ref) => {
       };
       
   
+      const handleMapClick = (e) => {
+        const { lng, lat } = e.lngLat;
+        captureCoordinatesAndQuery(lat, lng);
+      };
+    
       const addClickEventListener = () => {
         if (mapInstance && props.selectingOnMap) {
-          
           mapInstance.on('click', handleSelectOnMapClick);
           mapInstance.getCanvas().style.cursor = 'crosshair';
+        }else {
+          mapInstance.on('click', handleMapClick);
         }
       };
-  
+    
       const removeClickEventListener = () => {
         if (mapInstance) {
           mapInstance.off('click', handleSelectOnMapClick);
+          mapInstance.off('click', handleMapClick);
           mapInstance.getCanvas().style.cursor = '';
         }
       };
@@ -334,6 +342,21 @@ export const Map = forwardRef((props: Interface, ref) => {
         removeClickEventListener();
       };
     }, [props.handleSelect, props.selectingOnMap,props.selectedCoordinates]);
+
+
+    const captureCoordinatesAndQuery = async (latitude, longitude) => {
+      try {
+
+        const response = await axios.get(`${globalVariables.baseUrl}/monitor/sites?latitude=${latitude}&longitude=${longitude}`);
+    
+        if (response.data.length > 0) {
+          props.openObservationForm(response.data);
+        }
+
+      } catch (error) {
+        console.error('Error querying site:', error.message);
+      }
+    };
 
     return <div id="map" className="w-full h-full bg-slate-200">
       {
