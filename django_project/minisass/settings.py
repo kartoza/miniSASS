@@ -225,3 +225,6 @@ LOGGING = {
         },
     }
 }
+
+# Minio config
+MINIO_FOLDER= os.getenv('MINIO_FOLDER', '/web/temp')
