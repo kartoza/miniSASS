@@ -1,9 +1,15 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+import os
+import shutil
+
 from dirtyfields import DirtyFieldsMixin
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geometry_fields
+from django.db import models
+from django.db.models.signals import pre_save, post_delete
+from django.dispatch import receiver
+
+from minisass.utils import delete_file_field
 
 
 class Organisations(models.Model):
@@ -63,6 +69,35 @@ class Sites(models.Model):
     def __str__(self):
         return self.site_name
 
+    @property
+    def folder(self):
+        """Return folder of site"""
+        return os.path.join(
+            settings.MINIO_ROOT,
+            settings.MINIO_BUCKET,
+            f'{self.gid}'
+        )
+
+
+def site_image_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.site_id}',
+        filename
+    )
+
+
+class SiteImage(models.Model):
+    """Image for a site."""
+    site = models.ForeignKey(Sites, on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to=site_image_path, storage=settings.MINION_STORAGE
+    )
+
+    def delete_image(self):
+        """delete image."""
+        delete_file_field(self.image)
+
 
 class Observations(models.Model, DirtyFieldsMixin):
     FLAG_CATS = (
@@ -82,7 +117,9 @@ class Observations(models.Model, DirtyFieldsMixin):
         (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True
+    )
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)
@@ -96,19 +133,38 @@ class Observations(models.Model, DirtyFieldsMixin):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
-    score = models.DecimalField(max_digits=4, decimal_places=2,default=0)
-    site = models.ForeignKey(Sites, on_delete=models.CASCADE, related_name='observation', blank=True, null=True)
+    score = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    site = models.ForeignKey(
+        Sites, on_delete=models.CASCADE, related_name='observation',
+        blank=True, null=True
+    )
     time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, null=True, blank=True)
     obs_date = models.DateField(blank=True, null=True)
-    flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
-    water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
-    water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
-    ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
-    diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
-    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mS/m', blank=True)
+    flag = models.CharField(
+        max_length=5, choices=FLAG_CATS, default='dirty', blank=False
+    )
+    water_clarity = models.DecimalField(
+        max_digits=8, decimal_places=1, blank=True, null=True
+    )
+    water_temp = models.DecimalField(
+        max_digits=5, decimal_places=1, blank=True, null=True
+    )
+    ph = models.DecimalField(
+        max_digits=4, decimal_places=1, blank=True, null=True
+    )
+    diss_oxygen = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True
+    )
+    diss_oxygen_unit = models.CharField(
+        max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True
+    )
+    elec_cond = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True
+    )
+    elec_cond_unit = models.CharField(
+        max_length=8, choices=UNIT_EC_CATS, default='mS/m', blank=True
+    )
 
     class Meta:
         db_table = 'observations'
@@ -116,6 +172,36 @@ class Observations(models.Model, DirtyFieldsMixin):
     def __str__(self):
         return str(self.obs_date) + ': ' + self.site.site_name
 
+
+def observation_pest_image_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.observation.site_id}',
+        f'{instance.observation_id}',
+        filename
+    )
+
+
+class Pest(models.Model):
+    """Pest model."""
+    name = models.CharField(max_length=256, unique=True)
+
+    def __str__(self):
+        """Return the name."""
+        return self.name
+
+
+class ObservationPestImage(models.Model):
+    """Image for site and observation for a site."""
+    observation = models.ForeignKey(Observations, on_delete=models.CASCADE)
+    pest = models.ForeignKey(Pest, on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to=observation_pest_image_path, storage=settings.MINION_STORAGE
+    )
+
+    def delete_image(self):
+        """delete image."""
+        delete_file_field(self.image)
 
 
 # Helper function to send email content based on observation
@@ -147,6 +233,7 @@ The miniSASS team.
 
     observation.user.email_user(email_subject, email_content, email_sender)
 
+
 # Signal receiver to send email to the user when an observation is verified
 @receiver(pre_save, sender=Observations)
 def send_email_to_user(sender, instance, **kwargs):
@@ -157,3 +244,15 @@ def send_email_to_user(sender, instance, **kwargs):
     # state == clean)
     if dirty_fields.get('flag') == 'dirty' and instance.flag == 'clean':
         send_confirmation_email(instance)
+
+
+@receiver(post_delete, sender=Sites)
+def site_delete(sender, instance, **kwargs):
+    if os.path.exists(instance.folder):
+        shutil.rmtree(instance.folder)
+
+
+@receiver(post_delete, sender=SiteImage)
+@receiver(post_delete, sender=ObservationPestImage)
+def send_email_to_user(sender, instance, **kwargs):
+    instance.delete_image()

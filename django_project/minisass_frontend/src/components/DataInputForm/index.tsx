@@ -256,17 +256,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {props?.sitedetails}
           </Text>
-          <Button
-            className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-            shape="round"
-            color="blue_gray_500"
-            size="xs"
-            variant="fill"
-            onClick={openUploadModal}
-          >
-            {props?.uploadSiteImages}
-          </Button>
-          <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
 
           <Formik
             initialValues={formValues}
@@ -277,6 +266,29 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {({ values, handleChange, setFieldValue }) => (
               <Form>
+                <div>
+                  <Button
+                    type="button"
+                    className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                    shape="round"
+                    color="blue_gray_500"
+                    size="xs"
+                    variant="fill"
+                    onClick={openUploadModal}
+                  >
+                    {props?.uploadSiteImages}
+                  </Button>
+                  <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
+                </div>
+                <br/>
+
+                <UploadModal
+                  isOpen={isUploadModalOpen}
+                  onClose={closeUploadModal}
+                  onSubmit={(files) =>{
+                    setFieldValue('images', files)
+                    closeUploadModal()
+                  }} />
 
                 {/* rivername input */}
                 <div className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
