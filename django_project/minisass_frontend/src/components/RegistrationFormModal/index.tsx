@@ -107,12 +107,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       if (response.data) {
         const newFormData = {
           username: response.data.username,
-          name: response.data.first_name,
-          surname: response.data.last_name,
+          name: response.data.name,
+          surname: response.data.surname,
           email: response.data.email,
           organizationType: response.data.organisation_type,
           organizationName: response.data.organisation_name,
-          country: response.data.countru,
+          country: response.data.country,
           password: '',
           confirmPassword: '',
           oldPassword: '',
@@ -293,8 +293,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       }
     } else {
       if (formData.updatePassword) {
-        if (!formData.updatePassword) {
-          errors.updatePassword = 'Old Password is required';
+        if (!formData.oldPassword) {
+          errors.oldPassword = 'Old Password is required';
         }
         if (!formData.password) {
           errors.password = 'Password is required';
@@ -313,20 +313,10 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {
+    // if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {
+    if (validateForm()) {
       onSubmit(formData);
-      setFormErrors({});
-      setFormData({
-        username: '',
-        name: '',
-        surname: '',
-        email: '',
-        organizationType: '',
-        organizationName: '',
-        country: 'ZA',
-        password: '',
-        confirmPassword: '',
-      });
+      // setFormErrors({});
     }
   };
 
@@ -384,7 +374,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       }}
     >
       {Registrationloading ? (
-        // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
         <LinearProgress color="success" />
       ) : registrationInProgress ? (
         <div>
@@ -399,11 +388,14 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 color: '#539987',
               }}
             >
-              Registration in progress
+              {isRegister ? 'Registration in progress' : 'Success'}
             </h3>
             <br />
           <Typography>
-            To finish registration, please click on the activation link sent to the email you registered with.
+            {isRegister ?
+            'To finish registration, please click on the activation link sent to the email you registered with.' :
+              'Profile has been successfully updated.'
+            }
           </Typography>
 
           <Button
@@ -453,7 +445,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 color: '#539987',
               }}
             >
-              Registration Form
+              {isRegister ? 'Registration Form' : 'Update Account'}
             </h3>
             <Img
                 className="h-6 w-6 common-pointer"
@@ -656,29 +648,30 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                           placeholder="Old Password"
                           style={{ borderRadius: '4px', width: '16.5vw', 'marginLeft': '-5vw' }}
                         />
+                      {formErrors.oldPassword && <span style={{ color: 'red' }}>{formErrors.oldPassword}</span>}
                       </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                     <div style={{ flex: 1, flexDirection: 'column' }}>
-<label>Password:</label><br />
-<input
-type="password"
-name="password"
-value={formData.password}
-onChange={handleInputChange}
-placeholder="Password"
-style={{ borderRadius: '4px', width: '16.5vw' }}
-/>
-<br />
-<div style={{width: '16.5vw'}}>
-{remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-{remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-{remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-{remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-{remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
-{formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
-</div>
-</div>
+                    <label>Password:</label><br />
+                      <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                        style={{ borderRadius: '4px', width: '16.5vw' }}
+                      />
+                    <br />
+                    <div style={{width: '16.5vw'}}>
+                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                    {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                    </div>
+                    </div>
                     <div style={{ flex: 1, flexDirection: 'column' }}>
                       <label>Confirm Password:</label><br />
                       <input

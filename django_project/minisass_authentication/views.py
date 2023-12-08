@@ -195,12 +195,12 @@ def register(request):
                 except Lookup.DoesNotExist:
                     # If no match is found, use the default description "Organisation Type".
                     organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
-                
+
                 user_profile = UserProfile.objects.create(
                     user=user,
                     organisation_type=organisation_type,
-                    organisation_name=request.data.get('organizationName', ''),
-                    country=request.data.get('country', None)
+                    organisation_name=org_name,
+                    country=user_country
                 )
                 user_profile.save()
                 user.is_active = False
@@ -251,6 +251,40 @@ class UpdateUser(APIView):
 
     def get(self, request):
         return Response(UserUpdateSerializer(request.user).data)
+
+    def post(self, request):
+        serializer = UserUpdateSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            try:
+                user, user_profile = serializer.save(request.user)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=400)
+            update_password = request.data.get('updatePassword', False)
+            old_password = request.data.get('oldPassword', '')
+            new_password = request.data.get('password', '')
+            confirm_password = request.data.get('confirmPassword', '')
+            if update_password:
+                is_password_correct = serializer.validate_old_password_correct(
+                    old_password,
+                    user.password
+                )
+                if not is_password_correct:
+                    return JsonResponse({'error': 'Wrong old password'}, status=400)
+
+                is_password_match_criteria, missing_criteria = serializer.validate_password_criteria(new_password)
+                if not is_password_match_criteria:
+                    return JsonResponse({'error': f'Missing password criteria: {missing_criteria}'}, status=400)
+
+                is_confirm_password_match = new_password == confirm_password
+                if not is_confirm_password_match:
+                    return JsonResponse({'error': 'Confirmed password does not match password'}, status=400)
+
+                try:
+                    user.set_password(new_password)
+                    user.save()
+                except Exception as e:
+                    return JsonResponse({'error': str(e)}, status=400)
+            return JsonResponse(UserUpdateSerializer(user).data)
 
 
 @api_view(['POST'])

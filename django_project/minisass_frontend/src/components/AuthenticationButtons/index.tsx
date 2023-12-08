@@ -9,6 +9,9 @@ import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
 
+
+const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update/'
+
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
@@ -50,6 +53,8 @@ function AuthenticationButtons() {
   const closeProfileModal = () => {
     setProfileModalOpen(false);
     setError(null);
+    setUpdateProfileInProgress(false);
+    setUpdateProfileLoading(false);
   };
 
   const [error, setError] = useState(null);
@@ -111,7 +116,39 @@ function AuthenticationButtons() {
     }
   };
    
- 
+  const handleUpdateProfile = async (data) => {
+    const newData = {
+      ...data,
+      organisation_name: data.organizationName,
+      organisation_type: data.organizationType
+    }
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
+      const response = await axios.post(UPDATE_PROFILE, newData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        setLoading(true)
+        // Simulate 2-second delay for update process
+        setTimeout(() => {
+          setUpdateProfileLoading(false);
+          setUpdateProfileInProgress(true);
+        }, 1200);
+      } else {
+        setError( JSON.stringify(response.data));
+      }
+    } catch (err) {
+      if (err.response?.data) {
+        setError(err.response.data.error);
+      } else {
+        setError(err.message);
+      }
+    }
+  };
+
 
   return (
     <div className="sm:bottom-20 md:bottom-[119px] flex sm:flex-col flex-row md:gap-10 sm:h-[] items-start justify-between md:left-[50px] md:relative sm:right-[] md:right-[] sm:top-[] md:w-[90%] w-full">
@@ -179,7 +216,7 @@ function AuthenticationButtons() {
       <RegistrationFormModal
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
-        onSubmit={handleRegistration}
+        onSubmit={handleUpdateProfile}
         error_response={error}
         Registrationloading={updateProfileLoading}
         registrationInProgress={updateProfileInProgress}
