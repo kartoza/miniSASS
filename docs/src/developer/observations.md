@@ -1,4 +1,4 @@
-# Observations API Documentation
+# Observations and Images API Documentation
 
 The Observations API facilitates users in creating observations for various sites, allowing the specification of existing site IDs or the creation of new sites if they are not available. Additionally, it enables retrieval of recent observations, access to all observations, fetching a single observation, and other CRUD (Create, Retrieve, Update, Delete) operations.
 
@@ -265,10 +265,111 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 
 
 
+# Images use the same API for observations 
+
+
+## 1. **creating an observation with images**
+
+## Example payload
+
+```json
+{
+  "image_0": "(binary)",
+  "pest_0:flatworms": "(binary)",
+  "pest_0:stoneflies": "(binary)",
+  "data": {
+    "score": 13,
+    "datainput": {
+      "riverName": "river_test1",
+      "siteName": "site_1",
+      "siteDescription": "test",
+      "rivercategory": "sandy",
+      "sitelocation": "",
+      "selectKnownSite": "",
+      "selectOnMap": "",
+      "typeInCoordinates": "",
+      "observationdetaOne": "",
+      "date": "2023-12-08",
+      "collectorsname": "Tinashe",
+      "notes": "test",
+      "measurements": "",
+      "waterclaritycm": 22,
+      "watertemperaturOne": 18,
+      "ph": 14,
+      "dissolvedoxygenOne": 13,
+      "electricalconduOne": 16,
+      "dissolvedoxygenOneUnit": "%DO",
+      "electricalconduOneUnit": "µS/cm",
+      "latitude": 0,
+      "longitude": 0,
+      "selectedSite": "",
+      "images": [{}]
+    },
+    "flatworms": true,
+    "stoneflies": true,
+    "other_mayflies": true
+  }
+}
+```
+
+## Additional Information
+
+1. **image_0:** Represents a site image. If uploading multiple site images, it would be `image_0`, `image_1`, etc.
+2. For attaching images to pests/groups (e.g., flatworms, stoneflies, other_mayflies), the variable should be named `"pest_0:name_of_pest"`. The value should be the binary file (image), and the corresponding pest/group must be set to `true`.
+3. Accommodations for file uploading should be made on the frontend. Simply call the API for observation creation, passing the required parameters, and all the data will be saved on that site.
+
+## 2. Retrieving Observations with images
+
+![observation images](./img/fetching_images_for_observation.png)
+
+- The response returned from the API will contain an `images` field that will have the observation images.
+- each image is an object containing 
+```
+the id of the image
+the pest_id
+the pest_name
+the image path
+```
+
+## 3. Deleting an observation Image
+
+- When deleting an image, make a DELETE request, supplying the following:
+  - Observation ID
+  - Pest Image ID to delete
+
+### Example URL https://{current_domain}/monitor/observations/observation-details/1/image/1/
+
+## Endpoint
+
+- `/observations/observation-details/{observation_pk}/image/pest_image_id/`
+
+#### Request Type: DELETE
+
+- **Authentication**: Required
+- **Permission**: creator of observation
+- **Response**: Confirmation of successful deletion
+
+
+## 4. Fetching Site Images
+
+- Consume the same API endpoint for sites and the returned object contains the images on that site:
+
+![site images](./img/site_images.png)
+
+## Additional Information
+
+1. **images** Images is an array type containing the images for that particular site.
+
+
+
+
 ## Response Types
 
 ### HTTP 401 Unauthorized
 The request lacks valid authentication credentials or the authentication has failed.
+
+### HTTP 403 Forbidden
+The request lacks valid permissions to perform the action they intend.
 
 ### HTTP 200 OK
 The request has succeeded. The information returned with the response is dependent on the specific view or action performed.
