@@ -235,5 +235,5 @@ LOGGING = {
 MINIO_ROOT = os.getenv('MINIO_ROOT', '/home/web/minio')
 MINIO_BUCKET = os.getenv('MINIO_BUCKET', 'demo')
 MINION_STORAGE = FileSystemStorage(
-    location=MINIO_ROOT, base_url='/minio'
+    location=MINIO_ROOT, base_url='/minio-media'
 )
