@@ -17,6 +17,7 @@ interface RegistrationFormModalProps {
   error_response: string | null | boolean;
   Registrationloading: boolean;
   registrationInProgress: boolean;
+  isRegister: boolean;
 }
 
 interface RegistrationFormData {
@@ -37,7 +38,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   onSubmit,
   error_response,
   Registrationloading,
-  registrationInProgress
+  registrationInProgress,
+  isRegister
  }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
@@ -451,7 +453,11 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 {formErrors.organizationType && <span style={{ color: 'red' }}>{formErrors.organizationType}</span>}
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+
+            {
+              isRegister ? (
+                <>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
               <div style={{ flex: 1, flexDirection: 'column' }}>
                 <label>Password:</label><br />
                 <input
@@ -486,23 +492,84 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              marginLeft: '-54%',
-              width: '16.5vw'
-            }}>
-              <label>Country:</label>
-              <CountrySelector
-                id={"country-selector"}
-                open={isCountrySelectorOpen}
-                onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
-                onChange={setCountry}
-                selectedValue={COUNTRIES.find((option) => option.value === country)}
-              />
-              {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
-            </div>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    marginLeft: '-54%',
+                    width: '16.5vw'
+                  }}>
+                    <label>Country:</label>
+                    <CountrySelector
+                      id={"country-selector"}
+                      open={isCountrySelectorOpen}
+                      onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
+                      onChange={setCountry}
+                      selectedValue={COUNTRIES.find((option) => option.value === country)}
+                    />
+                    {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                    <div style={{ flex: 1, flexDirection: 'column' }}>
+                      <label>Password:</label><br />
+                      <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        onBlur={handlePasswordBlur}
+                        placeholder="Password"
+                        style={{ borderRadius: '4px', width: '16.5vw' }}
+                      />
+                      <br />
+                      <div style={{width: '16.5vw'}}>
+                        {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                        {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                        {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                        {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                        {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                        {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                      </div>
+                    </div>
+                    <div style={{ flex: 1, flexDirection: 'column' }}>
+                      <label>Confirm Password:</label><br />
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        onBlur={handlePasswordBlur}
+                        placeholder="Confirm Password"
+                        style={{ borderRadius: '4px', width: '16.5vw' }}
+                      />
+                      <br />
+                      {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
+                    </div>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    marginLeft: '-54%',
+                    width: '16.5vw'
+                  }}>
+                    <label>Country:</label>
+                    <CountrySelector
+                      id={"country-selector"}
+                      open={isCountrySelectorOpen}
+                      onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
+                      onChange={setCountry}
+                      selectedValue={COUNTRIES.find((option) => option.value === country)}
+                    />
+                    {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
+                  </div>
+                </>
+              )
+            }
+
             {error_response && (
               <div style={{ color: 'red' }}>{error_response}</div>
             )}

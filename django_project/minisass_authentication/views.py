@@ -1,7 +1,7 @@
 import json
 from minisass_authentication.serializers import UserSerializer
 from minisass_authentication.models import UserProfile, Lookup
-from rest_framework import status
+from rest_framework import status, APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -242,6 +242,16 @@ def register(request):
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UpdateUser(APIView):
+    """
+    Endpoint to update user profile and password
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
 
 
 

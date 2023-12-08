@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 import {useNavigate} from "react-router-dom";
 
 
-export default function UserMenu() {
+export default function UserMenu(props: {setUpdateProfileOpen: void}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { dispatch, state } = useAuth();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function UserMenu() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {}}>Profile</MenuItem>
+        <MenuItem onClick={() => props.setUpdateProfileOpen(true)}>Profile</MenuItem>
         <MenuItem onClick={() => {
           navigate(`/recent-activity`);
         }}>

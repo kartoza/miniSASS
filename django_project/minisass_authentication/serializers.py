@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
+
 class LookupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lookup

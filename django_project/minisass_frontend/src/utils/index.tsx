@@ -15,7 +15,7 @@ export const handleSectionNavigation = (id: string) => {
   });
 };
 
-const currentURL = window.location.href;
+const currentURL = 'http://0.0.0.0:61100';
 const parts = currentURL.split('/');
 const baseUrl = parts[0] + '//' + parts[2];
 const staticPath = baseUrl + '/static/images/';
@@ -41,4 +41,20 @@ export function formatDate(d, reverseDate = false) {
   } else {
     return [year, month, day].join('-');
   }
+}
+
+/**
+ * Capitalize string
+ */
+export function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+/**
+ * Get title from string
+ */
+export function getTitle(key: string) {
+  return  key.split('_')
+    .map((part) => capitalize(part))
+    .join(' ').trim()
 }

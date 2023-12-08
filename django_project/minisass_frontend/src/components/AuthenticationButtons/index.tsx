@@ -12,8 +12,11 @@ import Grid from '@mui/material/Grid'
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
+  const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
+  const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
 
   const { dispatch, state } = useAuth();
 
@@ -44,10 +47,16 @@ function AuthenticationButtons() {
     setError(null);
   };
 
+  const closeProfileModal = () => {
+    setRegisterModalOpen(false);
+    setError(null);
+  };
+
   const [error, setError] = useState(null);
 
   const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
   const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
+  const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/register/'
 
   const handleLogout = () => {
     logout(dispatch)
@@ -116,7 +125,7 @@ function AuthenticationButtons() {
         { state.isAuthenticated ? (
           <Grid container spacing={2} flexDirection={'row-reverse'}>
             <Grid item>
-              <UserMenu />
+              <UserMenu setUpdateProfileOpen={setProfileModalOpen}/>
             </Grid>
             <Grid item
                   className={"w-[230px]"}
@@ -166,6 +175,16 @@ function AuthenticationButtons() {
         error_response={error}
         Registrationloading={Registrationloading}
         registrationInProgress={registrationInProgress}
+        isRegister={true}
+        />
+      <RegistrationFormModal
+        isOpen={isProfileModalOpen}
+        onClose={closeProfileModal}
+        onSubmit={handleRegistration}
+        error_response={error}
+        Registrationloading={updateProfileLoading}
+        registrationInProgress={updateProfileInProgress}
+        isRegister={false}
         />
     </div>
   );
