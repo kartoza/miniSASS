@@ -1,4 +1,4 @@
-from minisass_authentication.serializers import UserSerializer
+from minisass_authentication.serializers import UserSerializer, UserUpdateSerializer
 from django.conf import settings
 from django.contrib.auth import (
     authenticate,
@@ -250,7 +250,7 @@ class UpdateUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response(UserSerializer(request.user).data)
+        return Response(UserUpdateSerializer(request.user).data)
 
 
 @api_view(['POST'])

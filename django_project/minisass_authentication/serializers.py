@@ -14,26 +14,30 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    organization_type = serializers.SerializerMethodField()
-    organization_name = serializers.SerializerMethodField()
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+    organisation_type = serializers.SerializerMethodField()
+    organisation_name = serializers.SerializerMethodField()
     country = serializers.SerializerMethodField()
     old_password = serializers.SerializerMethodField()
-    new_password = serializers.SerializerMethodField()
+    password = serializers.SerializerMethodField()
     confirm_password = serializers.SerializerMethodField()
 
-    def get_organization_type(self, instance):
-        return instance.user_profile.organization_type.description
+    def get_organisation_type(self, instance):
+        return instance.userprofile.organisation_type.description
 
-    def get_organization_name(self, instance):
-        return instance.user_profile.organisation_name
+    def get_organisation_name(self, instance):
+        return instance.userprofile.organisation_name
 
     def get_country(self, instance):
-        return instance.user_profile.country
+        return instance.userprofile.country
 
     def get_old_password(self, instance):
         return ''
 
-    def get_new_password(self, instance):
+    def get_password(self, instance):
         return ''
 
     def get_confirm_password(self, instance):
@@ -42,8 +46,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'email', 'first_name', 'last_name', 'organization_type',
-            'organization_name', 'country', 'old_password', 'new_password', 'confirm_password',
+            'username', 'email', 'first_name', 'last_name', 'organisation_type',
+            'organisation_name', 'country', 'old_password', 'password', 'confirm_password',
         )
         extra_kwargs = {'password': {'write_only': True}}
 

@@ -48,7 +48,7 @@ function AuthenticationButtons() {
   };
 
   const closeProfileModal = () => {
-    setRegisterModalOpen(false);
+    setProfileModalOpen(false);
     setError(null);
   };
 

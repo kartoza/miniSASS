@@ -9,6 +9,8 @@ import { globalVariables } from '../../utils';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from "axios";
+import {useAuth} from "../../AuthContext";
+import Checkbox from '@mui/material/Checkbox';
 
 
 interface RegistrationFormModalProps {
@@ -31,9 +33,11 @@ interface RegistrationFormData {
   country: string;
   password: string;
   confirmPassword: string;
+  oldPassword: string;
+  updatePassword: boolean;
 }
 
-const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/user/update/'
+const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update'
 
 const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
   isOpen, 
@@ -54,19 +58,68 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     country: 'ZA',
     password: '',
     confirmPassword: '',
+    oldPassword: '',
+    updatePassword: false
   });
 
   const [formErrors, setFormErrors] = useState<Partial<RegistrationFormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
+  const { dispatch, state  } = useAuth();
+  console.debug(formErrors)
+  const isButtonDisabled = () => {
+    let errors = [];
+    if (isRegister) {
+      Object.keys(formErrors).forEach(function(key, index) {
+        if (formErrors[key]) {
+          errors.push(key);
+        }
+      });
+    } else {
+      if (formData.updatePassword) {
+        Object.keys(formErrors).forEach(function(key, index) {
+          if (formErrors[key]) {
+            errors.push(key);
+          }
+        });
+      } else {
+        Object.keys(formErrors).forEach(function(key, index) {
+          const excludeKeys = [
+            'password',
+            'confirmPassword',
+            'oldPassword',
+            'updatePassword'
+          ]
+          if (formErrors[key] && !excludeKeys.includes(key)) {
+            errors.push(key);
+          }
+        });
+      }
+    }
+    console.debug(errors)
+    return errors.length > 0
+  }
 
-  // TODO: refactor to use
   const fetchUserDetail = async () => {
     const headers = { 'Authorization': `Bearer ${state.user.access_token}` };
     axios.get(UPDATE_PROFILE, {headers}).then((response) => {
       if (response.data) {
-        console.debug(response.data)
+        const newFormData = {
+          username: response.data.username,
+          name: response.data.first_name,
+          surname: response.data.last_name,
+          email: response.data.email,
+          organizationType: response.data.organisation_type,
+          organizationName: response.data.organisation_name,
+          country: response.data.countru,
+          password: '',
+          confirmPassword: '',
+          oldPassword: '',
+          updatePassword: false
+        }
+        setCountry(response.data.country)
+        setFormData(newFormData)
       }
     }).catch((error) => {
         console.log(error)
@@ -74,7 +127,10 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   }
 
   useEffect(() => {
-  }, []);
+    if (isOpen) {
+      fetchUserDetail()
+    }
+  }, [isOpen]);
 
 
   useEffect(() => {
@@ -91,6 +147,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
         country: 'ZA',
         password: '',
         confirmPassword: '',
+        oldPassword: '',
+        updatePassword: false
       });
       onClose();
     }
@@ -129,12 +187,22 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    const newPassword = { ...formData, [name]: value };
 
-    const remaining = validatePassword(newPassword.password, newPassword.confirmPassword);
-    setRemainingRequirements(remaining);
+    if (name === 'password') {
+      const newPassword = { ...formData, [name]: value };
 
-    setFormErrors({ ...formErrors, [name]: '' });
+      const remaining = validatePassword(newPassword.password, newPassword.confirmPassword);
+      setRemainingRequirements(remaining);
+
+
+      let errors = [];
+      Object.keys(remaining).forEach(function(key, index) {
+        if (remaining[key]) {
+          errors.push(key);
+        }
+      });
+      setFormErrors({ ...formErrors, [name]: errors.join(',') });
+    }
   };
 
   const validateEmail = (email: string) => {
@@ -216,11 +284,25 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     if (!formData.country) {
       errors.country = 'Country is required';
     }
-    if (!formData.password) {
-      errors.password = 'Password is required';
-    }
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Confirm Password is required';
+    if (isRegister) {
+      if (!formData.password) {
+        errors.password = 'Password is required';
+      }
+      if (!formData.confirmPassword) {
+        errors.confirmPassword = 'Confirm Password is required';
+      }
+    } else {
+      if (formData.updatePassword) {
+        if (!formData.updatePassword) {
+          errors.updatePassword = 'Old Password is required';
+        }
+        if (!formData.password) {
+          errors.password = 'Password is required';
+        }
+        if (!formData.confirmPassword) {
+          errors.confirmPassword = 'Confirm Password is required';
+        }
+      }
     }
 
     setFormErrors(errors);
@@ -250,7 +332,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
 
   // Use the effect to set the user's country based on geolocation
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && isRegister) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // Get user's latitude and longitude
@@ -476,64 +558,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
             </div>
 
             {
-              isRegister ? (
-                <>
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-              <div style={{ flex: 1, flexDirection: 'column' }}>
-                <label>Password:</label><br />
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Password"
-                  style={{ borderRadius: '4px', width: '16.5vw' }}
-                />
-                <br />
-                {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
-                {formData.password && (
-                  <div style={{ flex: 1, flexDirection: 'column' }}>
-                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
-                  </div>
-                )}
-              </div>
-              <div style={{ flex: 1, flexDirection: 'column' }}>
-                <label>Confirm Password:</label><br />
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm Password"
-                  style={{ borderRadius: '4px', width: '16.5vw' }}
-                />
-                <br />
-                {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
-              </div>
-            </div>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px',
-                    marginLeft: '-54%',
-                    width: '16.5vw'
-                  }}>
-                    <label>Country:</label>
-                    <CountrySelector
-                      id={"country-selector"}
-                      open={isCountrySelectorOpen}
-                      onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
-                      onChange={setCountry}
-                      selectedValue={COUNTRIES.find((option) => option.value === country)}
-                    />
-                    {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
-                  </div>
-                </>
-              ) : (
+              isRegister &&
                 <>
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                     <div style={{ flex: 1, flexDirection: 'column' }}>
@@ -543,19 +568,20 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        onBlur={handlePasswordBlur}
                         placeholder="Password"
                         style={{ borderRadius: '4px', width: '16.5vw' }}
                       />
                       <br />
-                      <div style={{width: '16.5vw'}}>
-                        {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-                        {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-                        {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-                        {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-                        {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
-                        {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
-                      </div>
+                      {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                      {formData.password && (
+                        <div style={{ flex: 1, flexDirection: 'column' }}>
+                          {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                          {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                          {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                          {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                          {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                        </div>
+                      )}
                     </div>
                     <div style={{ flex: 1, flexDirection: 'column' }}>
                       <label>Confirm Password:</label><br />
@@ -564,7 +590,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        onBlur={handlePasswordBlur}
                         placeholder="Confirm Password"
                         style={{ borderRadius: '4px', width: '16.5vw' }}
                       />
@@ -590,7 +615,85 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                     {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
                   </div>
                 </>
-              )
+            }
+
+            {
+              !isRegister &&
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                    <div style={{ flex: 1, flexDirection: 'column', width: '25vw'}}>
+                      <label>Country:</label>
+                      <CountrySelector
+                        id={"country-selector"}
+                        open={isCountrySelectorOpen}
+                        onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
+                        onChange={setCountry}
+                        selectedValue={COUNTRIES.find((option) => option.value === country)}
+                      />
+                      {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
+                    </div>
+                    <div style={{ flex: 1, flexDirection: 'column' }}>
+                      <label>Change Password:</label><br />
+                        <Checkbox
+                          checked={formData.updatePassword}
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setFormData({ ...formData, updatePassword: event.target.checked });
+                          }}
+                        />
+                    </div>
+                  </div>
+            }
+
+            {
+              formData.updatePassword && <>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                    <div style={{ flex: 1, flexDirection: 'column', width: '25vw' }}>
+                      <label>Old Password:</label><br />
+                        <input
+                          type="password"
+                          name="oldPassword"
+                          value={formData.oldPassword}
+                          onChange={handleInputChange}
+                          placeholder="Old Password"
+                          style={{ borderRadius: '4px', width: '16.5vw', 'marginLeft': '-5vw' }}
+                        />
+                      </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                    <div style={{ flex: 1, flexDirection: 'column' }}>
+<label>Password:</label><br />
+<input
+type="password"
+name="password"
+value={formData.password}
+onChange={handleInputChange}
+placeholder="Password"
+style={{ borderRadius: '4px', width: '16.5vw' }}
+/>
+<br />
+<div style={{width: '16.5vw'}}>
+{remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+{remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+{remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+{remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+{remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+{formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+</div>
+</div>
+                    <div style={{ flex: 1, flexDirection: 'column' }}>
+                      <label>Confirm Password:</label><br />
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        placeholder="Confirm Password"
+                        style={{ borderRadius: '4px', width: '16.5vw' }}
+                      />
+                      <br />
+                      {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
+                    </div>
+                  </div>
+                </>
             }
 
             {error_response && (
@@ -604,7 +707,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               style={{ marginRight: "-80%" }}
               onClick={handleSubmit}
             >
-              Register
+              {isRegister ? 'Register' : 'Update'}
             </Button>
           </form>
         </div>
