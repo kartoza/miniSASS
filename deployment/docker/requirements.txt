@@ -61,3 +61,4 @@ PyJWT==2.8.0
 pytz==2023.3.post1
 sentry-sdk==1.14.0
 geopandas==0.14.1
+numpy==1.26.2
