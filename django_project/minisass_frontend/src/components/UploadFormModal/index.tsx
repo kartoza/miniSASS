@@ -6,10 +6,11 @@ import { FaTrash } from 'react-icons/fa';
 interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: any
+  onSubmit: any,
+  accept?: string
 }
 
-const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, accept= '.jpg, .jpeg, .png' }) => {
   // Get the current URL using window.location.href
   const currentURL = window.location.href;
 
@@ -93,7 +94,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
               style={{
                 cursor: 'pointer',
                 marginRight: '7%'
-                
+
               }}
             >
               X
@@ -101,10 +102,10 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
           </div>
           <div className="flex flex-col gap-[30px] w-[88%] md:w-full" style={{marginLeft: '6%'}}>
             <div className="bg-gray-50 border border-dashed border-indigo-500_4c flex flex-col font-mulish gap-[21px] items-center justify-start p-[34px] sm:px-5 rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full">
-              
-              
+
+
               <div className="flex flex-col items-start justify-start p-[5px] w-auto">
-                
+
                 {uploadedFiles.length > 0 ? (
                   <div className="p-5">
                   {uploadedFiles.map((file, index) => (
@@ -119,23 +120,25 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
                     </div>
                   ))}
                 </div>
-                
+
                 ): (
                   <>
                   <Img
                     className="h-[59px] mt-[111px]"
                     src={`${newURL}img_download.svg`}
                     alt="download"
-                    style={{marginLeft: '30%'}}
+                    style={{cursor: 'pointer'}}
+                    onClick={handleBrowseClick}
                   />
                   <div className="flex flex-col items-start justify-start p-[5px] w-auto">
                     <Text
                       className="text-base text-blue_gray-900 text-center w-auto"
                       size="txtMulishRomanBold16"
                     >
-                  <span className="text-gray-800 font-raleway font-bold">
-                    Drag & drop files or
-                  </span>
+                  {/* TODO : We remove this until we can do drag/drop */}
+                  {/*<span className="text-gray-800 font-raleway font-bold">*/}
+                  {/*  Drag & drop files or*/}
+                  {/*</span>*/}
                   <span className="text-blue_gray-900 font-raleway font-bold">
                     {" "}
                   </span>
@@ -151,6 +154,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
                   type="file"
                   className="hidden"
                   onChange={handleFileUpload}
+                  accept={accept}
                   multiple
                 />
                   </div>
@@ -162,29 +166,30 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
                   className="text-center text-gray-700 text-xs w-auto"
                   size="txtRalewayRomanRegular12"
                 >
-                  Supported formates: JPEG, PNG, GIF, MP4, PDF, PSD, AI, Word,
-                  PPT
+                  Supported formates: <span style={{ textTransform: "uppercase" }}>{accept}</span>
                 </Text>
               </div>
             </div>
             <Button
-              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[100%] opacity-50 hover:opacity-100"
+              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[100%] opacity-50 hover:opacity-100 p-1"
               color="blue_gray_500"
               size="xl"
               variant="fill"
               style={{
-                height: '5vh',
                 fontWeight: 'bold',
               }}
-              onClick={handleBrowseClick} // Trigger the file input when clicked
+              onClick={() => {
+                onSubmit(uploadedFiles)
+              }}
             >
-              UPLOAD FILES
+              Upload chosen files
             </Button>
 
             {/* Hidden input element for file selection */}
             <input
               type="file"
               className="hidden"
+              accept={accept}
               onChange={handleFileUpload}
               multiple
               ref={fileInputRef}

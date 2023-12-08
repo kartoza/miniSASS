@@ -3,6 +3,8 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
+from django.core.files.storage import FileSystemStorage
+
 from minisass.utils import absolute_path
 
 
@@ -21,7 +23,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1
 ADMINS = (
     ('Gavin Fleming', 'gavin@kartoza.com'),
     ('Frank Sokolic', 'frank@gis-solutions.co.za'),
-    ('Ismail Sunni', 'ismail@kartoza.com')
+    ('Tinashe', 'tinashe@kartoza.com')
 )
 
 MANAGERS = ADMINS
@@ -228,3 +230,10 @@ LOGGING = {
         },
     }
 }
+
+# Minio config
+MINIO_ROOT = os.getenv('MINIO_ROOT', '/home/web/minio')
+MINIO_BUCKET = os.getenv('MINIO_BUCKET', 'demo')
+MINION_STORAGE = FileSystemStorage(
+    location=MINIO_ROOT, base_url='/minio-media'
+)
