@@ -56,7 +56,6 @@ function AuthenticationButtons() {
 
   const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
   const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
-  const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/register/'
 
   const handleLogout = () => {
     logout(dispatch)

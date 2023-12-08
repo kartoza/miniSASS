@@ -1,34 +1,34 @@
-import json
 from minisass_authentication.serializers import UserSerializer
-from minisass_authentication.models import UserProfile, Lookup
-from rest_framework import status, APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
+from django.contrib.auth import (
+    authenticate,
+    login,
+    get_user_model,
+    logout
+)
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from rest_framework import status
 from rest_framework.decorators import (
     api_view,
     permission_classes
 )
-from django.contrib.auth import (
-    authenticate,
-    login,
-    get_user_model, 
-    logout
-)
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes,force_str
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage, send_mail
-from django.conf import settings
-from django.http import JsonResponse
-from django.contrib.auth import models
-from django.urls import reverse
-from django.http import HttpResponseRedirect,HttpResponseBadRequest
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from minisass_authentication.models import UserProfile, Lookup
+from minisass_authentication.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -252,7 +252,7 @@ class UpdateUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-
+        return Response(UserSerializer(request.user).data)
 
 
 @api_view(['POST'])

@@ -8,6 +8,7 @@ import { SelectMenuOption } from "../../components/Countries/types";
 import { globalVariables } from '../../utils';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
+import axios from "axios";
 
 
 interface RegistrationFormModalProps {
@@ -31,6 +32,8 @@ interface RegistrationFormData {
   password: string;
   confirmPassword: string;
 }
+
+const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/user/update/'
 
 const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
   isOpen, 
@@ -57,6 +60,22 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
+
+  // TODO: refactor to use
+  const fetchUserDetail = async () => {
+    const headers = { 'Authorization': `Bearer ${state.user.access_token}` };
+    axios.get(UPDATE_PROFILE, {headers}).then((response) => {
+      if (response.data) {
+        console.debug(response.data)
+      }
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
+
+  useEffect(() => {
+  }, []);
+
 
   useEffect(() => {
     if (error_response === false) {
