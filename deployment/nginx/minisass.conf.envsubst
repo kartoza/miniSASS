@@ -57,11 +57,12 @@ server {
 
     # max upload size, adjust to taste
     client_max_body_size 15M;
-    # Django media
-    location /minio  {
-        # your Django project's media files - amend as required
+    # Minio media
+    location /minio-media  {
+        # Minio media
         alias /home/web/minio;
-        expires 21d; # cache for 71 days
+        include  /etc/nginx/mime.types;
+        expires 365d;
     }
     # Django media
     location /media  {

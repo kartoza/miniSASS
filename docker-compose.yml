@@ -161,6 +161,7 @@ services:
       - ./deployment/nginx/sites-enabled:/etc/nginx/conf.d:ro
       - static-data:/home/web/static
       - media-data:/home/web/media
+      - minio_images:/home/web/minio
       - certificates:/certificates/
     restart: on-failure
     depends_on:

@@ -678,6 +678,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="waterclaritycm"
                       placeholder="Water clarity (cm):"
                       type="number"
+                      min="0"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="sm:w-full"
                       shape="round"
@@ -709,6 +710,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="watertemperaturOne"
                       placeholder="Water temperature (°C):"
                       type="number"
+                      min="-100"
+                      max="100"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="sm:w-full"
                       shape="round"
@@ -740,6 +743,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="ph"
                       placeholder="pH:"
                       type="number"
+                      min="0"
+                      max="14"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName=""
                       shape="round"
@@ -772,6 +777,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         <Field
                           name="dissolvedoxygenOne"
                           type="number"
+                          min="0"
+                          max="20"
                           placeholder="0.000000"
                           className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
                           wrapClassName="w-full"
@@ -832,6 +839,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
                         <Field
                           name="electricalconduOne"
+                          min="0"
+                          max="100"
                           placeholder="0.000000"
                           type="number"
                           className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"

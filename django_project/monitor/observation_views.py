@@ -1,23 +1,25 @@
+import json
+from decimal import Decimal
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.gis.geos import Point
+from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import generics, mixins
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+
+from minisass_authentication.models import UserProfile
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
-from minisass_authentication.models import UserProfile
-from monitor.serializers import ObservationsSerializer
-
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.utils.translation import gettext as _
-
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-import json
-from django.contrib.gis.geos import Point
-from decimal import Decimal
+from monitor.serializers import (
+    ObservationsSerializer, ObservationPestImageSerializer
+)
 
 
 @csrf_exempt
@@ -92,7 +94,6 @@ def create_observations(request):
                         site=site, image=image
                     )
 
-
             # Create a new Observations instance and save it
             observation = Observations.objects.create(
                 score=score,
@@ -136,12 +137,13 @@ def create_observations(request):
                         pest_image.image = image
                         pest_image.save()
 
-            return JsonResponse({'status': 'success', 'observation_id': observation.gid})
+            return JsonResponse(
+                {'status': 'success', 'observation_id': observation.gid})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
+    return JsonResponse(
+        {'status': 'error', 'message': 'Invalid request method'})
 
 
 class RecentObservationListView(generics.ListAPIView):
@@ -160,7 +162,8 @@ class RecentObservationListView(generics.ListAPIView):
 
         for observation in serialized_data:
             try:
-                user_profile = UserProfile.objects.get(user=observation['user'])
+                user_profile = UserProfile.objects.get(
+                    user=observation['user'])
             except UserProfile.DoesNotExist:
                 user_profile = None
 
@@ -192,13 +195,44 @@ class ObservationRetrieveView(APIView):
         return Response(serializer.data)
 
 
+class ObservationImageViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet
+):
+    """Return images of observation"""
+    serializer_class = ObservationPestImageSerializer
+
+    def get_queryset(self):
+        """Return queryset."""
+        observation = get_object_or_404(
+            Observations, pk=self.kwargs['observation_pk']
+        )
+        return observation.observationpestimage_set.all()
+
+    def destroy(self, request, *args, **kwargs):
+        # TODO:
+        #  Update who can delete an image
+        observation = get_object_or_404(
+            Observations, pk=self.kwargs['observation_pk']
+        )
+        if not request.user.is_authenticated or (
+                not request.user.is_staff and request.user != observation.user
+        ):
+            raise PermissionDenied()
+        return super().destroy(request, *args, **kwargs)
+
+
 class ObservationListCreateView(generics.ListCreateAPIView):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
     permission_classes = [IsAuthenticated]
 
 
-class ObservationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+class ObservationRetrieveUpdateDeleteView(
+    generics.RetrieveUpdateDestroyAPIView
+):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
     permission_classes = [IsAuthenticated]
