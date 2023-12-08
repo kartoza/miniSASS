@@ -2,6 +2,7 @@ import csv
 from datetime import date
 from io import BytesIO, StringIO as IO
 
+import geopandas
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
 from django.shortcuts import reverse
