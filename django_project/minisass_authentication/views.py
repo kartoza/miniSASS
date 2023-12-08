@@ -95,7 +95,7 @@ def request_password_reset(request):
     domain = Site.objects.get_current().domain
     reset_link = request.build_absolute_uri(
         reverse('verify_password_reset', kwargs={
-        'uid': uid, 'token': token
+        'uidb64': uid, 'token': token
         })
     )
 
