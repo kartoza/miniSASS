@@ -21,7 +21,6 @@ function AuthenticationButtons() {
   useEffect(() => {
     setLoginModalOpen(state.openLoginModal)
   }, [state.openLoginModal]);
-  // console.debug(state.user.isAdmin)
 
   /** Update context based on login modal open/not. ***/
   useEffect(() => {

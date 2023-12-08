@@ -70,7 +70,6 @@ urlpatterns = [
         RecentObservationListView.as_view(), 
         name='recent-observation-list'
     ),
-    
     path(
         'observations/observation-details/<int:pk>/', 
         ObservationRetrieveView.as_view(),
