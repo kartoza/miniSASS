@@ -1,24 +1,26 @@
+import json
+from decimal import Decimal
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.gis.geos import Point
+from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import generics, mixins
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+
+from minisass_authentication.models import UserProfile
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
-from minisass_authentication.models import UserProfile
-from monitor.serializers import ObservationsSerializer
+from monitor.serializers import (
+    ObservationsSerializer, ObservationPestImageSerializer
+)
 
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.utils.translation import gettext as _
-
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-import json
-from django.contrib.gis.geos import Point
-from decimal import Decimal
 
 @csrf_exempt
 @login_required
@@ -72,8 +74,8 @@ def create_observations(request):
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
                 river_cat = datainput.get('rivercategory', '')
-                longitude = datainput.get('longitude',0)
-                latitude = datainput.get('latitude',0)
+                longitude = datainput.get('longitude', 0)
+                latitude = datainput.get('latitude', 0)
 
                 # Save the new site
                 site = Sites.objects.create(
@@ -92,7 +94,6 @@ def create_observations(request):
                         site=site, image=image
                     )
 
-
             # Create a new Observations instance and save it
             observation = Observations.objects.create(
                 score=score,
@@ -101,19 +102,19 @@ def create_observations(request):
                 flatworms=flatworms,
                 leeches=leeches,
                 crabs_shrimps=crabs_shrimps,
-                stoneflies = stoneflies,
-                minnow_mayflies = minnow_mayflies,
-                other_mayflies = other_mayflies,
-                damselflies = damselflies,
-                dragonflies = dragonflies,
-                bugs_beetles = bugs_beetles,
-                caddisflies = caddisflies,
-                true_flies = true_flies,
-                snails = snails,
-                comment = comment,
-                water_clarity = water_clarity,
-                water_temp = water_temp,
-                ph = ph,
+                stoneflies=stoneflies,
+                minnow_mayflies=minnow_mayflies,
+                other_mayflies=other_mayflies,
+                damselflies=damselflies,
+                dragonflies=dragonflies,
+                bugs_beetles=bugs_beetles,
+                caddisflies=caddisflies,
+                true_flies=true_flies,
+                snails=snails,
+                comment=comment,
+                water_clarity=water_clarity,
+                water_temp=water_temp,
+                ph=ph,
                 diss_oxygen=diss_oxygen,
                 diss_oxygen_unit=diss_oxygen_unit,
                 elec_cond=elec_cond,
@@ -136,21 +137,23 @@ def create_observations(request):
                         pest_image.image = image
                         pest_image.save()
 
-            return JsonResponse({'status': 'success', 'observation_id': observation.gid})
+            return JsonResponse(
+                {'status': 'success', 'observation_id': observation.gid})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
-
+    return JsonResponse(
+        {'status': 'error', 'message': 'Invalid request method'})
 
 
 class RecentObservationListView(generics.ListAPIView):
     serializer_class = ObservationsSerializer
 
-    def get_queryset(self):
-        return Observations.objects.all().order_by('-time_stamp')[:20]
+    def get_queryset(self, site_id=None, recent=True):
+        all_obs = Observations.objects.all().order_by('-time_stamp')
+        if site_id:
+            all_obs = all_obs.filter(site_id=site_id)
+        return all_obs[:20] if recent else all_obs
 
     def build_recent_observations(self, queryset):
         serialized_data = self.serializer_class(queryset, many=True).data
@@ -159,7 +162,8 @@ class RecentObservationListView(generics.ListAPIView):
 
         for observation in serialized_data:
             try:
-                user_profile = UserProfile.objects.get(user=observation['user'])
+                user_profile = UserProfile.objects.get(
+                    user=observation['user'])
             except UserProfile.DoesNotExist:
                 user_profile = None
 
@@ -169,13 +173,17 @@ class RecentObservationListView(generics.ListAPIView):
                 'username': user_profile.user.username if user_profile else "",
                 'organisation': user_profile.organisation_name if user_profile else "",
                 'time_stamp': observation['time_stamp'],
+                'obs_date': observation['obs_date'],
                 'score': observation['score'],
             })
 
         return recent_observations
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        site_id = request.GET.get('site_id', None)
+        recent = request.GET.get('recent', 'True')
+        recent = recent in ['True', 'true', '1', 'yes']
+        queryset = self.get_queryset(site_id, recent)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
 
@@ -187,6 +195,34 @@ class ObservationRetrieveView(APIView):
         return Response(serializer.data)
 
 
+class ObservationImageViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet
+):
+    """Return images of observation"""
+    serializer_class = ObservationPestImageSerializer
+
+    def get_queryset(self):
+        """Return queryset."""
+        observation = get_object_or_404(
+            Observations, pk=self.kwargs['observation_pk']
+        )
+        return observation.observationpestimage_set.all()
+
+    def destroy(self, request, *args, **kwargs):
+        # TODO:
+        #  Update who can delete an image
+        observation = get_object_or_404(
+            Observations, pk=self.kwargs['observation_pk']
+        )
+        if not request.user.is_authenticated or (
+                not request.user.is_staff and request.user != observation.user
+        ):
+            raise PermissionDenied()
+        return super().destroy(request, *args, **kwargs)
+
 
 class ObservationListCreateView(generics.ListCreateAPIView):
     queryset = Observations.objects.all()
@@ -194,7 +230,9 @@ class ObservationListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class ObservationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+class ObservationRetrieveUpdateDeleteView(
+    generics.RetrieveUpdateDestroyAPIView
+):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
     permission_classes = [IsAuthenticated]

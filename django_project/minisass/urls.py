@@ -38,5 +38,5 @@ if settings.DEBUG:
     urlpatterns += [
         re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
         re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-        re_path(r'^minio/(?P<path>.*)$', serve, {'document_root': settings.MINIO_ROOT, 'show_indexes': True}),
+        re_path(r'^minio-media/(?P<path>.*)$', serve, {'document_root': settings.MINIO_ROOT, 'show_indexes': True}),
     ]
