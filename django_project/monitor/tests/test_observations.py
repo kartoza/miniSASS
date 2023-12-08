@@ -1,4 +1,5 @@
 import os
+import geopandas
 from datetime import date, datetime
 
 from django.contrib.auth.models import User
