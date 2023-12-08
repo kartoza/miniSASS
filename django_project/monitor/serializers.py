@@ -90,7 +90,7 @@ class ObservationsSerializer(serializers.ModelSerializer):
             return serialized_organisation_type
         else:
             return None
-          
+
     def get_images(self, obj: Observations):
         """Return images of site."""
         return ObservationPestImageSerializer(
