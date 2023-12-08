@@ -9,6 +9,7 @@ def make_verified(modeladmin, request, queryset):
         observation.save()
 make_verified.short_description = "Mark selected observations as verified (clean)"
 
+
 def make_unverified(modeladmin, request, queryset):
     for observation in queryset:
         observation.flag = 'dirty'

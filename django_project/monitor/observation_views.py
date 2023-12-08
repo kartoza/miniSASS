@@ -1,4 +1,3 @@
-
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
@@ -19,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.contrib.gis.geos import Point
 from decimal import Decimal
+
 
 @csrf_exempt
 @login_required
@@ -72,8 +72,8 @@ def create_observations(request):
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
                 river_cat = datainput.get('rivercategory', '')
-                longitude = datainput.get('longitude',0)
-                latitude = datainput.get('latitude',0)
+                longitude = datainput.get('longitude', 0)
+                latitude = datainput.get('latitude', 0)
 
                 # Save the new site
                 site = Sites.objects.create(
@@ -101,19 +101,19 @@ def create_observations(request):
                 flatworms=flatworms,
                 leeches=leeches,
                 crabs_shrimps=crabs_shrimps,
-                stoneflies = stoneflies,
-                minnow_mayflies = minnow_mayflies,
-                other_mayflies = other_mayflies,
-                damselflies = damselflies,
-                dragonflies = dragonflies,
-                bugs_beetles = bugs_beetles,
-                caddisflies = caddisflies,
-                true_flies = true_flies,
-                snails = snails,
-                comment = comment,
-                water_clarity = water_clarity,
-                water_temp = water_temp,
-                ph = ph,
+                stoneflies=stoneflies,
+                minnow_mayflies=minnow_mayflies,
+                other_mayflies=other_mayflies,
+                damselflies=damselflies,
+                dragonflies=dragonflies,
+                bugs_beetles=bugs_beetles,
+                caddisflies=caddisflies,
+                true_flies=true_flies,
+                snails=snails,
+                comment=comment,
+                water_clarity=water_clarity,
+                water_temp=water_temp,
+                ph=ph,
                 diss_oxygen=diss_oxygen,
                 diss_oxygen_unit=diss_oxygen_unit,
                 elec_cond=elec_cond,
@@ -144,13 +144,14 @@ def create_observations(request):
 
 
 
-
-
 class RecentObservationListView(generics.ListAPIView):
     serializer_class = ObservationsSerializer
 
-    def get_queryset(self):
-        return Observations.objects.all().order_by('-time_stamp')[:20]
+    def get_queryset(self, site_id=None, recent=True):
+        all_obs = Observations.objects.all().order_by('-time_stamp')
+        if site_id:
+            all_obs = all_obs.filter(site_id=site_id)
+        return all_obs[:20] if recent else all_obs
 
     def build_recent_observations(self, queryset):
         serialized_data = self.serializer_class(queryset, many=True).data
@@ -169,13 +170,17 @@ class RecentObservationListView(generics.ListAPIView):
                 'username': user_profile.user.username if user_profile else "",
                 'organisation': user_profile.organisation_name if user_profile else "",
                 'time_stamp': observation['time_stamp'],
+                'obs_date': observation['obs_date'],
                 'score': observation['score'],
             })
 
         return recent_observations
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        site_id = request.GET.get('site_id', None)
+        recent = request.GET.get('recent', 'True')
+        recent = recent in ['True', 'true', '1', 'yes']
+        queryset = self.get_queryset(site_id, recent)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
 
@@ -185,7 +190,6 @@ class ObservationRetrieveView(APIView):
         observation = get_object_or_404(Observations, pk=kwargs['pk'])
         serializer = ObservationsSerializer(observation)
         return Response(serializer.data)
-
 
 
 class ObservationListCreateView(generics.ListCreateAPIView):
