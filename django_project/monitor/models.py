@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from dirtyfields import DirtyFieldsMixin
 from django.conf import settings
@@ -68,6 +69,15 @@ class Sites(models.Model):
     def __str__(self):
         return self.site_name
 
+    @property
+    def folder(self):
+        """Return folder of site"""
+        return os.path.join(
+            settings.MINIO_ROOT,
+            settings.MINIO_BUCKET,
+            f'{self.gid}'
+        )
+
 
 def site_image_path(instance, filename):
     return os.path.join(
@@ -107,7 +117,9 @@ class Observations(models.Model, DirtyFieldsMixin):
         (u'na', u'Unknown')
     )
     gid = models.AutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True
+    )
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)
@@ -121,19 +133,38 @@ class Observations(models.Model, DirtyFieldsMixin):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
-    score = models.DecimalField(max_digits=4, decimal_places=2,default=0)
-    site = models.ForeignKey(Sites, on_delete=models.CASCADE, related_name='observation', blank=True, null=True)
+    score = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    site = models.ForeignKey(
+        Sites, on_delete=models.CASCADE, related_name='observation',
+        blank=True, null=True
+    )
     time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, null=True, blank=True)
     obs_date = models.DateField(blank=True, null=True)
-    flag = models.CharField(max_length=5, choices=FLAG_CATS, default='dirty', blank=False)
-    water_clarity = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
-    water_temp = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
-    ph = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
-    diss_oxygen = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    diss_oxygen_unit = models.CharField(max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True)
-    elec_cond = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    elec_cond_unit = models.CharField(max_length=8, choices=UNIT_EC_CATS, default='mS/m', blank=True)
+    flag = models.CharField(
+        max_length=5, choices=FLAG_CATS, default='dirty', blank=False
+    )
+    water_clarity = models.DecimalField(
+        max_digits=8, decimal_places=1, blank=True, null=True
+    )
+    water_temp = models.DecimalField(
+        max_digits=5, decimal_places=1, blank=True, null=True
+    )
+    ph = models.DecimalField(
+        max_digits=4, decimal_places=1, blank=True, null=True
+    )
+    diss_oxygen = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True
+    )
+    diss_oxygen_unit = models.CharField(
+        max_length=8, choices=UNIT_DO_CATS, default='mgl', blank=True
+    )
+    elec_cond = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True
+    )
+    elec_cond_unit = models.CharField(
+        max_length=8, choices=UNIT_EC_CATS, default='mS/m', blank=True
+    )
 
     class Meta:
         db_table = 'observations'
@@ -213,6 +244,12 @@ def send_email_to_user(sender, instance, **kwargs):
     # state == clean)
     if dirty_fields.get('flag') == 'dirty' and instance.flag == 'clean':
         send_confirmation_email(instance)
+
+
+@receiver(post_delete, sender=Sites)
+def site_delete(sender, instance, **kwargs):
+    if os.path.exists(instance.folder):
+        shutil.rmtree(instance.folder)
 
 
 @receiver(post_delete, sender=SiteImage)

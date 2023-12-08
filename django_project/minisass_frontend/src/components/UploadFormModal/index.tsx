@@ -94,7 +94,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               style={{
                 cursor: 'pointer',
                 marginRight: '7%'
-                
+
               }}
             >
               X
@@ -102,10 +102,10 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
           </div>
           <div className="flex flex-col gap-[30px] w-[88%] md:w-full" style={{marginLeft: '6%'}}>
             <div className="bg-gray-50 border border-dashed border-indigo-500_4c flex flex-col font-mulish gap-[21px] items-center justify-start p-[34px] sm:px-5 rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-full">
-              
-              
+
+
               <div className="flex flex-col items-start justify-start p-[5px] w-auto">
-                
+
                 {uploadedFiles.length > 0 ? (
                   <div className="p-5">
                   {uploadedFiles.map((file, index) => (
@@ -120,23 +120,25 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                     </div>
                   ))}
                 </div>
-                
+
                 ): (
                   <>
                   <Img
                     className="h-[59px] mt-[111px]"
                     src={`${newURL}img_download.svg`}
                     alt="download"
-                    style={{marginLeft: '30%'}}
+                    style={{cursor: 'pointer'}}
+                    onClick={handleBrowseClick}
                   />
                   <div className="flex flex-col items-start justify-start p-[5px] w-auto">
                     <Text
                       className="text-base text-blue_gray-900 text-center w-auto"
                       size="txtMulishRomanBold16"
                     >
-                  <span className="text-gray-800 font-raleway font-bold">
-                    Drag & drop files or
-                  </span>
+                  {/* TODO : We remove this until we can do drag/drop */}
+                  {/*<span className="text-gray-800 font-raleway font-bold">*/}
+                  {/*  Drag & drop files or*/}
+                  {/*</span>*/}
                   <span className="text-blue_gray-900 font-raleway font-bold">
                     {" "}
                   </span>
@@ -180,7 +182,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                 onSubmit(uploadedFiles)
               }}
             >
-              SELECT SELECTED FILES
+              Upload chosen files
             </Button>
 
             {/* Hidden input element for file selection */}
