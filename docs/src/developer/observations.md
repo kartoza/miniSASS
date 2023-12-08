@@ -265,12 +265,12 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 
 
 
-# Images use the same API for observations 
+## Images use the same API for observations 
 
 
-## 1. **creating an observation with images**
+### 1. **creating an observation with images**
 
-## Example payload
+### Example payload
 
 ```json
 {
@@ -312,13 +312,13 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 }
 ```
 
-## Additional Information
+### Additional Information
 
 1. **image_0:** Represents a site image. If uploading multiple site images, it would be `image_0`, `image_1`, etc.
 2. For attaching images to pests/groups (e.g., flatworms, stoneflies, other_mayflies), the variable should be named `"pest_0:name_of_pest"`. The value should be the binary file (image), and the corresponding pest/group must be set to `true`.
 3. Accommodations for file uploading should be made on the frontend. Simply call the API for observation creation, passing the required parameters, and all the data will be saved on that site.
 
-## 2. Retrieving Observations with images
+### 2. Retrieving Observations with images
 
 ![observation images](./img/fetching_images_for_observation.png)
 
@@ -331,15 +331,16 @@ the pest_name
 the image path
 ```
 
-## 3. Deleting an observation Image
+### 3. Deleting an observation Image
 
 - When deleting an image, make a DELETE request, supplying the following:
   - Observation ID
   - Pest Image ID to delete
 
-### Example URL https://{current_domain}/monitor/observations/observation-details/1/image/1/
+### Example URL:
+- https://{current_domain}/monitor/observations/observation-details/1/image/1/
 
-## Endpoint
+### Endpoint:
 
 - `/observations/observation-details/{observation_pk}/image/pest_image_id/`
 
@@ -350,15 +351,16 @@ the image path
 - **Response**: Confirmation of successful deletion
 
 
-## 4. Fetching Site Images
+### 4. Fetching Site Images
 
 - Consume the same API endpoint for sites and the returned object contains the images on that site:
 
 ![site images](./img/site_images.png)
 
-## Additional Information
+### Additional Information
 
 1. **images** Images is an array type containing the images for that particular site.
+
 
 
 
