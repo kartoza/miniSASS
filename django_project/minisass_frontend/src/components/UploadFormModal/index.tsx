@@ -182,7 +182,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                 onSubmit(uploadedFiles)
               }}
             >
-              DONE
+              Upload chosen files
             </Button>
 
             {/* Hidden input element for file selection */}

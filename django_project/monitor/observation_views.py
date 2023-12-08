@@ -231,7 +231,8 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
 
 class ObservationRetrieveUpdateDeleteView(
-    generics.RetrieveUpdateDestroyAPIView):
+    generics.RetrieveUpdateDestroyAPIView
+):
     queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
     permission_classes = [IsAuthenticated]
