@@ -1,4 +1,6 @@
-from monitor.models import Observations, Sites
+from monitor.models import (
+    Observations, Sites, SiteImage, ObservationPestImage, Pest
+)
 from minisass_authentication.models import UserProfile
 from monitor.serializers import ObservationsSerializer
 
@@ -24,7 +26,7 @@ def create_observations(request):
     if request.method == 'POST':
         try:
             # Parse JSON data from the request body
-            data = json.loads(request.body.decode('utf-8'))
+            data = json.loads(request.POST.get('data', '{}'))
 
             # Extract datainput from the payload
             datainput = data.get('datainput', {})
@@ -83,6 +85,14 @@ def create_observations(request):
                     user=user
                 )
 
+            # Save images
+            for key, image in request.FILES.items():
+                if 'image_' in key:
+                    SiteImage.objects.create(
+                        site=site, image=image
+                    )
+
+
             # Create a new Observations instance and save it
             observation = Observations.objects.create(
                 score=score,
@@ -111,11 +121,27 @@ def create_observations(request):
                 obs_date=obs_date
             )
 
+            # Save images
+            for key, image in request.FILES.items():
+                if 'pest_' in key:
+                    pest = key.split(':')[1]
+                    if pest:
+                        pest, _ = Pest.objects.get_or_create(
+                            name=pest.replace('_', ' ').capitalize()
+                        )
+                        pest_image, _ = ObservationPestImage.objects.get_or_create(
+                            observation=observation,
+                            pest=pest
+                        )
+                        pest_image.image = image
+                        pest_image.save()
+
             return JsonResponse({'status': 'success', 'observation_id': observation.gid})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 
 class RecentObservationListView(generics.ListAPIView):

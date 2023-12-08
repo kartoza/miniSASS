@@ -158,17 +158,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     }
   };
 
-  const handlePasswordBlur = () => {
-    if (!formData.password) {
-      setFormErrors({ ...formErrors, password: 'Password is required.' });
-    }
-    if (!formData.confirmPassword) {
-      setFormErrors({ ...formErrors, password: 'Confirm Password is required.' });
-    }
+  useEffect(() => {
     if (formData.password !== formData.confirmPassword) {
-      setFormErrors({ ...formErrors, password: 'Passwords do not match.' });
+      setFormErrors({ ...formErrors, confirmPassword: 'Passwords do not match.' });
+    } else {
+      setFormErrors({ ...formErrors, confirmPassword: '' });
     }
-  };
+  }, [formData.password, formData.confirmPassword]);
 
   const validateForm = () => {
     const errors: Partial<RegistrationFormData> = {};
@@ -198,6 +194,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     }
     if (!formData.country) {
       errors.country = 'Country is required';
+    }
+    if (!formData.password) {
+      errors.password = 'Password is required';
+    }
+    if (!formData.confirmPassword) {
+      errors.confirmPassword = 'Confirm Password is required';
     }
 
     setFormErrors(errors);
@@ -306,7 +308,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "60%" }}
+              style={{ marginLeft: "65%" }}
               onClick={onClose}
             >
               Ok
@@ -459,17 +461,20 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  onBlur={handlePasswordBlur}
                   placeholder="Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
                 <br />
-                {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-                {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-                {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-                {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-                {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
                 {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                {formData.password && (
+                  <div style={{ flex: 1, flexDirection: 'column' }}>
+                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                  </div>
+                )}
               </div>
               <div style={{ flex: 1, flexDirection: 'column' }}>
                 <label>Confirm Password:</label><br />
@@ -478,7 +483,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  onBlur={handlePasswordBlur}
                   placeholder="Confirm Password"
                   style={{ borderRadius: '4px', width: '16.5vw' }}
                 />

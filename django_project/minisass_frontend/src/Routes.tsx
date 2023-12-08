@@ -6,10 +6,11 @@ const Home = React.lazy(() => import("./pages/MainPage"));
 const Map = React.lazy(() => import("./pages/Map"));
 const DebugLinks = React.lazy(() => import("./pages/Home"));
 const PasswordResetPage = React.lazy(() => import("./pages/PasswordReset"));
+import LinearProgress from '@mui/material/LinearProgress';
 
 const ProjectRoutes = () => {
   return (
-    <React.Suspense fallback={<>Loading...</>}>
+    <React.Suspense fallback={<><LinearProgress color="success" /></>}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

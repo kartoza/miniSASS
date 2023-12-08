@@ -6,6 +6,7 @@
 *~
 *.pyc
 python
+docker-compose.override.yml
 django_project/minisass/settings.py
 django_project/minisass/wsgi.py
 *.pyc
