@@ -3,10 +3,11 @@ import axios from 'axios';
 
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
+import UserMenu from '../../components/UserMenu';
 import RegistrationFormModal from '../../components/RegistrationFormModal';
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
-
+import Grid from '@mui/material/Grid'
 
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -20,6 +21,7 @@ function AuthenticationButtons() {
   useEffect(() => {
     setLoginModalOpen(state.openLoginModal)
   }, [state.openLoginModal]);
+  // console.debug(state.user.isAdmin)
 
   /** Update context based on login modal open/not. ***/
   useEffect(() => {
@@ -113,16 +115,25 @@ function AuthenticationButtons() {
       />
       <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px]">
         { state.isAuthenticated ? (
-          <Button
-            onClick={handleLogout}
-            className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
-            shape="square"
-            color="blue_900"
-            size="xs"
-            variant="fill"
-          >
-            Logout
-          </Button>
+          <Grid container spacing={2} flexDirection={'row-reverse'}>
+            <Grid item>
+              <UserMenu />
+            </Grid>
+            <Grid item
+                  className={"w-[230px]"}
+            >
+              <Button
+              onClick={handleLogout}
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              shape="square"
+              color="blue_900"
+              size="xs"
+              variant="fill"
+            >
+              Logout
+            </Button>
+            </Grid>
+          </Grid>
         ) : (
           <>
             <Button

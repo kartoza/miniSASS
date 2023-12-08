@@ -46,6 +46,7 @@ def check_authentication_status(request):
         'is_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else None,
         'email': request.user.email if request.user.is_authenticated else None,
+        'is_admin': request.user.is_staff if request.user.is_authenticated else None
     }
     return JsonResponse(user_data, status=200)
 
@@ -261,7 +262,8 @@ def user_login(request):
                 'email': user.email,
                 'access_token': str(access_token),
                 'refresh_token': str(RefreshToken.for_user(user)),
-                'is_authenticated': True
+                'is_authenticated': True,
+                'is_admin': request.user.is_staff if request.user.is_authenticated else None
             }
 
             return Response(user_data, status=status.HTTP_200_OK)

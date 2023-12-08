@@ -19,6 +19,7 @@ const ProjectRoutes = () => {
           <Route path="/map" element={<Map />} />
           <Route path="/links" element={<DebugLinks />} />
           <Route path="/password-reset" element={<PasswordResetPage />} />
+          <Route path="/recent-activity" element={<PasswordResetPage />} />
         </Routes>
       </Router>
     </React.Suspense>
