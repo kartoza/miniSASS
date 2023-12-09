@@ -847,13 +847,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           size="xs"
                           variant="outline"
                           style={{
-                            width: '215px',
-                            maxWidth: '215px',
+                            width: '219px',
+                            maxWidth: '219px',
                             height: '40px',
                             border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px',
                             padding: '8px 12px',
-                            marginRight: '-44px'
+                            marginRight: '-43px'
                           }}
                           value={values.dissolvedoxygenOne}
                           onChange={handleChange}
@@ -866,13 +866,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             size="xs"
                             variant="outline"
                             style={{
-                              width: '120px',
-                              maxWidth: '120px',
+                              width: '85px',
+                              maxWidth: '85px',
                               height: '40px',
                               border: '1px solid rgba(0, 0, 0, 0.23)',
                               borderRadius: '4px',
                               padding: '8px 12px',
-                              marginLeft: '17%'
+                              marginRight: '-20px',
+                              marginLeft: '50px'
                             }}
                           value={values.dissolvedoxygenOneUnit}
                           onChange={handleChange}
@@ -910,13 +911,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           size="xs"
                           variant="outline"
                           style={{
-                            width: '215px',
-                            maxWidth: '215px',
+                            width: '211px',
+                            maxWidth: '211px',
                             height: '40px',
                             border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px',
                             padding: '8px 12px',
-                            marginRight: '-44px'
+                            marginRight: '-35px'
                           }}
                           value={values.electricalconduOne}
                           onChange={handleChange}
@@ -929,13 +930,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             size="xs"
                             variant="outline"
                             style={{
-                              width: '120px',
-                              maxWidth: '120px',
+                              width: '85px',
+                              maxWidth: '85px',
                               height: '40px',
                               border: '1px solid rgba(0, 0, 0, 0.23)',
                               borderRadius: '4px',
                               padding: '8px 12px',
-                              marginLeft: '17%'
+                              marginRight: '-11px',
+                              marginLeft: '43px'
                             }}
                           value={values.electricalconduOneUnit}
                           onChange={handleChange}
