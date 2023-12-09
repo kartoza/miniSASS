@@ -144,7 +144,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
   const [sites, setSitesList] = useState([]);
   const [isInputDisabled,setIsInputDisabled] = useState(false);
-  const [type, setType] = useState<string>('')
+  const [type, setType] = useState<string>('');
+  const [siteUserValues, setSiteUserValues] = useState({
+    rivercategory: 'rocky',
+    riverName: '',
+    siteName: '',
+    siteDescription: ''
+  })
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
@@ -363,6 +369,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     value={values.riverName}
                     onChange={(e) => {
                       handleChange(e);
+                      setSiteUserValues((prevValues) => ({
+                        ...prevValues,
+                        riverName: e.target.value
+                      }));
                     }}
                     disabled={isInputDisabled ? true : false}
                   />
@@ -396,7 +406,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginBottom: '4.5%'
                     }}
                     value={values.siteName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      setSiteUserValues((prevValues) => ({
+                        ...prevValues,
+                        siteName: e.target.value
+                      }));
+                    }}
                     disabled={isInputDisabled ? true : false}
                   />
                 </div>
@@ -424,7 +440,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         }}
                         placeholder="e.g. downstream of industry."
                         value={values.siteDescription}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setSiteUserValues((prevValues) => ({
+                            ...prevValues,
+                            siteDescription: e.target.value
+                          }));
+                        }}
                         disabled={isInputDisabled ? true : false}
                       />
                 </div>
@@ -578,10 +600,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               const selectedValue = selectedOption.value;
                               if (selectedValue === 'none') {
                                 setIsInputDisabled(false);
-                                setFieldValue('riverName', '');
-                                setFieldValue('siteName', '');
-                                setFieldValue('rivercategory', 'Rocky');
-                                setFieldValue('siteDescription', '');
+                                setFieldValue('riverName', siteUserValues.riverName);
+                                setFieldValue('siteName', siteUserValues.siteName);
+                                setFieldValue('rivercategory', siteUserValues.rivercategory);
+                                setFieldValue('siteDescription', siteUserValues.siteDescription);
                               } else {
                                 setIsInputDisabled(true);
                                 const selectedSite = sites.find((site) => site.value === selectedValue);
