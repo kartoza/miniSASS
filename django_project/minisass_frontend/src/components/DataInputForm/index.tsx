@@ -143,6 +143,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
   const [sites, setSitesList] = useState([]);
+  const [isInputDisabled,setIsInputDisabled] = useState(false);
+  const [type, setType] = useState<string>('')
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
@@ -362,6 +364,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     onChange={(e) => {
                       handleChange(e);
                     }}
+                    disabled={isInputDisabled ? true : false}
                   />
                 </div>
 
@@ -394,6 +397,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     }}
                     value={values.siteName}
                     onChange={handleChange}
+                    disabled={isInputDisabled ? true : false}
                   />
                 </div>
 
@@ -421,6 +425,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         placeholder="e.g. downstream of industry."
                         value={values.siteDescription}
                         onChange={handleChange}
+                        disabled={isInputDisabled ? true : false}
                       />
                 </div>
 
@@ -481,7 +486,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           padding: '8px 12px',
                           marginBottom: '2%'
                         }}
-
+                        disabled={isInputDisabled ? true : false}
                       >
                       {inputOptionsList.map((option) => (
                         <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
