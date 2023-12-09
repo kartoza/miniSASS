@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import UserMenu from '../../components/UserMenu';
-import RegistrationFormModal from '../../components/RegistrationFormModal';
+import UserFormModal from '../../components/RegistrationFormModal';
+import EnforcePasswordChange from '../../components/EnforcePasswordChange';
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
@@ -14,6 +15,7 @@ const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/updat
 
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
@@ -66,6 +68,11 @@ function AuthenticationButtons() {
     logout(dispatch)
   };
 
+  const handleEnforcePassword = () => {
+    setIsEnforcePasswordOpen(false)
+    setProfileModalOpen(true);
+  }
+
   const handleLogin = async (loginData: any) => {
     try {
       const response = await axios.post(`${LOGIN_API}`, loginData, {
@@ -79,6 +86,9 @@ function AuthenticationButtons() {
         dispatch({ type: 'LOGIN', payload: userData });
         localStorage.setItem('authState', JSON.stringify({ userData }));
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
+        if (!userData.isPasswordEnforced) {
+          setIsEnforcePasswordOpen(true)
+        }
         setError(null);
         setLoginModalOpen(false)
       } else {
@@ -204,7 +214,7 @@ function AuthenticationButtons() {
         )}
       </div>
       <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} onSubmit={handleLogin}  error_response={error}/>
-      <RegistrationFormModal 
+      <UserFormModal
         isOpen={isRegisterModalOpen} 
         onClose={closeRegisterModal} 
         onSubmit={handleRegistration} 
@@ -213,7 +223,7 @@ function AuthenticationButtons() {
         registrationInProgress={registrationInProgress}
         isRegister={true}
         />
-      <RegistrationFormModal
+      <UserFormModal
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
         onSubmit={handleUpdateProfile}
@@ -221,7 +231,12 @@ function AuthenticationButtons() {
         Registrationloading={updateProfileLoading}
         registrationInProgress={updateProfileInProgress}
         isRegister={false}
+        updatePassword={true}
         />
+      <EnforcePasswordChange
+        isOpen={isEnforcePasswordOpen}
+        onClose={handleEnforcePassword}
+      />
     </div>
   );
 }

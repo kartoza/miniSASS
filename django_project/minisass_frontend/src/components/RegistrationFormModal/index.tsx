@@ -21,6 +21,7 @@ interface RegistrationFormModalProps {
   Registrationloading: boolean;
   registrationInProgress: boolean;
   isRegister: boolean;
+  updatePassword?: boolean
 }
 
 interface RegistrationFormData {
@@ -39,14 +40,15 @@ interface RegistrationFormData {
 
 const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update'
 
-const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
+const UserFormModal: React.FC<RegistrationFormModalProps> = ({
   isOpen, 
   onClose, 
   onSubmit,
   error_response,
   Registrationloading,
   registrationInProgress,
-  isRegister
+  isRegister,
+  updatePassword
  }) => {
   const [formData, setFormData] = useState<RegistrationFormData>({
     username: '',
@@ -112,13 +114,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
           email: response.data.email,
           organizationType: response.data.organisation_type,
           organizationName: response.data.organisation_name,
-          country: response.data.country,
+          country: response.data.country ? response.data.country : 'ZA',
           password: '',
           confirmPassword: '',
           oldPassword: '',
-          updatePassword: false
+          updatePassword: updatePassword ? updatePassword : false
         }
-        setCountry(response.data.country)
+        setCountry(response.data.country ? response.data.country : 'ZA')
         setFormData(newFormData)
       }
     }).catch((error) => {
@@ -148,7 +150,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
         password: '',
         confirmPassword: '',
         oldPassword: '',
-        updatePassword: false
+        updatePassword: updatePassword
       });
       onClose();
     }
@@ -711,4 +713,4 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   );
 };
 
-export default RegistrationFormModal;
+export default UserFormModal;

@@ -7,7 +7,7 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
 import { Link } from 'react-scroll';
-import RegistrationFormModal from "../../components/RegistrationFormModal";
+import UserFormModal from "../../components/RegistrationFormModal";
 import { globalVariables } from "../../utils";
 import axios from "axios"
 
@@ -408,7 +408,7 @@ const HowtoPage: React.FC = () => {
                 alt="rectangleSixteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
-               <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={null} error_response={null}/>
+               <UserFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={null} error_response={null}/>
                 <Text
                   className="leading-[136.40%] max-w-[480px] md:max-w-full text-2xl md:text-[22px] text-blue-900 sm:text-xl"
                   size="txtRalewayBold24"
