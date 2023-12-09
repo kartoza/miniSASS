@@ -9,6 +9,7 @@ import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
 import { globalVariables, formatDate } from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
+import Select from 'react-select';
 
 
 type DataInputFormProps = Omit<
@@ -202,6 +203,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           const sitesList = response.data.map(site => ({
             label: site.site_name,
             value: site.gid.toString(),
+            rivercategory: site.river_cat,
+            siteName: site.site_name,
+            siteDescription: site.description,
+            riverName: site.river_name,
           }));
           setSitesList(sitesList);
       }
@@ -220,6 +225,42 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const formatDate = (date) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
+  };
+
+  // this will trigger select on map TODO
+  const handleSelectKnownSiteFromMapChange = (evt) => {
+    const newValue = evt.target.value;
+    
+    // Toggle between selected and unselected states
+    setType((prevType) => (prevType === newValue ? null : newValue));
+    
+    if (type === newValue) {
+      console.log('Radio button unselected');
+    } else {
+      console.log('Radio button selected');
+    }
+  };
+
+  
+  const customStyles = {
+    control: (styles, { isFocused }) => ({
+      ...styles,
+      borderRadius: '4px',
+      width: '300px',
+      borderColor: isFocused ? '#539987' : 'rgba(0, 0, 0, 0.23)',
+      marginLeft: '210px'
+      
+    }),
+    option: (styles, { isFocused }) => ({
+      ...styles,
+      backgroundColor: isFocused ? '#539987' : 'transparent',
+      color: isFocused ? 'white' : 'black',
+    }),
+    menu: (styles) => ({
+      ...styles,
+      width: '16.5vw',
+      marginLeft: '210px'
+    }),
   };
 
   return (
@@ -500,44 +541,58 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
                 {/* Additional field for select known site */}
                 {selectSiteMode === 'SELECT_KNOWN_SITE' && (
-                  <div>
-                    {/* known site */}
-                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-                      <Text
-                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
+                  <>
+                    <RadioGroup
+                        value={type}
+                        onClick={handleSelectKnownSiteFromMapChange}
+                        row
                       >
-                        {`Sites:`}
-                      </Text>
-                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
-                        <Field as="select" name="selectedSite" className="!text-black-900_99 font-raleway text-base text-left"
-                            placeholderClassName="!text-black-900_99"
+                        <FormControlLabel value="MapSelection" control={<Radio />} label="Select On Map" />
+                      </RadioGroup>
+
+                    <div>
+                      {/* known site */}
+                      <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                        <Text
+                          className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          {`Sites:`}
+                        </Text>
+                        <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                          <Select
+                            name="selectedSite"
+                            options={sites}
+                            className="!text-black-900_99 font-raleway text-base text-left"
                             placeholder=""
-                            shape="round"
-                            color="black_900_3a"
-                            size="xs"
-                            variant="outline"
-                            style={{
-                              width: '300px',
-                              maxWidth: '300px',
-                              height: '40px',
-                              border: '1px solid rgba(0, 0, 0, 0.23)',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              marginLeft: '40%'
+                            isSearchable
+                            styles={customStyles}
+                            value={sites.find((option) => option.value === values.selectedSite)}
+                            onChange={(selectedOption) => {
+                              handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
+                              const selectedValue = selectedOption.value;
+                              if (selectedValue === 'none') {
+                                setIsInputDisabled(false);
+                                setFieldValue('riverName', '');
+                                setFieldValue('siteName', '');
+                                setFieldValue('rivercategory', 'Rocky');
+                                setFieldValue('siteDescription', '');
+                              } else {
+                                setIsInputDisabled(true);
+                                const selectedSite = sites.find((site) => site.value === selectedValue);
+                                if (selectedSite) {
+                                  setFieldValue('riverName', selectedSite.riverName);
+                                  setFieldValue('siteName', selectedSite.siteName);
+                                  setFieldValue('rivercategory', selectedSite.riverCategory);
+                                  setFieldValue('siteDescription', selectedSite.siteDescription);
+                                }
+                              }
                             }}
-                          value={values.selectedSite}
-                          onChange={handleChange}
-                          >
-                          {sites.map((option) => (
-                            <option key={option.value} value={option.value} selected={option.value === values.selectedSite}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Field>
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 )}
 
                 {/* Additional fields for longitude and latitude */}
