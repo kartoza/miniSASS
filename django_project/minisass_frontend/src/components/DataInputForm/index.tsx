@@ -395,14 +395,25 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               value={sites.find((option) => option.value === values.selectedSite)}
                               onChange={(selectedOption) => {
                                 handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
+                              
                                 const selectedValue = selectedOption.value;
-                                const selectedSite = sites.find((site) => site.value === selectedValue);
-                                if (selectedSite) {
-                                  setIsCreateSite('useexistingsite')
-                                  setFieldValue('riverName', selectedSite.riverName);
-                                  setFieldValue('siteName', selectedSite.siteName);
-                                  setFieldValue('rivercategory', selectedSite.riverCategory);
-                                  setFieldValue('siteDescription', selectedSite.siteDescription);
+                              
+                                if (selectedValue === 'none') {
+                                  // Clear variables when "None" is selected
+                                  setFieldValue('riverName', '');
+                                  setFieldValue('siteName', '');
+                                  setFieldValue('rivercategory', '');
+                                  setFieldValue('siteDescription', '');
+                                  setIsCreateSite('useexistingsite');
+                                } else {
+                                  const selectedSite = sites.find((site) => site.value === selectedValue);
+                                  if (selectedSite) {
+                                    setIsCreateSite('useexistingsite');
+                                    setFieldValue('riverName', selectedSite.riverName);
+                                    setFieldValue('siteName', selectedSite.siteName);
+                                    setFieldValue('rivercategory', selectedSite.riverCategory);
+                                    setFieldValue('siteDescription', selectedSite.siteDescription);
+                                  }
                                 }
                               }}
                             />
