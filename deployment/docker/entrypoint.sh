@@ -10,7 +10,11 @@ echo "-----------------------------------------------------"
 
 # Run initialization
 
-if [[ ! -d /home/web/django_project/minisass_frontend/node_modules || "${DEV_SETUP}" =~ [Tt][Rr][Uu][Ee] ]]; then
+if [ -z "${DEV_SETUP}" ]; then
+	DEV_SETUP=FALSE
+fi
+
+if [[ "${DEV_SETUP}" =~ [Tt][Rr][Uu][Ee] ]]; then
   pushd /home/web/django_project/minisass_frontend || exit
   npm install --legacy-peer-deps && npm run build
 fi
