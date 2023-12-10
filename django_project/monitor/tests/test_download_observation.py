@@ -9,46 +9,47 @@ from django.shortcuts import reverse
 from rest_framework.test import APITestCase
 
 from monitor.models import Observations, Sites
+from monitor.tests.test_observations import BaseObservationsModelTest
 
 
-class TestDownloadObservations(APITestCase):
+class TestDownloadObservations(BaseObservationsModelTest):
     """
     Test download observations.
     """
 
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username='testuser', password='testpassword'
-        )
-        self.client.force_authenticate(user=self.user)
-
-        self.site = Sites.objects.create(
-            site_name='Test Site',
-            river_name='Test River',
-            the_geom=Point(0, 0),
-            user=self.user
-        )
-
-        self.observation = Observations.objects.create(
-            user=self.user,
-            flatworms=True,
-            worms=True,
-            leeches=False,
-            crabs_shrimps=False,
-            site=self.site,
-            comment='test_comment',
-            score=4.5,
-            obs_date=date(2023, 12, 7),
-            flag='clean',
-            water_clarity=7.5,
-            water_temp=25.0,
-            ph=7.0,
-            diss_oxygen=8.5,
-            diss_oxygen_unit='mgl',
-            elec_cond=15.0,
-            elec_cond_unit='S/m'
-        )
-        self.url = reverse('download-observations', args=[self.site.gid])
+    # def setUp(self):
+    #     self.user = User.objects.create_user(
+    #         username='testuser', password='testpassword'
+    #     )
+    #     self.client.force_authenticate(user=self.user)
+    #
+    #     self.site = Sites.objects.create(
+    #         site_name='Test Site',
+    #         river_name='Test River',
+    #         the_geom=Point(0, 0),
+    #         user=self.user
+    #     )
+    #
+    #     self.observation = Observations.objects.create(
+    #         user=self.user,
+    #         flatworms=True,
+    #         worms=True,
+    #         leeches=False,
+    #         crabs_shrimps=False,
+    #         site=self.site,
+    #         comment='test_comment',
+    #         score=4.5,
+    #         obs_date=date(2023, 12, 7),
+    #         flag='clean',
+    #         water_clarity=7.5,
+    #         water_temp=25.0,
+    #         ph=7.0,
+    #         diss_oxygen=8.5,
+    #         diss_oxygen_unit='mgl',
+    #         elec_cond=15.0,
+    #         elec_cond_unit='S/m'
+    #     )
+    #     self.url = reverse('download-observations', args=[self.site.gid])
 
     def test_download_csv(self):
         """

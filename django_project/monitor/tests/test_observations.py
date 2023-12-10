@@ -16,7 +16,10 @@ from monitor.models import (
 )
 
 
-class ObservationsModelTest(TestCase):
+class BaseObservationsModelTest(TestCase):
+    """
+    Base Test for Observation Test.
+    """
     def image_field(self, name):
         """Return image field with name."""
         image_path = os.path.join(
@@ -118,6 +121,8 @@ class ObservationsModelTest(TestCase):
             image=self.image_field('leeches_1.jpg')
         )
 
+
+class ObservationsModelTest(BaseObservationsModelTest):
     def test_observation_str_representation(self):
         observation = Observations.objects.get(flatworms=True)
         self.assertEqual(
