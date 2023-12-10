@@ -1,8 +1,11 @@
+import os
 import csv
 import json
+import shutil
 from io import BytesIO as IO
 
 import requests
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -19,9 +22,11 @@ from django.utils import timezone
 from django.utils.encoding import smart_str
 from geopandas import GeoDataFrame
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
-from monitor.models import Schools, Sites, Observations
+from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage
+from monitor.utils import safe_copy, zip_directory
 
 
 def get_email_content(observation, new_site=False):
@@ -175,6 +180,8 @@ def get_observations(request, site_id):
 
 
 class DownloadObservations(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, site_id):
         start_date = request.GET.get('start_date', timezone.now().strftime('%Y-%m-%d'))
         end_date = request.GET.get('end_date', timezone.now().strftime('%Y-%m-%d'))
@@ -260,14 +267,20 @@ class DownloadObservations(APIView):
             obs_list.append(row)
 
         file_type = request.GET.get('type', 'csv')
+        include_image = request.GET.get('include_image', 'yes')
+        include_image = include_image.lower() in ['true', 'yes', '1']
+
+        dir_path = os.path.join(settings.MEDIA_ROOT, 'observation_reports', f'{request.user.username}_exports')
+        os.makedirs(dir_path)
+        file_name = f"observations.{file_type}"
+        file_path = os.path.join(dir_path, file_name)\
+
         if file_type == 'csv':
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="observations.csv"'
-            writer = csv.writer(response)
-            response.write(u'\ufeff'.encode('utf8'))
-            writer.writerow(headers)
-            for obs in obs_list:
-                writer.writerow(obs)
+            with open(file_path, 'w') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(headers)
+                for obs in obs_list:
+                    writer.writerow(obs)
         else:
             sites = json.loads(
                 serialize(
@@ -277,9 +290,9 @@ class DownloadObservations(APIView):
                 )
             )
             sites = {feature['id']: feature for feature in sites['features']}
-            observations = json.loads(serialize("geojson", observations, geometry_field="geom"))
+            observations_dict = json.loads(serialize("geojson", observations, geometry_field="geom"))
             users = {}
-            for obs in observations['features']:
+            for obs in observations_dict['features']:
                 site = sites[obs['properties']['site']]
                 if obs['properties']['user'] in users:
                     username = users[obs['properties']['user']]
@@ -293,15 +306,52 @@ class DownloadObservations(APIView):
                 obs['properties'] = prop
                 del obs['properties']['time_stamp']
 
-            gpkg_file = IO()
-            dataframe = GeoDataFrame.from_features(observations)
-            dataframe.to_file(gpkg_file, layer='observations', driver="GPKG")
-            gpkg_file.seek(0)
+            dataframe = GeoDataFrame.from_features(observations_dict)
+            file_path = os.path.join(dir_path, file_name)
+            dataframe.to_file(file_path, layer='observations', driver="GPKG")
 
-            response = HttpResponse(gpkg_file.read(),  content_type='application/x-sqlite3')
-            response['Content-Disposition'] = 'attachment; filename=observations.gpkg'
+        if include_image:
+            images_path = os.path.join(dir_path, 'images')
+            if observations.first():
+                site_image_path = os.path.join(images_path, 'site')
+                os.makedirs(site_image_path)
+                for img in SiteImage.objects.filter(site=observations.first().site):
+                    safe_copy(img.image.path, site_image_path)
 
-        return response
+            if observations.exists():
+                all_obs_image_path = os.path.join(images_path, 'observations')
+                os.makedirs(all_obs_image_path)
+                for obs in observations:
+                    obs_images = ObservationPestImage.objects.filter(observation=obs)
+                    obs_image_path = os.path.join(all_obs_image_path, obs.obs_date.strftime('%Y-%m-%d'))
+                    os.mkdir(obs_image_path)
+                    for img in obs_images:
+                        safe_copy(
+                            img.image.path,
+                            obs_image_path,
+                            img.pest.name
+                        )
+            mem_zip = IO()
+            zip_directory(dir_path, mem_zip)
+
+            response = HttpResponse(mem_zip.getvalue(), content_type='application/zip')
+            response['Content-Disposition'] = f'attachment; filename={file_name}'
+
+            shutil.rmtree(dir_path)
+
+            return response
+        else:
+            f = open(file_path, 'rb')
+            dest_file = IO()
+            dest_file.write(f.read())
+            f.close()
+            dest_file.seek(0)
+            content_type = 'text/csv' if file_type == 'csv' else 'application/x-sqlite3'
+            response = HttpResponse(dest_file.read(),  content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename={file_name}'
+            shutil.rmtree(dir_path)
+
+            return response
 
 
 def download_observations(request, site_id):
