@@ -148,7 +148,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [sites, setSitesList] = useState([]);
   const [enableSiteFields,setEnableSiteFields] = useState(true);
   const [isCreateSite, setIsCreateSite] = useState('createsite');
-  const [type, setType] = useState<string>('')
+  const [type, setType] = useState<string>('');
+  const [siteUserValues, setSiteUserValues] = useState({
+    rivercategory: 'rocky',
+    riverName: '',
+    siteName: '',
+    siteDescription: ''
+  })
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
