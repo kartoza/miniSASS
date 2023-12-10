@@ -34,6 +34,15 @@ const HIGHLIGHT_CIRCLE_ID = HIGHLIGHT_ID + '-circle'
 const HIGHLIGHT_LINE_ID = HIGHLIGHT_ID + '-line'
 const HIGHLIGHT_POLYGON_ID = HIGHLIGHT_ID + '-polygon'
 
+const initialMapConfig = {
+  container: 'map',
+  style: [],
+  center: [24.679864950000024, -28.671882886975247],
+  zoom: 5.3695883239884745,
+  attributionControl: false,
+  maxZoom: 17,
+};
+
 /**
  * Map component using maplibre
  * @param props
