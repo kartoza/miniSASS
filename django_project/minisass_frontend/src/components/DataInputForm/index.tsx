@@ -10,6 +10,7 @@ import axios from "axios";
 import { globalVariables, formatDate } from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
 import Select from 'react-select';
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 
 type DataInputFormProps = Omit<
@@ -43,6 +44,7 @@ type DataInputFormProps = Omit<
   | "handleMapClick"
   | "selectingOnMap"
   | "selectedCoordinates"
+  | "resetMap"
 > &
   Partial<{
     datainputform: string;
@@ -74,6 +76,7 @@ type DataInputFormProps = Omit<
     handleMapClick: (longitude: number, latitude: number) => void;
     selectedCoordinates:{longitude: number, latitude: number};
     selectingOnMap: boolean;
+    resetMap: () => void;
   }>;
 
 const inputOptionsList = [
@@ -98,7 +101,8 @@ const inputElectricConductivityUnitsList = [
 const SiteSelectionModes = {
     SELECT_KNOWN_SITE: 'Select known site',
     SELECT_ON_MAP: 'Select on map',
-    TYPE_IN_COORDINATES: 'Type in coordinates'
+    TYPE_IN_COORDINATES: 'Type in coordinates',
+    NONE: 'None'
 } as const;
 
 type SiteSelectionMode = keyof typeof SiteSelectionModes;
@@ -111,7 +115,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     props.setSidebarOpen(false);
   };
 
-  // TODO still need to save data to db
 
   // State to store form values
   const [formValues, setFormValues] = useState({
@@ -143,14 +146,9 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
   const [sites, setSitesList] = useState([]);
-  const [isInputDisabled,setIsInputDisabled] = useState(false);
-  const [type, setType] = useState<string>('');
-  const [siteUserValues, setSiteUserValues] = useState({
-    rivercategory: 'rocky',
-    riverName: '',
-    siteName: '',
-    siteDescription: ''
-  })
+  const [enableSiteFields,setEnableSiteFields] = useState(true);
+  const [isCreateSite, setIsCreateSite] = useState('createsite');
+  const [type, setType] = useState<string>('')
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
@@ -208,14 +206,24 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
       if (response.status === 200) {
-          const sitesList = response.data.map(site => ({
-            label: site.site_name,
-            value: site.gid.toString(),
-            rivercategory: site.river_cat,
-            siteName: site.site_name,
-            siteDescription: site.description,
-            riverName: site.river_name,
-          }));
+          const sitesList = [
+            {
+              label: 'None',
+              value: 'none',
+              rivercategory: '',
+              siteName: '',
+              siteDescription: '',
+              riverName: '',
+            },
+            ...response.data.map((site) => ({
+              label: site.site_name,
+              value: site.gid.toString(),
+              rivercategory: site.river_cat,
+              siteName: site.site_name,
+              siteDescription: site.description,
+              riverName: site.river_name,
+            })),
+          ];
           setSitesList(sitesList);
       }
     } catch (error) {
@@ -234,21 +242,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   };
-
-  // this will trigger select on map TODO
-  const handleSelectKnownSiteFromMapChange = (evt) => {
-    const newValue = evt.target.value;
-    
-    // Toggle between selected and unselected states
-    setType((prevType) => (prevType === newValue ? null : newValue));
-    
-    if (type === newValue) {
-      console.log('Radio button unselected');
-    } else {
-      console.log('Radio button selected');
-    }
-  };
-
   
   const customStyles = {
     control: (styles, { isFocused }) => ({
@@ -315,20 +308,103 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {({ values, handleChange, setFieldValue }) => (
               <Form>
-                <div>
-                  <Button
-                    type="button"
-                    className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                    shape="round"
-                    color="blue_gray_500"
-                    size="xs"
-                    variant="fill"
-                    onClick={openUploadModal}
-                  >
-                    {props?.uploadSiteImages}
-                  </Button>
-                  <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
-                </div>
+                {/* site controls */}
+                <RadioGroup
+                  value={isCreateSite}
+                  onClick={(evt) => {
+                    const newValue = evt.target.value;
+                    setType((prevType) => (prevType === newValue ? null : newValue));
+                    if(newValue === 'createsite'){
+                      setEnableSiteFields(true)
+                      setIsCreateSite('createsite')
+                    }
+                    else {
+                      setIsCreateSite('useexistingsite')
+                      setEnableSiteFields(false)
+                      getSites()
+                      setSelectSiteMode('NONE')
+                      if(selectSiteMode === 'SELECT_ON_MAP')
+                        props.toggleMapSelection()
+                    }
+                    props.resetMap()
+                    setFieldValue('selectedSite', 'none');
+                    setFieldValue('riverName', '');
+                    setFieldValue('siteName', '');
+                    setFieldValue('riverCategory', '');
+                    setFieldValue('siteDescription', '');
+                  }}
+                  row
+                >
+                  <FormControlLabel value="createsite" control={<Radio />} label="Create New Site" />
+                  <FormControlLabel value="useexistingsite" control={<Radio />} label="Use Existing Site" />
+                </RadioGroup>
+                
+                {enableSiteFields ? (
+                  <div>
+                    <Button
+                      type="button"
+                      className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                      shape="round"
+                      color="blue_gray_500"
+                      size="xs"
+                      variant="fill"
+                      onClick={openUploadModal}
+                    >
+                      {props?.uploadSiteImages}
+                    </Button>
+                    <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
+                  </div>
+                  ) : (
+                    <>
+                      <Button
+                          type="button"
+                          className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
+                          shape="round"
+                          color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
+                          size="xs"
+                          variant="fill"
+                          onClick={handleSelectKnownSite}
+                          style={{marginBottom: '5%' ,marginTop: '2%', opacity: 0.5}}
+                          disabled
+                        >
+                          {`select site on map`}
+                        </Button>
+                        <br />
+                        <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                          <Text
+                            className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                            size="txtRalewayRomanRegular18"
+                          >
+                            {`Sites:`}
+                          </Text>
+                          
+                          <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                            <Select
+                              name="selectedSite"
+                              options={sites}
+                              className="!text-black-900_99 font-raleway text-base text-left"
+                              placeholder=""
+                              isSearchable
+                              styles={customStyles}
+                              value={sites.find((option) => option.value === values.selectedSite)}
+                              onChange={(selectedOption) => {
+                                handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
+                                const selectedValue = selectedOption.value;
+                                const selectedSite = sites.find((site) => site.value === selectedValue);
+                                if (selectedSite) {
+                                  setIsCreateSite('useexistingsite')
+                                  setFieldValue('riverName', selectedSite.riverName);
+                                  setFieldValue('siteName', selectedSite.siteName);
+                                  setFieldValue('rivercategory', selectedSite.riverCategory);
+                                  setFieldValue('siteDescription', selectedSite.siteDescription);
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </>
+                  )}
+                 
                 <br/>
 
                 <UploadModal
@@ -374,7 +450,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         riverName: e.target.value
                       }));
                     }}
-                    disabled={isInputDisabled ? true : false}
+                    disabled={!enableSiteFields ? true : false}
                   />
                 </div>
 
@@ -413,7 +489,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         siteName: e.target.value
                       }));
                     }}
-                    disabled={isInputDisabled ? true : false}
+                    disabled={!enableSiteFields ? true : false} 
                   />
                 </div>
 
@@ -447,7 +523,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             siteDescription: e.target.value
                           }));
                         }}
-                        disabled={isInputDisabled ? true : false}
+                        disabled={!enableSiteFields ? true : false} 
                       />
                 </div>
 
@@ -508,7 +584,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           padding: '8px 12px',
                           marginBottom: '2%'
                         }}
-                        disabled={isInputDisabled ? true : false}
+                        disabled={!enableSiteFields ? true : false} 
                       >
                       {inputOptionsList.map((option) => (
                         <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
@@ -532,23 +608,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   <div className="flex sm:flex-col flex-row gap-3 items-start justify-start w-auto sm:w-full">
                     <Button
                       type="button"
-                      className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
-                      shape="round"
-                      color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
-                      size="xs"
-                      variant="fill"
-                      onClick={handleSelectKnownSite}
-                    >
-                      {props?.selectKnownSite}
-                    </Button>
-                    <Button
-                      type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
                       shape="round"
                       color={selectSiteMode === 'SELECT_ON_MAP' ? 'blue_900': 'blue_gray_500'}
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnMapClick}
+                      disabled={!enableSiteFields ? true : false} 
+                      style={{ opacity: enableSiteFields  ? 1 : 0.5 }}
                     >
                       {props?.selectOnMap}
                     </Button>
@@ -560,70 +627,17 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnTypeCoordinateClick}
+                      disabled={!enableSiteFields ? true : false}
+                      style={{ opacity: enableSiteFields  ? 1 : 0.5 }}
                     >
                       {props?.typeInCoordinates}
                     </Button>
                   </div>
                 </div>
 
-                {/* Additional field for select known site */}
-                {selectSiteMode === 'SELECT_KNOWN_SITE' && (
-                  <>
-                    <RadioGroup
-                        value={type}
-                        onClick={handleSelectKnownSiteFromMapChange}
-                        row
-                      >
-                        <FormControlLabel value="MapSelection" control={<Radio />} label="Select On Map" />
-                      </RadioGroup>
-
-                    <div>
-                      {/* known site */}
-                      <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-                        <Text
-                          className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                          size="txtRalewayRomanRegular18"
-                        >
-                          {`Sites:`}
-                        </Text>
-                        <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
-                          <Select
-                            name="selectedSite"
-                            options={sites}
-                            className="!text-black-900_99 font-raleway text-base text-left"
-                            placeholder=""
-                            isSearchable
-                            styles={customStyles}
-                            value={sites.find((option) => option.value === values.selectedSite)}
-                            onChange={(selectedOption) => {
-                              handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
-                              const selectedValue = selectedOption.value;
-                              if (selectedValue === 'none') {
-                                setIsInputDisabled(false);
-                                setFieldValue('riverName', siteUserValues.riverName);
-                                setFieldValue('siteName', siteUserValues.siteName);
-                                setFieldValue('rivercategory', siteUserValues.rivercategory);
-                                setFieldValue('siteDescription', siteUserValues.siteDescription);
-                              } else {
-                                setIsInputDisabled(true);
-                                const selectedSite = sites.find((site) => site.value === selectedValue);
-                                if (selectedSite) {
-                                  setFieldValue('riverName', selectedSite.riverName);
-                                  setFieldValue('siteName', selectedSite.siteName);
-                                  setFieldValue('rivercategory', selectedSite.riverCategory);
-                                  setFieldValue('siteDescription', selectedSite.siteDescription);
-                                }
-                              }
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
 
                 {/* Additional fields for longitude and latitude */}
-                { selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP' ?
+                { (selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP') && enableSiteFields  ?
                   <CoordinatesInputForm
                     values={values}
                     setFieldValue={setFieldValue}
