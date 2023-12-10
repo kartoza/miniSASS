@@ -356,7 +356,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             essential: true,
           });
         }
-        props.resetCoordinates()
+        // props.resetCoordinates()
       }
     }, [props.resetMap]);
 
