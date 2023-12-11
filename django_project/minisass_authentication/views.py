@@ -98,7 +98,7 @@ def request_password_reset(request):
     domain = Site.objects.get_current().domain
     reset_link = request.build_absolute_uri(
         reverse('verify_password_reset', kwargs={
-        'uid': uid, 'token': token
+        'uidb64': uid, 'token': token
         })
     )
 
@@ -176,6 +176,11 @@ def activate_account(request, uidb64, token):
 @api_view(['POST'])
 def register(request):
     if request.method == 'POST':
+        # Check if a user with the given email already exists
+        existing_user = User.objects.filter(email=request.data.get('email')).first()
+        if existing_user:
+            return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()

@@ -5,7 +5,6 @@ volumes:
   certificates:
   static-data:
   media-data:
-  minio_data:
   minio_images:
 services:
   db:
@@ -36,7 +35,7 @@ services:
     entrypoint: /bin/bash
     command: -c 'minio server /data --console-address ":9001"'
     volumes:
-      - minio_data:/data
+      - minio_images:/data
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -82,13 +81,12 @@ services:
     build:
       context: .
       dockerfile: ./deployment/docker/Dockerfile
-      target: prod
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media
       - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
-      - minio_images:/web
+      - minio_images:/home/web/minio
     environment:
       - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
@@ -96,47 +94,16 @@ services:
       - DATABASE_HOST=${DATABASE_HOST:-db}
       - DATABASE_PORT=${DATABASE_PORT:-5432}
       - SENTRY_KEY=${SENTRY_KEY:-}
+      - MINIO_ROOT=/home/web/minio
+      - MINIO_BUCKET=${BUCKET:-demo}
       - ALLOWED_HOSTS='*'
-#      - DEBUG=True
+      - DEV_SETUP=${DEV_SETUP}
     depends_on:
       db:
         condition: service_healthy
     restart: always
     ports:
       - "8080"
-    logging:
-      driver: json-file
-      options:
-        max-size: 200m
-        max-file: '10'
-
-  dev:
-    build:
-      context: .
-      dockerfile: ./deployment/docker/Dockerfile
-      target: dev
-    volumes:
-      - static-data:/home/web/static
-      - media-data:/home/web/media
-      - ./django_project:/home/web/django_project
-      # Images on the platform will be stored here
-      - minio_images:/web
-    environment:
-      - DJANGO_DB=${POSTGRES_DB:-minisass_data}
-      - POSTGRES_USER=${POSTGRES_USER:-docker}
-      - POSTGRES_PASS=${POSTGRES_PASS:-docker}
-      - DATABASE_HOST=${DATABASE_HOST:-db}
-      - DATABASE_PORT=${DATABASE_PORT:-5432}
-      - SENTRY_KEY=${SENTRY_KEY:-}
-      - ALLOWED_HOSTS='*'
-      - DEBUG=True
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
-    entrypoint: []
-    ports:
-      - "61100:8080"
     logging:
       driver: json-file
       options:
@@ -195,6 +162,7 @@ services:
       - ./deployment/nginx/sites-enabled:/etc/nginx/conf.d:ro
       - static-data:/home/web/static
       - media-data:/home/web/media
+      - minio_images:/home/web/minio
       - certificates:/certificates/
     restart: on-failure
     depends_on:

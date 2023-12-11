@@ -5,6 +5,9 @@ import UploadModal from "../../components/UploadFormModal";
 import ManageImagesModal from "../../components/ManageImagesModal";
 import { globalVariables } from "../../utils";
 import Modal from 'react-modal';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+
 
 
 interface ScoreFormProps {
@@ -42,6 +45,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [averageScore, setAverageScore] = useState(0);
   const [openImagePestId, setOpenImagePestId] = useState(0);
   const [pestImages, setPestImages] = useState({});
+  const [isSavingData, setIsSavingData] = useState(false);
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -90,10 +94,11 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
 
   // Function to log the state of checkboxes
   const handleSave = async () => {
+    setIsSavingData(true)
     try {
       // Create an object with the data to be saved
       const observationsData = {
-        score:totalScore,
+        score:averageScore,
         datainput: additionalData,
       };
       PESTS.map((pest,idx) => {
@@ -123,9 +128,11 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
       );
 
       if(response.status == 200){
+        setIsSavingData(false)
         setIsSuccessModalOpen(true);
       }
     } catch (error) {
+      setIsSavingData(false)
       setErrorMessage(error.message);
       setIsErrorModalOpen(true);
     }
@@ -185,6 +192,10 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
           overflowX: 'auto'
         }}
       >
+        {isSavingData ? (
+          <LinearProgress color="success" />
+        ) :
+        (
 
         <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
           <div
@@ -353,6 +364,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
           </div>
 
         </div>
+      )}
         {/* Success Modal */}
         <Modal
           isOpen={isSuccessModalOpen}
@@ -375,25 +387,34 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         >
           {isSuccessModalOpen && (
             <div>
-               <Img
-                    className="h-6 w-6 common-pointer"
-                    src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
-                    alt="close"
-                    onClick={closeSuccessModal}
-                    style={{ marginLeft: '340px'}}
-                  />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginLeft: '80px',
-                }}
-              >
-                <Text size="txtRalewayBold18" className="text-green-500">
-                Your data was successfully captured.
-              </Text>
-              </div>
+              <h3
+                  style={{
+                    fontFamily: 'Raleway',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    alignItems: 'flex-start',
+                    fontSize: '24px',
+                    lineHeight: '136.4%',
+                    color: '#539987',
+                  }}
+                >
+                  Observation Saved.
+                </h3>
+                <br />
+              <Typography>
+                The record was saved successfully.
+              </Typography>
+
+              <Button
+                  className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+                  color="blue_gray_500"
+                  size="xs"
+                  variant="fill"
+                  style={{ marginLeft: "55%" }}
+                  onClick={closeSuccessModal}
+                >
+                  Ok
+                </Button>
             </div>
           )}
         </Modal>
@@ -420,28 +441,39 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         >
           {isErrorModalOpen && (
             <div>
-               <Img
-                  className="h-6 w-6 common-pointer"
-                  src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
-                  alt="close"
+              <h3
+                  style={{
+                    fontFamily: 'Raleway',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    alignItems: 'flex-start',
+                    fontSize: '24px',
+                    lineHeight: '136.4%',
+                    color: '#d00501',
+                  }}
+                >
+                  Error.
+              </h3>
+                
+              <br />
+            <Text size="txtRalewayBold18" className="text-red-500">
+              {errorMessage}
+            </Text>
+            <Button
+                  className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                  shape="round"
+                  color="red_500"
+                  size="xs"
+                  variant="fill"
+                  style={{ marginLeft: "70%" }}
                   onClick={closeErrorModal}
-                  style={{ marginLeft: '340px'}}
-                />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginLeft: '80px',
-                }}
-              >
-                <Text size="txtRalewayBold18" className="text-red-500">
-                    {errorMessage}
-                  </Text>
+                >
+                  Close
+                </Button>
               </div>
-            </div>
           )}
         </Modal>
+        
         <ManageImagesModal
           title={manageImagesModalData.groups}
           isOpen={isManageImagesModalOpen}

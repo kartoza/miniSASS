@@ -91,11 +91,9 @@ export default function CoordinatesInputForm(
           disabled={disabled}
           setLatitude={(value) => {
             setFieldValue('latitude', value);
-            handleMapClick(Number(value), Number(values.longitude))
           }}
           setLongitude={(value) => {
             setFieldValue('longitude', value);
-            handleMapClick(Number(values.latitude), Number(value))
           }}
         />
         :
