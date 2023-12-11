@@ -1,5 +1,4 @@
 import os
-import geopandas
 from datetime import date, datetime
 
 from django.contrib.auth.models import User
@@ -16,7 +15,10 @@ from monitor.models import (
 )
 
 
-class ObservationsModelTest(TestCase):
+class BaseObservationsModelTest(TestCase):
+    """
+    Base Test for Observation Test.
+    """
     def image_field(self, name):
         """Return image field with name."""
         image_path = os.path.join(
@@ -47,11 +49,11 @@ class ObservationsModelTest(TestCase):
         )
 
         # Site images
-        SiteImage.objects.create(
+        self.site_image_1 = SiteImage.objects.create(
             site=self.site,
             image=self.image_field('site_1.jpg')
         )
-        SiteImage.objects.create(
+        self.site_image_1 = SiteImage.objects.create(
             site=self.site,
             image=self.image_field('site_2.jpg')
         )
@@ -65,7 +67,7 @@ class ObservationsModelTest(TestCase):
             site=self.site,
             comment='test_comment',
             score=4.5,
-            obs_date=date.today(),
+            obs_date=date(2023, 12, 3),
             flag='clean',
             water_clarity=7.5,
             water_temp=25.0,
@@ -85,7 +87,7 @@ class ObservationsModelTest(TestCase):
             site=self.site,
             comment='test_comment',
             score=2,
-            obs_date=date.today(),
+            obs_date=date(2023, 12, 7),
             flag='clean',
             water_clarity=3,
             water_temp=2,
@@ -118,6 +120,8 @@ class ObservationsModelTest(TestCase):
             image=self.image_field('leeches_1.jpg')
         )
 
+
+class ObservationsModelTest(BaseObservationsModelTest):
     def test_observation_str_representation(self):
         observation = Observations.objects.get(flatworms=True)
         self.assertEqual(

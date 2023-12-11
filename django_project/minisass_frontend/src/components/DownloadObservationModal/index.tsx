@@ -11,10 +11,11 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import "./index.css";
+import {useAuth} from "../../AuthContext";
 
 export interface DownloadObservationFormData {
     type: string,
-    includeImage: boolean,
+    includeImage: 'string',
     startDate: string,
     endDate: string,
 }
@@ -32,19 +33,25 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
                                                                            siteId, dateRange}) => {
   const initialState: DownloadObservationFormData = {
     type: 'csv',
-    includeImage: false,
+    includeImage: 'yes',
     startDate: dayjs(dateRange[1]),
     endDate: dayjs(dateRange[1])
   };
   const typeOptions = [
     { value: 'csv', label: 'CSV' },
-    { value: 'geopackage', label: 'GeoPackage' }
+    { value: 'gpkg', label: 'GeoPackage' }
   ];
+  const includeImageOptions = [
+    { value: 'yes', label: 'Yes' },
+    { value: 'no', label: 'No' }
+  ];
+
 
   const [formData, setFormData] = useState<DownloadObservationFormData>(initialState);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
   const [showHeading, setShowHeading] = useState<boolean>(true);
+  const { dispatch, state  } = useAuth();
 
   useEffect(() => {
     setFormData({ ...formData, startDate: dayjs(dateRange[1]), endDate: dayjs(dateRange[1]) });
@@ -59,7 +66,8 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
     try {
       const startDate = formData.startDate.format('YYYY-MM-DD');
       const endDate = formData.endDate.format('YYYY-MM-DD');
-      const url = `${DOWNLOAD_OBSERVATIONS_URL}/${siteId}?type=${formData.type}&start_date=${startDate}&end_date=${endDate}`;
+      const url = `${DOWNLOAD_OBSERVATIONS_URL}/${siteId}?type=${formData.type}&start_date=${startDate}&end_date=${endDate}&include_image=${formData.includeImage}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.get(url, { responseType: 'blob' });
 
       if (response.status === 200) {
@@ -68,7 +76,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
         // create "a" HTML element with href to file & click
         const link = document.createElement('a');
         link.href = href;
-        const fileName = formData.type === 'csv' ? 'observations.csv' : 'observations.gpkg'
+        const fileName = formData.includeImage === 'yes' ? 'observations.zip' : formData.type === 'csv' ? 'observations.csv' : 'observations.gpkg'
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
@@ -117,7 +125,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
           width: '605px',
-          height: '350px',
+          height: '400px',
           borderRadius: '0px 25px 25px 25px',
           border: 'none',
           background: 'white',
@@ -135,7 +143,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
             gap: '18px',
             position: 'relative',
             width: '605px',
-            height: '350px',
+            height: '400px',
             background: 'white',
             borderRadius: '0px 25px 25px 25px',
           }}
@@ -221,6 +229,37 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
             }),
           }}
         />
+        {showHeading && (
+          <label>
+            Include Image:
+          </label>
+        )}
+        <Select
+          name="type"
+          placeholder="Include Image..."
+          value={includeImageOptions.find(option => option.value === formData.includeImage)}
+          onChange={(selectedOption) => {
+            setFormData({ ...formData, includeImage: selectedOption.value });
+          }}
+          options={includeImageOptions}
+          styles={{
+            control: (styles, { isFocused }) => ({
+              ...styles,
+              borderRadius: '4px',
+              width: '245px',
+              borderColor: isFocused ? '#539987' : 'rgba(0, 0, 0, 0.23)',
+            }),
+            option: (styles, { isFocused }) => ({
+              ...styles,
+              backgroundColor: isFocused ? '#539987' : 'white',
+              color: isFocused ? 'white' : 'black'
+            }),
+            menu: (styles) => ({
+              ...styles,
+              width: '245px',
+            }),
+          }}
+        />
         <label>
           Date Range (Inclusive):
         </label>
@@ -264,7 +303,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
                 variant="fill"
                 onClick={handleSubmit}
               >
-                Submit
+                Download
               </Button>
             </div>
         </div>
