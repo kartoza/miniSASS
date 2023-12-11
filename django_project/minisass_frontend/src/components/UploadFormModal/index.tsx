@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Modal from 'react-modal';
 import { Button, Img, Text } from "../../components";
 import { FaTrash } from 'react-icons/fa';
+import Grid from '@mui/material/Grid';
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -106,7 +107,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
 
               <div className="flex flex-col items-start justify-start p-[5px] w-auto">
 
-                {uploadedFiles.length > 0 ? (
                   <div className="p-5">
                   {uploadedFiles.map((file, index) => (
                     <div key={index} className="flex flex-row items-center space-x-2">
@@ -121,45 +121,54 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                   ))}
                 </div>
 
-                ): (
-                  <>
-                  <Img
-                    className="h-[59px] mt-[111px]"
-                    src={`${newURL}img_download.svg`}
-                    alt="download"
-                    style={{cursor: 'pointer'}}
-                    onClick={handleBrowseClick}
-                  />
-                  <div className="flex flex-col items-start justify-start p-[5px] w-auto">
-                    <Text
-                      className="text-base text-blue_gray-900 text-center w-auto"
-                      size="txtMulishRomanBold16"
-                    >
-                  {/* TODO : We remove this until we can do drag/drop */}
-                  {/*<span className="text-gray-800 font-raleway font-bold">*/}
-                  {/*  Drag & drop files or*/}
-                  {/*</span>*/}
-                  <span className="text-blue_gray-900 font-raleway font-bold">
-                    {" "}
-                  </span>
-                  <a
-                    className="text-blue_gray-500 font-raleway font-bold underline cursor-pointer"
-                    onClick={handleBrowseClick}
+                  <Grid container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
                   >
-                    Browse
-                  </a>
-                </Text>
-                <input
-                  id="fileInput"
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileUpload}
-                  accept={accept}
-                  multiple
-                />
-                  </div>
-                  </>
-                )}
+                    <Grid item xs={3}>
+                      <Img
+                        className="h-[59px] mt-[111px]"
+                        src={`${newURL}img_download.svg`}
+                        alt="download"
+                        style={{cursor: 'pointer'}}
+                        onClick={handleBrowseClick}
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Text
+                          className="text-base text-blue_gray-900 text-center w-auto"
+                          size="txtMulishRomanBold16"
+                        >
+                        {/* TODO : We remove this until we can do drag/drop */}
+                        {/*<span className="text-gray-800 font-raleway font-bold">*/}
+                        {/*  Drag & drop files or*/}
+                        {/*</span>*/}
+                        <span className="text-blue_gray-900 font-raleway font-bold">
+                          {" "}
+                        </span>
+                        <a
+                          className="text-blue_gray-500 font-raleway font-bold underline cursor-pointer"
+                          onClick={handleBrowseClick}
+                        >
+                          Browse
+                        </a>
+                      </Text>
+                    </Grid>
+                    <Grid item sx={3}>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                        accept={accept}
+                        multiple
+                      />
+                    </Grid>
+                  </Grid>
+                  {/*<div className="flex flex-col items-start justify-start p-[5px] w-auto">*/}
+
+                  {/*</div>*/}
               </div>
               <div className="flex flex-col font-raleway items-start justify-start mb-[106px] p-[5px] w-auto sm:w-full">
                 <Text

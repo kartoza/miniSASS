@@ -7,6 +7,7 @@ import { globalVariables } from "../../utils";
 import Modal from 'react-modal';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
+import {useAuth} from "../../AuthContext";
 
 
 
@@ -33,7 +34,7 @@ const PESTS = [
 ]
 
 
-const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -46,6 +47,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   const [openImagePestId, setOpenImagePestId] = useState(0);
   const [pestImages, setPestImages] = useState({});
   const [isSavingData, setIsSavingData] = useState(false);
+  const {dispatch, state} = useAuth();
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -117,6 +119,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
       }
       form_data.append('data', JSON.stringify(observationsData));
 
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
         `${globalVariables.baseUrl}/monitor/observations-create/`,
         form_data,
