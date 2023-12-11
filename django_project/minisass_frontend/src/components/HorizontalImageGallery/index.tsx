@@ -13,7 +13,6 @@ interface GalleryProps {
 
 
 const HorizontalImageGallery: React.FC<GalleryProps> = ({images}) => {
-
   return (
     <ImageList sx={{overflowX: 'auto'}} rowHeight={200}>
       <ImageListItem sx={{display: 'flex', flexDirection: 'row'}}>
@@ -24,7 +23,7 @@ const HorizontalImageGallery: React.FC<GalleryProps> = ({images}) => {
               srcSet={image.image}
               alt={image.image}
               loading='lazy'
-              style={{paddingRight: '1em', border: 'solid'}}
+              style={{border: 'solid', marginLeft: '0.5rem'}}
             />
           )
         })}
