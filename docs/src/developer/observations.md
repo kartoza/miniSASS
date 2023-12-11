@@ -315,7 +315,7 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 ### Additional Information
 
 1. **image_0:** Represents a site image. If uploading multiple site images, it would be `image_0`, `image_1`, etc.
-2. For attaching images to pests/groups (e.g., flatworms, stoneflies, other_mayflies), the variable should be named `"pest_0:name_of_pest"`. The value should be the binary file (image), and the corresponding pest/group must be set to `true`.
+2. For attaching images to pests/groups (e.g. flatworms, stoneflies, other_mayflies), the variable should be named `"pest_0:name_of_pest"`. The value should be the binary file (image), and the corresponding pest/group must be set to `true`.
 3. Accommodations for file uploading should be made on the frontend. Simply call the API for observation creation, passing the required parameters, and all the data will be saved on that site.
 
 ### 2. Retrieving Observations with images
