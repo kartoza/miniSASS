@@ -161,6 +161,7 @@ const MapPage: React.FC = () => {
                 resetMap={resetMapToDefault}
                 idxActive={idxActive}
                 setIdxActive={setIdxActive}
+                resetMap={resetMapToDefault}
               />
               {/* Sidebar */}
               <Sidebar

@@ -14,6 +14,7 @@ interface ObservationDetailsProps {
   observation_id: string;
   classname: string;
   handleMapClick: (longitude: number, latitude: number) => void;
+  resetMap: () => void;
 }
 
 interface Observation {
@@ -28,10 +29,17 @@ interface Observation {
 
 const OBSERVATION_LIST_URL = globalVariables.baseUrl + '/monitor/observations/recent-observations'
 
-const ObservationDetails: React.FC<ObservationDetailsProps> = ({ setSidebarOpen , classname, observation_id, handleMapClick }) => {
+const ObservationDetails: React.FC<ObservationDetailsProps> = ({ 
+  setSidebarOpen, 
+  classname, 
+  observation_id, 
+  handleMapClick, 
+  resetMap  
+}) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
+    resetMap()
   };
 
   
