@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from monitor.models import Sites
 from monitor.serializers import (
+    SitesSerializer,
+    AssessmentSerializer,
     SitesSerializer, 
     SitesWithObservationsSerializer
 )
@@ -17,6 +19,15 @@ class SiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sites.objects.all()
     serializer_class = SitesSerializer
 
+
+class AssessmentListCreateView(generics.ListCreateAPIView):
+    queryset = Assessment.objects.all()
+    serializer_class = AssessmentSerializer
+
+class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Assessment.objects.all()
+    serializer_class = AssessmentSerializer
+
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
@@ -27,3 +38,4 @@ class SiteObservationsByLocation(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Sites.DoesNotExist:
             return Response([], status=status.HTTP_404_NOT_FOUND)
+
