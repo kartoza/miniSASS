@@ -46,7 +46,7 @@ def create_observations(request):
             caddisflies = data.get('caddisflies', False)
             true_flies = data.get('true_flies', False)
             snails = data.get('snails', False)
-            score = Decimal(str(datainput.get('score', 0)))
+            score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
             water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
             water_temp = Decimal(str(datainput.get('watertemperatureOne', 0)))

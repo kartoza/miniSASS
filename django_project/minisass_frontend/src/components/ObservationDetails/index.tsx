@@ -93,7 +93,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setObservationDetails(response.data);
         
         setTimeout(() => {
-          handleMapClick(response.data.longitude, response.data.latitude);
+          handleMapClick(response.data.latitude,response.data.longitude);
         }, 1200);
 
         if(parseFloat(response.data.score) < 6){

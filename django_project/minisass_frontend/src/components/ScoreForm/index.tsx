@@ -98,7 +98,7 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
     try {
       // Create an object with the data to be saved
       const observationsData = {
-        score:totalScore,
+        score:averageScore,
         datainput: additionalData,
       };
       PESTS.map((pest,idx) => {
