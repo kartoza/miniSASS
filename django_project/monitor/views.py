@@ -2,7 +2,7 @@ import os
 import csv
 import json
 import shutil
-from io import BytesIO as IO
+from io import BytesIO
 
 import requests
 from django.conf import settings
@@ -271,7 +271,8 @@ class DownloadObservations(APIView):
         include_image = include_image.lower() in ['true', 'yes', '1']
 
         dir_path = os.path.join(settings.MEDIA_ROOT, 'observation_reports', f'{request.user.username}_exports')
-        os.makedirs(dir_path)
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
         file_name = f"observations.{file_type}"
         file_path = os.path.join(dir_path, file_name)\
 
@@ -329,9 +330,9 @@ class DownloadObservations(APIView):
                         safe_copy(
                             img.image.path,
                             obs_image_path,
-                            img.pest.name
+                            f'{img.pest.name}.{img.image.name.split(".")[-1]}'
                         )
-            mem_zip = IO()
+            mem_zip = BytesIO()
             zip_directory(dir_path, mem_zip)
 
             response = HttpResponse(mem_zip.getvalue(), content_type='application/zip')
@@ -342,7 +343,7 @@ class DownloadObservations(APIView):
             return response
         else:
             f = open(file_path, 'rb')
-            dest_file = IO()
+            dest_file = BytesIO()
             dest_file.write(f.read())
             f.close()
             dest_file.seek(0)

@@ -1,14 +1,12 @@
 import csv
-from datetime import date
+import os
 from io import BytesIO, StringIO as IO
+from zipfile import ZipFile
 
 import geopandas
-from django.contrib.auth.models import User
-from django.contrib.gis.geos import Point
+from django.conf import settings
 from django.shortcuts import reverse
-from rest_framework.test import APITestCase
 
-from monitor.models import Observations, Sites
 from monitor.tests.test_observations import BaseObservationsModelTest
 
 
@@ -17,53 +15,24 @@ class TestDownloadObservations(BaseObservationsModelTest):
     Test download observations.
     """
 
-    # def setUp(self):
-    #     self.user = User.objects.create_user(
-    #         username='testuser', password='testpassword'
-    #     )
-    #     self.client.force_authenticate(user=self.user)
-    #
-    #     self.site = Sites.objects.create(
-    #         site_name='Test Site',
-    #         river_name='Test River',
-    #         the_geom=Point(0, 0),
-    #         user=self.user
-    #     )
-    #
-    #     self.observation = Observations.objects.create(
-    #         user=self.user,
-    #         flatworms=True,
-    #         worms=True,
-    #         leeches=False,
-    #         crabs_shrimps=False,
-    #         site=self.site,
-    #         comment='test_comment',
-    #         score=4.5,
-    #         obs_date=date(2023, 12, 7),
-    #         flag='clean',
-    #         water_clarity=7.5,
-    #         water_temp=25.0,
-    #         ph=7.0,
-    #         diss_oxygen=8.5,
-    #         diss_oxygen_unit='mgl',
-    #         elec_cond=15.0,
-    #         elec_cond_unit='S/m'
-    #     )
-    #     self.url = reverse('download-observations', args=[self.site.gid])
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('download-observations', args=[self.site.gid])
 
-    def test_download_csv(self):
+    def test_download_csv_without_images(self):
         """
-        Test download observations as CSV.
+        Test download observations as CSV without images.
         """
         response = self.client.get(
             self.url,
             {
                 'type': 'csv',
                 'start_date': '2023-12-03',
-                'end_date': '2023-12-07'
+                'end_date': '2023-12-07',
+                'include_image': False
             }
         )
-        content = response.content.decode('utf-8-sig')
+        content = response.content.decode('utf-8')
         cvs_reader = csv.reader(IO(content))
         body = list(cvs_reader)
 
@@ -80,12 +49,15 @@ class TestDownloadObservations(BaseObservationsModelTest):
                 'Comment'
             ],
             [
-                str(self.observation.gid), 'testuser', '2023-12-07',
-                'Test Site', 'Test River', '', '0.0', '0.0',
-                'True', 'True', 'False', 'False', 'False', 'False', 'False',
-                'False', 'False', 'False', 'False',
-                'False', 'False', '4.50', 'Verified', '7.5', '25.0', '7.0',
-                '8.50', 'mgl', '15.00', 'S/m',
+                str(self.observation.gid), 'testuser', '2023-12-03', 'Test Site', 'Test River', '', '0.0', '0.0',
+                'True', 'True', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False',
+                'False', 'False', '4.50', 'Verified', '7.5', '25.0', '7.0', '8.50', 'mgl', '15.00', 'S/m',
+                'test_comment'
+            ],
+            [
+                str(self.observation_2.gid), 'testuser', '2023-12-07', 'Test Site', 'Test River', '', '0.0', '0.0',
+                'False', 'True', 'True', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False',
+                'False', 'False', '2.00', 'Verified', '3.0', '2.0', '1.0', '1.50', 'mgl', '1.00', 'S/m',
                 'test_comment'
             ]
         ]
@@ -95,16 +67,46 @@ class TestDownloadObservations(BaseObservationsModelTest):
             expected_response
         )
 
-    def test_download_geopackage(self):
+    def test_download_csv_with_images(self):
+        """
+        Test download observations as CSV with.
+        """
+        response = self.client.get(
+            self.url,
+            {
+                'type': 'csv',
+                'start_date': '2023-12-03',
+                'end_date': '2023-12-07',
+            }
+        )
+        content = response.content
+
+        zip_file_path = os.path.join(settings.MEDIA_ROOT, 'test_download_csv_with_images.zip')
+
+        with open(zip_file_path, 'wb') as f:
+            f.write(content)
+
+        with ZipFile(zip_file_path) as zf:
+            files = [
+                'testuser_exports/observations.csv',
+                'testuser_exports/images/observations/2023-12-03/Flatworms.jpg',
+                'testuser_exports/images/observations/2023-12-03/Worms.jpg',
+                'testuser_exports/images/observations/2023-12-07/Leeches.jpg'
+            ]
+            for file in files:
+                self.assertTrue(file in zf.namelist())
+
+    def test_download_geopackage_without_images(self):
         """
         Test download observations as GeoPackage.
         """
         response = self.client.get(
             self.url,
             {
-                'type': 'geopackage',
+                'type': 'gpkg',
                 'start_date': '2023-12-03',
-                'end_date': '2023-12-07'
+                'end_date': '2023-12-07',
+                'include_image': False
             }
         )
         file = BytesIO()
@@ -113,5 +115,33 @@ class TestDownloadObservations(BaseObservationsModelTest):
         df = geopandas.read_file(file)
         self.assertEquals(
             len(df.index),
-            1
+            2
         )
+
+    def test_download_geopackage_with_images(self):
+        """
+        Test download observations as GeoPackage.
+        """
+        response = self.client.get(
+            self.url,
+            {
+                'type': 'gpkg',
+                'start_date': '2023-12-03',
+                'end_date': '2023-12-07',
+                'include_image': True
+            }
+        )
+        zip_file_path = os.path.join(settings.MEDIA_ROOT, 'test_download_geopackage_with_images.zip')
+
+        with open(zip_file_path, 'wb') as f:
+            f.write(response.content)
+
+        with ZipFile(zip_file_path) as zf:
+            files = [
+                'testuser_exports/observations.gpkg',
+                'testuser_exports/images/observations/2023-12-03/Flatworms.jpg',
+                'testuser_exports/images/observations/2023-12-03/Worms.jpg',
+                'testuser_exports/images/observations/2023-12-07/Leeches.jpg'
+            ]
+            for file in files:
+                self.assertTrue(file in zf.namelist())
