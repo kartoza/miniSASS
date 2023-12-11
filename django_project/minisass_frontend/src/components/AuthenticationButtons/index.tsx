@@ -22,6 +22,7 @@ function AuthenticationButtons() {
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
   const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
   const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
+  const [updatePassword, setUpdatePassword] = useState(false);
 
   const { dispatch, state } = useAuth();
 
@@ -64,13 +65,10 @@ function AuthenticationButtons() {
   const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
   const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
 
-  const handleLogout = () => {
-    logout(dispatch)
-  };
-
   const handleEnforcePassword = () => {
     setIsEnforcePasswordOpen(false)
     setProfileModalOpen(true);
+    setUpdatePassword(true)
   }
 
   const handleLogin = async (loginData: any) => {
@@ -173,20 +171,6 @@ function AuthenticationButtons() {
             <Grid item>
               <UserMenu setUpdateProfileOpen={setProfileModalOpen}/>
             </Grid>
-            <Grid item
-                  className={"w-[230px]"}
-            >
-              <Button
-              onClick={handleLogout}
-              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
-              shape="square"
-              color="blue_900"
-              size="xs"
-              variant="fill"
-            >
-              Logout
-            </Button>
-            </Grid>
           </Grid>
         ) : (
           <>
@@ -231,7 +215,7 @@ function AuthenticationButtons() {
         Registrationloading={updateProfileLoading}
         registrationInProgress={updateProfileInProgress}
         isRegister={false}
-        updatePassword={true}
+        updatePassword={updatePassword}
         />
       <EnforcePasswordChange
         isOpen={isEnforcePasswordOpen}

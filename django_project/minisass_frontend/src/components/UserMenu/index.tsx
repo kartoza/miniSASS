@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import {Img} from "../Img";
 import {globalVariables} from "../../utils";
-import {useAuth} from "../../AuthContext";
+import {logout, useAuth} from "../../AuthContext";
 import Link from '@mui/material/Link';
 import {useNavigate} from "react-router-dom";
 
@@ -17,8 +17,13 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout(dispatch)
   };
 
   return (
@@ -51,6 +56,11 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
             >Admin</Link>
           </MenuItem>
         }
+        <MenuItem
+          onClick={handleLogout}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   );
