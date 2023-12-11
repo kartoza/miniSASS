@@ -158,6 +158,7 @@ const MapPage: React.FC = () => {
                 handleSelect={handleMapClick} 
                 selectingOnMap={selectingOnMap}
                 selectedCoordinates={selectedCoordinates}
+                resetMap={resetMapToDefault}
                 idxActive={idxActive}
                 setIdxActive={setIdxActive}
                 resetMap={resetMapToDefault}

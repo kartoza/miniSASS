@@ -20,6 +20,7 @@ interface Interface {
   overlayLayers: layerConfiguration[],
   handleSelect: (latitude: number, longitude: number) => void;
   selectingOnMap: boolean;
+  resetMap: boolean;
   selectedCoordinates: {latitude: number, longitude: number};
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
@@ -359,6 +360,21 @@ export const Map = forwardRef((props: Interface, ref) => {
             essential: true,
           });
         }
+      }
+    }, [props.resetMap]);
+
+    useEffect(() => {
+      if (props.resetMap === true) {
+        let mapInstance = map;
+  
+        if (mapInstance) {
+          mapInstance.flyTo({
+            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
+            zoom: initialMapConfig.zoom,
+            essential: true,
+          });
+        }
+        // props.resetCoordinates()
       }
     }, [props.resetMap]);
 
