@@ -146,7 +146,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
   const [sites, setSitesList] = useState([]);
-  const [enableSiteFields,setEnableSiteFields] = useState(true);
+  const [enableSiteFields, setEnableSiteFields] = useState(true);
   const [isCreateSite, setIsCreateSite] = useState('createsite');
   const [type, setType] = useState<string>('');
   const [siteUserValues, setSiteUserValues] = useState({
@@ -344,27 +344,27 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   <FormControlLabel value="createsite" control={<Radio />} label="Create New Site" />
                   <FormControlLabel value="useexistingsite" control={<Radio />} label="Use Existing Site" />
                 </RadioGroup>
-                
-                {enableSiteFields ? (
-                  <div>
-                    <Button
-                      type="button"
-                      className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                      shape="round"
-                      color="blue_gray_500"
-                      size="xs"
-                      variant="fill"
-                      onClick={openUploadModal}
-                    >
-                      {props?.uploadSiteImages}
-                    </Button>
-                    <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
-                  </div>
-                  ) : (
+
+                <div>
+                  <Button
+                    type="button"
+                    className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                    shape="round"
+                    color="blue_gray_500"
+                    size="xs"
+                    variant="fill"
+                    onClick={openUploadModal}
+                  >
+                    {props?.uploadSiteImages}
+                  </Button>
+                  <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
+                </div>
+
+                {!enableSiteFields &&
                     <>
                       <Button
                           type="button"
-                          className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
+                          className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
                           shape="round"
                           color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
                           size="xs"
@@ -373,7 +373,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           style={{marginBottom: '5%' ,marginTop: '2%', opacity: 0.5}}
                           disabled
                         >
-                          {`select site on map`}
+                          {`Select site on map`}
                         </Button>
                         <br />
                         <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
@@ -420,7 +420,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           </div>
                         </div>
                       </>
-                  )}
+                }
                  
                 <br/>
 

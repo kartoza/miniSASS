@@ -6,6 +6,7 @@ import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
 import DownloadObservationForm from '../../components/DownloadObservationModal/index';
+import HorizontalImageGallery from '../../components/HorizontalImageGallery/';
 import LineChart from '../Charts/LineChart';
 import dayjs from 'dayjs';
 
@@ -53,6 +54,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
   const [isChartHidden, setIsChartHidden] = useState<boolean>(true);
   const [observationList, setObservationList] = useState<Observation[]>([]);
+  const images = Object.keys(observationDetails).length > 0 ?
+    [].concat(observationDetails.site.images, observationDetails.images) :
+    [];
 
   let minDate = dayjs().format('YYYY-MM-DD');
   let maxDate = dayjs().format('YYYY-MM-DD');
@@ -122,15 +126,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const tabsData = [
     { id: 'tab1', label: `${observationDetails.obs_date}`, content: (
       <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{marginTop: '10%'}}>
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${globalVariables.staticPath}img_rectangle97.png`}
-          alt="img_placeholder"
-        />
-        <Img
-          className="h-[152px] md:h-auto object-cover w-[164px]"
-          src={`${globalVariables.staticPath}img_rectangle97.png`}
-          alt="img_placeholder"
+        <HorizontalImageGallery
+          images={images}
         />
       </div>
     )
