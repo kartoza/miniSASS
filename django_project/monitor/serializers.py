@@ -6,7 +6,7 @@ from monitor.models import (
     Observations,
     ObservationPestImage,
     Sites,
-    SiteImage
+    SiteImage,
     Assessment
 )
 
