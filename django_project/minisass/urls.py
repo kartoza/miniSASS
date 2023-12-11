@@ -32,6 +32,7 @@ urlpatterns = [
     path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),
     path("password-reset/", TemplateView.as_view(template_name="react_base.html"), name="password_reset"),
     path("howto/", TemplateView.as_view(template_name="react_base.html"), name="how_to"),
+    path("recent-activity/", TemplateView.as_view(template_name="react_base.html"), name="recent_activity"),
 ]
 
 if settings.DEBUG:
