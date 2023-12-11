@@ -24,6 +24,6 @@ ENV \
 WORKDIR /
 
 ## Entry Point
-ADD ./start-script.sh /start-script.sh
-RUN chmod 755 /start-script.sh 
+ADD ./deployment/docker-s3-bucket/start-script.sh /start-script.sh
+RUN chmod 755 /start-script.sh
 ENTRYPOINT ["/start-script.sh"]
