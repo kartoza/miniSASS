@@ -203,7 +203,8 @@ def register(request):
                     user=user,
                     organisation_type=organisation_type,
                     organisation_name=org_name,
-                    country=user_country
+                    country=user_country,
+                    is_password_enforced=True
                 )
                 user_profile.save()
                 user.is_active = False
