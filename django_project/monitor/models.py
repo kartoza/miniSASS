@@ -47,6 +47,12 @@ class Schools(models.Model):
     def __str__(self):
         return self.school
 
+class Assessment(models.Model):
+    assessment = models.AutoField(primary_key=True)
+    assessment_data = models.JSONField(blank=True,null=True)
+
+    def __str__(self):
+        return self.assessment
 
 class Sites(models.Model):
     RIVER_CATS = (
@@ -61,6 +67,7 @@ class Sites(models.Model):
     river_cat = models.CharField(max_length=5, choices=RIVER_CATS, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now=True)
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE,blank=True,null=True)
     objects = models.Manager()
 
     class Meta:
@@ -120,6 +127,9 @@ class Observations(models.Model, DirtyFieldsMixin):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True
     )
+    minisass_ml_score = models.FloatField(blank=True,null=True)
+    ml_model_version = models.CharField(max_length=255,blank=True,null=True)
+    ml_model_type = models.CharField(max_length=255,blank=True,null=True)
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)

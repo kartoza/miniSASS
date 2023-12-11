@@ -6,8 +6,14 @@ from monitor.models import (
     Observations,
     ObservationPestImage,
     Sites,
-    SiteImage
+    SiteImage,
+    Assessment
 )
+
+class AssessmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assessment
+        fields = '__all__'
 
 
 class SiteImageSerializer(serializers.ModelSerializer):

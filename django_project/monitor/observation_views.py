@@ -10,6 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.utils.translation import gettext as _
+
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
@@ -149,10 +153,12 @@ def create_observations(request):
 class RecentObservationListView(generics.ListAPIView):
     serializer_class = ObservationsSerializer
 
-    def get_queryset(self, site_id=None, recent=True):
+    def get_queryset(self, site_id=None, recent=True, by_user=False, user=None):
         all_obs = Observations.objects.all().order_by('-time_stamp')
         if site_id:
             all_obs = all_obs.filter(site_id=site_id)
+        if by_user and user.id:
+            all_obs = all_obs.filter(user=user)
         return all_obs[:20] if recent else all_obs
 
     def build_recent_observations(self, queryset):
@@ -181,9 +187,11 @@ class RecentObservationListView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         site_id = request.GET.get('site_id', None)
+        by_user = request.GET.get('by_user', 'False')
+        by_user = by_user in ['True', 'true', '1', 'yes']
         recent = request.GET.get('recent', 'True')
-        recent = recent in ['True', 'true', '1', 'yes']
-        queryset = self.get_queryset(site_id, recent)
+        recent = recent in ['True', 'true', '1', 'yes'] and not request.user.id
+        queryset = self.get_queryset(site_id, recent, by_user, request.user)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
 
