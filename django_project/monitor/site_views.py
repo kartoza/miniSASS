@@ -1,15 +1,16 @@
+from django.contrib.gis.geos import Point
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework import status
-from monitor.models import Sites
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from monitor.models import Sites, Assessment
 from monitor.serializers import (
-    SitesSerializer,
     AssessmentSerializer,
-    SitesSerializer, 
+    SitesSerializer,
     SitesWithObservationsSerializer
 )
-from rest_framework.views import APIView
-from django.contrib.gis.geos import Point
+
 
 class SitesListCreateView(generics.ListCreateAPIView):
     queryset = Sites.objects.all()
