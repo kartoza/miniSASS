@@ -1,5 +1,15 @@
+import os
 from django.db import models
 from django.conf import settings
+
+
+def certificate_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.user.username}',
+        filename
+    )
+
 
 # TODO might remove this as it is no longer neccessary
 class Lookup(models.Model):
@@ -17,6 +27,7 @@ class Lookup(models.Model):
     def __str__(self):
         return self.description
 
+
 class UserProfile(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
@@ -32,6 +43,9 @@ class UserProfile(models.Model):
     is_password_enforced = models.BooleanField(
         default=False,
         help_text='Flag whether user has been enforced to use strong password'
+    )
+    image = models.FileField(
+        upload_to=certificate_path, storage=settings.MINION_STORAGE
     )
 
     def __str__(self):
