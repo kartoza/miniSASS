@@ -44,8 +44,8 @@ class UserProfile(models.Model):
         default=False,
         help_text='Flag whether user has been enforced to use strong password'
     )
-    image = models.FileField(
-        upload_to=certificate_path, storage=settings.MINION_STORAGE
+    certificate = models.FileField(
+        null=True, upload_to=certificate_path, storage=settings.MINION_STORAGE
     )
 
     def __str__(self):

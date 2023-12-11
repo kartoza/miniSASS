@@ -69,39 +69,6 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
   const { dispatch, state  } = useAuth();
-  console.debug(formErrors)
-  const isButtonDisabled = () => {
-    let errors = [];
-    if (isRegister) {
-      Object.keys(formErrors).forEach(function(key, index) {
-        if (formErrors[key]) {
-          errors.push(key);
-        }
-      });
-    } else {
-      if (formData.updatePassword) {
-        Object.keys(formErrors).forEach(function(key, index) {
-          if (formErrors[key]) {
-            errors.push(key);
-          }
-        });
-      } else {
-        Object.keys(formErrors).forEach(function(key, index) {
-          const excludeKeys = [
-            'password',
-            'confirmPassword',
-            'oldPassword',
-            'updatePassword'
-          ]
-          if (formErrors[key] && !excludeKeys.includes(key)) {
-            errors.push(key);
-          }
-        });
-      }
-    }
-    console.debug(errors)
-    return errors.length > 0
-  }
 
   const fetchUserDetail = async () => {
     const headers = { 'Authorization': `Bearer ${state.user.access_token}` };
@@ -133,6 +100,10 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
       fetchUserDetail()
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setFormData({ ...formData, updatePassword: updatePassword });
+  }, [updatePassword]);
 
 
   useEffect(() => {
