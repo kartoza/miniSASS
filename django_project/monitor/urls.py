@@ -13,7 +13,8 @@ from monitor.site_views import (
     AssessmentListCreateView,
     AssessmentRetrieveUpdateDestroyView,
     SitesListCreateView,
-    SiteRetrieveUpdateDestroyView
+    SiteRetrieveUpdateDestroyView,
+    SiteObservationsByLocation
 )
 from monitor.views import (
     index,
@@ -97,6 +98,12 @@ urlpatterns = [
         'observations/observation-details/<int:pk>/',
         ObservationRetrieveView.as_view(),
         name='observation-details'
+    ),
+
+        path(
+        'site-observations/<latitude>/<longitude>/', 
+        SiteObservationsByLocation.as_view(), 
+        name='site-observations'
     ),
 
     path(
