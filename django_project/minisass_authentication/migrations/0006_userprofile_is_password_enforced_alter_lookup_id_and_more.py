@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('minisass_authentication', '0004_alter_lookup_id_alter_userprofile_id'),
+        ('minisass_authentication', '0005_userprofile_is_expert'),
     ]
 
     operations = [
