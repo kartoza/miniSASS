@@ -73,11 +73,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'specialCharacter': not requirements['specialCharacter'].search(value),
             'length': not requirements['length'].search(value),
         }
+        print(remaining_requirements)
         return (
-            all(remaining_requirements.values()),
+            not all(remaining_requirements.values()),
             ', '.join([key for key, val in remaining_requirements.items() if val])
         )
-
 
     def validate_name(self, value):
         if value == '':
@@ -103,16 +103,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if value == '':
             raise serializers.ValidationError("Country should not be empty")
         return value
-
-    def validate(self, data):
-        # required_fields = [
-        #     'username', 'email', 'name', 'surname',
-        #     'organisation_type', 'organisation_name'
-        # ]
-        # for key, value in data.items():
-        #     if key in required_fields:
-        #         raise serializers.ValidationError(f"{key} should not be empty")
-        return data
 
     def save(self, old_user):
         user_dict = self.validated_data

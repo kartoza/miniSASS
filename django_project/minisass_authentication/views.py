@@ -250,7 +250,9 @@ class UpdateUser(APIView):
         return Response(UserUpdateSerializer(request.user).data)
 
     def post(self, request):
-        serializer = UserUpdateSerializer(data=request.data)
+        serializer = UserUpdateSerializer(
+            data=request.data
+        )
         if serializer.is_valid(raise_exception=True):
             try:
                 user, user_profile = serializer.save(request.user)
@@ -279,6 +281,8 @@ class UpdateUser(APIView):
                 try:
                     user.set_password(new_password)
                     user.save()
+                    user_profile.is_password_enforced = True
+                    user_profile.save()
                 except Exception as e:
                     return JsonResponse({'error': str(e)}, status=400)
             return JsonResponse(UserUpdateSerializer(user).data)
