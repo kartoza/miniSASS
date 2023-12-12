@@ -7,15 +7,15 @@ from monitor.observation_views import (
     ObservationRetrieveView,
     RecentObservationListView,
     create_observations,
-    ObservationImageViewSet
+    ObservationImageViewSet,
+    ObservationsBySiteId
 )
 from monitor.site_views import (
     AssessmentListCreateView,
     AssessmentRetrieveUpdateDestroyView,
     SitesListCreateView,
     SiteRetrieveUpdateDestroyView,
-    SiteObservationsByLocation,
-    ObservationsBySiteId
+    SiteObservationsByLocation
 )
 from monitor.views import (
     index,
