@@ -10,11 +10,13 @@ from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import gettext as _
+from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from minisass_authentication.models import UserProfile
+
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
@@ -82,7 +84,10 @@ def create_observations(request):
             try:
                 site = Sites.objects.get(gid=site_id)
             except Sites.DoesNotExist:
-                # If it doesn't exist, create a new site
+                # If it doesn't exist, create a new site with an incremented ID
+                max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
+                new_site_id = max_site_id + 1 if max_site_id is not None else 1
+
                 site_name = datainput.get('siteName', '')
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
@@ -90,8 +95,9 @@ def create_observations(request):
                 longitude = datainput.get('longitude', 0)
                 latitude = datainput.get('latitude', 0)
 
-                # Save the new site
+                # Save the new site with the incremented ID
                 site = Sites.objects.create(
+                    gid=new_site_id,
                     site_name=site_name,
                     river_name=river_name,
                     description=description,

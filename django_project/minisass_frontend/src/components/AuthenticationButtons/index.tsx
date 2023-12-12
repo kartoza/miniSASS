@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Button, Img } from '../../components';
 import LoginFormModal from '../../components/LoginFormModal';
 import UserMenu from '../../components/UserMenu';
-import UserFormModal from '../../components/RegistrationFormModal';
+import RegistrationFormModal from '../../components/RegistrationFormModal/index';
+import UserFormModal from '../../components/UserForm/index';
 import EnforcePasswordChange from '../../components/EnforcePasswordChange';
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
@@ -23,6 +24,7 @@ function AuthenticationButtons() {
   const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
   const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
+  const [formData, setFormData] = useState(false);
 
   const { dispatch, state } = useAuth();
 
@@ -132,11 +134,20 @@ function AuthenticationButtons() {
     }
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
-      const response = await axios.post(UPDATE_PROFILE, newData, {
+
+      let formData = new FormData();
+      if (data.certificate) {
+        formData.append('certificate', newData.certificate[0]);
+      }
+      delete newData.certificate
+      formData.append('data', JSON.stringify(newData));
+
+      const response = await axios.post(UPDATE_PROFILE, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
-      });
+      }
+      );
 
       if (response.status === 200) {
         setLoading(true)
@@ -198,14 +209,13 @@ function AuthenticationButtons() {
         )}
       </div>
       <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} onSubmit={handleLogin}  error_response={error}/>
-      <UserFormModal
+      <RegistrationFormModal
         isOpen={isRegisterModalOpen} 
         onClose={closeRegisterModal} 
         onSubmit={handleRegistration} 
         error_response={error}
         Registrationloading={Registrationloading}
         registrationInProgress={registrationInProgress}
-        isRegister={true}
         />
       <UserFormModal
         isOpen={isProfileModalOpen}
@@ -214,8 +224,8 @@ function AuthenticationButtons() {
         error_response={error}
         Registrationloading={updateProfileLoading}
         registrationInProgress={updateProfileInProgress}
-        isRegister={false}
         updatePassword={updatePassword}
+        defaultFormData={formData}
         />
       <EnforcePasswordChange
         isOpen={isEnforcePasswordOpen}
