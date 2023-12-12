@@ -56,6 +56,18 @@ def check_authentication_status(request):
     }
     return JsonResponse(user_data, status=200)
 
+@api_view(['GET'])
+def check_registration_status(request, email):
+    try:
+        user = User.objects.get(email=email)
+        user_data = {
+            'email': user.email,
+            'is_registration_completed': user.is_active,
+        }
+        return JsonResponse(user_data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 def contact_us(request):
