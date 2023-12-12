@@ -24,7 +24,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     organisation_type = serializers.CharField(source='userprofile.organisation_type.description')
     organisation_name = serializers.CharField(source='userprofile.organisation_name')
     country = serializers.CharField(source='userprofile.country')
-    certificate = serializers.CharField(source='userprofile.certificate')
     old_password = serializers.SerializerMethodField()
     password = serializers.SerializerMethodField()
     confirm_password = serializers.SerializerMethodField()
