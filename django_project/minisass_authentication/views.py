@@ -32,6 +32,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from minisass_authentication.models import UserProfile, Lookup
 from minisass_authentication.serializers import UserSerializer
 from minisass_authentication.utils import get_is_user_password_enforced
+from django.db import IntegrityError
+from django.db.models import Max
 
 User = get_user_model()
 
@@ -178,73 +180,86 @@ def activate_account(request, uidb64, token):
 @api_view(['POST'])
 def register(request):
     if request.method == 'POST':
-        # Check if a user with the given email already exists
         existing_user = User.objects.filter(email=request.data.get('email')).first()
         if existing_user:
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Get the highest existing ID in the UserProfile model
+        max_id = UserProfile.objects.all().aggregate(Max('user_id'))['user_id__max']
+        new_user_id = max_id + 1 if max_id is not None else 1
+
+        # Set the ID for the new user
+        request.data['id'] = new_user_id
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            user.first_name = request.data.get('name')
-            user.last_name = request.data.get('surname')
-            user_email = request.data.get('email')
-            username = request.data.get('username')
-            
-            # Create a User Profile
-            org_name = request.data.get('organizationName')
-            user_country = request.data.get('country')
-            organisation_type_description = request.data.get('organizationType')
-
-            if org_name and user_country and organisation_type_description:
-                # Retrieve the Lookup object based on the description.
-                # This assumes that the 'description' field in the Lookup model is unique.
-                organisation_type, created = Lookup.objects.get_or_create(description=organisation_type_description)
-
-                user_profile = UserProfile.objects.create(
-                    user=user,
-                    organisation_type=organisation_type,
-                    organisation_name=org_name,
-                    country=user_country,
-                    is_password_enforced=True
-                )
-                user_profile.save()
-                user.is_active = False
-                user.save()
-
-                # Get the current site's domain
-                domain = Site.objects.get_current().domain
-
-                # Generate token
-                token = default_token_generator.make_token(user) 
-
-                # Encode user ID for URL use
-                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            try:
+                user = serializer.save()
+                user.first_name = request.data.get('name')
+                user.last_name = request.data.get('surname')
+                user_email = request.data.get('email')
+                username = request.data.get('username')
                 
-                # Compose the reset link URL
-                activation_link = request.build_absolute_uri(
-                    reverse('activate-account', kwargs={
-                            'uidb64': uidb64, 'token': token})
-                )
+                # Create a User Profile
+                org_name = request.data.get('organizationName')
+                user_country = request.data.get('country')
+                organisation_type_description = request.data.get('organizationType')
+                
+                if org_name and user_country and organisation_type_description:
+                    # Retrieve the Lookup object based on the description.
+                    # This assumes that the 'description' field in the Lookup model is unique.
+                    try:
+                        organisation_type = Lookup.objects.get(description__iexact=organisation_type_description)
+                    except Lookup.DoesNotExist:
+                        # If no match is found, use the default description "Organisation Type".
+                        organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
+                    
+                    user_profile = UserProfile.objects.create(
+                        user=user,
+                        organisation_type=organisation_type,
+                        organisation_name=request.data.get('organizationName', ''),
+                        country=request.data.get('country', None)
+                    )
+                    user_profile.save()
+                    user.is_active = False
+                    user.save()
 
-                mail_subject = 'Activate account on miniSASS'
-                message = render_to_string('activate_account.html', {
-                    'domain': domain,
-                    'activation_link': activation_link,
-                    'name': username
-                })
-                send_mail(
-                    mail_subject,
-                    None,
-                    settings.CONTACT_US_RECEPIENT_EMAIL,
-                    [user_email],
-                    html_message=message
-                )
+                    # Get the current site's domain
+                    domain = Site.objects.get_current().domain,
 
-            else:
-                return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
+                    # Generate token
+                    token = default_token_generator.make_token(user) 
+
+                    # Encode user ID for URL use
+                    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                    
+                    # Compose the reset link URL
+                    activation_link = request.build_absolute_uri(
+                        reverse('activate-account', kwargs={
+                                'uidb64': uidb64, 'token': token})
+                    )
+
+                    mail_subject = 'Activate account on miniSASS'
+                    message = render_to_string('activate_account.html', {
+                        'domain': domain,
+                        'activation_link': activation_link,
+                        'name': username
+                    })
+                    send_mail(
+                        mail_subject,
+                        None,
+                        settings.CONTACT_US_RECEPIENT_EMAIL,
+                        [user_email],
+                        html_message=message
+                    )
+
+                else:
+                    return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
+                
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({'error': 'User creation failed due to integrity error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
