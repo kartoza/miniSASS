@@ -8,11 +8,17 @@ import re
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        user_id = validated_data.pop('id', None)
+
+        if user_id:
+            user = User.objects.create_user(id=user_id, **validated_data)
+        else:
+            user = User.objects.create_user(**validated_data)
+
         return user
 
 
