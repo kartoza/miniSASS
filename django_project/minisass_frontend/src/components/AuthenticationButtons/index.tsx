@@ -132,11 +132,20 @@ function AuthenticationButtons() {
     }
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
-      const response = await axios.post(UPDATE_PROFILE, newData, {
+
+      let formData = new FormData();
+      if (data.certificate) {
+        formData.append('certificate', newData.certificate[0]);
+      }
+      delete newData.certificate
+      formData.append('data', JSON.stringify(newData));
+
+      const response = await axios.post(UPDATE_PROFILE, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
-      });
+      }
+      );
 
       if (response.status === 200) {
         setLoading(true)

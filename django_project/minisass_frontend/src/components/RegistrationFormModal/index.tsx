@@ -36,6 +36,7 @@ interface RegistrationFormData {
   confirmPassword: string;
   oldPassword: string;
   updatePassword: boolean;
+  certificate: any
 }
 
 const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update'
@@ -61,7 +62,8 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
     password: '',
     confirmPassword: '',
     oldPassword: '',
-    updatePassword: false
+    updatePassword: false,
+    certificate: null
   });
 
   const [formErrors, setFormErrors] = useState<Partial<RegistrationFormData>>({});
@@ -69,6 +71,7 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
   const { dispatch, state  } = useAuth();
+  console.debug(formData)
 
   const fetchUserDetail = async () => {
     const headers = { 'Authorization': `Bearer ${state.user.access_token}` };
@@ -85,7 +88,8 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
           password: '',
           confirmPassword: '',
           oldPassword: '',
-          updatePassword: updatePassword ? updatePassword : false
+          updatePassword: updatePassword ? updatePassword : false,
+          certificate: response.data.certificate
         }
         setCountry(response.data.country ? response.data.country : 'ZA')
         setFormData(newFormData)
@@ -121,7 +125,8 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
         password: '',
         confirmPassword: '',
         oldPassword: '',
-        updatePassword: updatePassword
+        updatePassword: updatePassword,
+        certificate: ''
       });
       onClose();
     }
@@ -156,6 +161,11 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
       width: '16.5vw',
     }),
   };
+
+  const handleFileChange = (e: any) => {
+    // setFormData({ ...formData, ['certificate']: e.target.files[0] });
+    setFormData({ ...formData, 'certificate': e.target.files });
+  }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -585,7 +595,7 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
             {
               !isRegister &&
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-                    <div style={{ flex: 1, flexDirection: 'column', width: '25vw'}}>
+                    <div style={{ flex: 1, flexDirection: 'column', width: '304px'}}>
                       <label>Country:</label>
                       <CountrySelector
                         id={"country-selector"}
@@ -597,70 +607,81 @@ const UserFormModal: React.FC<RegistrationFormModalProps> = ({
                       {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
                     </div>
                     <div style={{ flex: 1, flexDirection: 'column' }}>
-                      <label>Change Password:</label><br />
-                        <Checkbox
-                          checked={formData.updatePassword}
-                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setFormData({ ...formData, updatePassword: event.target.checked });
-                          }}
+                        <label>Certificate:</label><br />
+                        <input
+                          type="file"
+                          name="certificate"
+                          // value={formData.certificate}
+                          onChange={handleFileChange}
+                          style={{ borderRadius: '4px', width: '16.5vw' }}
                         />
-                    </div>
+                      </div>
                   </div>
             }
 
-            {
-              formData.updatePassword && <>
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-                    <div style={{ flex: 1, flexDirection: 'column', width: '25vw' }}>
-                      <label>Old Password:</label><br />
-                        <input
-                          type="password"
-                          name="oldPassword"
-                          value={formData.oldPassword}
-                          onChange={handleInputChange}
-                          placeholder="Old Password"
-                          style={{ borderRadius: '4px', width: '16.5vw', 'marginLeft': '-5vw' }}
-                        />
-                      {formErrors.oldPassword && <span style={{ color: 'red' }}>{formErrors.oldPassword}</span>}
-                      </div>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-                    <div style={{ flex: 1, flexDirection: 'column' }}>
-                    <label>Password:</label><br />
-                      <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="Password"
-                        style={{ borderRadius: '4px', width: '16.5vw' }}
-                      />
-                    <br />
-                    <div style={{width: '16.5vw'}}>
-                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
-                    {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
-                    </div>
-                    </div>
-                    <div style={{ flex: 1, flexDirection: 'column' }}>
-                      <label>Confirm Password:</label><br />
-                      <input
-                        type="password"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        placeholder="Confirm Password"
-                        style={{ borderRadius: '4px', width: '16.5vw' }}
-                      />
-                      <br />
-                      {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
-                    </div>
-                  </div>
-                </>
-            }
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+              <div style={{ flex: 1, flexDirection: 'column', width: '305px' }}>
+                  <label>Change Password:</label><br />
+                    <Checkbox
+                      checked={formData.updatePassword}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setFormData({ ...formData, updatePassword: event.target.checked });
+                      }}
+                    />
+                </div>
+              {formData.updatePassword ?
+                <div style={{ flex: 1, flexDirection: 'column', width: '16.5vw'}}>
+                <label>Old Password:</label><br />
+                  <input
+                    type="password"
+                    name="oldPassword"
+                    value={formData.oldPassword}
+                    onChange={handleInputChange}
+                    placeholder="Old Password"
+                    style={{ borderRadius: '4px', width: '16.5vw'}}
+                  />
+                {formErrors.oldPassword && <span style={{ color: 'red' }}>{formErrors.oldPassword}</span>}
+                </div> :
+                <div style={{ flex: 1, flexDirection: 'column', width: '16.5vw'}}>
+                </div>
+              }
+            </div>
+            {formData.updatePassword &&
+              <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                <div style={{ flex: 1, flexDirection: 'column' }}>
+                <label>Password:</label><br />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password"
+                    style={{ borderRadius: '4px', width: '16.5vw' }}
+                  />
+                <br />
+                <div style={{width: '16.5vw'}}>
+                {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
+                {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
+                {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
+                {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
+                {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                </div>
+                </div>
+                <div style={{ flex: 1, flexDirection: 'column' }}>
+                  <label>Confirm Password:</label><br />
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm Password"
+                    style={{ borderRadius: '4px', width: '16.5vw' }}
+                  />
+                  <br />
+                  {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
+                </div>
+              </div>}
 
             {error_response && (
               <div style={{ color: 'red' }}>{error_response}</div>

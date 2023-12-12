@@ -166,7 +166,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                   className="text-center text-gray-700 text-xs w-auto"
                   size="txtRalewayRomanRegular12"
                 >
-                  Supported formates: <span style={{ textTransform: "uppercase" }}>{accept}</span>
+                  Supported formats: <span style={{ textTransform: "uppercase" }}>{accept}</span>
                 </Text>
               </div>
             </div>

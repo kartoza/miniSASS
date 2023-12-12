@@ -6,7 +6,7 @@ from django.conf import settings
 def certificate_path(instance, filename):
     return os.path.join(
         settings.MINIO_BUCKET,
-        f'{instance.user.username}',
+        f'{instance.user.id}',
         filename
     )
 
@@ -45,7 +45,8 @@ class UserProfile(models.Model):
         help_text='Flag whether user has been enforced to use strong password'
     )
     certificate = models.FileField(
-        null=True, upload_to=certificate_path, storage=settings.MINION_STORAGE
+        null=True, blank=True,
+        upload_to=certificate_path, storage=settings.MINION_STORAGE
     )
 
     def __str__(self):

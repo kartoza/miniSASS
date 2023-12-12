@@ -33,7 +33,7 @@ const PESTS = [
 ]
 
 
-const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
