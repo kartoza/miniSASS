@@ -124,7 +124,7 @@ urlpatterns = [
     ),
     path(
         'observations/by-site/<int:site_id>/', 
-        ObservationsBySiteId.as_view(), 
+        ObservationsBySiteId,
         name='observations-by-site'
     ),
 ]
