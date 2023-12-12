@@ -14,7 +14,8 @@ from monitor.site_views import (
     AssessmentRetrieveUpdateDestroyView,
     SitesListCreateView,
     SiteRetrieveUpdateDestroyView,
-    SiteObservationsByLocation
+    SiteObservationsByLocation,
+    ObservationsBySiteId
 )
 from monitor.views import (
     index,
@@ -120,5 +121,10 @@ urlpatterns = [
         'site-assessments/<int:pk>/', 
         AssessmentRetrieveUpdateDestroyView.as_view(), 
         name='assessment-retrieve-update-destroy'
+    ),
+    path(
+        'observations/by-site/<int:site_id>/', 
+        ObservationsBySiteId.as_view(), 
+        name='observations-by-site'
     ),
 ]
