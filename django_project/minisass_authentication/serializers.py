@@ -27,6 +27,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     old_password = serializers.SerializerMethodField()
     password = serializers.SerializerMethodField()
     confirm_password = serializers.SerializerMethodField()
+    certificate = serializers.SerializerMethodField()
 
     def get_name(self, instance):
         return instance.first_name
@@ -52,6 +53,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def get_confirm_password(self, instance):
         return ''
 
+    def get_certificate(self, instance):
+        if instance.userprofile:
+            if instance.userprofile.certificate:
+                return instance.userprofile.certificate.url
+            return None
+        return None
+
     @classmethod
     def validate_old_password_correct(self, value, compare_value):
         password_match = check_password(value, compare_value)
@@ -73,7 +81,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'specialCharacter': not requirements['specialCharacter'].search(value),
             'length': not requirements['length'].search(value),
         }
-        print(remaining_requirements)
         return (
             not all(remaining_requirements.values()),
             ', '.join([key for key, val in remaining_requirements.items() if val])
@@ -104,7 +111,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Country should not be empty")
         return value
 
-    def save(self, old_user):
+    def save(self, old_user, certificate=None):
         user_dict = self.validated_data
         user_profile_dict = self.validated_data.pop('userprofile')
         User.objects.filter(id=old_user.id).update(**user_dict)
@@ -117,13 +124,17 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             # If no match is found, use the default description "Organisation Type".
             organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
 
+        defaults = {
+            'organisation_type': organisation_type,
+            'organisation_name': user_profile_dict['organisation_name'],
+            'country': user_profile_dict['country']
+        }
+        if certificate:
+            defaults['certificate'] = certificate
+            defaults['is_expert'] = True
         user_profile, created = UserProfile.objects.update_or_create(
             user=old_user,
-            defaults={
-                'organisation_type': organisation_type,
-                'organisation_name': user_profile_dict['organisation_name'],
-                'country': user_profile_dict['country']
-            }
+            defaults=defaults
         )
         return old_user, user_profile
 
@@ -132,6 +143,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = (
             'username', 'email', 'name', 'surname', 'organisation_type',
             'organisation_name', 'country', 'old_password', 'password', 'confirm_password',
+            'certificate'
         )
         extra_kwargs = {
             'password': {'write_only': True},

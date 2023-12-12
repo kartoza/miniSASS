@@ -1,3 +1,5 @@
+import json
+
 from minisass_authentication.serializers import UserSerializer, UserUpdateSerializer
 from django.conf import settings
 from django.contrib.auth import (
@@ -256,18 +258,22 @@ class UpdateUser(APIView):
         return Response(UserUpdateSerializer(request.user).data)
 
     def post(self, request):
+        data = json.loads(request.POST.get('data', {}))
         serializer = UserUpdateSerializer(
-            data=request.data
+            data=data
         )
         if serializer.is_valid(raise_exception=True):
             try:
-                user, user_profile = serializer.save(request.user)
+                user, user_profile = serializer.save(
+                    request.user,
+                    certificate=request.FILES.get('certificate', None)
+                )
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
-            update_password = request.data.get('updatePassword', False)
-            old_password = request.data.get('oldPassword', '')
-            new_password = request.data.get('password', '')
-            confirm_password = request.data.get('confirmPassword', '')
+            update_password = data.get('updatePassword', False)
+            old_password = data.get('oldPassword', '')
+            new_password = data.get('password', '')
+            confirm_password = data.get('confirmPassword', '')
             if update_password:
                 is_password_correct = serializer.validate_old_password_correct(
                     old_password,
