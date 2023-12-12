@@ -58,9 +58,13 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
   useEffect(() => {
     const fetchScoreGroups = async () => {
       try {
+        setIsSavingData(true)
         const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
-        setScoreGroups(response.data);
-        setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })))
+        if(response.status == 200){
+          setScoreGroups(response.data);
+          setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })))
+          setIsSavingData(false)
+        } else; // TODO trigger a retry in about 3 seconds
       } catch (error) {
         console.error('Error fetching score groups:', error);
       }
@@ -129,7 +133,13 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
 
       if(response.status == 200){
         setIsSavingData(false)
-        setIsSuccessModalOpen(true);
+        console.error(response.data);
+        if (response.data.status.includes('error')) {
+          setErrorMessage(response.data.message);
+          setIsErrorModalOpen(true);
+        }else {
+          setIsSuccessModalOpen(true);
+        }
       }
     } catch (error) {
       setIsSavingData(false)
@@ -193,7 +203,14 @@ const ScoreForm: FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpe
         }}
       >
         {isSavingData ? (
-          <LinearProgress color="success" />
+          <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
+            <div className="flex flex-row gap-80 w-auto sm:w-full" style={{marginLeft: '0px'}}>
+              <div style={{ width: '535px'}}>
+                <LinearProgress color="success" />
+              </div>
+            </div>
+          </div>
+          
         ) :
         (
 
