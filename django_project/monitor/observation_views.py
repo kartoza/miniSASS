@@ -25,6 +25,21 @@ from monitor.serializers import (
     ObservationsSerializer, ObservationPestImageSerializer
 )
 
+from django.http import Http404
+
+
+@csrf_exempt
+@login_required
+class ObservationsBySiteId(APIView):
+    def get(self, request, site_id, format=None):
+        try:
+            site = Sites.objects.get(gid=site_id)
+            observations = Observations.objects.filter(site=site)
+            serializer = ObservationsSerializer(observations, many=True)
+            return Response(serializer.data)
+        except Sites.DoesNotExist:
+            raise Http404("Site does not exist")
+
 
 @csrf_exempt
 @login_required
