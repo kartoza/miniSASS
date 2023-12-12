@@ -2,7 +2,7 @@
 
 ## Description
 
-User Profile API functions as an endpoint to update user profile, password, and certificate.
+The User Profile API functions as an endpoint to update the user profile, password, and certificate.
 
 ## How to use
 
@@ -15,9 +15,9 @@ This API only allows 2 methods:
 2. POST
 
 #### GET
-Used to get User Profile detail including the uploaded certificate. No parameter is needed, since the endpoint automatically get the 
-profile based on the authenticated user. Success request will have status code 200.
-When using GET, `old_password`, `password`, and `confirm_password` field will always be empty.
+Used to get the User Profile detail including the uploaded certificate. No parameter is needed, since the endpoint automatically gets the 
+profile based on the authenticated user. A success request will have the status code 200.
+When using GET, the `old_password`, `password`, and `confirm_password` fields will always be empty.
 
 Example response:
 ```typescript
@@ -37,8 +37,8 @@ Example response:
 ```
 
 #### POST
-Used to update User Profile detail, including certificate upload. 
-The accepted content type are multipart/form-data.
+Used to update the User Profile detail, including the certificate upload. 
+The accepted content type is multipart/form-data.
 
 Here is an example to send the POST request.
 ```typescript
@@ -77,8 +77,8 @@ Then it will be sent as this
 ```
 
 
-If updating profile/changing password/uploading certificate is successful, response 200 will be returned
-with User Profile detail.
+If updating profile/changing password/uploading certificate is successful, a response 200 will be returned
+with the User Profile detail.
 ```typescript
 {
     "username": "admin",
@@ -96,5 +96,5 @@ with User Profile detail.
 ```
 
 ####  Update Password
-To update password, set `updatePassword` to `true`, then provide value to `old_password`, `password`, 
-and `confirm_password`.
+To update password, set `updatePassword` to `true`, then provide value in the `old_password`, `password`, 
+and `confirm_password` fields.
