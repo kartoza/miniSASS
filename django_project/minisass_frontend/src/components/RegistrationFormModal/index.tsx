@@ -31,9 +31,9 @@ interface RegistrationFormData {
   confirmPassword: string;
 }
 
-const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ 
-  isOpen, 
-  onClose, 
+const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
+  isOpen,
+  onClose,
   onSubmit,
   error_response,
   Registrationloading,
@@ -92,7 +92,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       borderRadius: '4px',
       width: '16.5vw',
       borderColor: isFocused ? '#539987' : 'rgba(0, 0, 0, 0.23)',
-      
+
     }),
     option: (styles, { isFocused }) => ({
       ...styles,
@@ -149,7 +149,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     return remainingRequirements;
   };
 
- 
+
   const handleEmailBlur = () => {
     if (formData.email) {
       if (!validateEmail(formData.email)) {
@@ -257,7 +257,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     }
   }, [isOpen]);
 
-  
+
 
   return (
     <>
@@ -315,8 +315,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
             </Button>
         </div>
       ) : (
-        
-      
+
+
       isOpen && (
         <div
           style={{

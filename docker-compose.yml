@@ -97,6 +97,7 @@ services:
       - MINIO_ROOT=/home/web/minio
       - MINIO_BUCKET=${BUCKET:-demo}
       - ALLOWED_HOSTS='*'
+      - DEV_SETUP=${DEV_SETUP}
     depends_on:
       db:
         condition: service_healthy

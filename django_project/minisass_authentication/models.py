@@ -1,5 +1,15 @@
+import os
 from django.db import models
 from django.conf import settings
+
+
+def certificate_path(instance, filename):
+    return os.path.join(
+        settings.MINIO_BUCKET,
+        f'{instance.user.id}',
+        filename
+    )
+
 
 # TODO might remove this as it is no longer neccessary
 class Lookup(models.Model):
@@ -17,6 +27,7 @@ class Lookup(models.Model):
     def __str__(self):
         return self.description
 
+
 class UserProfile(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
@@ -28,6 +39,15 @@ class UserProfile(models.Model):
     )
     organisation_name = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True, null=True)
+    is_expert = models.BooleanField(default=False)
+    is_password_enforced = models.BooleanField(
+        default=False,
+        help_text='Flag whether user has been enforced to use strong password'
+    )
+    certificate = models.FileField(
+        null=True, blank=True,
+        upload_to=certificate_path, storage=settings.MINION_STORAGE
+    )
 
     def __str__(self):
         return f"{self.organisation_type}: {self.organisation_name or 'Unknown'}"

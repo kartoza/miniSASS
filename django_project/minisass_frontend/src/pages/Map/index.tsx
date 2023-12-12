@@ -83,12 +83,19 @@ const MapPage: React.FC = () => {
     setSelectingOnMap((prev) => !prev);
   };
 
+
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
 
   const openObservationForm = (siteWithObservations: {site: {}, observations: []}) => {
     setSiteWithObservations(siteWithObservations)
     setIsObservationDetails(true)
     setSidebarOpen((prev) => !prev);
+
+  const [resetMapToDefault, setResetMap] = useState(false);
+
+  function resetMap(): void {
+    setSelectedCoordinates({latitude: null, longitude: null})
+    setResetMap(true)
   }
 
   return (
@@ -159,9 +166,11 @@ const MapPage: React.FC = () => {
                 handleSelect={handleMapClick} 
                 selectingOnMap={selectingOnMap}
                 selectedCoordinates={selectedCoordinates}
+                resetMap={resetMapToDefault}
                 idxActive={idxActive}
                 setIdxActive={setIdxActive}
                 openObservationForm={openObservationForm}
+                resetMap={resetMapToDefault}
               />
               {/* Sidebar */}
               <Sidebar
@@ -174,6 +183,7 @@ const MapPage: React.FC = () => {
                 handleMapClick={handleMapClick}
                 selectedCoordinates={selectedCoordinates}
                 siteWithObservations={siteWithObservations}
+                resetMap={resetMap}
               />
             </div>
           </div>

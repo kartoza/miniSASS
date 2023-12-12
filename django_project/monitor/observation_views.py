@@ -10,6 +10,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.utils.translation import gettext as _
+from django.db.models import Max
+
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
@@ -46,7 +51,7 @@ def create_observations(request):
             caddisflies = data.get('caddisflies', False)
             true_flies = data.get('true_flies', False)
             snails = data.get('snails', False)
-            score = Decimal(str(datainput.get('score', 0)))
+            score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
             water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
             water_temp = Decimal(str(datainput.get('watertemperatureOne', 0)))
@@ -69,7 +74,10 @@ def create_observations(request):
             try:
                 site = Sites.objects.get(gid=site_id)
             except Sites.DoesNotExist:
-                # If it doesn't exist, create a new site
+                # If it doesn't exist, create a new site with an incremented ID
+                max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
+                new_site_id = max_site_id + 1 if max_site_id is not None else 1
+
                 site_name = datainput.get('siteName', '')
                 river_name = datainput.get('riverName', '')
                 description = datainput.get('siteDescription', '')
@@ -77,8 +85,9 @@ def create_observations(request):
                 longitude = datainput.get('longitude', 0)
                 latitude = datainput.get('latitude', 0)
 
-                # Save the new site
+                # Save the new site with the incremented ID
                 site = Sites.objects.create(
+                    gid=new_site_id,
                     site_name=site_name,
                     river_name=river_name,
                     description=description,
@@ -149,10 +158,12 @@ def create_observations(request):
 class RecentObservationListView(generics.ListAPIView):
     serializer_class = ObservationsSerializer
 
-    def get_queryset(self, site_id=None, recent=True):
+    def get_queryset(self, site_id=None, recent=True, by_user=False, user=None):
         all_obs = Observations.objects.all().order_by('-time_stamp')
         if site_id:
             all_obs = all_obs.filter(site_id=site_id)
+        if by_user and user.id:
+            all_obs = all_obs.filter(user=user)
         return all_obs[:20] if recent else all_obs
 
     def build_recent_observations(self, queryset):
@@ -181,9 +192,11 @@ class RecentObservationListView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         site_id = request.GET.get('site_id', None)
+        by_user = request.GET.get('by_user', 'False')
+        by_user = by_user in ['True', 'true', '1', 'yes']
         recent = request.GET.get('recent', 'True')
-        recent = recent in ['True', 'true', '1', 'yes']
-        queryset = self.get_queryset(site_id, recent)
+        recent = recent in ['True', 'true', '1', 'yes'] and not request.user.id
+        queryset = self.get_queryset(site_id, recent, by_user, request.user)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
 

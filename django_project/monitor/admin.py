@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import (
-    Sites, Observations, SiteImage, ObservationPestImage, Pest
+    Assessment,
+    Sites, 
+    Observations, 
+    SiteImage, 
+    ObservationPestImage, 
+    Pest
 )
 
 def make_verified(modeladmin, request, queryset):
@@ -28,6 +33,9 @@ class ObservationsAdmin(admin.ModelAdmin):
         'site',
         'obs_date',
         'score',
+        'minisass_ml_score',
+        'ml_model_version',
+        'ml_model_type',
         'flag'
     )
     list_filter = ('flag',)
@@ -51,3 +59,4 @@ class SitesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Pest, admin.ModelAdmin)
+admin.site.register(Assessment, admin.ModelAdmin)

@@ -6,6 +6,7 @@ const Home = React.lazy(() => import("./pages/MainPage"));
 const Map = React.lazy(() => import("./pages/Map"));
 const DebugLinks = React.lazy(() => import("./pages/Home"));
 const PasswordResetPage = React.lazy(() => import("./pages/PasswordReset"));
+const RecentActivity = React.lazy(() => import("./pages/RecentActivity"));
 import LinearProgress from '@mui/material/LinearProgress';
 
 const ProjectRoutes = () => {
@@ -20,6 +21,7 @@ const ProjectRoutes = () => {
           <Route path="/map" element={<Map />} />
           <Route path="/links" element={<DebugLinks />} />
           <Route path="/password-reset" element={<PasswordResetPage />} />
+          <Route path="/recent-activity" element={<RecentActivity />} />
         </Routes>
       </Router>
     </React.Suspense>

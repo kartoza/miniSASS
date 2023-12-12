@@ -21,10 +21,12 @@ interface Interface {
   overlayLayers: layerConfiguration[],
   handleSelect: (latitude: number, longitude: number) => void;
   selectingOnMap: boolean;
+  resetMap: boolean;
   selectedCoordinates: {latitude: number, longitude: number};
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
+  resetMap: boolean;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -34,6 +36,15 @@ const HIGHLIGHT_WIDTH = 3
 const HIGHLIGHT_CIRCLE_ID = HIGHLIGHT_ID + '-circle'
 const HIGHLIGHT_LINE_ID = HIGHLIGHT_ID + '-line'
 const HIGHLIGHT_POLYGON_ID = HIGHLIGHT_ID + '-polygon'
+
+const initialMapConfig = {
+  container: 'map',
+  style: [],
+  center: [24.679864950000024, -28.671882886975247],
+  zoom: 5.3695883239884745,
+  attributionControl: false,
+  maxZoom: 17,
+};
 
 /**
  * Map component using maplibre
@@ -195,10 +206,13 @@ export const Map = forwardRef((props: Interface, ref) => {
 
     // navigating to different locations on the map
     useEffect(() => {
+      if (!map) {
+        // Map not initialized yet, return
+        return;
+      }
       let mapInstance = map;
-
+    
       const moveMapToCoordinates = (longitude, latitude) => {
-
         const geojson = {
           type: 'FeatureCollection',
           features: [
@@ -214,15 +228,15 @@ export const Map = forwardRef((props: Interface, ref) => {
             }
           ]
         };
-      
-        if (map.getSource('selected-point')) {
-          map.getSource('selected-point').setData(geojson);
+    
+        if (mapInstance.getSource('selected-point')) {
+          mapInstance.getSource('selected-point').setData(geojson);
         } else {
-          map.addSource('selected-point', {
+          mapInstance.addSource('selected-point', {
             type: 'geojson',
             data: geojson
           });
-          map.addLayer({
+          mapInstance.addLayer({
             id: 'selected-point-layer',
             type: 'circle',
             source: 'selected-point',
@@ -236,8 +250,8 @@ export const Map = forwardRef((props: Interface, ref) => {
             }
           });
         }
-        
-        map.flyTo({
+    
+        mapInstance.flyTo({
           center: [longitude, latitude],
           zoom: 10,
           essential: true
@@ -245,22 +259,22 @@ export const Map = forwardRef((props: Interface, ref) => {
       };
     
       if (
-        props.selectedCoordinates.longitude !== null && 
-        props.selectedCoordinates.latitude !== null && 
-        props.selectedCoordinates.longitude !== 0 && 
+        props.selectedCoordinates.longitude !== null &&
+        props.selectedCoordinates.latitude !== null &&
+        props.selectedCoordinates.longitude !== 0 &&
         props.selectedCoordinates.latitude !== 0
       ) {
         const { longitude, latitude } = props.selectedCoordinates;
         moveMapToCoordinates(longitude, latitude);
       }
-  
+    
       const handleSelectOnMapClick = (e) => {
         const lngLat = e.lngLat;
         const latitude = lngLat.lat;
         const longitude = lngLat.lng;
-      
+    
         props.handleSelect(latitude, longitude);
-      
+    
         const geojson = {
           type: 'FeatureCollection',
           features: [
@@ -276,20 +290,20 @@ export const Map = forwardRef((props: Interface, ref) => {
             }
           ]
         };
-      
+    
         // Check if the source already exists
-        if (map.getSource('selected-point')) {
+        if (mapInstance.getSource('selected-point')) {
           // Update the data of the existing source
-          map.getSource('selected-point').setData(geojson);
+          mapInstance.getSource('selected-point').setData(geojson);
         } else {
           // Add a new source
-          map.addSource('selected-point', {
+          mapInstance.addSource('selected-point', {
             type: 'geojson',
             data: geojson
           });
-      
+    
           // Add a layer to display the selected point
-          map.addLayer({
+          mapInstance.addLayer({
             id: 'selected-point-layer',
             type: 'circle',
             source: 'selected-point',
@@ -303,22 +317,22 @@ export const Map = forwardRef((props: Interface, ref) => {
             }
           });
         }
-
+    
         // Move the map's center to the selected point and adjust zoom level
-        map.flyTo({
+        mapInstance.flyTo({
           center: [longitude, latitude],
           zoom: 10,
           essential: true // ensures a smooth transition
         });
-      
-        map.getCanvas().style.cursor = '';
+    
+        mapInstance.getCanvas().style.cursor = '';
       };
-      
-  
+
       const handleMapClick = (e) => {
         const { lng, lat } = e.lngLat;
         captureCoordinatesAndQuery(lat, lng);
       };
+
     
       const addClickEventListener = () => {
         if (mapInstance && props.selectingOnMap) {
@@ -336,13 +350,44 @@ export const Map = forwardRef((props: Interface, ref) => {
           mapInstance.getCanvas().style.cursor = '';
         }
       };
-  
+    
       addClickEventListener();
-  
+    
       return () => {
         removeClickEventListener();
       };
-    }, [props.handleSelect, props.selectingOnMap,props.selectedCoordinates]);
+    
+    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates,map]);
+
+
+
+    useEffect(() => {
+      if (props.resetMap === true) {
+        let mapInstance = map;
+        if (mapInstance) {
+          mapInstance.flyTo({
+            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
+            zoom: initialMapConfig.zoom,
+            essential: true,
+          });
+        }
+      }
+    }, [props.resetMap]);
+
+    useEffect(() => {
+      if (props.resetMap === true) {
+        let mapInstance = map;
+  
+        if (mapInstance) {
+          mapInstance.flyTo({
+            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
+            zoom: initialMapConfig.zoom,
+            essential: true,
+          });
+        }
+        // props.resetCoordinates()
+      }
+    }, [props.resetMap]);
 
 
     const captureCoordinatesAndQuery = async (latitude, longitude) => {

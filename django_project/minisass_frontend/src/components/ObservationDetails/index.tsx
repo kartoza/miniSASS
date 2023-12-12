@@ -6,6 +6,7 @@ import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
 import DownloadObservationForm from '../../components/DownloadObservationModal/index';
+import HorizontalImageGallery from '../../components/HorizontalImageGallery/';
 import LineChart from '../Charts/LineChart';
 import dayjs from 'dayjs';
 
@@ -15,6 +16,7 @@ interface ObservationDetailsProps {
   classname: string;
   handleMapClick: (longitude: number, latitude: number) => void;
   siteWithObservations: { site: {}, observations: []};
+  resetMap: () => void;
 }
 
 interface Observation {
@@ -34,11 +36,15 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   classname, 
   observation_id,
   handleMapClick, 
-  siteWithObservations 
+  siteWithObservations,
+  observation_id, 
+  handleMapClick, 
+  resetMap  
 }) => {
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
+    resetMap()
   };
 
   const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observation_id}/`
@@ -51,6 +57,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
   const [isChartHidden, setIsChartHidden] = useState<boolean>(true);
   const [observationList, setObservationList] = useState<Observation[]>([]);
+  const images = Object.keys(observationDetails).length > 0 ?
+    [].concat(observationDetails.site.images, observationDetails.images) :
+    [];
 
   let minDate = dayjs().format('YYYY-MM-DD');
   let maxDate = dayjs().format('YYYY-MM-DD');
@@ -107,7 +116,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setObservationDetails(response.data);
         
         setTimeout(() => {
-          handleMapClick(response.data.longitude, response.data.latitude);
+          handleMapClick(response.data.latitude,response.data.longitude);
         }, 1200);
 
         updateScoreDisplay(response.data.score);
@@ -136,16 +145,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
           content: (
             // Render content for each tab based on observation data This is an example of images per observation
             <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-              {/* iterate images for observation if any */}
-              {observation.observationImages.map((imageSrc, index) => (
-                <Img
-                  key={index}
-                  className="h-[152px] md:h-auto object-cover w-[164px]"
-                  src={imageSrc}
-                  alt={`img_placeholder_${index}`}
-                />
-                ))
-              }
+              <HorizontalImageGallery
+                images={images}
+              />
             </div>
           ),
         })))
@@ -153,6 +155,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     }
 
   }, [observation_id,siteWithObservations]);
+
 
   return (
     <div className={classname}

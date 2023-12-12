@@ -17,7 +17,7 @@ RUN apt-get install nodejs -y
 
 ADD ./django_project /home/web/django_project
 ADD ./deployment/docker/requirements.txt /REQUIREMENTS.txt
-RUN pip install --no-deps -r /REQUIREMENTS.txt
+RUN pip install -r /REQUIREMENTS.txt
 
 WORKDIR /home/web/django_project/minisass_frontend
 RUN npm install --legacy-peer-deps && npm run build

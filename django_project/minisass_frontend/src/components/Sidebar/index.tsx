@@ -14,6 +14,7 @@ interface SidebarProps {
   handleMapClick: (longitude: number, latitude: number) => void;
   selectingOnMap: boolean;
   selectedCoordinates: {longitude: number, latitude: number};
+  resetMap: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -25,13 +26,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   toggleMapSelection, 
   handleMapClick,
   selectingOnMap,
-  selectedCoordinates
+  selectedCoordinates,
+  resetMap
 }) => {
   return (
     <div
       className={`absolute ${
-        isOpen ? "right-0" : "-right-full"
+        isOpen ? "right-[10px]" : "-right-full"
       } bg-white-A700 flex flex-col  items-start justify-center py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[0%] sm:top-[25px] w-auto transition-all duration-300`}
+      style={{
+        marginTop: '0.2%'
+      }}
     >
       {isObservationDetails ? (
         <ObservationDetails 
@@ -40,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           setSidebarOpen={setSidebarOpen}
           handleMapClick={handleMapClick}
           siteWithObservations={siteWithObservations}
+          resetMap={resetMap}
         />
       ):( isOpen &&
         <DataInputForm 
@@ -49,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           handleMapClick={handleMapClick}
           selectingOnMap={selectingOnMap}
           selectedCoordinates={selectedCoordinates}
+          resetMap={resetMap}
         />
       )}
       

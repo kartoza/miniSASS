@@ -9,6 +9,8 @@ import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
 import { globalVariables, formatDate } from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
+import Select from 'react-select';
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 
 type DataInputFormProps = Omit<
@@ -42,6 +44,7 @@ type DataInputFormProps = Omit<
   | "handleMapClick"
   | "selectingOnMap"
   | "selectedCoordinates"
+  | "resetMap"
 > &
   Partial<{
     datainputform: string;
@@ -73,6 +76,7 @@ type DataInputFormProps = Omit<
     handleMapClick: (longitude: number, latitude: number) => void;
     selectedCoordinates:{longitude: number, latitude: number};
     selectingOnMap: boolean;
+    resetMap: () => void;
   }>;
 
 const inputOptionsList = [
@@ -97,7 +101,8 @@ const inputElectricConductivityUnitsList = [
 const SiteSelectionModes = {
     SELECT_KNOWN_SITE: 'Select known site',
     SELECT_ON_MAP: 'Select on map',
-    TYPE_IN_COORDINATES: 'Type in coordinates'
+    TYPE_IN_COORDINATES: 'Type in coordinates',
+    NONE: 'None'
 } as const;
 
 type SiteSelectionMode = keyof typeof SiteSelectionModes;
@@ -110,7 +115,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     props.setSidebarOpen(false);
   };
 
-  // TODO still need to save data to db
 
   // State to store form values
   const [formValues, setFormValues] = useState({
@@ -142,6 +146,15 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
   const [sites, setSitesList] = useState([]);
+  const [enableSiteFields, setEnableSiteFields] = useState(true);
+  const [isCreateSite, setIsCreateSite] = useState('createsite');
+  const [type, setType] = useState<string>('');
+  const [siteUserValues, setSiteUserValues] = useState({
+    rivercategory: 'rocky',
+    riverName: '',
+    siteName: '',
+    siteDescription: ''
+  })
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
@@ -199,10 +212,24 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     try {
       const response = await axios.get(`${FETCH_SITES}`);
       if (response.status === 200) {
-          const sitesList = response.data.map(site => ({
-            label: site.site_name,
-            value: site.gid.toString(),
-          }));
+          const sitesList = [
+            {
+              label: 'None',
+              value: 'none',
+              rivercategory: '',
+              siteName: '',
+              siteDescription: '',
+              riverName: '',
+            },
+            ...response.data.map((site) => ({
+              label: site.site_name,
+              value: site.gid.toString(),
+              rivercategory: site.river_cat,
+              siteName: site.site_name,
+              siteDescription: site.description,
+              riverName: site.river_name,
+            })),
+          ];
           setSitesList(sitesList);
       }
     } catch (error) {
@@ -220,6 +247,27 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const formatDate = (date) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
+  };
+  
+  const customStyles = {
+    control: (styles, { isFocused }) => ({
+      ...styles,
+      borderRadius: '4px',
+      width: '300px',
+      borderColor: isFocused ? '#539987' : 'rgba(0, 0, 0, 0.23)',
+      marginLeft: '210px'
+      
+    }),
+    option: (styles, { isFocused }) => ({
+      ...styles,
+      backgroundColor: isFocused ? '#539987' : 'transparent',
+      color: isFocused ? 'white' : 'black',
+    }),
+    menu: (styles) => ({
+      ...styles,
+      width: '16.5vw',
+      marginLeft: '210px'
+    }),
   };
 
   return (
@@ -266,6 +314,37 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           >
             {({ values, handleChange, setFieldValue }) => (
               <Form>
+                {/* site controls */}
+                <RadioGroup
+                  value={isCreateSite}
+                  onClick={(evt) => {
+                    const newValue = evt.target.value;
+                    setType((prevType) => (prevType === newValue ? null : newValue));
+                    if(newValue === 'createsite'){
+                      setEnableSiteFields(true)
+                      setIsCreateSite('createsite')
+                    }
+                    else {
+                      setIsCreateSite('useexistingsite')
+                      setEnableSiteFields(false)
+                      getSites()
+                      setSelectSiteMode('NONE')
+                      if(selectSiteMode === 'SELECT_ON_MAP')
+                        props.toggleMapSelection()
+                    }
+                    props.resetMap()
+                    setFieldValue('selectedSite', 'none');
+                    setFieldValue('riverName', '');
+                    setFieldValue('siteName', '');
+                    setFieldValue('riverCategory', '');
+                    setFieldValue('siteDescription', '');
+                  }}
+                  row
+                >
+                  <FormControlLabel value="createsite" control={<Radio />} label="Create New Site" />
+                  <FormControlLabel value="useexistingsite" control={<Radio />} label="Use Existing Site" />
+                </RadioGroup>
+
                 <div>
                   <Button
                     type="button"
@@ -280,6 +359,69 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   </Button>
                   <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
                 </div>
+
+                {!enableSiteFields &&
+                    <>
+                      <Button
+                          type="button"
+                          className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                          shape="round"
+                          color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
+                          size="xs"
+                          variant="fill"
+                          onClick={handleSelectKnownSite}
+                          style={{marginBottom: '5%' ,marginTop: '2%', opacity: 0.5}}
+                          disabled
+                        >
+                          {`Select site on map`}
+                        </Button>
+                        <br />
+                        <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
+                          <Text
+                            className="text-gray-800 text-lg tracking-[0.15px] w-auto"
+                            size="txtRalewayRomanRegular18"
+                          >
+                            {`Sites:`}
+                          </Text>
+                          
+                          <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                            <Select
+                              name="selectedSite"
+                              options={sites}
+                              className="!text-black-900_99 font-raleway text-base text-left"
+                              placeholder=""
+                              isSearchable
+                              styles={customStyles}
+                              value={sites.find((option) => option.value === values.selectedSite)}
+                              onChange={(selectedOption) => {
+                                handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
+                              
+                                const selectedValue = selectedOption.value;
+                              
+                                if (selectedValue === 'none') {
+                                  // Clear variables when "None" is selected
+                                  setFieldValue('riverName', '');
+                                  setFieldValue('siteName', '');
+                                  setFieldValue('rivercategory', '');
+                                  setFieldValue('siteDescription', '');
+                                  setIsCreateSite('useexistingsite');
+                                } else {
+                                  const selectedSite = sites.find((site) => site.value === selectedValue);
+                                  if (selectedSite) {
+                                    setIsCreateSite('useexistingsite');
+                                    setFieldValue('riverName', selectedSite.riverName);
+                                    setFieldValue('siteName', selectedSite.siteName);
+                                    setFieldValue('rivercategory', selectedSite.riverCategory);
+                                    setFieldValue('siteDescription', selectedSite.siteDescription);
+                                  }
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </>
+                }
+                 
                 <br/>
 
                 <UploadModal
@@ -320,7 +462,12 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     value={values.riverName}
                     onChange={(e) => {
                       handleChange(e);
+                      setSiteUserValues((prevValues) => ({
+                        ...prevValues,
+                        riverName: e.target.value
+                      }));
                     }}
+                    disabled={!enableSiteFields ? true : false}
                   />
                 </div>
 
@@ -352,7 +499,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginBottom: '4.5%'
                     }}
                     value={values.siteName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      setSiteUserValues((prevValues) => ({
+                        ...prevValues,
+                        siteName: e.target.value
+                      }));
+                    }}
+                    disabled={!enableSiteFields ? true : false} 
                   />
                 </div>
 
@@ -379,7 +533,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         }}
                         placeholder="e.g. downstream of industry."
                         value={values.siteDescription}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setSiteUserValues((prevValues) => ({
+                            ...prevValues,
+                            siteDescription: e.target.value
+                          }));
+                        }}
+                        disabled={!enableSiteFields ? true : false} 
                       />
                 </div>
 
@@ -440,7 +601,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           padding: '8px 12px',
                           marginBottom: '2%'
                         }}
-
+                        disabled={!enableSiteFields ? true : false} 
                       >
                       {inputOptionsList.map((option) => (
                         <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
@@ -464,23 +625,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   <div className="flex sm:flex-col flex-row gap-3 items-start justify-start w-auto sm:w-full">
                     <Button
                       type="button"
-                      className="!text-white-A700 cursor-pointer font-raleway min-w-[184px] text-center text-lg tracking-[0.81px]"
-                      shape="round"
-                      color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
-                      size="xs"
-                      variant="fill"
-                      onClick={handleSelectKnownSite}
-                    >
-                      {props?.selectKnownSite}
-                    </Button>
-                    <Button
-                      type="button"
                       className="!text-white-A700 cursor-pointer font-raleway min-w-[155px] text-center text-lg tracking-[0.81px]"
                       shape="round"
                       color={selectSiteMode === 'SELECT_ON_MAP' ? 'blue_900': 'blue_gray_500'}
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnMapClick}
+                      disabled={!enableSiteFields ? true : false} 
+                      style={{ opacity: enableSiteFields  ? 1 : 0.5 }}
                     >
                       {props?.selectOnMap}
                     </Button>
@@ -492,56 +644,17 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       size="xs"
                       variant="fill"
                       onClick={handleSelectOnTypeCoordinateClick}
+                      disabled={!enableSiteFields ? true : false}
+                      style={{ opacity: enableSiteFields  ? 1 : 0.5 }}
                     >
                       {props?.typeInCoordinates}
                     </Button>
                   </div>
                 </div>
 
-                {/* Additional field for select known site */}
-                {selectSiteMode === 'SELECT_KNOWN_SITE' && (
-                  <div>
-                    {/* known site */}
-                    <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
-                      <Text
-                        className="text-gray-800 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {`Sites:`}
-                      </Text>
-                      <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
-                        <Field as="select" name="selectedSite" className="!text-black-900_99 font-raleway text-base text-left"
-                            placeholderClassName="!text-black-900_99"
-                            placeholder=""
-                            shape="round"
-                            color="black_900_3a"
-                            size="xs"
-                            variant="outline"
-                            style={{
-                              width: '300px',
-                              maxWidth: '300px',
-                              height: '40px',
-                              border: '1px solid rgba(0, 0, 0, 0.23)',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              marginLeft: '40%'
-                            }}
-                          value={values.selectedSite}
-                          onChange={handleChange}
-                          >
-                          {sites.map((option) => (
-                            <option key={option.value} value={option.value} selected={option.value === values.selectedSite}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Field>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Additional fields for longitude and latitude */}
-                { selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP' ?
+                { (selectSiteMode === 'TYPE_IN_COORDINATES' || selectSiteMode === 'SELECT_ON_MAP') && enableSiteFields  ?
                   <CoordinatesInputForm
                     values={values}
                     setFieldValue={setFieldValue}
@@ -678,6 +791,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="waterclaritycm"
                       placeholder="Water clarity (cm):"
                       type="number"
+                      min="0"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="sm:w-full"
                       shape="round"
@@ -709,6 +823,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="watertemperaturOne"
                       placeholder="Water temperature (°C):"
                       type="number"
+                      min="-100"
+                      max="100"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="sm:w-full"
                       shape="round"
@@ -740,6 +856,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       name="ph"
                       placeholder="pH:"
                       type="number"
+                      min="0"
+                      max="14"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName=""
                       shape="round"
@@ -772,6 +890,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         <Field
                           name="dissolvedoxygenOne"
                           type="number"
+                          min="0"
+                          max="20"
                           placeholder="0.000000"
                           className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
                           wrapClassName="w-full"
@@ -780,13 +900,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           size="xs"
                           variant="outline"
                           style={{
-                            width: '215px',
-                            maxWidth: '215px',
+                            width: '219px',
+                            maxWidth: '219px',
                             height: '40px',
                             border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px',
                             padding: '8px 12px',
-                            marginRight: '-44px'
+                            marginRight: '-43px'
                           }}
                           value={values.dissolvedoxygenOne}
                           onChange={handleChange}
@@ -799,13 +919,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             size="xs"
                             variant="outline"
                             style={{
-                              width: '120px',
-                              maxWidth: '120px',
+                              width: '85px',
+                              maxWidth: '85px',
                               height: '40px',
                               border: '1px solid rgba(0, 0, 0, 0.23)',
                               borderRadius: '4px',
                               padding: '8px 12px',
-                              marginLeft: '17%'
+                              marginRight: '-20px',
+                              marginLeft: '50px'
                             }}
                           value={values.dissolvedoxygenOneUnit}
                           onChange={handleChange}
@@ -832,6 +953,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       <div className="flex flex-row items-center justify-start w-[97%] sm:w-full" style={{ marginLeft:'10px'}}>
                         <Field
                           name="electricalconduOne"
+                          min="0"
+                          max="100"
                           placeholder="0.000000"
                           type="number"
                           className="!placeholder:text-black-900_dd !text-black-900_dd font-roboto md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.15px] w-full"
@@ -841,13 +964,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           size="xs"
                           variant="outline"
                           style={{
-                            width: '215px',
-                            maxWidth: '215px',
+                            width: '211px',
+                            maxWidth: '211px',
                             height: '40px',
                             border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px',
                             padding: '8px 12px',
-                            marginRight: '-44px'
+                            marginRight: '-35px'
                           }}
                           value={values.electricalconduOne}
                           onChange={handleChange}
@@ -860,13 +983,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             size="xs"
                             variant="outline"
                             style={{
-                              width: '120px',
-                              maxWidth: '120px',
+                              width: '85px',
+                              maxWidth: '85px',
                               height: '40px',
                               border: '1px solid rgba(0, 0, 0, 0.23)',
                               borderRadius: '4px',
                               padding: '8px 12px',
-                              marginLeft: '17%'
+                              marginRight: '-11px',
+                              marginLeft: '43px'
                             }}
                           value={values.electricalconduOneUnit}
                           onChange={handleChange}
