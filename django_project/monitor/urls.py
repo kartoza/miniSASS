@@ -8,7 +8,7 @@ from monitor.observation_views import (
     RecentObservationListView,
     create_observations,
     ObservationImageViewSet,
-    ObservationsBySiteId
+    get_observations_by_site
 )
 from monitor.site_views import (
     AssessmentListCreateView,
@@ -124,7 +124,7 @@ urlpatterns = [
     ),
     path(
         'observations/by-site/<int:site_id>/', 
-        ObservationsBySiteId,
+        get_observations_by_site,
         name='observations-by-site'
     ),
 ]
