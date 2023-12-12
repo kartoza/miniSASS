@@ -37,8 +37,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   observation_id,
   handleMapClick, 
   siteWithObservations,
-  observation_id, 
-  handleMapClick, 
   resetMap  
 }) => {
 
