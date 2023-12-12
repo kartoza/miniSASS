@@ -107,19 +107,52 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
 
               <div className="flex flex-col items-start justify-start p-[5px] w-auto">
 
-                  <div className="p-5">
+                  <Grid container flexDirection={'row'} spacing={2}>
+                    <Grid item>
+                      <Grid container flexDirection={'column'}>
+                        {uploadedFiles.map((file, index) => (
+                            <Grid item>
+                              <span className="text-gray-700">{file.name}</span>
+                            </Grid>
+                        ))}
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Grid container flexDirection={'column'}>
+                        {uploadedFiles.map((file, index) => (
+                          <Grid item>
+                            <button
+                              onClick={() => handleRemoveFile(index)}
+                              className="text-red-500 font-bold cursor-pointer"
+                            >
+                              <FaTrash />
+                            </button>
+                        </Grid>
+                        ))}
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+
+                  {/* <div className="p-5">
                   {uploadedFiles.map((file, index) => (
-                    <div key={index} className="flex flex-row items-center space-x-2">
-                      <span className="text-gray-700">{file.name}</span>
-                      <button
-                        onClick={() => handleRemoveFile(index)}
-                        className="text-red-500 font-bold cursor-pointer"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
+                    <Grid container flexDirection={'column'}>
+                      <Grid item>
+                        <span className="text-gray-700">{file.name}</span>
+                      </Grid>
+                      <Grid item>
+                        <button
+                          onClick={() => handleRemoveFile(index)}
+                          className="text-red-500 font-bold cursor-pointer"
+                        >
+                          <FaTrash />
+                        </button>
+                      </Grid>
+                    </Grid>
+                    // <div key={index} className="flex flex-row items-center space-x-2">
+                    // </div>
                   ))}
-                </div>
+                </div> */}
 
                   <Grid container
                     direction="column"

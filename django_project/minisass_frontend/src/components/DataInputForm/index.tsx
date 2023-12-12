@@ -358,6 +358,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     {props?.uploadSiteImages}
                   </Button>
                   <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
+                  {values.images?.length ? 
+                    <Button className="min-w-[100px] text-center text-lg">clear</Button> : ''}
                 </div>
 
                 {!enableSiteFields &&
