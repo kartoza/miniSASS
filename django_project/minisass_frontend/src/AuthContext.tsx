@@ -23,6 +23,8 @@ type AuthState = {
   isAuthenticated: boolean;
   refreshToken: null;
   openLoginModal: boolean;
+  isAdmin: boolean;
+  isPasswordEnforced: boolean;
 };
 
 type AuthAction =
@@ -38,7 +40,9 @@ const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   refreshToken: null,
-  openLoginModal: false
+  openLoginModal: false,
+  isAdmin: false,
+  isPasswordEnforced: false
 };
 
 // Create the context

@@ -10,6 +10,8 @@ from monitor.observation_views import (
     ObservationImageViewSet
 )
 from monitor.site_views import (
+    AssessmentListCreateView,
+    AssessmentRetrieveUpdateDestroyView,
     SitesListCreateView,
     SiteRetrieveUpdateDestroyView,
     SiteObservationsByLocation
@@ -107,5 +109,16 @@ urlpatterns = [
     path(
         'observations/observation-details/<int:observation_pk>/',
         include(router.urls)
+    ),
+
+    path(
+        'site-assessments/', 
+        AssessmentListCreateView.as_view(), 
+        name='assessment-list-create'
+    ),
+    path(
+        'site-assessments/<int:pk>/', 
+        AssessmentRetrieveUpdateDestroyView.as_view(), 
+        name='assessment-retrieve-update-destroy'
     ),
 ]
