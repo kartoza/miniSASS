@@ -90,6 +90,7 @@ const MapPage: React.FC = () => {
     setSiteWithObservations(siteWithObservations)
     setIsObservationDetails(true)
     setSidebarOpen((prev) => !prev);
+  }
 
   const [resetMapToDefault, setResetMap] = useState(false);
 
