@@ -54,7 +54,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return ''
 
     def get_certificate(self, instance):
-        return instance.userprofile.certificate.url
+        if instance.userprofile:
+            if instance.userprofile.certificate:
+                return instance.userprofile.certificate.url
+            return None
+        return None
 
     @classmethod
     def validate_old_password_correct(self, value, compare_value):
