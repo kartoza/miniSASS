@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.urls import reverse
-from monitor.models import Sites, Observations
+from monitor.models import Sites, Observations, SiteImage
 from monitor.serializers import SitesWithObservationsSerializer
 from rest_framework.test import APIClient
 from io import BytesIO
