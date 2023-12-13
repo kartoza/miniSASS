@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, FloatingInput, Img, Input, SelectBox, Text } from "../../components";
+import { Button, Img, Text } from "../../components";
+import ClearIcon from '@mui/icons-material/Clear';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import Tooltip from '@mui/material/Tooltip';
 import UploadModal from "../../components/UploadFormModal";
 import { Instance } from '@popperjs/core';
@@ -11,6 +13,7 @@ import { globalVariables, formatDate } from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
 import Select from 'react-select';
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import {deepClone} from "@mui/x-data-grid/utils/utils";
 
 
 type DataInputFormProps = Omit<
@@ -154,7 +157,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     riverName: '',
     siteName: '',
     siteDescription: ''
-  })
+  });
 
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
