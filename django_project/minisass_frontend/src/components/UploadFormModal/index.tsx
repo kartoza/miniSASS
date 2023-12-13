@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Modal from 'react-modal';
 import { Button, Img, Text } from "../../components";
 import { FaTrash } from 'react-icons/fa';
@@ -25,6 +25,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
   // Construct the new URL with the replacement path
   const newURL = baseUrl + '/' + replacementPath;
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [clearAll, setClearAll] = useState<boolean>(false);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -38,6 +39,23 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
     updatedFiles.splice(index, 1);
     setUploadedFiles(updatedFiles);
   };
+
+  const handleClearFile = () => {
+    setUploadedFiles([]);
+    setClearAll(true);
+  };
+
+  useEffect(() => {
+    if (clearAll) {
+      onSubmit(uploadedFiles);
+    }
+  }, [clearAll])
+
+  useEffect(() => {
+    if (isOpen) {
+      setClearAll(false);
+    }
+  }, [isOpen])
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -133,27 +151,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                     </Grid>
                   </Grid>
 
-
-                  {/* <div className="p-5">
-                  {uploadedFiles.map((file, index) => (
-                    <Grid container flexDirection={'column'}>
-                      <Grid item>
-                        <span className="text-gray-700">{file.name}</span>
-                      </Grid>
-                      <Grid item>
-                        <button
-                          onClick={() => handleRemoveFile(index)}
-                          className="text-red-500 font-bold cursor-pointer"
-                        >
-                          <FaTrash />
-                        </button>
-                      </Grid>
-                    </Grid>
-                    // <div key={index} className="flex flex-row items-center space-x-2">
-                    // </div>
-                  ))}
-                </div> */}
-
                   <Grid container
                     direction="column"
                     alignItems="center"
@@ -199,11 +196,20 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                       />
                     </Grid>
                   </Grid>
-                  {/*<div className="flex flex-col items-start justify-start p-[5px] w-auto">*/}
-
-                  {/*</div>*/}
               </div>
+
+
               <div className="flex flex-col font-raleway items-start justify-start mb-[106px] p-[5px] w-auto sm:w-full">
+                <Grid container flexDirection="column" alignItems="center" justifyContent="center">
+                  <Grid item xs={3}>
+                    <button
+                      onClick={handleClearFile}
+                      className="text-red-500 font-bold cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </Grid>
+                </Grid>
                 <Text
                   className="text-center text-gray-700 text-xs w-auto"
                   size="txtRalewayRomanRegular12"
