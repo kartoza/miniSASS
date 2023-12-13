@@ -7,6 +7,7 @@ import ObservationDetails from "../../components/ObservationDetails";
 interface SidebarProps {
   isOpen: boolean;
   isObservationDetails: boolean;
+  siteWithObservations: {site: {}, observations: []};
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   observation: string;
   toggleMapSelection: () => void;
@@ -18,7 +19,8 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ 
   isOpen, 
-  isObservationDetails, 
+  isObservationDetails,
+  siteWithObservations,
   setSidebarOpen , 
   observation,
   toggleMapSelection, 
@@ -42,6 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           observation_id={observation}
           setSidebarOpen={setSidebarOpen}
           handleMapClick={handleMapClick}
+          siteWithObservations={siteWithObservations}
           resetMap={resetMap}
         />
       ):( isOpen &&
