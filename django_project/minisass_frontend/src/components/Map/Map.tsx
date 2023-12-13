@@ -15,6 +15,8 @@ import { minisassObservationId } from "./Layer/MinisassLayer";
 import { globalVariables } from "../../utils";
 
 import 'maplibre-gl/dist/maplibre-gl.css';
+import axios from "axios";
+
 
 interface Interface {
   basemaps: BasemapConfiguration[],

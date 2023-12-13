@@ -81,7 +81,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   useEffect(() => {
-    fetchObservations();
+    if ((Array.isArray(observationDetails) && observationDetails.length > 0) || 
+      (typeof observationDetails === 'object' && Object.keys(observationDetails).length > 0)) {
+      fetchObservations();
+    }
   }, [observationDetails]);
 
   const closeDownloadModal = () => {
