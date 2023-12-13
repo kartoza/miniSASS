@@ -346,6 +346,30 @@ class ObservationsModelTest(BaseObservationsModelTest):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    def test_observations_by_site_id(self):
+        self.client.force_authenticate(
+            user=self.user
+        )
+
+        # Make a GET request to the observations by site endpoint
+        url = reverse('observations-by-site', kwargs={'site_id': self.site.gid})
+
+        # Make a GET request to the observations by site endpoint
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response['Content-Type'], 'application/json')
+
+    def test_observations_by_nonexistent_site_id(self):
+        self.client.login(username='testuser', password='testuserpassword')
+
+        url = reverse('observations-by-site', kwargs={'site_id': 999})
+
+        # Make a GET request to the observations by site endpoint with a nonexistent site ID
+        response = self.client.get(url)
+
+        # Check if the response status code is 404 Not Found
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def tearDown(self):
         """Tear down."""
         self.pest_image_1.delete()

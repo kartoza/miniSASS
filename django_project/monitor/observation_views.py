@@ -5,26 +5,36 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import Point
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, mixins
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import gettext as _
 from django.db.models import Max
-
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from minisass_authentication.models import UserProfile
+
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
 from monitor.serializers import (
     ObservationsSerializer, ObservationPestImageSerializer
 )
+
+def get_observations_by_site(request, site_id, format=None):
+    try:
+        site = Sites.objects.get(gid=site_id)
+        observations = Observations.objects.filter(site=site)
+        serializer = ObservationsAllFieldsSerializer(observations, many=True)
+        
+        return JsonResponse(
+            {'status': 'success', 'observations': serializer.data}
+        )
+    except Sites.DoesNotExist:
+        raise Http404("Site does not exist")
 
 
 @csrf_exempt

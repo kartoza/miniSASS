@@ -7,7 +7,8 @@ from monitor.observation_views import (
     ObservationRetrieveView,
     RecentObservationListView,
     create_observations,
-    ObservationImageViewSet
+    ObservationImageViewSet,
+    get_observations_by_site
 )
 from monitor.site_views import (
     AssessmentListCreateView,
@@ -120,5 +121,10 @@ urlpatterns = [
         'site-assessments/<int:pk>/', 
         AssessmentRetrieveUpdateDestroyView.as_view(), 
         name='assessment-retrieve-update-destroy'
+    ),
+    path(
+        'observations/by-site/<int:site_id>/', 
+        get_observations_by_site,
+        name='observations-by-site'
     ),
 ]

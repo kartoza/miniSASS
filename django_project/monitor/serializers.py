@@ -10,6 +10,13 @@ from monitor.models import (
     Assessment
 )
 
+
+class ObservationsAllFieldsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Observations
+        fields = '__all__'
+
+
 class AssessmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assessment
