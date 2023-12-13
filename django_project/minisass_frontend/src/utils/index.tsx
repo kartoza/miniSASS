@@ -26,6 +26,22 @@ export const globalVariables = {
   staticPath,
 };
 
+/**
+ * Capitalize string
+ */
+export function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+/**
+ * Get title from string
+ */
+export function getTitle(key: string) {
+  return  key.split('_')
+    .map((part) => capitalize(part))
+    .join(' ').trim()
+}
+
 /** Format date */
 export function formatDate(d, reverseDate = false) {
   let month = '' + (d.getMonth() + 1),
