@@ -14,6 +14,7 @@ from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from django.http import Http404
 
 from minisass_authentication.models import UserProfile
 
@@ -21,7 +22,9 @@ from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
 from monitor.serializers import (
-    ObservationsSerializer, ObservationPestImageSerializer
+    ObservationsSerializer, 
+    ObservationPestImageSerializer, 
+    ObservationsAllFieldsSerializer
 )
 
 def get_observations_by_site(request, site_id, format=None):

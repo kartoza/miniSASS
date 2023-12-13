@@ -7,7 +7,6 @@ from django.core.files.storage import FileSystemStorage
 
 from minisass.utils import absolute_path
 
-
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 CSRF_TRUSTED_ORIGINS = []
