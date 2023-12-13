@@ -133,26 +133,28 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       fetchObservation(observation_id)
     }else {
 
-        updateScoreDisplay(siteWithObservations.observations[0].score)
-        setObservationDetails(siteWithObservations.observations ?? [])
-        setObservations(siteWithObservations.observations ?? [])
-        setSiteDetails(siteWithObservations.site ?? {})
+        if (siteWithObservations.observations.length > 0) {
 
-
-        // create tabs based on observations per site
-        setTabsData(siteWithObservations.observations.map((observation: any, index: number) => ({
-          id: `tab${index + 1}`,
-          label: observation.obs_date, // tab name
-          content: (
-            // Render content for each tab based on observation data This is an example of images per observation
-            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-              <HorizontalImageGallery
-                images={images}
-              />
-            </div>
-          ),
-        })))
-
+          updateScoreDisplay(siteWithObservations.observations[0].score)
+          setObservationDetails(siteWithObservations.observations ?? [])
+          setObservations(siteWithObservations.observations ?? [])
+          setSiteDetails(siteWithObservations.site ?? {})
+  
+  
+          // create tabs based on observations per site
+          setTabsData(siteWithObservations.observations.map((observation: any, index: number) => ({
+            id: `tab${index + 1}`,
+            label: observation.obs_date, // tab name
+            content: (
+              // Render content for each tab based on observation data This is an example of images per observation
+              <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+                <HorizontalImageGallery
+                  images={images}
+                />
+              </div>
+            ),
+          })))
+        }
     }
 
   }, [observation_id,siteWithObservations]);
