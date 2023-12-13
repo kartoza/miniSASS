@@ -71,17 +71,11 @@ class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
-            # Create a Point object from the latitude and longitude
-            point = Point(float(longitude), float(latitude), srid=4326)
+            received_latitude = round(float(latitude), 2)
+            received_longitude = round(float(longitude), 2)
 
-            # Define a range for latitude and longitude (adjust the values as needed)
-            latitude_range = (point.y - 5, point.y + 5)
-            longitude_range = (point.x - 5, point.x + 5)
-
-            # Retrieve the first site within the specified range
             site = Sites.objects.filter(
-                the_geom__within=(Point(longitude_range[0], latitude_range[0], srid=4326),
-                                  Point(longitude_range[1], latitude_range[1], srid=4326))
+                the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
             ).first()
 
             if site:

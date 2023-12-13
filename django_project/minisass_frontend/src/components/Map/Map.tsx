@@ -28,7 +28,6 @@ interface Interface {
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
-  resetMap: boolean;
 }
 
 const HIGHLIGHT_ID = 'highlight'
