@@ -71,23 +71,18 @@ class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
-            tolerance = 0.05
-            latitude_range = (float(latitude) - tolerance, float(latitude) + tolerance)
-            longitude_range = (float(longitude) - tolerance, float(longitude) + tolerance)
+            received_latitude = round(float(latitude), 2)
+            received_longitude = round(float(longitude), 2)
 
-            # Filter sites within the specified range
-            sites = Sites.objects.filter(
-                the_geom__within=(Point(longitude_range[0], latitude_range[0], srid=4326),
-                                  Point(longitude_range[1], latitude_range[1], srid=4326))
-            )
+            site = Sites.objects.filter(
+                the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
+            ).first()
 
-            if sites.exists():
-                site = sites.first()
+            if site:
                 serializer = SitesWithObservationsSerializer(site)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response([], status=status.HTTP_404_NOT_FOUND)
-
-        except (Sites.DoesNotExist, ValueError):
+        except Sites.DoesNotExist:
             return Response([], status=status.HTTP_404_NOT_FOUND)
 
