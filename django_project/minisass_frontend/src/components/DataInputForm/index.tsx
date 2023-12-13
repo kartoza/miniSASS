@@ -166,11 +166,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const popperRef = React.useRef<Instance>(null);
   const areaRef = React.useRef<HTMLDivElement>(null);
 
-  const handleClearFile = (setFieldValue) => {
-    setFieldValue('images', []);
-    closeUploadModal();
-  };
-
   const handleMouseMove = (event: React.MouseEvent) => {
     positionRef.current = { x: event.clientX, y: event.clientY };
 
@@ -366,7 +361,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     {props?.uploadSiteImages}
                   </Button>
                   <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
-                  {values.images?.length ? <ClearIcon onClick={() => handleClearFile(setFieldValue)} /> : ''}
                 </div>
 
                 {!enableSiteFields &&
