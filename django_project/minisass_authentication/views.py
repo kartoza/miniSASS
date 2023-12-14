@@ -197,7 +197,7 @@ def register(request):
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Get the highest existing ID in the UserProfile model
-        max_id = User.objects.all().aggregate(Max('user_id'))['user_id__max']
+        max_id = User.objects.all().aggregate(Max('id'))['id__max']
         new_user_id = max_id + 1 if max_id is not None else 1
 
         # Set the ID for the new user
