@@ -48,7 +48,6 @@ const EditProfile: React.FC<EditProfileInterface> = ({
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
-  const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
   const [errorResponse, setErrorResponse] = useState(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const {dispatch, state} = useAuth();
@@ -88,15 +87,9 @@ const EditProfile: React.FC<EditProfileInterface> = ({
     axios.get(UPDATE_PROFILE, {headers}).then((response) => {
       if (response.data) {
         const newFormData = {
-          username: response.data.username,
-          name: response.data.name,
-          surname: response.data.surname,
-          email: response.data.email,
-          organisation_type: response.data.organisation_type,
-          organisation_name: response.data.organisation_name,
+          ...response.data,
           country: response.data.country ? response.data.country : 'ZA',
         }
-        setCountry(response.data.country ? response.data.country : 'ZA')
         setFormData(newFormData)
       }
     }).catch((error) => {
@@ -390,13 +383,41 @@ const EditProfile: React.FC<EditProfileInterface> = ({
                       id={"country-selector"}
                       open={isCountrySelectorOpen}
                       onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
-                      onChange={setCountry}
-                      selectedValue={COUNTRIES.find((option) => option.value === country)}
+                      onChange={(val: SelectMenuOption["value"]) => {
+                        setFormData({...formData, ['country']: val});
+                      }}
+                      selectedValue={COUNTRIES.find((option) => option.value === formData.country)}
                       disabled={!isEdit}
                     />
                   </Grid>
                   <Grid item>
                     {formErrors.country && <span style={{color: 'red'}}>{formErrors.country}</span>}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item>
+            <Grid container direction={'row'}>
+              <Grid item className={'label'}>
+                <label>Expertise:</label><br/>
+              </Grid>
+              <Grid item>
+                <Grid container flexDirection={'column'}>
+                  <Grid item>
+                    <input
+                      type="text"
+                      name="level"
+                      value={formData.is_expert ? 'Expert' : 'Novice'}
+                      onChange={handleInputChange}
+                      placeholder="Level"
+                      style={{borderRadius: '4px', width: '16.5vw'}}
+                      disabled={!isEdit}
+                    />
+                  </Grid>
+                  <Grid item>
+                    {formErrors.surname && <span style={{color: 'red'}}>{formErrors.surname}</span>}
                   </Grid>
                 </Grid>
               </Grid>

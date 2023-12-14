@@ -290,7 +290,6 @@ class UpdateUser(APIView):
             data=request.data
         )
         if serializer.is_valid(raise_exception=True):
-            print(serializer.validated_data)
             try:
                 user, user_profile = serializer.save(request.user)
                 return JsonResponse(UserUpdateSerializer(user).data)

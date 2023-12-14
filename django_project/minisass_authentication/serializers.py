@@ -50,18 +50,15 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         organisation_name = user_profile_dict['organisation_name']
         country = user_profile_dict['country']
         User.objects.filter(id=old_user.id).update(**user_dict)
-        print(organisation_type)
 
         if organisation_type:
             try:
                 organisation_type = Lookup.objects.get(
                     description__iexact=organisation_type
                 )
-                print(organisation_type)
             except Lookup.DoesNotExist:
                 # If no match is found, use the default description "Organisation Type".
                 organisation_type, _ = Lookup.objects.get_or_create(description__iexact="Organisation Type")
-                print(organisation_type)
 
         defaults = {}
         if organisation_type:

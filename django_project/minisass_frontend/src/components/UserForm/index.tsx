@@ -94,7 +94,7 @@ const UserFormModal: React.FC<FormModalProps> = ({
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
           width: '100%',
-          maxWidth: '45vw',
+          maxWidth: '50vw',
           background: 'white',
           border: 'none',
           borderRadius: '0px 25px 25px 25px',
@@ -211,7 +211,7 @@ const UserFormModal: React.FC<FormModalProps> = ({
               value={value}
               onChange={handleChange}
               aria-label="Vertical tabs example"
-              sx={{borderRight: 1, borderColor: 'divider'}}
+              sx={{borderRight: 1, borderColor: 'divider', minWidth: '200px'}}
             >
               <Tab label="Profile" {...a11yProps(0)} />
               <Tab label="Change Password" {...a11yProps(2)} />

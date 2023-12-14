@@ -51,7 +51,7 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
             onClick={handleClose}
           >
             <Link
-              href={`${globalVariables.currentURL}/admin`}
+              href={`${globalVariables.baseUrl}/admin`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >Admin</Link>
           </MenuItem>
