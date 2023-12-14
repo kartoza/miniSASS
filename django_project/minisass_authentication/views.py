@@ -76,15 +76,14 @@ def check_registration_status(request, email):
 
 
 @api_view(['GET'])
-class UserProfileIsExpertView(APIView):
-    def get(self, request, email):
-        user = get_object_or_404(User, email=email)
+def check_is_expert(self, request, email):
+    user = get_object_or_404(User, email=email)
 
-        user_profile = get_object_or_404(UserProfile, user=user)
+    user_profile = get_object_or_404(UserProfile, user=user)
 
-        serializer = UserProfileSerializer(user_profile)
+    serializer = UserProfileSerializer(user_profile)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
