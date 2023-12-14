@@ -30,49 +30,91 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     organisation_type = serializers.CharField(source='userprofile.organisation_type.description')
     organisation_name = serializers.CharField(source='userprofile.organisation_name')
     country = serializers.CharField(source='userprofile.country')
-    old_password = serializers.SerializerMethodField()
-    password = serializers.SerializerMethodField()
-    confirm_password = serializers.SerializerMethodField()
-    certificate = serializers.SerializerMethodField()
+    is_expert = serializers.BooleanField(source='userprofile.is_expert', required=False)
 
-    def get_name(self, instance):
-        return instance.first_name
+    def validate_name(self, value):
+        if value == '':
+            raise serializers.ValidationError("Name should not be empty")
+        return value
 
-    def get_surname(self, instance):
-        return instance.last_name
+    def validate_surname(self, value):
+        if value == '':
+            raise serializers.ValidationError("Surname should not be empty")
+        return value
 
-    def get_organisation_type(self, instance):
-        return instance.userprofile.organisation_type.description
+    def save(self, old_user):
+        user_dict = self.validated_data
+        user_profile_dict = self.validated_data.pop('userprofile')
 
-    def get_organisation_name(self, instance):
-        return instance.userprofile.organisation_name
+        organisation_type = user_profile_dict['organisation_type']['description']
+        organisation_name = user_profile_dict['organisation_name']
+        country = user_profile_dict['country']
+        User.objects.filter(id=old_user.id).update(**user_dict)
+        print(organisation_type)
 
-    def get_country(self, instance):
-        return instance.userprofile.country
+        if organisation_type:
+            try:
+                organisation_type = Lookup.objects.get(
+                    description__iexact=organisation_type
+                )
+                print(organisation_type)
+            except Lookup.DoesNotExist:
+                # If no match is found, use the default description "Organisation Type".
+                organisation_type, _ = Lookup.objects.get_or_create(description__iexact="Organisation Type")
+                print(organisation_type)
 
-    def get_old_password(self, instance):
-        return ''
+        defaults = {}
+        if organisation_type:
+            defaults['organisation_type'] = organisation_type
+        if organisation_type:
+            defaults['organisation_name'] = organisation_name
+        if country:
+            defaults['country'] = country
 
-    def get_password(self, instance):
-        return ''
+        user_profile, created = UserProfile.objects.update_or_create(
+            user=old_user,
+            defaults=defaults
+        )
+        return old_user, user_profile
 
-    def get_confirm_password(self, instance):
-        return ''
+    class Meta:
+        model = User
+        fields = (
+            'username', 'email', 'name', 'surname',
+            'organisation_type', 'organisation_name', 'country', 'is_expert'
+        )
 
-    def get_certificate(self, instance):
-        if instance.userprofile:
-            if instance.userprofile.certificate:
-                return instance.userprofile.certificate.url
-            return None
-        return None
 
-    @classmethod
-    def validate_old_password_correct(self, value, compare_value):
-        password_match = check_password(value, compare_value)
-        return password_match
+class CertificateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('certificate',)
 
-    @classmethod
-    def validate_password_criteria(self, value):
+    def save(self, old_user):
+        certificate = self.validated_data['certificate']
+        defaults = {}
+        if certificate:
+            defaults['certificate'] = certificate
+            defaults['is_expert'] = True
+        user_profile, created = UserProfile.objects.update_or_create(
+            user=old_user,
+            defaults=defaults
+        )
+        return user_profile
+
+
+class UpdatePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate_old_password(self, value):
+        password_match = check_password(value, self.context.get('old_password', ''))
+        if not password_match:
+            raise serializers.ValidationError('Wrong old password')
+        return value
+
+    def validate_password(self, value):
         requirements = {
             'uppercase': re.compile(r'^(?=.*[A-Z])'),
             'lowercase': re.compile(r'^(?=.*[a-z])'),
@@ -87,75 +129,26 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'specialCharacter': not requirements['specialCharacter'].search(value),
             'length': not requirements['length'].search(value),
         }
-        return (
-            not all(remaining_requirements.values()),
-            ', '.join([key for key, val in remaining_requirements.items() if val])
+        if all(remaining_requirements.values()):
+            missing_criteria = ', '.join([key for key, val in remaining_requirements.items() if val])
+            raise serializers.ValidationError(f'Missing password criteria: {missing_criteria}')
+        return value
+
+    def save(self, user):
+        user.set_password(self.validated_data['password'])
+        user.save()
+        UserProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                'is_password_enforced': True
+            }
         )
-
-    def validate_name(self, value):
-        if value == '':
-            raise serializers.ValidationError("Name should not be empty")
-        return value
-
-    def validate_surname(self, value):
-        if value == '':
-            raise serializers.ValidationError("Surname should not be empty")
-        return value
-
-    def validate_organisation_type(self, value):
-        if value == '':
-            raise serializers.ValidationError("Organisation Type should not be empty")
-        return value
-
-    def validate_organisation_name(self, value):
-        if value == '':
-            raise serializers.ValidationError("Organisation Name should not be empty")
-        return value
-
-    def validate_country(self, value):
-        if value == '':
-            raise serializers.ValidationError("Country should not be empty")
-        return value
-
-    def save(self, old_user, certificate=None):
-        user_dict = self.validated_data
-        user_profile_dict = self.validated_data.pop('userprofile')
-        User.objects.filter(id=old_user.id).update(**user_dict)
-
-        try:
-            organisation_type = Lookup.objects.get(
-                description__iexact=user_profile_dict['organisation_type']['description']
-            )
-        except Lookup.DoesNotExist:
-            # If no match is found, use the default description "Organisation Type".
-            organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
-
-        defaults = {
-            'organisation_type': organisation_type,
-            'organisation_name': user_profile_dict['organisation_name'],
-            'country': user_profile_dict['country']
-        }
-        if certificate:
-            defaults['certificate'] = certificate
-            defaults['is_expert'] = True
-        user_profile, created = UserProfile.objects.update_or_create(
-            user=old_user,
-            defaults=defaults
-        )
-        return old_user, user_profile
+        return user
 
     class Meta:
-        model = User
         fields = (
-            'username', 'email', 'name', 'surname', 'organisation_type',
-            'organisation_name', 'country', 'old_password', 'password', 'confirm_password',
-            'certificate'
+            'old_password', 'password', 'confirm_password',
         )
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'old_password': {'write_only': True},
-            'confirm_password': {'write_only': True}
-        }
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):

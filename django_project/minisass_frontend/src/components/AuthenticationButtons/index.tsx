@@ -125,48 +125,6 @@ function AuthenticationButtons() {
       setError(error.message);
     }
   };
-   
-  const handleUpdateProfile = async (data) => {
-    const newData = {
-      ...data,
-      organisation_name: data.organizationName,
-      organisation_type: data.organizationType
-    }
-    try {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
-
-      let formData = new FormData();
-      if (data.certificate) {
-        formData.append('certificate', newData.certificate[0]);
-      }
-      delete newData.certificate
-      formData.append('data', JSON.stringify(newData));
-
-      const response = await axios.post(UPDATE_PROFILE, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-      );
-
-      if (response.status === 200) {
-        setLoading(true)
-        // Simulate 2-second delay for update process
-        setTimeout(() => {
-          setUpdateProfileLoading(false);
-          setUpdateProfileInProgress(true);
-        }, 1200);
-      } else {
-        setError( JSON.stringify(response.data));
-      }
-    } catch (err) {
-      if (err.response?.data) {
-        setError(err.response.data.error);
-      } else {
-        setError(err.message);
-      }
-    }
-  };
 
 
   return (
@@ -220,12 +178,8 @@ function AuthenticationButtons() {
       <UserFormModal
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
-        onSubmit={handleUpdateProfile}
-        error_response={error}
         Registrationloading={updateProfileLoading}
         registrationInProgress={updateProfileInProgress}
-        updatePassword={updatePassword}
-        defaultFormData={formData}
         />
       <EnforcePasswordChange
         isOpen={isEnforcePasswordOpen}

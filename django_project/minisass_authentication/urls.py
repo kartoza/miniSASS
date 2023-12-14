@@ -16,7 +16,10 @@ from minisass_authentication.views import (
     update_password,
     user_logout,
     contact_us,
-    UpdateUser
+    UpdateUser,
+    UploadCertificate,
+    UpdatePassword,
+    UploadCertificate
 )
 
 
@@ -34,7 +37,10 @@ urlpatterns = [
     path('api/login/', user_login, name='user_login'),
     path('api/register/', register, name='register'),
     path('api/logout/', user_logout, name='user-logout'),
-    path('api/user/update/', UpdateUser.as_view(), name='user-update'),
+    path('api/user/update/', UpdateUser.as_view(), name='profile-update'),
+    path('api/user/password/update/', UpdatePassword.as_view(), name='password-update'),
+    path('api/user/certificate/upload/', UploadCertificate.as_view(), name='certificate-upload'),
+    path('api/certificate/', UploadCertificate.as_view(), name='certificate'),
     path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
     path('api/check-registration-status/<str:email>/', check_registration_status, name='check_registration_status'),
     path('api/contact-us', contact_us, name='contact_us'),
