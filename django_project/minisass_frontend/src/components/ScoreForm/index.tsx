@@ -107,10 +107,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       if (storedState) {
         const parsedState = JSON.parse(storedState);
         const user_email = parsedState.userData.email;
-        const user_level = await axios.get<boolean>(
+        const user_level = await axios.get(
           `${globalVariables.baseUrl}/authentication/api/user-profile/is-expert/${user_email}`
         );
-        if(user_level.data){
+
+        if(user_level.data.is_expert){
           additionalData.flag = 'clean'
         }else additionalData.flag = 'dirty'
       }
