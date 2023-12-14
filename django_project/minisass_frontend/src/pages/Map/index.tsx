@@ -87,9 +87,12 @@ const MapPage: React.FC = () => {
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
 
   const openObservationForm = (siteWithObservations: {site: {}, observations: []}) => {
-    setSiteWithObservations(siteWithObservations)
-    setIsObservationDetails(true)
-    setSidebarOpen((prev) => !prev);
+    
+    if(siteWithObservations.observations.length > 0){
+      setSiteWithObservations(siteWithObservations)
+      setIsObservationDetails(true)
+      setSidebarOpen((prev) => !prev);
+    }
   }
 
   const [resetMapToDefault, setResetMap] = useState(false);
