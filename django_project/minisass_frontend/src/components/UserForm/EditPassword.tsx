@@ -92,7 +92,6 @@ const EditPassword: React.FC<EditPasswordInterface> = ({
   };
 
   const handleSubmit = (e: FormEvent) => {
-    console.debug('validateForm()', validateForm())
     e.preventDefault();
     if (validateForm()) {
       handleUpdatePassword(formData);

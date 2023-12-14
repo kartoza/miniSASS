@@ -267,7 +267,7 @@ const EditProfile: React.FC<EditProfileInterface> = ({
           <Grid item>
             <Grid container direction={'row'}>
               <Grid item className={'label'}>
-                <label>Email:</label><br/>
+                <label>Name:</label><br/>
               </Grid>
               <Grid item>
                 <Grid container flexDirection={'column'}>
@@ -413,7 +413,7 @@ const EditProfile: React.FC<EditProfileInterface> = ({
                       onChange={handleInputChange}
                       placeholder="Level"
                       style={{borderRadius: '4px', width: '16.5vw'}}
-                      disabled={!isEdit}
+                      disabled
                     />
                   </Grid>
                   <Grid item>

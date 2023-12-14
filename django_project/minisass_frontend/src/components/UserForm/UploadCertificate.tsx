@@ -48,7 +48,6 @@ const EditPassword: React.FC<UploadCertiicateInterface> = ({
     try {
       let newFormData = new FormData();
       newFormData.append('certificate', data.certificate);
-      console.debug(newFormData);
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
       const response = await axios.post(UPLOAD_CERTIFICATE_URL, newFormData, {

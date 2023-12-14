@@ -60,8 +60,6 @@ const UserFormModal: React.FC<FormModalProps> = ({
   isOpen,
   onClose,
   defaultTab,
-  // loading,
-  // inProgress
  }) => {
   const [value, setValue] = React.useState(defaultTab);
   const [loading, setLoading] = React.useState(false);
