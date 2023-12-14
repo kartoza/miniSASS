@@ -85,6 +85,7 @@ const MapPage: React.FC = () => {
 
 
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
+  const [siteDetails, setSiteDetailsFromApi] = useState({});
 
   const openObservationForm = (siteWithObservations: {site: {}, observations: []}) => {
     
@@ -100,6 +101,14 @@ const MapPage: React.FC = () => {
   function resetMap(): void {
     setSelectedCoordinates({latitude: null, longitude: null})
     setResetMap(true)
+  }
+
+  function setSiteDetails(details: {}): void {
+    setSiteDetailsFromApi(details)
+  }
+
+  function resetSiteDetails(details: {}): void {
+    setSiteDetailsFromApi(details)
   }
 
   return (
@@ -187,6 +196,8 @@ const MapPage: React.FC = () => {
                 handleMapClick={handleMapClick}
                 selectedCoordinates={selectedCoordinates}
                 siteWithObservations={siteWithObservations}
+                siteDetails={siteDetails}
+                resetSiteDetails={resetSiteDetails}
                 resetMap={resetMap}
               />
             </div>
