@@ -124,7 +124,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     riverName: '',
     siteName: '',
     siteDescription: '',
-    rivercategory: '',
+    rivercategory: 'rocky',
     sitelocation: '',
     selectKnownSite: '',
     selectOnMap: '',
