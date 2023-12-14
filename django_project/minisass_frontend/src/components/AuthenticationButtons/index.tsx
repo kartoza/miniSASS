@@ -56,6 +56,7 @@ function AuthenticationButtons() {
     setProfileModalOpen(false);
     setUpdateProfileInProgress(false);
     setUpdateProfileLoading(false);
+    setUpdatePassword(false);
   }
 
   const [error, setError] = useState(null);
