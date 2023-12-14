@@ -40,9 +40,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   resetMap  
 }) => {
 
+  const [openFromHomePage, setOpenFromHomePage] = useState(true);
+
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
-    resetMap()
+    resetMap();
+    setOpenFromHomePage(false);
   };
 
   const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observation_id}/`
