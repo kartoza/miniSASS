@@ -108,13 +108,36 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     }
   };
 
-  const fetchObservation = async (observation: any) => {
+
+  const updateTabs =  (observations) => {
+    setTabsData(
+      observations.map((observation, index) => ({
+        id: `tab${index + 1}`,
+        label: observation.obs_date,
+        content: (
+          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+            {observation.images.map((image, index) => (
+              <img
+                key={`image_${index}`}
+                className="h-[152px] md:h-auto object-cover w-[164px]"
+                src={image.url}
+                alt={`img_${index}`}
+              />
+            ))}
+          </div>
+        )        
+      }))
+    );
+  }
+
+  const fetchObservation = async () => {
     try {
       const response = await axios.get(`${GET_OBSERVATION}`);
       
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
+        updateTabs([response.data])
         
         setTimeout(() => {
           handleMapClick(response.data.latitude,response.data.longitude);
