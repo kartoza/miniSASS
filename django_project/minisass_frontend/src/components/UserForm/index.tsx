@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Modal from 'react-modal';
 import {Button, Img} from "../../components";
 import {globalVariables} from '../../utils';
@@ -47,35 +47,37 @@ function a11yProps(index: number) {
 }
 
 
-
 interface FormModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: void;
+  defaultTab: number;
   loading: boolean;
   inProgress: boolean;
 }
 
-interface FormData {
-  username: string;
-  name: string;
-  surname: string;
-  email: string;
-  organization_type: string;
-  organization_name: string;
-  country: string;
-}
-
 
 const UserFormModal: React.FC<FormModalProps> = ({
-  isOpen, 
+  isOpen,
   onClose,
-  loading,
-  inProgress
+  defaultTab,
+  // loading,
+  // inProgress
  }) => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(defaultTab);
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const [itemUpdated, setItemUpdated] = React.useState<string>('');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const closeSuccessMessage = () => {
+    setSuccess(false);
+  }
+
+  useEffect(() => {
+    setValue(defaultTab ? defaultTab : 0)
+  }, [isOpen]);
 
 
   return (
@@ -102,7 +104,7 @@ const UserFormModal: React.FC<FormModalProps> = ({
     >
       {loading ? (
         <LinearProgress color="success" />
-      ) : inProgress ? (
+      ) : success ? (
         <div>
           <h3
               style={{
@@ -119,7 +121,7 @@ const UserFormModal: React.FC<FormModalProps> = ({
             </h3>
             <br />
           <Typography>
-            Profile has been successfully updated.
+            {`${itemUpdated} has been successfully updated.`}
           </Typography>
 
           <Button
@@ -128,7 +130,7 @@ const UserFormModal: React.FC<FormModalProps> = ({
               size="xs"
               variant="fill"
               style={{ marginLeft: "65%" }}
-              onClick={onClose}
+              onClick={closeSuccessMessage}
             >
               Ok
             </Button>
@@ -183,13 +185,25 @@ const UserFormModal: React.FC<FormModalProps> = ({
             sx={{bgcolor: 'background.paper', display: 'flex', width: '100%'}}
           >
             <TabPanel value={value} index={0}>
-              <EditProfile />
+              <EditProfile
+                setLoading={setLoading}
+                setSuccess={setSuccess}
+                setItemUpdated={setItemUpdated}
+              />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <EditPassword />
+              <EditPassword
+                setLoading={setLoading}
+                setSuccess={setSuccess}
+                setItemUpdated={setItemUpdated}
+              />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <UploadCertificate />
+              <UploadCertificate
+                setLoading={setLoading}
+                setSuccess={setSuccess}
+                setItemUpdated={setItemUpdated}
+              />
             </TabPanel>
             <Tabs
               orientation="vertical"

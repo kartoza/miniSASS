@@ -10,9 +10,19 @@ interface FormDataInterface {
   certificate: string;
 }
 
+interface UploadCertiicateInterface {
+  setLoading: (val: boolean) => void;
+  setSuccess: (val: boolean) => void;
+  setItemUpdated: (val: boolean) => void;
+}
+
 const UPLOAD_CERTIFICATE_URL = globalVariables.baseUrl + '/authentication/api/user/certificate/upload/'
 
-const EditPassword: React.FC = () => {
+const EditPassword: React.FC<UploadCertiicateInterface> = ({
+  setLoading,
+  setSuccess,
+  setItemUpdated
+}) => {
   const [formData, setFormData] = useState<FormDataInterface>({
     certificate: '',
   });
@@ -20,8 +30,6 @@ const EditPassword: React.FC = () => {
   // Default this to a country's code to preselect it
   const [errorResponse, setErrorResponse] = useState(null);
   const [certificate, setCertificate] = useState<null | string>(null);
-  const [loading, setLoading] = useState(null);
-  const [inProgress, setInProgress] = useState(null);
   const {dispatch, state} = useAuth();
 
   const fetchCertificate = async () => {
@@ -56,7 +64,8 @@ const EditPassword: React.FC = () => {
         // Simulate 2-second delay for update process
         setTimeout(() => {
           setLoading(false);
-          setInProgress(true);
+          setSuccess(true);
+          setItemUpdated('Certificate');
           setErrorResponse(null);
         }, 1200);
       } else {

@@ -12,9 +12,19 @@ interface FormData {
   old_password: string;
 }
 
+interface EditPasswordInterface {
+  setLoading: (val: boolean) => void;
+  setSuccess: (val: boolean) => void;
+  setItemUpdated: (val: boolean) => void;
+}
+
 const UPDATE_PASSWORD_URL = globalVariables.baseUrl + '/authentication/api/user/password/update/'
 
-const EditPassword: React.FC = () => {
+const EditPassword: React.FC<EditPasswordInterface> = ({
+  setLoading,
+  setSuccess,
+  setItemUpdated
+}) => {
   const [formData, setFormData] = useState<FormData>({
     password: '',
     confirm_password: '',
@@ -23,8 +33,6 @@ const EditPassword: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
   // Default this to a country's code to preselect it
   const [errorResponse, setErrorResponse] = useState(null);
-  const [loading, setLoading] = useState(null);
-  const [inProgress, setInProgress] = useState(null);
   const [remainingRequirements, setRemainingRequirements] = useState({
     uppercase: true,
     lowercase: true,
@@ -50,7 +58,8 @@ const EditPassword: React.FC = () => {
         // Simulate 2-second delay for update process
         setTimeout(() => {
           setLoading(false);
-          setInProgress(true);
+          setSuccess(true);
+          setItemUpdated('Password');
           setErrorResponse(null);
         }, 1200);
       } else {

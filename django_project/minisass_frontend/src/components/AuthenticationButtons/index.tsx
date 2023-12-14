@@ -12,8 +12,6 @@ import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
 
 
-const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update/'
-
 function AuthenticationButtons() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
@@ -21,10 +19,9 @@ function AuthenticationButtons() {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
+  const [updatePassword, setUpdatePassword] = useState(false);
   const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
   const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
-  const [updatePassword, setUpdatePassword] = useState(false);
-  const [formData, setFormData] = useState(false);
 
   const { dispatch, state } = useAuth();
 
@@ -57,10 +54,9 @@ function AuthenticationButtons() {
 
   const closeProfileModal = () => {
     setProfileModalOpen(false);
-    setError(null);
     setUpdateProfileInProgress(false);
     setUpdateProfileLoading(false);
-  };
+  }
 
   const [error, setError] = useState(null);
 
@@ -178,8 +174,9 @@ function AuthenticationButtons() {
       <UserFormModal
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
-        Registrationloading={updateProfileLoading}
-        registrationInProgress={updateProfileInProgress}
+        defaultTab={updatePassword ? 1 : 0}
+        loading={updateProfileLoading}
+        inProgress={updateProfileInProgress}
         />
       <EnforcePasswordChange
         isOpen={isEnforcePasswordOpen}

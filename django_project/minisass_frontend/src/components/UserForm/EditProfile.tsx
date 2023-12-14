@@ -4,6 +4,7 @@ import Select from "react-select";
 import CountrySelector from "../../components/Countries/selector";
 import {COUNTRIES} from "../../components/Countries/countries";
 import {SelectMenuOption} from "../../components/Countries/types";
+import LoginFormModal from "../../components/LoginFormModal";
 import {globalVariables} from '../../utils';
 import axios from "axios";
 import {useAuth} from "../../AuthContext";
@@ -19,12 +20,22 @@ interface FormData {
   organisation_type: string;
   organisation_name: string;
   country: string;
-  is_expert: boolean
+  is_expert: boolean;
+}
+
+interface EditProfileInterface {
+  setLoading: (val: boolean) => void;
+  setSuccess: (val: boolean) => void;
+  setItemUpdated: (val: boolean) => void;
 }
 
 const UPDATE_PROFILE = globalVariables.baseUrl + '/authentication/api/user/update/'
 
-const EditProfile: React.FC = () => {
+const EditProfile: React.FC<EditProfileInterface> = ({
+  setLoading,
+  setSuccess,
+  setItemUpdated
+}) => {
   const [formData, setFormData] = useState<FormData>({
     username: '',
     name: '',
@@ -40,8 +51,6 @@ const EditProfile: React.FC = () => {
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
   const [errorResponse, setErrorResponse] = useState(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [loading, setLoading] = useState(null);
-  const [inProgress, setInProgress] = useState(null);
   const {dispatch, state} = useAuth();
 
   const organisationOptions = [
@@ -112,7 +121,8 @@ const EditProfile: React.FC = () => {
         // Simulate 2-second delay for update process
         setTimeout(() => {
           setLoading(false);
-          setInProgress(true);
+          setSuccess(true);
+          setItemUpdated('Profile')
           setErrorResponse(null);
         }, 1200);
       } else {
