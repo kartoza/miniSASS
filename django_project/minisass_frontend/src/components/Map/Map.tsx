@@ -394,7 +394,7 @@ export const Map = forwardRef((props: Interface, ref) => {
     const captureCoordinatesAndQuery = async (latitude, longitude) => {
       try {
 
-        const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations?latitude=${latitude}&longitude=${longitude}`);
+        const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations/{latitude}/{longitude}/`);
     
         if (response.data.length > 0) {
           props.openObservationForm(response.data);
