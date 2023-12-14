@@ -1,6 +1,10 @@
 import json
 
-from minisass_authentication.serializers import UserSerializer, UserUpdateSerializer
+from minisass_authentication.serializers import (
+    UserSerializer, 
+    UserUpdateSerializer,
+    UserProfileSerializer
+)
 from django.conf import settings
 from django.contrib.auth import (
     authenticate,
@@ -30,10 +34,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from minisass_authentication.models import UserProfile, Lookup
-from minisass_authentication.serializers import UserSerializer
 from minisass_authentication.utils import get_is_user_password_enforced
 from django.db import IntegrityError
 from django.db.models import Max
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -43,6 +47,7 @@ User = get_user_model()
 def user_logout(request):
     logout(request)
     return JsonResponse({'message': 'Logout successful'}, status=200)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -56,6 +61,7 @@ def check_authentication_status(request):
     }
     return JsonResponse(user_data, status=200)
 
+
 @api_view(['GET'])
 def check_registration_status(request, email):
     try:
@@ -67,6 +73,18 @@ def check_registration_status(request, email):
         return JsonResponse(user_data, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+class UserProfileIsExpertView(APIView):
+    def get(self, request, email):
+        user = get_object_or_404(User, email=email)
+
+        user_profile = get_object_or_404(UserProfile, user=user)
+
+        serializer = UserProfileSerializer(user_profile)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
