@@ -94,7 +94,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [observations, setObservations] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const [siteDetails, setSiteDetails] = useState({});
-  const [tabsData, setTabsData] = useState({});
+  const [tabsData, setTabsData] = useState([]);
 
   const updateScoreDisplay = (score) => {
     if (parseFloat(score) < 6) {
