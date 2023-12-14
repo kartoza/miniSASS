@@ -332,11 +332,6 @@ class UpdatePassword(APIView):
     """
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        return Response(
-            UpdatePasswordSerializer(request.user).data
-        )
-
     def post(self, request):
         serializer = UpdatePasswordSerializer(
             data=request.data,
