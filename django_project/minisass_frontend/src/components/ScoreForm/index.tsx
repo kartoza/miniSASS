@@ -102,6 +102,19 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const handleSave = async () => {
     setIsSavingData(true)
     try {
+      
+      const storedState = localStorage.getItem('authState');
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        const user_email = parsedState.userData.email;
+        const user_level = await axios.get<boolean>(
+          `${globalVariables.baseUrl}/authentication/api/user-profile/is-expert/${user_email}`
+        );
+        if(user_level.data){
+          additionalData.flag = 'clean'
+        }else additionalData.flag = 'dirty'
+      }
+      
       // Create an object with the data to be saved
       const observationsData = {
         score:averageScore,
