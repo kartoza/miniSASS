@@ -16,9 +16,9 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
 
-4. **Contact**: If the user needs to get in touch with us, simply click the `CONTACT` button. Our team is ready to assist users with any inquiries or issues user may have.
+4. **Contact**: If the user needs to get in touch with us, simply click the `CONTACT` button. Our team is ready to assist users with any inquiries or issues.
 
-5. **Login**: Access your account by clicking the `LOGIN` button. If the user is a registered user, can log in here. For detailed login instructions, refer to the [login page documentation](./login-logout/index.md).
+5. **Login**: Access your account by clicking the `LOGIN` button. If the user is a registered user, they can log in here. For detailed login instructions, refer to the [login page documentation](./login-logout/index.md).
 
 6. **Register**: If the user is new to the platform, they can click `REGISTER` to create a new account. Registration is quick and easy, and it will give you full access to the platform. For detailed registration instructions, refer to the [register page documentation](./login-logout/index.md).
 
@@ -36,7 +36,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     ![Blog](./img/landing-page-4.png)
 
-10. **EXPLORE THE MAP**: Click on the `EXPLORE THE MAP` card section, to explore the map.
+10. **EXPLORE THE MAP**: Click on the `EXPLORE THE MAP` card section, to explore the interactive map.
 
     ![Map Page Before Login](./img/landing-page-5.png)
 
@@ -64,7 +64,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 ![Information](./img/landing-page-8.png)
 
-1. **Information**: It provides an overview and instructions on how to collect a miniSASS sample from a river, interpret the results, and use the miniSASS website features, such as the How To page and the miniSASS Map. The text encourages individuals, communities, schools, and families to get involved in monitoring their local streams and rivers, contributing to a map of river health across Southern Africa. Overall, it serves as an informative guide for those interested in learning about rivers, monitoring water quality, and actively participating in environmental conservation efforts.
+1. **Information**: Provides an overview and instructions on how to collect a miniSASS sample from a river, interpret the results, and use the miniSASS website features, such as the How To page and the miniSASS Map. The text encourages individuals, communities, schools, and families to get involved in monitoring their local streams and rivers, contributing to a map of river health across Southern Africa. Overall, it serves as an informative guide for those interested in learning about rivers, monitoring water quality, and actively participating in environmental conservation efforts.
 
 ## Recent Observations
 
