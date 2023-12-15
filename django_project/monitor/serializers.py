@@ -129,8 +129,8 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 
         # Query for observations related to the site
         observations = Observations.objects.filter(site_id=instance.gid)
+        serializer = ObservationsSerializer(observations, many=True)
 
-        # Combine the site information with the observations
         combined_data = {
             'site': {
                 'gid': instance.gid,
@@ -141,25 +141,6 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
             },
             'observations': serializer.data,
         }
-
-        # Serialize each observation and add it to combined_data
-        for observation in observations:
-            user_profile = UserProfile.objects.filter(user=observation.user).first()
-            collectors_name = (
-                f"{user_profile.user.first_name} {user_profile.user.last_name}"
-                if user_profile and user_profile.user.first_name and user_profile.user.last_name
-                else user_profile.user.username if user_profile else ""
-            )
-
-            observation_info = {
-                'collectorsname': collectors_name,
-                'organisationtype': LookupSerializer(user_profile.organisation_type).data if user_profile else None,
-                'latitude': data['latitude'],
-                'longitude': data['longitude'],
-                'obs_date': observation.obs_date,
-                # 'images': observation.images,
-            }
-            combined_data['observations'].append(observation_info)
 
         return combined_data
 
