@@ -242,17 +242,13 @@ def register(request):
                         # If no match is found, use the default description "Organisation Type".
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
-                    max_id = UserProfile.objects.all().aggregate(Max('id'))['id__max']
-                    new_profile_id = max_id + 1 if max_id is not None else 1
-                    
-                    user_profile = UserProfile.objects.create(
-                        id=new_profile_id,
+                    UserProfile.objects.create(
+                        id=new_user_id,
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=request.data.get('organizationName', ''),
                         country=request.data.get('country', None)
                     )
-                    user_profile.save()
                     user.is_active = False
                     user.save()
 
