@@ -14,10 +14,9 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_id = validated_data.pop('id', None)
 
-        if user_id:
+        if user_id and not User.objects.filter(id=user_id).exists():
+            # If user with the given id doesn't exist, create a new one
             user = User.objects.create_user(id=user_id, **validated_data)
-        else:
-            user = User.objects.create_user(**validated_data)
 
         return user
 
