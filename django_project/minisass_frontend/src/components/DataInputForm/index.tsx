@@ -330,12 +330,55 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           />
         </div>
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-          <Text
-            className="text-blue-900 text-lg w-auto"
-            size="txtRalewayBold18"
-          >
-            {props?.sitedetails}
-          </Text>
+          {/* Tooltip */}
+          <Tooltip
+                 title={
+                      <React.Fragment>
+                        <p style={{ color: 'inherit' }}>
+                          <strong>A. Upload Images:</strong> Upload site images to an existing site or on a new one.
+                          Just click the "Upload Images" button and proceed.
+                        </p>
+                        <p style={{ color: 'inherit', marginBottom: '1rem' }}>
+                          <strong>B. Select Site on Map:</strong> When enabled, click an area on the map with an existing site,
+                          and the site information will reflect in the form. When disabled, all saved sites appear in the
+                          select dropdown, and you can choose by clicking the choice, and its info will be reflected in the form.
+                        </p>
+                      </React.Fragment>
+                    }
+                    placement="top"
+                    arrow
+                    PopperProps={{
+                      popperRef,
+                      anchorEl: {
+                        getBoundingClientRect: () => {
+                          return new DOMRect(
+                            positionRef.current.x,
+                            areaRef.current!.getBoundingClientRect().y,
+                            0,
+                            0,
+                          );
+                        },
+                      },
+                    }}
+                  >
+                    <div className="flex flex-row gap-1 items-start justify-start w-auto"
+                      ref={areaRef}
+                      onMouseMove={handleMouseMove}
+                    >
+                      <Text
+                        className="text-blue-900 text-lg w-auto"
+                        size="txtRalewayBold18"
+                      >
+                        {props?.sitedetails}
+                      </Text>
+                      {/* Information icon */}
+                      <Img
+                        className="h-3.5 w-3.5 cursor-pointer"
+                        src={`${globalVariables.staticPath}information.png`}
+                        alt="Information Icon"
+                      />
+                    </div>
+                  </Tooltip>
 
           <Formik
             initialValues={formValues}
