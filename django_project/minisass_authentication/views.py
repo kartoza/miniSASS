@@ -76,7 +76,7 @@ def check_registration_status(request, email):
 
 
 @api_view(['GET'])
-def check_is_expert(self, request, email):
+def check_is_expert(request, email):
     user = get_object_or_404(User, email=email)
 
     user_profile = get_object_or_404(UserProfile, user=user)
