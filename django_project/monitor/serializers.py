@@ -113,7 +113,6 @@ class ObservationsSerializer(serializers.ModelSerializer):
 
 
 class SitesWithObservationsSerializer(serializers.ModelSerializer):
-    observations = ObservationsSerializer(many=True, read_only=True)
     sitename = serializers.CharField(source='site_name')
     rivername = serializers.CharField(source='river_name')
     sitedescription = serializers.CharField(source='description')
@@ -127,22 +126,25 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        # Combine the site information to the observations
+
+        # Query for observations related to the site
+        observations = Observations.objects.filter(site_id=instance.gid)
+
+        # Combine the site information with the observations
         combined_data = {
             'site': {
+                'gid': instance.gid,
                 'sitename': data['sitename'],
                 'rivername': data['rivername'],
                 'rivercategory': data['rivercategory'],
                 'sitedescription': data['sitedescription'],
             },
-            'observations': [],
+            'observations': serializer.data,
         }
 
-        if 'observations' not in data:
-            data['observations'] = []
-
-        for observation_data in data['observations']:
-            user_profile = UserProfile.objects.filter(user=observation_data['user']).first()
+        # Serialize each observation and add it to combined_data
+        for observation in observations:
+            user_profile = UserProfile.objects.filter(user=observation.user).first()
             collectors_name = (
                 f"{user_profile.user.first_name} {user_profile.user.last_name}"
                 if user_profile and user_profile.user.first_name and user_profile.user.last_name
@@ -154,9 +156,11 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
                 'organisationtype': LookupSerializer(user_profile.organisation_type).data if user_profile else None,
                 'latitude': data['latitude'],
                 'longitude': data['longitude'],
-                'obs_date': observation_data['obs_date'],
-                'observationImages': [],
+                'obs_date': observation.obs_date,
+                # 'images': observation.images,
             }
             combined_data['observations'].append(observation_info)
+
+        return combined_data
 
         return combined_data
