@@ -143,7 +143,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     electricalconduOneUnit: 'S/m',
     latitude: 0,
     longitude: 0,
-    selectedSite: ''
+    selectedSite: '',
+    flag: 'dirty'
   });
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);

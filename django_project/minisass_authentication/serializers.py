@@ -166,3 +166,9 @@ class LookupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lookup
         fields = '__all__'
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
