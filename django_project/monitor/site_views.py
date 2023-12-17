@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from monitor.models import SiteImage, Sites, Assessment
+from django.contrib.gis.measure import D
 
 
 from monitor.serializers import (
@@ -70,11 +71,18 @@ class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
-            # Create a Point object from the latitude and longitude
-            site = Sites.objects.get(the_geom__equals=Point(float(longitude), float(latitude), srid=4326))
+            received_latitude = round(float(latitude), 2)
+            received_longitude = round(float(longitude), 2)
 
-            serializer = SitesWithObservationsSerializer(site)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            site = Sites.objects.filter(
+                the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
+            ).first()
+
+            if site:
+                serializer = SitesWithObservationsSerializer(site)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response([], status=status.HTTP_404_NOT_FOUND)
         except Sites.DoesNotExist:
             return Response([], status=status.HTTP_404_NOT_FOUND)
 

@@ -300,7 +300,7 @@ const Home: React.FC = () => {
             </div>
             <div
               className="common-pointer h-full relative w-full"
-              onClick={openUploadModal}
+              onClick={() => navigate("/map?open_add_record=1")}
             >
               <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
                 <div className="bg-blue_gray-500 h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>

@@ -40,9 +40,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   resetMap  
 }) => {
 
+  const [openFromHomePage, setOpenFromHomePage] = useState(true);
+
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
-    resetMap()
+    resetMap();
+    setOpenFromHomePage(false);
   };
 
   const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observation_id}/`
@@ -81,7 +84,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   useEffect(() => {
-    fetchObservations();
+    if ((Array.isArray(observationDetails) && observationDetails.length > 0) || 
+      (typeof observationDetails === 'object' && Object.keys(observationDetails).length > 0)) {
+      fetchObservations();
+    }
   }, [observationDetails]);
 
   const closeDownloadModal = () => {
@@ -91,7 +97,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [observations, setObservations] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const [siteDetails, setSiteDetails] = useState({});
-  const [tabsData, setTabsData] = useState({});
+  const [tabsData, setTabsData] = useState([]);
 
   const updateScoreDisplay = (score) => {
     if (parseFloat(score) < 6) {
@@ -105,13 +111,37 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     }
   };
 
-  const fetchObservation = async (observation: any) => {
+
+  const updateTabs =  (observations) => {
+    setTabsData(
+      observations.map((observation, index) => ({
+        id: `tab${index + 1}`,
+        label: observation.obs_date,
+        content: (
+          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+            {observation.images.map((image, index) => (
+              <img
+                key={`image_${index}`}
+                className="h-[152px] md:h-auto object-cover w-[164px]"
+                src={image.image}
+                alt={`img_${index}`}
+                loading='lazy'
+              />
+            ))}
+          </div>
+        )        
+      }))
+    );
+  }
+
+  const fetchObservation = async () => {
     try {
       const response = await axios.get(`${GET_OBSERVATION}`);
       
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
+        updateTabs([response.data])
         
         setTimeout(() => {
           handleMapClick(response.data.latitude,response.data.longitude);
@@ -126,33 +156,20 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   };
 
   useEffect(() => {
-    if (observation_id){
-      fetchObservation(observation_id)
-    }else {
+    if (parseInt(observation_id) > 0 && openFromHomePage) {
+      fetchObservation();
+    } else {
+      if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
+        setLoading(false);
+        updateScoreDisplay(siteWithObservations.observations[0].score); // on intial load
+        setObservationDetails(siteWithObservations.observations[0]); // on intial load
 
-        updateScoreDisplay(siteWithObservations.observations[0].score)
-        setObservationDetails(siteWithObservations.observations ?? [])
-        setObservations(siteWithObservations.observations ?? [])
-        setSiteDetails(siteWithObservations.site ?? {})
-
-
-        // create tabs based on observations per site
-        setTabsData(siteWithObservations.observations.map((observation: any, index: number) => ({
-          id: `tab${index + 1}`,
-          label: observation.obs_date, // tab name
-          content: (
-            // Render content for each tab based on observation data This is an example of images per observation
-            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-              <HorizontalImageGallery
-                images={images}
-              />
-            </div>
-          ),
-        })))
-
+        setObservations(siteWithObservations.observations)
+        updateTabs(siteWithObservations.observations)
+        setSiteDetails(siteWithObservations.site)
+      } 
     }
-
-  }, [observation_id,siteWithObservations]);
+  }, [observation_id, siteWithObservations]);
 
 
   return (
@@ -303,7 +320,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.rivername}
+                  {observationDetails.rivername? observationDetails.rivername: siteDetails.river_name}
                 </Text>
               </div>
               <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -317,7 +334,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.sitename}
+                  {observationDetails.sitename? observationDetails.sitename: siteDetails.site_name}
                 </Text>
               </div>
               <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%' }}>
@@ -331,7 +348,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.sitedescription}
+                  {observationDetails.sitedescription? observationDetails.sitedescription: siteDetails.description}
                 </Text>
               </div>
 
@@ -382,7 +399,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular18"
                 >
-                  {observationDetails.rivercategory}
+                  {observationDetails.rivercategory? observationDetails.rivercategory: siteDetails.river_cat}
                 </Text>
               </div>
             </div>

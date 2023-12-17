@@ -48,6 +48,8 @@ type DataInputFormProps = Omit<
   | "selectingOnMap"
   | "selectedCoordinates"
   | "resetMap"
+  | "siteDetails"
+  | "resetSiteDetails"
 > &
   Partial<{
     datainputform: string;
@@ -80,6 +82,8 @@ type DataInputFormProps = Omit<
     selectedCoordinates:{longitude: number, latitude: number};
     selectingOnMap: boolean;
     resetMap: () => void;
+    siteDetails: {};
+    resetSiteDetails: (details: {}) => void;
   }>;
 
 const inputOptionsList = [
@@ -124,7 +128,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     riverName: '',
     siteName: '',
     siteDescription: '',
-    rivercategory: '',
+    rivercategory: 'rocky',
     sitelocation: '',
     selectKnownSite: '',
     selectOnMap: '',
@@ -143,7 +147,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     electricalconduOneUnit: 'S/m',
     latitude: 0,
     longitude: 0,
-    selectedSite: ''
+    selectedSite: '',
+    flag: 'dirty'
   });
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -205,16 +210,23 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [showScoreForm, setShowScoreForm] = useState(false);
 
   function handleSelectKnownSite(): void {
-    if (selectSiteMode === 'SELECT_ON_MAP') {
-      props.toggleMapSelection()
+    // disable map selection if currently on
+    // if (selectSiteMode === 'SELECT_ON_MAP') {
+    //   props.toggleMapSelection()
+    // }
+    if (selectSiteMode === 'SELECT_KNOWN_SITE') {
+      setSelectSiteMode('NONE')
+    }else {
+      setSelectSiteMode('SELECT_KNOWN_SITE')
     }
-    setSelectSiteMode("SELECT_KNOWN_SITE");
+    
   }
 
   const getSites = async () => {
     try {
-      const response = await axios.get(`${FETCH_SITES}`);
-      if (response.status === 200) {
+      if (Object.keys(props.siteDetails).length === 0) {
+        const response = await axios.get(`${FETCH_SITES}`);
+        if (response.status === 200) {
           const sitesList = [
             {
               label: 'None',
@@ -234,17 +246,35 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             })),
           ];
           setSitesList(sitesList);
+        }
+      } else {
+        const sitesList = [
+          {
+            label: props.siteDetails.site.sitename,
+            value: props.siteDetails.site.gid,
+            rivercategory: props.siteDetails.site.rivercategory,
+            siteName: props.siteDetails.site.sitename,
+            siteDescription: props.siteDetails.site.sitedescription,
+            riverName: props.siteDetails.site.rivername,
+          },
+        ];
+        setSitesList(sitesList);
+
+        setFormValues({
+          ...formValues,
+          selectedSite: props.siteDetails.site.gid
+        });
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
-
+  
   useEffect(() => {
     if (selectSiteMode === 'SELECT_KNOWN_SITE') {
-      getSites()
+      getSites();
     }
-  }, [selectSiteMode]);
+  }, [selectSiteMode, props.siteDetails]);
 
   // Helper function to format date
   const formatDate = (date) => {
@@ -301,12 +331,55 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           />
         </div>
         <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-          <Text
-            className="text-blue-900 text-lg w-auto"
-            size="txtRalewayBold18"
-          >
-            {props?.sitedetails}
-          </Text>
+          {/* Tooltip */}
+          <Tooltip
+                 title={
+                      <React.Fragment>
+                        <p style={{ color: 'inherit' }}>
+                          <strong>A. Upload Images:</strong> Upload site images to an existing site or on a new one.
+                          Just click the "Upload Images" button and proceed.
+                        </p>
+                        <p style={{ color: 'inherit', marginBottom: '1rem' }}>
+                          <strong>B. Select Site on Map:</strong> When enabled, click an area on the map with an existing site,
+                          and the site information will reflect in the form. When disabled, all saved sites appear in the
+                          select dropdown, and you can choose by clicking the choice, and its info will be reflected in the form.
+                        </p>
+                      </React.Fragment>
+                    }
+                    placement="top"
+                    arrow
+                    PopperProps={{
+                      popperRef,
+                      anchorEl: {
+                        getBoundingClientRect: () => {
+                          return new DOMRect(
+                            positionRef.current.x,
+                            areaRef.current!.getBoundingClientRect().y,
+                            0,
+                            0,
+                          );
+                        },
+                      },
+                    }}
+                  >
+                    <div className="flex flex-row gap-1 items-start justify-start w-auto"
+                      ref={areaRef}
+                      onMouseMove={handleMouseMove}
+                    >
+                      <Text
+                        className="text-blue-900 text-lg w-auto"
+                        size="txtRalewayBold18"
+                      >
+                        {props?.sitedetails}
+                      </Text>
+                      {/* Information icon */}
+                      <Img
+                        className="h-3.5 w-3.5 cursor-pointer"
+                        src={`${globalVariables.staticPath}information.png`}
+                        alt="Information Icon"
+                      />
+                    </div>
+                  </Tooltip>
 
           <Formik
             initialValues={formValues}
@@ -324,6 +397,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     const newValue = evt.target.value;
                     setType((prevType) => (prevType === newValue ? null : newValue));
                     if(newValue === 'createsite'){
+                      props.resetSiteDetails({})
+                      setSitesList([])
                       setEnableSiteFields(true)
                       setIsCreateSite('createsite')
                     }
@@ -348,36 +423,49 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   <FormControlLabel value="useexistingsite" control={<Radio />} label="Use Existing Site" />
                 </RadioGroup>
 
-                <div>
-                  <Button
-                    type="button"
-                    className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                    shape="round"
-                    color="blue_gray_500"
-                    size="xs"
-                    variant="fill"
-                    onClick={openUploadModal}
-                  >
-                    {props?.uploadSiteImages}
-                  </Button>
-                  <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
-                </div>
+                {enableSiteFields ? (
+                  <div className="flex sm:flex-col flex-row gap-3 items-start justify-start w-auto sm:w-full">
+                    <Button
+                      type="button"
+                      className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                      shape="round"
+                      color="blue_gray_500"
+                      size="xs"
+                      variant="fill"
+                      onClick={openUploadModal}
+                    >
+                      {props?.uploadSiteImages}
+                    </Button>
+                    <span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span>
+                  </div>
+                ) : (
+                    <><Button
+                        type="button"
+                        className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                        shape="round"
+                        color="blue_gray_500"
+                        size="xs"
+                        variant="fill"
+                        onClick={openUploadModal}
+                      >
+                        {props?.uploadSiteImages}
+                      </Button><span> {values.images?.length ? values.images?.length + ' images selected' : ''}</span><Button
+                        type="button"
+                        className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                        shape="round"
+                        color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900' : 'blue_gray_500'}
+                        size="xs"
+                        variant="fill"
+                        onClick={handleSelectKnownSite}
+                        style={{marginBottom: '2%', marginLeft: '1.5%'}}
+                      >
+                          {selectSiteMode === 'SELECT_KNOWN_SITE' ? 'Disable' : 'Select site on map'}
+
+                        </Button></>
+                )}
 
                 {!enableSiteFields &&
                     <>
-                      <Button
-                          type="button"
-                          className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                          shape="round"
-                          color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900': 'blue_gray_500'}
-                          size="xs"
-                          variant="fill"
-                          onClick={handleSelectKnownSite}
-                          style={{marginBottom: '5%' ,marginTop: '2%', opacity: 0.5}}
-                          disabled
-                        >
-                          {`Select site on map`}
-                        </Button>
                         <br />
                         <div className="flex flex-row h-[46px] md:h-auto items-start justify-start w-auto">
                           <Text
@@ -395,7 +483,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                               placeholder=""
                               isSearchable
                               styles={customStyles}
-                              value={sites.find((option) => option.value === values.selectedSite)}
+                              value={(() => {
+                                const selectedOption = sites.find((option) => option.value === values.selectedSite? option.value: option.value);
+                                return selectedOption;
+                              })()}
                               onChange={(selectedOption) => {
                                 handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
                               
@@ -462,7 +553,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginRight: '-2%',
                       marginBottom: '2%'
                     }}
-                    value={values.riverName}
+                    value={(() => {
+                      const siteRiverName = props.siteDetails?.site?.rivername;
+                      const selectedValue = siteRiverName ? siteRiverName: values.riverName;
+                      return selectedValue;
+                    })()}
                     onChange={(e) => {
                       handleChange(e);
                       setSiteUserValues((prevValues) => ({
@@ -501,7 +596,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginRight: '-2%',
                       marginBottom: '4.5%'
                     }}
-                    value={values.siteName}
+                    value={(() => {
+                      const siteSiteName = props.siteDetails?.site?.sitename;
+                      const selectedValue = siteSiteName ? siteSiteName: values.siteName;
+                      return selectedValue;
+                    })()}
                     onChange={(e) => {
                       handleChange(e);
                       setSiteUserValues((prevValues) => ({
@@ -535,7 +634,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           marginBottom: '4%'
                         }}
                         placeholder="e.g. downstream of industry."
-                        value={values.siteDescription}
+                        value={(() => {
+                          const siteSiteDescription = props.siteDetails?.site?.sitedescription;
+                          const selectedValue = siteSiteDescription ? siteSiteDescription: values.siteDescription;
+                          return selectedValue;
+                        })()}
                         onChange={(e) => {
                           handleChange(e);
                           setSiteUserValues((prevValues) => ({
@@ -607,7 +710,15 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         disabled={!enableSiteFields ? true : false} 
                       >
                       {inputOptionsList.map((option) => (
-                        <option key={option.value} value={option.value} selected={option.value === values.rivercategory}>
+                        <option 
+                          key={option.value} 
+                          value={(() => {
+                            const siteRivercategory = props.siteDetails?.site?.rivercategory;
+                            const selectedValue = siteRivercategory ? siteRivercategory : values.rivercategory;
+                            return selectedValue;
+                          })()}
+                          selected={option.value === values.rivercategory}
+                        >
                           {option.label}
                         </option>
                       ))}

@@ -1,3 +1,10 @@
+import json
+
+from minisass_authentication.serializers import (
+    UserSerializer, 
+    UserUpdateSerializer,
+    UserProfileSerializer
+)
 from django.conf import settings
 from django.contrib.auth import (
     authenticate,
@@ -8,6 +15,7 @@ from django.contrib.auth import (
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.db.models import Max
@@ -35,6 +43,9 @@ from minisass_authentication.serializers import (
     UserUpdateSerializer
 )
 from minisass_authentication.utils import get_is_user_password_enforced
+from django.db import IntegrityError
+from django.db.models import Max
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -44,6 +55,7 @@ User = get_user_model()
 def user_logout(request):
     logout(request)
     return JsonResponse({'message': 'Logout successful'}, status=200)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -57,6 +69,7 @@ def check_authentication_status(request):
     }
     return JsonResponse(user_data, status=200)
 
+
 @api_view(['GET'])
 def check_registration_status(request, email):
     try:
@@ -68,6 +81,17 @@ def check_registration_status(request, email):
         return JsonResponse(user_data, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def check_is_expert(request, email):
+    user = get_object_or_404(User, email=email)
+
+    user_profile = get_object_or_404(UserProfile, user=user)
+
+    serializer = UserProfileSerializer(user_profile)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -197,8 +221,7 @@ def register(request):
         if existing_user:
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Get the highest existing ID in the UserProfile model
-        max_id = UserProfile.objects.all().aggregate(Max('user_id'))['user_id__max']
+        max_id = User.objects.all().aggregate(Max('id'))['id__max']
         new_user_id = max_id + 1 if max_id is not None else 1
 
         # Set the ID for the new user
@@ -227,13 +250,13 @@ def register(request):
                         # If no match is found, use the default description "Organisation Type".
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
-                    user_profile = UserProfile.objects.create(
+                    UserProfile.objects.create(
+                        id=new_user_id,
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=request.data.get('organizationName', ''),
                         country=request.data.get('country', None)
                     )
-                    user_profile.save()
                     user.is_active = False
                     user.save()
 

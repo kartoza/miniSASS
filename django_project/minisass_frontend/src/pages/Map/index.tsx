@@ -54,6 +54,7 @@ const MapPage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const details = params.get("details");
+  const open_add_record = params.get("open_add_record")
 
   useEffect(() => {
 
@@ -61,9 +62,10 @@ const MapPage: React.FC = () => {
       window.scrollTo(0, 0);
       setIsObservationDetails(true)
       setSidebarOpen((prev) => !prev);
+    }else if(open_add_record){
+      handleSidebarToggle()
     }
-
-  }, [details]);
+  }, [details, open_add_record]);
 
   const [showLegend, setShowLegend] = useState(true);
 
@@ -85,11 +87,15 @@ const MapPage: React.FC = () => {
 
 
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
+  const [siteDetails, setSiteDetailsFromApi] = useState({});
 
   const openObservationForm = (siteWithObservations: {site: {}, observations: []}) => {
-    setSiteWithObservations(siteWithObservations)
-    setIsObservationDetails(true)
-    setSidebarOpen((prev) => !prev);
+    
+    if(siteWithObservations.observations.length > 0){
+      setSiteWithObservations(siteWithObservations)
+      setIsObservationDetails(true)
+      setSidebarOpen((prev) => !prev);
+    }
   }
 
   const [resetMapToDefault, setResetMap] = useState(false);
@@ -97,6 +103,14 @@ const MapPage: React.FC = () => {
   function resetMap(): void {
     setSelectedCoordinates({latitude: null, longitude: null})
     setResetMap(true)
+  }
+
+  function setSiteDetails(details: {}): void {
+    setSiteDetailsFromApi(details)
+  }
+
+  function resetSiteDetails(details: {}): void {
+    setSiteDetailsFromApi(details)
   }
 
   return (
@@ -184,6 +198,8 @@ const MapPage: React.FC = () => {
                 handleMapClick={handleMapClick}
                 selectedCoordinates={selectedCoordinates}
                 siteWithObservations={siteWithObservations}
+                siteDetails={siteDetails}
+                resetSiteDetails={resetSiteDetails}
                 resetMap={resetMap}
               />
             </div>

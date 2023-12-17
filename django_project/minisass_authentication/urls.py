@@ -20,6 +20,7 @@ from minisass_authentication.views import (
     UploadCertificate,
     UpdatePassword,
     UploadCertificate
+    check_is_expert
 )
 
 
@@ -44,5 +45,6 @@ urlpatterns = [
     path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
     path('api/check-registration-status/<str:email>/', check_registration_status, name='check_registration_status'),
     path('api/contact-us', contact_us, name='contact_us'),
-    path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account')
+    path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account'),
+    path('api/user-profile/is-expert/<str:email>/', check_is_expert, name='user-profile-is-expert'),
 ]
