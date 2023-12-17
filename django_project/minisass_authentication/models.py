@@ -2,6 +2,11 @@ import os
 from django.db import models
 from django.conf import settings
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+
 
 def certificate_path(instance, filename):
     return os.path.join(
@@ -9,6 +14,16 @@ def certificate_path(instance, filename):
         f'{instance.user.id}',
         filename
     )
+
+PENDING_STATUS = 'PENDING'
+APPROVED_STATUS = 'APPROVED'
+REJECTED_STATUS = 'REJECTED'
+
+EXPERT_APPROVAL_STATUS = (
+    (PENDING_STATUS, PENDING_STATUS),
+    (APPROVED_STATUS, APPROVED_STATUS),
+    (REJECTED_STATUS, REJECTED_STATUS)
+)
 
 
 # TODO might remove this as it is no longer neccessary
@@ -44,6 +59,10 @@ class UserProfile(models.Model):
         default=False,
         help_text='Flag whether user has been enforced to use strong password'
     )
+    expert_approval_status = models.CharField(
+        default=PENDING_STATUS,
+        choices=EXPERT_APPROVAL_STATUS
+    )
     certificate = models.FileField(
         null=True, blank=True,
         upload_to=certificate_path, storage=settings.MINION_STORAGE
@@ -51,3 +70,26 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.organisation_type}: {self.organisation_name or 'Unknown'}"
+
+    def save(self, *args, **kwargs):
+        if self.expert_approval_status == APPROVED_STATUS and self.certificate:
+            self.is_expert = True
+        super().save(*args, **kwargs)
+
+
+@receiver(post_save, sender=UserProfile)
+def post_certificate_approve(sender, instance: UserProfile, **kwargs):
+    if instance.expert_approval_status == APPROVED_STATUS and instance.certificate and instance.is_expert:
+        email = instance.user.email
+
+        message = render_to_string('profile/certificate_approved.html', {
+            'full_name': '{} {}'.format(instance.user.first_name, instance.user.last_name)
+        })
+
+        send_mail(
+            'Certificate Approved',
+            None,
+            settings.EXPERT_APPROVAL_RECIPIENT_EMAIL,
+            [email],
+            html_message=message
+        )

@@ -34,6 +34,10 @@ class UserProfileInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines = (UserProfileInline, )
+    list_filter = (
+        'userprofile__expert_approval_status', 'userprofile__is_expert',
+        'is_staff', 'is_superuser', 'is_active'
+    )
 
 
 admin.site.unregister(User)
