@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 
 import { Img, Text } from "../../components";
 import ContactFormModal from '../../components/ContactFormModal';
@@ -13,6 +15,7 @@ type FooterProps = React.DetailedHTMLProps<
 
 const Footer: React.FC<FooterProps> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -45,7 +48,7 @@ const Footer: React.FC<FooterProps> = (props) => {
   return (
     <>
       <footer className={props.className}>
-        <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full">
+        <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mb-[-10px]">
           <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full" style={{ marginLeft: '-5%' }}>
             <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
               <Img
@@ -96,24 +99,23 @@ const Footer: React.FC<FooterProps> = (props) => {
 
                 <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list">
                   <li style={{ whiteSpace: 'nowrap' }}>
-                    <a href="/howto">
+                    <HashLink to="/howto#howto-title">
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
                         size="txtRalewayExtraBold14WhiteA700"
                       >
                         How to
                       </Text>
-                    </a>
+                    </HashLink>;
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
-                    <a href="/map">
-                      <Text
-                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
-                        size="txtRalewayExtraBold14WhiteA700"
-                      >
-                        Map
-                      </Text>
-                    </a>
+                    <Text
+                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                      size="txtRalewayExtraBold14WhiteA700"
+                      onClick={() => navigate("/map")}
+                    >
+                      Map
+                    </Text>
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <a>
