@@ -70,10 +70,10 @@ const HowtoPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div
+            <div
             id={"howto-title"}
             className="bg-gray-200 flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5 relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full">
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[79px] mt-[61px]">
+              <div className="flex flex-col items-center justify-start md:ml-[0] ml-[79px] mt-[61px]">
               <Text
                 className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900"
                 size="txtRalewayRomanBold42"

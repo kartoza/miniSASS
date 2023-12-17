@@ -5,7 +5,7 @@ import { HashLink } from 'react-router-hash-link';
 import { Img, Text } from "../../components";
 import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
-import { ContactFormData } from '../../components/ContactFormModal/types'; 
+import { ContactFormData } from '../../components/ContactFormModal/types';
 
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -44,7 +44,7 @@ const Footer: React.FC<FooterProps> = (props) => {
 
   // Construct the new URL with the replacement path
   const newURL = baseUrl + '/' + replacementPath;
-  
+
   return (
     <>
       <footer className={props.className}>
@@ -53,7 +53,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
               <Img
                 className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}img_image6.png`}
+                src={`${newURL}img_image6.jpg`}
                 alt="Ground Truth"
               />
             </a>
