@@ -92,7 +92,7 @@ class CertificateSerializer(serializers.ModelSerializer):
         defaults = {}
         if certificate:
             defaults['certificate'] = certificate
-            defaults['is_expert'] = True
+            defaults['is_expert'] = False
         user_profile, created = UserProfile.objects.update_or_create(
             user=old_user,
             defaults=defaults

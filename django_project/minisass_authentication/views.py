@@ -321,6 +321,22 @@ class UploadCertificate(APIView):
                 user_profile = serializer.save(
                     request.user,
                 )
+                domain = Site.objects.get_current().domain
+                email = user_profile.user.email
+
+                message = render_to_string('profile/certificate_upload.html', {
+                    'email': email,
+                    'full_name': '{} {}'.format(user_profile.user.first_name, user_profile.user.last_name),
+                    'user_url': f'{domain}/admin/auth/user/{user_profile.user.id}/change/'
+                })
+
+                send_mail(
+                    'Certificate Verification',
+                    None,
+                    email,
+                    [settings.EXPERT_APPROVAL_RECIPIENT_EMAIL],
+                    html_message=message
+                )
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
             return JsonResponse(CertificateSerializer(user_profile).data)

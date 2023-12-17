@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate Verification</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p>Dear Admin,</p>
+        <p>User {{ email }} ({{ full_name }}) has uploaded his/her certificate for approval. </p>
+        <p>You can preview the certificates and approve their expert status from <a href="{{ user_url }}">{{ user_url }}</a></p>
+        <p>The steps would be:</p>
+        <ul>
+            <li>Check the uploaded certificate.</li>
+            <li>Set <b>Expert approval status</b> to <b>APPROVED</b> or <b>PENDING</b>, depending on the verified certificate.</li>
+            <li>Click <b>Save</b>.</li>
+        </ul>
+        User will then be set to an expert (<b>Is expert</b> field checked).
+    </div>
+</body>
+</html>
