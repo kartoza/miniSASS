@@ -188,6 +188,7 @@ const MapPage: React.FC = () => {
                 idxActive={idxActive}
                 setIdxActive={setIdxActive}
                 openObservationForm={openObservationForm}
+                setSiteDetails={setSiteDetails}
                 resetMap={resetMapToDefault}
               />
               {/* Sidebar */}
