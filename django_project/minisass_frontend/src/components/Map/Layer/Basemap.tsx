@@ -20,7 +20,7 @@ interface Interface {
  */
 export default function Basemap(props: Interface) {
 
-  const [idxActive, setIdxActive] = useState<number>(0);
+  const [idxActive, setIdxActive] = useState<number>(props.idxActive);
 
 
   /** First initiate */

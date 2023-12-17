@@ -24,7 +24,11 @@ const MapPage: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isObservationDetails, setIsObservationDetails] = useState(false);
   const [isLoginFromThis, setIsLoginFromThis] = useState(false);
-  const [idxActive, setIdxActive] = useState(0);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const details = params.get("details");
+  const open_add_record = params.get("open_add_record");
+  const [idxActive, setIdxActive] = useState(open_add_record ? 1 : 0);
 
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
@@ -50,11 +54,6 @@ const MapPage: React.FC = () => {
       setSidebarOpen(false)
     }
   }, [state.isAuthenticated]);
-
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const details = params.get("details");
-  const open_add_record = params.get("open_add_record")
 
   useEffect(() => {
 
