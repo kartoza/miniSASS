@@ -53,7 +53,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
               <Img
                 className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}img_image6.png`}
+                src={`${newURL}img_image6.jpg`}
                 alt="Ground Truth"
               />
             </a>

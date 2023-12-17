@@ -554,52 +554,52 @@ const Home: React.FC = () => {
           </div>
           {/* end of section */}
 
-          {/* articles and blogs section */}
-          <div className="flex flex-col gap-[58px] items-center justify-start max-w-[1450px] mt-28 mx-auto md:px-5 w-full">
-            <div className="flex flex-row md:gap-10 items-center justify-between max-w-[1450px] w-full">
-              <Text
-                className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
-                size="txtRalewayRomanBold40"
-              >
-                Latest Articles
-              </Text>
-              <Button
-                className="flex h-10 items-center justify-center rounded-[5px] w-10"
-                color="blue_gray_500"
-                size="sm"
-                variant="fill"
-                onClick={handleNextBlogs}
-              >
-                <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright_One" />
-              </Button>
-            </div>
+          {/*/!* articles and blogs section *!/*/}
+          {/*<div className="flex flex-col gap-[58px] items-center justify-start max-w-[1450px] mt-28 mx-auto md:px-5 w-full">*/}
+          {/*  <div className="flex flex-row md:gap-10 items-center justify-between max-w-[1450px] w-full">*/}
+          {/*    <Text*/}
+          {/*      className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"*/}
+          {/*      size="txtRalewayRomanBold40"*/}
+          {/*    >*/}
+          {/*      Latest Articles*/}
+          {/*    </Text>*/}
+          {/*    <Button*/}
+          {/*      className="flex h-10 items-center justify-center rounded-[5px] w-10"*/}
+          {/*      color="blue_gray_500"*/}
+          {/*      size="sm"*/}
+          {/*      variant="fill"*/}
+          {/*      onClick={handleNextBlogs}*/}
+          {/*    >*/}
+          {/*      <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright_One" />*/}
+          {/*    </Button>*/}
+          {/*  </div>*/}
 
-            {/* blogs */}
-            <div className="flex flex-col gap-8 sm:h-[50vh] items-start justify-start sm:overflow-auto w-auto md:w-full" style={{marginLeft:'-18%'}}>
-              <div className="flex md:flex-col flex-row gap-[23px] items-start justify-start w-auto md:w-full">
-                <Img
-                  className="h-[406px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[780px] md:w-full"
-                  src={`${globalVariables.staticPath}img_rectangle18.png`}
-                  alt="rectangleEighteen"
-                />
-                <Blogs className="flex flex-col gap-4 items-start justify-start w-auto" />
-              </div>
-              <List
-                className="sm:flex-col flex-row gap-8 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-3 justify-start w-auto md:w-full"
-                orientation="horizontal"
-              >
-                {BlogsPropList.slice(blogsCurrentIndex, blogsCurrentIndex + 3).map((props, index) => (
-                  <React.Fragment key={`DesktopThreeBloggriditem${index}`}>
-                    <Blogs
-                      className="flex flex-col gap-4 items-start justify-start w-auto"
-                      {...props}
-                    />
-                  </React.Fragment>
-                ))}
-              </List>
-            </div>
-          </div>
-          {/* end of section */}
+          {/*  /!* blogs *!/*/}
+          {/*  <div className="flex flex-col gap-8 sm:h-[50vh] items-start justify-start sm:overflow-auto w-auto md:w-full" style={{marginLeft:'-18%'}}>*/}
+          {/*    <div className="flex md:flex-col flex-row gap-[23px] items-start justify-start w-auto md:w-full">*/}
+          {/*      <Img*/}
+          {/*        className="h-[406px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[780px] md:w-full"*/}
+          {/*        src={`${globalVariables.staticPath}img_rectangle18.png`}*/}
+          {/*        alt="rectangleEighteen"*/}
+          {/*      />*/}
+          {/*      <Blogs className="flex flex-col gap-4 items-start justify-start w-auto" />*/}
+          {/*    </div>*/}
+          {/*    <List*/}
+          {/*      className="sm:flex-col flex-row gap-8 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-3 justify-start w-auto md:w-full"*/}
+          {/*      orientation="horizontal"*/}
+          {/*    >*/}
+          {/*      {BlogsPropList.slice(blogsCurrentIndex, blogsCurrentIndex + 3).map((props, index) => (*/}
+          {/*        <React.Fragment key={`DesktopThreeBloggriditem${index}`}>*/}
+          {/*          <Blogs*/}
+          {/*            className="flex flex-col gap-4 items-start justify-start w-auto"*/}
+          {/*            {...props}*/}
+          {/*          />*/}
+          {/*        </React.Fragment>*/}
+          {/*      ))}*/}
+          {/*    </List>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+          {/*/!* end of section *!/*/}
 
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
         </div>
