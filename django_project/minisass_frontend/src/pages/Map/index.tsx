@@ -85,6 +85,10 @@ const MapPage: React.FC = () => {
     setSelectingOnMap((prev) => !prev);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
 
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
   const [siteDetails, setSiteDetailsFromApi] = useState({});
