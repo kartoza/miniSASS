@@ -17,6 +17,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
+from django.db import IntegrityError
+from django.db.models import Max
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -34,6 +36,12 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from minisass_authentication.models import UserProfile, Lookup
+from minisass_authentication.serializers import (
+    CertificateSerializer,
+    UpdatePasswordSerializer,
+    UserSerializer,
+    UserUpdateSerializer
+)
 from minisass_authentication.utils import get_is_user_password_enforced
 from django.db import IntegrityError
 from django.db.models import Max
@@ -301,46 +309,66 @@ class UpdateUser(APIView):
         return Response(UserUpdateSerializer(request.user).data)
 
     def post(self, request):
-        data = json.loads(request.POST.get('data', {}))
         serializer = UserUpdateSerializer(
-            data=data
+            data=request.data
         )
         if serializer.is_valid(raise_exception=True):
             try:
-                user, user_profile = serializer.save(
+                user, user_profile = serializer.save(request.user)
+                return JsonResponse(UserUpdateSerializer(user).data)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=400)
+
+
+class UploadCertificate(APIView):
+    """
+    Endpoint to get and upload certificate
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            data = CertificateSerializer(request.user.userprofile).data
+        except Exception:
+            data = {
+                'certificate': None
+            }
+        return JsonResponse(data)
+
+    def post(self, request):
+        serializer = CertificateSerializer(
+            data=request.FILES
+        )
+        if serializer.is_valid(raise_exception=True):
+            try:
+                user_profile = serializer.save(
                     request.user,
-                    certificate=request.FILES.get('certificate', None)
                 )
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
-            update_password = data.get('updatePassword', False)
-            old_password = data.get('oldPassword', '')
-            new_password = data.get('password', '')
-            confirm_password = data.get('confirmPassword', '')
-            if update_password:
-                is_password_correct = serializer.validate_old_password_correct(
-                    old_password,
-                    user.password
-                )
-                if not is_password_correct:
-                    return JsonResponse({'error': 'Wrong old password'}, status=400)
+            return JsonResponse(CertificateSerializer(user_profile).data)
 
-                is_password_match_criteria, missing_criteria = serializer.validate_password_criteria(new_password)
-                if not is_password_match_criteria:
-                    return JsonResponse({'error': f'Missing password criteria: {missing_criteria}'}, status=400)
 
-                is_confirm_password_match = new_password == confirm_password
-                if not is_confirm_password_match:
-                    return JsonResponse({'error': 'Confirmed password does not match password'}, status=400)
+class UpdatePassword(APIView):
+    """
+    Endpoint to update password
+    """
+    permission_classes = [IsAuthenticated]
 
-                try:
-                    user.set_password(new_password)
-                    user.save()
-                    user_profile.is_password_enforced = True
-                    user_profile.save()
-                except Exception as e:
-                    return JsonResponse({'error': str(e)}, status=400)
-            return JsonResponse(UserUpdateSerializer(user).data)
+    def post(self, request):
+        serializer = UpdatePasswordSerializer(
+            data=request.data,
+            context={
+                'old_password': request.user.password
+            }
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(request.user)
+            try:
+                serializer.save(request.user)
+                return JsonResponse({'status': 'OK'})
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=400)
 
 
 @api_view(['POST'])
