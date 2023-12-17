@@ -39,6 +39,7 @@ class ObservationsAdmin(admin.ModelAdmin):
         'flag'
     )
     list_filter = ('flag',)
+    search_fields = ('site__site_name', 'site__river_name')
     actions = [make_verified, make_unverified]
     inlines = (ObservationPestImageInline,)
 
@@ -55,6 +56,8 @@ class SitesAdmin(admin.ModelAdmin):
         'user',
         'river_name',
     )
+    list_filter = ('river_cat', )
+    search_fields = ('site_name', 'river_name')
     inlines = (SiteImageInline,)
 
 

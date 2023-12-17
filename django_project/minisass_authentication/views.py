@@ -255,7 +255,7 @@ def register(request):
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=request.data.get('organizationName', ''),
-                        country=request.data.get('country', None)
+                        country=request.data.get('country', None),
                     )
                     user.is_active = False
                     user.save()
@@ -343,6 +343,22 @@ class UploadCertificate(APIView):
             try:
                 user_profile = serializer.save(
                     request.user,
+                )
+                domain = Site.objects.get_current().domain
+                email = user_profile.user.email
+
+                message = render_to_string('profile/certificate_upload.html', {
+                    'email': email,
+                    'full_name': '{} {}'.format(user_profile.user.first_name, user_profile.user.last_name),
+                    'user_url': f'{domain}/admin/auth/user/{user_profile.user.id}/change/'
+                })
+
+                send_mail(
+                    'Certificate Verification',
+                    None,
+                    email,
+                    [settings.EXPERT_APPROVAL_RECIPIENT_EMAIL],
+                    html_message=message
                 )
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
