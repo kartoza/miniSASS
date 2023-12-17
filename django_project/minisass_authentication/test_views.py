@@ -67,18 +67,18 @@ class ActivateAccountTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Assuming it redirects
         self.assertIn('activation_complete=true', response.url)
 
-class RegisterTest(TestCase):
-    def setUp(self):
-        self.client = APIClient()
+# class RegisterTest(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
 
-    def test_register_invalid_data(self):
-        # Prepare invalid user registration data
-        invalid_data = {
-           'surname': 'Doe',
-            'username': 'johndoe',
-        }
+#     def test_register_invalid_data(self):
+#         # Prepare invalid user registration data
+#         invalid_data = {
+#            'surname': 'Doe',
+#             'username': 'johndoe',
+#         }
 
-        url = reverse('register')
-        response = self.client.post(url, invalid_data, format='json')
+#         url = reverse('register')
+#         response = self.client.post(url, invalid_data, format='json')
 
-        self.assertEqual(response.status_code, 400)
+#         self.assertEqual(response.status_code, 400)

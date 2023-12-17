@@ -15,6 +15,8 @@ import { minisassObservationId } from "./Layer/MinisassLayer";
 import { globalVariables } from "../../utils";
 
 import 'maplibre-gl/dist/maplibre-gl.css';
+import axios from "axios";
+
 
 interface Interface {
   basemaps: BasemapConfiguration[],
@@ -26,7 +28,7 @@ interface Interface {
   idxActive: number;
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
-  resetMap: boolean;
+  setSiteDetails: (details: {}) => void;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -393,10 +395,11 @@ export const Map = forwardRef((props: Interface, ref) => {
     const captureCoordinatesAndQuery = async (latitude, longitude) => {
       try {
 
-        const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations?latitude=${latitude}&longitude=${longitude}`);
+        const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations/${latitude}/${longitude}/`);
     
-        if (response.data.length > 0) {
+        if (response.data) {
           props.openObservationForm(response.data);
+          props.setSiteDetails(response.data.site)
         }
 
       } catch (error) {

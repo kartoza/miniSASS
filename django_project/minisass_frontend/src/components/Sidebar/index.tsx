@@ -15,6 +15,8 @@ interface SidebarProps {
   selectingOnMap: boolean;
   selectedCoordinates: {longitude: number, latitude: number};
   resetMap: () => void;
+  siteDetails: {};
+  resetSiteDetails: (details: {}) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -27,7 +29,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   handleMapClick,
   selectingOnMap,
   selectedCoordinates,
-  resetMap
+  resetMap,
+  siteDetails,
+  resetSiteDetails
 }) => {
   return (
     <div
@@ -56,6 +60,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           selectingOnMap={selectingOnMap}
           selectedCoordinates={selectedCoordinates}
           resetMap={resetMap}
+          siteDetails={siteDetails}
+          resetSiteDetails={resetSiteDetails}
         />
       )}
       
