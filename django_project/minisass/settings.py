@@ -165,6 +165,7 @@ EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS', 'False')
 
 SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
 CONTACT_US_RECEPIENT_EMAIL = 'amy@kartoza.com'
+EXPERT_APPROVAL_RECIPIENT_EMAIL = 'info@minisass.org'
 
 # django registration/auth settings
 # ACCOUNT_ACTIVATION_DAYS = 7

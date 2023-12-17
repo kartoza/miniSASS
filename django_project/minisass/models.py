@@ -9,6 +9,9 @@ class GroupScores(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Group Scores'
+
 class Video(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)

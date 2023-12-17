@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {HashLink} from 'react-router-hash-link';
+import { HashLink } from 'react-router-hash-link';
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -327,7 +327,6 @@ const Home: React.FC = () => {
             </div>
             <div
               className="common-pointer h-full relative w-full"
-              onClick={() => navigate("/howto")}
             >
               <div className="md:h-28 h-[110px] m-auto w-full">
                 <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
@@ -366,7 +365,7 @@ const Home: React.FC = () => {
               Welcome to miniSASS
             </Text>
             <Text
-              className="sm:flex-1 mb-[18px] text-blue-900 text-xl tracking-[0.40px] w-[67%] sm:w-full"
+              className="sm:flex-1 mb-[18px] text-blue-900 text-xl tracking-[0.40px] w-[67%] sm:w-full mt-[7px]"
               size="txtRalewayRomanSemiBold20"
             >
               miniSASS is a simple tool which can be used by anyone to monitor
@@ -383,8 +382,9 @@ const Home: React.FC = () => {
               src={`${globalVariables.staticPath}img_rectangle1.png`}
               alt="rectangleOne"
             />
-            <Text
-              className="h-[380px] md:h-auto leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
+            <div>
+              <Text
+              className="md:h-auto leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanSemiBold16"
             >
               <span className="text-gray-800 font-raleway text-left font-normal">
@@ -431,15 +431,34 @@ const Home: React.FC = () => {
                   a map of river health across Southern Africa will develop.
                   Communities can use the information and knowledge to
                   illustrate the plight of their rivers, connect with other
-                  miniSASS samplers and investigate pollution sources
+                  miniSASS samplers and investigate pollution sources.
+                  <br /><br /><br/>
+                  An expert miniSASS operator is someone who is proficient with miniSASS, understands its processes,
+                  and most importantly is confident in their ability to accurately identify aquatic macroinvertebrates
+                  within each of the miniSASS groups. Ideally, an expert user has completed the online miniSASS
+                  training course{" "}
+                </>
+              </span>
+              <a
+                className="common-pointer text-blue-900 font-raleway text-left font-normal underline"
+                href={"https://groundtruth.plutolmsapp.com/enrol/index.php?id=374"}
+              >
+                https://groundtruth.plutolmsapp.com/enrol/index.php?id=374
+              </a>
+              <span className="text-gray-800 font-raleway text-left font-normal">
+                <>
+                  {" "}and can upload the certificate for completion of YOMA Opportunity 4 - Stream Monitoring.
+                  Alternatively, an expert could be someone who has practiced miniSASS for a long period or
+                  someone accredited with the SASS5 or similar technique.
                 </>
               </span>
             </Text>
+            </div>
           </div>
           {/* end of section */}
 
           {/* obeservations and map section */}
-          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start mt-28 w-full">
+          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start mt-10 w-full">
 
              {/* observations */}
              <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
@@ -553,6 +572,10 @@ const Home: React.FC = () => {
 
           </div>
           {/* end of section */}
+
+
+
+          {/* As per ticket #432, newsletter section for now.  */}
 
           {/*/!* articles and blogs section *!/*/}
           {/*<div className="flex flex-col gap-[58px] items-center justify-start max-w-[1450px] mt-28 mx-auto md:px-5 w-full">*/}
