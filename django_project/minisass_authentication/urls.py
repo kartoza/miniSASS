@@ -19,7 +19,6 @@ from minisass_authentication.views import (
     UpdateUser,
     UploadCertificate,
     UpdatePassword,
-    UploadCertificate
     check_is_expert
 )
 

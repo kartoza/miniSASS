@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {HashLink} from 'react-router-hash-link';
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -330,18 +331,20 @@ const Home: React.FC = () => {
             >
               <div className="md:h-28 h-[110px] m-auto w-full">
                 <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute flex flex-col h-max inset-[0] items-center justify-center m-auto w-[68%]">
+                <div className="absolute bottom-[10%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
                   <Img
                     className="h-8 w-8"
                     src={`${globalVariables.staticPath}img_bxclouddownload.svg`}
                     alt="bxclouddownload"
                   />
-                  <Text
-                    className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                    size="txtRalewayExtraBold14WhiteA700"
-                  >
-                    Download resources
-                  </Text>
+                    <HashLink to="/howto#minisass-video">
+                      <Text
+                        className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Resources
+                      </Text>
+                    </HashLink>;
                 </div>
               </div>
               <Img
