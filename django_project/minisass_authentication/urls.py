@@ -17,9 +17,8 @@ from minisass_authentication.views import (
     user_logout,
     contact_us,
     UpdateUser,
-    UploadCertificate,
     UpdatePassword,
-    UploadCertificate
+    UploadCertificate,
     check_is_expert
 )
 

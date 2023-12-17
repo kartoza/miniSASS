@@ -255,7 +255,7 @@ def register(request):
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=request.data.get('organizationName', ''),
-                        country=request.data.get('country', None)
+                        country=request.data.get('country', None),
                     )
                     user.is_active = False
                     user.save()
