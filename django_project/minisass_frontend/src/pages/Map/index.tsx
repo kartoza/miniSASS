@@ -111,7 +111,8 @@ const MapPage: React.FC = () => {
 
   function setSiteDetails(details: {}): void {
     setSiteDetailsFromApi(details)
-    // setIsObservationDetails(false)
+    if(isSidebarOpen)
+      setIsObservationDetails(false)
   }
 
   function resetSiteDetails(details: {}): void {
