@@ -250,14 +250,23 @@ def register(request):
                         # If no match is found, use the default description "Organisation Type".
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
-                    UserProfile.objects.update_or_create(
+                    # Check if UserProfile already exists for the user
+                    user_profile, created = UserProfile.objects.get_or_create(
+                        id=new_user_id,
                         user=user,
                         defaults={
-                          'organisation_type': organisation_type,
-                          'organisation_name': request.data.get('organizationName', ''),
-                          'country': request.data.get('country', None),
+                            'organisation_type': organisation_type,
+                            'organisation_name': request.data.get('organizationName', ''),
+                            'country': request.data.get('country', None),
                         }
                     )
+                    
+                    if not created:
+                        # UserProfile already existed, update the fields
+                        user_profile.organisation_type = organisation_type
+                        user_profile.organisation_name = request.data.get('organizationName', '')
+                        user_profile.country = request.data.get('country', None)
+                        user_profile.save()
                     user.is_active = False
                     user.save()
 
