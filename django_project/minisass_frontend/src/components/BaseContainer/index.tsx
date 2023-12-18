@@ -40,7 +40,7 @@ export default function BaseContainer (props: {children: any}) {
             </div>
             {/* end of section */}
           </div>
-          <div className="h-[200px]"></div>
+          <div className="h-[400px]"></div>
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" showLogo={false}/>
         </div>
       </div>

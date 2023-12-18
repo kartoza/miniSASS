@@ -103,7 +103,7 @@ function NavigationBar(props) {
 
 
       <div className="md:bottom-5 sm:bottom-[30px] flex sm:flex-1 flex-row gap-[37px] items-center justify-between left-3.5 relative w-[22%] md:w-[30%] sm:w-full">
-        <div className="flex flex-row gap-4 items-start justify-start w-auto" style={{ marginLeft: '120px'}}>
+        <div className="flex flex-row gap-4 items-start justify-start w-auto">
             <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
               <Img
                 className="h-6 w-6"
@@ -126,11 +126,17 @@ function NavigationBar(props) {
               />
             </a>
           </div>
-          <Img
-            className="h-[45px] sm:h-[] md:h-[] object-cover"
-            src={`${newURL}img_image3.png`}
-            alt="imageThree"
-          />
+          <Button
+            onClick={() => navigate('/mobile-app')}
+            className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5
+            sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+            shape="square"
+            color="blue_900"
+            size="xs"
+            variant="fill"
+          >
+            Download miniSASS App
+          </Button>
         </div>
 
                       
