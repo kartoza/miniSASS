@@ -227,7 +227,18 @@ def register(request):
         # Set the ID for the new user
         request.data['id'] = new_user_id
 
-        serializer = UserSerializer(data=request.data)
+        object_to_save = {
+            'last_name': request.data.get('surname', ''),
+            'username': request.data.get('username', ''),
+            'first_name': request.data.get('name', ''),
+            'organization_name': request.data.get('organizationName', ''),
+            'organization_type': request.data.get('organizationType', 'NGO'),
+            'country': request.data.get('country', 'SA'),
+            'email': request.data.get('email', ''),
+            'password': request.data.get('password', ''),
+        }
+
+        serializer = UserSerializer(data=object_to_save)
         if serializer.is_valid():
             try:
                 user = serializer.save()
@@ -242,19 +253,20 @@ def register(request):
                 organisation_type_description = request.data.get('organizationType')
                 
                 if org_name and user_country and organisation_type_description:
-                    # Retrieve the Lookup object based on the description.
-                    # This assumes that the 'description' field in the Lookup model is unique.
                     try:
                         organisation_type = Lookup.objects.get(description__iexact=organisation_type_description)
                     except Lookup.DoesNotExist:
                         # If no match is found, use the default description "Organisation Type".
-                        organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
+                        organisation_type, created = Lookup.objects.get_or_create(
+                            description__iexact="Organisation Type",
+                            defaults={'description': "Organisation Type"}
+                        )
 
-                    max_id = UserProfile.objects.all().aggregate(Max('pk'))['pk__max']
+                    max_id = UserProfile.objects.all().aggregate(Max('id'))['id__max']
                     new_user_id = max_id + 1 if max_id is not None else 1
-                    print(new_user_id)
                     
                     user_profile = UserProfile(
+                        id=new_user_id,
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=org_name,
@@ -265,7 +277,7 @@ def register(request):
                     user.save()
 
                     # Get the current site's domain
-                    domain = Site.objects.get_current().domain,
+                    domain = Site.objects.get_current().domain
 
                     # Generate token
                     token = default_token_generator.make_token(user) 
