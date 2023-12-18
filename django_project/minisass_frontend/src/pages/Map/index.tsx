@@ -104,13 +104,15 @@ const MapPage: React.FC = () => {
   const [resetMapToDefault, setResetMap] = useState(false);
 
   function resetMap(): void {
-    setSelectedCoordinates({latitude: -28.671882886975247, longitude: 24.679864950000024})
+    // @Zakki this causes random zoom in when you choose use existing site
+    // setSelectedCoordinates({latitude: -28.671882886975247, longitude: 24.679864950000024})
     setResetMap(true)
   }
 
   function setSiteDetails(details: {}): void {
     setSiteDetailsFromApi(details)
-    // setIsObservationDetails(false)
+    if(isSidebarOpen)
+      setIsObservationDetails(false)
   }
 
   function resetSiteDetails(details: {}): void {

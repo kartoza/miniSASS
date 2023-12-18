@@ -361,21 +361,6 @@ export const Map = forwardRef((props: Interface, ref) => {
     
     }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates,map]);
 
-
-
-    useEffect(() => {
-      if (props.resetMap === true) {
-        let mapInstance = map;
-        if (mapInstance) {
-          mapInstance.flyTo({
-            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
-            zoom: initialMapConfig.zoom,
-            essential: true,
-          });
-        }
-      }
-    }, [props.resetMap]);
-
     useEffect(() => {
       if (props.resetMap === true) {
         let mapInstance = map;
