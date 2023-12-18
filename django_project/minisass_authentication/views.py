@@ -257,6 +257,9 @@ def register(request):
                     #     organisation_name=request.data.get('organizationName', ''),
                     #     country=request.data.get('country', None),
                     # )
+                    UserUpdateSerializer(
+                        data=request.data
+                    )
                     user.is_active = False
                     user.save()
 
