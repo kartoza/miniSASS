@@ -255,7 +255,6 @@ def register(request):
                     print(new_user_id)
                     
                     user_profile = UserProfile(
-                        id=new_user_id,
                         user=user,
                         organisation_type=organisation_type,
                         organisation_name=org_name,
