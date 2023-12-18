@@ -86,7 +86,7 @@ const RecentActivity: React.FC = () => {
 
   return (
     <BaseContainer>
-      <Grid container flexDirection={'column'}>
+      <Grid container flexDirection={'column'} marginBottom={'200px'}>
         <Grid item>
           <Text
               className="sm:flex-1 ml-2 sm:ml-[0] sm:mt-0 mt-[3px] sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 w-[28%] sm:w-full"

@@ -11,9 +11,13 @@ type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > &
-  Partial<{}>;
+  Partial<{
+    showLogo?: boolean;
+  }>;
 
 const Footer: React.FC<FooterProps> = (props) => {
+  const hideLogo = props.showLogo === false;
+  console.debug(hideLogo)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -45,47 +49,57 @@ const Footer: React.FC<FooterProps> = (props) => {
   // Construct the new URL with the replacement path
   const newURL = baseUrl + '/' + replacementPath;
 
+  let className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mb-[-10px]";
+  if (hideLogo) {
+    className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mt-[230px] mb-[-10px]";
+  }
+
   return (
     <>
       <footer className={props.className}>
-        <div className="flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mb-[-10px]">
-          <div className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full" style={{ marginLeft: '-5%' }}>
-            <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
-              <Img
-                className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}img_image6.jpg`}
-                alt="Ground Truth"
-              />
-            </a>
-            <a href="https://www.iwmi.cgiar.org" target="_blank" rel="noopener noreferrer">
-              <Img
-                className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}patners_logo_2.png`}
-                alt="IWMI"
-              />
-            </a>
-            <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">
-              <Img
-                className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}patners_logo_3.png`}
-                alt="Amazon"
-              />
-            </a>
-            <a href="https://www.cgiar.org" target="_blank" rel="noopener noreferrer">
-              <Img
-                className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}patners_logo_4.png`}
-                alt="CGIAR"
-              />
-            </a>
-            <a href="https://www.unicef.org/" target="_blank" rel="noopener noreferrer">
-              <Img
-                className="h-[100px] md:h-auto object-contain"
-                src={`${newURL}patners_logo_5.png`}
-                alt="Unicef"
-              />
-            </a>
-          </div>
+        <div className={className}>
+          {!hideLogo &&
+            <div
+              className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full"
+              style={{marginLeft: '-5%'}}>
+              <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}img_image6.jpg`}
+                  alt="Ground Truth"
+                />
+              </a>
+              <a href="https://www.iwmi.cgiar.org" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_2.png`}
+                  alt="IWMI"
+                />
+              </a>
+              <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_3.png`}
+                  alt="Amazon"
+                />
+              </a>
+              <a href="https://www.cgiar.org" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_4.png`}
+                  alt="CGIAR"
+                />
+              </a>
+              <a href="https://www.unicef.org/" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_5.png`}
+                  alt="Unicef"
+                />
+              </a>
+            </div>
+          }
+
           <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px] md:w-[105%] sm:w-[110%] w-full">
             <div className="flex flex-col items-center justify-start mt-8 w-[85%] md:w-full">
               <div className="flex flex-col gap-10 items-center justify-start w-auto md:w-full">
@@ -97,7 +111,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   />
                 </div>
 
-                <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list">
+                <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list md:ml-[50px]">
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <HashLink to="/howto#howto-title">
                       <Text
@@ -106,7 +120,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       >
                         How to
                       </Text>
-                    </HashLink>;
+                    </HashLink>
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <Text
