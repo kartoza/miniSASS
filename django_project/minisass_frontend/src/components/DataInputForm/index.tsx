@@ -153,6 +153,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
+  const [isFetchingSites, setIsFetchingSites] = useState(false);
   const [sites, setSitesList] = useState([]);
   const [enableSiteFields, setEnableSiteFields] = useState(true);
   const [isCreateSite, setIsCreateSite] = useState('createsite');
@@ -225,6 +226,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const getSites = async () => {
     try {
       if (Object.keys(props.siteDetails).length === 0) {
+        setIsFetchingSites(true)
         const response = await axios.get(`${FETCH_SITES}`);
         if (response.status === 200) {
           const sitesList = [
@@ -246,6 +248,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             })),
           ];
           setSitesList(sitesList);
+          setIsFetchingSites(false);
         }
       } else {
         const sitesList = [
@@ -475,43 +478,47 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             {`Sites:`}
                           </Text>
                           
-                          <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
-                            <Select
-                              name="selectedSite"
-                              options={sites}
-                              className="!text-black-900_99 font-raleway text-base text-left"
-                              placeholder=""
-                              isSearchable
-                              styles={customStyles}
-                              value={(() => {
-                                const selectedOption = sites.find((option) => option.value === values.selectedSite? option.value: option.value);
-                                return selectedOption;
-                              })()}
-                              onChange={(selectedOption) => {
-                                handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
-                              
-                                const selectedValue = selectedOption.value;
-                              
-                                if (selectedValue === 'none') {
-                                  // Clear variables when "None" is selected
-                                  setFieldValue('riverName', '');
-                                  setFieldValue('siteName', '');
-                                  setFieldValue('rivercategory', '');
-                                  setFieldValue('siteDescription', '');
-                                  setIsCreateSite('useexistingsite');
-                                } else {
-                                  const selectedSite = sites.find((site) => site.value === selectedValue);
-                                  if (selectedSite) {
+                          {isFetchingSites? (
+                            <div style={{ marginLeft: '210px', height: '30px', width: '300px'}}>
+                              <LinearProgress color="success" /> </div> ): (
+                            <div className="flex flex-row items-center justify-start w-[97%] sm:w-full">
+                              <Select
+                                name="selectedSite"
+                                options={sites}
+                                className="!text-black-900_99 font-raleway text-base text-left"
+                                placeholder=""
+                                isSearchable
+                                styles={customStyles}
+                                value={(() => {
+                                  const selectedOption = sites.find((option) => option.value === values.selectedSite? option.value: option.value);
+                                  return selectedOption;
+                                })()}
+                                onChange={(selectedOption) => {
+                                  handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
+                                
+                                  const selectedValue = selectedOption.value;
+                                
+                                  if (selectedValue === 'none') {
+                                    // Clear variables when "None" is selected
+                                    setFieldValue('riverName', '');
+                                    setFieldValue('siteName', '');
+                                    setFieldValue('rivercategory', '');
+                                    setFieldValue('siteDescription', '');
                                     setIsCreateSite('useexistingsite');
-                                    setFieldValue('riverName', selectedSite.riverName);
-                                    setFieldValue('siteName', selectedSite.siteName);
-                                    setFieldValue('rivercategory', selectedSite.riverCategory);
-                                    setFieldValue('siteDescription', selectedSite.siteDescription);
+                                  } else {
+                                    const selectedSite = sites.find((site) => site.value === selectedValue);
+                                    if (selectedSite) {
+                                      setIsCreateSite('useexistingsite');
+                                      setFieldValue('riverName', selectedSite.riverName);
+                                      setFieldValue('siteName', selectedSite.siteName);
+                                      setFieldValue('rivercategory', selectedSite.riverCategory);
+                                      setFieldValue('siteDescription', selectedSite.siteDescription);
+                                    }
                                   }
-                                }
-                              }}
-                            />
-                          </div>
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
                       </>
                 }
