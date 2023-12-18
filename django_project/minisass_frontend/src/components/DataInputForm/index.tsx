@@ -217,6 +217,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     // }
     if (selectSiteMode === 'SELECT_KNOWN_SITE') {
       setSelectSiteMode('NONE')
+      props.resetSiteDetails({})
     }else {
       setSelectSiteMode('SELECT_KNOWN_SITE')
     }
@@ -248,7 +249,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
             })),
           ];
           setSitesList(sitesList);
-          setIsFetchingSites(false);
         }
       } else {
         const sitesList = [
@@ -268,6 +268,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           selectedSite: props.siteDetails.site.gid
         });
       }
+      setIsFetchingSites(false);
     } catch (error) {
       console.log(error.message);
     }
