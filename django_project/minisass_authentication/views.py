@@ -251,7 +251,7 @@ def register(request):
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
                     UserProfile.objects.update_or_create(
-                        user=user
+                        user=user,
                         defaults={
                           'organisation_type': organisation_type,
                           'organisation_name': request.data.get('organizationName', ''),
