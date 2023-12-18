@@ -221,8 +221,8 @@ def register(request):
         if existing_user:
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        total_users = User.objects.count()
-        new_user_id = total_users + 1 if total_users is not None else 1
+
+        new_user_id = User.objects.raw('SELECT max(id)+1 from UserProfile')
 
         object_to_save = {
             'last_name': request.data.get('surname', ''),
