@@ -11,10 +11,10 @@ import Search from './Search';
 import basemapsData from './config/basemaps.config.json';
 import overlayLayersData from './config/overlay.config.json';
 import { useAuth, OPEN_LOGIN_MODAL } from "../../AuthContext";
+import { globalVariables } from "../../utils";
+import HomeIcon from '@mui/icons-material/Home';
 
 import "./style.css"
-
-import { globalVariables } from "../../utils";
 
 const MapPage: React.FC = () => {
   const mapRef = useRef(null);
@@ -104,7 +104,7 @@ const MapPage: React.FC = () => {
   const [resetMapToDefault, setResetMap] = useState(false);
 
   function resetMap(): void {
-    setSelectedCoordinates({latitude: null, longitude: null})
+    setSelectedCoordinates({latitude: -28.671882886975247, longitude: 24.679864950000024})
     setResetMap(true)
   }
 
@@ -190,7 +190,6 @@ const MapPage: React.FC = () => {
                 setIdxActive={setIdxActive}
                 openObservationForm={openObservationForm}
                 setSiteDetails={setSiteDetails}
-                resetMap={resetMapToDefault}
               />
               {/* Sidebar */}
               <Sidebar
@@ -241,8 +240,21 @@ const MapPage: React.FC = () => {
             </Text>
           </div>
 
+          {/* Toggle button to reset map */}
+          <div
+            className="absolute top-0 left-0 m-4 p-2 bg-white top-[30%] rounded-md cursor-pointer"
+            onClick={resetMap}
+            style={{
+              transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
+              backgroundColor: 'white',
+              marginLeft: '10px'
+            }}
+          >
+            <HomeIcon className="w-35" />
+          </div>
+
         <div
-          className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[25%] sm:top-[25px] w-auto transition-opacity duration-300 ${
+          className={`absolute bg-white-A700 flex flex-col gap-2 items-start justify-center left-[1%] px-[18px] py-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] top-[50%] sm:top-[25px] w-auto transition-opacity duration-300 ${
             showLegend ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           style={{ marginLeft: '-4.0px' }}
