@@ -56,11 +56,11 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=255, blank=True, null=True)
     is_expert = models.BooleanField(default=False)
     is_password_enforced = models.BooleanField(
-        default=False,
+        default=True,
         help_text='Flag whether user has been enforced to use strong password'
     )
     expert_approval_status = models.CharField(
-        default=PENDING_STATUS,
+        default=REJECTED_STATUS,
         choices=EXPERT_APPROVAL_STATUS
     )
     certificate = models.FileField(
@@ -92,4 +92,15 @@ def post_certificate_approve(sender, instance: UserProfile, **kwargs):
             settings.EXPERT_APPROVAL_RECIPIENT_EMAIL,
             [email],
             html_message=message
+        )
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def post_user_create(sender, instance: UserProfile, created, **kwargs):
+    if created:
+        UserProfile.objects.get_or_create(
+            user=instance,
+            defaults={
+                'is_password_enforced': True
+            }
         )
