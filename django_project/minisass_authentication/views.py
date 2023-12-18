@@ -244,19 +244,19 @@ def register(request):
                 if org_name and user_country and organisation_type_description:
                     # Retrieve the Lookup object based on the description.
                     # This assumes that the 'description' field in the Lookup model is unique.
-                    try:
-                        organisation_type = Lookup.objects.get(description__iexact=organisation_type_description)
-                    except Lookup.DoesNotExist:
-                        # If no match is found, use the default description "Organisation Type".
-                        organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
+                    # try:
+                    #     organisation_type = Lookup.objects.get(description__iexact=organisation_type_description)
+                    # except Lookup.DoesNotExist:
+                    #     # If no match is found, use the default description "Organisation Type".
+                    #     organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
-                    UserProfile.objects.create(
-                        id=new_user_id,
-                        user=user,
-                        organisation_type=organisation_type,
-                        organisation_name=request.data.get('organizationName', ''),
-                        country=request.data.get('country', None),
-                    )
+                    # UserProfile.objects.create(
+                    #     id=new_user_id,
+                    #     user=user,
+                    #     organisation_type=organisation_type,
+                    #     organisation_name=request.data.get('organizationName', ''),
+                    #     country=request.data.get('country', None),
+                    # )
                     user.is_active = False
                     user.save()
 
