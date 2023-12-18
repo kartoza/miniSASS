@@ -55,7 +55,7 @@ export default function CoordinatesInputForm(
       onChange={(evt) => setType(evt.target.value)}
       row
     >
-      <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
+      {/* <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/> */}
       <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
     </RadioGroup>
     ): (
