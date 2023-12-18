@@ -17,7 +17,6 @@ type FooterProps = React.DetailedHTMLProps<
 
 const Footer: React.FC<FooterProps> = (props) => {
   const hideLogo = props.showLogo === false;
-  console.debug(hideLogo)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
