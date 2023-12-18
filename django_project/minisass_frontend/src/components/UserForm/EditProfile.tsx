@@ -43,6 +43,7 @@ const EditProfile: React.FC<EditProfileInterface> = ({
     organisation_type: '',
     organisation_name: '',
     country: 'ZA',
+    is_expert: false
   });
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);

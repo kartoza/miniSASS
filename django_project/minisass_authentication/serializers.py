@@ -33,7 +33,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     organisation_type = serializers.CharField(source='userprofile.organisation_type.description')
     organisation_name = serializers.CharField(source='userprofile.organisation_name')
     country = serializers.CharField(source='userprofile.country')
-    is_expert = serializers.BooleanField(source='userprofile.is_expert', required=False)
+    is_expert = serializers.SerializerMethodField()
+
+    def get_is_expert(self, obj):
+        try:
+            return obj.userprofile.is_expert
+        except Exception:
+            return False
 
     def validate_name(self, value):
         if value == '':
