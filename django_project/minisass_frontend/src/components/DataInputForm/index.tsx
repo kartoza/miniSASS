@@ -14,7 +14,7 @@ import CoordinatesInputForm from "../CoordinatesInputForm";
 import Select from 'react-select';
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import {deepClone} from "@mui/x-data-grid/utils/utils";
-
+import LinearProgress from '@mui/material/LinearProgress';
 
 type DataInputFormProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
