@@ -43,11 +43,11 @@ function NavigationBar(props) {
 
   return (
     <>
-      <AuthenticationButtons /> 
-                  
+      <AuthenticationButtons />
 
       <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
-        <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0 mt-[15px] md:relative md:right-[400px] w-auto sm:w-full">
+        <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0
+        mt-[15px] md:relative md:right-[400px] w-auto sm:w-full sm:flex-col sm:ml-[700px] sm:left-[10px]">
           <Button
             className={`common-pointer cursor-pointer font-extrabold leading-[normal] min-w-[102px] text-blue-900 text-center text-sm tracking-[0.98px] uppercase ${
               activePage === 'home' ? 'bg-gray-200' : 'bg-transparent'

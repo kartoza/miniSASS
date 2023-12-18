@@ -14,6 +14,7 @@ import UploadModal from "../../components/UploadFormModal";
 import { globalVariables } from "../../utils";
 import Modal from 'react-modal';
 import Typography from '@mui/material/Typography';
+import './index.css'
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
   const [activationComplete, setActivationComplete] = useState(false);
   const [activationMessage, setActivationMessage] = useState('');
+  const [observationPerPage, setObservationPerPage] = useState(5)
 
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -92,6 +94,22 @@ const Home: React.FC = () => {
         fetchHomePageData();
     }, []);
 
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth > 1050 && window.innerWidth < 1200) {
+      setObservationPerPage(3);
+    } else if (window.innerWidth > 1200 && window.innerWidth < 1536) {
+      setObservationPerPage(4);
+    } else {
+      setObservationPerPage(5)
+    }
+  };
+
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+  });
 
   // handle advancing to the next set of observations
   const handleNextObservations = () => {
@@ -244,7 +262,11 @@ const Home: React.FC = () => {
 
         {/* more links section */}
           <List
-            className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px] mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5 relative md:top-[170px] sm:top-[190px] top-[50px] w-full"
+            className="md:flex sm:flex-col flex-row gap-5 grid sm:grid-cols-1
+            md:grid-cols-2 grid-cols-4 h-32 justify-center max-w-[1450px]
+            mt-1 mx-auto sm:overflow-auto md:overflow-x-auto md:px-5
+            relative md:top-[170px] sm:top-[190px] top-[50px] w-full
+            sm:h-auto sm:h-auto sm:mt-[200px] md:mt-[200px]"
             orientation="horizontal"
           >
             <div
@@ -375,14 +397,14 @@ const Home: React.FC = () => {
               quality in that river.
             </Text>
           </div>
-          
-          <div className="flex md:flex-col flex-row gap-5 md:grid md:grid-cols-2 items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
+
+          <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
             <Img
               className="sm:flex-1 h-[380px] md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[380px] sm:w-full"
               src={`${globalVariables.staticPath}img_rectangle1.png`}
               alt="rectangleOne"
             />
-            <div>
+            <div className="sm:w-full md:w-full">
               <Text
               className="md:h-auto leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanSemiBold16"
@@ -458,8 +480,7 @@ const Home: React.FC = () => {
           {/* end of section */}
 
           {/* obeservations and map section */}
-          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start mt-10 w-full">
-
+          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[50px] recent-observations">
              {/* observations */}
              <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
               <div className="sm:bottom-[] flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
@@ -496,13 +517,17 @@ const Home: React.FC = () => {
                 )}
               </div>
               <List
-                className="flex-col sm:flex-row gap-3 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-5 sm:h-[50vh] items-baseline justify-around overflow-auto relative w-auto md:w-full"
+                className="flex-col sm:flex-row gap-3 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-5 sm:h-[50vh]
+                items-baseline justify-around overflow-auto relative w-auto md:w-full
+                recent-observations-list"
                 orientation="horizontal"
               >
-                {observations.slice(currentIndex, currentIndex + 5).map((props, index) => (
+                {observations.slice(currentIndex, currentIndex + observationPerPage).map((props, index) => (
                   <React.Fragment key={`DesktopThreeColumnscore${index}`}>
                     <Observations
-                      className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[265px] md:h-auto items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[280px]"
+                      className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[265px] md:h-auto
+                      items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px]
+                      rounded-tr-[25px] w-[280px] sm:w-full md:w-full"
                       {...props}
                     />
                   </React.Fragment>

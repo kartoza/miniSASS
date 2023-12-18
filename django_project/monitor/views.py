@@ -180,7 +180,6 @@ def get_observations(request, site_id):
 
 
 class DownloadObservations(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request, site_id):
         start_date = request.GET.get('start_date', timezone.now().strftime('%Y-%m-%d'))
