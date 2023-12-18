@@ -262,17 +262,26 @@ def register(request):
                             defaults={'description': "Organisation Type"}
                         )
 
-                    max_id = UserProfile.objects.all().aggregate(Max('id'))['id__max']
-                    new_user_id = max_id + 1 if max_id is not None else 1
+                    max_user_profile_id = UserProfile.objects.all().aggregate(Max('id'))['id__max']
+                    new_user_profile_id = max_user_profile_id + 1 if max_user_profile_id is not None else 1
                     
-                    user_profile = UserProfile(
-                        id=new_user_id,
+                    # Check if the user already has a user profile
+                    user_profile, created = UserProfile.objects.get_or_create(
                         user=user,
-                        organisation_type=organisation_type,
-                        organisation_name=org_name,
-                        country=user_country,
+                        defaults={
+                            'id': new_user_profile_id,
+                            'organisation_type': organisation_type,
+                            'organisation_name': org_name,
+                            'country': user_country,
+                        }
                     )
-                    user_profile.save()
+                    
+                    if not created:
+                        # User profile already existed, update the fields
+                        user_profile.organisation_type = organisation_type
+                        user_profile.organisation_name = org_name
+                        user_profile.country = user_country
+                        user_profile.save()
                     user.is_active = False
                     user.save()
 
