@@ -110,7 +110,7 @@ const MapPage: React.FC = () => {
 
   function setSiteDetails(details: {}): void {
     setSiteDetailsFromApi(details)
-    setIsObservationDetails(false)
+    // setIsObservationDetails(false)
   }
 
   function resetSiteDetails(details: {}): void {
