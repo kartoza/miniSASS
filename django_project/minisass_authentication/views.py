@@ -221,8 +221,8 @@ def register(request):
         if existing_user:
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        max_id = User.objects.all().aggregate(Max('id'))['id__max']
-        new_user_id = max_id + 1 if max_id is not None else 1
+        total_users = User.objects.count()
+        new_user_id = total_users + 1 if total_users is not None else 1
 
         object_to_save = {
             'last_name': request.data.get('surname', ''),
@@ -260,8 +260,8 @@ def register(request):
                             defaults={'description': "Organisation Type"}
                         )
 
-                    max_user_profile_id = UserProfile.objects.all().aggregate(Max('id'))['id__max']
-                    new_user_profile_id = max_user_profile_id + 1 if max_user_profile_id is not None else 1
+                    total_user_profiles = UserProfile.objects.count()
+                    new_user_profile_id = total_user_profiles + 1
                     
                     # Check if the user already has a user profile
                     user_profile, created = UserProfile.objects.get_or_create(
