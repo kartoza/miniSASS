@@ -224,9 +224,6 @@ def register(request):
         max_id = User.objects.all().aggregate(Max('id'))['id__max']
         new_user_id = max_id + 1 if max_id is not None else 1
 
-        # Set the ID for the new user
-        request.data['id'] = new_user_id
-
         object_to_save = {
             'last_name': request.data.get('surname', ''),
             'username': request.data.get('username', ''),
@@ -236,6 +233,7 @@ def register(request):
             'country': request.data.get('country', 'SA'),
             'email': request.data.get('email', ''),
             'password': request.data.get('password', ''),
+            'id': new_user_id,
         }
 
         serializer = UserSerializer(data=object_to_save)
