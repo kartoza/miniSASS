@@ -4,7 +4,6 @@ import Select from "react-select";
 import CountrySelector from "../../components/Countries/selector";
 import {COUNTRIES} from "../../components/Countries/countries";
 import {SelectMenuOption} from "../../components/Countries/types";
-import LoginFormModal from "../../components/LoginFormModal";
 import {globalVariables} from '../../utils';
 import axios from "axios";
 import {useAuth} from "../../AuthContext";
@@ -86,10 +85,13 @@ const EditProfile: React.FC<EditProfileInterface> = ({
     const headers = {'Authorization': `Bearer ${state.user.access_token}`};
     axios.get(UPDATE_PROFILE, {headers}).then((response) => {
       if (response.data) {
+        const country = COUNTRIES.find((option) => option.value === response.data.country) ?
+          COUNTRIES.find((option) => option.value === response.data.country) : 'ZA'
         const newFormData = {
           ...response.data,
-          country: response.data.country ? response.data.country : 'ZA',
+          country: country,
         }
+        console.debug(newFormData)
         setFormData(newFormData)
       }
     }).catch((error) => {
