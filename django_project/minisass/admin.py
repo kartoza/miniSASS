@@ -1,5 +1,5 @@
 from django.contrib import admin
-from minisass.models import GroupScores,Video
+from minisass.models import GroupScores, Video, MobileApp
 
 @admin.register(GroupScores)
 class GroupScoresAdmin(admin.ModelAdmin):
@@ -10,3 +10,10 @@ class GroupScoresAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title',)
+
+
+@admin.register(MobileApp)
+class MobileApp(admin.ModelAdmin):
+    list_display = ['name', 'active', 'date']
+    list_filter = ['active']
+    search_fields = ['name']

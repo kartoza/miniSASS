@@ -41,6 +41,7 @@ export default function BaseContainer (props: {children: any}) {
             </div>
             {/* end of section */}
           </div>
+          <div className="mt-[600px]"></div>
 
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
         </div>
