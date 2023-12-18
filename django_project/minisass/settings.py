@@ -156,7 +156,7 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('SMTP_HOST', 'smtp')
 EMAIL_PORT = os.getenv('SMTP_PORT', '25')
 EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER', 'noreply@kartoza.com')
@@ -235,4 +235,3 @@ MINIO_BUCKET = os.getenv('MINIO_BUCKET', 'demo')
 MINION_STORAGE = FileSystemStorage(
     location=MINIO_ROOT, base_url='/minio-media'
 )
-DEBUG=True
