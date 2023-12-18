@@ -42,6 +42,10 @@ nav:
                   - Home: index.md
                   - Developer Documentation: developer/index.md
                   - About: about/index.md
+        - User:
+                  - user/index.md
+                  - Landing Page: user/manual/landing-page.md
+                  - Contact Us: user/manual/contact-us.md
         - Developer:
                   - developer/index.md
                   - Installation: developer/install.md
