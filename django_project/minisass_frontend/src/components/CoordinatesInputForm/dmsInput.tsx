@@ -96,7 +96,7 @@ function DmsInput({ label, value, onChange, disabled }: DegreeInputInterface) {
     </Text>
     <DmsInputSection
       id={label + 'degrees'}
-      value={degrees} min={0} max={18000}
+      value={degrees} min={-18000} max={18000}
       disabled={disabled}
       onChange={(val) => {
         setCurrValue(

@@ -12,8 +12,8 @@ export function toDegreesMinutesAndSeconds(coordinate) {
 export function convertToDMSLatitude(val) {
   const { degrees, minutes, seconds } = toDegreesMinutesAndSeconds(val);
   const cardinal = val >= 0 ? "N" : "S";
-
-  return { degrees, minutes, seconds, cardinal }
+  const adjustedDegrees = cardinal === 'S' ? -degrees : degrees;
+  return { adjustedDegrees, minutes, seconds, cardinal }
 }
 
 /*** Convert longitude to dms */
