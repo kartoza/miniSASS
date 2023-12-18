@@ -58,9 +58,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
   const [isChartHidden, setIsChartHidden] = useState<boolean>(true);
   const [observationList, setObservationList] = useState<Observation[]>([]);
-  const images = Object.keys(observationDetails).length > 0 ?
-    [].concat(observationDetails.site.images, observationDetails.images) :
-    [];
 
   let minDate = dayjs().format('YYYY-MM-DD');
   let maxDate = dayjs().format('YYYY-MM-DD');
@@ -112,14 +109,14 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   };
 
 
-  const updateTabs =  (observations) => {
+  const updateTabs = (observations) => {
     setTabsData(
       observations.map((observation, index) => ({
         id: `tab${index + 1}`,
         label: observation.obs_date,
         content: (
           <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            {observation.images.map((image, index) => (
+            {[].concat(observation.site.images, observation.images).map((image, index) => (
               <img
                 key={`image_${index}`}
                 className="h-[152px] md:h-auto object-cover w-[164px]"

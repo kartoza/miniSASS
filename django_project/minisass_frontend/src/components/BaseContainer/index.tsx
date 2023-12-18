@@ -4,7 +4,6 @@ import {Img} from "../../components";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import {globalVariables} from "../../utils";
-import './index.css'
 
 
 export default function BaseContainer (props: {children: any}) {
@@ -36,14 +35,13 @@ export default function BaseContainer (props: {children: any}) {
                 </div>
               </div>
             </div>
-            <div className="content-container">
+            <div className="mt-[100px] w-[70%] ml-[15%]">
               {props.children}
             </div>
             {/* end of section */}
           </div>
-          <div className="mt-[600px]"></div>
-
-          <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" />
+          <div className="h-[400px]"></div>
+          <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" showLogo={false}/>
         </div>
       </div>
     </>

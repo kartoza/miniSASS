@@ -67,7 +67,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
       const startDate = formData.startDate.format('YYYY-MM-DD');
       const endDate = formData.endDate.format('YYYY-MM-DD');
       const url = `${DOWNLOAD_OBSERVATIONS_URL}/${siteId}?type=${formData.type}&start_date=${startDate}&end_date=${endDate}&include_image=${formData.includeImage}`;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.get(url, { responseType: 'blob' });
 
       if (response.status === 200) {

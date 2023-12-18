@@ -250,12 +250,13 @@ def register(request):
                         # If no match is found, use the default description "Organisation Type".
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
                     
-                    UserProfile.objects.create(
-                        id=new_user_id,
+                    UserProfile.objects.update_or_create(
                         user=user,
-                        organisation_type=organisation_type,
-                        organisation_name=request.data.get('organizationName', ''),
-                        country=request.data.get('country', None),
+                        defaults={
+                          'organisation_type': organisation_type,
+                          'organisation_name': request.data.get('organizationName', ''),
+                          'country': request.data.get('country', None),
+                        }
                     )
                     user.is_active = False
                     user.save()

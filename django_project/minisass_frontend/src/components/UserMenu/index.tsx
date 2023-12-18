@@ -27,7 +27,7 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
   };
 
   return (
-    <div>
+    <div className="h-[35px] w-[35px]">
       <Img
         src={`${globalVariables.staticPath}iconamoon_profile-circle-fill.svg`}
         alt="iconamoon_profile-circle-fill"

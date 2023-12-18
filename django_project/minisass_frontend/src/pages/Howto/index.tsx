@@ -7,7 +7,7 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
 import { Link } from 'react-scroll';
-import UserFormModal from "../../components/RegistrationFormModal";
+import RegistrationFormModal from "../../components/RegistrationFormModal";
 import { globalVariables } from "../../utils";
 import axios from "axios"
 
@@ -358,16 +358,9 @@ const HowtoPage: React.FC = () => {
                 </Text>
                 <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
                   <li>
-                    
-                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
                     <span className="text-gray-800 font-raleway text-left font-normal">
-                      Gather all the field sheets and{" "}
+                      Gather all the field sheets.
                     </span>
-                    <span className="underline">
-                      equipment
-                    </span>
-                      <span>!</span>
-                    </a>
                   </li>
                   <li>
                     <span className="text-gray-800 font-raleway text-left font-normal">
@@ -375,31 +368,39 @@ const HowtoPage: React.FC = () => {
                     </span>
                   </li>
                   <li>
-                    
-                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
                     <span className="text-gray-800 font-raleway text-left font-normal">
                       Count and identify all the bugs you have collected. Use the{" "}
                     </span>
-                    <span className="underline">Dichotomous Key</span>
+                    <span className="underline text-blue-900" onClick={() => {
+                      window.open(
+                        'https://minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf',
+                        "_blank",
+                        "noreferrer"
+                      );
+                    }}>Dichotomous Key</span>
                     <span>
                       {" "}and{" "}
                     </span>
-                      <span className="underline">
-                        Identification guide.
-                      </span>
-                    </a>
+                    <span className="underline text-blue-900" onClick={() => {
+                      window.open(
+                        'https://minisass.org/media/filer_public/2013/06/28/1111_minisass_information_guide_nov_2011.pdf',
+                        "_blank",
+                        "noreferrer"
+                      );
+                    }}>
+                      Identification guide.
+                    </span>
                   </li>
                   <li>
-                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal ">
-                      <span>Score them using the (</span>
-                      <span className="underline">Version 2.0 November 2011</span>
-                      <span>) and find your river health!!</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal underline">
-                      Read more on preparing for miniSASS...
-                    </a>
+                    <span>Score them using the (</span>
+                    <span className="underline text-blue-900" onClick={() => {
+                      window.open(
+                        'https://minisass.org/media/filer_public/2013/09/06/1111_minisass_info_pamphlet_front_sep_2013.pdf',
+                        "_blank",
+                        "noreferrer"
+                      );
+                    }}>Version 2.0 November 2011</span>
+                    <span>) and find your river health!!</span>
                   </li>
                 </ul>
 
@@ -412,7 +413,7 @@ const HowtoPage: React.FC = () => {
                 alt="rectangleSixteen"
               />
               <div className="flex flex-col gap-[26px] items-start justify-start w-auto sm:w-full">
-               <UserFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={null} error_response={null}/>
+               <RegistrationFormModal isOpen={isRegisterModalOpen} onClose={closeRegisterModal} onSubmit={null} error_response={null}/>
                 <Text
                   className="leading-[136.40%] max-w-[480px] md:max-w-full text-2xl md:text-[22px] text-blue-900 sm:text-xl"
                   size="txtRalewayBold24"
@@ -488,21 +489,25 @@ const HowtoPage: React.FC = () => {
                   Check on this List:
                   <ul style={{ listStyleType: 'disc', paddingLeft: '1rem' }}>
                     <li>
-                      <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal ">
-                       <span className="underline">Score sheet</span>
-                        <span className="text-gray-800 font-raleway text-left font-normal">
+                      <span className="underline text-blue-900" onClick={() => {
+                      window.open(
+                        'https://minisass.org/media/filer_public/2013/09/06/1111_minisass_info_pamphlet_front_sep_2013.pdf',
+                        "_blank",
+                        "noreferrer"
+                      );
+                    }}>Score sheet</span>
+                      <span className="text-gray-800 font-raleway text-left font-normal">
                         , or a piece of paper
                       </span>
-                      </a>
                       
                     </li>
                     <li>
                       Pen / Pencil
                     </li>
                     <li>
-                      
+
                       <a href="javascript:" className="text-blue-900 font-raleway text-left font-normal">
-                        <span>
+                        <span className="text-gray-800 font-raleway text-left font-normal">
                           Sieve / net (
                         </span>
                        <span className="underline"> You can make your own Net</span>
@@ -786,6 +791,7 @@ const HowtoPage: React.FC = () => {
                   <a
                     href="javascript:"
                     className="text-blue-900 font-raleway text-left font-normal underline"
+                    onClick={openRegisterModal}
                   >
                     register
                   </a>
@@ -856,7 +862,7 @@ const HowtoPage: React.FC = () => {
                     </Text>
                   </div>
                   <Img
-                    className="h-[242px] sm:h-auto object-cover w-[533px] md:w-full"
+                    className="h-[242px] sm:h-auto object-cover w-[533px] md:w-full mt-[-200px]"
                     src={`${globalVariables.staticPath}img_rectangle19.png`}
                     alt="rectangleNineteen"
                   />
@@ -898,7 +904,7 @@ const HowtoPage: React.FC = () => {
                         Double Check that this correlates with your on-site
                         data. Save your site and it will pop up on the map. If
                         you made a mistake you can send a request for change on
-                        the &quot;
+                        the {" "}
                       </>
                     </span>
                     <a
@@ -908,7 +914,7 @@ const HowtoPage: React.FC = () => {
                       Contact Us
                     </a>
                     <span className="text-gray-800 font-raleway text-left font-normal">
-                      <>&quot; Page.</>
+                      <>.</>
                     </span>
                   </Text>
                 </div>
@@ -967,7 +973,7 @@ const HowtoPage: React.FC = () => {
               <span className="text-white-A700 font-raleway text-left font-normal">
                 <>
                   {" "}
-                  to see previous miniSASS results and local schools.
+                  to see previous miniSASS results.
                   <br />
                 </>
               </span>
@@ -989,9 +995,7 @@ const HowtoPage: React.FC = () => {
               <span className="text-white-A700 font-raleway text-left font-normal">
                 <>
                   {" "}
-                  on other sites. To get more information on the sites, use the
-                  &quot;i&quot; information button and click on the crab to
-                  reveal all the observations.
+                  on other sites. To get more information on the sites, click on the crab symbol on the map to view site information.
                 </>
               </span>
             </Text>
@@ -1106,7 +1110,7 @@ const HowtoPage: React.FC = () => {
                       size="txtRalewayRomanRegular16Gray800"
                     >
                       <>
-                        take any piece of wire, for example an old clothes
+                        Take any piece of wire, for example an old clothes
                         hanger, and bend it into the shape of a net. Then tie
                         the netting (which can be any porous material) to the
                         wire with a piece of string. And you have a net like the
@@ -1118,7 +1122,7 @@ const HowtoPage: React.FC = () => {
                     </Text>
                   </div>
                   <Img
-                    className="h-[338px] sm:h-auto object-cover w-[533px] md:w-full"
+                    className="h-[338px] sm:h-auto object-cover w-[533px] md:w-full mt-[-150px]"
                     src={`${globalVariables.staticPath}img_rectangle19_338x533.png`}
                     alt="rectangleNineteen_One"
                   />

@@ -235,3 +235,4 @@ MINIO_BUCKET = os.getenv('MINIO_BUCKET', 'demo')
 MINION_STORAGE = FileSystemStorage(
     location=MINIO_ROOT, base_url='/minio-media'
 )
+DEBUG=True
