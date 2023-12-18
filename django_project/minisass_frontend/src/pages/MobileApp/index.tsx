@@ -15,7 +15,7 @@ const MobileApp: React.FC = () => {
   useEffect(() => {
     axios.get(`${globalVariables.baseUrl}/mobile-app/`)
       .then(response => {
-        setMobileApp(response.data[0].file);
+        setMobileApp(response.data?.file);
       })
       .catch(error => {
         console.error('Error fetching videos:', error);

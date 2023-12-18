@@ -1,4 +1,6 @@
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from minisass.models import (
     GroupScores,
     Video,
@@ -20,8 +22,9 @@ class VideoListView(generics.ListAPIView):
     serializer_class = VideoSerializer
 
 
-class GetMobileApp(generics.ListAPIView):
-    queryset = [MobileApp.objects.filter(active=True).order_by('-id').first()]
+class GetMobileApp(APIView):
     serializer_class = MobileAppSerializer
 
-
+    def get(self, request):
+        mobile_app = MobileApp.objects.filter(active=True).order_by('-id').first()
+        return Response(self.serializer_class(mobile_app).data)
