@@ -249,6 +249,10 @@ def register(request):
                     except Lookup.DoesNotExist:
                         # If no match is found, use the default description "Organisation Type".
                         organisation_type = Lookup.objects.get(description__iexact="Organisation Type")
+
+                    max_id = UserProfile.objects.all().aggregate(Max('pk'))['pk__max']
+                    new_user_id = max_id + 1 if max_id is not None else 1
+                    print(new_user_id)
                     
                     user_profile = UserProfile(
                         id=new_user_id,
