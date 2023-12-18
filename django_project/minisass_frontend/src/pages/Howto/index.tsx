@@ -1163,18 +1163,30 @@ const HowtoPage: React.FC = () => {
             src={`${globalVariables.staticPath}img_rectangle6_280x303.png`}
             alt="rectangleSix_One"
           />
-          <div className="scrolling-container">
-            {videos.map(video => (
-              <div key={video.id} className="VideoTile">
-                <iframe
-                  className="VideoEmbed"
-                  src={video.embed_code}
-                  title={video.title}
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+          <div className="flex container flex-col w-[70%]">
+            <div>
+              <Text
+                className="sm:text-4xl md:text-[38px] text-[40px] text-white-A700 w-auto"
+                size="txtRalewayRomanBold40"
+              >
+                How To Videos
+              </Text>
+            </div>
+            <div>
+              <div className="scrolling-container">
+                {videos.map(video => (
+                  <div key={video.id} className="VideoTile">
+                    <iframe
+                      className="VideoEmbed"
+                      src={video.embed_code}
+                      title={video.title}
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
