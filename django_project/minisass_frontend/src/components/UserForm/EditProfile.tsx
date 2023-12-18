@@ -86,12 +86,11 @@ const EditProfile: React.FC<EditProfileInterface> = ({
     axios.get(UPDATE_PROFILE, {headers}).then((response) => {
       if (response.data) {
         const country = COUNTRIES.find((option) => option.value === response.data.country) ?
-          COUNTRIES.find((option) => option.value === response.data.country) : 'ZA'
+          COUNTRIES.find((option) => option.value === response.data.country).value : 'ZA'
         const newFormData = {
           ...response.data,
           country: country,
         }
-        console.debug(newFormData)
         setFormData(newFormData)
       }
     }).catch((error) => {

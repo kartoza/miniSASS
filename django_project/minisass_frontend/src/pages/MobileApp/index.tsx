@@ -1,8 +1,6 @@
 import BaseContainer from '../../components/BaseContainer/';
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {Grid} from '@mui/material'
-// import {Button, Text} from "../../components";
 import {Text} from "../../components";
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box"
@@ -12,7 +10,6 @@ import {globalVariables} from "../../utils";
 import axios from "axios";
 
 const MobileApp: React.FC = () => {
-  const navigate = useNavigate()
   const [mobileApp, setMobileApp] = useState<any>(null);
 
   useEffect(() => {
@@ -40,7 +37,13 @@ const MobileApp: React.FC = () => {
           <Box>
             <Box style={{ width:"100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
               <Button
-                onClick={() => window.open(mobileApp, '_blank')}
+                onClick={() => {
+                  if (mobileApp) {
+                    window.open(mobileApp, '_blank')
+                  } else {
+                    alert('Mobile App is not yet available!')
+                  }
+                }}
                 className="sm:bottom-[130px] cursor-pointer font-semibold text-base text-center"
                 variant="contained"
                 style={{height: 70, fontSize: '20pt', backgroundColor: '#0e4981', paddingLeft: 50, paddingRight: 50}}
