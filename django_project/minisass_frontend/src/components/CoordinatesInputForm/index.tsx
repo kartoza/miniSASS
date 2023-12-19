@@ -60,7 +60,7 @@ export default function CoordinatesInputForm(
     </RadioGroup>
     ): (
       <RadioGroup
-      value={type}
+      value={`Degree`}
       onChange={(evt) => setType(evt.target.value)}
       row
     >
