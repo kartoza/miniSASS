@@ -271,19 +271,19 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       } else {
         const sitesList = [
           {
-            label: props.siteDetails.site.sitename,
-            value: props.siteDetails.site.gid,
-            rivercategory: props.siteDetails.site.rivercategory,
-            siteName: props.siteDetails.site.sitename,
-            siteDescription: props.siteDetails.site.sitedescription,
-            riverName: props.siteDetails.site.rivername,
+            label: props.siteDetails.sitename,
+            value: props.siteDetails.gid,
+            rivercategory: props.siteDetails.rivercategory,
+            siteName: props.siteDetails.sitename,
+            siteDescription: props.siteDetails.sitedescription,
+            riverName: props.siteDetails.rivername,
           },
         ];
         setSitesList(sitesList);
 
         setFormValues({
           ...formValues,
-          selectedSite: props.siteDetails.site.gid
+          selectedSite: props.siteDetails.gid
         });
       }
       setIsFetchingSites(false);
