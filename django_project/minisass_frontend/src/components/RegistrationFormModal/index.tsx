@@ -357,7 +357,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
-                style={{marginLeft: '30px'}}
+                style={{marginLeft: '85px'}}
               />
           </div>
 
@@ -433,7 +433,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-              <div style={{ flex: 1, flexDirection: 'column' }}>
+              <div style={{ flex: 1, flexDirection: 'column' ,marginLeft: '0px'}}>
                 <label>Organisation Name:</label><br />
                 <input
                   type="text"
@@ -502,7 +502,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' ,marginLeft: '-295px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' ,marginLeft: '-255px' ,width: '223px'}}>
             {/* <div style={{ flex: 1, flexDirection: 'column' }}> */}
               <label>Country:</label>
               <CountrySelector
