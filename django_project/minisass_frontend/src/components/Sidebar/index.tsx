@@ -17,7 +17,7 @@ interface SidebarProps {
   resetMap: () => void;
   siteDetails: {};
   resetSiteDetails: (details: {}) => void;
-  useSelectOnSite: (isSelectOnSite: boolean, supressObservationPanel: boolean) => void;
+  useSelectOnSite: (isSelectOnSite: boolean) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
