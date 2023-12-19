@@ -358,11 +358,18 @@ const HowtoPage: React.FC = () => {
         {/* resources for download section */}
         <div
           className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
-          <Img
-            className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-1/4 md:w-full"
-            src={`${globalVariables.staticPath}img_rectangle6_280x303.png`}
-            alt="rectangleSix_One"
-          />
+          <div className="flex container flex-col w-[30%]">
+            <Img
+              className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full"
+              src={`${globalVariables.staticPath}download-1.jpg`}
+              alt="rectangleSix_One"
+            />
+            <Img
+              className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 mt-[50px] object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full"
+              src={`${globalVariables.staticPath}download-2.jpg`}
+              alt="rectangleSix_One"
+            />
+          </div>
           <div className="flex container flex-col w-[70%]">
             <div>
               <Text
