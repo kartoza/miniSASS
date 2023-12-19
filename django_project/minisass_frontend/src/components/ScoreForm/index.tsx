@@ -418,7 +418,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               variant="fill"
               onClick={onCancel}
             >
-              Cancel
+              Back
             </Button>
           </div>
 
