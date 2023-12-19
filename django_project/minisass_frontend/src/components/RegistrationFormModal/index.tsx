@@ -357,7 +357,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
-                style={{marginLeft: '30px'}}
+                style={{marginLeft: '80px'}}
               />
           </div>
 
