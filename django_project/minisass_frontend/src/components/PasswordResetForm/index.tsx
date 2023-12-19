@@ -19,10 +19,7 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
     }
 
     try {
-      const response = await axios.post(
-        `${PASSWORD_RESET_API}`,
-        { newPassword, uid, token }
-      );
+      const response = await axios.post(`${PASSWORD_RESET_API}${uid}/${token}/`);
 
       if (response.status === 200) {
         // Password reset was successful
