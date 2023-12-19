@@ -17,6 +17,7 @@ interface SidebarProps {
   resetMap: () => void;
   siteDetails: {};
   resetSiteDetails: (details: {}) => void;
+  useSelectOnSite: (isSelectOnSite: boolean) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -31,7 +32,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   selectedCoordinates,
   resetMap,
   siteDetails,
-  resetSiteDetails
+  resetSiteDetails,
+  useSelectOnSite
 }) => {
   return (
     <div
@@ -62,6 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           resetMap={resetMap}
           siteDetails={siteDetails}
           resetSiteDetails={resetSiteDetails}
+          useSelectOnSite={useSelectOnSite}
         />
       )}
       
