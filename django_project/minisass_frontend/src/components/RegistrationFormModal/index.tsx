@@ -548,7 +548,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              // style={{ marginRight: "-80%" }}
+              style={{ marginRight: "-65%" }}
               onClick={handleSubmit}
             >
               Register
