@@ -11,7 +11,7 @@ export default function BaseContainer (props: {children: any}) {
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto pb-[5px] w-full">
         <div className="flex flex-col items-center justify-start sm:static w-full">
-          <div className="h-[537px] md:px-5 relative w-full">
+          <div className="md:px-5 relative w-full">
             {/* header section */}
             <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-53px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] sm:static w-full z-[1]">
               <div className="flex flex-col items-center justify-start w-[98%] md:w-full">
@@ -40,7 +40,6 @@ export default function BaseContainer (props: {children: any}) {
             </div>
             {/* end of section */}
           </div>
-          <div className="h-[400px]"></div>
           <Footer className="flex items-center justify-center mt-28 md:px-5 w-full" showLogo={false}/>
         </div>
       </div>
