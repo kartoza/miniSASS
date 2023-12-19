@@ -29,6 +29,7 @@ interface Interface {
   setIdxActive: React.Dispatch<React.SetStateAction<number>>;
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
   setSiteDetails: (details: {}) => void;
+  isSelectSiteOnMap: boolean;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -383,8 +384,9 @@ export const Map = forwardRef((props: Interface, ref) => {
         const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations/${latitude}/${longitude}/`);
     
         if (response.data) {
-          props.openObservationForm(response.data);
-          props.setSiteDetails(response.data.site)
+          if(!props.isSelectSiteOnMap)
+            props.openObservationForm(response.data);
+          else props.setSiteDetails(response.data.site);
         }
 
       } catch (error) {
