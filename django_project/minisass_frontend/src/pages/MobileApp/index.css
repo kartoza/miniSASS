@@ -1,0 +1,11 @@
+@media only screen and (min-width: 400px ) {
+    .download-btn {
+        font-size: 15pt;
+    }
+}
+
+@media only screen and (min-width: 1028px ) {
+    .download-btn {
+        font-size: 20pt;
+    }
+}

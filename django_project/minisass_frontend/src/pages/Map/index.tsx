@@ -103,9 +103,9 @@ const MapPage: React.FC = () => {
 
   const [resetMapToDefault, setResetMap] = useState(false);
 
-  function resetMap(): void {
+  function resetMap(latitude=null, longitude=null): void {
     // @Zakki this causes random zoom in when you choose use existing site
-    // setSelectedCoordinates({latitude: -28.671882886975247, longitude: 24.679864950000024})
+    setSelectedCoordinates({latitude: latitude, longitude: longitude})
     setResetMap(true)
   }
 
@@ -210,10 +210,24 @@ const MapPage: React.FC = () => {
               />
             </div>
           </div>
+
+
+          {/* Toggle button to reset map */}
+          <div
+            className="absolute top-0 left-0 m-4 p-2 bg-white top-[19.5%] rounded-md cursor-pointer"
+            onClick={() => resetMap(-28.671882886975247, 24.679864950000024)}
+            style={{
+              transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
+              backgroundColor: 'white',
+              marginLeft: '10px'
+            }}
+          >
+            <HomeIcon className="w-35" />
+          </div>
           
           {/* Toggle button to show legend */}
           <div
-            className="absolute top-0 left-0 m-4 p-2 bg-white top-[20%] rounded-md cursor-pointer"
+            className="absolute top-0 left-0 m-4 p-2 bg-white top-[26%] rounded-md cursor-pointer"
             onClick={toggleLegend}
             style={{
               transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
@@ -240,19 +254,6 @@ const MapPage: React.FC = () => {
             <Text className="text-base text-black-900" size="txtRalewayRomanBold16">
               L
             </Text>
-          </div>
-
-          {/* Toggle button to reset map */}
-          <div
-            className="absolute top-0 left-0 m-4 p-2 bg-white top-[30%] rounded-md cursor-pointer"
-            onClick={resetMap}
-            style={{
-              transition: 'transform 0.6s ease-in-out', // Adding smooth rotation transition
-              backgroundColor: 'white',
-              marginLeft: '10px'
-            }}
-          >
-            <HomeIcon className="w-35" />
           </div>
 
         <div

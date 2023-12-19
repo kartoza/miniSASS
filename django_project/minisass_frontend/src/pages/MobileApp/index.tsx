@@ -8,6 +8,7 @@ import Alert from "@mui/material/Alert"
 import DownloadIcon from '@mui/icons-material/Download';
 import {globalVariables} from "../../utils";
 import axios from "axios";
+import './index.css'
 
 const MobileApp: React.FC = () => {
   const [mobileApp, setMobileApp] = useState<any>(null);
@@ -44,9 +45,9 @@ const MobileApp: React.FC = () => {
                     alert('Mobile App is not yet available!')
                   }
                 }}
-                className="sm:bottom-[130px] cursor-pointer font-semibold text-base text-center"
+                className="cursor-pointer font-semibold text-base text-center download-btn"
                 variant="contained"
-                style={{height: 70, fontSize: '20pt', backgroundColor: '#0e4981', paddingLeft: 50, paddingRight: 50}}
+                style={{height: 70, backgroundColor: '#0e4981', paddingLeft: 50, paddingRight: 50}}
               >
                 <DownloadIcon style={{fontSize: '20pt'}}/> Download miniSASS App here
               </Button>
