@@ -624,7 +624,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginBottom: '4.5%'
                     }}
                     value={(() => {
-                      const siteSiteName = props.siteDetails?.site?.sitename;
+                      const siteSiteName = props.siteDetails?.sitename;
                       const selectedValue = siteSiteName ? siteSiteName: values.siteName;
                       return selectedValue;
                     })()}
@@ -662,7 +662,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         }}
                         placeholder="e.g. downstream of industry."
                         value={(() => {
-                          const siteSiteDescription = props.siteDetails?.site?.sitedescription;
+                          const siteSiteDescription = props.siteDetails?.sitedescription;
                           const selectedValue = siteSiteDescription ? siteSiteDescription: values.siteDescription;
                           return selectedValue;
                         })()}
@@ -740,7 +740,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         <option 
                           key={option.value} 
                           value={(() => {
-                            const siteRivercategory = props.siteDetails?.site?.rivercategory;
+                            const siteRivercategory = props.siteDetails?.rivercategory;
                             const selectedValue = siteRivercategory ? siteRivercategory : values.rivercategory;
                             return selectedValue;
                           })()}
