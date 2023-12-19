@@ -221,8 +221,8 @@ def register(request):
         if existing_user:
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        total_users = User.objects.count()
-        new_user_id = total_users + 1 if total_users is not None else 1
+
+        new_user_id = User.objects.raw('SELECT max(id)+1 from UserProfile')
 
         object_to_save = {
             'last_name': request.data.get('surname', ''),
@@ -240,8 +240,6 @@ def register(request):
         if serializer.is_valid():
             try:
                 user = serializer.save()
-                user.first_name = request.data.get('name')
-                user.last_name = request.data.get('surname')
                 user_email = request.data.get('email')
                 username = request.data.get('username')
                 
@@ -259,9 +257,8 @@ def register(request):
                             description__iexact="Organisation Type",
                             defaults={'description': "Organisation Type"}
                         )
-
-                    total_user_profiles = UserProfile.objects.count()
-                    new_user_profile_id = total_user_profiles + 1
+                        
+                    new_user_profile_id = UserProfile.objects.raw('SELECT max(id)+1 from UserProfile')
                     
                     # Check if the user already has a user profile
                     user_profile, created = UserProfile.objects.get_or_create(
