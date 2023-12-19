@@ -58,7 +58,8 @@ const Footer: React.FC<FooterProps> = (props) => {
       <footer className={props.className}>
         <div className={className}>
           {!hideLogo &&
-            <div
+            <>
+              <div
               className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full"
               style={{marginLeft: '-5%'}}>
               <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
@@ -68,11 +69,36 @@ const Footer: React.FC<FooterProps> = (props) => {
                   alt="Ground Truth"
                 />
               </a>
+              <a href="https://www.unicef.org/" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_5.png`}
+                  alt="Unicef"
+                />
+              </a>
+                <a href="https://www.cgiar.org" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_4.png`}
+                  alt="CGIAR"
+                />
+              </a>
               <a href="https://www.iwmi.cgiar.org" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
                   src={`${newURL}patners_logo_2.png`}
                   alt="IWMI"
+                />
+              </a>
+            </div>
+            <div
+              className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full"
+              style={{marginLeft: '-5%'}}>
+              <a href="https://www.wrc.org.za/" target="_blank" rel="noopener noreferrer">
+                <Img
+                  className="h-[100px] md:h-auto object-contain"
+                  src={`${newURL}patners_logo_6.jpg`}
+                  alt="Water Research Commission"
                 />
               </a>
               <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">
@@ -82,21 +108,22 @@ const Footer: React.FC<FooterProps> = (props) => {
                   alt="Amazon"
                 />
               </a>
-              <a href="https://www.cgiar.org" target="_blank" rel="noopener noreferrer">
+              <a href="https://wessa.org.za/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_4.png`}
-                  alt="CGIAR"
+                  src={`${newURL}patners_logo_8.png`}
+                  alt="Wildlife and Environment Society of South Africa (WESSA)"
                 />
               </a>
-              <a href="https://www.unicef.org/" target="_blank" rel="noopener noreferrer">
+              <a href="https://kartoza.com/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_5.png`}
-                  alt="Unicef"
+                  src={`${newURL}patners_logo_7.png`}
+                  alt="Kartoza"
                 />
               </a>
             </div>
+            </>
           }
 
           <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px] md:w-[105%] sm:w-[110%] w-full">

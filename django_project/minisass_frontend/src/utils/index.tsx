@@ -19,11 +19,13 @@ const currentURL = window.location.href;
 const parts = currentURL.split('/');
 const baseUrl = parts[0] + '//' + parts[2];
 const staticPath = baseUrl + '/static/images/';
+const docsPath = baseUrl + '/static/docs/';
 
 export const globalVariables = {
   currentURL,
   baseUrl,
   staticPath,
+  docsPath
 };
 
 /**
