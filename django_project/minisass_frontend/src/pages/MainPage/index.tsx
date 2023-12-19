@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import './index.css'
 
 import "react-circular-progressbar/dist/styles.css";
+import YouTubeVideo from "../../components/YoutubeEmbedded";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -378,103 +379,35 @@ const Home: React.FC = () => {
 
           <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
 
-          {/* introduction section */}
-          <div className="bg-gray-200 flex sm:flex-col flex-row gap-[49px] items-start justify-start max-w-[1450px] mt-5 mx-auto p-[43px] md:px-5 relative rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:top-[145px] sm:top-[200px] top-[30px] sm:w-[90%] md:w-[98%] w-full">
-            <Text
-              className="sm:flex-1 ml-2 sm:ml-[0] sm:mt-0 mt-[3px] sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 w-[28%] sm:w-full"
-              size="txtRalewayRomanBold42"
-            >
-              Welcome to miniSASS
-            </Text>
-            <Text
-              className="sm:flex-1 mb-[18px] text-blue-900 text-xl tracking-[0.40px] w-[67%] sm:w-full mt-[7px]"
-              size="txtRalewayRomanSemiBold20"
-            >
-              miniSASS is a simple tool which can be used by anyone to monitor
-              the health of a river. You collect a sample of macroinvertebrates
-              (small animals) from the water, and depending on which groups are
-              found, you have a measure of the general river health and water
-              quality in that river.
-            </Text>
-          </div>
-
-          <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mt-[86px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
-            <Img
-              className="sm:flex-1 h-[380px] md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[380px] sm:w-full"
-              src={`${globalVariables.staticPath}img_rectangle1.png`}
-              alt="rectangleOne"
-            />
-            <div className="sm:w-full md:w-full">
+          <div className="flex flex-col mt-[86px]">
+            <div>
               <Text
-              className="md:h-auto leading-[136.40%] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
-              size="txtRalewayRomanSemiBold16"
-            >
-              <span className="text-gray-800 font-raleway text-left font-normal">
-                <>
-                  Anyone can learn how to collect a miniSASS sample on a river.
-                  Once you have collected a sample you look for the different
-                  bug groups and score whether they were found. The score then
-                  tells you the health class of the river, ranging across five
-                  categories from natural to very poor.
-                  <br /><br/><br/>
-                  Have a look at the{" "}
-                </>
-              </span>
-              <span className="text-gray-800 font-raleway text-left font-normal">
-                How To
-              </span>
-              <span className="text-gray-800 font-raleway text-left font-normal">
-                <>
-                  {" "}
-                  page to see how easy it is. Through miniSASS you can learn
-                  about rivers, monitor the water quality of rivers within your
-                  community, and explore reasons why the water quality may not
-                  be as clean as everyone would like.
-                  <br /><br /><br/>
-                  The most important feature of the new website is the miniSASS{" "}
-                </>
-              </span>
-              <a
-                className="common-pointer text-blue-900 font-raleway text-left font-normal underline"
-                onClick={() => navigate("/map")}
+                className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
+                size="txtRalewayRomanBold40"
               >
-                Map
-              </a>
-              <span className="text-gray-800 font-raleway text-left font-normal">
-                <>
-                  , which allows you to explore your catchment, find your river,
-                  look at any existing miniSASS results and then upload your own
-                  miniSASS results! The map also lets you explore your catchment
-                  to see the land uses and activites that might be improving or
-                  worsening water quality.
-                  <br /><br /><br/>
-                  Get your community, school or family and friends involved in
-                  monitoring a selection of your streams and rivers. In this way
-                  a map of river health across Southern Africa will develop.
-                  Communities can use the information and knowledge to
-                  illustrate the plight of their rivers, connect with other
-                  miniSASS samplers and investigate pollution sources.
-                  <br /><br /><br/>
-                  An expert miniSASS operator is someone who is proficient with miniSASS, understands its processes,
-                  and most importantly is confident in their ability to accurately identify aquatic macroinvertebrates
-                  within each of the miniSASS groups. Ideally, an expert user has completed the online miniSASS
-                  training course{" "}
-                </>
-              </span>
-              <a
-                className="common-pointer text-blue-900 font-raleway text-left font-normal underline"
-                href={"https://groundtruth.plutolmsapp.com/enrol/index.php?id=374"}
+                What is miniSASS?
+              </Text>
+            </div>
+            <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
+              <div
+                className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[50%] sm:w-full"
               >
-                https://groundtruth.plutolmsapp.com/enrol/index.php?id=374
-              </a>
-              <span className="text-gray-800 font-raleway text-left font-normal">
-                <>
-                  {" "}and can upload the certificate for completion of YOMA Opportunity 4 - Stream Monitoring.
-                  Alternatively, an expert could be someone who has practiced miniSASS for a long period or
-                  someone accredited with the SASS5 or similar technique.
-                </>
-              </span>
-            </Text>
+                <YouTubeVideo videoId="hRgO80-427w" width="500px" height="300px" playButtonColor="green" />
+              </div>
+              <div className="w-[75%] sm:w-full md:w-full">
+                <Text
+                className="md:h-auto leading-[136.40%] text-xl tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
+                size="txtRalewayRomanSemiBold20"
+              >
+                The mini stream assessment scoring system (miniSASS) simple and accessible citizen science tool for
+                  monitoring the water quality and health of stream and river systems. You collect a sample
+                  of aquatic macroinvertebrates (small, but large enough to see animals with no internal skeletons)
+                  from a site in a stream or river. The community of these aquatic macroinvertebrates present then
+                  tells you about the water quality and health of the stream or river based on the concept that
+                  different groups of aquatic macroinvertebrates have different tolerances and sensitivities to
+                  disturbance and pollution.
+              </Text>
+              </div>
             </div>
           </div>
           {/* end of section */}
