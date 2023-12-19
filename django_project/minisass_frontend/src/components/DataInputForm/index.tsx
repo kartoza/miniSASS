@@ -50,6 +50,7 @@ type DataInputFormProps = Omit<
   | "resetMap"
   | "siteDetails"
   | "resetSiteDetails"
+  | "useSelectOnSite"
 > &
   Partial<{
     datainputform: string;
@@ -84,6 +85,7 @@ type DataInputFormProps = Omit<
     resetMap: () => void;
     siteDetails: {};
     resetSiteDetails: (details: {}) => void;
+    useSelectOnSite: (isSelectOnSite: boolean) => void;
   }>;
 
 const inputOptionsList = [
@@ -211,17 +213,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [showScoreForm, setShowScoreForm] = useState(false);
 
   function handleSelectKnownSite(): void {
-    // disable map selection if currently on
-    // if (selectSiteMode === 'SELECT_ON_MAP') {
-    //   props.toggleMapSelection()
-    // }
     if (selectSiteMode === 'SELECT_KNOWN_SITE') {
-      setSelectSiteMode('NONE')
       props.resetSiteDetails({})
+      setSelectSiteMode('NONE')
+      props.useSelectOnSite(false)
     }else {
+      props.useSelectOnSite(true)
       setSelectSiteMode('SELECT_KNOWN_SITE')
-    }
-    
+    } 
   }
 
   const getSites = async () => {
