@@ -1,50 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Img, List, Text } from "../../components";
 import Modal from 'react-modal';
+import { globalVariables } from "../../utils";
 
 interface ManageImageProps {
   title: string;
-  id: string; // TODO this will be used to fetch the data
+  id: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: any;
   sensivityScore: string;
   aiScore: string;
+  handleButtonClick: (id: any) => void;
+  pestImages: [];
 }
 
-const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onClose, sensivityScore, aiScore }) => {
-
-  // TODO will use id to fetch images and dynamically populate imageUrls
-
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const staticPath = baseUrl + '/' + replacementPath;
+const ManageImagesModal: React.FC<ManageImageProps> = ({ 
+  title, 
+  id ,
+  isOpen, 
+  onClose, 
+  sensivityScore, 
+  aiScore, 
+  handleButtonClick,
+  pestImages
+}) => {
 
 
-  const imageUrls = [
-    "img_rectangle97.png",
-    "img_rectangle97.png",
-    "img_rectangle97.png",
-    "img_rectangle97.png",
-    "img_rectangle97.png",
-    "img_rectangle97.png",
-    // Add more image URLs as needed
-  ];
- 
+  const [imageUrls, setImages] = useState([])
+
+  useEffect(() => {
+    setImages(pestImages)
+  }, [pestImages]);
 
   function saveImages(): void {
-    throw new Error("Function not implemented.");
+    onClose();
+    
   }
+
+  function handleAddMoreClick(): void {
+    handleButtonClick(id)
+  }
+
+
 
   return (
     <Modal
@@ -62,7 +61,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
           borderRadius: '0px 10px 10px 10px',
           width: '100%',
           maxWidth: '568px',
-          height: '61vh'
         },
       }}
     >
@@ -84,8 +82,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
                 <div key={`image-${index}`} className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
                   <Img
                     className="h-28 md:h-auto object-cover w-28"
-                    src={`${staticPath}${imageUrl}`}
-                    alt={`Image ${index}`}
+                    src={`${globalVariables.staticPath}${imageUrl}`}
+                    alt={`${imageUrl.name}`}
                   />
 
                   {/* example of a bad image or image that failed to upload */}
@@ -103,15 +101,18 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({ title, id ,isOpen, onCl
                       />
                     </div>
                   )} */}
+
                 </div>
               ))}
+
               {/* Upload image section */}
               <div className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
                 <div className="bg-white-A700 border border-blue_gray-500 border-dashed flex flex-col h-28 items-center justify-start p-11 md:px-10 sm:px-5 w-28">
                   <Img
                     className="h-6 w-6"
-                    src={`${staticPath}img_mdiimageplusoutline.svg`}
+                    src={`${globalVariables.staticPath}img_mdiimageplusoutline.svg`}
                     alt="mdiimageplusout"
+                    onClick={handleAddMoreClick}
                   />
                 </div>
               </div>

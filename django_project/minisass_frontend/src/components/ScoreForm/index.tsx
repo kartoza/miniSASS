@@ -79,18 +79,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     groups: '',
     sensetivityScore: '',
     id: '',
+    images: []
   });
 
   const handleButtonClick = (id) => {
-    // TODO:
-    //  It should be used when image is already uploaded
-    // const updatedButtonStates = buttonStates.map(buttonState => {
-    //   if (buttonState.id === id) {
-    //     return { ...buttonState, showManageImages: !buttonState.showManageImages };
-    //   }
-    //   return buttonState;
-    // });
-    // setButtonStates(updatedButtonStates);
+    setIsAddMore(true)
     setOpenImagePestId(id);
   };
 
@@ -193,15 +186,17 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setOpenImagePestId(0)
   };
 
-  const openManageImagesModal = (id, groups, sensetivityScore) => {
+  const openManageImagesModal = (id, groups, sensetivityScore, pest_images) => {
     setIsManageImagesModalOpen(true);
-    console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id)
+    // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     setManageImagesModalData({
       'groups': groups,
       'sensetivityScore': sensetivityScore,
       'id': id,
+      'images': pest_images
     });
   };
+
 
   const closeManageImagesModal = () => {
     setIsManageImagesModalOpen(false);
@@ -314,28 +309,57 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               </Button>
                               <UploadModal
                                 key={`image-${props.id}`}
-                                isOpen={openImagePestId === props.id} onClose={closeUploadModal}
+                                isOpen={openImagePestId === props.id && isAddMore} 
+                                onClose={closeUploadModal}
                                 onSubmit={
                                   files => {
                                     pestImages[props.id] = files
                                     setPestImages({...pestImages})
                                     setOpenImagePestId(0)
+                                    setIsAddMore(false)
+                                    const updatedButtonStates = buttonStates.map(buttonState => {
+                                      if (buttonState.id === props.id) {
+                                        return { ...buttonState, showManageImages: !buttonState.showManageImages };
+                                      }
+                                      return buttonState;
+                                    });
+                                    setButtonStates(updatedButtonStates);
+                                    
                                   }
                                 }/>
                               </>
                           )}
                           {buttonState.showManageImages && (
-                            <Button
+                            <><Button
                               type="button"
                               className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
                               shape="round"
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
-                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score)}
+                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
                             >
                               Manage Images
-                            </Button>
+                              {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images selected)</div> : null}
+                            </Button><UploadModal
+                                key={`image-${props.id}`}
+                                isOpen={openImagePestId === props.id && isAddMore}
+                                onClose={closeUploadModal}
+                                onSubmit={
+                                  
+                                  files => {
+                                    pestImages[props.id] = [...pestImages[props.id], ...files];
+                                    setPestImages({ ...pestImages });
+                                    setOpenImagePestId(0);
+                                    setIsAddMore(false);
+                                    setManageImagesModalData({
+                                      'groups': props.name,
+                                      'sensetivityScore': props.sensitivity_score,
+                                      'id': props.id,
+                                      'images': pestImages[props.id]
+                                    });
+
+                                  } } /></>
                           )}
                         </React.Fragment>
                       );
@@ -516,6 +540,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
           aiScore={'1.0'} // TODO this will be dynamic
+          handleButtonClick={handleButtonClick}
+          pestImages={manageImagesModalData.images}
         />
       </div>
     </>
