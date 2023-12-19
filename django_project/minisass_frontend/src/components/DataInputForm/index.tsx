@@ -264,7 +264,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
         setFormValues({
           ...formValues,
-          selectedSite: props.siteDetails.site.gid
+          selectedSite: props.siteDetails.gid
         });
       }
       setIsFetchingSites(false);
