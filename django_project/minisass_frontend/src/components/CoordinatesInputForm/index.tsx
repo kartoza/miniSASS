@@ -107,8 +107,8 @@ export default function CoordinatesInputForm(
               )
             )
             handleMapClick(
-              Number(values.longitude),
-              Number(values.latitude)
+              Number(values.latitude),
+              Number(values.longitude)
             )
           }}
           longitude={convertToDMSLongitude(values.longitude)}
@@ -119,8 +119,8 @@ export default function CoordinatesInputForm(
               )
             )
             handleMapClick(
-              Number(values.longitude), 
-              Number(values.latitude)
+              Number(values.latitude),
+              Number(values.longitude)
             )
           }}
         />
