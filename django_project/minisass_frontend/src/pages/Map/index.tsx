@@ -94,7 +94,7 @@ const MapPage: React.FC = () => {
 
   const openObservationForm = (siteWithObservations: {site: {}, observations: []}) => {
     
-    if(siteWithObservations.observations.length > 0){
+    if(siteWithObservations.observations.length > 0 && !isSelectSiteOnMap){
       setSiteWithObservations(siteWithObservations)
       setIsObservationDetails(true)
       setSidebarOpen((prev) => !prev);
@@ -102,17 +102,20 @@ const MapPage: React.FC = () => {
   }
 
   const [resetMapToDefault, setResetMap] = useState(false);
+  const [isSelectSiteOnMap, setIsSelectSiteOnMap] = useState(false);
 
   function resetMap(latitude=null, longitude=null): void {
-    // @Zakki this causes random zoom in when you choose use existing site
     setSelectedCoordinates({latitude: latitude, longitude: longitude})
     setResetMap(true)
   }
 
   function setSiteDetails(details: {}): void {
-    setSiteDetailsFromApi(details)
-    if(isSidebarOpen)
-      setIsObservationDetails(false)
+    if(isSelectSiteOnMap)
+      setSiteDetailsFromApi(details)
+  }
+
+  function useSelectOnSite(isSelectOnSite): void {
+    setIsSelectSiteOnMap(isSelectOnSite)
   }
 
   function resetSiteDetails(details: {}): void {
@@ -192,6 +195,7 @@ const MapPage: React.FC = () => {
                 setIdxActive={setIdxActive}
                 openObservationForm={openObservationForm}
                 setSiteDetails={setSiteDetails}
+                isSelectSiteOnMap={isSelectSiteOnMap}
               />
               {/* Sidebar */}
               <Sidebar
@@ -207,6 +211,7 @@ const MapPage: React.FC = () => {
                 siteDetails={siteDetails}
                 resetSiteDetails={resetSiteDetails}
                 resetMap={resetMap}
+                useSelectOnSite={useSelectOnSite}
               />
             </div>
           </div>
