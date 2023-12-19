@@ -55,7 +55,7 @@ export default function CoordinatesInputForm(
       onChange={(evt) => setType(evt.target.value)}
       row
     >
-      {/* <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/> */}
+      <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
       <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
     </RadioGroup>
     ): (
@@ -107,12 +107,8 @@ export default function CoordinatesInputForm(
               )
             )
             handleMapClick(
-              Number(values.latitude),
-              Number(
-                convertDmsToLatitude(
-                  values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
-                )
-              )
+              Number(values.longitude),
+              Number(values.latitude)
             )
           }}
           longitude={convertToDMSLongitude(values.longitude)}
@@ -122,11 +118,9 @@ export default function CoordinatesInputForm(
                 values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
               )
             )
-            handleMapClick(Number(values.longitude), 
-              Number(
-                convertDmsToLongitude(
-                values_internal.degrees, values_internal.minutes, values_internal.seconds, values_internal.cardinal
-              ))
+            handleMapClick(
+              Number(values.longitude), 
+              Number(values.latitude)
             )
           }}
         />
