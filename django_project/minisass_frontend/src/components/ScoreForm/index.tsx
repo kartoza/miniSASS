@@ -181,6 +181,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
 
   const [isManageImagesModalOpen, setIsManageImagesModalOpen] = useState(false);
+  const [isAddMore, setIsAddMore] = useState(false);
 
   const closeUploadModal = () => {
     setOpenImagePestId(0)
