@@ -451,7 +451,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 <br />
                 <Select
                   name="organizationType"
-                  placeholder="Select an organization type..."
+                  placeholder="Select an organization"
                   value={organisationOptions.find(option => option.value === formData.organizationType)}
                   onChange={(selectedOption) => {
                     setFormErrors({ ...formErrors, organizationType: '' });
