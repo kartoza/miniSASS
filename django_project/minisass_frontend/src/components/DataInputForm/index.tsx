@@ -581,7 +581,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       marginBottom: '2%'
                     }}
                     value={(() => {
-                      const siteRiverName = props.siteDetails?.site?.rivername;
+                      const siteRiverName = props.siteDetails?.rivername;
                       const selectedValue = siteRiverName ? siteRiverName: values.riverName;
                       return selectedValue;
                     })()}
