@@ -117,7 +117,7 @@ def create_observations(request):
                     )
 
             max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
-            new_observation_id = max_observation_id + 1 if max_site_id is not None else 1
+            new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
             observation = Observations.objects.create(
                 gid=new_observation_id,
                 score=score,
