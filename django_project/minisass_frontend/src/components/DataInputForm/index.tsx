@@ -122,6 +122,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const handleCloseSidebar = () => {
     props.setSidebarOpen(false);
+    props.resetMap();
   };
 
 
