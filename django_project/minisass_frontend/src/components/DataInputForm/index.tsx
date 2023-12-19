@@ -167,6 +167,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     siteDescription: ''
   });
 
+  // Tooltips positioning
   const positionRef = React.useRef<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -181,6 +182,24 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       popperRef.current.update();
     }
   };
+
+  const sitePopperRef = React.useRef<Instance>(null);
+  const sitePositionRef = React.useRef<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  const siteAreaRef = React.useRef<HTMLDivElement>(null);
+
+  const siteHandleMouseMove = (event: React.MouseEvent) => {
+    sitePositionRef.current = { x: event.clientX, y: event.clientY };
+
+    if (sitePopperRef.current != null) {
+      sitePopperRef.current.update();
+    }
+  };
+
+  
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
   };
@@ -356,8 +375,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       anchorEl: {
                         getBoundingClientRect: () => {
                           return new DOMRect(
-                            positionRef.current.x,
-                            areaRef.current!.getBoundingClientRect().y,
+                            sitePositionRef.current.x,
+                            siteAreaRef.current!.getBoundingClientRect().y,
                             0,
                             0,
                           );
@@ -366,8 +385,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     }}
                   >
                     <div className="flex flex-row gap-1 items-start justify-start w-auto"
-                      ref={areaRef}
-                      onMouseMove={handleMouseMove}
+                      ref={siteAreaRef}
+                      onMouseMove={siteHandleMouseMove}
                     >
                       <Text
                         className="text-blue-900 text-lg w-auto"
