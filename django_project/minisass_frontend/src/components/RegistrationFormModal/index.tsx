@@ -308,7 +308,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "75%" }}
+              style={{ marginLeft: "85%" }}
               onClick={onClose}
             >
               Ok
@@ -463,7 +463,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 {formErrors.organizationType && <span style={{ color: 'red' }}>{formErrors.organizationType}</span>}
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' ,width: '200px',marginLeft: '-274px' }}>
               <div style={{ flex: 1, flexDirection: 'column' }}>
                 <label>Password:</label><br />
                 <input
