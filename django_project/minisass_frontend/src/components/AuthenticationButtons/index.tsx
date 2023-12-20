@@ -116,6 +116,7 @@ function AuthenticationButtons() {
           setRegistrationInProgress(true);
         }, 1100);
       } else {
+        setLoading(false)
         if (response.data && response.data.error) {
           setError(response.data.error);
         } else {
