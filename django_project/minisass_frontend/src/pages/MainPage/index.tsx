@@ -221,6 +221,7 @@ const Home: React.FC = () => {
 
     const closeActivationModal = () => {
       setActivationComplete(false)
+      window.location.href = "/"
     }
 
 
