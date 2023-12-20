@@ -120,36 +120,38 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       {sendingMessage ? (
         <LinearProgress color="success" />
       ) : messageSent ? (
-      <div>
-        <h3
-            style={{
-              fontFamily: 'Raleway',
-              fontStyle: 'normal',
-              fontWeight: 700,
-              alignItems: 'flex-start',
-              fontSize: '24px',
-              lineHeight: '136.4%',
-              color: '#539987',
-            }}
-          >
-            Hang in there!
-          </h3>
-          <br />
-        <Typography>
-          We will contact you back shortly.
-        </Typography>
-
-        <Button
-            className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
-            color="blue_gray_500"
-            size="xs"
-            variant="fill"
-            style={{ marginLeft: "65%" }}
-            onClick={handleCloseModal}
-          >
-            Ok
-          </Button>
-      </div>
+        <div>
+          <h3
+              style={{
+                fontFamily: 'Raleway',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                alignItems: 'flex-start',
+                fontSize: '24px',
+                lineHeight: '136.4%',
+                color: '#539987',
+                marginLeft: '2%',
+                marginTop: '2%'
+              }}
+            >
+              Hang in there!
+            </h3>
+            <br />
+          <Typography style={{marginLeft: '2%'}}>
+            We will contact you back shortly.
+          </Typography>
+  
+          <Button
+              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
+              color="blue_gray_500"
+              size="xs"
+              variant="fill"
+              style={{ marginLeft: "68%" }}
+              onClick={handleCloseModal}
+            >
+              Ok
+            </Button>
+        </div>
       ) : (
       isOpen && (
         <div
