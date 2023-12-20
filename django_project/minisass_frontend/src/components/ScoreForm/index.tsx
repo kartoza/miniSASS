@@ -108,6 +108,18 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           additionalData.flag = 'clean'
         }else additionalData.flag = 'dirty'
       }
+
+      // check for empty measurement values
+      const  datainput  = additionalData;
+
+      // fields to check for empty values
+      const fieldsToCheck = ['waterclaritycm', 'watertemperatureOne', 'ph', 'dissolvedoxygenOne', 'electricalconduOne', 'watertemperaturOne'];
+
+      fieldsToCheck.forEach(field => {
+        if (datainput[field] === '') {
+          datainput[field] = 999;
+        }
+      });
       
       // Create an object with the data to be saved
       const observationsData = {
