@@ -116,7 +116,11 @@ function AuthenticationButtons() {
           setRegistrationInProgress(true);
         }, 1100);
       } else {
-        setError( JSON.stringify(response.data));
+        if (response.data && response.data.error) {
+          setError(response.data.error);
+        } else {
+          setError('An unexpected error occurred. Please contact us.');
+        }
       }
     } catch (error) {
       setError(error.message);
