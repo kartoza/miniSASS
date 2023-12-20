@@ -91,6 +91,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     scoreGroups.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
+  const [proceedToSavingData, setProceedToSavingData] = useState(false)
+
   // Function to log the state of checkboxes
   const handleSave = async () => {
     setIsSavingData(true)
@@ -184,6 +186,13 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
+      if(temp_checkedGroups.length > 0)
+        if (additionalData.selectedSite && additionalData.date) 
+          setProceedToSavingData(true)
+        else if (additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date && additionalData.latitude && additionalData.longitude && additionalData.date)
+          setProceedToSavingData(true)
+        else setProceedToSavingData(false)
+      else setProceedToSavingData(false)
       setAverageScore(temp_averageScore)
       setNumberOfGroups(temp_numberOfGroups)
       setTotalScore(temp_totalScore)
@@ -419,6 +428,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               size="xs"
               variant="fill"
               onClick={handleSave}
+              style={{
+                opacity: proceedToSavingData ? 1 : 0.5,
+              }}
+              disabled={!proceedToSavingData}
             >
               Save
             </Button>
