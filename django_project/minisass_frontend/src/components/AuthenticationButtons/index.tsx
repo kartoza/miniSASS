@@ -102,6 +102,7 @@ function AuthenticationButtons() {
   const handleRegistration = async (registrationData) => {
 
     try {
+      setLoading(true)
       const response = await axios.post(REGISTER_API, registrationData, {
         headers: {
           'Content-Type': 'application/json',
@@ -109,12 +110,11 @@ function AuthenticationButtons() {
       });
   
       if (response.status === 201) {
-        setLoading(true)
         // Simulate 2-second delay for registration process
         setTimeout(() => {
           setLoading(false);
           setRegistrationInProgress(true);
-        }, 1200);
+        }, 1100);
       } else {
         setError( JSON.stringify(response.data));
       }
