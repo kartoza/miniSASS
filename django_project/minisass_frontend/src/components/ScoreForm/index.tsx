@@ -144,11 +144,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
       form_data.append('data', JSON.stringify(observationsData));
 
-      if (additionalData.selectedSite && additionalData.date) 
-        setProceedToSavingData(true)
-      else if (additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date &&additionalData.latitude && additionalData.longitude && additionalData.date)
-        setProceedToSavingData(true)
-
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
         `${globalVariables.baseUrl}/monitor/observations-create/`,
@@ -192,7 +187,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       setCheckedGroups(temp_checkedGroups)
       if(temp_checkedGroups.length > 0)
-        setProceedToSavingData(true)
+        if (additionalData.selectedSite && additionalData.date) 
+          setProceedToSavingData(true)
+        else if (additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date && additionalData.latitude && additionalData.longitude && additionalData.date)
+          setProceedToSavingData(true)
+        else setProceedToSavingData(false)
       else setProceedToSavingData(false)
       setAverageScore(temp_averageScore)
       setNumberOfGroups(temp_numberOfGroups)
