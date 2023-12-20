@@ -124,6 +124,7 @@ function AuthenticationButtons() {
         }
       }
     } catch (error) {
+      setLoading(false)
       setError(error.message);
     }
   };
