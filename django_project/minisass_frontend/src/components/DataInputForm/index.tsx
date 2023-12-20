@@ -510,7 +510,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 isSearchable
                                 styles={customStyles}
                                 value={(() => {
-                                  const selectedOption = sites.find((option) => option.value === values.selectedSite? option.value: option.value);
+                                  const selectedOption = sites.find((option) => {
+                                    const isMatch = parseInt(option.value) === parseInt(values.selectedSite);
+                                    return isMatch;
+                                  });
                                   return selectedOption;
                                 })()}
                                 onChange={(selectedOption) => {
