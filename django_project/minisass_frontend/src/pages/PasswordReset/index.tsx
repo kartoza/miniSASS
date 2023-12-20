@@ -48,7 +48,7 @@ const PasswordResetPage: React.FC = () => {
        
        <br />
         <p style={{ textAlign: 'center' }}>
-          <span className="common-pointer" style={{ color: '#539987' }} onClick={() => navigate("/")}>Go Back</span>
+          <span className="common-pointer" style={{ color: '#539987' }} onClick={() => (window.location.href = "/")}>Go Back</span>
         </p>
        
        
