@@ -308,7 +308,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "65%" }}
+              style={{ marginLeft: "75%" }}
               onClick={onClose}
             >
               Ok
@@ -357,7 +357,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
-                style={{marginLeft: '85px'}}
+                style={{marginLeft: '95px'}}
               />
           </div>
 
