@@ -152,9 +152,3 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
 
 4. **GitHub**: miniSASS is an Open Source Project. Explore and contribute to the source code on GitHub. Click on the GitHub link to get the source code.
-
-
-
-
-
-
