@@ -47,25 +47,25 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
     2. **How to Manually Install the MiniSASS App APK:** This guide provides step-by-step instructions on how to manually install the MiniSASS app on an Android device using its APK file. Users are reminded to exercise caution when installing apps from outside the Google Play Store, emphasising the importance of downloading APK files from trusted sources. The key steps include enabling installation from unknown sources in device settings, downloading the MiniSASS APK from a reputable website, locating the downloaded file in the device's storage, installing the app, and launching it. Additionally, users are advised to restore their security settings after installation and regularly check for updates manually since the app won't update automatically.
 
 
-10. **EXPLORE THE MAP**: Click on the `EXPLORE THE MAP` card section, to explore the interactive map.
+11. **EXPLORE THE MAP**: Click on the `EXPLORE THE MAP` card section, to explore the interactive map.
 
     ![Map Page Before Login](./img/landing-page-5.png)
 
     - For a detailed map user manual, refer to the [map page documentation](./map/index.md).
 
-11. **HOW TO DO MINISASS**: Click on the `HOW TO DO MINISASS` card section, to go to the how-to page.
+12. **HOW TO DO MINISASS**: Click on the `HOW TO DO MINISASS` card section, to go to the how-to page.
 
     ![HowTo Page Before Login](./img/landing-page-6.png)
 
     - For a detailed how-to user manual, refer to the [how-to page documentation](./how-to/index.md).
 
-12. **UPLOAD RESULTS**: Click on the `UPLOAD RESULTS` card section, to upload the results.
+13. **UPLOAD RESULTS**: Click on the `UPLOAD RESULTS` card section, to upload the results.
 
     ![Upload Results Before Login](./img/landing-page-7.png)
 
     - For a detailed upload result user manual, refer to the [upload result page documentation](./upload/index.md).
 
-13. **DOWNLOAD RESOURCES**: Click on the `DOWNLOAD RESOURCES` card section, to download resources. It will redirect users to the how-to page. Where users can find how-to download resources.
+14. **DOWNLOAD RESOURCES**: Click on the `DOWNLOAD RESOURCES` card section, to download resources. It will redirect users to the how-to page. Where users can find how-to download resources.
 
     ![Download Resources Before Login](./img/landing-page-6.png)
 
