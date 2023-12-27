@@ -65,3 +65,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
     **See Details:** Users can access the details of the uploaded miniSASS observation by clicking on the crab icon.
 
     ![miniSASS Observation Details](./img/map-10.png)
+
+    1 **Exclamation Mark:** The exclamation mark on the crab indicates that the record has not been validated yet.
+
+    ![Exclamation Mark](./img/map-13.png)
