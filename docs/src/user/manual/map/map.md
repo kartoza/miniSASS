@@ -122,10 +122,8 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
 4. **GitHub**: miniSASS is an Open Source Project. Explore and contribute to the source code on GitHub. Click on the GitHub link to get the source code.
 
-=====================================================================================================
 
 # Map Page After Login User Manual
-
 
 ![Map](./img/map-14.png)
 
