@@ -116,15 +116,26 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         label: observation.obs_date,
         content: (
           <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            {[].concat(observation.site.images, observation.images).map((image, index) => (
+            {([].concat(observation.site.images, observation.images).length > 0) ? (
+              // Render images if there are any
+              [].concat(observation.site.images, observation.images).map((image, index) => (
+                <img
+                  key={`image_${index}`}
+                  className="h-[152px] md:h-auto object-cover w-[164px]"
+                  src={image.image}
+                  alt={`img_${index}`}
+                  loading='lazy'
+                />
+              ))
+            ) : (
+              // Render placeholder if no images are available
               <img
-                key={`image_${index}`}
                 className="h-[152px] md:h-auto object-cover w-[164px]"
-                src={image.image}
-                alt={`img_${index}`}
+                src="images_placeholder.jpg"
+                alt="No Images Available"
                 loading='lazy'
               />
-            ))}
+            )}
           </div>
         )        
       }))
