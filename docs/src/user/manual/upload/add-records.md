@@ -101,3 +101,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
             Unknown
 
     5. **Next Button:** Click on the next button for the next step of the add record. When the user clicks on the `Next` button score form will open where the user can choose the group and upload the image.
+
+        ![Score](./img/add-record-12.png)
+    
+    - For detailed instructions on adding a score, refer to the [score documentation](../upload/score.md).
