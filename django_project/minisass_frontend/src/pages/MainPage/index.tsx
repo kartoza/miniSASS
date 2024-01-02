@@ -28,7 +28,6 @@ const Home: React.FC = () => {
   const [activationComplete, setActivationComplete] = useState(false);
   const [activationMessage, setActivationMessage] = useState('');
   const [observationPerPage, setObservationPerPage] = useState(5);
-  const [retryCount, setRetryCount] = useState(0);
 
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -36,7 +35,7 @@ const Home: React.FC = () => {
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
     useEffect(() => {
-        const fetchHomePageData = () => {
+        const fetchHomePageData = (retryCount = 0) => {
             axios
                 .get(
                     `${FETCH_RECENT_OBSERVATIONS}`
@@ -72,14 +71,11 @@ const Home: React.FC = () => {
                         });
                         setObservations(ObservationsPropList)
                     } else {
-                      if(response.status === 404){
-                        if (retryCount >= 0 && retryCount < 3) {
+                        if (retryCount < 3) {
                           setTimeout(() => {
-                            fetchHomePageData();
+                            fetchHomePageData(retryCount+1);
                           }, 3000);
-                          setRetryCount(retryCount+1)
                         }
-                      }
                     }
                 })
                 .catch((error) => {
