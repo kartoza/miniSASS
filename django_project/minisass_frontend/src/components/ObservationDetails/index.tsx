@@ -131,7 +131,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
               // Render placeholder if no images are available
               <img
                 className="h-[152px] md:h-auto object-cover w-[164px]"
-                src="images_placeholder.jpg"
+                src={`${globalVariables.staticPath}images_placeholder.png`}
                 alt="No Images Available"
                 loading='lazy'
               />
