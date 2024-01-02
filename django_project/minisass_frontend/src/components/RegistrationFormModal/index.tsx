@@ -282,7 +282,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     >
       {Registrationloading ? (
         // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
-        <LinearProgress color="success" />
+        <div style={{ width: '400px'}}>
+          <LinearProgress color="success" />
+        </div>
       ) : registrationInProgress ? (
         <div>
           <h3
@@ -308,7 +310,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "85%" }}
+              style={{ marginLeft: "79%" }}
               onClick={onClose}
             >
               Ok
@@ -357,7 +359,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
-                style={{marginLeft: '95px'}}
+                style={{marginLeft: '100px'}}
               />
           </div>
 
