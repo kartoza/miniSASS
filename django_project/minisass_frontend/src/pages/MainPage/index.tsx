@@ -27,7 +27,8 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
   const [activationComplete, setActivationComplete] = useState(false);
   const [activationMessage, setActivationMessage] = useState('');
-  const [observationPerPage, setObservationPerPage] = useState(5)
+  const [observationPerPage, setObservationPerPage] = useState(5);
+  const [retryCount, setRetryCount] = useState(0);
 
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -70,6 +71,15 @@ const Home: React.FC = () => {
                           ObservationsPropList.push(structuredItem);
                         });
                         setObservations(ObservationsPropList)
+                    } else {
+                      if(response.status === 404){
+                        if (retryCount >= 0 && retryCount < 3) {
+                          setTimeout(() => {
+                            fetchHomePageData();
+                          }, 3000);
+                          setRetryCount(retryCount+1)
+                        }
+                      }
                     }
                 })
                 .catch((error) => {
