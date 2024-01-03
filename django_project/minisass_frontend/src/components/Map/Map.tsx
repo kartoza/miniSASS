@@ -378,6 +378,16 @@ export const Map = forwardRef((props: Interface, ref) => {
     }, [props.resetMap]);
 
 
+    useEffect(() => {
+        let mapInstance = map;
+        if(mapInstance)
+          if (props.isSelectSiteOnMap)
+            mapInstance.getCanvas().style.cursor = 'crosshair';
+          else mapInstance.getCanvas().style.cursor = '';
+  
+      }, [props.isSelectSiteOnMap]);
+
+
     const captureCoordinatesAndQuery = async (latitude, longitude) => {
       try {
 
