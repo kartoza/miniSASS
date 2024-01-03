@@ -27,7 +27,7 @@ const Home: React.FC = () => {
   const ObservationsPropList = [];
   const [activationComplete, setActivationComplete] = useState(false);
   const [activationMessage, setActivationMessage] = useState('');
-  const [observationPerPage, setObservationPerPage] = useState(5)
+  const [observationPerPage, setObservationPerPage] = useState(5);
 
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
     useEffect(() => {
-        const fetchHomePageData = () => {
+        const fetchHomePageData = (retryCount = 0) => {
             axios
                 .get(
                     `${FETCH_RECENT_OBSERVATIONS}`
@@ -70,6 +70,12 @@ const Home: React.FC = () => {
                           ObservationsPropList.push(structuredItem);
                         });
                         setObservations(ObservationsPropList)
+                    } else {
+                        if (retryCount < 3) {
+                          setTimeout(() => {
+                            fetchHomePageData(retryCount+1);
+                          }, 3000);
+                        }
                     }
                 })
                 .catch((error) => {
