@@ -523,6 +523,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 
                                   if (selectedValue === 'none') {
                                     // Clear variables when "None" is selected
+                                    setFieldValue('selectedSite', 'none');
                                     setFieldValue('riverName', '');
                                     setFieldValue('siteName', '');
                                     setFieldValue('rivercategory', '');
@@ -532,6 +533,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                     const selectedSite = sites.find((site) => site.value === selectedValue);
                                     if (selectedSite) {
                                       setIsCreateSite('useexistingsite');
+                                      setFieldValue('selectedSite', selectedSite);
                                       setFieldValue('riverName', selectedSite.riverName);
                                       setFieldValue('siteName', selectedSite.siteName);
                                       setFieldValue('rivercategory', selectedSite.riverCategory);
