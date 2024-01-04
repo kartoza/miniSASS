@@ -107,7 +107,6 @@ const MapPage: React.FC = () => {
   function resetMap(latitude=null, longitude=null): void {
     setSelectedCoordinates({latitude: latitude, longitude: longitude})
     setResetMap(true)
-    setSelectingOnMap(false)
   }
 
   function setSiteDetails(details: {}): void {
