@@ -62,7 +62,7 @@ class PasswordResetTest(APITestCase):
         self.assertEqual(
             response.json(),
             {
-                'error': 'Password has been used'
+                'error': 'This password has been used before. Please choose a new and unique password.'
             }
         )
 
@@ -93,9 +93,7 @@ class ActivateAccountTestCase(TestCase):
         self.assertIn('activation_complete=true', response.url)
 
 
-class RegisterTest(TestCase):
-    def setUp(self):
-        self.client = APIClient()
+class RegisterTest(APITestCase):
 
     def test_register_valid_data(self):
         valid_data = {

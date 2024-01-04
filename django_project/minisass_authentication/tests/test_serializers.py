@@ -35,4 +35,4 @@ class TestUpdatePasswordSerializer(APITestCase):
             serializer.is_valid(raise_exception=True)
         except Exception as e:
             self.assertTrue('Wrong old password' in str(e))
-            self.assertTrue('Password has been used' in str(e))
+            self.assertTrue('This password has been used before. Please choose a new and unique password.' in str(e))
