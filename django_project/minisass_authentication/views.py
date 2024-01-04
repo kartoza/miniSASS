@@ -1,10 +1,3 @@
-import json
-
-from minisass_authentication.serializers import (
-    UserSerializer, 
-    UserUpdateSerializer,
-    UserProfileSerializer
-)
 from django.conf import settings
 from django.contrib.auth import (
     authenticate,
@@ -15,12 +8,11 @@ from django.contrib.auth import (
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db import IntegrityError
-from django.db.models import Max
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
@@ -35,17 +27,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from minisass_authentication.models import UserProfile, Lookup
+from minisass_authentication.models import UserProfile, Lookup, PasswordHistory
 from minisass_authentication.serializers import (
     CertificateSerializer,
     UpdatePasswordSerializer,
     UserSerializer,
     UserUpdateSerializer
 )
+from minisass_authentication.serializers import (
+    UserProfileSerializer
+)
 from minisass_authentication.utils import get_is_user_password_enforced
-from django.db import IntegrityError
-from django.db.models import Max
-from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -189,6 +181,9 @@ def update_password(request, uid, token):
     if user and default_token_generator.check_token(user, token):
         # Set the new password for the user
         user.set_password(newPassword)
+        is_password_used = PasswordHistory.is_password_used(user, newPassword)
+        if is_password_used:
+            return Response({'error': 'Password has been used'}, status=status.HTTP_400_BAD_REQUEST)
         user.save()
         return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
@@ -395,11 +390,11 @@ class UpdatePassword(APIView):
         serializer = UpdatePasswordSerializer(
             data=request.data,
             context={
-                'old_password': request.user.password
+                'old_password': request.user.password,
+                'user': request.user
             }
         )
         if serializer.is_valid(raise_exception=True):
-            serializer.save(request.user)
             try:
                 serializer.save(request.user)
                 return JsonResponse({'status': 'OK'})

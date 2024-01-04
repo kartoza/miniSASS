@@ -19,7 +19,7 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
     }
 
     try {
-      const response = await axios.post(`${PASSWORD_RESET_API}${uid}/${token}/`);
+      const response = await axios.post(`${PASSWORD_RESET_API}${uid}/${token}/`, {newPassword: newPassword});
 
       if (response.status === 200) {
         // Password reset was successful
@@ -34,7 +34,11 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
     } catch (error) {
       // Handle API request errors, e.g., network issues or server errors
       console.error(error);
-      setResetErrors(["Password update failed. Please try again later."]);
+      if (error.response?.data) {
+        setResetErrors([`Password update failed. Reason: ${error.response?.data.error}`]);
+      } else {
+        setResetErrors(["Password update failed. Please try again later."]);
+      }
       settextColor('bg-red-100 text-red-600')
     }
   };

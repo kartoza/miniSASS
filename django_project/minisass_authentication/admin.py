@@ -1,5 +1,5 @@
 from django.contrib import admin
-from minisass_authentication.models import Lookup, UserProfile
+from minisass_authentication.models import Lookup, UserProfile, PasswordHistory
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
@@ -40,5 +40,10 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class PasswordHistoryAdmin(admin.ModelAdmin):
+    list_display = ('user', 'hashed_password', 'timestamp')
+
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(PasswordHistory, PasswordHistoryAdmin)
