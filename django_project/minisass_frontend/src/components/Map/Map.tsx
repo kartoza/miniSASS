@@ -30,6 +30,7 @@ interface Interface {
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
   setSiteDetails: (details: {}) => void;
   isSelectSiteOnMap: boolean;
+  setResetMap: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -364,6 +365,7 @@ export const Map = forwardRef((props: Interface, ref) => {
 
     useEffect(() => {
       if (props.resetMap === true) {
+        props.setResetMap(false)
         let mapInstance = map;
   
         if (mapInstance) {
