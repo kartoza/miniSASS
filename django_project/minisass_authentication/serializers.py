@@ -143,7 +143,7 @@ class UpdatePasswordSerializer(serializers.Serializer):
             self.context['user'], value
         )
         if is_password_used:
-            raise serializers.ValidationError('Password has been used')
+            raise serializers.ValidationError('This password has been used before. Please choose a new and unique password.')
         return value
 
     def save(self, user):

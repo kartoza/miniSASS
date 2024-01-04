@@ -183,7 +183,10 @@ def update_password(request, uid, token):
         user.set_password(newPassword)
         is_password_used = PasswordHistory.is_password_used(user, newPassword)
         if is_password_used:
-            return Response({'error': 'Password has been used'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'This password has been used before. Please choose a new and unique password.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         user.save()
         return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
 

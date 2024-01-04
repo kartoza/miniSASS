@@ -139,7 +139,7 @@ const EditPassword: React.FC<EditPasswordInterface> = ({
 
       const remaining = validatePassword(newPassword.password, newPassword.confirm_password);
       setRemainingRequirements(remaining);
-      if (formErrors.password == 'Password has been used') {
+      if (formErrors.password == 'This password has been used before. Please choose a new and unique password.') {
         setFormErrors({});
       }
     }
@@ -191,7 +191,7 @@ const EditPassword: React.FC<EditPasswordInterface> = ({
                       style={{borderRadius: '4px', width: '16.5vw'}}
                     />
                   </Grid>
-                  <Grid item>
+                  <Grid item style={{width: '16.5vw'}}>
                     {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
                     {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
                     {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
