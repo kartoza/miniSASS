@@ -8,9 +8,9 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
 1. **Site Details:** Hover over the `Information Icon` next to `Site Details` to view additional information about the section of the form.
 
-2. **Create New Site:** Choose the `Create New Property` option to initiate the process. This option allows you to add a new property to the site.
+2. **Create New Site:** Choose the `Create New Property` option to initiate the process. This option allows the user to add a new property to the site.
 
-    ### Site Details section
+    ### Site Details Section
 
     ![Create a new site, site details section](./img/add-record-2.png)
 
@@ -24,7 +24,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
         1. **Browse:** Click on the `Browse` link, a file explorer window will appear then navigate to the desired location on your device and select one or multiple image files. Supported formats for upload include `.JPG`, `.JPEG`, and `.PNG`. Upon selecting a file, it will be displayed in the popup with a corresponding `Delete` icon. To remove a selected file, click on the `Delete` icon associated with that file.
 
-            ![Selected file with delete icon](./img/add-record-5.png)
+            ![Selected file with the delete icon](./img/add-record-5.png)
 
         2. **Clear:** In case the user wishes to start over or change their selection, click on the `Clear` link. This will remove all currently selected files, allowing the user to choose new ones.
 
@@ -92,7 +92,11 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
             %DO (percentage of dissolved oxygen)
             PPM (parts per million)
             Unknown
-        
+
+        If the user inserts more than `20` in the `Dissolved Oxygen` field an information message will display.
+
+        ![Information message](./img/add-record-17.png)
+
         e. **Electrical Conductivity:** Enter the electrical conductivity measurement and select the unit from the dropdown options:
 
             S/m (Siemens per meter)
@@ -100,8 +104,110 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
             mS/m (millisiemens per meter)
             Unknown
 
-    5. **Next Button:** Click on the next button for the next step of the add record. When the user clicks on the `Next` button score form will open where the user can choose the group and upload the image.
+        If the user inserts more than `100` in the `Electrical Conductivity` field an information message will display.
+
+        ![Information message](./img/add-record-18.png)
+
+    5. **Next Button:** To proceed to the next step in adding a record, click on the `Next` button. Upon clicking `Next`, the score form will open, allowing the user to choose the group and upload an image associated with the record. It's important to note that the date field must be filled in before saving the score form.
 
         ![Score](./img/add-record-12.png)
     
+    - For detailed instructions on adding a score, refer to the [score documentation](../upload/score.md).
+
+3. **Use Existing Site:** Choose the `Use Existing Site` option to initiate the process. This option allows the user to use the existing property on the site.
+
+    ### Site Details Section
+
+    ![Use existing site, site details section](./img/add-record-13.png)
+
+    1. **Upload Site Images Button:** Use the `Upload Site Images` button to attach visual representations of the property. This helps to provide a comprehensive view and enhance the overall data quality. When the user clicks on the upload site image button a popup will shown for uploading the image of the property.
+
+        #### Upload Image
+
+        ![Upload image popup](./img/add-record-3.png)
+
+        The Upload Image Popup is a user interface element designed to allow users to easily upload images to a platform. This manual provides a step-by-step guide on how to use the popup, including instructions for selecting files, clearing selections, and understanding supported formats.
+
+        1. **Browse:** Click on the `Browse` link, a file explorer window will appear then navigate to the desired location on your device and select one or multiple image files. Supported formats for upload include `.JPG`, `.JPEG`, and `.PNG`. Upon selecting a file, it will be displayed in the popup with a corresponding `Delete` icon. To remove a selected file, click on the `Delete` icon associated with that file.
+
+            ![Selected file with the delete icon](./img/add-record-5.png)
+
+        2. **Clear:** In case the user wishes to start over or change their selection, click on the `Clear` link. This will remove all currently selected files, allowing the user to choose new ones.
+
+        3. **Upload Chosen Files:** After selecting the desired image files, locate and click on the `Upload chosen files` button. The system will process the uploaded files, and a user will see the message next to the `Upload site image` button, that (number) images selected.
+
+            ![Message](./img/add-record-14.png)
+
+        4. **Cross Icon:** Click on the `Cross` icon, to cancel the upload image process.
+
+    2. **Select Site On Map:** The `Select Site on Map` button is a feature designed to allow users to choose a specific location on the map. The user can also disable the selected site from the map by clicking on the `Disable` button.
+
+        ![Disable](./img/add-record-15.png)
+
+    3. **Sites:** The user has the option to choose from various available sites using the `Site` dropdown menu. This dropdown contains a list of pre-defined sites that the user can select from. When the user chooses a specific site from this dropdown, the form fields associated with that site will automatically populate with the relevant information.
+
+    4. **Form Fields:**
+
+        1. **River Name:** The name of the river will automatically populate with the relevant information of the chosen site. The user is unable to update the value of this field.
+
+        2. **Site Name:** The name of the site will automatically populate with the relevant information of the chosen site. The user is unable to update the value of this field.
+
+        3. **Site Description:** The description of the site will automatically populate with the relevant information of the chosen site. The user is unable to update the value of this field.
+
+        4. **River Category:** The category of the site will automatically populate with the relevant information of the chosen site. The user is unable to update the value of this field.
+
+    ### Site Location section
+
+    This user manual provides step-by-step instructions for using the `Site Location` section, for the `Use Existing Site` option. The section comprises two main parts: `Observation Details` and `Measurements`.
+
+    ![Use existing site, site location section](./img/add-record-16.png)
+
+    1. **Select on map button:** The `Select on map` button is disabled for the `Use Existing Site` option.
+
+    2. **Type in coordinates button:** The `Type in coordinates` button is disabled for the `Use Existing Site` option.
+    
+    3. **Observation details:**
+
+        a. **Date:** Choose the observation date by clicking on the calendar icon. A date picker will appear for easy selection.
+
+        ![Date Picker](./img/add-record-11.png)
+
+        b. **Collector's Name:** Enter the name of the person collecting the observation data.
+
+        c. **Notes:** Provide any relevant notes or additional information related to the observation.
+
+    4. **Measurements Section:**
+
+        a. **Water Clarity (cm):** Enter the water clarity measurement in centimeters.
+
+        b. **Water Temperature (°C):** Input the water temperature in degrees Celsius.
+
+        c. **pH:** Enter the pH level of the water.
+
+        d. **Dissolved Oxygen:** Choose the dissolved oxygen measurement unit from the dropdown options:
+
+            mg/l (milligrams per liter)
+            %DO (percentage of dissolved oxygen)
+            PPM (parts per million)
+            Unknown
+
+        If the user inserts more than `20` in the `Dissolved Oxygen` field an information message will display.
+
+        ![Information message](./img/add-record-17.png)
+
+        e. **Electrical Conductivity:** Enter the electrical conductivity measurement and select the unit from the dropdown options:
+
+            S/m (Siemens per meter)
+            µS/cm (microsiemens per centimeter)
+            mS/m (millisiemens per meter)
+            Unknown
+
+        If the user inserts more than `100` in the `Electrical Conductivity` field an information message will display.
+
+        ![Information message](./img/add-record-18.png)
+
+    5. **Next Button:** To proceed to the next step in adding a record, click on the `Next` button. Upon clicking `Next`, the score form will open, allowing the user to choose the group and upload an image associated with the record. It's important to note that the date field must be filled in before saving the score form.
+
+        ![Score](./img/add-record-12.png)
+
     - For detailed instructions on adding a score, refer to the [score documentation](../upload/score.md).
