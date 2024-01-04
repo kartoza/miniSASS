@@ -7,10 +7,13 @@ import {globalVariables} from "../../utils";
 import {logout, useAuth} from "../../AuthContext";
 import Link from '@mui/material/Link';
 import {useNavigate} from "react-router-dom";
+import ConfirmationDialogRawProps from "../ConfirmationDialog";
+import ConfirmationDialogRaw from "../ConfirmationDialog";
 
 
 export default function UserMenu(props: {setUpdateProfileOpen: void}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [logoutOpen, setLogoutOpen] = React.useState(false);
   const { dispatch, state } = useAuth();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -18,15 +21,36 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleClickLogout = () => {
+    setLogoutOpen(true);
+    handleClose();
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleLogout = () => {
+    handleClickLogout();
+  };
+
+  const handleLogoutConfirm = () => {
     logout(dispatch)
   };
 
+  const handleLogoutCancel = () => {
+    setLogoutOpen(false)
+  };
+
   return (
+    <>
+    <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        open={logoutOpen}
+        onClose={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+      />
     <div className="h-[35px] w-[35px]">
       <Img
         src={`${globalVariables.staticPath}iconamoon_profile-circle-fill.svg`}
@@ -63,5 +87,6 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
         </MenuItem>
       </Menu>
     </div>
+    </>
   );
 }
