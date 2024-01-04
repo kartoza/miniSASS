@@ -35,7 +35,7 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
       // Handle API request errors, e.g., network issues or server errors
       console.error(error);
       if (error.response?.data) {
-        setResetErrors([`Password update failed. Reason: ${error.response?.data.error}`]);
+        setResetErrors([error.response?.data.error]);
       } else {
         setResetErrors(["Password update failed. Please try again later."]);
       }
