@@ -1,6 +1,6 @@
 from django.test import TestCase
 from minisass_authentication.models import Lookup
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
@@ -9,14 +9,14 @@ from django.utils.http import (
 )
 from django.contrib.auth.tokens import default_token_generator
 
-class PasswordResetTest(TestCase):
+
+class PasswordResetTest(APITestCase):
     def setUp(self):
         self.user_data = {
             'email': 'test@example.com',
-            'username': 'test',
+            'username': 'test'
         }
         self.user = User.objects.create_user(**self.user_data)
-
 
     def test_verify_password_reset(self):
         # Generate token and UID for user
@@ -26,9 +26,7 @@ class PasswordResetTest(TestCase):
         # Verify password reset link
         url = reverse('verify_password_reset', kwargs={'uidb64': uidb64, 'token': token})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302) 
-
-
+        self.assertEqual(response.status_code, 302)
 
     def test_update_password_reset(self):
         # Generate token and UID for user
@@ -38,10 +36,37 @@ class PasswordResetTest(TestCase):
         # Update password using reset link
         new_password = 'newpassword123'
         url = reverse('update_password_reset', kwargs={'uid': uidb64, 'token': token})
-        data = {'new_password': new_password}
+        data = {'newPassword': new_password}
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200) 
-        
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_password_reset_password_exist(self):
+        """
+        Test update password fails when new password has been used by that user.
+        """
+
+        # Update password using reset link
+        new_password = 'newpassword123'
+        self.user.set_password(new_password)
+        self.user.save()
+
+        # Generate token and UID for user
+        token = default_token_generator.make_token(self.user)
+        uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
+
+        self.client.force_authenticate(user=self.user)
+        url = reverse('update_password_reset', kwargs={'uid': uidb64, 'token': token})
+        data = {'newPassword': new_password}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {
+                'error': 'Password has been used'
+            }
+        )
+
+
 class ActivateAccountTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -66,6 +91,7 @@ class ActivateAccountTestCase(TestCase):
         # Asserts
         self.assertEqual(response.status_code, 302)  # Assuming it redirects
         self.assertIn('activation_complete=true', response.url)
+
 
 class RegisterTest(TestCase):
     def setUp(self):

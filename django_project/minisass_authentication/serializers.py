@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from minisass_authentication.models import Lookup, UserProfile
+from minisass_authentication.models import Lookup, UserProfile, PasswordHistory
 import re
 
 
@@ -138,6 +138,12 @@ class UpdatePasswordSerializer(serializers.Serializer):
         if all(remaining_requirements.values()):
             missing_criteria = ', '.join([key for key, val in remaining_requirements.items() if val])
             raise serializers.ValidationError(f'Missing password criteria: {missing_criteria}')
+
+        is_password_used = PasswordHistory.is_password_used(
+            self.context['user'], value
+        )
+        if is_password_used:
+            raise serializers.ValidationError('Password has been used')
         return value
 
     def save(self, user):

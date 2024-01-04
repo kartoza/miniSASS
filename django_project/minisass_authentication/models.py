@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.contrib.auth.hashers import check_password
 
 
 def certificate_path(instance, filename):
@@ -77,6 +78,30 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
 
 
+class PasswordHistory(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=False
+    )
+    hashed_password = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Password Histories'
+
+    @classmethod
+    def is_password_used(cls, user, plain_password):
+        """
+        Check whether password has been used for the specified user.
+        """
+        password_histories = PasswordHistory.objects.filter(user=user)
+        for password_history in password_histories:
+            if check_password(plain_password, password_history.hashed_password):
+                return True
+        return False
+
+
 @receiver(post_save, sender=UserProfile)
 def post_certificate_approve(sender, instance: UserProfile, **kwargs):
     if instance.expert_approval_status == APPROVED_STATUS and instance.certificate and instance.is_expert:
@@ -96,7 +121,7 @@ def post_certificate_approve(sender, instance: UserProfile, **kwargs):
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def post_user_create(sender, instance: UserProfile, created, **kwargs):
+def post_user_save(sender, instance: settings.AUTH_USER_MODEL, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(
             user=instance,
@@ -104,3 +129,7 @@ def post_user_create(sender, instance: UserProfile, created, **kwargs):
                 'is_password_enforced': True
             }
         )
+    PasswordHistory.objects.get_or_create(
+        user=instance,
+        hashed_password=instance.password
+    )

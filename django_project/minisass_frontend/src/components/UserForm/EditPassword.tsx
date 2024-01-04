@@ -68,6 +68,10 @@ const EditPassword: React.FC<EditPasswordInterface> = ({
     } catch (err) {
       if (err.response?.data) {
         setErrorResponse(err.response.data.error);
+        const errors: Partial<FormData> = {};
+        errors.old_password = err.response.data.old_password
+        errors.password = err.response.data.password
+        setFormErrors(errors);
       } else {
         setErrorResponse(err.message);
       }
@@ -135,6 +139,9 @@ const EditPassword: React.FC<EditPasswordInterface> = ({
 
       const remaining = validatePassword(newPassword.password, newPassword.confirm_password);
       setRemainingRequirements(remaining);
+      if (formErrors.password == 'Password has been used') {
+        setFormErrors({});
+      }
     }
   };
 
