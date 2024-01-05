@@ -10,13 +10,13 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
 2. **Create New Site:** Choose the `Create New Property` option to initiate the process. This option allows the user to add a new property to the site.
 
-    ### Site Details Section
+    **Site Details Section**
 
     ![Create a new site, site details section](./img/add-record-2.png)
 
     1. **Upload Site Images Button:** Use the `Upload Site Images` button to attach visual representations of the property. This helps to provide a comprehensive view and enhance the overall data quality. When the user clicks on the upload site image button a popup will shown for uploading the image of the property.
 
-        #### Upload Image
+        **Upload Image**
 
         ![Upload image popup](./img/add-record-3.png)
 
@@ -44,7 +44,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
         4. **River Category:** Hover over the `Information Icon` next to `River Category` to access additional information about the available categories in the dropdown. Select the appropriate category that best represents the river.
     
-    ### Site Location section
+    **Site Location section**
 
     This user manual provides step-by-step instructions for using the `Site Location` section, which includes options for selecting the location on a map or typing in coordinates. The section comprises two main parts: `Observation Details` and `Measurements`.
 
@@ -80,7 +80,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
     
     4. **Measurements Section:**
 
-        a. **Water Clarity (cm):** Enter the water clarity measurement in centimeters.
+        a. **Water Clarity (cm):** Enter the water clarity measurement in centimetres.
 
         b. **Water Temperature (°C):** Input the water temperature in degrees Celsius.
 
@@ -88,7 +88,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
         d. **Dissolved Oxygen:** Choose the dissolved oxygen measurement unit from the dropdown options:
 
-            mg/l (milligrams per liter)
+            mg/l (milligrams per litre)
             %DO (percentage of dissolved oxygen)
             PPM (parts per million)
             Unknown
@@ -100,7 +100,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
         e. **Electrical Conductivity:** Enter the electrical conductivity measurement and select the unit from the dropdown options:
 
             S/m (Siemens per meter)
-            µS/cm (microsiemens per centimeter)
+            µS/cm (microsiemens per centimetre)
             mS/m (millisiemens per meter)
             Unknown
 
@@ -116,13 +116,13 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
 3. **Use Existing Site:** Choose the `Use Existing Site` option to initiate the process. This option allows the user to use the existing property on the site.
 
-    ### Site Details Section
+    **Site Details Section**
 
     ![Use existing site, site details section](./img/add-record-13.png)
 
     1. **Upload Site Images Button:** Use the `Upload Site Images` button to attach visual representations of the property. This helps to provide a comprehensive view and enhance the overall data quality. When the user clicks on the upload site image button a popup will shown for uploading the image of the property.
 
-        #### Upload Image
+        **Upload Image**
 
         ![Upload image popup](./img/add-record-3.png)
 
@@ -156,7 +156,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
         4. **River Category:** The category of the site will automatically populate with the relevant information of the chosen site. The user is unable to update the value of this field.
 
-    ### Site Location section
+    **Site Location section**
 
     This user manual provides step-by-step instructions for using the `Site Location` section, for the `Use Existing Site` option. The section comprises two main parts: `Observation Details` and `Measurements`.
 
@@ -178,7 +178,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
     4. **Measurements Section:**
 
-        a. **Water Clarity (cm):** Enter the water clarity measurement in centimeters.
+        a. **Water Clarity (cm):** Enter the water clarity measurement in centimetres.
 
         b. **Water Temperature (°C):** Input the water temperature in degrees Celsius.
 
@@ -186,7 +186,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
 
         d. **Dissolved Oxygen:** Choose the dissolved oxygen measurement unit from the dropdown options:
 
-            mg/l (milligrams per liter)
+            mg/l (milligrams per litre)
             %DO (percentage of dissolved oxygen)
             PPM (parts per million)
             Unknown
@@ -198,7 +198,7 @@ Welcome to the Add Record Form User Manual. This guide will walk you through the
         e. **Electrical Conductivity:** Enter the electrical conductivity measurement and select the unit from the dropdown options:
 
             S/m (Siemens per meter)
-            µS/cm (microsiemens per centimeter)
+            µS/cm (microsiemens per centimetre)
             mS/m (millisiemens per meter)
             Unknown
 

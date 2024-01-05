@@ -80,7 +80,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
     ![Ground Truth](../img/landing-page-14.png)
 
-2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfill their potential, from early childhood through adolescence. And we never give up.
+2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfil their potential, from early childhood through adolescence. And we never give up.
 
     ![United Nations Children's Fund (UNICEF)](../img/landing-page-18.png)
 
@@ -123,7 +123,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 4. **GitHub**: miniSASS is an Open Source Project. Explore and contribute to the source code on GitHub. Click on the GitHub link to get the source code.
 
 
-# Map Page After Login User Manual
+## Map Page After Login User Manual
 
 ![Map](./img/map-14.png)
 
@@ -195,7 +195,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
     ![Exclamation Mark](./img/map-13.png)
 
-## Available References
+### Available References
 
 ![Available References](../img/landing-page-13.png)
 
@@ -205,7 +205,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
     ![Ground Truth](../img/landing-page-14.png)
 
-2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfill their potential, from early childhood through adolescence. And we never give up.
+2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfil their potential, from early childhood through adolescence. And we never give up.
 
     ![United Nations Children's Fund (UNICEF)](../img/landing-page-18.png)
 
@@ -237,7 +237,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
     ![Kartoza](../how-to/img/how-to-14.png)
 
-## Footer Options
+### Footer Options
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
 
