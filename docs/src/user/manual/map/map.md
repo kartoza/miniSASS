@@ -209,7 +209,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
     ![United Nations Children's Fund (UNICEF)](../img/landing-page-18.png)
 
-3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis.CGIAR is the world’s largest global agricultural innovation network.
+3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis. CGIAR is the world’s largest global agricultural innovation network.
     - We provide evidence to policymakers, innovation to partners, and new tools to harness the economic, environmental and nutritional power of agriculture.
 
     ![CGIAR](../img/landing-page-17.png)
@@ -241,7 +241,7 @@ Welcome to the Map User Manual, the user's comprehensive guide to navigating and
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
 
-2. **HowTo**: Navigate to the how-to page by clicking on the `HowTo` link. For detailed how-to instructions, refer to the [how-to page documentation](../how-to/how-to.md).
+2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](../how-to/how-to.md).
 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
 
