@@ -12,7 +12,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
 
-2. **HowTo**: Navigate to the how-to page by clicking on the `HowTo` link. For detailed how-to instructions, refer to the [how-to page documentation](./how-to/how-to.md).
+2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](./how-to/how-to.md).
 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
 
@@ -44,7 +44,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     1. **DOWNLOAD MINISASS APP HERE:** Click on the `DOWNLOAD MINISASS APP HERE` button, to download the miniSASS APK.
 
-    2. **How to Manually Install the MiniSASS App APK:** This guide provides step-by-step instructions on how to manually install the MiniSASS app on an Android device using its APK file. Users are reminded to exercise caution when installing apps from outside the Google Play Store, emphasising the importance of downloading APK files from trusted sources. The key steps include enabling installation from unknown sources in device settings, downloading the MiniSASS APK from a reputable website, locating the downloaded file in the device's storage, installing the app, and launching it. Additionally, users are advised to restore their security settings after installation and regularly check for updates manually since the app won't update automatically.
+    2. **How to Manually Install the MiniSASS App APK:** This guide provides step-by-step instructions on how to manually install the miniSASS app on an Android device using its APK file. Users are reminded to exercise caution when installing apps from outside the Google Play Store, emphasising the importance of downloading APK files from trusted sources. The key steps include enabling installation from unknown sources in device settings, downloading the miniSASS APK from a reputable website, locating the downloaded file in the device's storage, installing the app, and launching it. Additionally, users are advised to restore their security settings after installation and regularly check for updates manually since the app won't update automatically.
 
 
 11. **EXPLORE THE MAP**: Click on the `EXPLORE THE MAP` card section, to explore the interactive map.
@@ -135,7 +135,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     ![United Nations Children's Fund (UNICEF)](./img/landing-page-18.png)
 
-3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis.CGIAR is the world’s largest global agricultural innovation network.
+3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis. CGIAR is the world’s largest global agricultural innovation network.
     - We provide evidence to policymakers, innovation to partners, and new tools to harness the economic, environmental and nutritional power of agriculture.
 
     ![CGIAR](./img/landing-page-17.png)
@@ -296,7 +296,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     ![Ground Truth](./img/landing-page-14.png)
 
-2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfill their potential, from early childhood through adolescence. And we never give up.
+2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfil their potential, from early childhood through adolescence. And we never give up.
 
     ![United Nations Children's Fund (UNICEF)](./img/landing-page-18.png)
 
