@@ -44,14 +44,37 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
-                  - Landing Page: user/manual/landing-page.md
-                  - Contact Us: user/manual/contact-us.md
+                  - Manual:
+                        - user/manual/index.md
+                        - Landing Page: user/manual/landing-page.md
+                        - How To: user/manual/how-to/how-to.md
+                        - "": user/manual/how-to/index.md # not needed?
+                        - Register:
+                                - user/manual/register/index.md
+                                - Register: user/manual/register/register.md
+                                - Activate Account: user/manual/register/activate-account.md
+                        - Login and Logout:
+                                - user/manual/login-logout/index.md
+                                - Login: user/manual/login-logout/login.md
+                                - Forgot Password: user/manual/login-logout/forgot-password.md
+                                - Reset Password: user/manual/login-logout/reset-password-email.md
+                                - Logout: user/manual/login-logout/logout.md
+                        - User Profile:
+                                - user/manual/user-profile/index.md
+                                - Profile: user/manual/user-profile/profile.md
+                                - Recent Activity: user/manual/user-profile/recent-activity.md
+                                - Admin Options: user/manual/user-profile/admin.md # might need to move to another section?
+                        - Map: user/manual/map/map.md
+                        - "": user/manual/map/index.md # not needed?
+                        - Upload: user/manual/upload/index.md
+                        - Contact Us: user/manual/contact-us.md
         - Developer:
                   - developer/index.md
                   - Installation: developer/install.md
                   - Authentication: developer/authentication.md
                   - Sites: developer/sites.md
                   - Observations: developer/observations.md
+                  - Profile API: developer/profile.md
         - About:
                   - about/index.md
                   - License: about/license.md
