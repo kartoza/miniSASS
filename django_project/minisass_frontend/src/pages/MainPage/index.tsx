@@ -442,7 +442,7 @@ const Home: React.FC = () => {
                         marginRight: '1%'
                       }}
                     >
-                      <Img src={`${newURL}img_arrowleft.svg`} alt="arrowleft" />
+                      <Img src={`${globalVariables.staticPath}img_arrowleft.svg`} alt="arrowleft" />
                     </Button>
                   )}
                   {currentIndex + 5 < observations.length && (
@@ -453,7 +453,7 @@ const Home: React.FC = () => {
                       variant="fill"
                       onClick={handleNextObservations}
                     >
-                      <Img src={`${newURL}img_arrowright.svg`} alt="arrowright" />
+                      <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright" />
                     </Button>
                   )}
                 </div>
