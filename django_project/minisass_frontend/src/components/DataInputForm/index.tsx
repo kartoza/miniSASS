@@ -536,7 +536,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('selectedSite', selectedSite);
                                       setFieldValue('riverName', selectedSite.riverName);
                                       setFieldValue('siteName', selectedSite.siteName);
-                                      setFieldValue('rivercategory', selectedSite.riverCategory);
+                                      setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                     }
                                   }
@@ -746,7 +746,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           key={option.value} 
                           value={(() => {
                             const siteRivercategory = props.siteDetails?.rivercategory;
-                            const selectedValue = siteRivercategory ? siteRivercategory : values.rivercategory;
+                            const selectedValue = siteRivercategory ? siteRivercategory : option.value;
                             return selectedValue;
                           })()}
                           selected={option.value === values.rivercategory}
