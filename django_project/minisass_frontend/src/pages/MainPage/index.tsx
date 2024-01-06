@@ -386,7 +386,7 @@ const Home: React.FC = () => {
 
           <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
 
-          <div className="flex flex-col mt-[86px]">
+          <div className="flex flex-col mt-[86px] mt-5 relative md:top-[145px] sm:top-[200px] top-[30px] md:w-[98%]">
             <div>
               <Text
                 className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
@@ -399,7 +399,7 @@ const Home: React.FC = () => {
               <div
                 className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[50%] sm:w-full"
               >
-                <YouTubeVideo videoId="hRgO80-427w" width="500px" height="300px" playButtonColor="green" />
+                <YouTubeVideo videoId="hRgO80-427w" width="100%" height="300px" playButtonColor="green" />
               </div>
               <div className="w-[75%] sm:w-full md:w-full">
                 <Text

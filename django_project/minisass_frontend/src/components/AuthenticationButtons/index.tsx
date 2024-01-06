@@ -154,7 +154,7 @@ function AuthenticationButtons() {
           <>
             <Button
               onClick={openLoginModal}
-              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[100px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
               shape="square"
               color="blue_900"
               size="xs"
@@ -164,7 +164,7 @@ function AuthenticationButtons() {
             </Button>
             <Button
               onClick={openRegisterModal}
-              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[105px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
               shape="square"
               color="blue_900"
               size="xs"
