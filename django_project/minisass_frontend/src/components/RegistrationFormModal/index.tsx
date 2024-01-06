@@ -270,10 +270,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
           left: '50%',
           right: 'auto',
           bottom: 'auto',
-          // marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
-          // width: '100%',
-          // maxWidth: '43vw',
           background: 'white',
           border: 'none',
           borderRadius: '0px 25px 25px 25px',
@@ -281,8 +278,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       }}
     >
       {Registrationloading ? (
-        // <CircularProgress style={{ margin: '20px' , color: '#288b31' }}/>
-        <div style={{ width: '400px'}}>
+        <div style={{ width: '535px'}}>
           <LinearProgress color="success" />
         </div>
       ) : registrationInProgress ? (
@@ -305,12 +301,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
             To finish registration, please click on the activation link sent to the email you registered with.
           </Typography>
 
+          <br />
           <Button
               className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "79%" }}
+              style={{ marginLeft: "77%" }}
               onClick={onClose}
             >
               Ok
@@ -337,8 +334,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               alignItems: 'flex-start',
               padding: '0px',
               gap: '55%',
-              // width: '40vw',
-              // height: '33px',
             }}
           >
             <h3
@@ -384,9 +379,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   value={formData.username}
                   onChange={handleInputChange}
                   placeholder="Username"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
+                <br />
                 {formErrors.username && <span style={{ color: 'red' }}>{formErrors.username}</span>}
               </div>
               <div style={{ flex: 1, flexDirection: 'column' }}>
@@ -398,9 +393,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   onChange={handleInputChange}
                   onBlur={handleEmailBlur}
                   placeholder="Email"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
+                <br />
                 {formErrors.email && <span style={{ color: 'red' }}>{formErrors.email}</span>}
               </div>
             </div>
@@ -415,9 +410,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
+                <br />
                 {formErrors.name && <span style={{ color: 'red' }}>{formErrors.name}</span>}
               </div>
               <div style={{ flex: 1, flexDirection: 'column' }}>
@@ -428,9 +423,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   value={formData.surname}
                   onChange={handleInputChange}
                   placeholder="Surname"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
+                <br />
                 {formErrors.surname && <span style={{ color: 'red' }}>{formErrors.surname}</span>}
               </div>
             </div>
@@ -443,9 +438,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   value={formData.organizationName}
                   onChange={handleInputChange}
                   placeholder="Organization Name"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
+                <br />
                 {formErrors.organizationName && <span style={{ color: 'red' }}>{formErrors.organizationName}</span>}
               </div>
               <div style={{ flex: 1, flexDirection: 'column',height:'20px'}}>
@@ -474,7 +469,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Password"
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                   style={{ borderRadius: '4px' }}
                 />
                 <br />
@@ -498,14 +492,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   onChange={handleInputChange}
                   placeholder="Confirm Password"
                   style={{ borderRadius: '4px' }}
-                  // style={{ borderRadius: '4px', width: '16.5vw' }}
                 />
                 <br />
                 {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' ,marginLeft: '-255px' ,width: '223px'}}>
-            {/* <div style={{ flex: 1, flexDirection: 'column' }}> */}
               <label>Country:</label>
               <CountrySelector
                 id={"country-selector"}
@@ -521,27 +513,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 
               </div>
 
-
-            {/* </div> */}
-            {/* <div 
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              marginLeft: '-54%',
-              width: '16.5vw'
-            }}
-            >
-              <label>Country:</label>
-              <CountrySelector
-                id={"country-selector"}
-                open={isCountrySelectorOpen}
-                onToggle={() => setIsCountrySelectorOpen(!isCountrySelectorOpen)}
-                onChange={setCountry}
-                selectedValue={COUNTRIES.find((option) => option.value === country)}
-              />
-              {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
-            </div> */}
             {error_response && (
               <div style={{ color: 'red' }}>{error_response}</div>
             )}
