@@ -423,38 +423,40 @@ const Home: React.FC = () => {
           <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[50px] recent-observations">
              {/* observations */}
              <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
-              <div className="sm:bottom-[] flex sm:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
+              <div className="sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
                 <Text
                   className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                   size="txtRalewayRomanBold40"
                 >
                   Recent Observations
                 </Text>
-                {currentIndex > 0 && ( // Hide left arrow if at the beginning
-                  <Button
-                    className="flex h-10 sm:hidden items-center justify-center rounded-[5px] w-10"
-                    color="blue_gray_500"
-                    size="sm"
-                    variant="fill"
-                    onClick={handlePrevObservations}
-                    style={{
-                      marginRight: '1%'
-                    }}
-                  >
-                    <Img src={`${globalVariables.staticPath}img_arrowleft.svg`} alt="arrowleft" />
-                  </Button>
-                )}
-                {currentIndex + 5 < observations.length && ( // Hide right arrow if at the end
-                  <Button
-                    className="flex h-10 sm:hidden items-center justify-center rounded-[5px] w-10"
-                    color="blue_gray_500"
-                    size="sm"
-                    variant="fill"
-                    onClick={handleNextObservations}
-                  >
-                    <Img src={`${globalVariables.staticPath}img_arrowright.svg`} alt="arrowright" />
-                  </Button>
-                )}
+                <div className="flex gap-2">
+                  {currentIndex > 0 && (
+                    <Button
+                      className="flex h-10 items-center justify-center rounded-[5px] w-10"
+                      color="blue_gray_500"
+                      size="sm"
+                      variant="fill"
+                      onClick={handlePrevObservations}
+                      style={{
+                        marginRight: '1%'
+                      }}
+                    >
+                      <Img src={`${newURL}img_arrowleft.svg`} alt="arrowleft" />
+                    </Button>
+                  )}
+                  {currentIndex + 5 < observations.length && (
+                    <Button
+                      className="flex h-10 items-center justify-center rounded-[5px] w-10"
+                      color="blue_gray_500"
+                      size="sm"
+                      variant="fill"
+                      onClick={handleNextObservations}
+                    >
+                      <Img src={`${newURL}img_arrowright.svg`} alt="arrowright" />
+                    </Button>
+                  )}
+                </div>
               </div>
               <List
                 className="flex-col sm:flex-row gap-3 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-5 sm:h-[50vh]
