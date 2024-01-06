@@ -131,7 +131,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     );
   }
 
-  const fetchObservation = async () => {
+  const fetchObservation = async (retryCount = 0) => {
     try {
       const response = await axios.get(`${GET_OBSERVATION}`);
       
@@ -146,7 +146,13 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
         updateScoreDisplay(response.data.score);
 
-      } else { }
+      } else {
+        if (retryCount < 3) {
+          setTimeout(() => {
+            fetchObservation(retryCount+1);
+          }, 3000);
+        }
+      }
     } catch (error) {
       console.log(error.message)
      }
