@@ -9,6 +9,7 @@ import DownloadObservationForm from '../../components/DownloadObservationModal/i
 import HorizontalImageGallery from '../../components/HorizontalImageGallery/';
 import LineChart from '../Charts/LineChart';
 import dayjs from 'dayjs';
+import up from "../../dist/assets/index-b9b8121e";
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -81,7 +82,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   useEffect(() => {
-    if ((Array.isArray(observationDetails) && observationDetails.length > 0) || 
+    if ((Array.isArray(observationDetails) && observationDetails.length > 0) ||
       (typeof observationDetails === 'object' && Object.keys(observationDetails).length > 0)) {
       fetchObservations();
     }
@@ -93,8 +94,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const [observations, setObservations] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+  const [imageTabIndex, setImageTabIndex] = useState<number>(0);
   const [siteDetails, setSiteDetails] = useState({});
   const [tabsData, setTabsData] = useState([]);
+  const [imageTabsData, setImageTabsData] = useState({});
 
   const updateScoreDisplay = (score) => {
     if (parseFloat(score) < 6) {
@@ -109,14 +112,52 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   };
 
 
-  const updateTabs = (observations) => {
-    setTabsData(
-      observations.map((observation, index) => ({
-        id: `tab${index + 1}`,
-        label: observation.obs_date,
+  useEffect(() => {
+    if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
+      setTabbedImages(observations);
+    }
+  }, [observations]);
+
+  useEffect(() => {
+    if (observationDetails.site && siteWithObservations.observations.length == 0) {
+      setTabbedImages([observationDetails]);
+    }
+  }, [observationDetails]);
+
+  useEffect(() => {
+    setImageTabIndex(0);
+  }, [activeTabIndex]);
+
+  useEffect(() => {
+    if (parseInt(observation_id) > 0 && openFromHomePage && Object.keys(observationDetails).length > 0) {
+      updateTabs([observationDetails]);
+    } else {
+      if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
+        updateTabs(observations)
+      }
+    }
+  }, [imageTabsData, imageTabIndex]);
+
+  const setTabbedImages = (observations) => {
+    let imagesPerDate = {}
+    observations.map((observation) => {
+      const images = [].concat(observation.site.images, observation.images);
+      let imagesPerPest = {};
+      images.forEach((image) => {
+        const key = image.pest_name ? image.pest_name : 'Site'
+        if (Object.keys(imagesPerPest).includes(key)) {
+          imagesPerPest[key].push(image)
+        } else {
+          imagesPerPest[key] = [image]
+        }
+      });
+
+      const allImages = Object.keys(imagesPerPest).map((key, index) => ({
+        id: `tab-image-${observation.obs_date}-${index + 1}`,
+        label: key,
         content: (
           <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            {[].concat(observation.site.images, observation.images).map((image, index) => (
+            {imagesPerPest[key].map((image, index) => (
               <img
                 key={`image_${index}`}
                 className="h-[152px] md:h-auto object-cover w-[164px]"
@@ -125,6 +166,30 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                 loading='lazy'
               />
             ))}
+          </div>
+        )
+      }));
+
+      imagesPerDate[observation.obs_date] = allImages
+    })
+
+    setImageTabsData(imagesPerDate);
+  }
+
+  const updateTabs = (observations) => {
+    setTabsData(
+      observations.map((observation, index) => ({
+        id: `tab${index + 1}`,
+        label: observation.obs_date,
+        content: (
+          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+            <TabbedContent
+              tabsData={imageTabsData[observation.obs_date]}
+              activeTabIndex={imageTabIndex}
+              onTabChange={(index) => {
+                setImageTabIndex(index);
+              }}
+            />
           </div>
         )        
       }))
@@ -138,7 +203,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
-        updateTabs([response.data])
+        setSiteDetails({})
+        setObservations([])
+        // setImageTabsData(setTabbedImages([response.data]));
+        // updateTabs([response.data])
         
         setTimeout(() => {
           handleMapClick(response.data.latitude,response.data.longitude);
@@ -160,9 +228,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setLoading(false);
         updateScoreDisplay(siteWithObservations.observations[0].score); // on intial load
         setObservationDetails(siteWithObservations.observations[0]); // on intial load
+        setObservationList(siteWithObservations.observations)
 
         setObservations(siteWithObservations.observations)
-        updateTabs(siteWithObservations.observations)
+        // setImageTabsData(setTabbedImages(siteWithObservations.observations));
+        // updateTabs(siteWithObservations.observations)
         setSiteDetails(siteWithObservations.site)
       } 
     }
