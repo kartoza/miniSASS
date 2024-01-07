@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Img, Text } from "../../components";
-import { CircularProgressbar } from "react-circular-progressbar";
+import React, {useEffect, useState} from "react";
+import {Img, Text} from "../../components";
+import {CircularProgressbar} from "react-circular-progressbar";
 import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
-import { globalVariables } from "../../utils";
+import {globalVariables} from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
 import DownloadObservationForm from '../../components/DownloadObservationModal/index';
-import HorizontalImageGallery from '../../components/HorizontalImageGallery/';
 import LineChart from '../Charts/LineChart';
 import dayjs from 'dayjs';
-import up from "../../dist/assets/index-b9b8121e";
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
