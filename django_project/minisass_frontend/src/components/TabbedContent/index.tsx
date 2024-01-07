@@ -6,7 +6,7 @@ const TabbedContent = ({ tabsData, activeTabIndex, onTabChange }) => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-start w-[28vw]" style={{overflowX: 'auto', overflowY: 'hidden'}}>
+    <div className="flex flex-col items-start justify-start w-[38vw]" style={{overflowX: 'auto', overflowY: 'hidden'}}>
       <div className="flex gap-5">
         {tabsData.map((tab, index) => (
           <button
