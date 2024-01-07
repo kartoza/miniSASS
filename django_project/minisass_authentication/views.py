@@ -409,9 +409,9 @@ class UpdatePassword(APIView):
 def user_login(request):
     if request.method == 'POST':
 
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
         if user:
             login(request, user)
             
