@@ -411,7 +411,9 @@ def user_login(request):
 
         email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(email=email, password=password)
+        
+        user = authenticate(request, username=email, password=password)
+        
         if user:
             login(request, user)
             
