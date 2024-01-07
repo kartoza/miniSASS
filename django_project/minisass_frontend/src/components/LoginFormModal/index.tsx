@@ -2,17 +2,18 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 import { Button ,Img } from "../../components";
 import { useNavigate } from 'react-router-dom';
+import { globalVariables } from '../../utils';
 
 interface LoginFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { username: string; password: string }) => void;
+  onSubmit: (data: { email: string; password: string }) => void;
   error_response: string | null;
 }
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubmit, error_response }) => {
-  const [formData, setFormData] = useState<{ username: string; password: string }>({
-    username: '',
+  const [formData, setFormData] = useState<{ email: string; password: string }>({
+    email: '',
     password: '',
   });
   const [error, setError] = useState<string | null>(null);
@@ -32,21 +33,21 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (formData.username && formData.password) {
-      setError(null);
-      onSubmit(formData);
-      setFormData({ username: '', password: '' });
-    } else {
-      setError('Please enter both username and password.');
-    }
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  const currentURL = window.location.href;
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2];
-  const staticPath = baseUrl + '/static/images/';
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (validateEmail(formData.email) && formData.password) {
+      setError(null);
+      onSubmit(formData);
+      setFormData({ email: '', password: '' });
+    } else {
+      setError('Please enter both valid email and password.');
+    }
+  };
 
   return (
     <Modal
@@ -107,7 +108,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
             >
               <Img
                 className="h-6 w-6 common-pointer"
-                src={`${staticPath}img_icbaselineclose.svg`}
+                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
                 alt="close"
                 onClick={onClose}
               />
@@ -125,10 +126,10 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
           >
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="email"
+              value={formData.email}
               onChange={handleInputChange}
-              placeholder="Username"
+              placeholder="Email"
               style={{
                 width: '100%',
                 maxWidth: '300px',
