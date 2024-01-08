@@ -68,6 +68,10 @@ class UserProfile(models.Model):
         null=True, blank=True,
         upload_to=certificate_path, storage=settings.MINION_STORAGE
     )
+    is_using_email = models.BooleanField(
+        default=False,
+        help_text='Indicates whether the user is using email for login'
+    )
 
     def __str__(self):
         return f"{self.organisation_type}: {self.organisation_name or 'Unknown'}"
