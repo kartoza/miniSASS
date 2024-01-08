@@ -15,12 +15,12 @@ const slideshowImages = [
 
 const Slideshow = () => {
   return (
-    <div className="slide-container">
+    <div className="slide-container mt-[25px]">
       <Fade>
         {slideshowImages.map((fadeImage, index) => (
           <div key={index}>
             <Img
-              className="h-[464px] sm:left-[] mt-auto mx-auto object-cover relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full"
+              className="h-[464px] sm:left-[] mt-auto mx-auto object-cover relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full mt-[-25px]"
               src={fadeImage}
               alt="intrestedcitize"
             />
