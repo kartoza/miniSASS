@@ -31,7 +31,7 @@ jobs:
           EXTRA_PACKAGES: build-base
           #REQUIREMENTS: folder/requirements.txt
       - name: Upload PDF Artifact ⚡
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docs
           path: docs/pdfs
