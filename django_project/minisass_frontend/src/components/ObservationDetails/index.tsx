@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Img, Text} from "../../components";
-import {CircularProgressbar} from "react-circular-progressbar";
+import React, { useEffect, useState } from "react";
+import { Img, Text } from "../../components";
+import { CircularProgressbar } from "react-circular-progressbar";
 import axios from "axios";
 import TabbedContent from "../../components/TabbedContent";
-import {globalVariables} from "../../utils";
+import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
 import DownloadObservationForm from '../../components/DownloadObservationModal/index';
 import LineChart from '../Charts/LineChart';
@@ -155,15 +155,26 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         label: key,
         content: (
           <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            {imagesPerPest[key].map((image, index) => (
+            {(imagesPerPest[key].length > 0) ? (
+              // Render images if there are any
+              imagesPerPest[key].map((image, index) => (
+                <img
+                  key={`image_${index}`}
+                  className="h-[152px] md:h-auto object-cover w-[164px]"
+                  src={image.image}
+                  alt={`img_${index}`}
+                  loading='lazy'
+                />
+              ))
+            ) : (
+              // Render placeholder if no images are available
               <img
-                key={`image_${index}`}
                 className="h-[152px] md:h-auto object-cover w-[164px]"
-                src={image.image}
-                alt={`img_${index}`}
+                src={`${globalVariables.staticPath}images_placeholder.png`}
+                alt="No Images Available"
                 loading='lazy'
               />
-            ))}
+            )}
           </div>
         )
       }));
