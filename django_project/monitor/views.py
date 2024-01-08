@@ -3,6 +3,7 @@ import csv
 import json
 import shutil
 import uuid
+import subprocess
 from io import BytesIO
 
 import requests
@@ -325,9 +326,9 @@ class DownloadObservations(APIView):
                         'site': img.site_id,
                         'image': os.sep.join(final_name.split(os.sep)[-3:]),
                     })
-                dataframe = DataFrame.from_records(site_images)
-                file_path = os.path.join(dir_path, 'site_images.csv')
-                dataframe.to_csv(file_path, index=False)
+                    dataframe = DataFrame.from_records(site_images)
+                    site_images_table = os.path.join(dir_path, 'site_images.csv')
+                    dataframe.to_csv(site_images_table, index=False)
 
             if observations.exists():
                 all_obs_image_path = os.path.join(images_path, 'Observations')
@@ -354,14 +355,45 @@ class DownloadObservations(APIView):
                             'pest': img.pest_id,
                             'image': os.sep.join(final_name.split(os.sep)[-5:]),
                         })
-                        dataframe = DataFrame.from_records(observation_images)
-                        file_path = os.path.join(dir_path, 'observation_images.csv')
-                        dataframe.to_csv(file_path, index=False)
+                dataframe = DataFrame.from_records(observation_images)
+                observation_images_table = os.path.join(dir_path, 'observation_images.csv')
+                dataframe.to_csv(observation_images_table, index=False)
 
             pests = Pest.objects.values()
             dataframe = DataFrame.from_records(pests)
-            file_path = os.path.join(dir_path, 'pests.csv')
-            dataframe.to_csv(file_path, index=False)
+            pest_table = os.path.join(dir_path, 'pests.csv')
+            dataframe.to_csv(pest_table, index=False)
+
+            if file_type == 'gpkg':
+                with open(os.path.join(dir_path, 'README'), 'w') as f:
+                    content = """Table relations
+
+observations:
+- id: ID of the observation
+- site: ID of the observation site
+
+pests:
+- id: ID of the pest
+
+observation_images:
+- id: ID of the image
+- observation: ID of the observation. You can link this to "id" field in observation table.
+- pest: ID of the pest. You can link this to "id" field in pest table.
+
+site_images:
+- id: ID of the image
+- site: ID of the site. You can link this to "site" field in observation table.
+
+If site_images or observation_images does not exist in the Geopackage, it means the exported data
+does not have images."""
+                    f.write(content)
+
+                subprocess.run(['ogr2ogr', '-append', file_path, observation_images_table])
+                subprocess.run(['ogr2ogr', '-append', file_path, pest_table])
+                subprocess.run(['ogr2ogr', '-append', file_path, site_images_table])
+                os.remove(site_images_table)
+                os.remove(observation_images_table)
+                os.remove(pest_table)
 
             mem_zip = BytesIO()
             zip_directory(dir_path, mem_zip)
