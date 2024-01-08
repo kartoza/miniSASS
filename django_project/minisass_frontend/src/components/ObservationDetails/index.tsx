@@ -150,12 +150,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         }
       });
 
-      const allImages = Object.keys(imagesPerPest).map((key, index) => ({
+      let allImages = Object.keys(imagesPerPest).map((key, index) => ({
         id: `tab-image-${observation.obs_date}-${index + 1}`,
         label: key,
         content: (
-          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            {(imagesPerPest[key].length > 0) ? (
+          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full alabasta" style={{ marginTop: '10%' }}>
+            {
               // Render images if there are any
               imagesPerPest[key].map((image, index) => (
                 <img
@@ -166,18 +166,30 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   loading='lazy'
                 />
               ))
-            ) : (
-              // Render placeholder if no images are available
-              <img
-                className="h-[152px] md:h-auto object-cover w-[164px]"
-                src={`${globalVariables.staticPath}images_placeholder.png`}
-                alt="No Images Available"
-                loading='lazy'
-              />
-            )}
+            }
           </div>
         )
       }));
+
+      if (images.length === 0) {
+        allImages = [{
+          id: `tab-image-${observation.obs_date}-1`,
+          label: 'Empty Image',
+          content: (
+            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full alabasta" style={{ marginTop: '10%' }}>
+              {
+                // Render placeholder if no images are available
+                <img
+                  className="h-[152px] md:h-auto object-cover w-[164px] alabasta"
+                  src={`${globalVariables.staticPath}images_placeholder.png`}
+                  alt="No Images Available"
+                  loading='lazy'
+                />
+              }
+            </div>
+          )
+        }]
+      }
 
       imagesPerDate[observation.obs_date] = allImages
     })
