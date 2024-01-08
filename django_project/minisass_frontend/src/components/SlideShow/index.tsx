@@ -1,55 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Img } from "../../components/Img";
+import { Fade } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
+import { globalVariables } from "../../utils";
 
-// Get the current URL using window.location.href
-const currentURL = window.location.href;
-
-// Extract the base URL (everything up to the first single forward slash '/')
-const parts = currentURL.split('/');
-const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-// Define the replacement path
-const replacementPath = 'static/images/';
-
-// Construct the new URL with the replacement path
-const newURL = baseUrl + '/' + replacementPath;
-
-// Define an array of images for the slideshow TODO get the images from the api
+// Define an array of images for the slideshow TODO get the images list from the api
 const slideshowImages = [
-  `${newURL}slideshow10.jpg`,
-  `${newURL}slideshow8.jpg`,
-  `${newURL}slideshow7.jpg`,
-  `${newURL}slideshow9.jpg`,
-  `${newURL}img_intrestedcitizensfromduct.png`,
+  `${globalVariables.staticPath}slideshow10.jpg`,
+  `${globalVariables.staticPath}slideshow8.jpg`,
+  `${globalVariables.staticPath}slideshow7.jpg`,
+  `${globalVariables.staticPath}slideshow9.jpg`,
+  `${globalVariables.staticPath}img_intrestedcitizensfromduct.png`,
 ];
 
 const Slideshow = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Function to change the image index
-  const changeImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === slideshowImages.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  // Use setInterval to change the image every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(changeImage, 4000);
-
-    // Clear the interval when the component unmounts
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div>
-      <Img
-        className="h-[464px] sm:left-[] mt-auto mx-auto object-cover relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full"
-        src={slideshowImages[currentImageIndex]}
-        alt="intrestedcitize"
-      />
+    <div className="slide-container">
+      <Fade>
+        {slideshowImages.map((fadeImage, index) => (
+          <div key={index}>
+            <Img
+              className="h-[464px] sm:left-[] mt-auto mx-auto object-cover relative rounded-br-[65px] top-10 sm:top-[-80px] md:top-[-85px] w-full"
+              src={fadeImage}
+              alt="intrestedcitize"
+            />
+            {/* <h2>{fadeImage.caption}</h2> */}
+          </div>
+        ))}
+      </Fade>
     </div>
-  );
-};
+  )
+}
+
 
 export default Slideshow;
