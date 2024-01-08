@@ -167,7 +167,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
 
-2. **HowTo**: Navigate to the how-to page by clicking on the `HowTo` link. For detailed how-to instructions, refer to the [how-to page documentation](./how-to/how-to.md).
+2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](./how-to/how-to.md).
 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
 
