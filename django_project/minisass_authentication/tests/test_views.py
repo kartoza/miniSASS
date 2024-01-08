@@ -208,7 +208,6 @@ class UpdatePasswordTest(APITestCase):
 
     def test_update_password_works(self):
         response = self.client.post(self.url, self.base_payload)
-        print(response.json())
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.json(), {'status': 'OK'})
 
@@ -241,7 +240,6 @@ class UpdatePasswordTest(APITestCase):
             'confirm_password': 'qwertY1@',
         })
         response = self.client.post(self.url, payload)
-        print(response.json())
         self.assertEquals(response.status_code, 400)
         self.assertEquals(
             response.json(),
