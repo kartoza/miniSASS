@@ -6,8 +6,10 @@ import TabbedContent from "../../components/TabbedContent";
 import { globalVariables } from "../../utils";
 import LinearProgress from '@mui/material/LinearProgress';
 import DownloadObservationForm from '../../components/DownloadObservationModal/index';
+import HorizontalImageGallery from '../../components/HorizontalImageGallery/';
 import LineChart from '../Charts/LineChart';
 import dayjs from 'dayjs';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 interface ObservationDetailsProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -80,7 +82,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   useEffect(() => {
-    if ((Array.isArray(observationDetails) && observationDetails.length > 0) ||
+    if ((Array.isArray(observationDetails) && observationDetails.length > 0) || 
       (typeof observationDetails === 'object' && Object.keys(observationDetails).length > 0)) {
       fetchObservations();
     }
@@ -92,10 +94,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const [observations, setObservations] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
-  const [imageTabIndex, setImageTabIndex] = useState<number>(0);
   const [siteDetails, setSiteDetails] = useState({});
   const [tabsData, setTabsData] = useState([]);
-  const [imageTabsData, setImageTabsData] = useState({});
 
   const updateScoreDisplay = (score) => {
     if (parseFloat(score) < 6) {
@@ -110,107 +110,22 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   };
 
 
-  useEffect(() => {
-    if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
-      setTabbedImages(observations);
-    }
-  }, [observations]);
-
-  useEffect(() => {
-    if (observationDetails.site && siteWithObservations.observations.length == 0) {
-      setTabbedImages([observationDetails]);
-    }
-  }, [observationDetails]);
-
-  useEffect(() => {
-    setImageTabIndex(0);
-  }, [activeTabIndex]);
-
-  useEffect(() => {
-    if (parseInt(observation_id) > 0 && openFromHomePage && Object.keys(observationDetails).length > 0) {
-      updateTabs([observationDetails]);
-    } else {
-      if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
-        updateTabs(observations)
-      }
-    }
-  }, [imageTabsData, imageTabIndex]);
-
-  const setTabbedImages = (observations) => {
-    let imagesPerDate = {}
-    observations.map((observation) => {
-      const images = [].concat(observation.site.images, observation.images);
-      let imagesPerPest = {};
-      images.forEach((image) => {
-        const key = image.pest_name ? image.pest_name : 'Site'
-        if (Object.keys(imagesPerPest).includes(key)) {
-          imagesPerPest[key].push(image)
-        } else {
-          imagesPerPest[key] = [image]
-        }
-      });
-
-      let allImages = Object.keys(imagesPerPest).map((key, index) => ({
-        id: `tab-image-${observation.obs_date}-${index + 1}`,
-        label: key,
-        content: (
-          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full alabasta" style={{ marginTop: '10%' }}>
-            {
-              // Render images if there are any
-              imagesPerPest[key].map((image, index) => (
-                <img
-                  key={`image_${index}`}
-                  className="h-[152px] md:h-auto object-cover w-[164px]"
-                  src={image.image}
-                  alt={`img_${index}`}
-                  loading='lazy'
-                />
-              ))
-            }
-          </div>
-        )
-      }));
-
-      if (images.length === 0) {
-        allImages = [{
-          id: `tab-image-${observation.obs_date}-1`,
-          label: 'Empty Image',
-          content: (
-            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full alabasta" style={{ marginTop: '10%' }}>
-              {
-                // Render placeholder if no images are available
-                <img
-                  className="h-[152px] md:h-auto object-cover w-[164px] alabasta"
-                  src={`${globalVariables.staticPath}images_placeholder.png`}
-                  alt="No Images Available"
-                  loading='lazy'
-                />
-              }
-            </div>
-          )
-        }]
-      }
-
-      imagesPerDate[observation.obs_date] = allImages
-    })
-
-    setImageTabsData(imagesPerDate);
-  }
-
   const updateTabs = (observations) => {
     setTabsData(
       observations.map((observation, index) => ({
         id: `tab${index + 1}`,
         label: observation.obs_date,
         content: (
-          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
-            <TabbedContent
-              tabsData={imageTabsData[observation.obs_date]}
-              activeTabIndex={imageTabIndex}
-              onTabChange={(index) => {
-                setImageTabIndex(index);
-              }}
-            />
+          <div className="flex flex-row gap-2.5 items-start justify-start w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+            {[].concat(observation.site.images, observation.images).map((image, index) => (
+              <img
+                key={`image_${index}`}
+                className="h-[152px] md:h-auto object-cover w-[164px]"
+                src={image.image}
+                alt={`img_${index}`}
+                loading='lazy'
+              />
+            ))}
           </div>
         )        
       }))
@@ -224,10 +139,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       if (response.status === 200) {
         setLoading(false);
         setObservationDetails(response.data);
-        setSiteDetails({})
-        setObservations([])
-        // setImageTabsData(setTabbedImages([response.data]));
-        // updateTabs([response.data])
+        updateTabs([response.data])
         
         setTimeout(() => {
           handleMapClick(response.data.latitude,response.data.longitude);
@@ -249,15 +161,32 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setLoading(false);
         updateScoreDisplay(siteWithObservations.observations[0].score); // on intial load
         setObservationDetails(siteWithObservations.observations[0]); // on intial load
-        setObservationList(siteWithObservations.observations)
 
         setObservations(siteWithObservations.observations)
-        // setImageTabsData(setTabbedImages(siteWithObservations.observations));
-        // updateTabs(siteWithObservations.observations)
+        updateTabs(siteWithObservations.observations)
         setSiteDetails(siteWithObservations.site)
       } 
     }
   }, [observation_id, siteWithObservations]);
+
+
+  const [isSiteDetailsOpen, setIsSiteDetailsOpen] = useState(true);
+  const [isObservationDetailsOpen, setIsObservationDetailsOpen] = useState(true);
+  const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
+
+  const toggleSiteDetails = () => {
+    setIsSiteDetailsOpen(!isSiteDetailsOpen);
+  };
+
+  const toggleObservationDetails = () => {
+    setIsObservationDetailsOpen(!isObservationDetailsOpen);
+  };
+
+  const toggleMeasurements = () => {
+    setIsMeasurementsOpen(!isMeasurementsOpen);
+  };
+
+
 
 
   return (
@@ -265,7 +194,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     style={{
         height: '75vh',
         overflowY: 'auto',
-        overflowX: 'auto',
+        // overflowX: 'auto',
       }}
     >
     <div className="flex sm:flex-col flex-row gap-2.5 items-start justify-between w-full">
@@ -390,168 +319,305 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                 </Text>
               </div>
             </div>
+
             <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-              <Text
-                className="text-blue-900 text-lg w-auto"
-                size="txtRalewayBold18Blue900"
-              >
-                Site Details
-              </Text>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+              <div className="flex items-center gap-3">
                 <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
+                  className="text-blue-900 text-lg w-auto"
+                  size="txtRalewayBold18Blue900"
                 >
-                  River name:
+                  Site Details
                 </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.rivername? observationDetails.rivername: siteDetails.river_name}
-                </Text>
+                <button onClick={toggleSiteDetails} className="focus:outline-none">
+                  {isSiteDetailsOpen ? <FaAngleDown /> : <FaAngleUp />}
+                </button>
               </div>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+              {isSiteDetailsOpen && (
+                <><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      River name:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.rivername ? observationDetails.rivername : siteDetails.river_name}
+                    </Text>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Site name:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.sitename ? observationDetails.sitename : siteDetails.site_name}
+                      </Text>
+                    </div>
+
+                    <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%' }}>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Site description:
+                      </Text>
+                      <Text
+                        className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.sitedescription? observationDetails.sitedescription: siteDetails.description}
+                      </Text>
+                    </div>
+
+                    <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Latitude:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.latitude !== undefined && observationDetails.latitude !== null
+                          ? observationDetails.latitude
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].latitude
+                            : '0')}
+                      </Text>
+                    </div>
+
+                    <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Longitude:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.longitude !== undefined && observationDetails.longitude !== null
+                          ? observationDetails.longitude
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].longitude
+                            : '0')}
+                      </Text>
+                    </div>
+
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      River category:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.rivercategory? observationDetails.rivercategory: siteDetails.river_cat}
+                    </Text>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
+              <div className="flex items-center gap-3">
                 <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
+                  className="text-blue-900 text-lg w-auto"
+                  size="txtRalewayBold18Blue900"
                 >
-                  Site name:
+                  Observation details
                 </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.sitename? observationDetails.sitename: siteDetails.site_name}
-                </Text>
-              </div>
-              <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%' }}>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
-                  size="txtRalewayRomanRegular18"
-                >
-                  Site description:
-                </Text>
-                <Text
-                  className="leading-[24.00px] max-w-[250px] md:max-w-full text-gray-800_01 text-lg tracking-[0.15px] self-end text-right"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.sitedescription? observationDetails.sitedescription: siteDetails.description}
-                </Text>
+                <button onClick={toggleObservationDetails} className="focus:outline-none">
+                    {isObservationDetailsOpen ? <FaAngleDown /> : <FaAngleUp />}
+                </button>
               </div>
 
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  Latitude:
-                </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.latitude !== undefined && observationDetails.latitude !== null
-                    ? observationDetails.latitude
-                    : (siteWithObservations.observations.length > 0
-                      ? siteWithObservations.observations[0].latitude
-                      : '0')}
-                </Text>
-              </div>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  Longitude:
-                </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.longitude !== undefined && observationDetails.longitude !== null
-                    ? observationDetails.longitude
-                    : (siteWithObservations.observations.length > 0
-                      ? siteWithObservations.observations[0].longitude
-                      : '0')}
-                </Text>
-              </div>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  River category:
-                </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.rivercategory? observationDetails.rivercategory: siteDetails.river_cat}
-                </Text>
-              </div>
-            </div>
+              {isObservationDetailsOpen && (
+                <>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      Date:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.obs_date !== undefined && observationDetails.obs_date !== null
+                        ? observationDetails.obs_date
+                        : (siteWithObservations.observations.length > 0
+                          ? siteWithObservations.observations[0].obs_date
+                          : 'dd/mm/yyyy')}
+                    </Text>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Collectors name:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.collectorsname !== undefined && observationDetails.collectorsname !== null
+                          ? observationDetails.collectorsname
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].collectorsname
+                            : '')}
+                      </Text>
+                    </div>
+                    <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Organisation type:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.organisationtype !== undefined && observationDetails.organisationtype !== null
+                          ? observationDetails.organisationtype.description
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].organisationtype.description
+                            : 'N/A')}
+                      </Text>
+                    </div>
+                </>
+              )}
+
             <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-              <Text
-                className="text-blue-900 text-lg w-auto"
-                size="txtRalewayBold18Blue900"
-              >
-                Observation details
-              </Text>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+              <div className="flex items-center gap-3">
                 <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
+                  className="text-blue-900 text-lg w-auto"
+                  size="txtRalewayBold18Blue900"
                 >
-                  Date:
+                  Measurements
                 </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.obs_date !== undefined && observationDetails.obs_date !== null
-                    ? observationDetails.obs_date
-                    : (siteWithObservations.observations.length > 0
-                      ? siteWithObservations.observations[0].obs_date
-                      : 'dd/mm/yyyy')}
-                </Text>
+                <button onClick={toggleMeasurements} className="focus:outline-none">
+                    {isMeasurementsOpen ? <FaAngleDown /> : <FaAngleUp />}
+                </button>
               </div>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  Collectors name:
-                </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.collectorsname !== undefined && observationDetails.collectorsname !== null
-                    ? observationDetails.collectorsname
-                    : (siteWithObservations.observations.length > 0
-                      ? siteWithObservations.observations[0].collectorsname
-                      : '')}
-                </Text>
-              </div>
-              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  Organisation type:
-                </Text>
-                <Text
-                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                  size="txtRalewayRomanRegular18"
-                >
-                  {observationDetails.organisationtype !== undefined && observationDetails.organisationtype !== null
-                    ? observationDetails.organisationtype.description
-                    : (siteWithObservations.observations.length > 0
-                      ? siteWithObservations.observations[0].organisationtype.description
-                      : 'N/A')}
-                </Text>
-              </div>
+
+
+              {isMeasurementsOpen && (
+                <><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Water Clarity:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.water_clarity !== undefined
+                          ? observationDetails.water_clarity
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].water_clarity
+                            : 'null')}
+                      </Text>
+                    </div>
+                    <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          Water Temperature:
+                        </Text>
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          {observationDetails.water_temp !== undefined
+                            ? observationDetails.water_temp
+                            : (siteWithObservations.observations.length > 0
+                              ? siteWithObservations.observations[0].water_temp
+                              : 'null')}
+                        </Text>
+                      </div>
+
+                      <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          Ph:
+                        </Text>
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          {observationDetails.ph !== undefined
+                            ? observationDetails.ph
+                            : (siteWithObservations.observations.length > 0
+                              ? siteWithObservations.observations[0].ph
+                              : 'null')}
+                        </Text>
+                      </div>
+
+                      <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          Dissolved Oxygen:
+                        </Text>
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          {observationDetails.diss_oxygen !== undefined
+                            ? observationDetails.diss_oxygen + ' ' + observationDetails.diss_oxygen_unit
+                            : (siteWithObservations.observations.length > 0
+                              ? siteWithObservations.observations[0].diss_oxygen + ' ' + siteWithObservations.observations[0].diss_oxygen_unit
+                              : 'null')}
+                        </Text>
+                      </div>
+
+                      <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          Electrical Conduct:
+                        </Text>
+                        <Text
+                          className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                          size="txtRalewayRomanRegular18"
+                        >
+                          {observationDetails.elec_cond !== undefined
+                            ? observationDetails.elec_cond + ' ' + observationDetails.elec_cond_unit
+                            : (siteWithObservations.observations.length > 0
+                              ? siteWithObservations.observations[0].elec_cond + ' ' + siteWithObservations.observations[0].elec_cond_unit
+                              : 'null')}
+                        </Text>
+                      </div>
+                      
+                    </>
+              )}
+            </div>
+
             </div>
           </div></>
           )}
