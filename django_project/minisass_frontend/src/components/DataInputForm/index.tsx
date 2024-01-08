@@ -523,6 +523,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 
                                   if (selectedValue === 'none') {
                                     // Clear variables when "None" is selected
+                                    setFieldValue('selectedSite', 'none');
                                     setFieldValue('riverName', '');
                                     setFieldValue('siteName', '');
                                     setFieldValue('rivercategory', '');
@@ -532,9 +533,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                     const selectedSite = sites.find((site) => site.value === selectedValue);
                                     if (selectedSite) {
                                       setIsCreateSite('useexistingsite');
+                                      setFieldValue('selectedSite', selectedSite);
                                       setFieldValue('riverName', selectedSite.riverName);
                                       setFieldValue('siteName', selectedSite.siteName);
-                                      setFieldValue('rivercategory', selectedSite.riverCategory);
+                                      setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                     }
                                   }
@@ -651,33 +653,34 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     {props?.sitedescriptionOne}
                   </Text>
 
-                      <Field
-                        name="siteDescription"
-                        style={{
-                          width: '300px',
-                          maxWidth: '300px',
-                          height: '80px',
-                          border: '1px solid rgba(0, 0, 0, 0.23)',
-                          borderRadius: '4px',
-                          padding: '8px 12px',
-                          marginRight: '-2%',
-                          marginBottom: '4%'
-                        }}
-                        placeholder="e.g. downstream of industry."
-                        value={(() => {
-                          const siteSiteDescription = props.siteDetails?.sitedescription;
-                          const selectedValue = siteSiteDescription ? siteSiteDescription: values.siteDescription;
-                          return selectedValue;
-                        })()}
-                        onChange={(e) => {
-                          handleChange(e);
-                          setSiteUserValues((prevValues) => ({
-                            ...prevValues,
-                            siteDescription: e.target.value
-                          }));
-                        }}
-                        disabled={!enableSiteFields ? true : false} 
-                      />
+                  <textarea
+                    name="siteDescription"
+                    style={{
+                      width: '300px',
+                      maxWidth: '300px',
+                      height: '80px',
+                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                      marginRight: '-2%',
+                      marginBottom: '4%',
+                      resize: 'vertical', // Optional: Allow vertical resizing
+                    }}
+                    placeholder="e.g. downstream of industry."
+                    value={(() => {
+                      const siteSiteDescription = props.siteDetails?.sitedescription;
+                      const selectedValue = siteSiteDescription ? siteSiteDescription : values.siteDescription;
+                      return selectedValue;
+                    })()}
+                    onChange={(e) => {
+                      handleChange(e);
+                      setSiteUserValues((prevValues) => ({
+                        ...prevValues,
+                        siteDescription: e.target.value
+                      }));
+                    }}
+                    disabled={!enableSiteFields ? true : false}
+                  />
                 </div>
 
                 {/* river category input */}
@@ -744,7 +747,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           key={option.value} 
                           value={(() => {
                             const siteRivercategory = props.siteDetails?.rivercategory;
-                            const selectedValue = siteRivercategory ? siteRivercategory : values.rivercategory;
+                            const selectedValue = siteRivercategory ? siteRivercategory : option.value;
                             return selectedValue;
                           })()}
                           selected={option.value === values.rivercategory}
@@ -895,7 +898,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     >
                       {props?.notes}
                     </Text>
-                    <Field
+                    <textarea
                       name="notes"
                       style={{
                         width: '300px',
@@ -905,6 +908,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         borderRadius: '4px',
                         padding: '8px 12px',
                         marginRight: '-2%',
+                        resize: 'vertical', // Optional: Allow vertical resizing
                       }}
                       placeholder="e.g. downstream of industry."
                       value={values.notes}
