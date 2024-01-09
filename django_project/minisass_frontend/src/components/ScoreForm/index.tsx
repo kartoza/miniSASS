@@ -267,12 +267,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     );
 
     if(response.status == 200){
-      setObservationId(response.observation_id)
-      setSiteId(response.site_id)
-      setPestId(response.pest_image_id)
+      setObservationId(response.data.observation_id)
+      setSiteId(response.data.site_id)
+      setPestId(response.data.pest_image_id)
       setCreateNewSiteOrObservation(false)
 
-      const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
+      const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${response.data.observation_id}/`
 
       const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
       
