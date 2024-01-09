@@ -1,6 +1,7 @@
 # Recent Observation User Manual
 
 ## Introduction:
+
 The `Recent Observations` feature on the home page provides a quick overview of the latest observations. By clicking on the `View Details` link, users can access a dedicated map page displaying the location associated with each observation. Navigate to the home page. Locate the `Recent Observations` section, which typically includes a list of recent observations.
 
 ![Recent Observations](./img/recent-observation-1.png)
@@ -58,7 +59,7 @@ This icon visually represents the location on the map where the uploaded observa
 
     ![United Nations Children's Fund (UNICEF)](./img/landing-page-18.png)
 
-3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis.CGIAR is the world’s largest global agricultural innovation network.
+3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis. CGIAR is the world’s largest global agricultural innovation network.
     - We provide evidence to policymakers, innovation to partners, and new tools to harness the economic, environmental and nutritional power of agriculture.
 
     ![CGIAR](./img/landing-page-17.png)
