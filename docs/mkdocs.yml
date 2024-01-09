@@ -40,6 +40,7 @@ markdown_extensions:
 nav:
         - Home:
                   - Home: index.md
+                  - User Documentation: user/index.md
                   - Developer Documentation: developer/index.md
                   - About: about/index.md
         - User:
@@ -65,8 +66,10 @@ nav:
                                 - Recent Activity: user/manual/user-profile/recent-activity.md
                                 - Admin Options: user/manual/user-profile/admin.md # might need to move to another section?
                         - Map: user/manual/map/map.md
-                        - "": user/manual/map/index.md # not needed?
-                        - Upload: user/manual/upload/index.md
+                        - Upload: 
+                                - user/manual/upload/index.md
+                                - Add Records: user/manual/upload/add-records.md
+                                - Score: user/manual/upload/score.md
                         - Contact Us: user/manual/contact-us.md
         - Developer:
                   - developer/index.md
