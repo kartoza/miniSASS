@@ -6,6 +6,7 @@ import { Img, Text } from "../../components";
 import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
+import { globalVariables } from "../../utils";
 
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -29,24 +30,8 @@ const Footer: React.FC<FooterProps> = (props) => {
   };
 
   const handleFormSubmit = (formData: ContactFormData) => {
-    // Handle form submission (formData) here
-    console.log(formData);
-
-    // Close the modal after submission
     closeModal();
   };
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
 
   let className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mb-[-10px]";
   if (hideLogo) {
@@ -65,28 +50,28 @@ const Footer: React.FC<FooterProps> = (props) => {
               <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}img_image6.jpg`}
+                  src={`${globalVariables.staticPath}img_image6.jpg`}
                   alt="Ground Truth"
                 />
               </a>
               <a href="https://www.unicef.org/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_5.png`}
+                  src={`${globalVariables.staticPath}patners_logo_5.png`}
                   alt="Unicef"
                 />
               </a>
                 <a href="https://www.cgiar.org" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_4.png`}
+                  src={`${globalVariables.staticPath}patners_logo_4.png`}
                   alt="CGIAR"
                 />
               </a>
               <a href="https://www.iwmi.cgiar.org" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_2.png`}
+                  src={`${globalVariables.staticPath}patners_logo_2.png`}
                   alt="IWMI"
                 />
               </a>
@@ -97,28 +82,21 @@ const Footer: React.FC<FooterProps> = (props) => {
               <a href="https://www.wrc.org.za/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_6.jpg`}
+                  src={`${globalVariables.staticPath}patners_logo_6.jpg`}
                   alt="Water Research Commission"
-                />
-              </a>
-              <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">
-                <Img
-                  className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_3.png`}
-                  alt="Amazon"
                 />
               </a>
               <a href="https://wessa.org.za/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_8.png`}
+                  src={`${globalVariables.staticPath}patners_logo_8.png`}
                   alt="Wildlife and Environment Society of South Africa (WESSA)"
                 />
               </a>
               <a href="https://kartoza.com/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${newURL}patners_logo_7.png`}
+                  src={`${globalVariables.staticPath}patners_logo_7.png`}
                   alt="Kartoza"
                 />
               </a>
@@ -132,7 +110,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                 <div className="bg-transparent flex flex-col items-start justify-start w-auto">
                   <Img
                     className="h-[39px] md:h-auto object-cover w-[246px] sm:w-full"
-                    src={`${newURL}replacement_logo.png`}
+                    src={`${globalVariables.staticPath}replacement_logo.png`}
                     alt="minisasstextLogo"
                   />
                 </div>
@@ -195,21 +173,21 @@ const Footer: React.FC<FooterProps> = (props) => {
                     <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
                       <Img
                         className="h-6 w-6"
-                        src={`${newURL}img_icbaselinefacebook_white_a700.svg`}
+                        src={`${globalVariables.staticPath}img_icbaselinefacebook_white_a700.svg`}
                         alt="icbaselinefaceb_One"
                       />
                     </a>
                     <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank" rel="noopener noreferrer">
                       <Img
                         className="h-6 w-6"
-                        src={`${newURL}img_riyoutubefill_white_a700.svg`}
+                        src={`${globalVariables.staticPath}img_riyoutubefill_white_a700.svg`}
                         alt="riyoutubefill_One"
                       />
                     </a>
                     <a href="https://minisassblog.wordpress.com" target="_blank" rel="noopener noreferrer">
                       <Img
                         className="h-6 w-6"
-                        src={`${newURL}img_formkitwordpress_white_a700.svg`}
+                        src={`${globalVariables.staticPath}img_formkitwordpress_white_a700.svg`}
                         alt="formkitwordpres_One"
                       />
                     </a>

@@ -256,6 +256,10 @@ def register(request):
                             description__iexact="Organisation Type",
                             defaults={'description': "Organisation Type"}
                         )
+                    except Lookup.MultipleObjectsReturned:
+                        organisation_type = Lookup.objects.filter(
+                            description__iexact=organisation_type_description
+                        ).first()
                         
                     new_user_profile_id = UserProfile.objects.raw('SELECT max(id)+1 from UserProfile')
                     

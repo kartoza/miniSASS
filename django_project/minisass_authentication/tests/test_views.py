@@ -127,6 +127,25 @@ class RegisterTest(APITestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_register_multiple_lookup(self):
+        Lookup.objects.create(description='Consultancy')
+        Lookup.objects.create(description='Consultancy')
+        valid_data = {
+           'surname': 'Doe',
+           'username': 'johndoe',
+           'name': 'johndoe',
+           'organizationName': 'johndoe',
+           'organizationType': 'Consultancy',
+           'country': 'SA',
+           'email': 'em@gmail.com',
+           'password': 'p'
+        }
+
+        url = reverse('register')
+        response = self.client.post(url, valid_data, format='json')
+
+        self.assertEqual(response.status_code, 201)
+
 
 class UpdateUserTest(APITestCase):
     def setUp(self):
