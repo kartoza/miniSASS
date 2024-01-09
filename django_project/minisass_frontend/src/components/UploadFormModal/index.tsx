@@ -18,18 +18,12 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
   const [clearAll, setClearAll] = useState<boolean>(false);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO
-    // trigger image save to the new upload pest image api
-    // will require the site and observation id to be available here if any
     const files = e.target.files;
     if (files) {
       setUploadedFiles([...uploadedFiles, ...Array.from(files)]);
     }
   };
 
-  // TODO
-  // this needs to be moved to manage images modal and it should also
-  // trigger the delete api 
   const handleRemoveFile = (index: number) => {
     const updatedFiles = [...uploadedFiles];
     updatedFiles.splice(index, 1);
@@ -224,6 +218,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               }}
               onClick={() => {
                 onSubmit(uploadedFiles)
+                handleClearFile()
               }}
             >
               Upload chosen files
