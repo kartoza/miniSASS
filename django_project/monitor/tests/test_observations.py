@@ -206,7 +206,8 @@ class ObservationsModelTest(BaseObservationsModelTest):
             url, 
             {
                 'pest_image:pest_name': image_file,
-                'observationId': self.observation.gid
+                'observationId': self.observation.gid,
+                'create_site_or_observation': 'False'
             },
         )
 
