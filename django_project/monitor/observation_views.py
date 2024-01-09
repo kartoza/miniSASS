@@ -192,23 +192,31 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            try:
-                site = Sites.objects.get(gid=site_id)
-                
-                site_name = datainput.get('siteName', '')
-                river_name = datainput.get('riverName', '')
-                description = datainput.get('siteDescription', '')
-                river_cat = datainput.get('rivercategory', 'rocky')
-                longitude = datainput.get('longitude', 0)
-                latitude = datainput.get('latitude', 0)
+            create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
-                site.site_name = site_name
-                site.river_name = river_name
-                site.description = description
-                site.river_cat = river_cat
-                site.the_geom = Point(x=longitude, y=latitude, srid=4326)
-                site.user = user
-                site.save()
+            if create_site_or_observation.lower() == 'true':
+                try:
+                    site = Sites.objects.get(gid=site_id)
+                except Sites.DoesNotExist:
+                    max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
+                    new_site_id = max_site_id + 1 if max_site_id is not None else 1
+
+                    site_name = datainput.get('siteName', '')
+                    river_name = datainput.get('riverName', '')
+                    description = datainput.get('siteDescription', '')
+                    river_cat = datainput.get('rivercategory', 'rocky')
+                    longitude = datainput.get('longitude', 0)
+                    latitude = datainput.get('latitude', 0)
+
+                    site = Sites.objects.create(
+                        gid=new_site_id,
+                        site_name=site_name,
+                        river_name=river_name,
+                        description=description,
+                        river_cat=river_cat,
+                        the_geom=Point(x=longitude, y=latitude, srid=4326),
+                        user=user
+                    )
 
                 for key, image in request.FILES.items():
                     if 'image_' in key:
@@ -216,45 +224,97 @@ def create_observations(request):
                             site=site, image=image
                         )
 
-            except Sites.DoesNotExist:
-                pass
+                max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
+                new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                observation = Observations.objects.create(
+                    gid=new_observation_id,
+                    score=score,
+                    site=site,
+                    user=user,
+                    flatworms=flatworms,
+                    leeches=leeches,
+                    crabs_shrimps=crabs_shrimps,
+                    stoneflies=stoneflies,
+                    minnow_mayflies=minnow_mayflies,
+                    other_mayflies=other_mayflies,
+                    damselflies=damselflies,
+                    dragonflies=dragonflies,
+                    bugs_beetles=bugs_beetles,
+                    caddisflies=caddisflies,
+                    true_flies=true_flies,
+                    snails=snails,
+                    comment=comment,
+                    water_clarity=water_clarity,
+                    water_temp=water_temp,
+                    ph=ph,
+                    diss_oxygen=diss_oxygen,
+                    diss_oxygen_unit=diss_oxygen_unit,
+                    elec_cond=elec_cond,
+                    elec_cond_unit=elec_cond_unit,
+                    obs_date=obs_date
+                )
+
+            elif create_site_or_observation.lower() == 'false':
+                try:
+                    site = Sites.objects.get(gid=site_id)
+                    
+                    site_name = datainput.get('siteName', '')
+                    river_name = datainput.get('riverName', '')
+                    description = datainput.get('siteDescription', '')
+                    river_cat = datainput.get('rivercategory', 'rocky')
+                    longitude = datainput.get('longitude', 0)
+                    latitude = datainput.get('latitude', 0)
+
+                    site.site_name = site_name
+                    site.river_name = river_name
+                    site.description = description
+                    site.river_cat = river_cat
+                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
+                    site.user = user
+                    site.save()
+
+                    for key, image in request.FILES.items():
+                        if 'image_' in key:
+                            SiteImage.objects.create(
+                                site=site, image=image
+                            )
+
+                except Sites.DoesNotExist:
+                    pass
 
 
-            try:
-                observation = Observations.objects.get(gid=observation_id)
+                try:
+                    observation = Observations.objects.get(gid=observation_id)
 
-                observation.score = score
-                observation.site = site
-                observation.user = user
-                observation.flatworms = flatworms
-                observation.leeches = leeches
-                observation.crabs_shrimps = crabs_shrimps
-                observation.stoneflies = stoneflies
-                observation.minnow_mayflies = minnow_mayflies
-                observation.other_mayflies = other_mayflies
-                observation.damselflies = damselflies
-                observation.dragonflies = dragonflies
-                observation.bugs_beetles = bugs_beetles
-                observation.caddisflies = caddisflies
-                observation.true_flies = true_flies
-                observation.snails = snails
-                observation.comment = comment
-                observation.water_clarity = water_clarity
-                observation.water_temp = water_temp
-                observation.ph = ph
-                observation.diss_oxygen = diss_oxygen
-                observation.diss_oxygen_unit = diss_oxygen_unit
-                observation.elec_cond = elec_cond
-                observation.elec_cond_unit = elec_cond_unit
-                observation.obs_date = obs_date
+                    observation.score = score
+                    observation.site = site
+                    observation.user = user
+                    observation.flatworms = flatworms
+                    observation.leeches = leeches
+                    observation.crabs_shrimps = crabs_shrimps
+                    observation.stoneflies = stoneflies
+                    observation.minnow_mayflies = minnow_mayflies
+                    observation.other_mayflies = other_mayflies
+                    observation.damselflies = damselflies
+                    observation.dragonflies = dragonflies
+                    observation.bugs_beetles = bugs_beetles
+                    observation.caddisflies = caddisflies
+                    observation.true_flies = true_flies
+                    observation.snails = snails
+                    observation.comment = comment
+                    observation.water_clarity = water_clarity
+                    observation.water_temp = water_temp
+                    observation.ph = ph
+                    observation.diss_oxygen = diss_oxygen
+                    observation.diss_oxygen_unit = diss_oxygen_unit
+                    observation.elec_cond = elec_cond
+                    observation.elec_cond_unit = elec_cond_unit
+                    observation.obs_date = obs_date
 
-                observation.save()
+                    observation.save()
 
-            except Observations.DoesNotExist:
-                pass
-
-
-
+                except Observations.DoesNotExist:
+                    pass
 
             return JsonResponse(
                 {'status': 'success', 'observation_id': observation.gid})
