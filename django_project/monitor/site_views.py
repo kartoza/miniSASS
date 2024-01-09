@@ -18,6 +18,15 @@ class SitesListCreateView(generics.ListCreateAPIView):
     queryset = Sites.objects.all()
     serializer_class = SitesSerializer
 
+    def list(self, request):
+        queryset = self.get_queryset()
+        site_name = request.GET.get('site_name', None)
+        if site_name:
+            queryset = queryset.filter(site_name__icontains=site_name)
+        queryset = queryset[0:4]
+        serializer = SitesSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
         # Extract data from the request payload
         site_data = request.data.get('site_data', {})
@@ -54,6 +63,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
         serializer = self.get_serializer(site)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class SiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sites.objects.all()
