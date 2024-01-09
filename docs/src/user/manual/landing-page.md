@@ -87,6 +87,8 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 3. **Details**: The details section provides information about the observation uploader's username, organisation name, and the date of upload for a more detailed insight.
 
+- For detailed recent observation instructions, refer to the [recent observation documentation](./map/recent-observation.md).
+
 4. **View Details**: Click on the `View Details` link to access comprehensive information about the observation.
 
 5. **Score Icon**: An icon representing the observation's score.

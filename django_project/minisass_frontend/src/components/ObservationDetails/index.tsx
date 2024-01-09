@@ -209,7 +209,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         content: (
           <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
             <TabbedContent
-              tabsData={imageTabsData[observation.obs_date]}
+              tabsData={imageTabsData[observation.obs_date] ? imageTabsData[observation.obs_date] : []}
               activeTabIndex={imageTabIndex}
               onTabChange={(index) => {
                 setImageTabIndex(index);
@@ -230,8 +230,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setObservationDetails(response.data);
         setSiteDetails({})
         setObservations([])
-        // setImageTabsData(setTabbedImages([response.data]));
-        // updateTabs([response.data])
         
         setTimeout(() => {
           handleMapClick(response.data.latitude,response.data.longitude);

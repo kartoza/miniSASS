@@ -79,7 +79,7 @@ const EnforePasswordChangeModal: React.FC<Props> = ({
             </h3>
             <br />
           <Typography>
-            Please use a stronger password for your account
+            Please update your password to access the new site
           </Typography>
 
           <Button

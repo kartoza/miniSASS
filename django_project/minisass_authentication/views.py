@@ -152,6 +152,7 @@ def request_password_reset(request):
     
     return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def verify_password_reset(request, uidb64, token):
     try:
@@ -337,6 +338,7 @@ class UpdateUser(APIView):
         if serializer.is_valid(raise_exception=True):
             try:
                 user, user_profile = serializer.save(request.user)
+                user.refresh_from_db()
                 return JsonResponse(UserUpdateSerializer(user).data)
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
@@ -398,6 +400,7 @@ class UpdatePassword(APIView):
             data=request.data,
             context={
                 'old_password': request.user.password,
+                'password': request.data.get('password', ''),
                 'user': request.user
             }
         )

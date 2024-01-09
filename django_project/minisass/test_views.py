@@ -1,10 +1,16 @@
+import datetime
+from unittest import mock
+
+import pytz
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
-from minisass.models import Video, GroupScores
-from minisass.serializers import VideoSerializer, GroupScoresSerializer
+from rest_framework.fields import DateTimeField
 from rest_framework.test import APIClient
-from django.contrib.auth.models import User
+from rest_framework.test import APITestCase
+
+from minisass.models import Video, GroupScores, MobileApp
+from minisass.serializers import VideoSerializer, GroupScoresSerializer
+
 
 class VideoAPITestCase(APITestCase):
     def setUp(self):
@@ -83,3 +89,30 @@ class GroupScoresAPITestCase(APITestCase):
         # Attempt to retrieve the deleted group scores from the database
         with self.assertRaises(GroupScores.DoesNotExist):
             deleted_group_scores = GroupScores.objects.get(name='Test Group2')
+
+
+class GetMobileAppTest(APITestCase):
+    def setUp(self):
+        MobileApp.objects.create(name='v.1.1')
+        self.mobile_app = MobileApp.objects.create(name='v.1.2', active=True)
+
+    def test_get_mobile_app(self):
+        """
+        Test the API will return latest active mobile app.
+        """
+
+        url = reverse('get-mobile-app')
+        mocked = datetime.datetime(2024, 1, 8, 0, 0, 0, tzinfo=pytz.utc)
+        with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
+            response = self.client.get(url)
+            self.assertEquals(response.status_code, 200)
+            self.assertEquals(
+                response.json(),
+                {
+                    'id': self.mobile_app.id,
+                    'date': DateTimeField().to_representation(self.mobile_app.date),
+                    'name': 'v.1.2',
+                    'file': None,
+                    'active': True
+                }
+            )
