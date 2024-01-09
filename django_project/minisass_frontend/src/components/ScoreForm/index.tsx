@@ -227,6 +227,60 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
+
+  const [observationId, setObservationId] = useState(0);
+  const [siteId, setSiteId] = useState(0);
+  const [pestId, setPestId] = useState(0);
+
+  const uploadImages = async (pestImages) => {
+    console.log('files ',pestImages)
+
+    var data = new FormData();
+
+    for (var key in pestImages) {
+      const pest = PESTS[key]
+      pestImages[key].map((file, idx) => {
+        data.append('pest_' + idx + ':' + pest, file);
+      })
+    }
+
+
+    data.append('observationId', JSON.stringify(observationId));
+    if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== ""){
+      data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+      additionalData.selectedSite = "";
+    } else data.append('siteId', JSON.stringify(siteId));
+
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
+
+    const response = await axios.post(
+      `${globalVariables.baseUrl}/monitor/upload-pest-images/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    if(response.status == 200){
+      setObservationId(response.data.observation_id)
+      setSiteId(response.data.site_id)
+      setPestId(response.data.pest_image_id)
+
+      const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
+
+      const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
+      
+      if (get_observation_images.status === 200) {
+        console.log('uploaded images in ',response.data)
+        setPestImages(response.data.images);
+      }
+
+    }
+  };
+  
   return (
     <>
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
@@ -346,7 +400,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                       return buttonState;
                                     });
                                     setButtonStates(updatedButtonStates);
-                                    
+                                    uploadImages(pestImages)
                                   }
                                 }/>
                               </>
