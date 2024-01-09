@@ -1,18 +1,20 @@
-// @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+
+//require('dotenv').config();
 
 /**
- * @see https://playwright.dev/docs/test-configuration
+ * See https://playwright.dev/docs/test-configuration.
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
+  timeout: 30 * 1000,
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -29,6 +31,7 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    baseURL: process.env.STAGING === '1' ? 'https://minisass.sta.do.kartoza.com/#/' : 'http://localhost:61122/#/'
   },
 
   /* Configure projects for major browsers */
@@ -38,15 +41,15 @@ module.exports = defineConfig({
       use: { ...devices['Desktop Chrome'],
       // Use prepared auth state.
       storageState: 'auth.json',
-      },
-      // dependencies: ['setup'],
+     },
+     //dependencies: ['setup'],
     },
-
+    //
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
     // },
-
+    //
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
@@ -69,7 +72,7 @@ module.exports = defineConfig({
     // },
     // {
     //   name: 'Google Chrome',
-    //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
@@ -80,4 +83,3 @@ module.exports = defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-
