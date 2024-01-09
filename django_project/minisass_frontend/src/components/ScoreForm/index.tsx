@@ -143,6 +143,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       //   })
       // }
       form_data.append('data', JSON.stringify(observationsData));
+      form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -231,6 +232,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [observationId, setObservationId] = useState(0);
   const [siteId, setSiteId] = useState(0);
   const [pestId, setPestId] = useState(0);
+  const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
 
   const uploadImages = async (pestImages) => {
     console.log('files ',pestImages)
@@ -265,17 +267,18 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     );
 
     if(response.status == 200){
-      setObservationId(response.data.observation_id)
-      setSiteId(response.data.site_id)
-      setPestId(response.data.pest_image_id)
+      setObservationId(response.observation_id)
+      setSiteId(response.site_id)
+      setPestId(response.pest_image_id)
+      setCreateNewSiteOrObservation(false)
 
       const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
 
       const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
       
       if (get_observation_images.status === 200) {
-        console.log('uploaded images in ',response.data)
-        setPestImages(response.data.images);
+        console.log('uploaded images in ',get_observation_images.data)
+        setPestImages(get_observation_images.data.images);
       }
 
     }
