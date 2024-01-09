@@ -68,14 +68,15 @@ def upload_pest_image(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                data = json.loads(request.POST.get('data', '{}'))
-                datainput = data.get('datainput', {})
-
-                site_id = datainput.get('selectedSite')
+                
+                site_id = request.POST.get('siteId')
+                observation_id = request.POST.get('observationId')
                 try:
                     site_id = int(site_id)
+                    observation_id = int(observation_id)
                 except (ValueError, TypeError):
                     site_id = 0
+                    observation_id = 0
 
                 try:
                     site = Sites.objects.get(gid=site_id)
@@ -83,16 +84,14 @@ def upload_pest_image(request):
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
-                user = request.user
+                    user = request.user
+    
+                    site = Sites.objects.create(
+                        gid=new_site_id,
+                        the_geom=Point(x=0, y=0, srid=4326),
+                        user=user
+                    )
 
-                site = Sites.objects.create(
-                    gid=new_site_id,
-                    the_geom=Point(x=0, y=0, srid=4326),
-                    user=user
-                )
-
-
-                observation_id = request.POST.get('observationId')
                 try:
                     observation = Observations.objects.get(gid=observation_id, site=site)
                 except Observations.DoesNotExist:
