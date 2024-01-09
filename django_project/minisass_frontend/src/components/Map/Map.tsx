@@ -114,28 +114,28 @@ export const Map = forwardRef((props: Interface, ref) => {
     /** First initiate */
     useEffect(() => {
       const userPosition = getLocalStorageWithExpiry('user-location');
-      if (!userPosition) {
+      if (!userPosition || !userPosition.latitude) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             // Get user's latitude and longitude
             // set location expire after 7 days
-            setLocalStorageWithExpiry('user-location', position.coords, 604800000);
+            setLocalStorageWithExpiry(
+              'user-location',
+              {latitude: position.coords.latitude, longitude: position.coords.longitude},
+              604800000);
             setLatitude(position.coords.latitude);
             setLongitude(position.coords.longitude);
           },
           (error) => {
             console.error('Error getting user location:', error);
             // Set default country ,if geoLocation fails
-            setLocalStorageWithExpiry('user-location', {latitude: -7.730405, longitude: 110.002494}, 5000)
-            setLatitude(-7.730405);
-            setLongitude(110.002494);
-            // setLocalStorageWithExpiry(
-            //   'user-location',
-            //   {latitude: -28.671882886975247, longitude: 24.679864950000024},
-            //   604800000
-            // )
-            // setLatitude(-28.671882886975247);
-            // setLongitude(24.679864950000024);
+            setLocalStorageWithExpiry(
+              'user-location',
+              {latitude: -28.671882886975247, longitude: 24.679864950000024},
+              604800000
+            )
+            setLatitude(-28.671882886975247);
+            setLongitude(24.679864950000024);
           }
         );
       } else {
