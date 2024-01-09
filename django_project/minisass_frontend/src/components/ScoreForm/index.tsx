@@ -136,12 +136,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
-      for (var key in pestImages) {
-        const pest = PESTS[key]
-        pestImages[key].map((file, idx) => {
-          form_data.append('pest_' + idx + ':' + pest, file);
-        })
-      }
+      // for (var key in pestImages) {
+      //   const pest = PESTS[key]
+      //   pestImages[key].map((file, idx) => {
+      //     form_data.append('pest_' + idx + ':' + pest, file);
+      //   })
+      // }
       form_data.append('data', JSON.stringify(observationsData));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
