@@ -3,6 +3,7 @@ from django.test import TestCase
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import Point
 from django.urls import reverse
 from monitor.models import Sites, Observations, SiteImage
 from monitor.serializers import SitesWithObservationsSerializer
@@ -107,6 +108,24 @@ class SitesListCreateViewTestCase(TestCase):
         site_id = response.data['gid']
         images_count = SiteImage.objects.filter(site_id=site_id).count()
         self.assertEqual(images_count, 0)
+
+    def test_list_site_filter(self):
+        Sites.objects.create(
+            user=self.user,
+            site_name='Cape Town',
+            the_geom=Point(0, 0)
+        )
+        Sites.objects.create(
+            user=self.user,
+            site_name='Limpopo',
+            the_geom=Point(1, 1)
+        )
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        url = reverse('sites-list-create')
+        response = client.get(f'{url}?site_name=mpo', format='json')
+        self.assertEquals(len(response.json()), 1)
+        self.assertEquals(response.json()[0]['site_name'], 'Limpopo')
 
 
 class SiteObservationsByLocationTestCase(APITestCase):

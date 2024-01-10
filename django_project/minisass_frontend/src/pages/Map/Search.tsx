@@ -5,6 +5,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { debounce } from '@mui/material/utils';
 import { CircularProgress } from "@mui/material";
+import {globalVariables} from "../../utils";
+import { parse } from "wkt";
 
 
 interface PlaceType {
@@ -34,51 +36,12 @@ export default function Search(props: Interface) {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingData, setLoadingData] = useState<boolean>(false);
 
-  // This is sites data
-  const [sites, setSites] = useState<PlaceType[]>(null);
-
-  /**
-   * This function removes newline characters from a string.
-   */
-  function escape(str) {
-    return str
-      .replace(/[\n]/g, " ")
-      .replace(/[\r]/g, " ");
-  }
-
-  /** Fetch sites data at first time */
-  useEffect(() => {
-    (
-      async () => {
-        try {
-          const response = await fetch('/map/sites/-9/-9/-9/');
-          const text = await response.text();
-          const json = JSON.parse(escape(text))
-          const results: PlaceType[] = []
-          json.features.map(row => {
-            const properties = row.properties
-            results.push({
-              value: properties.gid,
-              source: SITES,
-              label: properties.combo_name,
-              data: row
-            })
-          })
-          setSites(results)
-        } catch (error) {
-
-        }
-      }
-    )()
-  }, []);
-
   // Fetching results
   const fetchResults = React.useMemo(
     () =>
       debounce(
         (
           query: string,
-          sites: PlaceType[],
           callback: (query: string, results?: readonly PlaceType[],) => void,
         ) => {
           setLoading(true);
@@ -86,21 +49,35 @@ export default function Search(props: Interface) {
           (
             async () => {
               try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json`);
-                const json = await response.json();
-                let results: PlaceType[] = []
-                json.map(row => {
-                  results.push({
-                    value: row.place_id,
-                    source: NOMINATIM,
-                    label: row.display_name,
-                    data: row
-                  })
-                })
-                if (sites) {
-                  results = results.concat(sites.filter(site => site.label.includes(query)))
-                }
-                callback(query, results)
+                const responseSite = fetch(`${globalVariables.baseUrl}/monitor/sites/?site_name=${query}`);
+                const responseNominatim = fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json`);
+
+                Promise.all([ responseSite, responseNominatim ]).then(([siteResponse, nominatimResponse]) => {
+                  let results: PlaceType[] = [];
+                  siteResponse.json().then((response) => {
+                    response.map(row => {
+                      results.push({
+                        value: row.gid,
+                        source: SITES,
+                        label: `${row.site_name} (Site)`,
+                        data: row
+                      })
+                    })
+
+                    nominatimResponse.json().then((response) => {
+                      response.map(row => {
+                        results.push({
+                          value: row.place_id,
+                          source: NOMINATIM,
+                          label: row.display_name,
+                          data: row
+                        })
+                      })
+                      callback(query, results);
+                    });
+
+                  });
+                });
               } catch (error) {
 
               }
@@ -122,7 +99,7 @@ export default function Search(props: Interface) {
       return undefined;
     }
 
-    fetchResults(inputValue, sites, (query: string, results?: readonly PlaceType[]) => {
+    fetchResults(inputValue, (query: string, results?: readonly PlaceType[]) => {
       if (query !== lastQuery) {
         return
       }
@@ -162,7 +139,8 @@ export default function Search(props: Interface) {
           break
         }
         case SITES: {
-          props.searchEntityChanged(value.data);
+          const geojson = parse(value.data.the_geom);
+          props.searchEntityChanged(geojson);
           setLoadingData(false);
           break
         }
