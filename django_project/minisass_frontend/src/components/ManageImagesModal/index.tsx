@@ -36,12 +36,12 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
     const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
     
     if (get_observation_images.status === 200) {
-      const filteredImages = get_observation_images.data.images.filter((image) => {
+        const filteredImages = get_observation_images.data.images.filter((image) => {
         const formattedTitle = title.toLowerCase().replace(/\s+/g, '_');
-      
+
         return image.pest_name.toLowerCase() === formattedTitle;
       });
-      
+
       setImages(filteredImages);
     }
 
@@ -62,7 +62,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
   async function handleRemoveImage(id: any): Promise<void> {
     const observationId = parseInt(localStorage.getItem('observationId'))
-    const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/observation-images/${observationId}/delete/${id}`
+    
+    const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/delete-pest-image/${id}/?observation_pk=${observationId}`
 
       const delete_observation_image = await axios.post(`${DELETE_PEST_IMAGE}`);
       
