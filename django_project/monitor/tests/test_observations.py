@@ -13,6 +13,7 @@ from minisass_authentication.models import UserProfile
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
+from django.shortcuts import get_object_or_404
 
 
 class BaseObservationsModelTest(TestCase):
@@ -36,6 +37,7 @@ class BaseObservationsModelTest(TestCase):
             password='testpassword',
             first_name='First',
             last_name='Last',
+            email='test@gmail.com'
         )
         self.profile = UserProfile.objects.get_or_create(user=self.user)
         self.client = APIClient()
@@ -198,7 +200,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         image_file = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg")
 
         # this resolves the user instance error when creating the site
-        self.client.login(username='testuser', password='testpassword')
+        self.client.login(email='test@gmail.com', password='testpassword')
 
         url = reverse('upload-pest-images')
 
@@ -206,7 +208,8 @@ class ObservationsModelTest(BaseObservationsModelTest):
             url, 
             {
                 'pest_image:pest_name': image_file,
-                'observationId': self.observation.gid,
+                'observationId': 0,
+                'siteId': 0,
                 'create_site_or_observation': 'False'
             },
         )
@@ -217,9 +220,24 @@ class ObservationsModelTest(BaseObservationsModelTest):
         self.assertIn('observation_id', response.json())
 
         observation_id = response.json()['observation_id']
+        site_id = response.json()['site_id']
         pest_image_id = response.json()['pest_image_id']
 
-        # test deleting an image aswell
+
+        response = self.client.post(
+            url, 
+            {
+                'pest_image:pest_name': image_file,
+                'observationId': observation_id,
+                'siteId': site_id,
+                'create_site_or_observation': 'False'
+            },
+        )
+
+        observation_id = response.json()['observation_id']
+        site_id = response.json()['site_id']
+        pest_image_id = response.json()['pest_image_id']
+
         url = reverse(
             'remove-pest-image',
             kwargs={
@@ -400,7 +418,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         self.assertEqual(response['Content-Type'], 'application/json')
 
     def test_observations_by_nonexistent_site_id(self):
-        self.client.login(username='testuser', password='testuserpassword')
+        self.client.login(email='test@gmail.com', password='testuserpassword')
 
         url = reverse('observations-by-site', kwargs={'site_id': 999})
 
