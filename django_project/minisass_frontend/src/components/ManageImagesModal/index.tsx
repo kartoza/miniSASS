@@ -14,7 +14,6 @@ interface ManageImageProps {
   sensivityScore: string;
   aiScore: string;
   handleButtonClick: (id: any) => void;
-  setRefetchImages: React.Dispatch<React.SetStateAction<boolean>>;
   refetchImages: boolean;
 }
 
@@ -26,7 +25,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   sensivityScore, 
   aiScore, 
   handleButtonClick,
-  setRefetchImages,
   refetchImages
 }) => {
 
@@ -52,12 +50,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   }
 
   useEffect(() => {
-    // console.log('is open ',isOpen, ' refetch ',refetchImages)
     if(isOpen && refetchImages){
-      setRefetchImages(false)
       fetch_observation_images()
-    }else {
-      setRefetchImages(true)
     }
     
   }, [isOpen, refetchImages]);
