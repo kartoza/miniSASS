@@ -14,6 +14,8 @@ interface ManageImageProps {
   sensivityScore: string;
   aiScore: string;
   handleButtonClick: (id: any) => void;
+  setRefetchImages: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchImages: boolean;
 }
 
 const ManageImagesModal: React.FC<ManageImageProps> = ({ 
@@ -24,6 +26,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   sensivityScore, 
   aiScore, 
   handleButtonClick,
+  setRefetchImages,
+  refetchImages
 }) => {
 
 
@@ -39,7 +43,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
         const filteredImages = get_observation_images.data.images.filter((image) => {
         const formattedTitle = title.toLowerCase().replace(/\s+/g, '_');
 
-        return image.pest_name.toLowerCase() === formattedTitle;
+        return image.pest_name.toLowerCase().replace(/\s+/g, '_') === formattedTitle;
       });
 
       setImages(filteredImages);
@@ -48,9 +52,16 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   }
 
   useEffect(() => {
-    if(isOpen)
+    // console.log('is open ',isOpen, ' refetch ',refetchImages)
+    if(isOpen && refetchImages){
+      setRefetchImages(false)
       fetch_observation_images()
-  }, [isOpen]);
+    }else {
+      setRefetchImages(true)
+    }
+    
+  }, [isOpen, refetchImages]);
+
 
   function saveImages(): void {
     onClose();
@@ -63,7 +74,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   async function handleRemoveImage(id: any): Promise<void> {
     const observationId = parseInt(localStorage.getItem('observationId'))
     
-    const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/delete-pest-image/${id}/?observation_pk=${observationId}`
+    const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/observation-images/${observationId}/delete/${id}/`
 
       const delete_observation_image = await axios.post(`${DELETE_PEST_IMAGE}`);
       
@@ -106,7 +117,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.map((image, index) => (
-              <div key={`image-${index}`} className="relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
+              <div key={`${image.pest_id}`} className="relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
                 <Img
                   className="h-28 md:h-auto object-cover w-28"
                   key={`${image.pest_id}`}
