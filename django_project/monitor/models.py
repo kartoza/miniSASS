@@ -210,6 +210,13 @@ class ObservationPestImage(models.Model):
     image = models.ImageField(
         upload_to=observation_pest_image_path, storage=settings.MINION_STORAGE
     )
+    valid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        # Check image as valid if uploaded by expert.
+        if self.observation.user.is_expert:
+            self.valid = True
+        return super().save(*args, **kwargs)
 
     def delete_image(self):
         """delete image."""
