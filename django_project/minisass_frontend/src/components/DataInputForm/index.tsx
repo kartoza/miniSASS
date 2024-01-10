@@ -86,6 +86,7 @@ type DataInputFormProps = Omit<
     siteDetails: {};
     resetSiteDetails: (details: {}) => void;
     useSelectOnSite: (isSelectOnSite: boolean) => void;
+    setCursor: (cursor: string) => void
   }>;
 
 const inputOptionsList = [
@@ -123,6 +124,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleCloseSidebar = () => {
     props.setSidebarOpen(false);
     props.resetMap();
+    props.setCursor('')
   };
 
 
@@ -199,7 +201,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       sitePopperRef.current.update();
     }
   };
-
   
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
@@ -238,6 +239,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       setSelectSiteMode('NONE')
       props.useSelectOnSite(false)
     }else {
+      props.setCursor('crosshair')
       props.useSelectOnSite(true)
       setSelectSiteMode('SELECT_KNOWN_SITE')
     } 
@@ -298,6 +300,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       getSites();
     }
   }, [selectSiteMode, props.siteDetails]);
+
+  useEffect(() => {
+    if (showScoreForm) {
+      props.setCursor('')
+    } else if(selectSiteMode === 'SELECT_KNOWN_SITE') {
+      props.setCursor('crosshair')
+    }
+  }, [showScoreForm]);
 
   // Helper function to format date
   const formatDate = (date) => {

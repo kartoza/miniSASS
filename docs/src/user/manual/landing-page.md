@@ -51,7 +51,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     ![Map Page Before Login](./img/landing-page-5.png)
 
-    - For a detailed map user manual, refer to the [map page documentation](./map/index.md).
+    - For a detailed map user manual, refer to the [map page documentation](./map/map.md).
 
 12. **HOW TO DO MINISASS**: Click on the `HOW TO DO MINISASS` card section, to go to the how-to page.
 
@@ -218,7 +218,7 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
     ![Map Page Before Login](./img/landing-page-23.png)
 
-    - For a detailed map user manual, refer to the [map page documentation](./map/index.md).
+    - For a detailed map user manual, refer to the [map page documentation](./map/map.md).
 
 11. **HOW TO DO MINISASS**: Click on the `HOW TO DO MINISASS` card section, to go to the how-to page.
 
