@@ -19,7 +19,8 @@ from minisass_authentication.views import (
     UpdateUser,
     UploadCertificate,
     UpdatePassword,
-    check_is_expert
+    check_is_expert,
+    retrieve_email_by_username
 )
 
 
@@ -46,4 +47,5 @@ urlpatterns = [
     path('api/contact-us', contact_us, name='contact_us'),
     path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account'),
     path('api/user-profile/is-expert/<str:email>/', check_is_expert, name='user-profile-is-expert'),
+    path('api/retrieve-email-by-username/<str:username>/', retrieve_email_by_username, name='retrieve-email-by-username'),
 ]
