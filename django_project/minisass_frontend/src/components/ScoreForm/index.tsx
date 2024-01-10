@@ -47,6 +47,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [openImagePestId, setOpenImagePestId] = useState(0);
   const [pestImages, setPestImages] = useState({});
   const [isSavingData, setIsSavingData] = useState(false);
+  const [selectedPests, setSelectedPests] = useState('')
   const {dispatch, state} = useAuth();
 
   const closeSuccessModal = () => {
@@ -182,6 +183,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
+      setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
       if(temp_checkedGroups.length > 0)
         if (additionalData.selectedSite && additionalData.date) 
           setProceedToSavingData(true)
@@ -235,23 +237,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         const currentArray = pestImages[key];
     
         if (currentArray.length > 0) {
-          console.log(`Array with key ${key} has a length greater than 0`);
           var data = new FormData();
 
           for (const key in pestImages) {
             if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
-          
-              const matchingPest = PESTS.find(pest => {
-                if(PESTS[JSON.stringify(parseInt(key)-1)].includes(pest))
-                  return PESTS[JSON.stringify(parseInt(key)-1)];
-              });
-              
-              if (matchingPest) {
-          
+        
                 pestImages[key].map((file, idx) => {
-                  data.append('pest_' + idx + ':' + matchingPest, file);
+                  data.append('pest_' + idx + ':' + selectedPests.toLowerCase().replace(/\s+/g, '_'), file);
                 });
-              }
+              
             }
           }
 
