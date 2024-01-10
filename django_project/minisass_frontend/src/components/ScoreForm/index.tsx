@@ -136,12 +136,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
-      // for (var key in pestImages) {
-      //   const pest = PESTS[key]
-      //   pestImages[key].map((file, idx) => {
-      //     form_data.append('pest_' + idx + ':' + pest, file);
-      //   })
-      // }
       form_data.append('data', JSON.stringify(observationsData));
       form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
 
@@ -231,20 +225,29 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const [observationId, setObservationId] = useState(0);
   const [siteId, setSiteId] = useState(0);
-  const [pestId, setPestId] = useState(0);
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
 
   const uploadImages = async (pestImages) => {
-    console.log('files ',pestImages)
 
     var data = new FormData();
 
-    for (var key in pestImages) {
-      const pest = PESTS[key]
-      pestImages[key].map((file, idx) => {
-        data.append('pest_' + idx + ':' + pest, file);
-      })
+    for (const key in pestImages) {
+      if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
+    
+        const matchingPest = PESTS.find(pest => {
+          if(PESTS[JSON.stringify(parseInt(key)-1)].includes(pest))
+            return PESTS[JSON.stringify(parseInt(key)-1)];
+        });
+        
+        if (matchingPest) {
+    
+          pestImages[key].map((file, idx) => {
+            data.append('pest_' + idx + ':' + matchingPest, file);
+          });
+        }
+      }
     }
+    
 
 
     data.append('observationId', JSON.stringify(observationId));
@@ -267,20 +270,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     );
 
     if(response.status == 200){
+      setCreateNewSiteOrObservation(false)
       setObservationId(response.data.observation_id)
       setSiteId(response.data.site_id)
-      setPestId(response.data.pest_image_id)
-      setCreateNewSiteOrObservation(false)
-
-      const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${response.data.observation_id}/`
-
-      const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
-      
-      if (get_observation_images.status === 200) {
-        console.log('uploaded images in ',get_observation_images.data)
-        setPestImages(get_observation_images.data.images);
-      }
-
     }
   };
   
@@ -384,7 +376,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 onClick={() => handleButtonClick(props.id)}
                               >
                                 Upload images
-                                {pestImages[props.id]?.length ? <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images selected)</div> : null}
+                                {pestImages[props.id]?.length ? <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images uploaded)</div> : null}
                               </Button>
                               <UploadModal
                                 key={`image-${props.id}`}
@@ -427,7 +419,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 onSubmit={
                                   
                                   files => {
-                                    pestImages[props.id] = [...pestImages[props.id], ...files];
+                                    pestImages[props.id] = files;
                                     setPestImages({ ...pestImages });
                                     setOpenImagePestId(0);
                                     setIsAddMore(false);
@@ -437,6 +429,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                       'id': props.id,
                                       'images': pestImages[props.id]
                                     });
+
+                                    uploadImages(pestImages)
 
                                   } } /></>
                           )}
@@ -624,7 +618,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           sensivityScore={manageImagesModalData.sensetivityScore}
           aiScore={'1.0'} // TODO this will be dynamic
           handleButtonClick={handleButtonClick}
-          pestImages={manageImagesModalData.images}
+          observationId={observationId}
         />
       </div>
     </>
