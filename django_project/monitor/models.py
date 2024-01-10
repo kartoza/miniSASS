@@ -214,7 +214,7 @@ class ObservationPestImage(models.Model):
 
     def save(self, *args, **kwargs):
         # Check image as valid if uploaded by expert.
-        if self.observation.user.is_expert:
+        if self.observation.user.userprofile.is_expert:
             self.valid = True
         return super().save(*args, **kwargs)
 
