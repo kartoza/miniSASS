@@ -274,6 +274,10 @@ class DownloadObservations(APIView):
         dir_path = os.path.join(settings.MEDIA_ROOT, 'observation_reports', f'{uuid.uuid4().hex}', 'exports')
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
+        shutil.copy(
+            os.path.join(os.getcwd(), 'monitor', 'observation_download_files', 'observations.qgz'),
+            dir_path
+        )
         file_name = f"observations.{file_type}"
         file_path = os.path.join(dir_path, file_name)\
 
