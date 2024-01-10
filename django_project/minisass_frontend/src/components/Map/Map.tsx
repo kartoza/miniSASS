@@ -375,11 +375,7 @@ export const Map = forwardRef((props: Interface, ref) => {
       };
 
       const handleMapClick = (e) => {
-        // const { lng, lat } = e.lngLat;
-        const { lng, lat } = {
-          lng: 18.42197346839901,
-          lat: -34.01105238586057
-        };
+        const { lng, lat } = e.lngLat;
         captureCoordinatesAndQuery(lat, lng);
       };
 
