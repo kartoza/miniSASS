@@ -98,7 +98,7 @@ urlpatterns = [
     path(
         'observation-images/<int:observation_pk>/delete/<int:pk>/',
         delete_pest_image,
-        name='delete-pest-image'
+        name='remove-pest-image'
     ),
 
     path(
