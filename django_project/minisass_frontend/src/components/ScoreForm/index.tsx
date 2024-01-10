@@ -140,6 +140,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       })
       form_data.append('data', JSON.stringify(observationsData));
       form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
+      form_data.append('observationId', JSON.stringify(observationId))
+      form_data.append('siteId', JSON.stringify(siteId))
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -429,7 +431,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
                             >
                               Manage Images
-                              {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images selected)</div> : null}
+                              {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
                             </Button><UploadModal
                                 key={`image-${props.id}`}
                                 isOpen={openImagePestId === props.id && isAddMore}
