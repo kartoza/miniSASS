@@ -137,11 +137,15 @@ class UpdatePasswordSerializer(serializers.Serializer):
             missing_criteria = ', '.join([key for key, val in remaining_requirements.items() if val])
             raise serializers.ValidationError(f'Missing password criteria: {missing_criteria}')
 
-        is_password_used = PasswordHistory.is_password_used(
-            self.context['user'], value
-        )
-        if is_password_used:
-            raise serializers.ValidationError('This password has been used before. Please choose a new and unique password.')
+        do_history_check = self.context.get('do_history_check', True)
+        if do_history_check:
+            is_password_used = PasswordHistory.is_password_used(
+                self.context['user'], value
+            )
+            if is_password_used:
+                raise serializers.ValidationError(
+                    'This password has been used before. Please choose a new and unique password.'
+                )
         return value
 
     def validate_confirm_password(self, value):
