@@ -86,6 +86,7 @@ type DataInputFormProps = Omit<
     siteDetails: {};
     resetSiteDetails: (details: {}) => void;
     useSelectOnSite: (isSelectOnSite: boolean) => void;
+    setCursor: (cursor: string) => void
   }>;
 
 const inputOptionsList = [
@@ -123,6 +124,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleCloseSidebar = () => {
     props.setSidebarOpen(false);
     props.resetMap();
+    props.setCursor('')
   };
 
 
@@ -199,7 +201,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       sitePopperRef.current.update();
     }
   };
-
   
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
@@ -238,6 +239,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       setSelectSiteMode('NONE')
       props.useSelectOnSite(false)
     }else {
+      props.setCursor('crosshair')
       props.useSelectOnSite(true)
       setSelectSiteMode('SELECT_KNOWN_SITE')
     } 
@@ -298,6 +300,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       getSites();
     }
   }, [selectSiteMode, props.siteDetails]);
+
+  useEffect(() => {
+    if (showScoreForm) {
+      props.setCursor('')
+    } else if(selectSiteMode === 'SELECT_KNOWN_SITE') {
+      props.setCursor('crosshair')
+    }
+  }, [showScoreForm]);
 
   // Helper function to format date
   const formatDate = (date) => {
@@ -523,6 +533,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 
                                   if (selectedValue === 'none') {
                                     // Clear variables when "None" is selected
+                                    setFieldValue('selectedSite', 'none');
                                     setFieldValue('riverName', '');
                                     setFieldValue('siteName', '');
                                     setFieldValue('rivercategory', '');
@@ -532,9 +543,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                     const selectedSite = sites.find((site) => site.value === selectedValue);
                                     if (selectedSite) {
                                       setIsCreateSite('useexistingsite');
+                                      setFieldValue('selectedSite', selectedSite);
                                       setFieldValue('riverName', selectedSite.riverName);
                                       setFieldValue('siteName', selectedSite.siteName);
-                                      setFieldValue('rivercategory', selectedSite.riverCategory);
+                                      setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                     }
                                   }
@@ -745,7 +757,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           key={option.value} 
                           value={(() => {
                             const siteRivercategory = props.siteDetails?.rivercategory;
-                            const selectedValue = siteRivercategory ? siteRivercategory : values.rivercategory;
+                            const selectedValue = siteRivercategory ? siteRivercategory : option.value;
                             return selectedValue;
                           })()}
                           selected={option.value === values.rivercategory}

@@ -102,35 +102,11 @@ function NavigationBar(props) {
       </div>
 
 
-      <div className="md:bottom-5 sm:bottom-[30px] flex sm:flex-1 flex-row gap-[37px] items-center justify-between left-3.5 relative w-[22%] md:w-[30%] sm:w-full">
-        <div className="flex flex-row gap-4 items-start justify-start w-auto">
-          <a href="https://www.facebook.com/mini.sass?fref=ts" target="_blank" rel="noopener noreferrer">
-            <Img
-              className="h-6 w-6"
-              src={`${newURL}img_icbaselinefacebook.svg`}
-              alt="icbaselinefaceb"
-            />
-          </a>
-          <a href="https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ" target="_blank" rel="noopener noreferrer">
-            <Img
-              className="h-6 w-6"
-              src={`${newURL}img_riyoutubefill.svg`}
-              alt="riyoutubefill"
-            />
-          </a>
-          <a href="https://minisassblog.wordpress.com" target="_blank" rel="noopener noreferrer">
-            <Img
-              className="h-6 w-6"
-              src={`${newURL}img_formkitwordpress.svg`}
-              alt="formkitwordpres"
-            />
-          </a>
-        </div>
-        <div>
+      <div className="mb-[12px] sticky mr-[-15px]">
           <Button
           onClick={() => navigate('/mobile-app')}
-          className="cursor-pointer font-semibold leading-[normal]
-          relative rounded-bl-[15px] rounded-tl-[15px] text-base text-center w-full"
+          className="cursor-pointer font-semibold leading-[normal] relative rounded-bl-[15px] rounded-tl-[15px]
+          text-base text-center w-full"
           shape="square"
           color="blue_900"
           size="xs"
@@ -138,7 +114,6 @@ function NavigationBar(props) {
         >
           Download miniSASS App
         </Button>
-        </div>
       </div>
 
                       

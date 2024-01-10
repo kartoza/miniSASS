@@ -56,8 +56,7 @@ def check_authentication_status(request):
         'is_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else None,
         'email': request.user.email if request.user.is_authenticated else None,
-        'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-        'is_password_enforced': get_is_user_password_enforced(request.user)
+        'is_admin': request.user.is_staff if request.user.is_authenticated else None
     }
     return JsonResponse(user_data, status=200)
 
@@ -151,6 +150,7 @@ def request_password_reset(request):
     )
     
     return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def verify_password_reset(request, uidb64, token):
@@ -255,6 +255,10 @@ def register(request):
                             description__iexact="Organisation Type",
                             defaults={'description': "Organisation Type"}
                         )
+                    except Lookup.MultipleObjectsReturned:
+                        organisation_type = Lookup.objects.filter(
+                            description__iexact=organisation_type_description
+                        ).first()
                         
                     new_user_profile_id = UserProfile.objects.raw('SELECT max(id)+1 from UserProfile')
                     
@@ -333,6 +337,7 @@ class UpdateUser(APIView):
         if serializer.is_valid(raise_exception=True):
             try:
                 user, user_profile = serializer.save(request.user)
+                user.refresh_from_db()
                 return JsonResponse(UserUpdateSerializer(user).data)
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=400)
@@ -394,6 +399,7 @@ class UpdatePassword(APIView):
             data=request.data,
             context={
                 'old_password': request.user.password,
+                'password': request.data.get('password', ''),
                 'user': request.user
             }
         )
@@ -426,7 +432,7 @@ def user_login(request):
                 'refresh_token': str(RefreshToken.for_user(user)),
                 'is_authenticated': True,
                 'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-                'is_password_enforced': get_is_user_password_enforced(request.user)
+                'is_password_enforced': get_is_user_password_enforced(request.user, password)
             }
 
             return Response(user_data, status=status.HTTP_200_OK)

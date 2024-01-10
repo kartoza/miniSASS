@@ -107,7 +107,7 @@ class ObservationsSerializer(serializers.ModelSerializer):
     def get_images(self, obj: Observations):
         """Return images of site."""
         return ObservationPestImageSerializer(
-            obj.observationpestimage_set.all(), many=True
+            obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
         ).data
      
 

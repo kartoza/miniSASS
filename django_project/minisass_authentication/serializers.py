@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from minisass_authentication.models import Lookup, UserProfile, PasswordHistory
+from minisass_authentication.models import Lookup, UserProfile, PasswordHistory, PENDING_STATUS
 import re
 
 
@@ -59,16 +59,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         organisation_name = user_profile_dict['organisation_name']
         country = user_profile_dict['country']
         User.objects.filter(id=old_user.id).update(**user_dict)
-
         if organisation_type:
             try:
                 organisation_type = Lookup.objects.get(
                     description__iexact=organisation_type
                 )
             except Lookup.DoesNotExist:
-                # If no match is found, use the default description "Organisation Type".
-                organisation_type, _ = Lookup.objects.get_or_create(description__iexact="Organisation Type")
-
+                organisation_type, _ = Lookup.objects.get_or_create(description=organisation_type)
         defaults = {}
         if organisation_type:
             defaults['organisation_type'] = organisation_type
@@ -102,6 +99,7 @@ class CertificateSerializer(serializers.ModelSerializer):
         if certificate:
             defaults['certificate'] = certificate
             defaults['is_expert'] = False
+            defaults['expert_approval_status'] = PENDING_STATUS
         user_profile, created = UserProfile.objects.update_or_create(
             user=old_user,
             defaults=defaults
@@ -135,15 +133,24 @@ class UpdatePasswordSerializer(serializers.Serializer):
             'specialCharacter': not requirements['specialCharacter'].search(value),
             'length': not requirements['length'].search(value),
         }
-        if all(remaining_requirements.values()):
+        if any(remaining_requirements.values()):
             missing_criteria = ', '.join([key for key, val in remaining_requirements.items() if val])
             raise serializers.ValidationError(f'Missing password criteria: {missing_criteria}')
 
-        is_password_used = PasswordHistory.is_password_used(
-            self.context['user'], value
-        )
-        if is_password_used:
-            raise serializers.ValidationError('This password has been used before. Please choose a new and unique password.')
+        do_history_check = self.context.get('do_history_check', True)
+        if do_history_check:
+            is_password_used = PasswordHistory.is_password_used(
+                self.context['user'], value
+            )
+            if is_password_used:
+                raise serializers.ValidationError(
+                    'This password has been used before. Please choose a new and unique password.'
+                )
+        return value
+
+    def validate_confirm_password(self, value):
+        if self.context['password'] != value:
+            raise serializers.ValidationError('Confirmed password is not same as new password.')
         return value
 
     def save(self, user):

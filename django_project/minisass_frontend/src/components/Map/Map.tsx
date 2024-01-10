@@ -12,7 +12,7 @@ import { BasemapConfiguration } from "./Layer/Basemap"
 import { layerConfiguration } from "./Layer/Overlay";
 import { hasLayer, hasSource, removeLayer, removeSource } from "./utils"
 import { minisassObservationId } from "./Layer/MinisassLayer";
-import { globalVariables } from "../../utils";
+import {getLocalStorageWithExpiry, globalVariables, setLocalStorageWithExpiry} from "../../utils";
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import axios from "axios";
@@ -30,6 +30,7 @@ interface Interface {
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
   setSiteDetails: (details: {}) => void;
   isSelectSiteOnMap: boolean;
+  cursor: string
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -43,7 +44,6 @@ const HIGHLIGHT_POLYGON_ID = HIGHLIGHT_ID + '-polygon'
 const initialMapConfig = {
   container: 'map',
   style: [],
-  center: [24.679864950000024, -28.671882886975247],
   zoom: 5.3695883239884745,
   attributionControl: false,
   maxZoom: 17,
@@ -57,6 +57,9 @@ const initialMapConfig = {
 export const Map = forwardRef((props: Interface, ref) => {
     const [map, setMap] = useState<maplibregl.Map>(null);
 
+    const [latitude, setLatitude] = useState<number | null>(null);
+    const [longitude, setLongitude] = useState<number | null>(null);
+
     /** Update highlight geosjon **/
     useImperativeHandle(ref, () => ({
       updateHighlighGeojson(geojson) {
@@ -64,9 +67,8 @@ export const Map = forwardRef((props: Interface, ref) => {
       }
     }));
 
-    /** First initiate */
     useEffect(() => {
-      if (!map) {
+      if (!map && latitude && longitude) {
         (
           async () => {
             const response = await fetch('https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/minisass_style_v1.json');
@@ -88,7 +90,7 @@ export const Map = forwardRef((props: Interface, ref) => {
               {
                 container: 'map',
                 style: styles,
-                center: [24.679864950000024, -28.671882886975247],
+                center: [longitude, latitude],
                 zoom: 5.3695883239884745,
                 attributionControl: false,
                 maxZoom: 17
@@ -98,16 +100,57 @@ export const Map = forwardRef((props: Interface, ref) => {
             );
             newMap.once("load", () => {
               setMap(newMap)
-              newMap.fitBounds([
-                [16.4679158, -34.8344038],
-                [32.8918141, -22.1246704]
-              ]);
+              newMap.flyTo({
+                center: [longitude, latitude],
+                zoom: initialMapConfig.zoom,
+                essential: true,
+              });
             })
             newMap.addControl(new maplibregl.NavigationControl(), 'top-left');
           }
         )();
       }
+    }, [latitude, longitude]);
+
+    /** First initiate */
+    useEffect(() => {
+      const userPosition = getLocalStorageWithExpiry('user-location');
+      if (!userPosition || !userPosition.latitude) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Get user's latitude and longitude
+            // set location expire after 7 days
+            setLocalStorageWithExpiry(
+              'user-location',
+              {latitude: position.coords.latitude, longitude: position.coords.longitude},
+              604800000);
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+          },
+          (error) => {
+            console.error('Error getting user location:', error);
+            // Set default country ,if geoLocation fails
+            setLocalStorageWithExpiry(
+              'user-location',
+              {latitude: -28.671882886975247, longitude: 24.679864950000024},
+              604800000
+            )
+            setLatitude(-28.671882886975247);
+            setLongitude(24.679864950000024);
+          }
+        );
+      } else {
+        setLatitude(userPosition.latitude);
+        setLongitude(userPosition.longitude);
+      }
     }, []);
+
+    /** Set cursor */
+    useEffect(() => {
+      if (map) {
+        map.getCanvas().style.cursor = props.cursor;
+      }
+    }, [props.cursor]);
 
     /*** Show layer to maplibre */
     const showLayer = (
@@ -350,7 +393,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         if (mapInstance) {
           mapInstance.off('click', handleSelectOnMapClick);
           mapInstance.off('click', handleMapClick);
-          mapInstance.getCanvas().style.cursor = '';
+          mapInstance.getCanvas().style.cursor = props.cursor;
         }
       };
     
@@ -360,7 +403,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         removeClickEventListener();
       };
     
-    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates,map]);
+    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates, map]);
 
     useEffect(() => {
       if (props.resetMap === true) {
@@ -368,7 +411,7 @@ export const Map = forwardRef((props: Interface, ref) => {
   
         if (mapInstance) {
           mapInstance.flyTo({
-            center: [initialMapConfig.center[0], initialMapConfig.center[1]],
+            center: [longitude, latitude],
             zoom: initialMapConfig.zoom,
             essential: true,
           });
@@ -384,7 +427,7 @@ export const Map = forwardRef((props: Interface, ref) => {
           if (props.isSelectSiteOnMap)
             mapInstance.getCanvas().style.cursor = 'crosshair';
           else mapInstance.getCanvas().style.cursor = '';
-  
+
       }, [props.isSelectSiteOnMap]);
 
 
