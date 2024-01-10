@@ -185,7 +185,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
-      setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
+      if(temp_checkedGroups.length > 0)
+        setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
       if(temp_checkedGroups.length > 0)
         if (additionalData.selectedSite && additionalData.date) 
           setProceedToSavingData(true)
