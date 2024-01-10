@@ -221,7 +221,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
 
         # test deleting an image aswell
         url = reverse(
-            'delete-pest-image',
+            'remove-pest-image',
             kwargs={
                 'pk': pest_image_id,
                 'observation_pk': observation_id
