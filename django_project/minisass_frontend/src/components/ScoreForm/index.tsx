@@ -51,6 +51,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
+    handleCloseSidebar()
   };
 
   const closeErrorModal = () => {
