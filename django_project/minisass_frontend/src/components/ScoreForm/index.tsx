@@ -208,6 +208,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const openManageImagesModal = (id, groups, sensetivityScore, pest_images) => {
     setIsManageImagesModalOpen(true);
+    setRefetchImages(true)
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     setManageImagesModalData({
       'groups': groups,
@@ -220,6 +221,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const closeManageImagesModal = () => {
     setIsManageImagesModalOpen(false);
+    setRefetchImages(false)
   };
 
   const handleCloseSidebar = () => {
@@ -282,7 +284,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
               localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
-              setRefetchImages(true)
             }
 
           }catch( exception ){
@@ -635,7 +636,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           sensivityScore={manageImagesModalData.sensetivityScore}
           aiScore={'1.0'} // TODO this will be dynamic
           handleButtonClick={handleButtonClick}
-          setRefetchImages={setRefetchImages}
           refetchImages={refetchImages}
         />
       </div>
