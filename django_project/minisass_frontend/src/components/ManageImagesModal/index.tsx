@@ -120,7 +120,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                   loading='lazy'
                 />
                 {/* Add the x icon here (adjust styles as needed) */}
-                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.pest_id)}>
+                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
                   ✖
                 </div>
               </div>
