@@ -254,14 +254,19 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               }
             }
           }
+
+          const storedObservationId = localStorage.getItem('observationId') || 0;
+          const storedSiteId = localStorage.getItem('siteId') || 0;
           
-          data.append('observationId', JSON.stringify(observationId));
-          if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== ""){
+          data.append('observationId', JSON.stringify(storedObservationId));
+
+          if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
             data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
             additionalData.selectedSite = "";
-          } else data.append('siteId', JSON.stringify(siteId));
+          } else
+            data.append('siteId', JSON.stringify(storedSiteId));
 
-          axios.defaults.headers.common['Authorization'] = `Bearer `;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
           try{
 
@@ -280,6 +285,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setSiteId(response.data.site_id)
               setPestImages({})
               setCreateNewSiteOrObservation(false)
+              localStorage.setItem('observationId', response.data.observation_id);
+              localStorage.setItem('siteId', response.data.site_id);
             }
 
           }catch( exception ){
@@ -631,7 +638,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           sensivityScore={manageImagesModalData.sensetivityScore}
           aiScore={'1.0'} // TODO this will be dynamic
           handleButtonClick={handleButtonClick}
-          observationId={observationId}
         />
       </div>
     </>
