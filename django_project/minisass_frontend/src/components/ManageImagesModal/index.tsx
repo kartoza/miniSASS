@@ -14,7 +14,6 @@ interface ManageImageProps {
   sensivityScore: string;
   aiScore: string;
   handleButtonClick: (id: any) => void;
-  observationId: number;
 }
 
 const ManageImagesModal: React.FC<ManageImageProps> = ({ 
@@ -25,13 +24,13 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   sensivityScore, 
   aiScore, 
   handleButtonClick,
-  observationId
 }) => {
 
 
   const [imageUrls, setImages] = useState([])
 
   const fetch_observation_images = async () => {
+    const observationId = parseInt(localStorage.getItem('observationId'))
     const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
 
     const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
@@ -62,6 +61,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   }
 
   async function handleRemoveImage(id: any): Promise<void> {
+    const observationId = parseInt(localStorage.getItem('observationId'))
     const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/observation-images/${observationId}/delete/${id}`
 
       const delete_observation_image = await axios.post(`${DELETE_PEST_IMAGE}`);
