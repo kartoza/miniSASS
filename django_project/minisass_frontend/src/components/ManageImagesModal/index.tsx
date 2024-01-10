@@ -64,7 +64,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   async function handleRemoveImage(id: any): Promise<void> {
     const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/observation-images/${observationId}/delete/${id}`
 
-      const delete_observation_image = await axios.get(`${DELETE_PEST_IMAGE}`);
+      const delete_observation_image = await axios.post(`${DELETE_PEST_IMAGE}`);
       
       if (delete_observation_image.status === 200)
         fetch_observation_images()
