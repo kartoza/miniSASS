@@ -230,52 +230,64 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const uploadImages = async (pestImages) => {
 
-    var data = new FormData();
-
     for (const key in pestImages) {
       if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
+        const currentArray = pestImages[key];
     
-        const matchingPest = PESTS.find(pest => {
-          if(PESTS[JSON.stringify(parseInt(key)-1)].includes(pest))
-            return PESTS[JSON.stringify(parseInt(key)-1)];
-        });
+        if (currentArray.length > 0) {
+          console.log(`Array with key ${key} has a length greater than 0`);
+          var data = new FormData();
+
+          for (const key in pestImages) {
+            if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
+          
+              const matchingPest = PESTS.find(pest => {
+                if(PESTS[JSON.stringify(parseInt(key)-1)].includes(pest))
+                  return PESTS[JSON.stringify(parseInt(key)-1)];
+              });
+              
+              if (matchingPest) {
+          
+                pestImages[key].map((file, idx) => {
+                  data.append('pest_' + idx + ':' + matchingPest, file);
+                });
+              }
+            }
+          }
+          
+          data.append('observationId', JSON.stringify(observationId));
+          if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== ""){
+            data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+            additionalData.selectedSite = "";
+          } else data.append('siteId', JSON.stringify(siteId));
+
+          axios.defaults.headers.common['Authorization'] = `Bearer `;
+
+          try{
+
+            const response = await axios.post(
+              `${globalVariables.baseUrl}/monitor/upload-pest-images/`,
+              data,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }
+            );
         
-        if (matchingPest) {
-    
-          pestImages[key].map((file, idx) => {
-            data.append('pest_' + idx + ':' + matchingPest, file);
-          });
-        }
+            if(response.status == 200){
+              setObservationId(response.data.observation_id)
+              setSiteId(response.data.site_id)
+              setPestImages({})
+              setCreateNewSiteOrObservation(false)
+            }
+
+          }catch( exception ){
+            console.log(exception.message);
+          }
+        } 
       }
     }
-    
-
-
-    data.append('observationId', JSON.stringify(observationId));
-    if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== ""){
-      data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
-      additionalData.selectedSite = "";
-    } else data.append('siteId', JSON.stringify(siteId));
-
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
-
-    const response = await axios.post(
-      `${globalVariables.baseUrl}/monitor/upload-pest-images/`,
-      data,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    );
-
-    if(response.status == 200){
-      setCreateNewSiteOrObservation(false)
-      setObservationId(response.data.observation_id)
-      setSiteId(response.data.site_id)
-    }
-  };
   
   return (
     <>
