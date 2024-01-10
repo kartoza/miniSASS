@@ -139,11 +139,16 @@ def upload_pest_image(request):
 
 @csrf_exempt
 @login_required
-def delete_pest_image(request, *args, **kwargs):
+def delete_pest_image(request, observation_pk, pk, **kwargs):
     if request.method == 'POST':
         try:
-            observation_id = kwargs.get('observation_pk')
-            image_id = kwargs.get('pk')
+            # Check if observation_pk and pk are not empty, if empty, use values from kwargs
+            observation_id = observation_pk if observation_pk else kwargs.get('observation_pk')
+            image_id = pk if pk else kwargs.get('pk')
+
+            if not observation_id or not image_id:
+                return JsonResponse({'status': 'error', 'message': 'Observation_pk and pk must be provided.'}, status=400)
+
 
             observation = get_object_or_404(Observations, gid=observation_id)
 
@@ -153,7 +158,9 @@ def delete_pest_image(request, *args, **kwargs):
 
             return JsonResponse({'status': 'success', 'message': 'Image deleted successfully.'})
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
 
 @csrf_exempt
@@ -193,6 +200,12 @@ def create_observations(request):
             observation_id = request.POST.get('observationId')
             obs_date = datainput.get('date')
             user = request.user
+            try:
+                site_id = int(site_id)
+                observation_id = int(observation_id)
+            except (ValueError, TypeError):
+                site_id = 0
+                observation_id = 0
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
