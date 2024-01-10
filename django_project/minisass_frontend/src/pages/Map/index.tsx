@@ -88,6 +88,10 @@ const MapPage: React.FC = () => {
     window.scrollTo(0, 0)
   }, []);
 
+  useEffect(() => {
+    if (!isSidebarOpen)
+      setSelectedCoordinates({ latitude: null, longitude: null })
+  }, [isSidebarOpen]);
 
   const [siteWithObservations, setSiteWithObservations] = useState({site:{}, observations: []});
   const [siteDetails, setSiteDetailsFromApi] = useState({});
@@ -98,6 +102,10 @@ const MapPage: React.FC = () => {
       setSiteWithObservations(siteWithObservations)
       setIsObservationDetails(true)
       setSidebarOpen((prev) => !prev);
+      setSelectedCoordinates({
+        latitude: siteWithObservations.site.latitude,
+        longitude: siteWithObservations.site.longitude
+      })
     }
   }
 

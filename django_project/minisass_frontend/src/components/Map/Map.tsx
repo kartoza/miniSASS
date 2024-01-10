@@ -268,7 +268,19 @@ export const Map = forwardRef((props: Interface, ref) => {
         };
     
         if (mapInstance.getSource('selected-point')) {
-          mapInstance.getSource('selected-point').setData(geojson);
+          mapInstance.addLayer({
+            id: 'selected-point-layer',
+            type: 'circle',
+            source: 'selected-point',
+            paint: {
+              'circle-color': `#ff0000`,
+              'circle-opacity': 0,
+              'circle-radius': 12,
+              'circle-stroke-color': HIGHLIGHT_COLOR,
+              'circle-stroke-opacity': HIGHLIGHT_OPACITY,
+              'circle-stroke-width': HIGHLIGHT_WIDTH
+            }
+          });
         } else {
           mapInstance.addSource('selected-point', {
             type: 'geojson',
@@ -304,6 +316,8 @@ export const Map = forwardRef((props: Interface, ref) => {
       ) {
         const { longitude, latitude } = props.selectedCoordinates;
         moveMapToCoordinates(longitude, latitude);
+      } else {
+        map.removeLayer('selected-point-layer')
       }
     
       const handleSelectOnMapClick = (e) => {
@@ -367,7 +381,11 @@ export const Map = forwardRef((props: Interface, ref) => {
       };
 
       const handleMapClick = (e) => {
-        const { lng, lat } = e.lngLat;
+        // const { lng, lat } = e.lngLat;
+        const { lng, lat } = {
+          lng: 18.42197346839901,
+          lat: -34.01105238586057
+        };
         captureCoordinatesAndQuery(lat, lng);
       };
 
