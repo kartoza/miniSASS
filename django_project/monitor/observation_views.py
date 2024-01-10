@@ -78,8 +78,10 @@ def upload_pest_image(request):
                     site_id = 0
                     observation_id = 0
 
+
                 try:
-                    site = Sites.objects.get(gid=site_id)
+                    site = Sites.objects.get(gid=site_id)  
+                    
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
