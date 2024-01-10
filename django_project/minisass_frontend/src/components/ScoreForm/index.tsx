@@ -229,6 +229,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [observationId, setObservationId] = useState(0);
   const [siteId, setSiteId] = useState(0);
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
+  const [refetchImages, setRefetchImages] = useState(false);
 
   const uploadImages = async (pestImages) => {
 
@@ -252,13 +253,13 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           const storedObservationId = localStorage.getItem('observationId') || 0;
           const storedSiteId = localStorage.getItem('siteId') || 0;
           
-          data.append('observationId', JSON.stringify(storedObservationId));
+          data.append('observationId', JSON.stringify(observationId));
 
           if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
             data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
             additionalData.selectedSite = "";
           } else
-            data.append('siteId', JSON.stringify(storedSiteId));
+            data.append('siteId', JSON.stringify(siteId));
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
@@ -279,8 +280,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setSiteId(response.data.site_id)
               setPestImages({})
               setCreateNewSiteOrObservation(false)
-              localStorage.setItem('observationId', response.data.observation_id);
-              localStorage.setItem('siteId', response.data.site_id);
+              localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
+              localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
+              setRefetchImages(true)
             }
 
           }catch( exception ){
@@ -633,6 +635,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           sensivityScore={manageImagesModalData.sensetivityScore}
           aiScore={'1.0'} // TODO this will be dynamic
           handleButtonClick={handleButtonClick}
+          setRefetchImages={setRefetchImages}
+          refetchImages={refetchImages}
         />
       </div>
     </>
