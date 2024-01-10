@@ -309,8 +309,7 @@ class DownloadObservations(APIView):
                 del obs['properties']['time_stamp']
 
             dataframe = GeoDataFrame.from_features(observations_dict)
-            dataframe.set_crs(4326)
-            file_path = os.path.join(dir_path, file_name)
+            dataframe = dataframe.set_crs(4326)
             dataframe.to_file(file_path, layer='observations', driver="GPKG")
 
         if include_image:
