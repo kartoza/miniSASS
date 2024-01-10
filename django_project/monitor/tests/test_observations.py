@@ -111,7 +111,7 @@ class BaseObservationsModelTest(TestCase):
         self.pest_image_2 = ObservationPestImage.objects.create(
             observation=self.observation,
             pest=self.worms,
-            image=self.image_field('flatworms_1.jpg')
+            image=self.image_field('worms_1.jpg')
         )
 
         self.pest_image_3 = ObservationPestImage.objects.create(
