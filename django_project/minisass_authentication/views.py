@@ -412,7 +412,7 @@ def user_login(request):
         email = request.data.get('email')
         password = request.data.get('password')
         
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, email=email, password=password)
         
         if user:
             login(request, user)
@@ -431,3 +431,18 @@ def user_login(request):
 
             return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+def retrieve_email_by_username(request, username):
+
+        if not username:
+            return Response({'error': 'Username is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        User = get_user_model()
+
+        try:
+            user = User.objects.get(username=username)
+            return JsonResponse({'email': user.email}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
