@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Img, List, Text } from "../../components";
 import Modal from 'react-modal';
 import { globalVariables } from "../../utils";
+import axios from "axios";
 
 interface ManageImageProps {
   title: string;
@@ -13,40 +14,60 @@ interface ManageImageProps {
   sensivityScore: string;
   aiScore: string;
   handleButtonClick: (id: any) => void;
-  pestImages: [];
+  observationId: number;
 }
 
 const ManageImagesModal: React.FC<ManageImageProps> = ({ 
   title, 
-  id ,
+  id,
   isOpen, 
   onClose, 
   sensivityScore, 
   aiScore, 
   handleButtonClick,
-  pestImages
+  observationId
 }) => {
 
 
   const [imageUrls, setImages] = useState([])
 
+  const fetch_observation_images = async () => {
+    const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
+
+    const get_observation_images = await axios.get(`${GET_OBSERVATION}`);
+    
+    if (get_observation_images.status === 200) {
+      const filteredImages = get_observation_images.data.images.filter((image) => {
+        const formattedTitle = title.toLowerCase().replace(/\s+/g, '_');
+      
+        return image.pest_name.toLowerCase() === formattedTitle;
+      });
+      
+      setImages(filteredImages);
+    }
+
+  }
+
   useEffect(() => {
-    setImages(pestImages)
-  }, [pestImages]);
+    if(isOpen)
+      fetch_observation_images()
+  }, [isOpen]);
 
   function saveImages(): void {
     onClose();
-    
   }
 
   function handleAddMoreClick(): void {
     handleButtonClick(id)
   }
 
+  async function handleRemoveImage(id: any): Promise<void> {
+    const DELETE_PEST_IMAGE = globalVariables.baseUrl + `/monitor/observation-images/${observationId}/delete/${id}`
 
-
-  function handleRemoveImage(id: any): void {
-    throw new Error("Function not implemented.");
+      const delete_observation_image = await axios.get(`${DELETE_PEST_IMAGE}`);
+      
+      if (delete_observation_image.status === 200)
+        fetch_observation_images()
   }
 
   return (
@@ -87,13 +108,13 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
               <div key={`image-${index}`} className="relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
                 <Img
                   className="h-28 md:h-auto object-cover w-28"
-                  key={`image_${index}`}
+                  key={`${image.pest_id}`}
                   src={image.image}
-                  alt={`${image.name}`}
+                  alt={`${image.pest_name}`}
                   loading='lazy'
                 />
                 {/* Add the x icon here (adjust styles as needed) */}
-                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.pest_id)}>
                   ✖
                 </div>
               </div>
