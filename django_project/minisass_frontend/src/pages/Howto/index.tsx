@@ -37,12 +37,14 @@ const HowtoPage: React.FC = () => {
           </div>
           <div
             id={"howto-title"}
-            className="bg-gray-200 h-[20px] flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5 relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full">
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[79px] mt-[61px]">
+            className="bg-gray-200 h-[20px] flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5
+            relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full
+            ">
+            <div className="flex flex-col items-center justify-start md:ml-[0] mt-[61px]">
               <Text
-                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900"
+                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[150px]"
                 size="txtRalewayRomanBold42"
-                style={{marginBottom: '-30px' ,marginLeft: '104px'}}
+                style={{marginBottom: '-30px'}}
               >
                 How to
               </Text>
@@ -52,7 +54,8 @@ const HowtoPage: React.FC = () => {
 
         {/* How to do a miniSASS survey section*/}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[-30px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[-30px] mx-auto md:px-5
+          md:relative md:top-20 sm:mt-[200px] sm:w-[144%] w-full">
           <Text
             className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
