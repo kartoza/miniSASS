@@ -30,6 +30,7 @@ interface Interface {
   openObservationForm: (siteWithObservations: {site: {}, observations: []}) => void;
   setSiteDetails: (details: {}) => void;
   isSelectSiteOnMap: boolean;
+  cursor: string
 }
 
 const HIGHLIGHT_ID = 'highlight'
@@ -143,6 +144,13 @@ export const Map = forwardRef((props: Interface, ref) => {
         setLongitude(userPosition.longitude);
       }
     }, []);
+
+    /** Set cursor */
+    useEffect(() => {
+      if (map) {
+        map.getCanvas().style.cursor = props.cursor;
+      }
+    }, [props.cursor]);
 
     /*** Show layer to maplibre */
     const showLayer = (
@@ -385,7 +393,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         if (mapInstance) {
           mapInstance.off('click', handleSelectOnMapClick);
           mapInstance.off('click', handleMapClick);
-          mapInstance.getCanvas().style.cursor = '';
+          mapInstance.getCanvas().style.cursor = props.cursor;
         }
       };
     
@@ -395,7 +403,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         removeClickEventListener();
       };
     
-    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates,map]);
+    }, [props.handleSelect, props.selectingOnMap, props.selectedCoordinates, map]);
 
     useEffect(() => {
       if (props.resetMap === true) {
@@ -419,7 +427,7 @@ export const Map = forwardRef((props: Interface, ref) => {
           if (props.isSelectSiteOnMap)
             mapInstance.getCanvas().style.cursor = 'crosshair';
           else mapInstance.getCanvas().style.cursor = '';
-  
+
       }, [props.isSelectSiteOnMap]);
 
 

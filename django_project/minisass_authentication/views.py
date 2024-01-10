@@ -56,8 +56,7 @@ def check_authentication_status(request):
         'is_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else None,
         'email': request.user.email if request.user.is_authenticated else None,
-        'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-        'is_password_enforced': get_is_user_password_enforced(request.user)
+        'is_admin': request.user.is_staff if request.user.is_authenticated else None
     }
     return JsonResponse(user_data, status=200)
 
@@ -431,7 +430,7 @@ def user_login(request):
                 'refresh_token': str(RefreshToken.for_user(user)),
                 'is_authenticated': True,
                 'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-                'is_password_enforced': get_is_user_password_enforced(request.user)
+                'is_password_enforced': get_is_user_password_enforced(request.user, password)
             }
 
             return Response(user_data, status=status.HTTP_200_OK)

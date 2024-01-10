@@ -103,6 +103,7 @@ const MapPage: React.FC = () => {
 
   const [resetMapToDefault, setResetMap] = useState(false);
   const [isSelectSiteOnMap, setIsSelectSiteOnMap] = useState(false);
+  const [cursor, setCursor] = useState('');
 
   function resetMap(latitude=null, longitude=null): void {
     setSelectedCoordinates({latitude: latitude, longitude: longitude})
@@ -195,6 +196,7 @@ const MapPage: React.FC = () => {
                 setIdxActive={setIdxActive}
                 openObservationForm={openObservationForm}
                 setSiteDetails={setSiteDetails}
+                cursor={cursor}
                 isSelectSiteOnMap={isSelectSiteOnMap}
               />
               {/* Sidebar */}
@@ -211,6 +213,7 @@ const MapPage: React.FC = () => {
                 siteDetails={siteDetails}
                 resetSiteDetails={resetSiteDetails}
                 resetMap={resetMap}
+                setCursor={setCursor}
                 useSelectOnSite={useSelectOnSite}
               />
             </div>

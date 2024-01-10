@@ -7,6 +7,8 @@
 * Admire Nyakudya, Kartoza, 2013
 * Jurgen Blignaut, Webtide 2013
 * Simon Bruton, GroundTruth 2013-2014
+* Tinashe Chiraya, Kartoza, 2023
+* Zulfikar Muzakki, Kartoza, 2023
 
 ## License
 

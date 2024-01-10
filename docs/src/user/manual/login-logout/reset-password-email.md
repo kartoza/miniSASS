@@ -1,5 +1,7 @@
 # Reset Password Email & Update Password User Manual
 
+Welcome to the miniSASS Reset Password page! Follow these steps to reset your password.
+
 ## Reset Password Email
 
 ![Reset Password Email](./img/reset-password-email-1.png)

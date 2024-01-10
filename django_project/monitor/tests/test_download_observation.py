@@ -88,10 +88,15 @@ class TestDownloadObservations(BaseObservationsModelTest):
 
         with ZipFile(zip_file_path) as zf:
             files = [
-                'testuser_exports/observations.csv',
-                'testuser_exports/images/observations/2023-12-03/Flatworms.jpg',
-                'testuser_exports/images/observations/2023-12-03/Worms.jpg',
-                'testuser_exports/images/observations/2023-12-07/Leeches.jpg'
+                'exports/observations.csv',
+                'exports/pests.csv',
+                'exports/observation_images.csv',
+                'exports/site_images.csv',
+                'exports/Images/Observations/2023-12-03/Flatworms/flatworms_1.jpg',
+                'exports/Images/Observations/2023-12-03/Worms/worms_1.jpg',
+                'exports/Images/Observations/2023-12-07/Leeches/leeches_1.jpg',
+                'exports/Images/Site/site_1.jpg',
+                'exports/Images/Site/site_2.jpg'
             ]
             for file in files:
                 self.assertTrue(file in zf.namelist())
@@ -138,10 +143,13 @@ class TestDownloadObservations(BaseObservationsModelTest):
 
         with ZipFile(zip_file_path) as zf:
             files = [
-                'testuser_exports/observations.gpkg',
-                'testuser_exports/images/observations/2023-12-03/Flatworms.jpg',
-                'testuser_exports/images/observations/2023-12-03/Worms.jpg',
-                'testuser_exports/images/observations/2023-12-07/Leeches.jpg'
+                'exports/observations.gpkg',
+                'exports/README',
+                'exports/Images/Observations/2023-12-03/Flatworms/flatworms_1.jpg',
+                'exports/Images/Observations/2023-12-03/Worms/worms_1.jpg',
+                'exports/Images/Observations/2023-12-07/Leeches/leeches_1.jpg',
+                'exports/Images/Site/site_1.jpg',
+                'exports/Images/Site/site_2.jpg'
             ]
             for file in files:
                 self.assertTrue(file in zf.namelist())

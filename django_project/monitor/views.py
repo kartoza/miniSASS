@@ -2,6 +2,8 @@ import os
 import csv
 import json
 import shutil
+import uuid
+import subprocess
 from io import BytesIO
 
 import requests
@@ -21,11 +23,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.encoding import smart_str
 from geopandas import GeoDataFrame
+from pandas import DataFrame
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 
 from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
-from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage
+from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage, Pest
 from monitor.utils import safe_copy, zip_directory
 
 
@@ -269,9 +271,13 @@ class DownloadObservations(APIView):
         include_image = request.GET.get('include_image', 'yes')
         include_image = include_image.lower() in ['true', 'yes', '1']
 
-        dir_path = os.path.join(settings.MEDIA_ROOT, 'observation_reports', f'{request.user.username}_exports')
+        dir_path = os.path.join(settings.MEDIA_ROOT, 'observation_reports', f'{uuid.uuid4().hex}', 'exports')
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
+        shutil.copy(
+            os.path.join(os.getcwd(), 'monitor', 'observation_download_files', 'observations.qgz'),
+            dir_path
+        )
         file_name = f"observations.{file_type}"
         file_path = os.path.join(dir_path, file_name)\
 
@@ -282,18 +288,18 @@ class DownloadObservations(APIView):
                 for obs in obs_list:
                     writer.writerow(obs)
         else:
-            sites = json.loads(
+            site_images = json.loads(
                 serialize(
                     "geojson",
                     Sites.objects.filter(gid=site_id),
                     geometry_field="the_geom"
                 )
             )
-            sites = {feature['id']: feature for feature in sites['features']}
+            site_images = {feature['id']: feature for feature in site_images['features']}
             observations_dict = json.loads(serialize("geojson", observations, geometry_field="geom"))
             users = {}
             for obs in observations_dict['features']:
-                site = sites[obs['properties']['site']]
+                site = site_images[obs['properties']['site']]
                 if obs['properties']['user'] in users:
                     username = users[obs['properties']['user']]
                 else:
@@ -307,30 +313,91 @@ class DownloadObservations(APIView):
                 del obs['properties']['time_stamp']
 
             dataframe = GeoDataFrame.from_features(observations_dict)
-            file_path = os.path.join(dir_path, file_name)
+            dataframe = dataframe.set_crs(4326)
             dataframe.to_file(file_path, layer='observations', driver="GPKG")
 
         if include_image:
-            images_path = os.path.join(dir_path, 'images')
+            images_path = os.path.join(dir_path, 'Images')
             if observations.first():
-                site_image_path = os.path.join(images_path, 'site')
+                site_images = []
+                site_image_path = os.path.join(images_path, 'Site')
                 os.makedirs(site_image_path)
                 for img in SiteImage.objects.filter(site=observations.first().site):
-                    safe_copy(img.image.path, site_image_path)
+                    final_name = safe_copy(img.image.path, site_image_path)
+                    site_images.append({
+                        'id': img.id,
+                        'site': img.site_id,
+                        'image': os.sep.join(final_name.split(os.sep)[-3:]),
+                    })
+                    dataframe = DataFrame.from_records(site_images)
+                    site_images_table = os.path.join(dir_path, 'site_images.csv')
+                    dataframe.to_csv(site_images_table, index=False)
 
             if observations.exists():
-                all_obs_image_path = os.path.join(images_path, 'observations')
+                all_obs_image_path = os.path.join(images_path, 'Observations')
                 os.makedirs(all_obs_image_path)
+                observation_images = []
                 for obs in observations:
                     obs_images = ObservationPestImage.objects.filter(observation=obs)
                     obs_image_path = os.path.join(all_obs_image_path, obs.obs_date.strftime('%Y-%m-%d'))
                     os.mkdir(obs_image_path)
                     for img in obs_images:
-                        safe_copy(
+                        pest_path = os.path.join(obs_image_path, img.pest.name)
+                        if not os.path.exists(pest_path):
+                            # if the demo_folder directory is not present
+                            # then create it.
+                            os.makedirs(pest_path)
+                        final_name = safe_copy(
                             img.image.path,
-                            obs_image_path,
-                            f'{img.pest.name}.{img.image.name.split(".")[-1]}'
+                            pest_path,
+                            os.path.basename(img.image.name)
                         )
+                        observation_images.append({
+                            'id': img.id,
+                            'observation': img.observation_id,
+                            'pest': img.pest_id,
+                            'image': os.sep.join(final_name.split(os.sep)[-5:]),
+                        })
+                dataframe = DataFrame.from_records(observation_images)
+                observation_images_table = os.path.join(dir_path, 'observation_images.csv')
+                dataframe.to_csv(observation_images_table, index=False)
+
+            pests = Pest.objects.values()
+            dataframe = DataFrame.from_records(pests)
+            pest_table = os.path.join(dir_path, 'pests.csv')
+            dataframe.to_csv(pest_table, index=False)
+
+            if file_type == 'gpkg':
+                with open(os.path.join(dir_path, 'README'), 'w') as f:
+                    content = """Table relations
+
+observations:
+- id: ID of the observation
+- site: ID of the observation site
+
+pests:
+- id: ID of the pest
+
+observation_images:
+- id: ID of the image
+- observation: ID of the observation. You can link this to "id" field in observation table.
+- pest: ID of the pest. You can link this to "id" field in pest table.
+
+site_images:
+- id: ID of the image
+- site: ID of the site. You can link this to "site" field in observation table.
+
+If site_images or observation_images does not exist in the Geopackage, it means the exported data
+does not have images."""
+                    f.write(content)
+
+                subprocess.run(['ogr2ogr', '-append', file_path, observation_images_table])
+                subprocess.run(['ogr2ogr', '-append', file_path, pest_table])
+                subprocess.run(['ogr2ogr', '-append', file_path, site_images_table])
+                os.remove(site_images_table)
+                os.remove(observation_images_table)
+                os.remove(pest_table)
+
             mem_zip = BytesIO()
             zip_directory(dir_path, mem_zip)
 
