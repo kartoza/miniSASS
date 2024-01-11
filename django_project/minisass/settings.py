@@ -236,6 +236,8 @@ MINION_STORAGE = FileSystemStorage(
     location=MINIO_ROOT, base_url='/minio-media'
 )
 
+AUTHENTICATION_BACKENDS = ['minisass_authentication.backends.EmailBackend']
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")

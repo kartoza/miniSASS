@@ -60,10 +60,11 @@ function AuthenticationButtons() {
   }
 
   const [error, setError] = useState(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const LOGIN_API = globalVariables.baseUrl + '/authentication/api/login/';
   const REGISTER_API = globalVariables.baseUrl + '/authentication/api/register/'
-
+  
   const handleEnforcePassword = () => {
     setIsEnforcePasswordOpen(false)
     setProfileModalOpen(true);
@@ -72,6 +73,7 @@ function AuthenticationButtons() {
 
   const handleLogin = async (loginData: any) => {
     try {
+      setIsAuthenticating(true)
       const response = await axios.post(`${LOGIN_API}`, loginData, {
         headers: {
           'Content-Type': 'application/json',
@@ -88,14 +90,17 @@ function AuthenticationButtons() {
         }
         setError(null);
         setLoginModalOpen(false)
+        setIsAuthenticating(false)
       } else {
         if(!response.data.is_authenticated){
           setError('Please complete registration to continue.');
         }
         else setError('Invalid credentials. Please try again.');
+        setIsAuthenticating(false)
       }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
+      setIsAuthenticating(false)
     }
   };
 
@@ -175,7 +180,13 @@ function AuthenticationButtons() {
           </>
         )}
       </div>
-      <LoginFormModal isOpen={isLoginModalOpen} onClose={closeLoginModal} onSubmit={handleLogin}  error_response={error}/>
+      <LoginFormModal 
+        isOpen={isLoginModalOpen} 
+        onClose={closeLoginModal} 
+        onSubmit={handleLogin}  
+        error_response={error}
+        isAuthenticating={isAuthenticating}
+      />
       <RegistrationFormModal
         isOpen={isRegisterModalOpen} 
         onClose={closeRegisterModal} 

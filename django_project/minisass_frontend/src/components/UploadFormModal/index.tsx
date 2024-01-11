@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { Button, Img, Text } from "../../components";
 import { FaTrash } from 'react-icons/fa';
 import Grid from '@mui/material/Grid';
+import { globalVariables } from "../../utils";
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -12,18 +13,7 @@ interface UploadModalProps {
 }
 
 const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, accept= '.jpg, .jpeg, .png' }) => {
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
 
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [clearAll, setClearAll] = useState<boolean>(false);
 
@@ -159,7 +149,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                     <Grid item xs={3}>
                       <Img
                         className="h-[59px] mt-[111px]"
-                        src={`${newURL}img_download.svg`}
+                        src={`${globalVariables.staticPath}img_download.svg`}
                         alt="download"
                         style={{cursor: 'pointer'}}
                         onClick={handleBrowseClick}
@@ -228,6 +218,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               }}
               onClick={() => {
                 onSubmit(uploadedFiles)
+                handleClearFile()
               }}
             >
               Upload chosen files

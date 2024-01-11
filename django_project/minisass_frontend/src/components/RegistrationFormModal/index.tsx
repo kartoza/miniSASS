@@ -178,9 +178,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     }
 
     // Check for other required fields
-    if (!formData.username) {
-      errors.username = 'Username is required';
-    }
     if (!formData.name) {
       errors.name = 'Name is required';
     }
@@ -263,10 +260,8 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   //choose the screen size
   const handleResize = () => {
     if (window.innerWidth < 600) {
-      console.log('smaller device view')
       setApplyDeviceStyles(true)
     } else {
-      console.log('website view')
       setApplyDeviceStyles(false)
     }
   };
@@ -299,7 +294,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       }}
     >
       {Registrationloading ? (
-        <div style={{ width: '535px'}}>
+        <div style={{ width: applyDeviceStyles? '180px':'535px'}}>
           <LinearProgress color="success" />
         </div>
       ) : registrationInProgress ? (
@@ -394,19 +389,6 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
             <div 
             style={{ display: 'flex', flexDirection: applyDeviceStyles? 'column': 'row', gap: applyDeviceStyles? '10px':'40px' }}
             >
-              <div style={{ flex: 1, flexDirection: 'column' }}>
-                <label>Username:</label><br />
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  placeholder="Username"
-                  style={{ borderRadius: '4px' }}
-                />
-                <br />
-                {formErrors.username && <span style={{ color: 'red' }}>{formErrors.username}</span>}
-              </div>
               <div style={{ flex: 1, flexDirection: 'column'  }}>
                 <label>Email:</label><br />
                 <input

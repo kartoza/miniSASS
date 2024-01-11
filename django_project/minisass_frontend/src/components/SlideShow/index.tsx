@@ -15,7 +15,7 @@ const slideshowImages = [
 
 const Slideshow = () => {
   return (
-    <div className="slide-container mt-[25px]">
+    <div className="slide-container">
       <Fade>
         {slideshowImages.map((fadeImage, index) => (
           <div key={index}>

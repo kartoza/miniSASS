@@ -138,6 +138,8 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
                 'rivername': data['rivername'],
                 'rivercategory': data['rivercategory'],
                 'sitedescription': data['sitedescription'],
+                'longitude': instance.the_geom.x,
+                'latitude': instance.the_geom.y,
             },
             'observations': serializer.data,
         }
