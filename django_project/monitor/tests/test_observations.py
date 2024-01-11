@@ -36,6 +36,7 @@ class BaseObservationsModelTest(TestCase):
             password='testpassword',
             first_name='First',
             last_name='Last',
+            email='test@gmail.com'
         )
         self.profile = UserProfile.objects.get_or_create(user=self.user)
         self.client = APIClient()
@@ -360,7 +361,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         self.assertEqual(response['Content-Type'], 'application/json')
 
     def test_observations_by_nonexistent_site_id(self):
-        self.client.login(username='testuser', password='testuserpassword')
+        self.client.login(email='test@gmail.com', password='testuserpassword')
 
         url = reverse('observations-by-site', kwargs={'site_id': 999})
 
