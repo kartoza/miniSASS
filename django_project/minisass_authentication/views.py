@@ -56,8 +56,7 @@ def check_authentication_status(request):
         'is_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else None,
         'email': request.user.email if request.user.is_authenticated else None,
-        'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-        'is_password_enforced': get_is_user_password_enforced(request.user)
+        'is_admin': request.user.is_staff if request.user.is_authenticated else None
     }
     return JsonResponse(user_data, status=200)
 
@@ -416,9 +415,11 @@ class UpdatePassword(APIView):
 def user_login(request):
     if request.method == 'POST':
 
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
+        
+        user = authenticate(request, email=email, password=password)
+        
         if user:
             login(request, user)
             
@@ -431,8 +432,23 @@ def user_login(request):
                 'refresh_token': str(RefreshToken.for_user(user)),
                 'is_authenticated': True,
                 'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-                'is_password_enforced': get_is_user_password_enforced(request.user)
+                'is_password_enforced': get_is_user_password_enforced(request.user, password)
             }
 
             return Response(user_data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+def retrieve_email_by_username(request, username):
+
+        if not username:
+            return Response({'error': 'Username is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        User = get_user_model()
+
+        try:
+            user = User.objects.get(username=username)
+            return JsonResponse({'email': user.email}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

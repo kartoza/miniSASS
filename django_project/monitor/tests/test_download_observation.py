@@ -145,3 +145,4 @@ class TestDownloadObservations(BaseObservationsModelTest):
     #         ]
     #         for file in files:
     #             self.assertTrue(file in zf.namelist())
+

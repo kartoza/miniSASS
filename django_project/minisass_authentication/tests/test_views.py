@@ -286,8 +286,7 @@ class CheckAuthenticationStatusTest(APITestCase):
                 'is_authenticated': True,
                 'username': self.user.username,
                 'email': self.user.email,
-                'is_admin': self.user.is_staff,
-                'is_password_enforced': True
+                'is_admin': self.user.is_staff
             }
         )
 
@@ -354,3 +353,62 @@ class CheckIsExpertTest(APITestCase):
                 'organisation_type': None
             }
         )
+
+
+class LoginTest(APITestCase):
+    def test_login_strong_password(self):
+        user = UserFactory.create()
+
+        # set password to meet criteria
+        password = 'qwertY1@'
+        user.set_password(password)
+        user.save()
+
+        # Set is_password_enforced = False, meaning it could be an old user
+        user.userprofile.is_password_enforced = False
+        user.userprofile.save()
+
+        url = reverse('user_login')
+        payload = {
+            'email': user.email,
+            'password': password
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEquals(
+            response.json()['username'],
+            user.username,
+        )
+        self.assertEquals(
+            response.json()['email'],
+            user.email,
+        )
+        self.assertTrue(
+            response.json()['is_password_enforced']
+        )
+
+    def test_login_weak_password(self):
+        user = UserFactory.create()
+
+        # set password to weak password
+        password = 'admin'
+        user.set_password(password)
+        user.save()
+
+        url = reverse('user_login')
+        payload = {
+            'email': user.email,
+            'password': password
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEquals(
+            response.json()['username'],
+            user.username,
+        )
+        self.assertEquals(
+            response.json()['email'],
+            user.email,
+        )
+        self.assertFalse(
+            response.json()['is_password_enforced']
+        )
+

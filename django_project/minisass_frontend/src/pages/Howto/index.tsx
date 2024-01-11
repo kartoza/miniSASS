@@ -37,12 +37,14 @@ const HowtoPage: React.FC = () => {
           </div>
           <div
             id={"howto-title"}
-            className="bg-gray-200 h-[20px] flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5 relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full">
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[79px] mt-[61px]">
+            className="bg-gray-200 h-[20px] flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5
+            relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full
+            ">
+            <div className="flex flex-col items-center justify-start md:ml-[0] mt-[61px]">
               <Text
-                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900"
+                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[150px]"
                 size="txtRalewayRomanBold42"
-                style={{marginBottom: '-30px' ,marginLeft: '104px'}}
+                style={{marginBottom: '-30px'}}
               >
                 How to
               </Text>
@@ -52,7 +54,8 @@ const HowtoPage: React.FC = () => {
 
         {/* How to do a miniSASS survey section*/}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[-30px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[-30px] mx-auto md:px-5
+          md:relative md:top-20 sm:mt-[200px] sm:w-[144%] w-full">
           <Text
             className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
             size="txtRalewayRomanBold40"
@@ -62,9 +65,9 @@ const HowtoPage: React.FC = () => {
           <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px]
           md:relative md:top-[50px] w-full mt-[-40px]">
             <Text
-                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll
+                text-base text-gray-800"
                 size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               <span>MiniSASS Equipment (</span>
               <span className="underline text-blue-900 cursor-pointer" onClick={() => {
@@ -136,7 +139,6 @@ const HowtoPage: React.FC = () => {
             <Text
               className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
                 <li>Go prepared (get all the equipment).</li>
@@ -169,9 +171,9 @@ const HowtoPage: React.FC = () => {
             >
               <YouTubeVideo videoId="yGbi7P8RYoU" width="550px" height="300px" playButtonColor="green"/>
             </div>
-            <div className="w-[75%] sm:w-full md:w-full">
+            <div className="w-full">
               <Text
-                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 w-[550px]"
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
                 size="txtRalewayRomanRegular16Gray800"
               >
                 Find a suitable site at your stream / river. MiniSASS cannot be done on stagnant water like ponds, dams and wetlands. It is very important to check whether the sample area has flowing water, if not then a miniSASS cannot be done there.
@@ -185,7 +187,9 @@ const HowtoPage: React.FC = () => {
         </div>
         {/* end of section */}
 
-        {/* Choosing a site to sample for miniSASS */}
+
+
+                {/* How to stay safe when doing miniSASS */}
         <div
           className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
           <Text
@@ -197,9 +201,14 @@ const HowtoPage: React.FC = () => {
           <div
             className="flex md:flex-col flex-row max-w-[1450px] gap-14
           md:relative md:top-[50px] w-full mt-[-40px]">
-            <div className="w-[50%] sm:w-full md:w-full">
+            <div
+                className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[50%] sm:w-full"
+            >
+              <YouTubeVideo videoId="WX_DkYyfnmk" width="550px" height="300px" playButtonColor="green"/>
+            </div>
+            <div className="w-full">
               <Text
-                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 w-[550px]"
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
                 size="txtRalewayRomanRegular16Gray800"
               >
                 Sample as many habitats in the stream as possible for a total of 5 minutes. Get energetic with sampling!
@@ -208,10 +217,6 @@ const HowtoPage: React.FC = () => {
                 as well. Scoop in and around the vegetation to make sure you get the critters hiding there as well.
                 Keep an eye out for clams, mussels, crabs, snails, and anything else you might not easily catch in the net.
               </Text>
-            </div>
-            <div className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[75%] sm:w-full"
-            >
-              <YouTubeVideo videoId="WX_DkYyfnmk" width="550px" height="300px" playButtonColor="green"/>
             </div>
           </div>
         </div>
@@ -244,7 +249,6 @@ const HowtoPage: React.FC = () => {
             <Text
               className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               Run some water through your net in the stream or using a bucket to filter out most of the mud and grit you may have gotten in the net. The cleaner your sample, the easier it is to find and identify all the macroinvertebrates.
               <br/><br/>
@@ -281,7 +285,6 @@ const HowtoPage: React.FC = () => {
             <Text
               className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               Calculate your score and get your ecological category of river health. Each group of macroinvertebrates has been allocated a sensitivity score due to their sensitivity to pollution and disturbance. A high sensitivity score indicates that the group does not tolerate disturbance and pollution, so they are not likely not to be present in polluted and disturbed river conditions. A low sensitivity score indicates a greater resistance to pollution – these groups are generally found even is highly modified streams / rivers.
               <br/><br/>
@@ -308,9 +311,9 @@ const HowtoPage: React.FC = () => {
             >
               <YouTubeVideo videoId="uUJTrkZKL6U" width="550px" height="300px" playButtonColor="green"/>
             </div>
-            <div className="w-[75%] sm:w-full md:w-full">
+            <div className="sm:w-full md:w-full">
               <Text
-                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 w-[550px]"
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
                 size="txtRalewayRomanRegular16Gray800"
               >
                 Upload the your data!
@@ -348,7 +351,6 @@ const HowtoPage: React.FC = () => {
             <Text
               className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               View your submission among everyone else’s on the map (check your site is in the right place!). The colour of the crab showing your assessment will correspond to the health of the stream at your site. Visit the same site every 5-6 weeks to get a time series for the health of your stream and contribute towards a powerful global dataset of water quality and stream / river health. You don’t have to wait to sample again though, head to another site in a different place on the same stream, or head to another stream to keep doing miniSASS surveys! Every time, you will be contributing vital data that will be used for better monitoring and managing the earth’s precious freshwater resources.
             </Text>
@@ -501,7 +503,6 @@ const HowtoPage: React.FC = () => {
             <Text
                 className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
                 size="txtRalewayRomanRegular16Gray800"
-              style={{marginRight: '20%'}}
             >
               Graham, P. M., Dickens, C. W. S., & Taylor, J. (2004). miniSASS—A novel technique for community participation in river health monitoring and management. African Journal of Aquatic Science, 29(1), 25–35. https://doi.org/10.2989/16085910409503789
               <br/><br/>

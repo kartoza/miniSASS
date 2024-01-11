@@ -65,8 +65,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
     maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
   } else if (observationList.length > 1) {
-    minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
-    maxDate = dayjs(observationList[observationList.length - 1].obs_date).format('YYYY-MM-DD');
+    maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+    minDate = dayjs(observationList[observationList.length - 1].obs_date).format('YYYY-MM-DD');
   }
 
   const fetchObservations = async () => {
