@@ -187,6 +187,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       setCheckedGroups(temp_checkedGroups)
       if(temp_checkedGroups.length > 0)
         setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
+      
+      // disabled upload buttons
+      const newCheckedState = [...isCheckboxChecked];
+      newCheckedState[id] = !newCheckedState[id];
+      setIsCheckboxChecked(newCheckedState);
+      
       if(temp_checkedGroups.length > 0)
         if (additionalData.selectedSite && additionalData.date) 
           setProceedToSavingData(true)
@@ -204,6 +210,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const [isManageImagesModalOpen, setIsManageImagesModalOpen] = useState(false);
   const [isAddMore, setIsAddMore] = useState(false);
+  // disabled upload buttons
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(Array(13).fill(false));
 
   const closeUploadModal = () => {
     setOpenImagePestId(0)
@@ -394,6 +402,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 color="blue_gray_500"
                                 size="xs"
                                 variant="fill"
+                                // disabled upload buttons
+                                disabled={!isCheckboxChecked[props.id] ? true : false}
+                                style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id]  ? 1 : 0.5 }}
                                 onClick={() => handleButtonClick(props.id)}
                               >
                                 Upload images
@@ -429,6 +440,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               color="blue_gray_500"
                               size="xs"
                               variant="fill"
+                              // disabled upload buttons
+                              disabled={!isCheckboxChecked[props.id] ? true : false}
+                              style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id]  ? 1 : 0.5 }}
                               onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
                             >
                               Manage Images
