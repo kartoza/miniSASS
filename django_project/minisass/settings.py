@@ -237,3 +237,4 @@ MINION_STORAGE = FileSystemStorage(
 )
 
 AUTHENTICATION_BACKENDS = ['minisass_authentication.backends.EmailBackend']
+DEBUG = True
