@@ -336,6 +336,21 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     }),
   };
 
+  const transformSiteDetails = (siteDetails) => {
+    if (!siteDetails) {
+      return {};
+    }
+  
+    return {
+      label: siteDetails.sitename || '',
+      riverName: siteDetails.rivername || '',
+      rivercategory: siteDetails.rivercategory || '',
+      siteDescription: siteDetails.sitedescription || '',
+      siteName: siteDetails.sitename || '',
+      value: siteDetails.gid || 0,
+    };
+  };
+
   return (
     <>
       {!showScoreForm ? (
@@ -521,10 +536,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 styles={customStyles}
                                 value={(() => {
                                   const selectedOption = sites.find((option) => {
-                                    const isMatch = parseInt(option.value) === parseInt(values.selectedSite);
+                                    const isMatch = parseInt(option.value) === parseInt(values.selectedSite.value);
                                     return isMatch;
                                   });
-                                  return selectedOption;
+                                  
+                                  if(selectSiteMode === 'SELECT_KNOWN_SITE')
+                                    return transformSiteDetails(props.siteDetails)
+                                  return selectedOption
                                 })()}
                                 onChange={(selectedOption) => {
                                   handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
