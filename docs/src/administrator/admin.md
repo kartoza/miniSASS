@@ -1,4 +1,4 @@
-# User Manual Admin Option
+# Admin Profile Option
 
 ## Introduction
 
@@ -10,3 +10,5 @@ The `Admin` option is a powerful tool accessible to super users, providing admin
 Upon selecting the `Admin` option, users will be redirected to the `Admin Panel`. This centralised dashboard provides an overview of key system settings, user management, and other administrative functionalities.
 
 ![Admin Panel](./img/admin-2.png)
+
+Once you have accessed the administration site, please refer to the [Django Administrator](./django-admin.md) documentation for more information regarding which sections to manage.
