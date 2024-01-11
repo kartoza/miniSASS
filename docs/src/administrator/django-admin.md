@@ -86,7 +86,7 @@ The Django admin user table is a central component within the Django admin inter
 
         10. **Remove All**: The button to choose all of the permissions and remove them from the user.
 
-        11. **Organisation Type:** The administrator can view and edit the Organisations type using this dropdown.
+        11. **Organisation Type:** The administrator can view and edit the `organisations type` using this dropdown.
 
         12. **Icons** The administrator can use the icons to perform many actions.
 
@@ -110,7 +110,7 @@ The Django admin user table is a central component within the Django admin inter
                 - If approved, set Expert approval status to APPROVED.
                 - If rejected, set Expert approval status to REJECTED.
 
-        15. **Certificate Field:**  Allows users to upload their certificates as a part of the expert approval process. Users can upload relevant certificates, providing proof of their expertise for verification.
+        15. **Certificate Field:**  Allows administrators to upload user certificates as a part of the expert approval process.
 
         16. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
         
@@ -120,6 +120,36 @@ The Django admin user table is a central component within the Django admin inter
 
         19. **Delete button**: Delete the currently opened record. It will take administrators to a confirmation page.
 
+    4. **Adding a New User:** The administrators can create a new user by clicking on the `add user` button, when the administrators click on this button a new page opens for adding the user record.
+
+        ![Add User](./img/django-admin-8.png)
+
+        1. **Username**: Administrators should enter a unique username for the new user. It should be 150 characters, or less, and may contain only letters, digits, and the characters '@', '.', '+', '-', and '_'.
+
+        2. **Password**: Administrators should create a strong password for the user. The password must meet these criteria:
+
+            - password can not be too similar to your other personal information.
+            - password must contain at least 8 characters.
+            - password can not be a commonly used password.
+            - password can not be entirely numeric.
+
+        3. **Confirm Password:** Re-enter the same password in the confirmation field to verify accuracy.
+
+        ![Add User Profile](./img/django-admin-9.png)
+
+        4. **Organisation Type:** The administrator can add the `organisation type` using the dropdown.
+
+        5. **Is Expert Checkbox:** Indicates whether a user has been approved as an expert in the system. Administrators can manually check or uncheck this checkbox to set or revoke expert status for a user.
+
+        6. **Expert Approval status:** The administrator can choose the `Expert approval status` from the dropdown for the user.
+
+        7. **Certificate Field:**  Allows administrators to upload user certificates as a part of the expert approval process.
+
+        8. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
+        
+        9. **Save and add another**: Save the current record and then be redirected to a new page to add a new record.
+
+        10. **Save and continue editing**: Save the current record while still showing the current record.
 
 ### Observations Table
 <!-- Validating images that are dirty -->
