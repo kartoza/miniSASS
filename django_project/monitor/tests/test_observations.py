@@ -361,7 +361,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         self.assertEqual(response['Content-Type'], 'application/json')
 
     def test_observations_by_nonexistent_site_id(self):
-        self.client.login(email='email', password='testuserpassword')
+        self.client.login(email='test@gmail.com', password='testuserpassword')
 
         url = reverse('observations-by-site', kwargs={'site_id': 999})
 
