@@ -46,7 +46,7 @@ const Home: React.FC = () => {
                         // Iterate through the response data and structure it as required by observations component
                         response.data.forEach((item) => {
                           // Convert the timestamp to a JavaScript Date object
-                          const timestampDate = new Date(item.time_stamp);
+                          const timestampDate = new Date(item.obs_date);
                         
                           // Define an array of month names
                           const monthNames = [
