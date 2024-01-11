@@ -136,6 +136,15 @@ const Footer: React.FC<FooterProps> = (props) => {
                     </Text>
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
+                    <Text
+                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                      size="txtRalewayExtraBold14WhiteA700"
+                      onClick={() => window.open('https://kartoza.github.io/miniSASS/', "_blank")}
+                    >
+                      Documentation
+                    </Text>
+                  </li>
+                  <li style={{ whiteSpace: 'nowrap' }}>
                     <a>
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase"
