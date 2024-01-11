@@ -360,6 +360,7 @@ const HowtoPage: React.FC = () => {
 
         {/* resources for download section */}
         <div
+          id={'howto-resources'}
           className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
           <div className="flex container flex-col w-[30%]">
             <Img
