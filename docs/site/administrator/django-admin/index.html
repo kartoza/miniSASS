@@ -13,24 +13,24 @@
       
       
       
-        <link rel="prev" href="../login/">
+        <link rel="prev" href="../admin/">
       
       
-        <link rel="next" href="../reset-password-email/">
+        <link rel="next" href="../../developer/">
       
-      <link rel="icon" href="../../../../assets/logo.png">
+      <link rel="icon" href="../../assets/logo.png">
       <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
-        <title>Forgot Password - MiniSASS</title>
+        <title>Django Administration - MiniSASS</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.eebd395e.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ecc896b0.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
       
       
 
@@ -46,11 +46,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#minisass-forgot-password-page-user-manual" class="md-skip">
+        <a href="#django-administration-site" class="md-skip">
           Skip to content
         </a>
       
@@ -95,7 +95,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="MiniSASS" class="md-header__button md-logo" aria-label="MiniSASS" data-md-component="logo">
+    <a href="../.." title="MiniSASS" class="md-header__button md-logo" aria-label="MiniSASS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Forgot Password
+              Django Administration
             
           </span>
         </div>
@@ -218,8 +218,24 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../user/" class="md-tabs__link">
+        User
       </a>
     </li>
   
@@ -236,23 +252,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../" class="md-tabs__link md-tabs__link--active">
-        User
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../../../administrator/" class="md-tabs__link">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
         Administrator
       </a>
     </li>
@@ -268,7 +268,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../developer/" class="md-tabs__link">
+      <a href="../../developer/" class="md-tabs__link">
         Developer
       </a>
     </li>
@@ -284,7 +284,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../about/" class="md-tabs__link">
+      <a href="../../about/" class="md-tabs__link">
         About
       </a>
     </li>
@@ -318,7 +318,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="MiniSASS" class="md-nav__button md-logo" aria-label="MiniSASS" data-md-component="logo">
+    <a href="../.." title="MiniSASS" class="md-nav__button md-logo" aria-label="MiniSASS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
@@ -379,7 +379,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../..">Home</a>
+          <a href="../..">Home</a>
           
             <label for="__nav_1">
               <span class="md-nav__icon md-icon"></span>
@@ -402,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../" class="md-nav__link">
+      <a href="../../user/" class="md-nav__link">
         User Documentation
       </a>
     </li>
@@ -416,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/" class="md-nav__link">
+      <a href="../../developer/" class="md-nav__link">
         Developer Documentation
       </a>
     </li>
@@ -430,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../about/" class="md-nav__link">
+      <a href="../../about/" class="md-nav__link">
         About
       </a>
     </li>
@@ -450,16 +450,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
         
@@ -474,7 +472,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../">User</a>
+          <a href="../../user/">User</a>
           
             <label for="__nav_2">
               <span class="md-nav__icon md-icon"></span>
@@ -482,7 +480,7 @@
           
         </div>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           User
@@ -495,16 +493,14 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
       
       
         
@@ -537,7 +533,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">Manual</a>
+          <a href="../../user/manual/">Manual</a>
           
             <label for="__nav_2_2">
               <span class="md-nav__icon md-icon"></span>
@@ -545,7 +541,7 @@
           
         </div>
       
-      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2_2">
           <span class="md-nav__icon md-icon"></span>
           Manual
@@ -560,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../landing-page/" class="md-nav__link">
+      <a href="../../user/manual/landing-page/" class="md-nav__link">
         Landing Page
       </a>
     </li>
@@ -574,7 +570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/how-to/" class="md-nav__link">
+      <a href="../../user/manual/how-to/how-to/" class="md-nav__link">
         How To
       </a>
     </li>
@@ -588,7 +584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../how-to/" class="md-nav__link">
+      <a href="../../user/manual/how-to/" class="md-nav__link">
         
       </a>
     </li>
@@ -624,7 +620,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../register/">Register</a>
+          <a href="../../user/manual/register/">Register</a>
           
             <label for="__nav_2_2_5">
               <span class="md-nav__icon md-icon"></span>
@@ -647,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../register/register/" class="md-nav__link">
+      <a href="../../user/manual/register/register/" class="md-nav__link">
         Register
       </a>
     </li>
@@ -661,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../register/activate-account/" class="md-nav__link">
+      <a href="../../user/manual/register/activate-account/" class="md-nav__link">
         Activate Account
       </a>
     </li>
@@ -680,16 +676,14 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_6" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_6" >
       
       
         
@@ -710,7 +704,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Login and Logout</a>
+          <a href="../../user/manual/login-logout/">Login and Logout</a>
           
             <label for="__nav_2_2_6">
               <span class="md-nav__icon md-icon"></span>
@@ -718,7 +712,7 @@
           
         </div>
       
-      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_6_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_6_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2_2_6">
           <span class="md-nav__icon md-icon"></span>
           Login and Logout
@@ -733,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../login/" class="md-nav__link">
+      <a href="../../user/manual/login-logout/login/" class="md-nav__link">
         Login
       </a>
     </li>
@@ -745,21 +739,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user/manual/login-logout/forgot-password/" class="md-nav__link">
         Forgot Password
       </a>
-      
     </li>
   
 
@@ -771,7 +755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reset-password-email/" class="md-nav__link">
+      <a href="../../user/manual/login-logout/reset-password-email/" class="md-nav__link">
         Reset Password
       </a>
     </li>
@@ -785,7 +769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../logout/" class="md-nav__link">
+      <a href="../../user/manual/login-logout/logout/" class="md-nav__link">
         Logout
       </a>
     </li>
@@ -828,7 +812,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../user-profile/">User Profile</a>
+          <a href="../../user/manual/user-profile/">User Profile</a>
           
             <label for="__nav_2_2_7">
               <span class="md-nav__icon md-icon"></span>
@@ -851,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-profile/profile/" class="md-nav__link">
+      <a href="../../user/manual/user-profile/profile/" class="md-nav__link">
         Profile
       </a>
     </li>
@@ -865,7 +849,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-profile/recent-activity/" class="md-nav__link">
+      <a href="../../user/manual/user-profile/recent-activity/" class="md-nav__link">
         Recent Activity
       </a>
     </li>
@@ -908,7 +892,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../map/">Map</a>
+          <a href="../../user/manual/map/">Map</a>
           
             <label for="__nav_2_2_8">
               <span class="md-nav__icon md-icon"></span>
@@ -931,7 +915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../map/map/" class="md-nav__link">
+      <a href="../../user/manual/map/map/" class="md-nav__link">
         Map Page
       </a>
     </li>
@@ -945,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../map/recent-observation/" class="md-nav__link">
+      <a href="../../user/manual/map/recent-observation/" class="md-nav__link">
         Recent Observations
       </a>
     </li>
@@ -988,7 +972,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../upload/">Upload</a>
+          <a href="../../user/manual/upload/">Upload</a>
           
             <label for="__nav_2_2_9">
               <span class="md-nav__icon md-icon"></span>
@@ -1011,7 +995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../upload/add-records/" class="md-nav__link">
+      <a href="../../user/manual/upload/add-records/" class="md-nav__link">
         Add Records
       </a>
     </li>
@@ -1025,7 +1009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../upload/score/" class="md-nav__link">
+      <a href="../../user/manual/upload/score/" class="md-nav__link">
         Score
       </a>
     </li>
@@ -1046,7 +1030,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contact-us/" class="md-nav__link">
+      <a href="../../user/manual/contact-us/" class="md-nav__link">
         Contact Us
       </a>
     </li>
@@ -1073,14 +1057,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
       
       
         
@@ -1097,7 +1083,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../../administrator/">Administrator</a>
+          <a href="../">Administrator</a>
           
             <label for="__nav_3">
               <span class="md-nav__icon md-icon"></span>
@@ -1105,7 +1091,7 @@
           
         </div>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           Administrator
@@ -1120,7 +1106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../administrator/admin/" class="md-nav__link">
+      <a href="../admin/" class="md-nav__link">
         Accessing Administration Page
       </a>
     </li>
@@ -1132,11 +1118,140 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../../administrator/django-admin/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Django Administration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Django Administration
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#important-tables-to-manage" class="md-nav__link">
+    Important Tables to Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Important Tables to Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-table" class="md-nav__link">
+    Users Table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations-table" class="md-nav__link">
+    Observations Table
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-tables-to-manage" class="md-nav__link">
+    Other Tables to Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Tables to Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-scores" class="md-nav__link">
+    Group Scores
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-apps" class="md-nav__link">
+    Mobile Apps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#videos" class="md-nav__link">
+    Videos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-table-management" class="md-nav__link">
+    General Table Management
+  </a>
+  
+    <nav class="md-nav" aria-label="General Table Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-tables" class="md-nav__link">
+    Adding Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editing-tables" class="md-nav__link">
+    Editing Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-record-of-tables" class="md-nav__link">
+    Delete Record of Tables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1184,7 +1299,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../../developer/">Developer</a>
+          <a href="../../developer/">Developer</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -1207,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/install/" class="md-nav__link">
+      <a href="../../developer/install/" class="md-nav__link">
         Installation
       </a>
     </li>
@@ -1221,7 +1336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/authentication/" class="md-nav__link">
+      <a href="../../developer/authentication/" class="md-nav__link">
         Authentication
       </a>
     </li>
@@ -1235,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/sites/" class="md-nav__link">
+      <a href="../../developer/sites/" class="md-nav__link">
         Sites
       </a>
     </li>
@@ -1249,7 +1364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/observations/" class="md-nav__link">
+      <a href="../../developer/observations/" class="md-nav__link">
         Observations
       </a>
     </li>
@@ -1263,7 +1378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../developer/profile/" class="md-nav__link">
+      <a href="../../developer/profile/" class="md-nav__link">
         Profile API
       </a>
     </li>
@@ -1305,7 +1420,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../../about/">About</a>
+          <a href="../../about/">About</a>
           
             <label for="__nav_5">
               <span class="md-nav__icon md-icon"></span>
@@ -1328,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../about/license/" class="md-nav__link">
+      <a href="../../about/license/" class="md-nav__link">
         License
       </a>
     </li>
@@ -1362,6 +1477,109 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#important-tables-to-manage" class="md-nav__link">
+    Important Tables to Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Important Tables to Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-table" class="md-nav__link">
+    Users Table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations-table" class="md-nav__link">
+    Observations Table
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-tables-to-manage" class="md-nav__link">
+    Other Tables to Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Tables to Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-scores" class="md-nav__link">
+    Group Scores
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-apps" class="md-nav__link">
+    Mobile Apps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#videos" class="md-nav__link">
+    Videos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-table-management" class="md-nav__link">
+    General Table Management
+  </a>
+  
+    <nav class="md-nav" aria-label="General Table Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-tables" class="md-nav__link">
+    Adding Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editing-tables" class="md-nav__link">
+    Editing Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-record-of-tables" class="md-nav__link">
+    Delete Record of Tables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1378,46 +1596,32 @@
   
 
 
-<h1 id="minisass-forgot-password-page-user-manual">miniSASS Forgot Password Page User Manual<a class="headerlink" href="#minisass-forgot-password-page-user-manual" title="Permanent link">&para;</a></h1>
-<p>Welcome to the miniSASS Forgot Password page! Follow the steps below to reset your forgotten password.</p>
-<p><img alt="Forgot Password" src="../img/forgot-password-1.png" /></p>
-<ol>
-<li>
-<p><strong>Informative Message:</strong></p>
-<p>Read the informative message at the top of the page: "Please provide the email you registered with, and you will receive instructions shortly on how to reset your forgotten password."</p>
-</li>
-<li>
-<p><strong>Email Input Field:</strong></p>
-<p>Enter the email address associated with your miniSASS account in the provided input field.</p>
-</li>
-<li>
-<p><strong>Send Reset Link Button:</strong></p>
-<ul>
-<li>Click the <code>Send Reset Link</code> button to initiate the password reset process.</li>
-</ul>
-<p><strong>On Success</strong>
-- A confirmation message will inform you that an email with instructions has been sent to the provided email address.</p>
-<div class="highlight"><pre><span></span><code>![Success Message](./img/forgot-password-3.png)
-</code></pre></div>
-<ul>
-<li>For detailed reset password email instructions, refer to the <a href="../reset-password-email/">reset password email page documentation</a>.</li>
-</ul>
-<p><strong>On Failure</strong>
-- If the send reset link attempt fails, an error message will be displayed.</p>
-<div class="highlight"><pre><span></span><code>![Error Message](./img/forgot-password-2.png)
-</code></pre></div>
-</li>
-<li>
-<p><strong>Go Back Button:</strong></p>
-<p>If you decide not to reset your password, you can click the <code>Go Back</code> button to return to the login page.</p>
-</li>
-</ol>
-<p><strong>Security Tips</strong></p>
-<p>Ensure that you use the email address associated with your miniSASS account.
-Check your email promptly for the password reset instructions.</p>
-<p><strong>Note:</strong></p>
-<p>If you do not receive an email within a few minutes, please check your spam folder.
-For further assistance, contact our support team. For detailed contact page instructions, refer to the <a href="../../contact-us/">contact page documentation</a>.</p>
+<h1 id="django-administration-site">Django Administration Site<a class="headerlink" href="#django-administration-site" title="Permanent link">&para;</a></h1>
+<p>This site is the administration site for the miniSASS platform, and only specific superusers can access it and in turn have the ability to make changes on it.</p>
+<h2 id="important-tables-to-manage">Important Tables to Manage<a class="headerlink" href="#important-tables-to-manage" title="Permanent link">&para;</a></h2>
+<p>There are a variety of tables to manage on the Django Admin site but the two key ones are the <a href="#users-table">Users Table</a> and the <a href="#observations-table">Observations Table</a>.</p>
+<h3 id="users-table">Users Table<a class="headerlink" href="#users-table" title="Permanent link">&para;</a></h3>
+<!-- Main focus on changing novice user to expert user -->
+
+<h3 id="observations-table">Observations Table<a class="headerlink" href="#observations-table" title="Permanent link">&para;</a></h3>
+<!-- Validating images that are dirty -->
+
+<h2 id="other-tables-to-manage">Other Tables to Manage<a class="headerlink" href="#other-tables-to-manage" title="Permanent link">&para;</a></h2>
+<p>There are other tables that can be managed by administrative users and these are the <a href="#group-scores">Group Scores</a>, <a href="#mobile-apps">Mobile Apps</a>, and <a href="#videos">Videos</a></p>
+<h3 id="group-scores">Group Scores<a class="headerlink" href="#group-scores" title="Permanent link">&para;</a></h3>
+<!-- Shouldn't need to be changed but can be -->
+
+<h3 id="mobile-apps">Mobile Apps<a class="headerlink" href="#mobile-apps" title="Permanent link">&para;</a></h3>
+<!-- Current version where app can be added, can add new apk if needed -->
+
+<h3 id="videos">Videos<a class="headerlink" href="#videos" title="Permanent link">&para;</a></h3>
+<!-- can store videos, but we'd have to do front end work to display them -->
+
+<h2 id="general-table-management">General Table Management<a class="headerlink" href="#general-table-management" title="Permanent link">&para;</a></h2>
+<p>All of the tables on the administration site follow similar structures and as such can be managed in similar ways.</p>
+<h3 id="adding-tables">Adding Tables<a class="headerlink" href="#adding-tables" title="Permanent link">&para;</a></h3>
+<h3 id="editing-tables">Editing Tables<a class="headerlink" href="#editing-tables" title="Permanent link">&para;</a></h3>
+<h3 id="delete-record-of-tables">Delete Record of Tables<a class="headerlink" href="#delete-record-of-tables" title="Permanent link">&para;</a></h3>
 
 
 
@@ -1525,17 +1729,17 @@ For further assistance, contact our support team. For detailed contact page inst
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.annotate", "content.tabs.link", "header.autohide", "navigation.indexes", "navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.tabs.link", "header.autohide", "navigation.indexes", "navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
         
           <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
         
       
         
-          <script src="../../../../js/tablesort.js"></script>
+          <script src="../../js/tablesort.js"></script>
         
       
     

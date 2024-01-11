@@ -64,13 +64,19 @@ nav:
                                 - user/manual/user-profile/index.md
                                 - Profile: user/manual/user-profile/profile.md
                                 - Recent Activity: user/manual/user-profile/recent-activity.md
-                                - Admin Options: user/manual/user-profile/admin.md # might need to move to another section?
-                        - Map: user/manual/map/map.md
+                        - Map: 
+                                - user/manual/map/index.md
+                                - Map Page: user/manual/map/map.md
+                                - Recent Observations: user/manual/map/recent-observation.md
                         - Upload: 
                                 - user/manual/upload/index.md
                                 - Add Records: user/manual/upload/add-records.md
                                 - Score: user/manual/upload/score.md
                         - Contact Us: user/manual/contact-us.md
+        - Administrator:
+                - administrator/index.md
+                - Accessing Administration Page: administrator/admin.md
+                - Django Administration: administrator/django-admin.md
         - Developer:
                   - developer/index.md
                   - Installation: developer/install.md

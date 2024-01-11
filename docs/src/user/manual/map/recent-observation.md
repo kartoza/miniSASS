@@ -41,56 +41,56 @@ This icon visually represents the location on the map where the uploaded observa
 
     1. **Dot:** The dot shows the score on the chart. The user can hover over the dot for more information.
 
-6. **Add Record:** Clicking on the `Add Record` button opens an add record form for adding the record. For detailed add record instructions, refer to the [add record documentation](../upload/add-record.md).
+6. **Add Record:** Clicking on the `Add Record` button opens an add record form for adding the record. For detailed add record instructions, refer to the [add record documentation](../upload/add-records.md).
 
 7. **Map:** - For detailed map instructions, refer to the [map documentation](./map.md).
 
 ## Available References
 
-![Available References](./img/landing-page-13.png)
+![Available References](../img/landing-page-13.png)
 
 1. **Ground Truth**: GroundTruth provides a range of consulting services and equipment beneficial to water resource management projects.
 
     - GroundTruth has provided input into and coordinated large-scale, multi-national projects as well as small-scale, local projects. Through these projects, we have fostered a large and diverse client base and gained recognition for our work through several awards. 
 
-    ![Ground Truth](./img/landing-page-14.png)
+    ![Ground Truth](../img/landing-page-14.png)
 
 2. **United Nations Children's Fund (UNICEF)**: UNICEF works in over 190 countries and territories to save children's lives, defend their rights, and help them fulfil their potential, from early childhood through adolescence. And we never give up.
 
-    ![United Nations Children's Fund (UNICEF)](./img/landing-page-18.png)
+    ![United Nations Children's Fund (UNICEF)](../img/landing-page-18.png)
 
 3. **CGIAR**: CGIAR is a global research partnership for a food-secure future dedicated to transforming food, land, and water systems in a climate crisis. CGIAR is the world’s largest global agricultural innovation network.
     - We provide evidence to policymakers, innovation to partners, and new tools to harness the economic, environmental and nutritional power of agriculture.
 
-    ![CGIAR](./img/landing-page-17.png)
+    ![CGIAR](../img/landing-page-17.png)
 
 4. **International Water Management Institute (IWMI)**: IWMI is an international, research-for-development organization, with offices in 15 countries and a global network of scientists operating in more than 55 countries. For over three decades, our research results have led to changes in water management that have contributed to social and economic development.
 
     - A global network for water research that focuses on issues related to sustainable use of water resources.
     - IWMI’s mission is a water-secure world.
 
-    ![International Water Management Institute](./img/landing-page-15.png)
+    ![International Water Management Institute](../img/landing-page-15.png)
 
 5. **Water Research Commission:** The WRC was established in terms of the Water Research Act (Act No 34 of 1971), following a period of serious water shortage. It was deemed to be of national importance to generate new knowledge and to promote the country’s water research purposefully, owing to the view held that water would be one of South Africa’s most limiting factors in the 21st century. In 1971 when the WRC was founded, water research and development (R&D) in South Africa was limited to a few institutions and the funding level inadequate. There was no research coordination and an apparent neglect of some key research fields. In addition, there was little strategic direction or leadership that would provide for the identification of priority areas or appropriate technology transfer. It was to address these issues, that the WRC was established.
 
-    ![WRC](./how-to/img/how-to-12.png)
+    ![WRC](../how-to/img/how-to-12.png)
 
 6. **Amazon Web Services (AWS)**: Amazon Web Services (AWS) is the world’s most comprehensive and broadly adopted cloud, offering over 200 fully featured services from data centers globally. Millions of customers—including the fastest-growing startups, largest enterprises, and leading government agencies—are using AWS to lower costs, become more agile, and innovate faster.
 
-    ![Amazon Web Services (AWS)](./img/landing-page-16.png)
+    ![Amazon Web Services (AWS)](../img/landing-page-16.png)
 
 7. **WESSA (Wildlife and Environment Society of South Africa):** WESSA (the Wildlife and Environment Society of South Africa) is a South African environmental organisation that aims to initiate and support high-impact environmental and conservation projects to promote participation in caring for the Earth. For over 90 years we have proactively engaged with the challenges and opportunities presented by our country’s unique natural heritage and the social and economic systems that depend on it.
 
-    ![WESSA!](./how-to/img/how-to-13.png)
+    ![WESSA!](../how-to/img/how-to-13.png)
 
 8. **Kartoza:** Make geospatial data and technology work for you by partnering with us for training, development and maintenance of GIS systems. Kartoza is a South Africa-based Free and Open Source GIS (FOSSGIS) service provider. We use GIS software to solve complex location-related problems for individuals, businesses and governments around the world. Our team develops software using FOSSGIS to give you the freedom to share and modify your GIS as your needs grow and change.
 
-    ![Kartoza](./how-to/img/how-to-14.png)
+    ![Kartoza](../how-to/img/how-to-14.png)
 
 ## Footer Options
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
 
-2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](./how-to/how-to.md).
+2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](../how-to/how-to.md).
 
 3. **Map**: Navigate to the map page by clicking on the `Map` link.
