@@ -48,7 +48,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if(formData.usernameForEmailRetrieval){
+    if(formData.usernameForEmailRetrieval && !formData.email){
       try{
         const user_email = await axios.get(
           `${globalVariables.baseUrl}/authentication/api/retrieve-email-by-username/${formData.usernameForEmailRetrieval}`
