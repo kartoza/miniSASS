@@ -102,7 +102,8 @@ def upload_pest_image(request):
                     observation = Observations.objects.create(
                         gid=new_observation_id,
                         site=site,
-                        user=user
+                        user=user,
+                        comment=''
                     )
 
                 # Save images in the request object
