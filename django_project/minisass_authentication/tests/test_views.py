@@ -370,7 +370,7 @@ class LoginTest(APITestCase):
 
         url = reverse('user_login')
         payload = {
-            'username': user.username,
+            'email': user.email,
             'password': password
         }
         response = self.client.post(url, payload, format='json')
@@ -396,7 +396,7 @@ class LoginTest(APITestCase):
 
         url = reverse('user_login')
         payload = {
-            'username': user.username,
+            'email': user.email,
             'password': password
         }
         response = self.client.post(url, payload, format='json')

@@ -235,10 +235,10 @@ const Home: React.FC = () => {
     <>
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto pb-[5px] w-full">
         <div className="flex flex-col items-center justify-start sm:static w-full">
-          <div className="h-[537px] md:px-5 relative w-full">
+          <div className="h-[514px] md:px-5 relative w-full">
 
             {/* header section */}
-            <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-53px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] sm:static w-full z-[1]">
+            <div className="bg-white-A700 flex flex-col items-center justify-start mb-[-25px] mx-auto pb-[17px] pl-[17px] rounded-bl-[65px] sm:static w-full z-[1]">
               <div className="flex flex-col items-center justify-start w-[98%] md:w-full">
                 <div className="flex md:flex-col flex-row gap-[30px] items-start justify-between sm:static w-full">
 
@@ -386,7 +386,7 @@ const Home: React.FC = () => {
 
           <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
 
-          <div className="flex flex-col mt-[86px] mt-5 relative md:top-[145px] sm:top-[200px] top-[30px] md:w-[98%]">
+          <div className="flex flex-col mt-[25px] mt-5 relative md:top-[145px] sm:top-[200px] top-[30px] md:w-[98%]">
             <div>
               <Text
                 className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
@@ -404,7 +404,7 @@ const Home: React.FC = () => {
               <div className="w-[75%] sm:w-full md:w-full">
                 <Text
                 className="md:h-auto leading-[136.40%] text-xl tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
-                size="txtRalewayRomanSemiBold20"
+                size="txtRalewayRoman20"
               >
                 The mini stream assessment scoring system (miniSASS) simple and accessible citizen science tool for
                   monitoring the water quality and health of stream and river systems. You collect a sample
@@ -420,10 +420,10 @@ const Home: React.FC = () => {
           {/* end of section */}
 
           {/* obeservations and map section */}
-          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[50px] recent-observations">
+          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[25px] recent-observations">
              {/* observations */}
-             <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative sm:top-[45px] w-full">
-              <div className="sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
+             <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative w-full sm:mt-[150px] md:mt-[150px]">
+              <div className="mb-[-50px] sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
                 <Text
                   className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                   size="txtRalewayRomanBold40"
@@ -461,7 +461,7 @@ const Home: React.FC = () => {
               <List
                 className="flex-col sm:flex-row gap-3 grid sm:grid-cols-1 md:grid-cols-2 grid-cols-5 sm:h-[50vh]
                 items-baseline justify-around overflow-auto relative w-auto md:w-full
-                recent-observations-list"
+                recent-observations-list sm:mt-[50px] md:mt-[50px]"
                 orientation="horizontal"
               >
                 {observations.slice(currentIndex, currentIndex + observationPerPage).map((props, index) => (
@@ -478,7 +478,8 @@ const Home: React.FC = () => {
             </div>
 
             {/* map */}
-            <div className="bg-blue-900 flex flex-col items-start justify-start max-w-full mt-28 pl-[53px] pr-[134px] md:px-10 sm:px-5 py-[103px] w-full">
+            <div className="bg-blue-900 flex flex-col items-start justify-start max-w-full mt-[-50px] pl-[53px]
+              pr-[134px] md:px-10 sm:px-5 py-[103px] w-full sm:mt-[50px] md:mt-[50px]">
               <div className="flex md:flex-col flex-row md:gap-10 gap-[89px] items-center justify-start max-w-[1350px] mx-auto w-full">
                 <Img
                   className="md:flex-1 h-[280px] sm:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] w-[303px] md:w-full"
