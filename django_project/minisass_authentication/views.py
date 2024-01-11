@@ -224,7 +224,7 @@ def register(request):
 
         object_to_save = {
             'last_name': request.data.get('surname', ''),
-            'username': request.data.get('username', ''),
+            'username': request.data.get('email', 'default_username'),
             'first_name': request.data.get('name', ''),
             'organization_name': request.data.get('organizationName', ''),
             'organization_type': request.data.get('organizationType', 'NGO'),
