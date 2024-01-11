@@ -8,7 +8,9 @@ from monitor.observation_views import (
     RecentObservationListView,
     create_observations,
     ObservationImageViewSet,
-    get_observations_by_site
+    get_observations_by_site,
+    upload_pest_image,
+    delete_pest_image
 )
 from monitor.site_views import (
     AssessmentListCreateView,
@@ -87,6 +89,16 @@ urlpatterns = [
         'observations-create/',
         create_observations,
         name='create_observations'
+    ),
+    path(
+        'upload-pest-images/', 
+        upload_pest_image,
+        name='upload-pest-images'
+    ),
+    path(
+        'observation-images/<int:observation_pk>/delete/<int:pk>/',
+        delete_pest_image,
+        name='remove-pest-image'
     ),
 
     path(

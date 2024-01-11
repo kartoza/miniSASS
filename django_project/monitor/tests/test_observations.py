@@ -13,6 +13,7 @@ from minisass_authentication.models import UserProfile
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
+from django.shortcuts import get_object_or_404
 
 
 class BaseObservationsModelTest(TestCase):
@@ -192,6 +193,62 @@ class ObservationsModelTest(BaseObservationsModelTest):
         # Check if the object is actually deleted from the database
         with self.assertRaises(Observations.DoesNotExist):
             Observations.objects.get(gid=observation.gid)
+
+    def test_upload_pest_image(self):
+
+        # Create a sample image file
+        image_file = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg")
+
+        # this resolves the user instance error when creating the site
+        self.client.login(email='test@gmail.com', password='testpassword')
+
+        url = reverse('upload-pest-images')
+
+        response = self.client.post(
+            url, 
+            {
+                'pest_image:pest_name': image_file,
+                'observationId': 0,
+                'siteId': 0,
+                'create_site_or_observation': 'False'
+            },
+        )
+
+        # Check the response status and content
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('status', response.json())
+        self.assertIn('observation_id', response.json())
+
+        observation_id = response.json()['observation_id']
+        site_id = response.json()['site_id']
+        pest_image_id = response.json()['pest_image_id']
+
+
+        response = self.client.post(
+            url, 
+            {
+                'pest_image:pest_name': image_file,
+                'observationId': observation_id,
+                'siteId': site_id,
+                'create_site_or_observation': 'False'
+            },
+        )
+
+        observation_id = response.json()['observation_id']
+        site_id = response.json()['site_id']
+        pest_image_id = response.json()['pest_image_id']
+
+        url = reverse(
+            'remove-pest-image',
+            kwargs={
+                'pk': pest_image_id,
+                'observation_pk': observation_id
+            }
+        )
+
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, 200)
 
     def test_observation_image_list_view(self):
         """Test observation images."""
