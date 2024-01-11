@@ -71,6 +71,7 @@ def upload_pest_image(request):
                 
                 site_id = request.POST.get('siteId')
                 observation_id = request.POST.get('observationId')
+                user = request.user
                 try:
                     site_id = int(site_id)
                     observation_id = int(observation_id)
@@ -85,8 +86,6 @@ def upload_pest_image(request):
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
-
-                    user = request.user
     
                     site = Sites.objects.create(
                         gid=new_site_id,
@@ -102,7 +101,8 @@ def upload_pest_image(request):
 
                     observation = Observations.objects.create(
                         gid=new_observation_id,
-                        site=site
+                        site=site,
+                        user=user
                     )
 
                 # Save images in the request object
