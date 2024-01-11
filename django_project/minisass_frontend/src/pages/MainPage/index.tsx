@@ -366,7 +366,7 @@ const Home: React.FC = () => {
                     src={`${globalVariables.staticPath}img_bxclouddownload.svg`}
                     alt="bxclouddownload"
                   />
-                    <HashLink to="/howto#minisass-video">
+                    <HashLink to="/howto#howto-resources">
                       <Text
                         className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                         size="txtRalewayExtraBold14WhiteA700"
