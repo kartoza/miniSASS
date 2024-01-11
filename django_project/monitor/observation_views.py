@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from django.http import Http404
+from datetime import datetime
 
 from minisass_authentication.models import UserProfile
 
@@ -103,7 +104,8 @@ def upload_pest_image(request):
                         gid=new_observation_id,
                         site=site,
                         user=user,
-                        comment=''
+                        comment='',
+                        obs_date=datetime.now()
                     )
 
                 # Save images in the request object
