@@ -258,8 +258,11 @@ class ObservationPestImage(models.Model):
         # Create dir if necessary and move file
         if not os.path.exists(os.path.dirname(new_path)):
             os.makedirs(os.path.dirname(new_path))
+        try:
+            os.rename(initial_path, new_path)
+        except (FileNotFoundError, FileExistsError):
+            return
 
-        os.rename(initial_path, new_path)
         self.image.name = new_name
 
 
