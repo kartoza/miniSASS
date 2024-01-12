@@ -38,7 +38,7 @@ const HowtoPage: React.FC = () => {
           <div
             id={"howto-title"}
             className="bg-gray-200 h-[20px] flex flex-col items-start justify-end mt-auto mx-auto p-12 md:px-10 sm:px-5
-            relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%] sm:w-[144%] w-full
+            relative rounded-br-[65px] md:top-[-105px] sm:top-[-80px] top-[50px] md:w-[102%]w-full
             ">
             <div className="flex flex-col items-center justify-start md:ml-[0] mt-[61px]">
               <Text
@@ -55,9 +55,9 @@ const HowtoPage: React.FC = () => {
         {/* How to do a miniSASS survey section*/}
         <div
           className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[-30px] mx-auto md:px-5
-          md:relative md:top-20 sm:mt-[200px] sm:w-[144%] w-full">
+          md:relative md:top-20 sm:mt-[200px]w-full sm:mt-[200px]">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             How to do a miniSASS survey
@@ -114,9 +114,9 @@ const HowtoPage: React.FC = () => {
 
         {/* MiniSASS survey: How to do a miniSASS assessment */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             MiniSASS survey: How to do a miniSASS assessment
@@ -156,9 +156,9 @@ const HowtoPage: React.FC = () => {
 
         {/* How to stay safe when doing miniSASS */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             How to stay safe when doing miniSASS
@@ -191,9 +191,9 @@ const HowtoPage: React.FC = () => {
 
                 {/* How to stay safe when doing miniSASS */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             Choosing a site to sample for miniSASS
@@ -224,9 +224,9 @@ const HowtoPage: React.FC = () => {
 
         {/* How to take a miniSASS sample */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             How to take a miniSASS sample
@@ -260,9 +260,9 @@ const HowtoPage: React.FC = () => {
 
         {/* How to calculate your miniSASS score */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             How to calculate your miniSASS score
@@ -296,9 +296,9 @@ const HowtoPage: React.FC = () => {
 
         {/* Uploading your miniSASS score */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             Uploading your miniSASS score
@@ -326,9 +326,9 @@ const HowtoPage: React.FC = () => {
 
         {/* Using miniSASS for monitoring */}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             Using miniSASS for monitoring
@@ -361,15 +361,15 @@ const HowtoPage: React.FC = () => {
         {/* resources for download section */}
         <div
           id={'howto-resources'}
-          className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5 sm:w-[144%] w-full">
-          <div className="flex container flex-col w-[30%]">
+          className="bg-blue-900 flex md:flex-col flex-row md:gap-10 gap-[97px] items-start justify-start mt-28 p-[103px] md:px-10 sm:px-5w-full sm:mt-[200px]">
+          <div className="flex container flex-col w-[30%] sm:w-full">
             <Img
-              className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full"
+              className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full sm:w-full"
               src={`${globalVariables.staticPath}download-1.jpg`}
               alt="rectangleSix_One"
             />
             <Img
-              className="md:flex-1 h-[280px] sm:h-auto md:ml-[0] ml-[27px] md:mt-0 mt-0.5 mt-[50px] object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full"
+              className="md:flex-1 h-[280px] sm:h-auto sm:mt-[25px] md:ml-[0] ml-[27px] md:mt-0 mt-0.5 mt-[50px] object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tl-[25px] md:w-full"
               src={`${globalVariables.staticPath}download-2.jpg`}
               alt="rectangleSix_One"
             />
@@ -385,7 +385,7 @@ const HowtoPage: React.FC = () => {
             </div>
             <div>
               <Text
-                className="sm:text-4xl md:text-[38px] text-[20px] text-white-A700 w-auto"
+                className="sm:text-2xl md:text-[38px] text-[20px] text-white-A700 w-auto"
                 size="txtRalewayRomanBold30"
               >
                 Below are educational resources developed as part of the Share-Net partnership project between Wildlife and Environment Society of South Africa (WESSA) and the Water Research Commission (WRC). Share-Net are committed to developing and disseminating materials in support of environmentally focused teaching and learning. Share-Net materials are copyright-free for educational purposes.
@@ -393,7 +393,7 @@ const HowtoPage: React.FC = () => {
             </div>
             <div>
               <Text
-                className="sm:text-4xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
+                className="sm:text-2xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
                 size="txtRalewayRomanBold30"
               >
                 <span><b>miniSASS field sheets</b></span>
@@ -437,14 +437,14 @@ const HowtoPage: React.FC = () => {
             </div>
             <div>
               <Text
-                className="sm:text-4xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
+                className="sm:text-2xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
                 size="txtRalewayRomanBold30"
               >
               Below are packages aimed at learners in different grades, containing activities oriented towards learning in various fields. The packages for Grades 7, 9, and 11, include activities involving miniSASS for education in the natural sciences / environmental health and sustainability / freshwater ecology. We encourage you to adapt and use the materials in new, exciting ways but request that you acknowledge Share-Net as an original source. Sensible use of these curriculum activities is entirely the responsibility of the educator.              </Text>
             </div>
             <div>
               <Text
-                className="sm:text-4xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
+                className="sm:text-2xl md:text-[38px] text-[20px] text-white-A700 w-auto mt-[30px]"
                 size="txtRalewayRomanBold30"
               >
                 <span><b>Educational Resources</b></span>
@@ -492,9 +492,9 @@ const HowtoPage: React.FC = () => {
 
         {/* Further reading section*/}
         <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[94px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px] sm:w-[144%] w-full">
+          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[94px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
           <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full"
+            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
             Further Reading
@@ -515,7 +515,7 @@ const HowtoPage: React.FC = () => {
         </div>
         {/* end of section */}
 
-        <Footer className="flex items-center justify-center mt-28 md:px-5 sm:w-[144%] w-full"/>
+        <Footer className="flex items-center justify-center mt-28 md:px-5w-full"/>
       </div>
     </>
   );
