@@ -224,8 +224,8 @@ def create_observations(request):
                     river_name = datainput.get('riverName', '')
                     description = datainput.get('siteDescription', '')
                     river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = Decimal("{:.6f}".format(float(datainput.get('longitude', 0))))
-                    latitude = Decimal("{:.6f}".format(float(datainput.get('latitude', 0))))
+                    longitude = datainput.get('longitude', 0)
+                    latitude = datainput.get('latitude', 0)
 
                     if Sites.objects.filter(site_name=site_name).exists():
                         return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
@@ -285,8 +285,8 @@ def create_observations(request):
                     river_name = datainput.get('riverName', '')
                     description = datainput.get('siteDescription', '')
                     river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = Decimal("{:.6f}".format(float(datainput.get('longitude', 0))))
-                    latitude = Decimal("{:.6f}".format(float(datainput.get('latitude', 0))))
+                    longitude = datainput.get('longitude', 0)
+                    latitude = datainput.get('latitude', 0)
 
                     site.site_name = site_name
                     site.river_name = river_name
