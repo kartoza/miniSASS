@@ -324,13 +324,45 @@ The Django admin user table is a central component within the Django admin inter
 There are other tables that can be managed by administrative users and these are the [Group Scores](#group-scores), [Mobile Apps](#mobile-apps), and [Videos](#videos)
 
 ### Group Scores
-<!-- Shouldn't need to be changed but can be -->
+
+![group scores table](./img/django-admin-18.png)
+
+1. **Group Scores:** The administrators can click on the group to view the group's table.
+
+    ![group scores](./img/django-admin-19.png)
+
+    1. **Group:** 
+        - The administrator can view or edit the details of a specific group.
+        - When the administrator clicks on the name of the particular group, a change page will open, allowing the administrator to view or edit the details of that specific group.
+
+        ![edit/view group scores](./img/django-admin-20.png)
+    
+    2. **ADD GROUP SCORE:** 
+        - The administrator can create a new group.
+        - When the administrator clicks on the `ADD GROUP SCORE` button, a new add group score page will open, allowing the administrator to add a new group.
+
+        ![add group scores](./img/django-admin-21.png)
+
 
 ### Mobile Apps
-<!-- Current version where app can be added, can add new apk if needed -->
+
+![mobile apps](./img/django-admin-22.png)
+
+1. **Mobile Apps:** Click on the `Mobile Apps` to open the mobile apps table.
+
+2. **Current version:** The current version of the `miniSASS Mobile App`.
+
+3. **ADD MOBILE APPS:** The administrators can add the new version of the miniSASS mobile app by using this button.
 
 ### Videos
-<!-- can store videos, but we'd have to do front end work to display them -->
+
+![mobile apps](./img/django-admin-23.png)
+
+1. **Videos:** Click on the `Videos` to open the videos table.
+
+2. **View Video:** Click on the name of the video to view or edit the video link.
+
+3. **ADD VIDEO:** Administrators can upload videos using this button. To display the video on the website, additional front-end development work is required.
 
 ## General Table Management
 
