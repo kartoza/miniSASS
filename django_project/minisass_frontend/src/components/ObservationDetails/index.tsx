@@ -44,7 +44,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
-    resetMap();
+    // resetMap();
     setOpenFromHomePage(false);
   };
 
