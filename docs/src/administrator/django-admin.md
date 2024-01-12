@@ -352,7 +352,7 @@ There are other tables that can be managed by administrative users and these are
 
 2. **Current version:** The current version of the `miniSASS Mobile App`.
 
-3. **ADD MOBILE APPS** The administrators can add the new version of the miniSASS mobile app by using this button.
+3. **ADD MOBILE APPS:** The administrators can add the new version of the miniSASS mobile app by using this button.
 
 ### Videos
 
@@ -362,7 +362,7 @@ There are other tables that can be managed by administrative users and these are
 
 2. **View Video:** Click on the name of the video to view or edit the video link.
 
-3. **ADD VIDEO** Administrators can upload videos using this button. To display the video on the website, additional front-end development work is required.
+3. **ADD VIDEO:** Administrators can upload videos using this button. To display the video on the website, additional front-end development work is required.
 
 ## General Table Management
 
