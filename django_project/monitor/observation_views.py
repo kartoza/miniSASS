@@ -340,7 +340,36 @@ def create_observations(request):
                     observation.save()
 
                 except Observations.DoesNotExist:
-                    pass
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
+                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    observation = Observations.objects.create(
+                        gid=new_observation_id,
+                        score=score,
+                        site=site,
+                        user=user,
+                        flatworms=flatworms,
+                        worms=worms,
+                        leeches=leeches,
+                        crabs_shrimps=crabs_shrimps,
+                        stoneflies=stoneflies,
+                        minnow_mayflies=minnow_mayflies,
+                        other_mayflies=other_mayflies,
+                        damselflies=damselflies,
+                        dragonflies=dragonflies,
+                        bugs_beetles=bugs_beetles,
+                        caddisflies=caddisflies,
+                        true_flies=true_flies,
+                        snails=snails,
+                        comment=comment,
+                        water_clarity=water_clarity,
+                        water_temp=water_temp,
+                        ph=ph,
+                        diss_oxygen=diss_oxygen,
+                        diss_oxygen_unit=diss_oxygen_unit,
+                        elec_cond=elec_cond,
+                        elec_cond_unit=elec_cond_unit,
+                        obs_date=obs_date
+                    )
 
             return JsonResponse(
                 {'status': 'success', 'observation_id': observation.gid})
