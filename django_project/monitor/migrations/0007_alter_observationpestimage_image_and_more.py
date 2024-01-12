@@ -45,4 +45,14 @@ class Migration(migrations.Migration):
                                                                                         location='/home/web/minio'),
                                     upload_to=monitor.models.site_image_path),
         ),
+        migrations.AlterField(
+            model_name='sites',
+            name='river_name',
+            field=models.CharField(max_length=50),
+        ),
+        migrations.AlterField(
+            model_name='sites',
+            name='site_name',
+            field=models.CharField(max_length=50),
+        ),
     ]
