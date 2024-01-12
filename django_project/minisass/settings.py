@@ -237,3 +237,9 @@ MINION_STORAGE = FileSystemStorage(
 )
 
 AUTHENTICATION_BACKENDS = ['minisass_authentication.backends.EmailBackend']
+
+
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
+MINIO_AI_BUCKET = os.getenv("MINIO_AI_BUCKET")
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT")

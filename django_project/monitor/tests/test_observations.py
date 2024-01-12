@@ -1,21 +1,28 @@
 import os
 from datetime import date, datetime
+from unittest.mock import patch
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from minisass_authentication.models import UserProfile
+from minisass_authentication.tests.factories import UserFactory
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
-from django.shortcuts import get_object_or_404
 
 
+@override_settings(
+    MINIO_ENDPOINT='http://some-endpoint',
+    MINIO_ACCESS_KEY='MINIO_ACCESS_KEY',
+    MINIO_SECRET_KEY='MINIO_SECRET_KEY'
+)
 class BaseObservationsModelTest(TestCase):
     """
     Base Test for Observation Test.
@@ -32,6 +39,9 @@ class BaseObservationsModelTest(TestCase):
         )
 
     def setUp(self):
+        self.s3_client_patch = patch('minisass.utils.boto3.client')
+        self.s3_client_patch.start()
+
         self.user = User.objects.create_user(
             username='testuser',
             password='testpassword',
@@ -101,6 +111,7 @@ class BaseObservationsModelTest(TestCase):
         )
 
         self.flatworms, _ = Pest.objects.get_or_create(name='Flatworms')
+        self.bugs_beetles, _ = Pest.objects.get_or_create(name='Bugs beetles')
         self.worms, _ = Pest.objects.get_or_create(name='Worms')
         self.leeches, _ = Pest.objects.get_or_create(name='Leeches')
 
@@ -428,9 +439,109 @@ class ObservationsModelTest(BaseObservationsModelTest):
         # Check if the response status code is 404 Not Found
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_expert_auto_validated_observation(self):
+        """
+        When observation is created by expert, it will automatically be validated.
+        All images will also valid.
+        """
+        user = UserFactory.create()
+        user.userprofile.is_expert = True
+        user.userprofile.save()
+
+        observation = Observations.objects.create(
+            user=user,
+            flatworms=True,
+            worms=True,
+            leeches=False,
+            crabs_shrimps=False,
+            site=self.site,
+            comment='test_comment',
+            score=4.5,
+            obs_date=date(2023, 12, 3),
+            flag='clean',
+            water_clarity=7.5,
+            water_temp=25.0,
+            ph=7.0,
+            diss_oxygen=8.5,
+            diss_oxygen_unit='mgl',
+            elec_cond=15.0,
+            elec_cond_unit='S/m'
+        )
+        site_image_1 = SiteImage.objects.create(
+            site=observation.site,
+            image=self.image_field('site_2.jpg')
+        )
+        pest_image_1 = ObservationPestImage.objects.create(
+            observation=observation,
+            pest=self.bugs_beetles,
+            image=self.image_field('bugs_beetles_1.jpg')
+        )
+        self.assertTrue(observation.is_validated)
+        self.assertTrue(pest_image_1.valid)
+
+        # image is in 'clean' directory
+        self.assertTrue(
+            pest_image_1.image.name,
+            f'demo/observations/clean/bugs_beetles/{observation.site_id}/{observation.gid}/bugs_beetles_1.jpg'
+        )
+        self.assertTrue(
+            site_image_1.image.name,
+            f'demo/sites/{observation.site_id}/site_2.jpg'
+        )
+
+    def test_novice_observation_dirty(self):
+        """
+        When observation is created by novice, it will not automatically be validated.
+        All images will also invalid.
+        """
+        self.assertFalse(self.observation.is_validated)
+        self.assertFalse(self.pest_image_1.valid)
+
+        # image is in 'dirty' directory
+        self.assertTrue(
+            self.pest_image_1.image.name,
+            f'demo/observations/dirty/flatworms/{self.observation.site_id}/{self.observation.gid}/flatworms_1.jpg'
+        )
+        self.assertTrue(
+            self.site_image_1.image.name,
+            f'demo/sites/{self.site.gid}/site_1.jpg'
+        )
+
+    def test_validate_image(self):
+        """
+        Test validating image. Image path should be updated, and image file is moved.
+        """
+        old_image_path = f'demo/observations/dirty/flatworms/{self.observation.site_id}/' \
+                         f'{self.observation.gid}/flatworms_1.jpg'
+        new_image_path = old_image_path.replace('/dirty/', '/clean/').replace('flatworms', 'worms')
+        self.assertTrue(
+            self.pest_image_1.image.name,
+            old_image_path
+        )
+
+        self.pest_image_1.valid = True
+        self.pest_image_1.pest = self.worms
+        self.pest_image_1.save()
+
+        # image path in databse record is updated
+        self.assertTrue(
+            self.pest_image_1.image.name,
+            new_image_path
+        )
+
+        # Observation is validated
+        self.assertTrue(self.pest_image_1.observation.is_validated)
+
+        # Image file is moved to clean directory
+        self.assertFalse(os.path.exists(os.path.join(settings.MINIO_ROOT, old_image_path)))
+        self.assertTrue(
+            os.path.exists(os.path.join(settings.MINIO_ROOT, new_image_path))
+        )
+
     def tearDown(self):
         """Tear down."""
         self.pest_image_1.delete()
         self.pest_image_2.delete()
         self.pest_image_3.delete()
         self.site.delete()
+        self.s3_client_patch.stop()
