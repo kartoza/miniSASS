@@ -112,13 +112,13 @@ The Django admin user table is a central component within the Django admin inter
 
         15. **Certificate Field:**  Allows administrators to upload user certificates as a part of the expert approval process.
 
-        16. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
+        16. **Save:** Save the current record and then get redirected to the Django Admin Table/record list.
         
-        17. **Save and add another**: Save the current record and then be redirected to a new page to add a new record.
+        17. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
-        18. **Save and continue editing**: Save the current record while still showing the current record.
+        18. **Save and continue editing:** Save the current record while still showing the current record.
 
-        19. **Delete button**: Delete the currently opened record. It will take administrators to a confirmation page.
+        19. **Delete button:** Delete the currently opened record. It will take administrators to a confirmation page.
 
     4. **Adding a New User:** The administrators can create a new user by clicking on the `add user` button, when the administrators click on this button a new page opens for adding the user record.
 
@@ -145,7 +145,7 @@ The Django admin user table is a central component within the Django admin inter
 
         7. **Certificate Field:**  Allows administrators to upload user certificates as a part of the expert approval process.
 
-        8. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
+        8. **Save:** Save the current record and then get redirected to the Django Admin Table/record list.
         
         9. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
@@ -238,7 +238,7 @@ The Django admin user table is a central component within the Django admin inter
 
     14. **Delete Column:** Checkbox available for deleting the pest record. Check the checkbox to select the pest record for deletion.
 
-    15. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
+    15. **Save:** Save the current record and then get redirected to the Django Admin Table/record list.
         
     16. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
