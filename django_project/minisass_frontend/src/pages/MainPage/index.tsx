@@ -34,54 +34,56 @@ const Home: React.FC = () => {
 
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
-    useEffect(() => {
-        const fetchHomePageData = (retryCount = 0) => {
-            axios
-                .get(
-                    `${FETCH_RECENT_OBSERVATIONS}`
-                )
-                .then((response) => {
-                    if (response.data) {
+  const fetchHomePageData = async (retryCount = 0) => {
+    await axios
+        .get(
+            `${FETCH_RECENT_OBSERVATIONS}`
+        )
+        .then((response) => {
+            if (response.data) {
 
-                        // Iterate through the response data and structure it as required by observations component
-                        response.data.forEach((item) => {
-                          // Convert the timestamp to a JavaScript Date object
-                          const timestampDate = new Date(item.obs_date);
-                        
-                          // Define an array of month names
-                          const monthNames = [
-                            "January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"
-                          ];
-                        
-                          // Format the date
-                          const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
-                        
-                          const structuredItem = {
-                            observation: item.observation,
-                            usernamejimtaylOne: `Username: ${item.username}`,
-                            userimage: "",
-                            username: item.site,
-                            score1: item.score,
-                            score: item.score,
-                            organisation: `Organisation: ${item.organisation}`,
-                            dateadded: `Date added: ${formattedDate}`
-                          };
-                          ObservationsPropList.push(structuredItem);
-                        });
-                        setObservations(ObservationsPropList)
-                    } else {
-                        if (retryCount < 3) {
-                          setTimeout(() => {
-                            fetchHomePageData(retryCount+1);
-                          }, 3000);
-                        }
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
+                // Iterate through the response data and structure it as required by observations component
+                response.data.forEach((item) => {
+                  // Convert the timestamp to a JavaScript Date object
+                  const timestampDate = new Date(item.time_stamp);
+                
+                  // Define an array of month names
+                  const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                  ];
+                
+                  // Format the date
+                  const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
+                
+                  const structuredItem = {
+                    observation: item.observation,
+                    usernamejimtaylOne: `Username: ${item.username}`,
+                    userimage: "",
+                    username: item.site,
+                    score1: item.score,
+                    score: item.score,
+                    organisation: `Organisation: ${item.organisation}`,
+                    dateadded: `Date added: ${formattedDate}`
+                  };
+                  ObservationsPropList.push(structuredItem);
                 });
-        };
+                setObservations(ObservationsPropList)
+            } else {
+                if (retryCount < 3) {
+                  setTimeout(() => {
+                    fetchHomePageData(retryCount+1);
+                  }, 3000);
+                }
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+  };
+
+
+    useEffect(() => {
 
         const uidParam = urlParams.get('uid');
         const tokenParam = urlParams.get('token');
