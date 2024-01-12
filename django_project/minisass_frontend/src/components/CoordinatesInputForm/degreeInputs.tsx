@@ -55,7 +55,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
         width: '300px',
         maxWidth: '300px',
         height: '40px',
-        border: '1px solid rgba(0, 0, 0, 0.23)',
+        border: `1px solid ${!currValue ? 'red' : 'rgba(0, 0, 0, 0.23)'}`,
         borderRadius: '4px',
         padding: '8px 12px',
         marginRight: '-2%'

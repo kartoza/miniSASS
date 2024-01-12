@@ -299,6 +299,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     if (selectSiteMode === 'SELECT_KNOWN_SITE') {
       getSites();
     }
+
+    // validations check if object is not empty
+    function isObjectEmpty(obj) {
+      return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
+    
+    if (!isObjectEmpty(props.siteDetails)) {
+      setProceedToSavingData(true)
+    }
+
   }, [selectSiteMode, props.siteDetails]);
 
   useEffect(() => {
@@ -335,6 +345,45 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       marginLeft: '210px'
     }),
   };
+
+
+  // form validations
+  const [proceedToSavingData, setProceedToSavingData] = useState(false);
+  const updateHighlightedFields = () => {
+    if (
+      formValues.riverName &&
+      formValues.siteName &&
+      formValues.siteDescription &&
+      formValues.date
+    ) {
+      setProceedToSavingData(true);
+    } else if(enableSiteFields){
+      setProceedToSavingData(false);
+    }
+  };
+
+  // form validations
+  useEffect(() => {
+    if(!proceedToSavingData && enableSiteFields)
+      handleSelectOnTypeCoordinateClick()
+  }, [proceedToSavingData]);
+
+
+  const transformSiteDetails = (siteDetails) => {
+    if (!siteDetails) {
+      return {};
+    }
+  
+    return {
+      label: siteDetails.sitename || '',
+      riverName: siteDetails.rivername || '',
+      rivercategory: siteDetails.rivercategory || '',
+      siteDescription: siteDetails.sitedescription || '',
+      siteName: siteDetails.sitename || '',
+      value: siteDetails.gid || 0,
+    };
+  };
+
 
   return (
     <>
@@ -449,6 +498,11 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     setFieldValue('siteName', '');
                     setFieldValue('riverCategory', '');
                     setFieldValue('siteDescription', '');
+                    // form validations
+                    setProceedToSavingData(false)
+                    formValues.riverName = ''
+                    formValues.siteName = ''
+                    formValues.siteDescription = ''
                   }}
                   row
                 >
@@ -489,7 +543,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         color={selectSiteMode === 'SELECT_KNOWN_SITE' ? 'blue_900' : 'blue_gray_500'}
                         size="xs"
                         variant="fill"
-                        onClick={handleSelectKnownSite}
+                        onClick={(() => {
+                          handleSelectKnownSite()
+                          setFieldValue('riverName', '');
+                          setFieldValue('siteName', '');
+                          setFieldValue('riverCategory', '');
+                          setFieldValue('siteDescription', '');
+                          setProceedToSavingData(false)
+                        })}
                         style={{marginBottom: '2%', marginLeft: '1.5%'}}
                       >
                           {selectSiteMode === 'SELECT_KNOWN_SITE' ? 'Disable' : 'Select site on map'}
@@ -521,10 +582,13 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                 styles={customStyles}
                                 value={(() => {
                                   const selectedOption = sites.find((option) => {
-                                    const isMatch = parseInt(option.value) === parseInt(values.selectedSite);
+                                    const isMatch = parseInt(option.value) === parseInt(values.selectedSite.value);
                                     return isMatch;
                                   });
-                                  return selectedOption;
+                                  
+                                  if(selectSiteMode === 'SELECT_KNOWN_SITE')
+                                    return transformSiteDetails(props.siteDetails)
+                                  return selectedOption
                                 })()}
                                 onChange={(selectedOption) => {
                                   handleChange({ target: { name: 'selectedSite', value: selectedOption.value } });
@@ -539,6 +603,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                     setFieldValue('rivercategory', '');
                                     setFieldValue('siteDescription', '');
                                     setIsCreateSite('useexistingsite');
+                                    setProceedToSavingData(false);
                                   } else {
                                     const selectedSite = sites.find((site) => site.value === selectedValue);
                                     if (selectedSite) {
@@ -548,6 +613,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('siteName', selectedSite.siteName);
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
+                                      setProceedToSavingData(true);
                                     }
                                   }
                                 }}
@@ -589,7 +655,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       width: '300px',
                       maxWidth: '300px',
                       height: '40px',
-                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      border: `1px solid ${proceedToSavingData ? 'rgba(0, 0, 0, 0.23)': !formValues.riverName ? 'red' : 'rgba(0, 0, 0, 0.23)'}`,
                       borderRadius: '4px',
                       padding: '8px 12px',
                       marginRight: '-2%',
@@ -606,6 +672,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         ...prevValues,
                         riverName: e.target.value
                       }));
+                      formValues.riverName = e.target.value
+                      updateHighlightedFields()
                     }}
                     disabled={!enableSiteFields ? true : false}
                   />
@@ -632,7 +700,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       width: '300px',
                       maxWidth: '300px',
                       height: '40px',
-                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      border: `1px solid ${proceedToSavingData ? 'rgba(0, 0, 0, 0.23)': !formValues.siteName ? 'red' : 'rgba(0, 0, 0, 0.23)'}`,
                       borderRadius: '4px',
                       padding: '8px 12px',
                       marginRight: '-2%',
@@ -649,6 +717,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         ...prevValues,
                         siteName: e.target.value
                       }));
+                      formValues.siteName = e.target.value
+                      updateHighlightedFields()
                     }}
                     disabled={!enableSiteFields ? true : false} 
                   />
@@ -669,7 +739,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       width: '300px',
                       maxWidth: '300px',
                       height: '80px',
-                      border: '1px solid rgba(0, 0, 0, 0.23)',
+                      border: `1px solid ${proceedToSavingData ? 'rgba(0, 0, 0, 0.23)': !formValues.siteDescription ? 'red' : 'rgba(0, 0, 0, 0.23)'}`,
                       borderRadius: '4px',
                       padding: '8px 12px',
                       marginRight: '-2%',
@@ -688,6 +758,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         ...prevValues,
                         siteDescription: e.target.value
                       }));
+                      formValues.siteDescription = e.target.value
+                      updateHighlightedFields()
                     }}
                     disabled={!enableSiteFields ? true : false}
                   />
@@ -855,7 +927,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             width: '300px',
                             maxWidth: '300px',
                             height: '40px',
-                            border: '1px solid rgba(0, 0, 0, 0.23)',
+                            border: `1px solid ${!formValues.date ? 'red' : 'rgba(0, 0, 0, 0.23)'}`,
                             borderRadius: '4px',
                             padding: '8px 12px',
                             marginRight: '-10px',
@@ -863,7 +935,15 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                           min={'2010-01-01'}
                           max={formatDate(new Date())}
                           value={values.date}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleChange(e);
+                            setSiteUserValues((prevValues) => ({
+                              ...prevValues,
+                              date: e.target.value
+                            }));
+                            formValues.date = e.target.value
+                            updateHighlightedFields()
+                          }}
                         />
                       </div>
                     </div>
@@ -1164,6 +1244,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   </div>
                 </div>
 
+                {!proceedToSavingData && (
+                  <Text
+                    className={` text-lg tracking-[0.15px] w-auto `}
+                    size="txtRalewayRomanRegular18"
+                    style={{ color: 'red', marginTop: '4px', marginBottom:' 4px' }}
+                  >
+                    Incomplete form. Please scroll up to complete the highlighted fields.
+                  </Text>
+                )}
+
                 <Button
                   className="!text-white-A700 cursor-pointer font-raleway mb-[33px] text-center text-lg tracking-[0.81px] w-[141px]"
                   shape="round"
@@ -1171,6 +1261,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                   size="xs"
                   variant="fill"
                   type="submit"
+                  disabled={!proceedToSavingData ? true : false}
+                  style={{ marginTop: '10px', opacity: proceedToSavingData  ? 1 : 0.5 }}
                 >
                   next
                 </Button>
