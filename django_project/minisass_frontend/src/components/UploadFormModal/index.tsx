@@ -36,12 +36,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
   };
 
   useEffect(() => {
-    if (clearAll) {
-      onSubmit(uploadedFiles);
-    }
-  }, [clearAll])
-
-  useEffect(() => {
     if (isOpen) {
       setClearAll(false);
     }
@@ -205,6 +199,12 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                   size="txtRalewayRomanRegular12"
                 >
                   Supported formats: <span style={{ textTransform: "uppercase" }}>{accept}</span>
+                </Text>
+                <Text
+                  className="text-center text-gray-700 text-xs w-auto"
+                  size="txtRalewayRomanRegular12"
+                >
+                  Supports multiple select to upload multiple images.
                 </Text>
               </div>
             </div>
