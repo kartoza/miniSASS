@@ -86,20 +86,31 @@ class Sites(models.Model):
             f'{self.gid}'
         )
 
-
+# This will be used when we finally use Kartoza minIO
 def site_image_path(instance, filename):
     return os.path.join(
-        settings.MINIO_BUCKET,
+        'sites',
         f'{instance.site_id}',
         filename
     )
+
+# def site_image_path(instance, filename):
+#     return os.path.join(
+#         settings.MINIO_BUCKET,
+#         f'{instance.site_id}',
+#         filename
+#     )
 
 
 class SiteImage(models.Model):
     """Image for a site."""
     site = models.ForeignKey(Sites, on_delete=models.CASCADE)
+    # This will be used once we fully use Kartoza minIO
+    # image = models.ImageField(
+    #     upload_to=site_image_path
+    # )
     image = models.ImageField(
-        upload_to=site_image_path, storage=settings.MINION_STORAGE
+        upload_to=site_image_path, max_length=250
     )
 
     def delete_image(self):
@@ -153,7 +164,12 @@ class Observations(models.Model, DirtyFieldsMixin):
     comment = models.CharField(max_length=255, null=True, blank=True)
     obs_date = models.DateField(blank=True, null=True)
     flag = models.CharField(
-        max_length=5, choices=FLAG_CATS, default='dirty', blank=False
+        max_length=5, choices=FLAG_CATS, default='dirty', blank=False,
+        help_text='Flag whether observation comes from expert or novice'
+    )
+    is_validated = models.BooleanField(
+        default=False,
+        help_text='Flag whether observation correctness has been validated'
     )
     water_clarity = models.DecimalField(
         max_digits=8, decimal_places=1, blank=True, null=True
@@ -181,17 +197,32 @@ class Observations(models.Model, DirtyFieldsMixin):
         db_table = 'observations'
         verbose_name_plural = 'Observations'
 
+    def save(self, *args, **kwargs):
+        if self.user.userprofile.is_expert:
+            self.is_validated = True
+        return super(Observations, self).save(*args, **kwargs)
+
     def __str__(self):
         return str(self.obs_date) + ': ' + self.site.site_name
 
-
+# This will be used once we use Kartoza minIO
 def observation_pest_image_path(instance, filename):
     return os.path.join(
-        settings.MINIO_BUCKET,
+        'observations',
+        'clean' if instance.valid or instance.observation.flag == 'clean' else 'dirty',
+        instance.pest.name,
         f'{instance.observation.site_id}',
         f'{instance.observation_id}',
         filename
     )
+
+# def observation_pest_image_path(instance, filename):
+#     return os.path.join(
+#         settings.MINIO_BUCKET,
+#         f'{instance.observation.site_id}',
+#         f'{instance.observation_id}',
+#         filename
+#     )
 
 
 class Pest(models.Model):
@@ -207,9 +238,20 @@ class ObservationPestImage(models.Model):
     """Image for site and observation for a site."""
     observation = models.ForeignKey(Observations, on_delete=models.CASCADE)
     pest = models.ForeignKey(Pest, on_delete=models.CASCADE)
+    # This will be used once we fully use Kartoza minION
+    # image = models.ImageField(
+    #     upload_to=observation_pest_image_path
+    # )
     image = models.ImageField(
-        upload_to=observation_pest_image_path, storage=settings.MINION_STORAGE
+        upload_to=observation_pest_image_path, max_length=250
     )
+    valid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        # Check image as valid if uploaded by expert.
+        if self.observation.user.userprofile.is_expert:
+            self.valid = True
+        return super().save(*args, **kwargs)
 
     def delete_image(self):
         """delete image."""

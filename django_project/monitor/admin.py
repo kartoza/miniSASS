@@ -36,9 +36,10 @@ class ObservationsAdmin(admin.ModelAdmin):
         'minisass_ml_score',
         'ml_model_version',
         'ml_model_type',
-        'flag'
+        'flag',
+        'is_validated'
     )
-    list_filter = ('flag',)
+    list_filter = ('flag', 'is_validated')
     search_fields = ('site__site_name', 'site__river_name')
     actions = [make_verified, make_unverified]
     inlines = (ObservationPestImageInline,)

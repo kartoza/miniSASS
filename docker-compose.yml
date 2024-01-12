@@ -52,7 +52,7 @@ services:
         condition: service_started
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc config host add minisass http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc config host add minisass ${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       /usr/bin/mc rm -r --force minisass/${BUCKET};
       /usr/bin/mc mb minisass/${BUCKET};
       /usr/bin/mc policy download minisass/${BUCKET};
@@ -70,7 +70,7 @@ services:
       - S3_MOUNT_DIRECTORY=/web
       - S3_BUCKET_NAME=${BUCKET}
       # URL can be an amazon S3 bucket so that we can mount it
-      - MINIO_URL=http://minio:9000/
+      - MINIO_URL=${MINIO_ENDPOINT}
     volumes:
       - minio_images:/web
     depends_on:
@@ -96,6 +96,11 @@ services:
       - SENTRY_KEY=${SENTRY_KEY:-}
       - MINIO_ROOT=/home/web/minio
       - MINIO_BUCKET=${BUCKET:-demo}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minisass_admin}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-secure_minio_secret}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
       - ALLOWED_HOSTS='*'
       - DEV_SETUP=${DEV_SETUP}
     depends_on:
