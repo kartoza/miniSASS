@@ -20,16 +20,41 @@ def delete_file_field(file_field):
         except Exception:
             pass
 
-        try:
-            s3 = boto3.client(
-                's3',
-                endpoint_url=settings.AWS_S3_ENDPOINT_URL,
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
-            )
-            s3.delete_object(
-                Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-                Key=file_field.name,
-            )
-        except Exception:
-            pass
+
+def get_s3_client():
+    return boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_ENDPOINT,
+        aws_access_key_id=settings.MINIO_ACCESS_KEY,
+        aws_secret_access_key=settings.MINIO_SECRET_KEY
+    )
+
+
+def delete_from_minio(key: str, bucket: str=None):
+    """
+    Delete file from minIO.
+    """
+    bucket = bucket or settings.MINIO_AI_BUCKET
+
+    s3 = get_s3_client()
+    s3.delete_object(
+        Bucket=bucket,
+        Key=key,
+    )
+
+
+def send_to_minio(source, destination, bucket):
+    """
+    Send file to minio/S3
+    """
+
+    s3 = get_s3_client()
+    s3.upload_file(source, bucket, destination)
+
+
+def get_path_string(string: str):
+    """
+    Get string in all lowercase, and space converted to udnerscore.
+    Example: True flies will be converted to true_flies
+    """
+    return string.lower().replace(' ', '_')

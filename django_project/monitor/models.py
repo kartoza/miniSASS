@@ -1,15 +1,17 @@
 import os
 import shutil
+import time
 
 from dirtyfields import DirtyFieldsMixin
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geometry_fields
 from django.db import models
-from django.db.models.signals import pre_save, post_delete
+from django.db.models.signals import pre_save, post_delete, post_save
 from django.dispatch import receiver
 
-from minisass.utils import delete_file_field
+from minisass.utils import delete_file_field, delete_from_minio, get_path_string
+from monitor.utils import send_to_ai_bucket
 
 
 class Organisations(models.Model):
@@ -88,17 +90,26 @@ class Sites(models.Model):
 
 def site_image_path(instance, filename):
     return os.path.join(
+        settings.MINIO_BUCKET,
         'sites',
         f'{instance.site_id}',
         filename
     )
 
 
+# def site_image_path(instance, filename):
+#     return os.path.join(
+#         settings.MINIO_BUCKET,
+#         f'{instance.site_id}',
+#         filename
+#     )
+
+
 class SiteImage(models.Model):
     """Image for a site."""
     site = models.ForeignKey(Sites, on_delete=models.CASCADE)
     image = models.ImageField(
-        upload_to=site_image_path, max_length=250
+        upload_to=site_image_path, max_length=250, storage=settings.MINION_STORAGE
     )
 
     def delete_image(self):
@@ -196,13 +207,22 @@ class Observations(models.Model, DirtyFieldsMixin):
 
 def observation_pest_image_path(instance, filename):
     return os.path.join(
+        settings.MINIO_BUCKET,
         'observations',
         'clean' if instance.valid or instance.observation.flag == 'clean' else 'dirty',
-        instance.pest.name,
+        get_path_string(instance.pest.name),
         f'{instance.observation.site_id}',
         f'{instance.observation_id}',
         filename
     )
+#
+# def observation_pest_image_path(instance, filename):
+#     return os.path.join(
+#         settings.MINIO_BUCKET,
+#         f'{instance.observation.site_id}',
+#         f'{instance.observation_id}',
+#         filename
+#     )
 
 
 class Pest(models.Model):
@@ -219,7 +239,7 @@ class ObservationPestImage(models.Model):
     observation = models.ForeignKey(Observations, on_delete=models.CASCADE)
     pest = models.ForeignKey(Pest, on_delete=models.CASCADE)
     image = models.ImageField(
-        upload_to=observation_pest_image_path, max_length=250
+        upload_to=observation_pest_image_path, max_length=250, storage=settings.MINION_STORAGE
     )
     valid = models.BooleanField(default=False)
 
@@ -229,9 +249,31 @@ class ObservationPestImage(models.Model):
             self.valid = True
         return super().save(*args, **kwargs)
 
+    def get_minio_key(self):
+        """
+        Return S3/Minio key without bucket
+        """
+        destination = os.path.join(*self.image.name.split(os.sep)[1:])
+        return destination
+
     def delete_image(self):
         """delete image."""
         delete_file_field(self.image)
+        delete_from_minio(self.get_minio_key())
+
+    def update_image_path(self):
+        initial_path = self.image.path
+        filename = os.path.basename(self.image.path)
+
+        new_name = observation_pest_image_path(self, filename)
+        new_path = os.path.join(settings.MINIO_ROOT, new_name)
+
+        # Create dir if necessary and move file
+        if not os.path.exists(os.path.dirname(new_path)):
+            os.makedirs(os.path.dirname(new_path))
+
+        os.rename(initial_path, new_path)
+        self.image.name = new_name
 
 
 # Helper function to send email content based on observation
@@ -284,5 +326,36 @@ def site_delete(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=SiteImage)
 @receiver(post_delete, sender=ObservationPestImage)
-def send_email_to_user(sender, instance, **kwargs):
+def delete_image(sender, instance, **kwargs):
     instance.delete_image()
+
+@receiver(pre_save, sender=ObservationPestImage)
+def check_save_image(sender, instance: ObservationPestImage, **kwargs):
+    try:
+        old_instance = ObservationPestImage.objects.get(id=instance.id)
+    except ObservationPestImage.DoesNotExist:
+        return
+
+    if instance.valid is True and old_instance.valid is False:
+        if instance.image.name != old_instance.image.name:
+            instance.send_to_ai_bucket = True
+            return
+
+        instance.observation.is_validated = True
+        instance.observation.save()
+
+        instance.update_image_path()
+        instance.send_to_ai_bucket = True
+
+
+@receiver(post_save, sender=ObservationPestImage)
+def post_save_image(sender, instance, created: ObservationPestImage, **kwargs):
+    if created and instance.valid:
+        while True:
+            if os.path.exists(instance.image.path):
+                break
+            time.sleep(1)
+        send_to_ai_bucket(instance)
+
+    elif getattr(instance, 'send_to_ai_bucket', False):
+        send_to_ai_bucket(instance)
