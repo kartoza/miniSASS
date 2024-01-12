@@ -179,6 +179,7 @@ def create_observations(request):
 
             # Extract other fields from the payload
             flatworms = data.get('flatworms', False)
+            worms = data.get('worms', False)
             leeches = data.get('leeches', False)
             crabs_shrimps = data.get('crabs_shrimps', False)
             stoneflies = data.get('stoneflies', False)
@@ -250,6 +251,7 @@ def create_observations(request):
                     site=site,
                     user=user,
                     flatworms=flatworms,
+                    worms=worms,
                     leeches=leeches,
                     crabs_shrimps=crabs_shrimps,
                     stoneflies=stoneflies,
@@ -308,6 +310,7 @@ def create_observations(request):
                     observation.site = site
                     observation.user = user
                     observation.flatworms = flatworms
+                    observation.worms = worms
                     observation.leeches = leeches
                     observation.crabs_shrimps = crabs_shrimps
                     observation.stoneflies = stoneflies
