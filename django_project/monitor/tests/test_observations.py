@@ -507,7 +507,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
             f'demo/sites/{self.site.gid}/site_1.jpg'
         )
 
-    # commenting this since it causes issue on deployment, even though it works on local.
+    # commenting this since it causes issue on deployment, even though it works on local and Github.
     # def test_validate_image(self):
     #     """
     #     Test validating image. Image path should be updated, and image file is moved.
