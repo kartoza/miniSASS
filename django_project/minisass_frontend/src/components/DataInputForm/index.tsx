@@ -369,6 +369,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   }, [proceedToSavingData]);
 
 
+  formValues.selectedSite = siteDetails.gid
+
   const transformSiteDetails = (siteDetails) => {
     if (!siteDetails) {
       return {};
@@ -466,6 +468,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           <Formik
             initialValues={formValues}
             onSubmit={(values) => {
+              if(formValues.selectedSite != '' && formValues.selectedSite != 'none'){
+                values.selectedSite = formValues.selectedSite
+                formValues.selectedSite = ''
+              }
               setFormValues(values)
               handleShowScoreForm()
             }}
