@@ -368,7 +368,7 @@ There are other tables that can be managed by administrative users and these are
 
 All of the tables on the administration site follow similar structures and as such can be managed in similar ways.
 
-### Managing Tables on Administration Site
+### Managing Tables on the Administration Site
 
 All tables on the administration site adhere to a consistent structure, facilitating uniform management procedures. The following points outline the general approach for adding, editing, and deleting records across various tables:
 
