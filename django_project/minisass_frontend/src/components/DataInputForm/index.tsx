@@ -369,12 +369,12 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   }, [proceedToSavingData]);
 
 
-  formValues.selectedSite = siteDetails ? siteDetails.gid : null;
-
   const transformSiteDetails = (siteDetails) => {
     if (!siteDetails) {
       return {};
     }
+
+    formValues.selectedSite = siteDetails?.gid ?? null;
   
     return {
       label: siteDetails.sitename || '',
