@@ -37,10 +37,13 @@ def delete_from_minio(key: str, bucket: str=None):
     bucket = bucket or settings.MINIO_AI_BUCKET
 
     s3 = get_s3_client()
-    s3.delete_object(
-        Bucket=bucket,
-        Key=key,
-    )
+    try:
+        s3.delete_object(
+            Bucket=bucket,
+            Key=key,
+        )
+    except Exception:
+        pass
 
 
 def send_to_minio(source, destination, bucket):
@@ -49,7 +52,10 @@ def send_to_minio(source, destination, bucket):
     """
 
     s3 = get_s3_client()
-    s3.upload_file(source, bucket, destination)
+    try:
+        s3.upload_file(source, bucket, destination)
+    except Exception:
+        pass
 
 
 def get_path_string(string: str):
