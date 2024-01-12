@@ -17,20 +17,22 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+// TODO: GET PEST FROM API OR INTEGRATE IMAGE TO GROUP_SCORE
 const PESTS = [
   '-', // This is to skip idx 0
-  'flatworms',
-  'leeches',
-  'crabs_shrimps',
-  'stoneflies',
-  'minnow_mayflies',
-  'other_mayflies',
-  'damselflies',
-  'dragonflies',
-  'bugs_beetles',
-  'caddisflies',
-  'true_flies',
-  'snails'
+  "bugs_beetles",
+  "caddisflies",
+  "crabs_shrimps",
+  "damselflies",
+  "dragonflies",
+  "flatworms",
+  "leeches",
+  "minnow_mayflies",
+  "other_mayflies",
+  "snails",
+  "stoneflies",
+  "true_flies",
+  "worms"
 ]
 
 

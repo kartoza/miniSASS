@@ -226,8 +226,8 @@ def create_observations(request):
                     river_cat = datainput.get('rivercategory', 'rocky')
 
                     # Make lng lat max 6 decimal place
-                    longitude = float("{:.6f}".format(datainput.get('longitude', 0)))
-                    latitude = float("{:.6f}".format(datainput.get('latitude', 0)))
+                    longitude = float("{:.6f}".format(float(datainput.get('longitude', 0))))
+                    latitude = float("{:.6f}".format(float(datainput.get('latitude', 0))))
 
                     if Sites.objects.filter(site_name=site_name).exists():
                         return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
