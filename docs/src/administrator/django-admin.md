@@ -25,7 +25,7 @@ The Django admin user table is a central component within the Django admin inter
     
     Simply enter the relevant information into the search bar and hit enter to display matching records.
 
-    2. **Action Dropdown**:** Administrators can perform batch actions on selected user records using the `Action Dropdown`. To select multiple records, use the checkbox in front of each user record. Once selected, open the Action Dropdown and choose the desired action, e.g., Delete selected users. Confirm the action and the selected records will be processed accordingly. This feature streamlines bulk user management tasks, enhancing efficiency for administrators.
+    2. **Action Dropdown:** Administrators can perform batch actions on selected user records using the `Action Dropdown`. To select multiple records, use the checkbox in front of each user record. Once selected, open the Action Dropdown and choose the desired action, e.g., Delete selected users. Confirm the action and the selected records will be processed accordingly. This feature streamlines bulk user management tasks, enhancing efficiency for administrators.
 
     3. **User Name:** Clicking on the username of a user opens a detailed view of that user's record. A new page will open, providing comprehensive information about the selected user.
 
@@ -78,13 +78,13 @@ The Django admin user table is a central component within the Django admin inter
             
             After providing the necessary information, administrators can save the group.
         
-        7. **Permissions**: Available permissions for the group. Administrators can choose permissions from the list and assign them to the user.
+        7. **Permissions:** Available permissions for the group. Administrators can choose permissions from the list and assign them to the user.
 
-        8. **Arrow**: Using these arrows, administrators can add or remove the permissions to the user.
+        8. **Arrow:** Using these arrows, administrators can add or remove the permissions to the user.
 
-        9. **Choose All**: The button to choose all of the permissions and assign them to the user.
+        9. **Choose All:** The button to choose all of the permissions and assign them to the user.
 
-        10. **Remove All**: The button to choose all of the permissions and remove them from the user.
+        10. **Remove All:** The button to choose all of the permissions and remove them from the user.
 
         11. **Organisation Type:** The administrator can view and edit the `organisations type` using this dropdown.
 
@@ -124,9 +124,9 @@ The Django admin user table is a central component within the Django admin inter
 
         ![Add User](./img/django-admin-8.png)
 
-        1. **Username**: Administrators should enter a unique username for the new user. It should be 150 characters, or less, and may contain only letters, digits, and the characters '@', '.', '+', '-', and '_'.
+        1. **Username:** Administrators should enter a unique username for the new user. It should be 150 characters, or less, and may contain only letters, digits, and the characters '@', '.', '+', '-', and '_'.
 
-        2. **Password**: Administrators should create a strong password for the user. The password must meet these criteria:
+        2. **Password:** Administrators should create a strong password for the user. The password must meet these criteria:
 
             - password can not be too similar to your other personal information.
             - password must contain at least 8 characters.
@@ -147,9 +147,9 @@ The Django admin user table is a central component within the Django admin inter
 
         8. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
         
-        9. **Save and add another**: Save the current record and then be redirected to a new page to add a new record.
+        9. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
-        10. **Save and continue editing**: Save the current record while still showing the current record.
+        10. **Save and continue editing:** Save the current record while still showing the current record.
 
     5. **Filters:** The administrators can filter the user table using the available filters at the right side of the tables. 
 
@@ -195,7 +195,7 @@ The Django admin user table is a central component within the Django admin inter
         
         Check the relevant groups that apply to the observation.
     
-    3. **Score of Selected Groups**: Numerical score associated with the selected observation groups.
+    3. **Score of Selected Groups:** Numerical score associated with the selected observation groups.
 
     4. **History Button:** The History button allows administrators to access the history log of the observation, providing insights into changes and activities related to the observation.
 
@@ -240,11 +240,11 @@ The Django admin user table is a central component within the Django admin inter
 
     15. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
         
-    16. **Save and add another**: Save the current record and then be redirected to a new page to add a new record.
+    16. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
-    17. **Save and continue editing**: Save the current record while still showing the current record.
+    17. **Save and continue editing:** Save the current record while still showing the current record.
 
-    18. **Delete button**: Delete the currently opened record. It will take administrators to a confirmation page.
+    18. **Delete button:** Delete the currently opened record. It will take administrators to a confirmation page.
 
 4. **Add Observation:** The `add observation` button allows administrators to create new observation records directly from the `Observation Table`.
 
@@ -307,11 +307,11 @@ The Django admin user table is a central component within the Django admin inter
         - For expert-contributed observations, the `Valid` status is checked by default, assuming they are accurate.
         - For novice-contributed observations, the administrator must manually check the checkbox after validating the observation for correctness.
     
-    10. **Save**: Save the current record and then get redirected to the Django Admin Table/record list.
+    10. **Save:** Save the current record and then get redirected to the Django Admin Table/record list.
         
-    11. **Save and add another**: Save the current record and then be redirected to a new page to add a new record.
+    11. **Save and add another:** Save the current record and then be redirected to a new page to add a new record.
 
-    12. **Save and continue editing**: Save the current record while still showing the current record.
+    12. **Save and continue editing:** Save the current record while still showing the current record.
 
 5. **Filter:** Administrators can filter observations based on cleanliness status - dirty or clean. Click on the available filters to view observations specific to either clean or dirty status.
 
