@@ -178,19 +178,19 @@ def create_observations(request):
             datainput = data.get('datainput', {})
 
             # Extract other fields from the payload
-            flatworms = data.get('Flat Worms', False)
-            worms = data.get('Worms', False)
-            leeches = data.get('Leeches', False)
-            crabs_shrimps = data.get('Crabs or Shrimps', False)
-            stoneflies = data.get('Stoneflies', False)
-            minnow_mayflies = data.get('Minnow Mayflies', False)
-            other_mayflies = data.get('Other Mayflies', False)
-            damselflies = data.get('Damselflies', False)
-            dragonflies = data.get('Dragonflies', False)
-            bugs_beetles = data.get('Bugs or Beetles', False)
-            caddisflies = data.get('Caddisflies', False)
-            true_flies = data.get('True Flies', False)
-            snails = data.get('Snails', False)
+            flatworms = data.get('flatworms', False)
+            worms = data.get('worms', False)
+            leeches = data.get('leeches', False)
+            crabs_shrimps = data.get('crabs_shrimps', False)
+            stoneflies = data.get('stoneflies', False)
+            minnow_mayflies = data.get('minnow_mayflies', False)
+            other_mayflies = data.get('other_mayflies', False)
+            damselflies = data.get('damselflies', False)
+            dragonflies = data.get('dragonflies', False)
+            bugs_beetles = data.get('bugs_beetles', False)
+            caddisflies = data.get('caddisflies', False)
+            true_flies = data.get('true_flies', False)
+            snails = data.get('snails', False)
             score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
             water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
@@ -226,8 +226,8 @@ def create_observations(request):
                     river_cat = datainput.get('rivercategory', 'rocky')
 
                     # Make lng lat max 6 decimal place
-                    longitude = float("{:.6f}".format(float(datainput.get('longitude', 0))))
-                    latitude = float("{:.6f}".format(float(datainput.get('latitude', 0))))
+                    longitude = float("{:.6f}".format(datainput.get('longitude', 0)))
+                    latitude = float("{:.6f}".format(datainput.get('latitude', 0)))
 
                     if Sites.objects.filter(site_name=site_name).exists():
                         return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
@@ -340,7 +340,36 @@ def create_observations(request):
                     observation.save()
 
                 except Observations.DoesNotExist:
-                    pass
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
+                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    observation = Observations.objects.create(
+                        gid=new_observation_id,
+                        score=score,
+                        site=site,
+                        user=user,
+                        flatworms=flatworms,
+                        worms=worms,
+                        leeches=leeches,
+                        crabs_shrimps=crabs_shrimps,
+                        stoneflies=stoneflies,
+                        minnow_mayflies=minnow_mayflies,
+                        other_mayflies=other_mayflies,
+                        damselflies=damselflies,
+                        dragonflies=dragonflies,
+                        bugs_beetles=bugs_beetles,
+                        caddisflies=caddisflies,
+                        true_flies=true_flies,
+                        snails=snails,
+                        comment=comment,
+                        water_clarity=water_clarity,
+                        water_temp=water_temp,
+                        ph=ph,
+                        diss_oxygen=diss_oxygen,
+                        diss_oxygen_unit=diss_oxygen_unit,
+                        elec_cond=elec_cond,
+                        elec_cond_unit=elec_cond_unit,
+                        obs_date=obs_date
+                    )
 
             return JsonResponse(
                 {'status': 'success', 'observation_id': observation.gid})
