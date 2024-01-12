@@ -781,7 +781,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         <div style={{ color: 'inherit' }}>
                           <p>
                             <strong>Classifying your stream / river:</strong> A: "Rocky" section of a stream / river has loose rocks instream and is often found closer to the source of the river.
-                            Sections of stream / rivers without any loose rocks instream are termed </strong> B: "Sandy" and are often found towards the mouth of the stream / river.
+                            Sections of stream / rivers without any loose rocks instream are termed "Sandy" and are often found towards the mouth of the stream / river.
                           </p>
                         </div>
                       </React.Fragment>
