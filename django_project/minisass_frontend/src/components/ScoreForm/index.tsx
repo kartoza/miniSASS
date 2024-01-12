@@ -140,8 +140,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       })
       form_data.append('data', JSON.stringify(observationsData));
       form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
-      form_data.append('observationId', JSON.stringify(observationId))
-      form_data.append('siteId', JSON.stringify(siteId))
+      const obs_id = localStorage.getItem('observationId') || observationId;
+      const site_id = localStorage.getItem('siteId') || siteId;
+      form_data.append('observationId', JSON.stringify(obs_id));
+      form_data.append('siteId', JSON.stringify(site_id));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
