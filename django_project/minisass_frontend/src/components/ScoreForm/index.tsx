@@ -132,8 +132,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         score:averageScore,
         datainput: additionalData,
       };
-      PESTS.map((pest,idx) => {
-        observationsData[pest] = checkboxStates['' + idx]
+
+      scoreGroups.map((sg) => {
+        observationsData[sg.name] = checkboxStates['' + sg.id]
       })
 
       var form_data = new FormData();
