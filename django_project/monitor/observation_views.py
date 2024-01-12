@@ -223,8 +223,10 @@ def create_observations(request):
                     river_name = datainput.get('riverName', '')
                     description = datainput.get('siteDescription', '')
                     river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = datainput.get('longitude', 0)
-                    latitude = datainput.get('latitude', 0)
+
+                    # Make lng lat max 6 decimal place
+                    longitude = float("{:.6f}".format(datainput.get('longitude', 0)))
+                    latitude = float("{:.6f}".format(datainput.get('latitude', 0)))
 
                     site = Sites.objects.create(
                         gid=new_site_id,

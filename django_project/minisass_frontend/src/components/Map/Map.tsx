@@ -325,7 +325,9 @@ export const Map = forwardRef((props: Interface, ref) => {
         const { longitude, latitude } = props.selectedCoordinates;
         moveMapToCoordinates(longitude, latitude);
       } else {
-        map.removeLayer('selected-point-layer')
+        try {
+          map.removeLayer('selected-point-layer')
+        } catch (error) {}
       }
     
       const handleSelectOnMapClick = (e) => {

@@ -32,14 +32,18 @@ export default function CoordinatesInputForm(
 
   /** set latitude **/
   const setLatitude = (val) => {
-    val = Math.floor(val * detailed) / detailed
-    setFieldValue('latitude', val)
+    if (val) {
+      val = val.toFixed(6)
+      setFieldValue('latitude', val)
+    }
   }
 
   /** set longitude **/
   const setLongitude = (val) => {
-    val = Math.floor(val * detailed) / detailed
-    setFieldValue('longitude', val)
+    if (val) {
+      val = val.toFixed(6)
+      setFieldValue('longitude', val)
+    }
   }
 
   useEffect(() => {

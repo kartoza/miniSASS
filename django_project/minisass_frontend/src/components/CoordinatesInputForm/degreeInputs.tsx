@@ -24,7 +24,9 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
   }, [currValue]);
 
   useEffect(() => {
-    setCurrValue(value)
+    if (value) {
+      setCurrValue(value)
+    }
   }, [value]);
 
   return <div

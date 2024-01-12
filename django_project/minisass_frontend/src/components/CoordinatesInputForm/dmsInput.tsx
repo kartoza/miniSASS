@@ -38,15 +38,15 @@ function DmsInputSection(
     color="black_900_3a"
     size="xs"
     variant="outline"
-    step={0.01}
+    step={1}
     min={min}
     max={max}
-    placeholder="0.000000"
+    placeholder="0000000"
     onChange={(evt) => {
-      let value = parseFloat(evt.target.value)
-      if (parseFloat(evt.target.value) > max) {
+      let value = parseInt(evt.target.value)
+      if (value > max) {
         value = max
-      } else if (parseFloat(evt.target.value) < min) {
+      } else if (value < min) {
         value = min
       }
       onChange(value)
