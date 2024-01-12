@@ -369,7 +369,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   }, [proceedToSavingData]);
 
 
-  formValues.selectedSite = siteDetails.gid
+  formValues.selectedSite = siteDetails ? siteDetails.gid : null;
 
   const transformSiteDetails = (siteDetails) => {
     if (!siteDetails) {
