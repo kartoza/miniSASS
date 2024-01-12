@@ -76,7 +76,11 @@ const MapPage: React.FC = () => {
   const [selectedCoordinates, setSelectedCoordinates] = useState({ latitude: null, longitude: null });
 
   const handleMapClick = (latitude, longitude) => {
-    setSelectedCoordinates({ latitude, longitude });
+    // setSelectedCoordinates({ latitude, longitude });
+    setSelectedCoordinates({
+      latitude: latitude,
+      longitude: longitude
+    })
     // console.log(selectedCoordinates) // for testing coordinates accuracy
   };
 
