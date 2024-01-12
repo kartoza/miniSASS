@@ -208,8 +208,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                 className="leading-[150.00%] max-w-[507px] md:max-w-full text-base text-gray-800 tracking-[0.15px]"
                 size="txtRalewayRomanRegular16Gray800"
               >
-                Please consider that AI score is different from your manual
-                score, maybe you have to adjust it
+                If your score doesn't match the AI's, it means the algorithm sees the image differently. Double-check your images, and if you're sure about your identifications, go ahead and click "save."
               </Text>
             </div>
           </div>
