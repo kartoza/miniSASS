@@ -192,6 +192,8 @@ class Observations(models.Model, DirtyFieldsMixin):
         if self.user:
             if self.user.userprofile.is_expert:
                 self.is_validated = True
+        if self.comment is None:
+            self.comment = ''
         return super(Observations, self).save(*args, **kwargs)
 
     def __str__(self):
