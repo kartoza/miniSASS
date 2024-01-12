@@ -227,6 +227,9 @@ def create_observations(request):
                     longitude = datainput.get('longitude', 0)
                     latitude = datainput.get('latitude', 0)
 
+                    if Sites.objects.filter(site_name=site_name).exists():
+                        return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
+
                     site = Sites.objects.create(
                         gid=new_site_id,
                         site_name=site_name,
