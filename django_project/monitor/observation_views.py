@@ -200,13 +200,13 @@ def create_observations(request):
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
             elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
-            site_id = request.POST.get('siteId',datainput.get('selectedSite', 0))
+            site_id = request.POST.get('siteId', datainput.get('selectedSite', 0))
             observation_id = request.POST.get('observationId')
             obs_date = datainput.get('date')
             user = request.user
             try:
-                site_id = int(site_id)
-                observation_id = int(observation_id)
+                site_id = int(site_id.replace('"', ''))
+                observation_id = int(observation_id.replace('"', ''))
             except (ValueError, TypeError):
                 site_id = 0
                 observation_id = 0
@@ -340,7 +340,36 @@ def create_observations(request):
                     observation.save()
 
                 except Observations.DoesNotExist:
-                    pass
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
+                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    observation = Observations.objects.create(
+                        gid=new_observation_id,
+                        score=score,
+                        site=site,
+                        user=user,
+                        flatworms=flatworms,
+                        worms=worms,
+                        leeches=leeches,
+                        crabs_shrimps=crabs_shrimps,
+                        stoneflies=stoneflies,
+                        minnow_mayflies=minnow_mayflies,
+                        other_mayflies=other_mayflies,
+                        damselflies=damselflies,
+                        dragonflies=dragonflies,
+                        bugs_beetles=bugs_beetles,
+                        caddisflies=caddisflies,
+                        true_flies=true_flies,
+                        snails=snails,
+                        comment=comment,
+                        water_clarity=water_clarity,
+                        water_temp=water_temp,
+                        ph=ph,
+                        diss_oxygen=diss_oxygen,
+                        diss_oxygen_unit=diss_oxygen_unit,
+                        elec_cond=elec_cond,
+                        elec_cond_unit=elec_cond_unit,
+                        obs_date=obs_date
+                    )
 
             return JsonResponse(
                 {'status': 'success', 'observation_id': observation.gid})
