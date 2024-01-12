@@ -97,14 +97,6 @@ def site_image_path(instance, filename):
     )
 
 
-# def site_image_path(instance, filename):
-#     return os.path.join(
-#         settings.MINIO_BUCKET,
-#         f'{instance.site_id}',
-#         filename
-#     )
-
-
 class SiteImage(models.Model):
     """Image for a site."""
     site = models.ForeignKey(Sites, on_delete=models.CASCADE)
@@ -197,8 +189,9 @@ class Observations(models.Model, DirtyFieldsMixin):
         verbose_name_plural = 'Observations'
 
     def save(self, *args, **kwargs):
-        if self.user.userprofile.is_expert:
-            self.is_validated = True
+        if self.user:
+            if self.user.userprofile.is_expert:
+                self.is_validated = True
         return super(Observations, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -215,14 +208,6 @@ def observation_pest_image_path(instance, filename):
         f'{instance.observation_id}',
         filename
     )
-#
-# def observation_pest_image_path(instance, filename):
-#     return os.path.join(
-#         settings.MINIO_BUCKET,
-#         f'{instance.observation.site_id}',
-#         f'{instance.observation_id}',
-#         filename
-#     )
 
 
 class Pest(models.Model):

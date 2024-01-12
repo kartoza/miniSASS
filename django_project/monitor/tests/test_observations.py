@@ -39,7 +39,7 @@ class BaseObservationsModelTest(TestCase):
         )
 
     def setUp(self):
-        self.s3_client_patch = patch('minisass.utils.boto3.client', autospec=True)
+        self.s3_client_patch = patch('minisass.utils.boto3.client')
         self.s3_client_patch.start()
 
         self.user = User.objects.create_user(
