@@ -40,7 +40,10 @@ class Command(BaseCommand):
             # Create dir if necessary and move file
             if not os.path.exists(os.path.dirname(new_path)):
                 os.makedirs(os.path.dirname(new_path))
+            try:
+                os.rename(initial_path, new_path)
+            except (FileNotFoundError, FileExistsError):
+                continue
 
-            os.rename(initial_path, new_path)
             image.image.name = new_name
             image.save()
