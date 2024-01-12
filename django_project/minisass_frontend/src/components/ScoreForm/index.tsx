@@ -96,6 +96,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   );
 
   const [proceedToSavingData, setProceedToSavingData] = useState(false)
+  const [observationId, setObservationId] = useState(0);
+  const [siteId, setSiteId] = useState(0);
 
   // Function to log the state of checkboxes
   const handleSave = async () => {
@@ -244,8 +246,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setSidebarOpen(false);
   };
 
-  const [observationId, setObservationId] = useState(0);
-  const [siteId, setSiteId] = useState(0);
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
 
