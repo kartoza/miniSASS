@@ -30,7 +30,6 @@ from rest_framework.views import APIView
 from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
 from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage, Pest
 from monitor.utils import safe_copy, zip_directory
-from monitor.serializers import PestSerializer
 
 
 def get_email_content(observation, new_site=False):
