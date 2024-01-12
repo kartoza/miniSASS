@@ -164,7 +164,7 @@ EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD', 'docker')
 EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS', 'False')
 
 SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
-CONTACT_US_RECEPIENT_EMAIL = 'amy@kartoza.com'
+CONTACT_US_RECEPIENT_EMAIL = 'info@minisass.org'
 EXPERT_APPROVAL_RECIPIENT_EMAIL = 'info@minisass.org'
 
 # django registration/auth settings
