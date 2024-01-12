@@ -101,7 +101,7 @@ const MapPage: React.FC = () => {
     if(siteWithObservations.observations.length > 0 && !isSelectSiteOnMap){
       setSiteWithObservations(siteWithObservations)
       setIsObservationDetails(true)
-      setSidebarOpen((prev) => !prev);
+      setSidebarOpen(true);
       setSelectedCoordinates({
         latitude: siteWithObservations.site.latitude,
         longitude: siteWithObservations.site.longitude
