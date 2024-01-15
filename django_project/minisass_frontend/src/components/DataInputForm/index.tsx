@@ -324,7 +324,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   };
-  
+
   const customStyles = {
     control: (styles, { isFocused }) => ({
       ...styles,
@@ -948,7 +948,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             marginRight: '-10px',
                           }}
                           min={'2010-01-01'}
-                          max={formatDate(new Date())}
+                          max={(new Date()).toISOString().split('T')[0]}
                           value={values.date}
                           onChange={(e) => {
                             handleChange(e);
