@@ -70,12 +70,13 @@ def upload_pest_image(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
+                
                 site_id = request.POST.get('siteId')
                 observation_id = request.POST.get('observationId')
                 user = request.user
                 try:
-                    site_id = int(site_id.replace('"', ''))
-                    observation_id = int(observation_id.replace('"', ''))
+                    site_id = int(site_id)
+                    observation_id = int(observation_id)
                 except (ValueError, TypeError):
                     site_id = 0
                     observation_id = 0
@@ -171,8 +172,6 @@ def create_observations(request):
         try:
             # Parse JSON data from the request body
             data = json.loads(request.POST.get('data', '{}'))
-            print(request.POST)
-            print(data)
 
             # Extract datainput from the payload
             datainput = data.get('datainput', {})
@@ -211,8 +210,20 @@ def create_observations(request):
                     river_name = datainput.get('riverName', '')
                     description = datainput.get('siteDescription', '')
                     river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = datainput.get('longitude', 0)
-                    latitude = datainput.get('latitude', 0)
+
+                    longitude_str = datainput.get('longitude', '0').replace('"', '')
+                    latitude_str = datainput.get('latitude', '0').replace('"', '')
+
+                    try:
+                        longitude = Decimal(longitude_str)
+                        latitude = Decimal(latitude_str)
+                    except ValueError:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+                    
+                    # Check if the values are within a valid range
+                    if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
+                        return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
+
 
                     if Sites.objects.filter(site_name=site_name).exists():
                         return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
@@ -259,55 +270,12 @@ def create_observations(request):
                 try:
                     site = Sites.objects.get(gid=site_id)
                     
-                    site_name = datainput.get('siteName', '')
-                    river_name = datainput.get('riverName', '')
-                    description = datainput.get('siteDescription', '')
-                    river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = datainput.get('longitude', 0)
-                    latitude = datainput.get('latitude', 0)
-
-                    site.site_name = site_name
-                    site.river_name = river_name
-                    site.description = description
-                    site.river_cat = river_cat
-                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
-                    site.user = user
-                    site.save()
-
                     for key, image in request.FILES.items():
                         if 'image_' in key:
                             SiteImage.objects.create(
                                 site=site, image=image
                             )
 
-                except Sites.DoesNotExist:
-                    pass
-
-
-                try:
-                    observation = Observations.objects.get(gid=observation_id)
-
-                    observation.score = score
-                    observation.site = site
-                    observation.user = user
-                    observation.comment = comment
-                    observation.water_clarity = water_clarity
-                    observation.water_temp = water_temp
-                    observation.ph = ph
-                    observation.diss_oxygen = diss_oxygen
-                    observation.diss_oxygen_unit = diss_oxygen_unit
-                    observation.elec_cond = elec_cond
-                    observation.elec_cond_unit = elec_cond_unit
-                    observation.obs_date = obs_date
-
-                    for db_fields in GroupScores.DB_FIELDS:
-                        value = data.get(db_fields[0], False)
-                        setattr(observation, db_fields[0], value)
-                    observation.save()
-
-                    observation.save()
-
-                except Observations.DoesNotExist:
                     max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
                     new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
                     observation = Observations(
@@ -315,19 +283,6 @@ def create_observations(request):
                         score=score,
                         site=site,
                         user=user,
-                        # flatworms=flatworms,
-                        # worms=worms,
-                        # leeches=leeches,
-                        # crabs_shrimps=crabs_shrimps,
-                        # stoneflies=stoneflies,
-                        # minnow_mayflies=minnow_mayflies,
-                        # other_mayflies=other_mayflies,
-                        # damselflies=damselflies,
-                        # dragonflies=dragonflies,
-                        # bugs_beetles=bugs_beetles,
-                        # caddisflies=caddisflies,
-                        # true_flies=true_flies,
-                        # snails=snails,
                         comment=comment,
                         water_clarity=water_clarity,
                         water_temp=water_temp,
@@ -343,8 +298,12 @@ def create_observations(request):
                         setattr(observation, db_fields[0], value)
                     observation.save()
 
-            return JsonResponse(
-                {'status': 'success', 'observation_id': observation.gid})
+                    return JsonResponse(
+                        {'status': 'success', 'observation_id': observation.gid})
+
+                except Sites.DoesNotExist:
+                    return JsonResponse({'status': 'error', 'message': 'cannot find site to save observation to'})
+
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 

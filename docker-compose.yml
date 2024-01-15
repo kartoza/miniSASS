@@ -96,8 +96,8 @@ services:
       - SENTRY_KEY=${SENTRY_KEY:-}
       - MINIO_ROOT=/home/web/minio
       - MINIO_BUCKET=${BUCKET:-demo}
-      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER}
-      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - MINIO_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
       - MINIO_AI_BUCKET=${BUCKET}
       - MINIO_ENDPOINT=${MINIO_URL:-http://minio:9000}
       - ALLOWED_HOSTS='*'
