@@ -76,26 +76,23 @@ def upload_pest_image(request):
                 user = request.user
                 try:
                     site_id = int(site_id)
+                except (ValueError, TypeError):
+                    try:
+                        site_id = site_id.strip().replace('"', '')
+                    except (ValueError, TypeError):
+                        site_id = 0
+
+                try:
                     observation_id = int(observation_id)
                 except (ValueError, TypeError):
-                    site_id = 0
-                    observation_id = 0
+                    try:
+                        site_id = observation_id.strip().replace('"', '')
+                    except (ValueError, TypeError):
+                        observation_id = 0
 
 
                 try:
                     site = Sites.objects.get(gid=site_id)
-
-                    site_name = request.POST.get('siteName', '')
-                    river_name = request.POST.get('riverName', '')
-                    description = request.POST.get('siteDescription', '')
-                    river_cat = request.POST.get('rivercategory', 'rocky')
-
-                    site.site_name = site_name
-                    site.river_name = river_name
-                    site.description = description
-                    site.river_cat = river_cat
-                    site.user = user
-                    site.save()
                     
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
