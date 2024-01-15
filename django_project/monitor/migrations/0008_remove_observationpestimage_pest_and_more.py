@@ -18,12 +18,10 @@ def populate_group(apps, schema_editor):
             key = 'crabs_shrimps'
         elif image.pest.name.lower() == 'flat worms':
             key = 'flatworms'
-        try:
-            image.group = GroupScores.objects.get(db_field=key)
-        except GroupScores.DoesNotExist:
-            pass
-        image.save()
-
+        groups = GroupScores.objects.filter(db_field=key)
+        if groups.exists():
+            image.group = groups.first()
+            image.save()
 
 
 class Migration(migrations.Migration):
