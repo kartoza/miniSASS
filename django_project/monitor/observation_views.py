@@ -197,12 +197,14 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id = int(str(datainput.get('siteId',datainput.get('selectedSite', 0)))
-            observation_id = int(str(datainput.get('observationId',0))
+            site_id = int(str(datainput.get('siteId', datainput.get('selectedSite', 0))))
+            observation_id = int(str(datainput.get('observationId', 0)))
+
             
             try:
-                latitude = Decimal(str(datainput.get('latitude',0))
-                longitude = Decimal(str(datainput.get('longitude',0))
+                latitude = Decimal(str(datainput.get('latitude', 0)))
+                longitude = Decimal(str(datainput.get('longitude', 0)))
+
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
                     
