@@ -347,6 +347,7 @@ class RecentObservationListView(generics.ListAPIView):
                 'time_stamp': observation['time_stamp'],
                 'obs_date': observation['obs_date'],
                 'score': observation['score'],
+                'river_category': observation['site']['river_cat'],
             })
 
         return recent_observations

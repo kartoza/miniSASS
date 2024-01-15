@@ -63,6 +63,7 @@ const Home: React.FC = () => {
                     username: item.site,
                     score1: item.score,
                     score: item.score,
+                            rivercategory: item.river_category,
                     organisation: `Organisation: ${item.organisation}`,
                     dateadded: `Date added: ${formattedDate}`
                   };

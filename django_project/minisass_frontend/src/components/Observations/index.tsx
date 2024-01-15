@@ -12,6 +12,7 @@ type DesktopTwoColumnscoreProps = Omit<
   | "organisation"
   | "dateadded"
   | "score"
+  | "river_category"
   | "userimage"
   | "score1"
 > &
@@ -21,30 +22,63 @@ type DesktopTwoColumnscoreProps = Omit<
     organisation: string;
     dateadded: string;
     score: string;
+    river_category: string;
     userimage: string;
     score1: string;
   }>;
 
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
-  const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
   const [titleColor, setTitleColor] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
   
 
   useEffect(() => {
-    if(parseFloat(props.score || "0") < 6){
-      setIsRedProgressBar(true)
-      setTitleColor("text-red-600")
-      setProgressBarColor("red")
-      setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`)
-    }else {
-      console.log('score more')
-      setIsRedProgressBar(false)
-      setTitleColor("text-green-800")
-      setProgressBarColor("green")
-      setRenderCrab(`${globalVariables.staticPath}img_image2.png`)
+    if (props.riverCategory === 'sandy') {
+    if (props.score > 6.9) {
+        setTitleColor("text-blue-600");
+        setProgressBarColor("blue");
+        setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
+      } else if (props.score >= 5.9) {
+        setTitleColor("text-green-600");
+        setProgressBarColor("green");
+        setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
+      } else if (props.score >= 5.4) {
+        setTitleColor("text-orange-600");
+        setProgressBarColor("orange");
+        setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
+      } else if (props.score >= 4.8) {
+        setTitleColor("text-red-600");
+        setProgressBarColor("red");
+        setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
+      } else {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+      }
+    } else {
+      if (props.score > 7.2) {
+        setTitleColor("text-blue-600");
+        setProgressBarColor("blue");
+        setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
+      } else if (props.score >= 6.2) {
+        setTitleColor("text-green-600");
+        setProgressBarColor("green");
+        setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
+      } else if (props.score >= 5.7) {
+        setTitleColor("text-orange-600");
+        setProgressBarColor("orange");
+        setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
+      } else if (props.score >= 5.3) {
+        setTitleColor("text-red-600");
+        setProgressBarColor("red");
+        setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
+      } else {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+      }
     }
       
 
