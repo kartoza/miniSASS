@@ -84,6 +84,18 @@ def upload_pest_image(request):
 
                 try:
                     site = Sites.objects.get(gid=site_id)
+
+                    site_name = request.POST.get('siteName', '')
+                    river_name = request.POST.get('riverName', '')
+                    description = request.POST.get('siteDescription', '')
+                    river_cat = request.POST.get('rivercategory', 'rocky')
+
+                    site.site_name = site_name
+                    site.river_name = river_name
+                    site.description = description
+                    site.river_cat = river_cat
+                    site.user = user
+                    site.save()
                     
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
@@ -275,13 +287,6 @@ def create_observations(request):
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
-
-                    site.site_name = site_name
-                    site.river_name = river_name
-                    site.description = description
-                    site.river_cat = river_cat
-                    site.user = user
-                    site.save()
                     
                     for key, image in request.FILES.items():
                         if 'image_' in key:
