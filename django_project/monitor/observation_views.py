@@ -168,11 +168,12 @@ def delete_pest_image(request, observation_pk, pk, **kwargs):
 @csrf_exempt
 @login_required
 def create_observations(request):
-    # if request.method == 'POST':
+    if request.method == 'POST':
         try:
 
             longitude = 0
             latitude = 0
+            
             # Parse JSON data from the request body
             data = json.loads(request.POST.get('data', '{}'))
 
@@ -196,24 +197,12 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id_str = request.POST.get('siteId', datainput.get('selectedSite', '0'))
-            observation_id_str = request.POST.get('observationId', '0')
-            site_id_str = site_id_str.replace('"', '')
-            observation_id_str = observation_id_str.replace('"', '')
+            site_id = int(str(datainput.get('siteId',datainput.get('selectedSite', 0)))
+            observation_id = int(str(datainput.get('observationId',0))
             
             try:
-                site_id = int(site_id_str)
-                observation_id = int(observation_id_str)
-            except ValueError:
-                site_id = 0
-                observation_id = 0
-
-            longitude_str = datainput.get('longitude', '0').replace('"', '')
-            latitude_str = datainput.get('latitude', '0').replace('"', '')
-
-            try:
-                longitude = Decimal(longitude_str)
-                latitude = Decimal(latitude_str)
+                latitude = Decimal(str(datainput.get('latitude',0))
+                longitude = Decimal(str(datainput.get('longitude',0))
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
                     
@@ -321,8 +310,8 @@ def create_observations(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
-    # return JsonResponse(
-    #     {'status': 'error', 'message': 'Invalid request method'})
+    return JsonResponse(
+        {'status': 'error', 'message': 'Invalid request method'})
 
 
 class RecentObservationListView(generics.ListAPIView):
