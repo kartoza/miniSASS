@@ -28,7 +28,9 @@ make_unverified.short_description = "Mark selected observations as unverified (d
 class ObservationPestImageInline(admin.TabularInline):
     model = ObservationPestImage
     form = ObservationPestImageForm
-    autocomplete_fields = ('group',)
+    autocomplete_fields = ('group', )
+    fields = ('group', 'image', 'image_preview', 'valid')
+    readonly_fields = ('image_preview', )
 
 @admin.register(Observations)
 class ObservationsAdmin(admin.ModelAdmin):

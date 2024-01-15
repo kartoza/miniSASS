@@ -197,19 +197,27 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id = int(str(datainput.get('siteId',datainput.get('selectedSite', 0)))
-            observation_id = int(str(datainput.get('observationId',0))
-            
+            site_id_str = str(request.POST.get('siteId', datainput.get('selectedSite', '0')))
+            observation_id_str = str(request.POST.get('observationId', '0'))
+
+            # Remove leading and trailing whitespaces, and replace double quotes
+            site_id_str = site_id_str.strip().replace('"', '')
+            observation_id_str = observation_id_str.strip().replace('"', '')
+
+            # Check if the strings are not empty before attempting conversion
+            site_id = int(site_id_str) if site_id_str else 0
+            observation_id = int(observation_id_str) if observation_id_str else 0
+
+
             try:
-                latitude = Decimal(str(datainput.get('latitude',0))
-                longitude = Decimal(str(datainput.get('longitude',0))
+                latitude = Decimal(str(datainput.get('latitude', 0)))
+                longitude = Decimal(str(datainput.get('longitude', 0)))
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
-                    
+
             # Check if the values are within a valid range
             if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
-
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
@@ -260,16 +268,19 @@ def create_observations(request):
                     value = data.get(db_fields[0], False)
                     setattr(observation, db_fields[0], value)
                 observation.save()
+                return JsonResponse(
+                    {'status': 'success', 'observation_id': observation.gid})
+
 
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
+                    breakpoint()
 
                     site.site_name = site_name
                     site.river_name = river_name
                     site.description = description
                     site.river_cat = river_cat
-                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
                     site.user = user
                     site.save()
                     
