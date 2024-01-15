@@ -29,7 +29,6 @@ type DesktopTwoColumnscoreProps = Omit<
 
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
-  const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
   const [titleColor, setTitleColor] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
