@@ -70,7 +70,7 @@ def upload_pest_image(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                
+
                 site_id = request.POST.get('siteId')
                 observation_id = request.POST.get('observationId')
                 user = request.user
@@ -98,11 +98,23 @@ def upload_pest_image(request):
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
     
-                    site = Sites.objects.create(
+                    site = Sites(
                         gid=new_site_id,
                         the_geom=Point(x=0, y=0, srid=4326),
                         user=user
                     )
+
+                    site_name = request.POST.get('siteName', '')
+                    river_name = request.POST.get('riverName', '')
+                    description = request.POST.get('siteDescription', '')
+                    river_cat = request.POST.get('rivercategory', 'rocky')
+
+                    site.site_name = site_name
+                    site.river_name = river_name
+                    site.description = description
+                    site.river_cat = river_cat
+                    site.user = user
+                    site.save()
 
                 try:
                     observation = Observations.objects.get(gid=observation_id, site=site)
