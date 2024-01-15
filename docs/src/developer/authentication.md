@@ -6,7 +6,7 @@
 
 Uses JSON Web Tokens, which are encoded tokens containing user information.
 With every request made, the token will be validated for the logged in user.
-The token expires after a certain interval ,which means on the frontend there should be a mechanism
+The token expires after a certain interval, which means on the frontend there should be a mechanism
 to refresh the token for example a function to constantly check and determine if the user is still logged in, if so refresh the token.
 
 ## How to use
@@ -23,15 +23,16 @@ This API only allows 2 methods:
 1. POST
 2. OPTIONS
 
- **POST**: used to submit user credentials . The credentials are accepted in the form of:
+ **POST**: used to submit user credentials. The credentials are accepted in the form of:
     i. application/json
     ii. application/x-www-form-urlencoded
     iii. multipart/form-data
 
     **example usage**:
     {
-        "username": "test_user",
-        "password": "test_password"
+        "email": "test@gmail.com",
+        "password": "test_password",
+        "usernameForEmailRetrieval": "test_username"
     }
 
  **OPTIONS**: Returns the documentation available for the login api (basic description).
@@ -165,4 +166,4 @@ This API only allows 2 methods
 
 ### Summary
 
-The `Authentication API`, is responsible for login , registration and password reset.
+The `Authentication API, is responsible for login, registration and password reset.
