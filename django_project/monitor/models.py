@@ -348,7 +348,6 @@ def check_save_image(sender, instance: ObservationPestImage, **kwargs):
 
 @receiver(post_save, sender=ObservationPestImage)
 def post_save_image(sender, instance, created: ObservationPestImage, **kwargs):
-    print('aaaaaaaa')
     if created and instance.valid:
         while True:
             if os.path.exists(instance.image.path):
