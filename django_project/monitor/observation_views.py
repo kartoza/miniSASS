@@ -275,7 +275,6 @@ def create_observations(request):
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
-                    breakpoint()
 
                     site.site_name = site_name
                     site.river_name = river_name
