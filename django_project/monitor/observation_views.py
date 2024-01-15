@@ -70,13 +70,12 @@ def upload_pest_image(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                
                 site_id = request.POST.get('siteId')
                 observation_id = request.POST.get('observationId')
                 user = request.user
                 try:
-                    site_id = int(site_id)
-                    observation_id = int(observation_id)
+                    site_id = int(site_id.replace('"', ''))
+                    observation_id = int(observation_id.replace('"', ''))
                 except (ValueError, TypeError):
                     site_id = 0
                     observation_id = 0
