@@ -284,7 +284,13 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
             additionalData.selectedSite = "";
           } else
-            data.append('siteId', JSON.stringify(siteId));
+            {
+              data.append('siteId', JSON.stringify(siteId));
+              data.append('siteName',additionalData?.siteName)
+              data.append('riverName',additionalData?.riverName)
+              data.append('siteDescription',additionalData?.siteDescription)
+              data.append('rivercategory',additionalData?.rivercategory)
+            }
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
