@@ -194,6 +194,21 @@ def create_observations(request):
             site_id_str = site_id_str.replace('"', '')
             observation_id_str = observation_id_str.replace('"', '')
             
+            site_name = datainput.get('siteName', '')
+            river_name = datainput.get('riverName', '')
+            description = datainput.get('siteDescription', '')
+            river_cat = datainput.get('rivercategory', 'rocky')
+
+            longitude_str = datainput.get('longitude', '0').replace('"', '')
+            latitude_str = datainput.get('latitude', '0').replace('"', '')
+
+            try:
+                longitude = Decimal(longitude_str)
+                latitude = Decimal(latitude_str)
+            except ValueError:
+                return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+                    
+            
             try:
                 site_id = int(site_id_str)
                 observation_id = int(observation_id_str)
@@ -211,19 +226,6 @@ def create_observations(request):
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
-                    site_name = datainput.get('siteName', '')
-                    river_name = datainput.get('riverName', '')
-                    description = datainput.get('siteDescription', '')
-                    river_cat = datainput.get('rivercategory', 'rocky')
-
-                    longitude_str = datainput.get('longitude', '0').replace('"', '')
-                    latitude_str = datainput.get('latitude', '0').replace('"', '')
-
-                    try:
-                        longitude = Decimal(longitude_str)
-                        latitude = Decimal(latitude_str)
-                    except ValueError:
-                        return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
                     
                     # Check if the values are within a valid range
                     if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
@@ -274,6 +276,16 @@ def create_observations(request):
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
+                    longitude = datainput.get('longitude', 0)
+                    latitude = datainput.get('latitude', 0)
+
+                    site.site_name = site_name
+                    site.river_name = river_name
+                    site.description = description
+                    site.river_cat = river_cat
+                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
+                    site.user = user
+                    site.save()
                     
                     for key, image in request.FILES.items():
                         if 'image_' in key:
