@@ -9,6 +9,7 @@ from django.contrib.gis.db import models as geometry_fields
 from django.db import models
 from django.db.models.signals import pre_save, post_delete, post_save
 from django.dispatch import receiver
+from django.utils.html import mark_safe
 
 from minisass.models import GroupScores
 from minisass.utils import delete_file_field, delete_from_minio, get_path_string
@@ -269,6 +270,9 @@ class ObservationPestImage(models.Model):
 
         self.image.name = new_name
 
+    def image_preview(self):
+        return mark_safe('<img src="%s" width="150" height="150" />' % (self.image))
+
 
 # Helper function to send email content based on observation
 def send_confirmation_email(observation):
@@ -344,6 +348,7 @@ def check_save_image(sender, instance: ObservationPestImage, **kwargs):
 
 @receiver(post_save, sender=ObservationPestImage)
 def post_save_image(sender, instance, created: ObservationPestImage, **kwargs):
+    print('aaaaaaaa')
     if created and instance.valid:
         while True:
             if os.path.exists(instance.image.path):
