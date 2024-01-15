@@ -51,8 +51,22 @@ class SitesSerializer(serializers.ModelSerializer):
 class ObservationPestImageSerializer(serializers.ModelSerializer):
     """Serializer for Observation Pert image."""
 
-    pest_id = serializers.IntegerField(source='group.id')
-    pest_name = serializers.CharField(source='group.name')
+    pest_id = serializers.SerializerMethodField()
+    pest_name = serializers.SerializerMethodField()
+
+    def get_pest_id(self, instance):
+        if instance.group:
+            return instance.group_id
+        elif instance.pest:
+            return instance.pest_id
+        return None
+
+    def get_pest_name(self, instance):
+        if instance.group:
+            return instance.group.name
+        elif instance.pest:
+            return instance.pest.name
+        return None
 
     class Meta:
         model = ObservationPestImage
