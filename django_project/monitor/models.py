@@ -271,7 +271,7 @@ class ObservationPestImage(models.Model):
         self.image.name = new_name
 
     def image_preview(self):
-        return mark_safe('<img src="%s" width="150" height="150" />' % (self.image))
+        return mark_safe('<img src="%s" width="150" height="150" />' % (self.image.url))
 
 
 # Helper function to send email content based on observation
