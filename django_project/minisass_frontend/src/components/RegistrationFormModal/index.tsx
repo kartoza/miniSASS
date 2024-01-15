@@ -118,7 +118,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   };
 
   const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
     return emailRegex.test(email);
   };
 
