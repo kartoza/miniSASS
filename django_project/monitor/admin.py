@@ -69,4 +69,5 @@ class SitesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Pest, admin.ModelAdmin)
+admin.site.register(ObservationPestImage)
 admin.site.register(Assessment, admin.ModelAdmin)
