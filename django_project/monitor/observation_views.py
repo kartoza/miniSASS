@@ -24,19 +24,20 @@ from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
 from monitor.serializers import (
-    ObservationsSerializer, 
-    ObservationPestImageSerializer, 
+    ObservationsSerializer,
+    ObservationPestImageSerializer,
     ObservationsAllFieldsSerializer
 )
 from django.core.exceptions import ValidationError
 from django.db import transaction
+
 
 def get_observations_by_site(request, site_id, format=None):
     try:
         site = Sites.objects.get(gid=site_id)
         observations = Observations.objects.filter(site=site)
         serializer = ObservationsAllFieldsSerializer(observations, many=True)
-        
+
         return JsonResponse(
             {'status': 'success', 'observations': serializer.data}
         )
@@ -44,13 +45,12 @@ def get_observations_by_site(request, site_id, format=None):
         raise Http404("Site does not exist")
 
 
-
 @csrf_exempt
 @login_required
 def upload_pest_image(request):
     """
     This view function handles the upload of pest images, associating them with an observation and a site.
-    
+
     - Creates an empty site and observation.
     - Associates uploaded images with the observation.
     - Returns the observation ID, site ID, and image IDs for further processing.
@@ -70,7 +70,7 @@ def upload_pest_image(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                
+
                 site_id = request.POST.get('siteId')
                 observation_id = request.POST.get('observationId')
                 user = request.user
@@ -81,14 +81,13 @@ def upload_pest_image(request):
                     site_id = 0
                     observation_id = 0
 
-
                 try:
-                    site = Sites.objects.get(gid=site_id)  
-                    
+                    site = Sites.objects.get(gid=site_id)
+
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
-    
+
                     site = Sites.objects.create(
                         gid=new_site_id,
                         the_geom=Point(x=0, y=0, srid=4326),
@@ -124,7 +123,7 @@ def upload_pest_image(request):
 
                 return JsonResponse(
                     {
-                        'status': 'success', 
+                        'status': 'success',
                         'observation_id': observation.gid,
                         'site_id': site.gid,
                         'pest_image_id': pest_image.id
@@ -139,6 +138,7 @@ def upload_pest_image(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+
 @csrf_exempt
 @login_required
 def delete_pest_image(request, observation_pk, pk, **kwargs):
@@ -149,8 +149,8 @@ def delete_pest_image(request, observation_pk, pk, **kwargs):
             image_id = pk if pk else kwargs.get('pk')
 
             if not observation_id or not image_id:
-                return JsonResponse({'status': 'error', 'message': 'Observation_pk and pk must be provided.'}, status=400)
-
+                return JsonResponse({'status': 'error', 'message': 'Observation_pk and pk must be provided.'},
+                                    status=400)
 
             observation = get_object_or_404(Observations, gid=observation_id)
 
@@ -173,7 +173,7 @@ def create_observations(request):
 
             longitude = 0
             latitude = 0
-            
+
             # Parse JSON data from the request body
             data = json.loads(request.POST.get('data', '{}'))
 
@@ -197,19 +197,18 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id = int(str(datainput.get('siteId',datainput.get('selectedSite', 0)))
-            observation_id = int(str(datainput.get('observationId',0))
-            
+            site_id = int(str(datainput.get('siteId', datainput.get('selectedSite', 0))))
+            observation_id = int(str(datainput.get('observationId', 0)))
+
             try:
-                latitude = Decimal(str(datainput.get('latitude',0))
-                longitude = Decimal(str(datainput.get('longitude',0))
+                latitude = Decimal(str(datainput.get('latitude', 0)))
+                longitude = Decimal(str(datainput.get('longitude', 0)))
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
-                    
+
             # Check if the values are within a valid range
             if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
-
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
@@ -272,7 +271,7 @@ def create_observations(request):
                     site.the_geom = Point(x=longitude, y=latitude, srid=4326)
                     site.user = user
                     site.save()
-                    
+
                     for key, image in request.FILES.items():
                         if 'image_' in key:
                             SiteImage.objects.create(
