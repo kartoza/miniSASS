@@ -197,7 +197,7 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id_str = str(request.POST.get('siteId', datainput.get('selectedSite', '0')))
+            site_id = int(str(datainput.get('siteId', datainput.get('selectedSite', '0'))))
             observation_id_str = str(request.POST.get('observationId', '0'))
 
             # Remove leading and trailing whitespaces, and replace double quotes
