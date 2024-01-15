@@ -4,8 +4,27 @@ from django.conf import settings
 
 
 class GroupScores(models.Model):
+    DB_FIELDS = [
+        ('bugs_beetles', 'bugs_beetles'),
+        ('caddisflies', 'caddisflies'),
+        ('crabs_shrimps', 'crabs_shrimps'),
+        ('damselflies', 'damselflies'),
+        ('dragonflies', 'dragonflies'),
+        ('flatworms', 'flatworms'),
+        ('leeches', 'leeches'),
+        ('minnow_mayflies', 'minnow_mayflies'),
+        ('other_mayflies', 'other_mayflies'),
+        ('snails', 'snails'),
+        ('stoneflies', 'stoneflies'),
+        ('true_flies', 'true_flies'),
+        ('worms', 'worms')
+    ]
+
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    db_field = models.CharField(
+        max_length=25, choices=DB_FIELDS, blank=True
+    )
     sensitivity_score = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):

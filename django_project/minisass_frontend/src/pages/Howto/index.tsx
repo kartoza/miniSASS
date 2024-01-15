@@ -515,7 +515,7 @@ const HowtoPage: React.FC = () => {
         </div>
         {/* end of section */}
 
-        <Footer className="flex items-center justify-center mt-28 md:px-5w-full"/>
+        <Footer className="flex items-center justify-center mt-28 md:px-5 w-full sm:mt-[200px]"/>
       </div>
     </>
   );

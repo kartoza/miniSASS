@@ -13,7 +13,7 @@ from minisass.serializers import (
 )
 
 class GroupScoresListView(generics.ListAPIView):
-    queryset = GroupScores.objects.all()
+    queryset = GroupScores.objects.all().order_by('name')
     serializer_class = GroupScoresSerializer
 
 

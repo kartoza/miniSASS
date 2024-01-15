@@ -164,7 +164,7 @@ EMAIL_HOST_PASSWORD = os.getenv('SMTP_HOST_PASSWORD', 'docker')
 EMAIL_USE_TLS = os.getenv('SMTP_EMAIL_TLS', 'False')
 
 SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
-CONTACT_US_RECEPIENT_EMAIL = 'amy@kartoza.com'
+CONTACT_US_RECEPIENT_EMAIL = 'info@minisass.org'
 EXPERT_APPROVAL_RECIPIENT_EMAIL = 'info@minisass.org'
 
 # django registration/auth settings
@@ -236,12 +236,13 @@ MINION_STORAGE = FileSystemStorage(
     location=MINIO_ROOT, base_url='/minio-media'
 )
 
-AUTHENTICATION_BACKENDS = ['minisass_authentication.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'minisass_authentication.backends.EmailBackend',
+]
 
 
-MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
-MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
-MINIO_AI_BUCKET = os.getenv("MINIO_AI_BUCKET")
-MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT")
-
-DEBUG = True
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY") or os.getenv("AWS_ACCESS_KEY")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY") or os.getenv("AWS_SECRET_ACCESS_KEY")
+MINIO_AI_BUCKET = os.getenv("MINIO_BUCKET")
+MINIO_ENDPOINT = os.getenv("MINIO_URL")

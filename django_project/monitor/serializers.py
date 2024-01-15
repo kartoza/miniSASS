@@ -7,7 +7,8 @@ from monitor.models import (
     ObservationPestImage,
     Sites,
     SiteImage,
-    Assessment
+    Assessment,
+    Pest
 )
 
 
@@ -50,8 +51,8 @@ class SitesSerializer(serializers.ModelSerializer):
 class ObservationPestImageSerializer(serializers.ModelSerializer):
     """Serializer for Observation Pert image."""
 
-    pest_id = serializers.IntegerField(source='pest.id')
-    pest_name = serializers.CharField(source='pest.name')
+    pest_id = serializers.IntegerField(source='group.id')
+    pest_name = serializers.CharField(source='group.name')
 
     class Meta:
         model = ObservationPestImage

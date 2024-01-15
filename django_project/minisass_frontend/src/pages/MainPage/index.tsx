@@ -34,55 +34,57 @@ const Home: React.FC = () => {
 
   const FETCH_RECENT_OBSERVATIONS = globalVariables.baseUrl + '/monitor/observations/recent-observations/';
 
-    useEffect(() => {
-        const fetchHomePageData = (retryCount = 0) => {
-            axios
-                .get(
-                    `${FETCH_RECENT_OBSERVATIONS}`
-                )
-                .then((response) => {
-                    if (response.data) {
+  const fetchHomePageData = async (retryCount = 0) => {
+    await axios
+        .get(
+            `${FETCH_RECENT_OBSERVATIONS}`
+        )
+        .then((response) => {
+            if (response.data) {
 
-                        // Iterate through the response data and structure it as required by observations component
-                        response.data.forEach((item) => {
-                          // Convert the timestamp to a JavaScript Date object
-                          const timestampDate = new Date(item.obs_date);
-                        
-                          // Define an array of month names
-                          const monthNames = [
-                            "January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"
-                          ];
-                        
-                          // Format the date
-                          const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
-                        
-                          const structuredItem = {
-                            observation: item.observation,
-                            usernamejimtaylOne: `Username: ${item.username}`,
-                            userimage: "",
-                            username: item.site,
-                            score1: item.score,
-                            score: item.score,
+                // Iterate through the response data and structure it as required by observations component
+                response.data.forEach((item) => {
+                  // Convert the timestamp to a JavaScript Date object
+                  const timestampDate = new Date(item.time_stamp);
+                
+                  // Define an array of month names
+                  const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                  ];
+                
+                  // Format the date
+                  const formattedDate = `${timestampDate.getDate()} ${monthNames[timestampDate.getMonth()]} ${timestampDate.getFullYear()}`;
+                
+                  const structuredItem = {
+                    observation: item.observation,
+                    usernamejimtaylOne: `Username: ${item.username}`,
+                    userimage: "",
+                    username: item.site,
+                    score1: item.score,
+                    score: item.score,
                             rivercategory: item.river_category,
-                            organisation: `Organisation: ${item.organisation}`,
-                            dateadded: `Date added: ${formattedDate}`
-                          };
-                          ObservationsPropList.push(structuredItem);
-                        });
-                        setObservations(ObservationsPropList)
-                    } else {
-                        if (retryCount < 3) {
-                          setTimeout(() => {
-                            fetchHomePageData(retryCount+1);
-                          }, 3000);
-                        }
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
+                    organisation: `Organisation: ${item.organisation}`,
+                    dateadded: `Date added: ${formattedDate}`
+                  };
+                  ObservationsPropList.push(structuredItem);
                 });
-        };
+                setObservations(ObservationsPropList)
+            } else {
+                if (retryCount < 3) {
+                  setTimeout(() => {
+                    fetchHomePageData(retryCount+1);
+                  }, 3000);
+                }
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+  };
+
+
+    useEffect(() => {
 
         const uidParam = urlParams.get('uid');
         const tokenParam = urlParams.get('token');
@@ -356,33 +358,33 @@ const Home: React.FC = () => {
                 alt="crab_placeholder"
               />
             </div>
-            <div
-              className="common-pointer h-full relative w-full"
-            >
-              <div className="md:h-28 h-[110px] m-auto w-full">
-                <div className="bg-blue_gray-500 h-28 m-auto rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
-                <div className="absolute bottom-[10%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
-                  <Img
-                    className="h-8 w-8"
-                    src={`${globalVariables.staticPath}img_bxclouddownload.svg`}
-                    alt="bxclouddownload"
-                  />
-                    <HashLink to="/howto#howto-resources">
-                      <Text
-                        className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
-                        size="txtRalewayExtraBold14WhiteA700"
-                      >
-                        Resources
-                      </Text>
-                    </HashLink>;
+            <HashLink to="/howto#howto-resources">
+              <div
+                className="common-pointer h-full relative w-full"
+              >
+                <div className="flex h-24 md:h-28 justify-end mt-auto mx-auto w-full">
+                  <div className="bg-blue_gray-500 h-28 mt-auto mx-auto relative rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-full"></div>
+                  <div className="absolute bottom-[13%] flex flex-col inset-x-[0] items-center justify-start mx-auto w-[47%]">
+                    <Img
+                      className="bottom-5 h-8 relative w-8"
+                      src={`${globalVariables.staticPath}img_bxclouddownload.svg`}
+                      alt="bxbong"
+                    />
+                    <Text
+                      className="bottom-5 mt-1 relative text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
+                      size="txtRalewayExtraBold14WhiteA700"
+                    >
+                      Resources
+                    </Text>
+                  </div>
                 </div>
+                <Img
+                  className="absolute h-[72px] right-[0] top-[0] w-[72px]"
+                  src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100_72x46.svg`}
+                  alt="crab_placeholder"
+                />
               </div>
-              <Img
-                className="absolute h-[72px] right-[0] top-[0] w-[72px]"
-                src={`${globalVariables.staticPath}img_notov1crab_blue_gray_100_72x46.svg`}
-                alt="crab_placeholder"
-              />
-            </div>
+            </HashLink>
           </List>
 
           <UploadModal isOpen={isUploadModalOpen} onClose={closeUploadModal} onSubmit={null} />
@@ -471,7 +473,6 @@ const Home: React.FC = () => {
                       className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[265px] md:h-auto
                       items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px]
                       rounded-tr-[25px] w-[280px] sm:w-full md:w-full"
-                      // riverCategory={props.river_category}
                       {...props}
                     />
                   </React.Fragment>

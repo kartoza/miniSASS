@@ -10,7 +10,7 @@ const TabbedContent = ({ tabsData, activeTabIndex, onTabChange }) => {
 
   return (
     <div className="flex flex-col items-start justify-start " >
-      <div className="flex gap-5 w-[28vw]" style={{overflowX: 'auto'}}>
+      <div className="flex gap-5 w-[34vw]" style={{overflowX: 'auto'}}>
         {sortedTabsData.map((tab, index) => (
           <button
             key={tab.id}

@@ -1,6 +1,8 @@
 from django import forms
-from monitor.models import Sites, Observations
 from django.forms import ModelForm, Textarea, Select, DateInput
+
+from monitor.models import Sites, Observations, ObservationPestImage
+
 
 # Form based on the Sites model
 class SiteForm(ModelForm):
@@ -41,6 +43,11 @@ class ObservationForm(ModelForm):
             'diss_oxygen_unit': Select(),
             'elec_cond_unit': Select()
         }
+
+class ObservationPestImageForm(ModelForm):
+    class Meta:
+        model = ObservationPestImage
+        exclude = ('pest', )
 
 # Form for storing lon/lat coordinates
 class CoordsForm(forms.Form):

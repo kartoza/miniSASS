@@ -324,7 +324,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   };
-  
+
   const customStyles = {
     control: (styles, { isFocused }) => ({
       ...styles,
@@ -373,6 +373,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     if (!siteDetails) {
       return {};
     }
+
+    formValues.selectedSite = siteDetails?.gid ?? null;
   
     return {
       label: siteDetails.sitename || '',
@@ -466,6 +468,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           <Formik
             initialValues={formValues}
             onSubmit={(values) => {
+              if(formValues.selectedSite != '' && formValues.selectedSite != 'none'){
+                values.selectedSite = formValues.selectedSite
+                formValues.selectedSite = ''
+              }
               setFormValues(values)
               handleShowScoreForm()
             }}
@@ -770,7 +776,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
                   {/* Tooltip */}
                   <Tooltip
-                    title="River category description comes here"
+                    title={
+                      <React.Fragment>
+                        <div style={{ color: 'inherit' }}>
+                          <p>
+                            <strong>Classifying your stream / river:</strong> A: "Rocky" section of a stream / river has loose rocks instream and is often found closer to the source of the river.
+                            Sections of stream / rivers without any loose rocks instream are termed "Sandy" and are often found towards the mouth of the stream / river.
+                          </p>
+                        </div>
+                      </React.Fragment>
+                    }
                     placement="top"
                     arrow
                     PopperProps={{
@@ -933,7 +948,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                             marginRight: '-10px',
                           }}
                           min={'2010-01-01'}
-                          max={formatDate(new Date())}
+                          max={(new Date()).toISOString().split('T')[0]}
                           value={values.date}
                           onChange={(e) => {
                             handleChange(e);

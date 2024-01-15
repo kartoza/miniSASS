@@ -17,20 +17,22 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+// TODO: GET PEST FROM API OR INTEGRATE IMAGE TO GROUP_SCORE
 const PESTS = [
   '-', // This is to skip idx 0
-  'flatworms',
-  'leeches',
-  'crabs_shrimps',
-  'stoneflies',
-  'minnow_mayflies',
-  'other_mayflies',
-  'damselflies',
-  'dragonflies',
-  'bugs_beetles',
-  'caddisflies',
-  'true_flies',
-  'snails'
+  "bugs_beetles",
+  "caddisflies",
+  "crabs_shrimps",
+  "damselflies",
+  "dragonflies",
+  "flatworms",
+  "leeches",
+  "minnow_mayflies",
+  "other_mayflies",
+  "snails",
+  "stoneflies",
+  "true_flies",
+  "worms"
 ]
 
 
@@ -94,6 +96,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   );
 
   const [proceedToSavingData, setProceedToSavingData] = useState(false)
+  const [observationId, setObservationId] = useState(0);
+  const [siteId, setSiteId] = useState(0);
 
   // Function to log the state of checkboxes
   const handleSave = async () => {
@@ -130,8 +134,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         score:averageScore,
         datainput: additionalData,
       };
-      PESTS.map((pest,idx) => {
-        observationsData[pest] = checkboxStates['' + idx]
+
+      scoreGroups.map((sg) => {
+        observationsData[sg.db_field] = checkboxStates['' + sg.id]
       })
 
       var form_data = new FormData();
@@ -140,8 +145,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       })
       form_data.append('data', JSON.stringify(observationsData));
       form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
-      form_data.append('observationId', JSON.stringify(observationId))
-      form_data.append('siteId', JSON.stringify(siteId))
+      const obs_id = localStorage.getItem('observationId') || observationId;
+      const site_id = localStorage.getItem('siteId') || siteId;
+      form_data.append('observationId', JSON.stringify(obs_id));
+      form_data.append('siteId', JSON.stringify(site_id));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -239,8 +246,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setSidebarOpen(false);
   };
 
-  const [observationId, setObservationId] = useState(0);
-  const [siteId, setSiteId] = useState(0);
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
 
@@ -255,9 +260,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
           for (const key in pestImages) {
             if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
-        
                 pestImages[key].map((file, idx) => {
-                  data.append('pest_' + idx + ':' + selectedPests.toLowerCase().replace(/\s+/g, '_'), file);
+                  data.append('pest_' + idx + ':' + key, file);
                 });
               
             }

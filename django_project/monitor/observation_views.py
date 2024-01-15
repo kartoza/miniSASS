@@ -18,6 +18,7 @@ from django.http import Http404
 from datetime import datetime
 
 from minisass_authentication.models import UserProfile
+from minisass.models import GroupScores
 
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
@@ -111,14 +112,12 @@ def upload_pest_image(request):
                 # Save images in the request object
                 for key, image in request.FILES.items():
                     if 'pest_' in key:
-                        pest_name = key.split(':')[1]
-                        if pest_name:
-                            pest, _ = Pest.objects.get_or_create(
-                                name=pest_name.replace('_', ' ').capitalize()
-                            )
+                        group_id = key.split(':')[1]
+                        if group_id:
+                            group = GroupScores.objects.get(id=group_id)
                             pest_image, _ = ObservationPestImage.objects.get_or_create(
                                 observation=observation,
-                                pest=pest
+                                group=group
                             )
                             pest_image.image = image
                             pest_image.save()
@@ -178,19 +177,6 @@ def create_observations(request):
             datainput = data.get('datainput', {})
 
             # Extract other fields from the payload
-            flatworms = data.get('flatworms', False)
-            worms = data.get('worms', False)
-            leeches = data.get('leeches', False)
-            crabs_shrimps = data.get('crabs_shrimps', False)
-            stoneflies = data.get('stoneflies', False)
-            minnow_mayflies = data.get('minnow_mayflies', False)
-            other_mayflies = data.get('other_mayflies', False)
-            damselflies = data.get('damselflies', False)
-            dragonflies = data.get('dragonflies', False)
-            bugs_beetles = data.get('bugs_beetles', False)
-            caddisflies = data.get('caddisflies', False)
-            true_flies = data.get('true_flies', False)
-            snails = data.get('snails', False)
             score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
             water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
@@ -200,16 +186,21 @@ def create_observations(request):
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
             elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
-            site_id = request.POST.get('siteId',datainput.get('selectedSite', 0))
-            observation_id = request.POST.get('observationId')
             obs_date = datainput.get('date')
             user = request.user
+            site_id_str = request.POST.get('siteId', datainput.get('selectedSite', '0'))
+            observation_id_str = request.POST.get('observationId', '0')
+            
+            site_id_str = site_id_str.replace('"', '')
+            observation_id_str = observation_id_str.replace('"', '')
+            
             try:
-                site_id = int(site_id)
-                observation_id = int(observation_id)
-            except (ValueError, TypeError):
+                site_id = int(site_id_str)
+                observation_id = int(observation_id_str)
+            except ValueError:
                 site_id = 0
                 observation_id = 0
+
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
@@ -224,8 +215,23 @@ def create_observations(request):
                     river_name = datainput.get('riverName', '')
                     description = datainput.get('siteDescription', '')
                     river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = datainput.get('longitude', 0)
-                    latitude = datainput.get('latitude', 0)
+
+                    longitude_str = datainput.get('longitude', '0').replace('"', '')
+                    latitude_str = datainput.get('latitude', '0').replace('"', '')
+
+                    try:
+                        longitude = Decimal(longitude_str)
+                        latitude = Decimal(latitude_str)
+                    except ValueError:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+                    
+                    # Check if the values are within a valid range
+                    if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
+                        return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
+
+
+                    if Sites.objects.filter(site_name=site_name).exists():
+                        return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
 
                     site = Sites.objects.create(
                         gid=new_site_id,
@@ -245,24 +251,11 @@ def create_observations(request):
 
                 max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
                 new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
-                observation = Observations.objects.create(
+                observation = Observations(
                     gid=new_observation_id,
                     score=score,
                     site=site,
                     user=user,
-                    flatworms=flatworms,
-                    worms=worms,
-                    leeches=leeches,
-                    crabs_shrimps=crabs_shrimps,
-                    stoneflies=stoneflies,
-                    minnow_mayflies=minnow_mayflies,
-                    other_mayflies=other_mayflies,
-                    damselflies=damselflies,
-                    dragonflies=dragonflies,
-                    bugs_beetles=bugs_beetles,
-                    caddisflies=caddisflies,
-                    true_flies=true_flies,
-                    snails=snails,
                     comment=comment,
                     water_clarity=water_clarity,
                     water_temp=water_temp,
@@ -273,72 +266,49 @@ def create_observations(request):
                     elec_cond_unit=elec_cond_unit,
                     obs_date=obs_date
                 )
+                for db_fields in GroupScores.DB_FIELDS:
+                    value = data.get(db_fields[0], False)
+                    setattr(observation, db_fields[0], value)
+                observation.save()
 
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
                     
-                    site_name = datainput.get('siteName', '')
-                    river_name = datainput.get('riverName', '')
-                    description = datainput.get('siteDescription', '')
-                    river_cat = datainput.get('rivercategory', 'rocky')
-                    longitude = datainput.get('longitude', 0)
-                    latitude = datainput.get('latitude', 0)
-
-                    site.site_name = site_name
-                    site.river_name = river_name
-                    site.description = description
-                    site.river_cat = river_cat
-                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
-                    site.user = user
-                    site.save()
-
                     for key, image in request.FILES.items():
                         if 'image_' in key:
                             SiteImage.objects.create(
                                 site=site, image=image
                             )
 
-                except Sites.DoesNotExist:
-                    pass
-
-
-                try:
-                    observation = Observations.objects.get(gid=observation_id)
-
-                    observation.score = score
-                    observation.site = site
-                    observation.user = user
-                    observation.flatworms = flatworms
-                    observation.worms = worms
-                    observation.leeches = leeches
-                    observation.crabs_shrimps = crabs_shrimps
-                    observation.stoneflies = stoneflies
-                    observation.minnow_mayflies = minnow_mayflies
-                    observation.other_mayflies = other_mayflies
-                    observation.damselflies = damselflies
-                    observation.dragonflies = dragonflies
-                    observation.bugs_beetles = bugs_beetles
-                    observation.caddisflies = caddisflies
-                    observation.true_flies = true_flies
-                    observation.snails = snails
-                    observation.comment = comment
-                    observation.water_clarity = water_clarity
-                    observation.water_temp = water_temp
-                    observation.ph = ph
-                    observation.diss_oxygen = diss_oxygen
-                    observation.diss_oxygen_unit = diss_oxygen_unit
-                    observation.elec_cond = elec_cond
-                    observation.elec_cond_unit = elec_cond_unit
-                    observation.obs_date = obs_date
-
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
+                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    observation = Observations(
+                        gid=observation_id if observation_id != 0 else new_observation_id,
+                        score=score,
+                        site=site,
+                        user=user,
+                        comment=comment,
+                        water_clarity=water_clarity,
+                        water_temp=water_temp,
+                        ph=ph,
+                        diss_oxygen=diss_oxygen,
+                        diss_oxygen_unit=diss_oxygen_unit,
+                        elec_cond=elec_cond,
+                        elec_cond_unit=elec_cond_unit,
+                        obs_date=obs_date
+                    )
+                    for db_fields in GroupScores.DB_FIELDS:
+                        value = data.get(db_fields[0], False)
+                        setattr(observation, db_fields[0], value)
                     observation.save()
 
-                except Observations.DoesNotExist:
-                    pass
+                    return JsonResponse(
+                        {'status': 'success', 'observation_id': observation.gid})
 
-            return JsonResponse(
-                {'status': 'success', 'observation_id': observation.gid})
+                except Sites.DoesNotExist:
+                    return JsonResponse({'status': 'error', 'message': 'cannot find site to save observation to'})
+
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
