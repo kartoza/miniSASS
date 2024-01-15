@@ -186,16 +186,20 @@ def create_observations(request):
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
             elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
-            site_id = request.POST.get('siteId', datainput.get('selectedSite', 0))
-            observation_id = request.POST.get('observationId')
             obs_date = datainput.get('date')
             user = request.user
+            site_id_str = request.POST.get('siteId', datainput.get('selectedSite', '0'))
+            observation_id_str = request.POST.get('observationId', '0')
+            
+            site_id_str = site_id_str.replace('"', '')
+            observation_id_str = observation_id_str.replace('"', '')
+            
             try:
-                site_id = int(site_id.replace('"', ''))
-                observation_id = int(observation_id.replace('"', ''))
-            except (ValueError, TypeError):
-                site_id = 0
-                observation_id = 0
+                site_id = int(site_id_str)
+                observation_id = int(observation_id_str)
+            except ValueError:
+                return JsonResponse({'status': 'error', 'message': 'Invalid site_id or observation_id format'})
+
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
 
