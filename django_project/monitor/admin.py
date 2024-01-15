@@ -68,6 +68,5 @@ class SitesAdmin(admin.ModelAdmin):
     inlines = (SiteImageInline,)
 
 
-admin.site.register(Pest, admin.ModelAdmin)
 admin.site.register(ObservationPestImage)
 admin.site.register(Assessment, admin.ModelAdmin)
