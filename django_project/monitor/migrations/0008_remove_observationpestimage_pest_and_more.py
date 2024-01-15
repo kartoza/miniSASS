@@ -18,7 +18,10 @@ def populate_group(apps, schema_editor):
             key = 'crabs_shrimps'
         elif image.pest.name.lower() == 'flat worms':
             key = 'flatworms'
-        image.group = GroupScores.objects.get(db_field=key)
+        try:
+            image.group = GroupScores.objects.get(db_field=key)
+        except GroupScores.DoesNotExist:
+            pass
         image.save()
 
 
