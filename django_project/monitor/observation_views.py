@@ -198,7 +198,8 @@ def create_observations(request):
                 site_id = int(site_id_str)
                 observation_id = int(observation_id_str)
             except ValueError:
-                return JsonResponse({'status': 'error', 'message': 'Invalid site_id or observation_id format'})
+                site_id = 0
+                observation_id = 0
 
 
             create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
