@@ -470,6 +470,7 @@ const Home: React.FC = () => {
                       className="border border-blue_gray-100 border-solid flex flex-col gap-2 h-[265px] md:h-auto
                       items-start justify-between sm:px-5 px-6 py-5 rounded-bl-[25px] rounded-br-[25px]
                       rounded-tr-[25px] w-[280px] sm:w-full md:w-full"
+                      // riverCategory={props.river_category}
                       {...props}
                     />
                   </React.Fragment>

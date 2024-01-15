@@ -101,17 +101,74 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isObservationDetailsOpen, setIsObservationDetailsOpen] = useState(true);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
 
-  const updateScoreDisplay = (score) => {
-    if (parseFloat(score) < 6) {
-      setTitleColor("text-red-600");
-      setProgressBarColor("red");
-      setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+  const updateScoreDisplay = (riverCategory, score) => {
+    if (riverCategory === 'sandy') {
+      if (score > 6.9) {
+        setTitleColor("text-blue-600");
+        setProgressBarColor("blue");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 5.9) {
+        setTitleColor("text-green-600");
+        setProgressBarColor("green");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 5.4) {
+        setTitleColor("text-orange-600");
+        setProgressBarColor("orange");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 4.8) {
+        setTitleColor("text-red-600");
+        setProgressBarColor("red");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+      }
     } else {
-      setTitleColor("text-green-800");
-      setProgressBarColor("green");
-      setRenderCrab(`${globalVariables.staticPath}img_image2.png`);
+      if (score > 7.2) {
+        setTitleColor("text-blue-600");
+        setProgressBarColor("blue");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 6.2) {
+        setTitleColor("text-green-600");
+        setProgressBarColor("green");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 5.7) {
+        setTitleColor("text-orange-600");
+        setProgressBarColor("orange");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else if (score >= 5.3) {
+        setTitleColor("text-red-600");
+        setProgressBarColor("red");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+      } else {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+      }
     }
+    // if (parseFloat(score) < 6) {
+    //   setTitleColor("text-red-600");
+    //   setProgressBarColor("red");
+    //   setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
+    // } else {
+    //   setTitleColor("text-green-800");
+    //   setProgressBarColor("green");
+    //   setRenderCrab(`${globalVariables.staticPath}img_image2.png`);
+    // }
   };
+
+  const getClassification = (color) => {
+    if (color === 'blue') {
+      return 'NATURAL'
+    } else if (color === 'green') {
+      return 'GOOD';
+    } else if (color === 'orange') {
+      return 'FAIR';
+    } else if (color === 'red') {
+      return 'POOR';
+    } else {
+      return 'VERY POOR';
+    }
+  }
 
 
   useEffect(() => {
@@ -235,7 +292,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
           handleMapClick(response.data.latitude,response.data.longitude);
         }, 1200);
 
-        updateScoreDisplay(response.data.score);
+        updateScoreDisplay(response.data.site.river_cat, response.data.score);
 
       } else { }
     } catch (error) {
@@ -249,7 +306,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     } else {
       if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
         setLoading(false);
-        updateScoreDisplay(siteWithObservations.observations[0].score); // on intial load
+        updateScoreDisplay(siteWithObservations.river_cat, siteWithObservations.observations[0].score); // on intial load
         setObservationDetails(siteWithObservations.observations[0]); // on intial load
         setObservationList(siteWithObservations.observations)
 
@@ -339,7 +396,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         activeTabIndex={activeTabIndex}
         onTabChange={(index) => {
           // update variables to reflect changes
-          updateScoreDisplay(observations[index].score);
+          updateScoreDisplay(observations[index].site.river_cat, observations[index].score);
           setObservationDetails(observations[index])
           setActiveTabIndex(index);
         }}
@@ -400,7 +457,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className={`${titleColor} text-base w-auto`}
                   size="txtRalewayRomanSemiBold16"
                 >
-                  {progressBarColor === 'green' ? (`Good`) : (`Poor`)}
+                  {getClassification(progressBarColor)}
                 </Text>
               </div>
             </div>

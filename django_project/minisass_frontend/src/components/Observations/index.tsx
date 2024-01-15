@@ -12,6 +12,7 @@ type DesktopTwoColumnscoreProps = Omit<
   | "organisation"
   | "dateadded"
   | "score"
+  | "river_category"
   | "userimage"
   | "score1"
 > &
@@ -21,12 +22,14 @@ type DesktopTwoColumnscoreProps = Omit<
     organisation: string;
     dateadded: string;
     score: string;
+    river_category: string;
     userimage: string;
     score1: string;
   }>;
 
 
 const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
+  console.debug(props)
   const [isRedProgressBar, setIsRedProgressBar] = useState<boolean>(false);
   const [titleColor, setTitleColor] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
