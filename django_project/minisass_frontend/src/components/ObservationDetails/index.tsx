@@ -122,6 +122,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       } else {
         setTitleColor("text-purple-600");
         setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
       }
     } else {
       if (score > 7.2) {
@@ -143,17 +144,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       } else {
         setTitleColor("text-purple-600");
         setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
       }
     }
-    // if (parseFloat(score) < 6) {
-    //   setTitleColor("text-red-600");
-    //   setProgressBarColor("red");
-    //   setRenderCrab(`${globalVariables.staticPath}img_image2_24x30.png`);
-    // } else {
-    //   setTitleColor("text-green-800");
-    //   setProgressBarColor("green");
-    //   setRenderCrab(`${globalVariables.staticPath}img_image2.png`);
-    // }
   };
 
   const getClassification = (color) => {
