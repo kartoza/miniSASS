@@ -5,7 +5,7 @@ from minisass.models import GroupScores, Video, MobileApp
 class GroupScoresSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupScores
-        fields = ['id', 'name', 'sensitivity_score']
+        fields = ['id', 'name', 'sensitivity_score', 'db_field']
 
 
 class VideoSerializer(serializers.ModelSerializer):

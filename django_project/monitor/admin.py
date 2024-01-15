@@ -1,12 +1,15 @@
 from django.contrib import admin
+
+from monitor.forms import ObservationPestImageForm
 from .models import (
     Assessment,
-    Sites, 
-    Observations, 
-    SiteImage, 
-    ObservationPestImage, 
+    Sites,
+    Observations,
+    SiteImage,
+    ObservationPestImage,
     Pest
 )
+
 
 def make_verified(modeladmin, request, queryset):
     for observation in queryset:
@@ -24,6 +27,8 @@ make_unverified.short_description = "Mark selected observations as unverified (d
 
 class ObservationPestImageInline(admin.TabularInline):
     model = ObservationPestImage
+    form = ObservationPestImageForm
+    autocomplete_fields = ('group',)
 
 @admin.register(Observations)
 class ObservationsAdmin(admin.ModelAdmin):
@@ -41,6 +46,7 @@ class ObservationsAdmin(admin.ModelAdmin):
     )
     list_filter = ('flag', 'is_validated')
     search_fields = ('site__site_name', 'site__river_name')
+    autocomplete_fields = ('site', 'user')
     actions = [make_verified, make_unverified]
     inlines = (ObservationPestImageInline,)
 

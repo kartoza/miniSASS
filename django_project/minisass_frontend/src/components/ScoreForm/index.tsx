@@ -136,7 +136,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       };
 
       scoreGroups.map((sg) => {
-        observationsData[sg.name] = checkboxStates['' + sg.id]
+        observationsData[sg.db_field] = checkboxStates['' + sg.id]
       })
 
       var form_data = new FormData();
@@ -260,9 +260,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
           for (const key in pestImages) {
             if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
-        
                 pestImages[key].map((file, idx) => {
-                  data.append('pest_' + idx + ':' + selectedPests.toLowerCase().replace(/\s+/g, '_'), file);
+                  data.append('pest_' + idx + ':' + key, file);
                 });
               
             }

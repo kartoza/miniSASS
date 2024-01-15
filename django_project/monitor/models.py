@@ -10,6 +10,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_delete, post_save
 from django.dispatch import receiver
 
+from minisass.models import GroupScores
 from minisass.utils import delete_file_field, delete_from_minio, get_path_string
 from monitor.utils import send_to_ai_bucket
 
@@ -130,9 +131,9 @@ class Observations(models.Model, DirtyFieldsMixin):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True
     )
-    minisass_ml_score = models.FloatField(blank=True,null=True)
-    ml_model_version = models.CharField(max_length=255,blank=True,null=True)
-    ml_model_type = models.CharField(max_length=255,blank=True,null=True)
+    minisass_ml_score = models.FloatField(blank=True, null=True)
+    ml_model_version = models.CharField(max_length=255, blank=True, null=True)
+    ml_model_type = models.CharField(max_length=255, blank=True, null=True)
     flatworms = models.BooleanField(default=False)
     worms = models.BooleanField(default=False)
     leeches = models.BooleanField(default=False)
@@ -197,7 +198,7 @@ class Observations(models.Model, DirtyFieldsMixin):
         return super(Observations, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.obs_date) + ': ' + self.site.site_name
+        return str(self.obs_date) + ': ' + self.site.site_name if self.site else ''
 
 
 def observation_pest_image_path(instance, filename):
@@ -205,7 +206,7 @@ def observation_pest_image_path(instance, filename):
         settings.MINIO_BUCKET,
         'observations',
         'clean' if instance.valid or instance.observation.flag == 'clean' else 'dirty',
-        get_path_string(instance.pest.name),
+        instance.group.db_field or get_path_string(instance.group.name),
         f'{instance.observation.site_id}',
         f'{instance.observation_id}',
         filename
@@ -224,7 +225,8 @@ class Pest(models.Model):
 class ObservationPestImage(models.Model):
     """Image for site and observation for a site."""
     observation = models.ForeignKey(Observations, on_delete=models.CASCADE)
-    pest = models.ForeignKey(Pest, on_delete=models.CASCADE)
+    pest = models.ForeignKey(Pest, on_delete=models.CASCADE, null=True, blank=True)
+    group = models.ForeignKey(GroupScores, on_delete=models.CASCADE, null=True)
     image = models.ImageField(
         upload_to=observation_pest_image_path, max_length=250, storage=settings.MINION_STORAGE
     )

@@ -345,7 +345,7 @@ class DownloadObservations(APIView):
                     if not os.path.exists(obs_image_path):
                         os.mkdir(obs_image_path)
                     for img in obs_images:
-                        pest_path = os.path.join(obs_image_path, img.pest.name)
+                        pest_path = os.path.join(obs_image_path, img.group.name)
                         if not os.path.exists(pest_path):
                             # if the demo_folder directory is not present
                             # then create it.
@@ -393,13 +393,21 @@ site_images:
 If site_images or observation_images does not exist in the Geopackage, it means the exported data
 does not have images."""
                     f.write(content)
-
-                subprocess.run(['ogr2ogr', '-append', file_path, observation_images_table])
-                subprocess.run(['ogr2ogr', '-append', file_path, pest_table])
-                subprocess.run(['ogr2ogr', '-append', file_path, site_images_table])
-                os.remove(site_images_table)
-                os.remove(observation_images_table)
-                os.remove(pest_table)
+                try:
+                    subprocess.run(['ogr2ogr', '-append', file_path, observation_images_table])
+                    os.remove(observation_images_table)
+                except UnboundLocalError:
+                    pass
+                try:
+                    subprocess.run(['ogr2ogr', '-append', file_path, pest_table])
+                    os.remove(pest_table)
+                except UnboundLocalError:
+                    pass
+                try:
+                    subprocess.run(['ogr2ogr', '-append', file_path, site_images_table])
+                    os.remove(site_images_table)
+                except UnboundLocalError:
+                    pass
 
             mem_zip = BytesIO()
             zip_directory(dir_path, mem_zip)
