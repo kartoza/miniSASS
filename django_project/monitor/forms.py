@@ -44,14 +44,7 @@ class ObservationForm(ModelForm):
             'elec_cond_unit': Select()
         }
 
-# Form based on the Observations model
 class ObservationPestImageForm(ModelForm):
-    # group = forms.ModelChoiceField(
-    #     queryset=GroupScores.objects.all().order_by('name'),
-    #     empty_label="-----",
-    #     required=True
-    # )
-
     class Meta:
         model = ObservationPestImage
         exclude = ('pest', )
