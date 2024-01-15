@@ -83,7 +83,7 @@ def upload_pest_image(request):
 
 
                 try:
-                    site = Sites.objects.get(gid=site_id)  
+                    site = Sites.objects.get(gid=site_id)
                     
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
@@ -197,7 +197,7 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id = int(str(datainput.get('siteId', datainput.get('selectedSite', '0'))))
+            site_id_str = str(request.POST.get('siteId', datainput.get('selectedSite', '0')))
             observation_id_str = str(request.POST.get('observationId', '0'))
 
             # Remove leading and trailing whitespaces, and replace double quotes
@@ -208,18 +208,18 @@ def create_observations(request):
             site_id = int(site_id_str) if site_id_str else 0
             observation_id = int(observation_id_str) if observation_id_str else 0
 
-
             try:
-                latitude = Decimal(str(datainput.get('latitude', 0)))
-                longitude = Decimal(str(datainput.get('longitude', 0)))
+                latitude = float(str(datainput.get('latitude', 0)))
+                longitude = float(str(datainput.get('longitude', 0)))
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+
 
             # Check if the values are within a valid range
             if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
 
-            create_site_or_observation = request.POST.get('create_site_or_observation', 'True')
+            create_site_or_observation = request.POST.get('create_site_or_observation', 'true')
 
             if create_site_or_observation.lower() == 'true':
                 try:

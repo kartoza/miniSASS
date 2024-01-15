@@ -143,8 +143,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
+      if (additionalData.selectedSite) {
+        localStorage.setItem('siteId', additionalData.selectedSite.value)
+        setCreateNewSiteOrObservation(false);
+        form_data.append('create_site_or_observation', JSON.stringify(false));
+      } else {
+        setCreateNewSiteOrObservation(true);
+        form_data.append('create_site_or_observation', JSON.stringify(true));
+      }
       form_data.append('data', JSON.stringify(observationsData));
-      form_data.append('create_site_or_observation', JSON.stringify(createSiteOrObservation));
       const obs_id = localStorage.getItem('observationId') || observationId;
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
@@ -163,8 +170,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       if(response.status == 200){
         setIsSavingData(false)
-        localStorage.setItem('observationId', '0')
-        localStorage.setItem('siteId', '0')
+        localStorage.setItem('observationId', JSON.stringify(0))
+        localStorage.setItem('siteId', JSON.stringify(0))
         if (response.data.status.includes('error')) {
           setErrorMessage(response.data.message);
           setIsErrorModalOpen(true);
