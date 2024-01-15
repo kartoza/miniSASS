@@ -218,7 +218,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
                     <br />
                     If you have forgotten your email, enter your username below to retrieve your email.
                     <br />
-                    This functionality will be removed in 7 days.
+                    This functionality is temporary and will be removed in the near future.
                   </p>
                   <input
                     type="text"
