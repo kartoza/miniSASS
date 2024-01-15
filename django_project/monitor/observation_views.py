@@ -189,6 +189,10 @@ def create_observations(request):
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
             elec_cond = Decimal(str(datainput.get('electricalconduOne', 0)))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
+            site_name = datainput.get('siteName', '')
+            river_name = datainput.get('riverName', '')
+            description = datainput.get('siteDescription', '')
+            river_cat = datainput.get('rivercategory', 'rocky')
             obs_date = datainput.get('date')
             user = request.user
 
@@ -226,11 +230,6 @@ def create_observations(request):
                 except Sites.DoesNotExist:
                     max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
-
-                    site_name = datainput.get('siteName', '')
-                    river_name = datainput.get('riverName', '')
-                    description = datainput.get('siteDescription', '')
-                    river_cat = datainput.get('rivercategory', 'rocky')
 
                     if Sites.objects.filter(site_name=site_name).exists():
                         return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
@@ -276,6 +275,14 @@ def create_observations(request):
             elif create_site_or_observation.lower() == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
+
+                    site.site_name = site_name
+                    site.river_name = river_name
+                    site.description = description
+                    site.river_cat = river_cat
+                    site.the_geom = Point(x=longitude, y=latitude, srid=4326)
+                    site.user = user
+                    site.save()
                     
                     for key, image in request.FILES.items():
                         if 'image_' in key:
