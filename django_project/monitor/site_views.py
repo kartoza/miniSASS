@@ -24,8 +24,6 @@ class SitesListCreateView(generics.ListCreateAPIView):
         if site_name:
             queryset = queryset.filter(site_name__icontains=site_name)
 
-        # only show the first 5 sites
-        queryset = queryset[0:6]
         serializer = SitesSerializer(queryset, many=True)
         return Response(serializer.data)
 
