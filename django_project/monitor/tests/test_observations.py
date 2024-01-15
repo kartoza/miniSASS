@@ -11,6 +11,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from minisass.models import GroupScores
 from minisass_authentication.models import UserProfile
 from minisass_authentication.tests.factories import UserFactory
 from monitor.models import (
@@ -110,26 +111,26 @@ class BaseObservationsModelTest(TestCase):
             elec_cond_unit='S/m'
         )
 
-        self.flatworms, _ = Pest.objects.get_or_create(name='Flatworms')
-        self.bugs_beetles, _ = Pest.objects.get_or_create(name='Bugs beetles')
-        self.worms, _ = Pest.objects.get_or_create(name='Worms')
-        self.leeches, _ = Pest.objects.get_or_create(name='Leeches')
+        self.flatworms, _ = GroupScores.objects.get_or_create(name='Flatworms', sensitivity_score=2)
+        self.bugs_beetles, _ = GroupScores.objects.get_or_create(name='Bugs beetles', sensitivity_score=2)
+        self.worms, _ = GroupScores.objects.get_or_create(name='Worms', sensitivity_score=2)
+        self.leeches, _ = GroupScores.objects.get_or_create(name='Leeches', sensitivity_score=2)
 
         self.pest_image_1 = ObservationPestImage.objects.create(
             observation=self.observation,
-            pest=self.flatworms,
+            group=self.flatworms,
             image=self.image_field('flatworms_1.jpg')
         )
 
         self.pest_image_2 = ObservationPestImage.objects.create(
             observation=self.observation,
-            pest=self.worms,
+            group=self.worms,
             image=self.image_field('worms_1.jpg')
         )
 
         self.pest_image_3 = ObservationPestImage.objects.create(
             observation=self.observation_2,
-            pest=self.leeches,
+            group=self.leeches,
             image=self.image_field('leeches_1.jpg')
         )
 
@@ -218,7 +219,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         response = self.client.post(
             url, 
             {
-                'pest_image:pest_name': image_file,
+                f'pest_image:{self.flatworms.id}': image_file,
                 'observationId': 0,
                 'siteId': 0,
                 'create_site_or_observation': 'False'
@@ -238,7 +239,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         response = self.client.post(
             url, 
             {
-                'pest_image:pest_name': image_file,
+                f'pest_image:{self.flatworms.id}': image_file,
                 'observationId': observation_id,
                 'siteId': site_id,
                 'create_site_or_observation': 'False'
@@ -327,8 +328,8 @@ class ObservationsModelTest(BaseObservationsModelTest):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = response.json()
-        self.assertEqual(response['pest_id'], self.pest_image_1.pest.id)
-        self.assertEqual(response['pest_name'], self.pest_image_1.pest.name)
+        self.assertEqual(response['pest_id'], self.pest_image_1.group.id)
+        self.assertEqual(response['pest_name'], self.pest_image_1.group.name)
 
     def test_observation_image_delete_view(self):
         """Test observation images."""
@@ -387,8 +388,8 @@ class ObservationsModelTest(BaseObservationsModelTest):
         self.assertEqual(response.status_code, 200)
 
         response = response.json()
-        self.assertEqual(response['pest_id'], self.pest_image_1.pest.id)
-        self.assertEqual(response['pest_name'], self.pest_image_1.pest.name)
+        self.assertEqual(response['pest_id'], self.pest_image_1.group.id)
+        self.assertEqual(response['pest_name'], self.pest_image_1.group.name)
 
         # Delete image that exist and user is creator of observation
         self.client.force_authenticate(
@@ -473,7 +474,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
         )
         pest_image_1 = ObservationPestImage.objects.create(
             observation=observation,
-            pest=self.bugs_beetles,
+            group=self.bugs_beetles,
             image=self.image_field('bugs_beetles_1.jpg')
         )
         self.assertTrue(observation.is_validated)

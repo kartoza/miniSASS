@@ -18,6 +18,7 @@ from django.http import Http404
 from datetime import datetime
 
 from minisass_authentication.models import UserProfile
+from minisass.models import GroupScores
 
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
@@ -111,14 +112,12 @@ def upload_pest_image(request):
                 # Save images in the request object
                 for key, image in request.FILES.items():
                     if 'pest_' in key:
-                        pest_name = key.split(':')[1]
-                        if pest_name:
-                            pest, _ = Pest.objects.get_or_create(
-                                name=pest_name.replace('_', ' ').capitalize()
-                            )
+                        group_id = key.split(':')[1]
+                        if group_id:
+                            group = GroupScores.objects.get(id=group_id)
                             pest_image, _ = ObservationPestImage.objects.get_or_create(
                                 observation=observation,
-                                pest=pest
+                                group=group
                             )
                             pest_image.image = image
                             pest_image.save()
@@ -178,19 +177,6 @@ def create_observations(request):
             datainput = data.get('datainput', {})
 
             # Extract other fields from the payload
-            flatworms = data.get('Flat Worms', False)
-            worms = data.get('Worms', False)
-            leeches = data.get('Leeches', False)
-            crabs_shrimps = data.get('Crabs or Shrimps', False)
-            stoneflies = data.get('Stoneflies', False)
-            minnow_mayflies = data.get('Minnow Mayflies', False)
-            other_mayflies = data.get('Other Mayflies', False)
-            damselflies = data.get('Damselflies', False)
-            dragonflies = data.get('Dragonflies', False)
-            bugs_beetles = data.get('Bugs or Beetles', False)
-            caddisflies = data.get('Caddisflies', False)
-            true_flies = data.get('True Flies', False)
-            snails = data.get('Snails', False)
             score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
             water_clarity = Decimal(str(datainput.get('waterclaritycm', 0)))
@@ -260,24 +246,11 @@ def create_observations(request):
 
                 max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
                 new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
-                observation = Observations.objects.create(
+                observation = Observations(
                     gid=new_observation_id,
                     score=score,
                     site=site,
                     user=user,
-                    flatworms=flatworms,
-                    worms=worms,
-                    leeches=leeches,
-                    crabs_shrimps=crabs_shrimps,
-                    stoneflies=stoneflies,
-                    minnow_mayflies=minnow_mayflies,
-                    other_mayflies=other_mayflies,
-                    damselflies=damselflies,
-                    dragonflies=dragonflies,
-                    bugs_beetles=bugs_beetles,
-                    caddisflies=caddisflies,
-                    true_flies=true_flies,
-                    snails=snails,
                     comment=comment,
                     water_clarity=water_clarity,
                     water_temp=water_temp,
@@ -288,6 +261,10 @@ def create_observations(request):
                     elec_cond_unit=elec_cond_unit,
                     obs_date=obs_date
                 )
+                for db_fields in GroupScores.DB_FIELDS:
+                    value = data.get(db_fields[0], False)
+                    setattr(observation, db_fields[0], value)
+                observation.save()
 
             elif create_site_or_observation.lower() == 'false':
                 try:
@@ -301,24 +278,11 @@ def create_observations(request):
 
                     max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
                     new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
-                    observation = Observations.objects.create(
+                    observation = Observations(
                         gid=new_observation_id,
                         score=score,
                         site=site,
                         user=user,
-                        flatworms=flatworms,
-                        worms=worms,
-                        leeches=leeches,
-                        crabs_shrimps=crabs_shrimps,
-                        stoneflies=stoneflies,
-                        minnow_mayflies=minnow_mayflies,
-                        other_mayflies=other_mayflies,
-                        damselflies=damselflies,
-                        dragonflies=dragonflies,
-                        bugs_beetles=bugs_beetles,
-                        caddisflies=caddisflies,
-                        true_flies=true_flies,
-                        snails=snails,
                         comment=comment,
                         water_clarity=water_clarity,
                         water_temp=water_temp,
@@ -329,6 +293,10 @@ def create_observations(request):
                         elec_cond_unit=elec_cond_unit,
                         obs_date=obs_date
                     )
+                    for db_fields in GroupScores.DB_FIELDS:
+                        value = data.get(db_fields[0], False)
+                        setattr(observation, db_fields[0], value)
+                    observation.save()
 
                     return JsonResponse(
                         {'status': 'success', 'observation_id': observation.gid})
