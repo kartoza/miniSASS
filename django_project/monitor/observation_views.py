@@ -79,6 +79,7 @@ def upload_pest_image(request):
                 except (ValueError, TypeError):
                     try:
                         site_id = site_id.strip().replace('"', '')
+                        site_id = int(site_id)
                     except (ValueError, TypeError):
                         site_id = 0
 
@@ -86,7 +87,8 @@ def upload_pest_image(request):
                     observation_id = int(observation_id)
                 except (ValueError, TypeError):
                     try:
-                        site_id = observation_id.strip().replace('"', '')
+                        observation_id = observation_id.strip().replace('"', '')
+                        observation_id = int(observation_id)
                     except (ValueError, TypeError):
                         observation_id = 0
 
@@ -136,7 +138,7 @@ def upload_pest_image(request):
                         group_id = key.split(':')[1]
                         if group_id:
                             group = GroupScores.objects.get(id=group_id)
-                            pest_image, _ = ObservationPestImage.objects.get_or_create(
+                            pest_image = ObservationPestImage.objects.create(
                                 observation=observation,
                                 group=group
                             )
@@ -194,7 +196,7 @@ def create_observations(request):
 
             longitude = 0
             latitude = 0
-            
+
             # Parse JSON data from the request body
             data = json.loads(request.POST.get('data', '{}'))
 
@@ -226,8 +228,15 @@ def create_observations(request):
             observation_id_str = observation_id_str.strip().replace('"', '')
 
             # Check if the strings are not empty before attempting conversion
-            site_id = int(site_id_str) if site_id_str else 0
-            observation_id = int(observation_id_str) if observation_id_str else 0
+            try:
+                site_id = int(site_id_str) if site_id_str else 0
+            except (ValueError, TypeError):
+                site_id = 0
+
+            try:
+                observation_id = int(observation_id_str) if observation_id_str else 0
+            except (ValueError, TypeError):
+                observation_id = 0
 
             try:
                 latitude = float(str(datainput.get('latitude', 0)))
@@ -240,9 +249,9 @@ def create_observations(request):
             if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
 
-            create_site_or_observation = request.POST.get('create_site_or_observation', 'true')
+            create_site_or_observation = request.POST.get('create_site_or_observation', 'true').lower()
 
-            if create_site_or_observation.lower() == 'true':
+            if create_site_or_observation == 'true':
                 try:
                     site = Sites.objects.get(gid=site_id)
                 except Sites.DoesNotExist:
@@ -292,8 +301,7 @@ def create_observations(request):
                 return JsonResponse(
                     {'status': 'success', 'observation_id': observation.gid})
 
-
-            elif create_site_or_observation.lower() == 'false':
+            elif create_site_or_observation == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
                     
