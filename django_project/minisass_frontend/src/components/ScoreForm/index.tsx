@@ -143,11 +143,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
-      if (localStorage.getItem('siteId') !== "0") {
+      if (additionalData.selectedSite) {
+        localStorage.setItem('siteId', additionalData.selectedSite.value)
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
-      } else if (additionalData.selectedSite) {
-        localStorage.setItem('siteId', additionalData.selectedSite.value)
+      } else if (localStorage.getItem('siteId') !== "0") {
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
       } else {
