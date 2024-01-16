@@ -110,7 +110,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
               orientation="horizontal"
             >
 
-            {imageUrls.map((image, index) => (
+            {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
               <div key={`${image.pest_id}`} className="relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
                 <Img
                   className="h-28 md:h-auto object-cover w-28"

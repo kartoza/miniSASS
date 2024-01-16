@@ -136,7 +136,7 @@ def upload_pest_image(request):
                         group_id = key.split(':')[1]
                         if group_id:
                             group = GroupScores.objects.get(id=group_id)
-                            pest_image, _ = ObservationPestImage.objects.get_or_create(
+                            pest_image = ObservationPestImage.objects.create(
                                 observation=observation,
                                 group=group
                             )
