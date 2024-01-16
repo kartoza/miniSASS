@@ -378,7 +378,7 @@ class RecentObservationListView(generics.ListAPIView):
         by_user = request.GET.get('by_user', 'False')
         by_user = by_user in ['True', 'true', '1', 'yes']
         recent = request.GET.get('recent', 'True')
-        recent = recent in ['True', 'true', '1', 'yes'] and not request.user.id
+        recent = recent in ['True', 'true', '1', 'yes']
         queryset = self.get_queryset(site_id, recent, by_user, request.user)
         recent_observations = self.build_recent_observations(queryset)
         return Response(recent_observations)
