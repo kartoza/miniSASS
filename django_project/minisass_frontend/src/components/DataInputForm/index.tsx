@@ -37,7 +37,7 @@ type DataInputFormProps = Omit<
   | "defaultslotOne"
   | "measurements"
   | "waterclaritycm"
-  | "watertemperaturOne"
+  | "watertemperatureOne"
   | "ph"
   | "dissolvedoxygenOne"
   | "electricalconduOne"
@@ -72,7 +72,7 @@ type DataInputFormProps = Omit<
     defaultslotOne: JSX.Element | string;
     measurements: string;
     waterclaritycm: string;
-    watertemperaturOne: string;
+    watertemperatureOne: string;
     ph: string;
     dissolvedoxygenOne: string;
     electricalconduOne: string;
@@ -95,17 +95,17 @@ const inputOptionsList = [
 ];
 
 const inputOxygenUnitsList = [
-  { label: "mg/l", value: "mg/l" },
+  { label: "mg/l", value: "mgl" },
   { label: "%DO", value: "%DO" },
   { label: "PPM", value: "PPM" },
-  { label: "Unknown", value: "uknown" },
+  { label: "Unknown", value: "na" },
 ];
 
 const inputElectricConductivityUnitsList = [
   { label: "S/m", value: "S/m" },
   { label: "µS/cm", value: "µS/cm" },
-  { label: "m S/m", value: "m S/m" },
-  { label: "Unknown", value: "uknown" },
+  { label: "m S/m", value: "mS/m" },
+  { label: "Unknown", value: "na" },
 ];
 
 const SiteSelectionModes = {
@@ -144,17 +144,18 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     notes: '',
     measurements: '',
     waterclaritycm: '',
-    watertemperaturOne: '',
+    watertemperatureOne: '',
     ph: '',
     dissolvedoxygenOne: '',
     electricalconduOne: '',
-    dissolvedoxygenOneUnit: 'mg/l',
+    dissolvedoxygenOneUnit: 'mgl',
     electricalconduOneUnit: 'S/m',
     latitude: 0,
     longitude: 0,
     selectedSite: '',
     flag: 'dirty'
   });
+  console.debug(formValues)
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
@@ -385,6 +386,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       value: siteDetails.gid || 0,
     };
   };
+
+  const [charCountSite, setCharCountSite] = useState(0);
+  const [charCountRiver, setCharCountRiver] = useState(0);
+  const maxCharLimit = 50;
 
 
   return (
@@ -680,9 +685,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       }));
                       formValues.riverName = e.target.value
                       updateHighlightedFields()
+                      const inputValue = e.target.value;
+                      setCharCountRiver(inputValue.length);
+                      if (inputValue.length >= maxCharLimit) {
+                        e.preventDefault();
+                        return;
+                      }
                     }}
                     disabled={!enableSiteFields ? true : false}
                   />
+                  {charCountRiver >= maxCharLimit && (
+                    <><Text className="text-red-500 text-xs">
+                        Max characters reached!
+                      </Text></>
+                  )}
                 </div>
 
                 {/* sitename input  */}
@@ -725,9 +741,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       }));
                       formValues.siteName = e.target.value
                       updateHighlightedFields()
+                      const inputValue = e.target.value;
+                      setCharCountSite(inputValue.length);
+                      if (inputValue.length >= maxCharLimit) {
+                        e.preventDefault();
+                        return;
+                      }
                     }}
                     disabled={!enableSiteFields ? true : false} 
                   />
+                  {charCountSite >= maxCharLimit && (
+                    <><Text className="text-red-500 text-xs">
+                        Max characters reached!
+                      </Text></>
+                  )}
                 </div>
 
                 {/* description input  */}
@@ -1070,10 +1097,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       className="text-gray-800 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >
-                      {props?.watertemperaturOne}
+                      {props?.watertemperatureOne}
                     </Text>
                     <Field
-                      name="watertemperaturOne"
+                      name="watertemperatureOne"
                       placeholder="Water temperature (°C):"
                       type="number"
                       min="-100"
@@ -1093,7 +1120,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         padding: '8px 12px',
                         marginRight: '-10px'
                       }}
-                      value={values.watertemperaturOne}
+                      value={values.watertemperatureOne}
                       onChange={handleChange}
                     />
                   </div>
@@ -1111,6 +1138,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="number"
                       min="0"
                       max="14"
+                      step={0.1}
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName=""
                       shape="round"
@@ -1325,7 +1353,7 @@ DataInputForm.defaultProps = {
   ),
   measurements: "Measurements",
   waterclaritycm: "Water clarity (cm):",
-  watertemperaturOne: "Water temperature (°C):",
+  watertemperatureOne: "Water temperature (°C):",
   ph: "pH:",
   dissolvedoxygenOne: "Dissolved oxygen",
   electricalconduOne: "Electrical conductivity",

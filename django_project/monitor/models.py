@@ -168,10 +168,10 @@ class Observations(models.Model, DirtyFieldsMixin):
         max_digits=8, decimal_places=1, blank=True, null=True
     )
     water_temp = models.DecimalField(
-        max_digits=5, decimal_places=1, blank=True, null=True
+        max_digits=8, decimal_places=1, blank=True, null=True
     )
     ph = models.DecimalField(
-        max_digits=4, decimal_places=1, blank=True, null=True
+        max_digits=8, decimal_places=1, blank=True, null=True
     )
     diss_oxygen = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, null=True

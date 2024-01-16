@@ -121,11 +121,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const  datainput  = additionalData;
 
       // fields to check for empty values
-      const fieldsToCheck = ['waterclaritycm', 'watertemperatureOne', 'ph', 'dissolvedoxygenOne', 'electricalconduOne', 'watertemperaturOne'];
+      const fieldsToCheck = ['waterclaritycm', 'watertemperatureOne', 'ph', 'dissolvedoxygenOne', 'electricalconduOne', 'watertemperatureOne'];
 
       fieldsToCheck.forEach(field => {
         if (datainput[field] === '') {
-          datainput[field] = 999;
+          datainput[field] = null;
         }
       });
       
@@ -143,7 +143,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
-      if (additionalData.selectedSite) {
+      if (localStorage.getItem('siteId') !== "0") {
+        form_data.append('create_site_or_observation', JSON.stringify(false));
+        setCreateNewSiteOrObservation(false);
+      } else if (additionalData.selectedSite) {
         localStorage.setItem('siteId', additionalData.selectedSite.value)
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
@@ -294,6 +297,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
           try{
+            setRefetchImages(false)
 
             const response = await axios.post(
               `${globalVariables.baseUrl}/monitor/upload-pest-images/`,
@@ -312,6 +316,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
               localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
+              setRefetchImages(true)
             }
 
           }catch( exception ){
