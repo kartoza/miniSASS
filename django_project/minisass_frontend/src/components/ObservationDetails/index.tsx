@@ -103,19 +103,19 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const updateScoreDisplay = (riverCategory, score) => {
     if (riverCategory === 'sandy') {
-      if (score > 6.9) {
+      if (score > 6.8) {
         setTitleColor("text-blue-600");
         setProgressBarColor("blue");
         setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
-      } else if (score >= 5.9) {
+      } else if (score > 5.8 && score <= 6.8) {
         setTitleColor("text-green-600");
         setProgressBarColor("green");
         setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
-      } else if (score >= 5.4) {
+      } else if (score > 5.3 && score <= 5.8) {
         setTitleColor("text-orange-600");
         setProgressBarColor("orange");
         setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
-      } else if (score >= 4.8) {
+      } else if (score > 4.8 && score <= 5.3) {
         setTitleColor("text-red-600");
         setProgressBarColor("red");
         setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
@@ -129,15 +129,15 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setTitleColor("text-blue-600");
         setProgressBarColor("blue");
         setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
-      } else if (score >= 6.2) {
+      } else if (score > 6.1 && score <= 7.2) {
         setTitleColor("text-green-600");
         setProgressBarColor("green");
         setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
-      } else if (score >= 5.7) {
+      } else if (score > 5.6 && score <= 6.1) {
         setTitleColor("text-orange-600");
         setProgressBarColor("orange");
         setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
-      } else if (score >= 5.3) {
+      } else if (score > 5.3 && score <= 5.6) {
         setTitleColor("text-red-600");
         setProgressBarColor("red");
         setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
