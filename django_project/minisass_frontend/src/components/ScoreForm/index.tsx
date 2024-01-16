@@ -145,11 +145,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       })
       if (additionalData.selectedSite) {
         localStorage.setItem('siteId', additionalData.selectedSite.value)
-        setCreateNewSiteOrObservation(false);
         form_data.append('create_site_or_observation', JSON.stringify(false));
+        setCreateNewSiteOrObservation(false);
       } else {
-        setCreateNewSiteOrObservation(true);
         form_data.append('create_site_or_observation', JSON.stringify(true));
+        setCreateNewSiteOrObservation(true);
       }
       form_data.append('data', JSON.stringify(observationsData));
       const obs_id = localStorage.getItem('observationId') || observationId;
@@ -207,11 +207,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const newCheckedState = [...isCheckboxChecked];
       newCheckedState[id] = !newCheckedState[id];
       setIsCheckboxChecked(newCheckedState);
-      
+
       if(temp_checkedGroups.length > 0)
         if (additionalData.selectedSite && additionalData.date) 
           setProceedToSavingData(true)
-        else if (additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date && additionalData.latitude && additionalData.longitude && additionalData.date)
+        else if (additionalData.latitude && additionalData.longitude && additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date)
           setProceedToSavingData(true)
         else setProceedToSavingData(false)
       else setProceedToSavingData(false)
@@ -282,7 +282,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
           if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
             data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
-            additionalData.selectedSite = "";
           } else
             {
               data.append('siteId', JSON.stringify(siteId));
