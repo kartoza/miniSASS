@@ -121,7 +121,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const  datainput  = additionalData;
 
       // fields to check for empty values
-      const fieldsToCheck = ['waterclaritycm', 'watertemperatureOne', 'ph', 'dissolvedoxygenOne', 'electricalconduOne', 'watertemperaturOne'];
+      const fieldsToCheck = ['waterclaritycm', 'watertemperatureOne', 'ph', 'dissolvedoxygenOne', 'electricalconduOne', 'watertemperatureOne'];
 
       fieldsToCheck.forEach(field => {
         if (datainput[field] === '') {
