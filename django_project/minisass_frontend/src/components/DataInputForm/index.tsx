@@ -387,6 +387,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     };
   };
 
+  const [charCountSite, setCharCountSite] = useState(0);
+  const [charCountRiver, setCharCountRiver] = useState(0);
+  const maxCharLimit = 50;
+
 
   return (
     <>
@@ -681,9 +685,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       }));
                       formValues.riverName = e.target.value
                       updateHighlightedFields()
+                      const inputValue = e.target.value;
+                      setCharCountRiver(inputValue.length);
+                      if (inputValue.length >= maxCharLimit) {
+                        e.preventDefault();
+                        return;
+                      }
                     }}
                     disabled={!enableSiteFields ? true : false}
                   />
+                  {charCountRiver >= maxCharLimit && (
+                    <><Text className="text-red-500 text-xs">
+                        Max characters reached!
+                      </Text></>
+                  )}
                 </div>
 
                 {/* sitename input  */}
@@ -726,9 +741,20 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       }));
                       formValues.siteName = e.target.value
                       updateHighlightedFields()
+                      const inputValue = e.target.value;
+                      setCharCountSite(inputValue.length);
+                      if (inputValue.length >= maxCharLimit) {
+                        e.preventDefault();
+                        return;
+                      }
                     }}
                     disabled={!enableSiteFields ? true : false} 
                   />
+                  {charCountSite >= maxCharLimit && (
+                    <><Text className="text-red-500 text-xs">
+                        Max characters reached!
+                      </Text></>
+                  )}
                 </div>
 
                 {/* description input  */}
