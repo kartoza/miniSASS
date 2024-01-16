@@ -37,7 +37,7 @@ type DataInputFormProps = Omit<
   | "defaultslotOne"
   | "measurements"
   | "waterclaritycm"
-  | "watertemperaturOne"
+  | "watertemperatureOne"
   | "ph"
   | "dissolvedoxygenOne"
   | "electricalconduOne"
@@ -72,7 +72,7 @@ type DataInputFormProps = Omit<
     defaultslotOne: JSX.Element | string;
     measurements: string;
     waterclaritycm: string;
-    watertemperaturOne: string;
+    watertemperatureOne: string;
     ph: string;
     dissolvedoxygenOne: string;
     electricalconduOne: string;
@@ -144,7 +144,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     notes: '',
     measurements: '',
     waterclaritycm: '',
-    watertemperaturOne: '',
+    watertemperatureOne: '',
     ph: '',
     dissolvedoxygenOne: '',
     electricalconduOne: '',
@@ -1071,10 +1071,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       className="text-gray-800 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >
-                      {props?.watertemperaturOne}
+                      {props?.watertemperatureOne}
                     </Text>
                     <Field
-                      name="watertemperaturOne"
+                      name="watertemperatureOne"
                       placeholder="Water temperature (°C):"
                       type="number"
                       min="-100"
@@ -1094,7 +1094,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                         padding: '8px 12px',
                         marginRight: '-10px'
                       }}
-                      value={values.watertemperaturOne}
+                      value={values.watertemperatureOne}
                       onChange={handleChange}
                     />
                   </div>
@@ -1112,6 +1112,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       type="number"
                       min="0"
                       max="14"
+                      step={0.1}
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName=""
                       shape="round"
@@ -1326,7 +1327,7 @@ DataInputForm.defaultProps = {
   ),
   measurements: "Measurements",
   waterclaritycm: "Water clarity (cm):",
-  watertemperaturOne: "Water temperature (°C):",
+  watertemperatureOne: "Water temperature (°C):",
   ph: "pH:",
   dissolvedoxygenOne: "Dissolved oxygen",
   electricalconduOne: "Electrical conductivity",
