@@ -294,6 +294,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
 
           try{
+            setRefetchImages(false)
 
             const response = await axios.post(
               `${globalVariables.baseUrl}/monitor/upload-pest-images/`,
@@ -312,6 +313,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
               localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
+              setRefetchImages(true)
             }
 
           }catch( exception ){
