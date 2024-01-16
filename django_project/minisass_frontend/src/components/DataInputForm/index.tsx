@@ -95,17 +95,17 @@ const inputOptionsList = [
 ];
 
 const inputOxygenUnitsList = [
-  { label: "mg/l", value: "mg/l" },
+  { label: "mg/l", value: "mgl" },
   { label: "%DO", value: "%DO" },
   { label: "PPM", value: "PPM" },
-  { label: "Unknown", value: "uknown" },
+  { label: "Unknown", value: "na" },
 ];
 
 const inputElectricConductivityUnitsList = [
   { label: "S/m", value: "S/m" },
   { label: "µS/cm", value: "µS/cm" },
-  { label: "m S/m", value: "m S/m" },
-  { label: "Unknown", value: "uknown" },
+  { label: "m S/m", value: "mS/m" },
+  { label: "Unknown", value: "na" },
 ];
 
 const SiteSelectionModes = {
@@ -148,13 +148,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     ph: '',
     dissolvedoxygenOne: '',
     electricalconduOne: '',
-    dissolvedoxygenOneUnit: 'mg/l',
+    dissolvedoxygenOneUnit: 'mgl',
     electricalconduOneUnit: 'S/m',
     latitude: 0,
     longitude: 0,
     selectedSite: '',
     flag: 'dirty'
   });
+  console.debug(formValues)
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
