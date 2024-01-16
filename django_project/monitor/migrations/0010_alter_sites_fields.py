@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('monitor', '0009_remove_observationpestimage_pest_and_more'),
+        ('monitor', '0009_alter_observations_ph_alter_observations_water_temp'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='observations',
-            name='ph',
-            field=models.DecimalField(blank=True, decimal_places=1, max_digits=8, null=True),
+            model_name='sites',
+            name='river_name',
+            field=models.CharField(max_length=50),
         ),
         migrations.AlterField(
-            model_name='observations',
-            name='water_temp',
-            field=models.DecimalField(blank=True, decimal_places=1, max_digits=8, null=True),
+            model_name='sites',
+            name='site_name',
+            field=models.CharField(max_length=50),
         ),
     ]
