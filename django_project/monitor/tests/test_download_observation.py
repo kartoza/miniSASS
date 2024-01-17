@@ -51,13 +51,13 @@ class TestDownloadObservations(BaseObservationsModelTest):
             [
                 str(self.observation.gid), 'testuser', '2023-12-03', 'Test Site', 'Test River', '', '0.0', '0.0',
                 'True', 'True', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False',
-                'False', 'False', '4.50', 'Verified', '7.5', '25.0', '7.0', '8.50', 'mgl', '15.00', 'S/m',
+                'False', 'False', '4.00', 'Verified', '7.5', '25.0', '7.0', '8.50', 'mgl', '15.00', 'S/m',
                 'test_comment'
             ],
             [
                 str(self.observation_2.gid), 'testuser', '2023-12-07', 'Test Site', 'Test River', '', '0.0', '0.0',
                 'False', 'True', 'True', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False',
-                'False', 'False', '2.00', 'Verified', '3.0', '2.0', '1.0', '1.50', 'mgl', '1.00', 'S/m',
+                'False', 'False', '4.00', 'Verified', '3.0', '2.0', '1.0', '1.50', 'mgl', '1.00', 'S/m',
                 'test_comment'
             ]
         ]

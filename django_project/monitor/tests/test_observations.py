@@ -111,10 +111,10 @@ class BaseObservationsModelTest(TestCase):
             elec_cond_unit='S/m'
         )
 
-        self.flatworms, _ = GroupScores.objects.get_or_create(name='Flatworms', sensitivity_score=2)
-        self.bugs_beetles, _ = GroupScores.objects.get_or_create(name='Bugs beetles', sensitivity_score=2)
-        self.worms, _ = GroupScores.objects.get_or_create(name='Worms', sensitivity_score=2)
-        self.leeches, _ = GroupScores.objects.get_or_create(name='Leeches', sensitivity_score=2)
+        self.flatworms, _ = GroupScores.objects.get_or_create(name='Flatworms', sensitivity_score=2, db_field='flatworms')
+        self.bugs_beetles, _ = GroupScores.objects.get_or_create(name='Bugs beetles', sensitivity_score=2, db_field='bugs_beetles')
+        self.worms, _ = GroupScores.objects.get_or_create(name='Worms', sensitivity_score=2, db_field='worms')
+        self.leeches, _ = GroupScores.objects.get_or_create(name='Leeches', sensitivity_score=2, db_field='leeches')
 
         self.pest_image_1 = ObservationPestImage.objects.create(
             observation=self.observation,
