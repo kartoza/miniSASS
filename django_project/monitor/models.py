@@ -256,8 +256,11 @@ class ObservationPestImage(models.Model):
 
     def delete_image(self):
         """delete image."""
-        delete_file_field(self.image)
-        delete_from_minio(self.get_minio_key())
+
+        # Delete image if it's not valid/not yet validated by admin.
+        if not self.valid:
+            delete_file_field(self.image)
+            delete_from_minio(self.get_minio_key())
 
     def update_image_path(self):
         initial_path = self.image.path

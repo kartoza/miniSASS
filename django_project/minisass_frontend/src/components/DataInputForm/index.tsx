@@ -15,6 +15,8 @@ import Select from 'react-select';
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import {deepClone} from "@mui/x-data-grid/utils/utils";
 import LinearProgress from '@mui/material/LinearProgress';
+import { parse } from "wkt";
+
 
 type DataInputFormProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -79,7 +81,7 @@ type DataInputFormProps = Omit<
     next: string;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
     toggleMapSelection: () => void;
-    handleMapClick: (longitude: number, latitude: number) => void;
+    handleMapClick: (latitude: number, longitude: number) => void;
     selectedCoordinates:{longitude: number, latitude: number};
     selectingOnMap: boolean;
     resetMap: () => void;
@@ -155,7 +157,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     selectedSite: '',
     flag: 'dirty'
   });
-  console.debug(formValues)
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
@@ -268,6 +269,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               siteName: site.site_name,
               siteDescription: site.description,
               riverName: site.river_name,
+              longitude: parse(site.the_geom).coordinates[0],
+              latitude: parse(site.the_geom).coordinates[1],
             })),
           ];
           setSitesList(sitesList);
@@ -625,6 +628,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                       setProceedToSavingData(true);
+                                      props.handleMapClick(selectedOption.latitude, selectedOption.longitude)
                                     }
                                   }
                                 }}
