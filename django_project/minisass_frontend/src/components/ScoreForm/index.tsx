@@ -324,6 +324,23 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     }
   }
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (proceedToSavingData) {
+        const message = "You have unsaved data, are you sure you want to leave?";
+        event.returnValue = message;
+        return message;
+        
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+}, [proceedToSavingData]);
+
   const deleteObservation = async (observationId) => {
     console.log('function call triggered')
     try {
