@@ -74,7 +74,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             const response = await fetch('https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/minisass_style_v1.json');
             const styles = await response.json();
             const urlTile = new URL(styles.sources[minisassObservationId].tiles[0])
-            const currUrl = new URL('http://0.0.0.0')
+            const currUrl = new URL(window.location)
             currUrl.pathname = urlTile.pathname
             styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
 
