@@ -30,6 +30,11 @@ echo 'Initialize project.'
 python manage.py collectstatic --clear --noinput
 python manage.py migrate
 
+# Command to create a superuser if it doesn't already exist
+echo 'Creating superuser...'
+python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('${DJANGO_SUPERUSER_USERNAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" 2>/dev/null || echo 'Superuser already exists, skipping.'
+
+
 # Run tests
 echo 'Running tests.'
 python manage.py test
