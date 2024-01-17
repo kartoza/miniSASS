@@ -143,7 +143,7 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
 
         # Query for observations related to the site
-        observations = Observations.objects.filter(site_id=instance.gid)
+        observations = Observations.objects.filter(site_id=instance.gid).order_by('-obs_date', '-gid')
         serializer = ObservationsSerializer(observations, many=True)
 
         combined_data = {

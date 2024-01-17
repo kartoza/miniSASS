@@ -74,7 +74,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             const response = await fetch('https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/minisass_style_v1.json');
             const styles = await response.json();
             const urlTile = new URL(styles.sources[minisassObservationId].tiles[0])
-            const currUrl = new URL(window.location)
+            const currUrl = new URL('http://0.0.0.0')
             currUrl.pathname = urlTile.pathname
             styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
 
@@ -274,41 +274,29 @@ export const Map = forwardRef((props: Interface, ref) => {
             }
           ]
         };
-    
+
         if (mapInstance.getSource('selected-point')) {
-          mapInstance.addLayer({
-            id: 'selected-point-layer',
-            type: 'circle',
-            source: 'selected-point',
-            paint: {
-              'circle-color': `#ff0000`,
-              'circle-opacity': 0,
-              'circle-radius': 12,
-              'circle-stroke-color': HIGHLIGHT_COLOR,
-              'circle-stroke-opacity': HIGHLIGHT_OPACITY,
-              'circle-stroke-width': HIGHLIGHT_WIDTH
-            }
-          });
-        } else {
-          mapInstance.addSource('selected-point', {
-            type: 'geojson',
-            data: geojson
-          });
-          mapInstance.addLayer({
-            id: 'selected-point-layer',
-            type: 'circle',
-            source: 'selected-point',
-            paint: {
-              'circle-color': `#ff0000`,
-              'circle-opacity': 0,
-              'circle-radius': 12,
-              'circle-stroke-color': HIGHLIGHT_COLOR,
-              'circle-stroke-opacity': HIGHLIGHT_OPACITY,
-              'circle-stroke-width': HIGHLIGHT_WIDTH
-            }
-          });
+          mapInstance.removeLayer('selected-point-layer')
+          mapInstance.removeSource('selected-point')
         }
-    
+        mapInstance.addSource('selected-point', {
+          type: 'geojson',
+          data: geojson
+        });
+        mapInstance.addLayer({
+          id: 'selected-point-layer',
+          type: 'circle',
+          source: 'selected-point',
+          paint: {
+            'circle-color': `#ff0000`,
+            'circle-opacity': 0,
+            'circle-radius': 20,
+            'circle-stroke-color': HIGHLIGHT_COLOR,
+            'circle-stroke-opacity': HIGHLIGHT_OPACITY,
+            'circle-stroke-width': HIGHLIGHT_WIDTH
+          }
+        });
+
         mapInstance.flyTo({
           center: [longitude, latitude],
           zoom: 10,
@@ -327,6 +315,7 @@ export const Map = forwardRef((props: Interface, ref) => {
       } else {
         try {
           map.removeLayer('selected-point-layer')
+          map.removeSource('selected-point')
         } catch (error) {}
       }
     
@@ -453,6 +442,7 @@ export const Map = forwardRef((props: Interface, ref) => {
         const response = await axios.get(`${globalVariables.baseUrl}/monitor/site-observations/${latitude}/${longitude}/`);
     
         if (response.data) {
+          window.location.href = window.location.href.split('?')[0];
           if(!props.isSelectSiteOnMap)
             props.openObservationForm(response.data);
           else props.setSiteDetails(response.data.site);
