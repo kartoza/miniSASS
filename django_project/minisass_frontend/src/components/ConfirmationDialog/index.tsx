@@ -12,10 +12,12 @@ export interface ConfirmationDialogRawProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  title: string;
+  message: string;
 }
 
 export default function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
-  const { onClose, onConfirm, value: valueProp, open, ...other } = props;
+  const { onClose, onConfirm, value: valueProp, open, title, message, ...other } = props;
 
   const handleCancel = () => {
     onClose();
@@ -32,9 +34,9 @@ export default function ConfirmationDialogRaw(props: ConfirmationDialogRawProps)
       open={open}
       {...other}
     >
-      <DialogTitle>Log out</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent dividers>
-        Are you sure you want to log out?
+        {message}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleConfirm}>Yes</Button>
