@@ -38,7 +38,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 import os 
 from minio import Minio
-import minio.error import ResponseError
+from minio.error import ResponseError
 
 def get_observations_by_site(request, site_id, format=None):
     try:
