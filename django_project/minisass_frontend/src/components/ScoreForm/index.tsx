@@ -324,6 +324,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     }
   }
 
+  const deleteObservation = async (observationId) => {
+    try {
+      await axios.delete(`/observations/${observationId}/`);
+    } catch (error) {
+      setError(error);
+    }
+  };
+  
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
 
   const handleCloseSidebar = () => {
@@ -332,13 +340,17 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
 
   const handleCloseConfirm = () => {
-    setIsCloseDialogOpen(false)
+    const storedObservationId = localStorage.getItem('observationId') || 0;
+    deleteObservation(parseInt(storedObservationId));
+    setIsCloseDialogOpen(false);
     setSidebarOpen(false);
   };
 
   const handleDialogCancel = () => {
     setIsCloseDialogOpen(false)
   };
+
+  
   
   return (
     <>
