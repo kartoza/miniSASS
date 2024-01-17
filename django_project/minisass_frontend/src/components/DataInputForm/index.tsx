@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Button, Img, Text } from "../../components";
-import ClearIcon from '@mui/icons-material/Clear';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import {Button, Img, Text} from "../../components";
 import Tooltip from '@mui/material/Tooltip';
 import UploadModal from "../../components/UploadFormModal";
-import { Instance } from '@popperjs/core';
-import { Formik, Form, Field } from 'formik';
+import {Instance} from '@popperjs/core';
+import {Field, Form, Formik} from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
-import { globalVariables, formatDate } from "../../utils";
+import {globalVariables} from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
 import Select from 'react-select';
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import {deepClone} from "@mui/x-data-grid/utils/utils";
+import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
+import {debounce} from '@mui/material/utils';
 import LinearProgress from '@mui/material/LinearProgress';
-import { parse } from "wkt";
+import {parse} from "wkt";
 
 
 type DataInputFormProps = Omit<
@@ -128,6 +126,21 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     props.resetMap();
     props.setCursor('')
   };
+
+    // Fetching results
+  const zoomToLocation = React.useMemo(
+    () =>
+      debounce(
+        (
+          latitude: number,
+          longitude: number,
+        ) => {
+          props.handleMapClick(latitude, longitude);
+        },
+        2000,
+      ),
+    [],
+  );
 
 
   // State to store form values
@@ -628,7 +641,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                       setProceedToSavingData(true);
-                                      props.handleMapClick(selectedOption.latitude, selectedOption.longitude)
+                                      zoomToLocation(selectedOption.latitude, selectedOption.longitude)
                                     }
                                   }
                                 }}
