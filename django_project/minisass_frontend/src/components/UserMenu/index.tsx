@@ -45,12 +45,15 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
   return (
     <>
     <ConfirmationDialogRaw
-        id="logout-dialog"
-        keepMounted
-        open={logoutOpen}
-        onClose={handleLogoutCancel}
-        onConfirm={handleLogoutConfirm}
-      />
+      id="logout-dialog"
+      keepMounted
+      value="logout"
+      open={logoutOpen}
+      onClose={handleLogoutCancel}
+      onConfirm={handleLogoutConfirm}
+      title="Log out"
+      message="Are you sure you want to log out?"
+    />
     <div className="h-[35px] w-[35px]">
       <Img
         src={`${globalVariables.staticPath}iconamoon_profile-circle-fill.svg`}
