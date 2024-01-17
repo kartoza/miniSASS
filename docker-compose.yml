@@ -125,17 +125,15 @@ services:
       - certificates:/certificates/
     restart: always
 
-  vtiles:
-    image: pramsey/pg_featureserv
+  tiles:
+    image: pramsey/pg_tileserv
     volumes:
-      - ./deployment/config/pg_featureserv.toml:/etc/pg_featureserv.toml
+      - ./deployment/config/pg_tileserv.toml:/etc/pg_tileserv.toml
     restart: always
     environment:
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@${DATABASE_HOST}/${POSTGRES_DB}
-      - PGFS_SERVER_URLBASE=https://${HTTPS_HOST}/tiles
-      - PGFS_SERVER_BASEPATH=/
-    ports:
-      - "9000"
+      - TS_URLBASE=${VECTOR_TILES_URL}
+      - TS_BASEPATH=/tiles
     depends_on:
       db:
         condition: service_healthy
