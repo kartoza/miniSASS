@@ -314,8 +314,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
             </h3>
             <br />
           <Typography>
-            To finish registration, please click on the activation link sent to the email you registered with.
+            To complete your registration, please click on the activation link sent to the email you provided. Please note that it may take a few minutes for the email to arrive. We appreciate your patience.
           </Typography>
+
 
           <br />
           <Button

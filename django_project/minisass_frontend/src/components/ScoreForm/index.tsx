@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import {useAuth} from "../../AuthContext";
+import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
 
 
@@ -16,24 +17,6 @@ interface ScoreFormProps {
   additionalData: {};
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-// TODO: GET PEST FROM API OR INTEGRATE IMAGE TO GROUP_SCORE
-const PESTS = [
-  '-', // This is to skip idx 0
-  "bugs_beetles",
-  "caddisflies",
-  "crabs_shrimps",
-  "damselflies",
-  "dragonflies",
-  "flatworms",
-  "leeches",
-  "minnow_mayflies",
-  "other_mayflies",
-  "snails",
-  "stoneflies",
-  "true_flies",
-  "worms"
-]
 
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
@@ -51,6 +34,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [isSavingData, setIsSavingData] = useState(false);
   const [selectedPests, setSelectedPests] = useState('')
   const {dispatch, state} = useAuth();
+
+  console.debug(additionalData)
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -253,10 +238,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setRefetchImages(false)
   };
 
-  const handleCloseSidebar = () => {
-    setSidebarOpen(false);
-  };
-
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
 
@@ -326,9 +307,68 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
     }
   }
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (proceedToSavingData) {
+        const message = "You have unsaved data, are you sure you want to leave?";
+        event.returnValue = message;
+        return message;
+        
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+}, [proceedToSavingData]);
+
+  const deleteObservation = async (observationId) => {
+    console.log('function call triggered')
+    try {
+      await axios.delete(`/observations/${observationId}/`);
+    } catch (error) {
+      setError(error);
+    }
+  };
+  
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+
+  const handleCloseSidebar = () => {
+    if(proceedToSavingData)
+      setIsCloseDialogOpen(true)
+    else setSidebarOpen(false)
+  };
+
+  const handleCloseConfirm = () => {
+    const storedObservationId = localStorage.getItem('observationId') || 0;
+    deleteObservation(parseInt(storedObservationId));
+    setIsCloseDialogOpen(false);
+    setSidebarOpen(false);
+  };
+
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
+
+  
   
   return (
     <>
+
+      <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        value="logout"
+        open={isCloseDialogOpen}
+        onClose={handleDialogCancel}
+        onConfirm={handleCloseConfirm}
+        title="Confirm Close"
+        message="You have unsaved data ,are you sure want to close?"
+      />
+      
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
           height: '75vh',
@@ -649,7 +689,20 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
               <br />
             <Text size="txtRalewayBold18" className="text-red-500">
-              {errorMessage}
+              {error.message ? (
+                 <div>
+                  <Text size="txtRalewayBold18" className="text-red-500">
+                    Something unexpectedly went wrong. Please try again.
+                  </Text>
+                 <Text size="txtRalewayBold18" className="text-red-500">
+                   If the problem persists, kindly contact the system administrator via the contact form.
+                 </Text>
+                 <Text size="txtRalewayBold18" className="text-red-500">
+                   We apologize for the inconvenience.
+                 </Text>
+                </div>
+              ) : null
+            }
             </Text>
             <Button
                   className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"

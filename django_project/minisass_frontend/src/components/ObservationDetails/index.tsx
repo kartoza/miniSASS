@@ -626,7 +626,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                     </div></>
               )}
 
-<div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
+            <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
               <div className="flex items-center gap-3">
                 <Text
                   className="text-blue-900 text-lg w-auto"
@@ -652,11 +652,24 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                         className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                         size="txtRalewayRomanRegular18"
                       >
-                        {observationDetails.water_clarity !== undefined
-                          ? observationDetails.water_clarity
-                          : (siteWithObservations.observations.length > 0
-                            ? siteWithObservations.observations[0].water_clarity
-                            : 'null')}
+                        {observationDetails.water_clarity !== undefined &&
+                          (
+                            (parseFloat(observationDetails.water_clarity) !== 999 && parseFloat(observationDetails.water_clarity) !== -9999)
+                              ? observationDetails.water_clarity
+                              : (
+                                siteWithObservations.observations.length > 0
+                                  ? (
+                                    (
+                                      parseFloat(siteWithObservations.observations[0].water_clarity) !== 999 &&
+                                      parseFloat(siteWithObservations.observations[0].water_clarity) !== -9999
+                                    )
+                                      ? siteWithObservations.observations[0].water_clarity
+                                      : 'null'
+                                  )
+                                  : 'null'
+                              )
+                          )}
+
                       </Text>
                     </div>
                     <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
@@ -670,11 +683,25 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          {observationDetails.water_temp !== undefined
-                            ? observationDetails.water_temp
-                            : (siteWithObservations.observations.length > 0
-                              ? siteWithObservations.observations[0].water_temp
-                              : 'null')}
+                          {observationDetails.water_temp !== undefined &&
+                            (
+                              (parseFloat(observationDetails.water_temp) !== 999 && parseFloat(observationDetails.water_temp) !== -9999)
+                                ? observationDetails.water_temp
+                                : (
+                                  siteWithObservations.observations.length > 0
+                                    ? (
+                                      (
+                                        parseFloat(siteWithObservations.observations[0].water_temp) !== 999 &&
+                                        parseFloat(siteWithObservations.observations[0].water_temp) !== -999
+                                      )
+                                        ? siteWithObservations.observations[0].water_temp
+                                        : null
+                                    )
+                                    : null
+                                )
+                            )
+                          }
+
                         </Text>
                       </div>
 
@@ -689,11 +716,24 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          {observationDetails.ph !== undefined
-                            ? observationDetails.ph
-                            : (siteWithObservations.observations.length > 0
-                              ? siteWithObservations.observations[0].ph
-                              : 'null')}
+                        {observationDetails.ph !== undefined &&
+                          (
+                            (parseFloat(observationDetails.ph) !== 999 && parseFloat(observationDetails.ph) !== -9999)
+                              ? observationDetails.ph
+                              : (
+                                siteWithObservations.observations.length > 0
+                                  ? (
+                                    (
+                                      parseFloat(siteWithObservations.observations[0].ph) !== 999 &&
+                                      parseFloat(siteWithObservations.observations[0].ph) !== -999
+                                    )
+                                      ? siteWithObservations.observations[0].ph
+                                      : null
+                                  )
+                                  : null
+                              )
+                          )
+                        }
                         </Text>
                       </div>
 
@@ -708,11 +748,24 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          {observationDetails.diss_oxygen !== undefined
-                            ? observationDetails.diss_oxygen + ' ' + observationDetails.diss_oxygen_unit
-                            : (siteWithObservations.observations.length > 0
-                              ? siteWithObservations.observations[0].diss_oxygen + ' ' + siteWithObservations.observations[0].diss_oxygen_unit
-                              : 'null')}
+                          {observationDetails.diss_oxygen !== undefined &&
+                            (
+                              (parseFloat(observationDetails.diss_oxygen) !== 999 && parseFloat(observationDetails.diss_oxygen) !== -9999)
+                                ? observationDetails.diss_oxygen + ' ' + observationDetails.diss_oxygen_unit
+                                : (
+                                  siteWithObservations.observations.length > 0
+                                    ? (
+                                      (
+                                        parseFloat(siteWithObservations.observations[0].diss_oxygen) !== 999 &&
+                                        parseFloat(siteWithObservations.observations[0].diss_oxygen) !== -9999
+                                      )
+                                        ? siteWithObservations.observations[0].diss_oxygen + ' ' + siteWithObservations.observations[0].diss_oxygen_unit
+                                        : 'null'
+                                    )
+                                    : 'null'
+                                )
+                            )}
+
                         </Text>
                       </div>
 
@@ -727,11 +780,24 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          {observationDetails.elec_cond !== undefined
-                            ? observationDetails.elec_cond + ' ' + observationDetails.elec_cond_unit
-                            : (siteWithObservations.observations.length > 0
-                              ? siteWithObservations.observations[0].elec_cond + ' ' + siteWithObservations.observations[0].elec_cond_unit
-                              : 'null')}
+                          {observationDetails.elec_cond !== undefined &&
+                            (
+                              (parseFloat(observationDetails.elec_cond) !== 999 && parseFloat(observationDetails.elec_cond) !== -9999)
+                                ? observationDetails.elec_cond + ' ' + observationDetails.elec_cond_unit
+                                : (
+                                  siteWithObservations.observations.length > 0
+                                    ? (
+                                      (
+                                        parseFloat(siteWithObservations.observations[0].elec_cond) !== 999 &&
+                                        parseFloat(siteWithObservations.observations[0].elec_cond) !== -9999
+                                      )
+                                        ? siteWithObservations.observations[0].elec_cond + ' ' + siteWithObservations.observations[0].elec_cond_unit
+                                        : 'null'
+                                    )
+                                    : 'null'
+                                )
+                            )}
+
                         </Text>
                       </div>
                       
