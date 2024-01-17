@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import {useAuth} from "../../AuthContext";
+import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
 
 
@@ -253,10 +254,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setRefetchImages(false)
   };
 
-  const handleCloseSidebar = () => {
-    setSidebarOpen(false);
-  };
-
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
 
@@ -326,9 +323,37 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
     }
   }
+
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+
+  const handleCloseSidebar = () => {
+    if(proceedToSavingData)
+      setIsCloseDialogOpen(true)
+  };
+
+  const handleCloseConfirm = () => {
+    setIsCloseDialogOpen(false)
+    setSidebarOpen(false);
+  };
+
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
   
   return (
     <>
+
+      <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        value="logout"
+        open={isCloseDialogOpen}
+        onClose={handleDialogCancel}
+        onConfirm={handleCloseConfirm}
+        title="Confirm Close"
+        message="You have unsaved data ,are you sure want to close?"
+      />
+      
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
           height: '75vh',
