@@ -164,6 +164,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           setErrorMessage(response.data.message);
           setIsErrorModalOpen(true);
         }else {
+          setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
         }
       }
@@ -326,9 +327,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 }, [proceedToSavingData]);
 
   const deleteObservation = async (observationId) => {
-    console.log('function call triggered')
     try {
-      await axios.delete(`/observations/${observationId}/`);
+      await axios.delete(`monitor/observations/${observationId}/`);
     } catch (error) {
       setError(error);
     }

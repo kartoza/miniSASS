@@ -30,6 +30,22 @@ echo 'Initialize project.'
 python manage.py collectstatic --clear --noinput
 python manage.py migrate
 
+
+echo 'Creating superuser...'
+
+if [ -z "${DJANGO_SUPERUSER_USERNAME}" ]; then
+    DJANGO_SUPERUSER_USERNAME=kartoza_admin
+fi
+if [ -z "${DJANGO_SUPERUSER_PASSWORD}" ]; then
+    DJANGO_SUPERUSER_PASSWORD="Gs10w29k8*&"
+fi
+if [ -z "${DJANGO_SUPERUSER_EMAIL}" ]; then
+    DJANGO_SUPERUSER_EMAIL=tinashe@kartoza.com
+fi
+# create super user if one doesn't exist
+python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('${DJANGO_SUPERUSER_USERNAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" 2>/dev/null || echo 'Superuser already exists, skipping.'
+
+
 # Run tests
 echo 'Running tests.'
 python manage.py test

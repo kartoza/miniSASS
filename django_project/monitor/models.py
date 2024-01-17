@@ -200,10 +200,13 @@ class Observations(models.Model, DirtyFieldsMixin):
 
     def recalculate_score(self):
         score = 0
+        checked_count = 0
         for group in GroupScores.objects.all():
-            if getattr(self, group.db_field):
-                score += group.sensitivity_score
-        self.score = score
+            if group.db_field != '':
+                if getattr(self, group.db_field):
+                    score += group.sensitivity_score
+                    checked_count += 1
+        self.score = score / checked_count
         self.save()
 
     def __str__(self):
@@ -256,8 +259,11 @@ class ObservationPestImage(models.Model):
 
     def delete_image(self):
         """delete image."""
-        delete_file_field(self.image)
-        delete_from_minio(self.get_minio_key())
+
+        # Delete image if it's not valid/not yet validated by admin.
+        if not self.valid:
+            delete_file_field(self.image)
+            delete_from_minio(self.get_minio_key())
 
     def update_image_path(self):
         initial_path = self.image.path

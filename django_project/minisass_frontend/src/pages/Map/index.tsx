@@ -56,7 +56,6 @@ const MapPage: React.FC = () => {
   }, [state.isAuthenticated]);
 
   useEffect(() => {
-
     if(details){
       window.scrollTo(0, 0);
       setIsObservationDetails(true)
