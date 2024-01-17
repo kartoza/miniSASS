@@ -17,6 +17,12 @@ from rest_framework.viewsets import GenericViewSet
 from django.http import Http404
 from datetime import datetime
 
+# dependencies for ai score calculations
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+
 from minisass_authentication.models import UserProfile
 from minisass.models import GroupScores
 
@@ -44,6 +50,35 @@ def get_observations_by_site(request, site_id, format=None):
         raise Http404("Site does not exist")
 
 
+# section for ai score calculations
+# TODO move this into seperate file
+def classify_image(image):
+    img_array = tf.keras.utils.img_to_array(image)
+    img_array = tf.expand_dims(img_array, 0)
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+    predicted_class = classes[np.argmax(score)]
+    confidence = 100 * np.max(score)
+    return {'class': predicted_class, 'confidence': confidence}
+
+classes = [
+	'bugs_and_beetles',
+	'caddisflies',
+	'crabs_and_shrimps',
+	'damselflies',
+	'dragonflies',
+	'flat_worms',
+	'leeches',
+	'minnow_mayflies',
+	'other_mayflies',
+	'snails_clams_mussels',
+	'stoneflies',
+	'true_flies',
+	'worms'
+]
+
+model = keras.models.load_model('ai_image_calculation')
+# end of ai score calculation section
 
 @csrf_exempt
 @login_required
@@ -135,6 +170,8 @@ def upload_pest_image(request):
                 # Save images in the request object
                 for key, image in request.FILES.items():
                     if 'pest_' in key:
+                        result = classify_image(image)
+                        classification_results.append(result)
                         group_id = key.split(':')[1]
                         if group_id:
                             group = GroupScores.objects.get(id=group_id)
@@ -150,7 +187,8 @@ def upload_pest_image(request):
                         'status': 'success', 
                         'observation_id': observation.gid,
                         'site_id': site.gid,
-                        'pest_image_id': pest_image.id
+                        'pest_image_id': pest_image.id,
+                        'classification_results': classification_results
                     }
                 )
         except ValidationError as ve:
