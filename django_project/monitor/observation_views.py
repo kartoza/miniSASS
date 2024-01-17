@@ -38,7 +38,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 import os 
 from minio import Minio
-from minio.error import ResponseError
+from minio.error import S3Error
 
 def get_observations_by_site(request, site_id, format=None):
     try:
@@ -75,7 +75,7 @@ def retrieve_file_from_minio(file_name):
 
        
         return file_path
-    except ResponseError as err:
+    except S3Error as err:
         print(f"Error retrieving file from Minio: {err}")
         return None
 
