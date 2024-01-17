@@ -200,11 +200,13 @@ class Observations(models.Model, DirtyFieldsMixin):
 
     def recalculate_score(self):
         score = 0
+        checked_count = 0
         for group in GroupScores.objects.all():
             if group.db_field != '':
                 if getattr(self, group.db_field):
                     score += group.sensitivity_score
-        self.score = score
+                    checked_count += 1
+        self.score = score / checked_count
         self.save()
 
     def __str__(self):
