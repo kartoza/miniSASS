@@ -689,11 +689,14 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          {observationDetails.ph !== undefined
+                          {observationDetails.ph !== undefined && parseFloat(observationDetails.ph) !== -9999
                             ? observationDetails.ph
                             : (siteWithObservations.observations.length > 0
-                              ? siteWithObservations.observations[0].ph
-                              : 'null')}
+                            ? (parseFloat(siteWithObservations.observations[0].ph) !== -9999
+                            ? siteWithObservations.observations[0].ph
+                            : null)
+                           : null)}
+
                         </Text>
                       </div>
 
