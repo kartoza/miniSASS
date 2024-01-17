@@ -52,6 +52,26 @@ class ObservationsAdmin(admin.ModelAdmin):
     actions = [make_verified, make_unverified]
     inlines = (ObservationPestImageInline,)
 
+    def save_formset(self, request, form, formset, change):
+        observation: Observations = form.instance
+        for inline_form in formset.forms:
+            # If the new observation image has changed
+            if inline_form.has_changed():
+                old_instance = ObservationPestImage.objects.get(id=inline_form.instance.id)
+
+                # if the group has changed e.g. from damselflies to dragonflies and marked as valid,
+                # set damselflies to False on observation
+                # set dragonflies to True on observation
+                if old_instance.group.db_field != inline_form.instance.group.db_field and inline_form.instance.valid:
+                    setattr(observation, old_instance.group.db_field, False)
+                    setattr(observation, inline_form.instance.group.db_field, True)
+
+                # # if new observation image is valid, set the related field to True.
+                # if inline_form.instance.valid:
+                #     setattr(observation, inline_form.instance.group.db_field, True)
+        super().save_formset(request, form, formset, change)
+        observation.recalculate_score()
+
 
 class SiteImageInline(admin.TabularInline):
     model = SiteImage

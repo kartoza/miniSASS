@@ -71,14 +71,16 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
         </MenuItem>
         {
           state.user.is_admin &&
-          <MenuItem
-            onClick={handleClose}
+          <Link
+            href={`${globalVariables.baseUrl}/admin`}
+            style={{textDecoration: 'none', color: 'inherit'}}
           >
-            <Link
-              href={`${globalVariables.baseUrl}/admin`}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >Admin</Link>
-          </MenuItem>
+            <MenuItem
+              onClick={handleClose}
+            >
+              Admin
+            </MenuItem>
+          </Link>
         }
         <MenuItem
           onClick={handleLogout}
