@@ -36,6 +36,8 @@ from monitor.serializers import (
 )
 from django.core.exceptions import ValidationError
 from django.db import transaction
+import os 
+from minio import Minio
 
 def get_observations_by_site(request, site_id, format=None):
     try:
@@ -48,6 +50,38 @@ def get_observations_by_site(request, site_id, format=None):
         )
     except Sites.DoesNotExist:
         raise Http404("Site does not exist")
+
+
+# Use environment variables for Minio configuration
+minio_access_key = os.getenv('MINIO_ACCESS_KEY', '')
+minio_secret_key = os.getenv('MINIO_SECRET_KEY','')
+minio_endpoint = os.getenv('MINIO_ENDPOINT','')
+minio_bucket = os.getenv('MINIO_BUCKET','')
+secure_connection = os.getenv('SECURE_CONNECTION',False)
+
+def retrieve_file_from_minio(file_name):
+    try:
+        minio_client = Minio(
+		minio_endpoint, 
+		access_key=minio_access_key, 
+		secret_key=minio_secret_key, 
+		secure=secure_connection
+	)
+
+        # Download the file from Minio
+        file_path = '/home/web/django_project/monitor/' + file_name
+        minio_client.fget_object(minio_bucket, file_name, file_path)
+
+       
+        return file_path
+    except ResponseError as err:
+        print(f"Error retrieving file from Minio: {err}")
+        return None
+
+file_name = "ai_image_calculation.h5"
+downloaded_file_path = retrieve_file_from_minio(file_name)
+if downloaded_file_path:
+    model = keras.models.load_model(downloaded_file_path)
 
 
 # section for ai score calculations
@@ -77,7 +111,7 @@ classes = [
 	'worms'
 ]
 
-model = keras.models.load_model('ai_image_calculation')
+
 # end of ai score calculation section
 
 @csrf_exempt
