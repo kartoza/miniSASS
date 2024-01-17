@@ -328,7 +328,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const deleteObservation = async (observationId) => {
     try {
-      await axios.delete(`/observations/${observationId}/`);
+      await axios.delete(`monitor/observations/${observationId}/`);
     } catch (error) {
       setError(error);
     }
