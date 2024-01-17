@@ -198,6 +198,14 @@ class Observations(models.Model, DirtyFieldsMixin):
             self.comment = ''
         return super(Observations, self).save(*args, **kwargs)
 
+    def recalculate_score(self):
+        score = 0
+        for group in GroupScores.objects.all():
+            if getattr(self, group.db_field):
+                score += group.sensitivity_score
+        self.score = score
+        self.save()
+
     def __str__(self):
         return str(self.obs_date) + ': ' + self.site.site_name if self.site else ''
 
@@ -357,3 +365,5 @@ def post_save_image(sender, instance, created: ObservationPestImage, **kwargs):
 
     elif getattr(instance, 'send_to_ai_bucket', False):
         send_to_ai_bucket(instance)
+
+    instance.observation.recalculate_score()
