@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Button, Img, Text } from "../../components";
-import ClearIcon from '@mui/icons-material/Clear';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import {Button, Img, Text} from "../../components";
 import Tooltip from '@mui/material/Tooltip';
 import UploadModal from "../../components/UploadFormModal";
-import { Instance } from '@popperjs/core';
-import { Formik, Form, Field } from 'formik';
+import {Instance} from '@popperjs/core';
+import {Field, Form, Formik} from 'formik';
 import ScoreForm from "../../components/ScoreForm";
 import axios from "axios";
-import { globalVariables, formatDate } from "../../utils";
+import {globalVariables} from "../../utils";
 import CoordinatesInputForm from "../CoordinatesInputForm";
 import Select from 'react-select';
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import {deepClone} from "@mui/x-data-grid/utils/utils";
+import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
+import {debounce} from '@mui/material/utils';
 import LinearProgress from '@mui/material/LinearProgress';
+import {parse} from "wkt";
+
 
 type DataInputFormProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -79,7 +79,7 @@ type DataInputFormProps = Omit<
     next: string;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
     toggleMapSelection: () => void;
-    handleMapClick: (longitude: number, latitude: number) => void;
+    handleMapClick: (latitude: number, longitude: number) => void;
     selectedCoordinates:{longitude: number, latitude: number};
     selectingOnMap: boolean;
     resetMap: () => void;
@@ -127,6 +127,21 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     props.setCursor('')
   };
 
+    // Fetching results
+  const zoomToLocation = React.useMemo(
+    () =>
+      debounce(
+        (
+          latitude: number,
+          longitude: number,
+        ) => {
+          props.handleMapClick(latitude, longitude);
+        },
+        2000,
+      ),
+    [],
+  );
+
 
   // State to store form values
   const [formValues, setFormValues] = useState({
@@ -155,7 +170,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     selectedSite: '',
     flag: 'dirty'
   });
-  console.debug(formValues)
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectSiteMode, setSelectSiteMode] = useState<SiteSelectionMode | undefined>();
@@ -268,6 +282,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
               siteName: site.site_name,
               siteDescription: site.description,
               riverName: site.river_name,
+              longitude: parse(site.the_geom).coordinates[0],
+              latitude: parse(site.the_geom).coordinates[1],
             })),
           ];
           setSitesList(sitesList);
@@ -625,6 +641,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                       setProceedToSavingData(true);
+                                      zoomToLocation(selectedOption.latitude, selectedOption.longitude)
                                     }
                                   }
                                 }}
