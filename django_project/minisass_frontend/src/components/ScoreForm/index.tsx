@@ -17,24 +17,6 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// TODO: GET PEST FROM API OR INTEGRATE IMAGE TO GROUP_SCORE
-const PESTS = [
-  '-', // This is to skip idx 0
-  "bugs_beetles",
-  "caddisflies",
-  "crabs_shrimps",
-  "damselflies",
-  "dragonflies",
-  "flatworms",
-  "leeches",
-  "minnow_mayflies",
-  "other_mayflies",
-  "snails",
-  "stoneflies",
-  "true_flies",
-  "worms"
-]
-
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
@@ -51,6 +33,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [isSavingData, setIsSavingData] = useState(false);
   const [selectedPests, setSelectedPests] = useState('')
   const {dispatch, state} = useAuth();
+
+  console.debug(additionalData)
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);

@@ -473,10 +473,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
           <Formik
             initialValues={formValues}
             onSubmit={(values) => {
-              if(formValues.selectedSite != '' && formValues.selectedSite != 'none'){
-                values.selectedSite = formValues.selectedSite
-                formValues.selectedSite = ''
-              }
+              // if(formValues.selectedSite != '' && formValues.selectedSite != 'none'){
+              //   values.selectedSite = formValues.selectedSite
+              //   formValues.selectedSite = ''
+              // }
               setFormValues(values)
               handleShowScoreForm()
             }}
