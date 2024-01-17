@@ -56,7 +56,7 @@ def get_observations_by_site(request, site_id, format=None):
 minio_access_key = os.getenv('MINIO_ACCESS_KEY', '')
 minio_secret_key = os.getenv('MINIO_SECRET_KEY','')
 minio_endpoint = os.getenv('MINIO_ENDPOINT','')
-minio_bucket = os.getenv('MINIO_BUCKET','')
+minio_bucket = os.getenv('MINIO_AI_BUCKET','')
 secure_connection = os.getenv('SECURE_CONNECTION',False)
 
 def retrieve_file_from_minio(file_name):
