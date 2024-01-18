@@ -53,6 +53,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [loading, setLoading] = useState(true);
   const [observationDetails, setObservationDetails] = useState({});
   const [titleColor, setTitleColor] = useState<string>('');
+  const [classification, setClassification] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
   const [renderCrab, setRenderCrab] = useState<string>('');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
@@ -102,67 +103,73 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
 
   const updateScoreDisplay = (riverCategory, score) => {
+    console.debug(score)
     if (riverCategory === 'sandy') {
       if (score > 6.8) {
         setTitleColor("text-blue-600");
         setProgressBarColor("blue");
         setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
+        setClassification('NATURAL');
       } else if (score > 5.8 && score <= 6.8) {
         setTitleColor("text-green-600");
         setProgressBarColor("green");
         setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
+        setClassification('GOOD');
       } else if (score > 5.3 && score <= 5.8) {
         setTitleColor("text-orange-600");
         setProgressBarColor("orange");
         setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
+        setClassification('FAIR');
       } else if (score > 4.8 && score <= 5.3) {
         setTitleColor("text-red-600");
         setProgressBarColor("red");
         setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
+        setClassification('POOR');
+      } else if (score <= 4.8 && score !== '') {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+        setClassification('VERY POOR');
       } else {
         setTitleColor("text-purple-600");
         setProgressBarColor("purple");
         setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+        setClassification('N/A');
       }
     } else {
       if (score > 7.2) {
         setTitleColor("text-blue-600");
         setProgressBarColor("blue");
         setRenderCrab(`${globalVariables.staticPath}crab_blue.svg`);
+        setClassification('NATURAL');
       } else if (score > 6.1 && score <= 7.2) {
         setTitleColor("text-green-600");
         setProgressBarColor("green");
         setRenderCrab(`${globalVariables.staticPath}crab_green.svg`);
+        setClassification('GOOD');
       } else if (score > 5.6 && score <= 6.1) {
         setTitleColor("text-orange-600");
         setProgressBarColor("orange");
         setRenderCrab(`${globalVariables.staticPath}crab_orange.svg`);
+        setClassification('FAIR');
       } else if (score > 5.3 && score <= 5.6) {
         setTitleColor("text-red-600");
         setProgressBarColor("red");
         setRenderCrab(`${globalVariables.staticPath}crab_red.svg`);
+        setClassification('POOR');
+      } else if (score <= 5.3 && score !== '') {
+        setTitleColor("text-purple-600");
+        setProgressBarColor("purple");
+        setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+        setClassification('VERY POOR');
       } else {
         setTitleColor("text-purple-600");
         setProgressBarColor("purple");
         setRenderCrab(`${globalVariables.staticPath}crab_purple.svg`);
+        setClassification('N/A');
       }
     }
   };
-
-  const getClassification = (color) => {
-    if (color === 'blue') {
-      return 'NATURAL'
-    } else if (color === 'green') {
-      return 'GOOD';
-    } else if (color === 'orange') {
-      return 'FAIR';
-    } else if (color === 'red') {
-      return 'POOR';
-    } else {
-      return 'VERY POOR';
-    }
-  }
-
 
   useEffect(() => {
     if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
@@ -304,8 +311,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         setObservationList(siteWithObservations.observations)
 
         setObservations(siteWithObservations.observations)
-        // setImageTabsData(setTabbedImages(siteWithObservations.observations));
-        // updateTabs(siteWithObservations.observations)
         setSiteDetails(siteWithObservations.site)
       } 
     }
@@ -450,7 +455,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   className={`${titleColor} text-base w-auto`}
                   size="txtRalewayRomanSemiBold16"
                 >
-                  {getClassification(progressBarColor)}
+                  {classification}
                 </Text>
               </div>
             </div>
@@ -696,12 +701,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                     ? (
                                       (
                                         parseFloat(siteWithObservations.observations[0].water_temp) !== 999 &&
-                                        parseFloat(siteWithObservations.observations[0].water_temp) !== -999
+                                        parseFloat(siteWithObservations.observations[0].water_temp) !== -9999
                                       )
                                         ? siteWithObservations.observations[0].water_temp
-                                        : null
+                                        : 'null'
                                     )
-                                    : null
+                                    : 'null'
                                 )
                             )
                           }
@@ -729,12 +734,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                   ? (
                                     (
                                       parseFloat(siteWithObservations.observations[0].ph) !== 999 &&
-                                      parseFloat(siteWithObservations.observations[0].ph) !== -999
+                                      parseFloat(siteWithObservations.observations[0].ph) !== -9999
                                     )
                                       ? siteWithObservations.observations[0].ph
-                                      : null
+                                      : 'null'
                                   )
-                                  : null
+                                  : 'null'
                               )
                           )
                         }

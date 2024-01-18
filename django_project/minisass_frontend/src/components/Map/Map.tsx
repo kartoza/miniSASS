@@ -443,8 +443,72 @@ export const Map = forwardRef((props: Interface, ref) => {
     
         if (response.data) {
           window.location.href = window.location.href.split('?')[0];
+          const data = response.data;
+          if (data.observations.length === 0) {
+            data.observations = [{
+              "gid": 0,
+              "site": {
+                  "gid": data.site.gid,
+                  "images": [],
+                  "the_geom": `SRID=4326;POINT (${data.site.longitude} ${data.site.latitude})`,
+                  "site_name": data.site.sitename,
+                  "river_name": data.site.rivername,
+                  "description": data.site.sitedescription,
+                  "river_cat": data.site.rivercategory,
+                  "time_stamp": "",
+                  "user": 0,
+                  "assessment": null
+              },
+              "sitename": data.site.sitename,
+              "rivername": data.site.rivername,
+              "sitedescription": data.site.sitedescription,
+              "rivercategory": data.site.sitecategory,
+              "longitude": data.site.longitude,
+              "latitude": data.site.latitude,
+              "collectorsname": "N/A",
+              "organisationtype": {
+                  "id": 0,
+                  "rank": 0,
+                  "description": "N/A",
+                  "active": true,
+                  "container": null
+              },
+              "images": [],
+              "minisass_ml_score": null,
+              "ml_model_version": null,
+              "ml_model_type": null,
+              "flatworms": false,
+              "worms": false,
+              "leeches": false,
+              "crabs_shrimps": false,
+              "stoneflies": true,
+              "minnow_mayflies": false,
+              "other_mayflies": false,
+              "damselflies": false,
+              "dragonflies": false,
+              "bugs_beetles": false,
+              "caddisflies": false,
+              "true_flies": false,
+              "snails": false,
+              "collector_name": "",
+              "score": "",
+              "time_stamp": "",
+              "comment": "",
+              "obs_date": new Date().toISOString().split('T')[0],
+              "flag": "",
+              "is_validated": false,
+              "water_clarity": "-9999.0",
+              "water_temp": "-9999.0",
+              "ph": "-9999.0",
+              "diss_oxygen": "-9999.00",
+              "diss_oxygen_unit": "mgl",
+              "elec_cond": "-9999.00",
+              "elec_cond_unit": "S/m",
+              "user": 0
+          }]
+          }
           if(!props.isSelectSiteOnMap)
-            props.openObservationForm(response.data);
+            props.openObservationForm(data);
           else props.setSiteDetails(response.data.site);
         }
 
