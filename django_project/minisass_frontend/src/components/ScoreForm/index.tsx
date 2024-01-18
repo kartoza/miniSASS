@@ -241,6 +241,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
+  const [imageAiPrediction, setImageAiPrediction] = useState({});
 
   const uploadImages = async (pestImages) => {
 
@@ -292,8 +293,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             );
         
             if(response.status == 200){
+              print('response data: ',response.data)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
+              setImageAiPrediction(response.data.classification_results[0])
               setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
@@ -726,7 +729,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           onSubmit={null}
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
-          aiScore={'1.0'} // TODO this will be dynamic
+          aiScore={imageAiPrediction.confidence}
+          aiGroup={imageAiPrediction.class}
           handleButtonClick={handleButtonClick}
           refetchImages={refetchImages}
         />

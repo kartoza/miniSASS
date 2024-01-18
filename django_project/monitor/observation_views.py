@@ -17,6 +17,14 @@ from rest_framework.viewsets import GenericViewSet
 from django.http import Http404
 from datetime import datetime
 
+# dependencies for ai score calculations
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+
 from minisass_authentication.models import UserProfile
 from minisass.models import GroupScores
 
@@ -30,6 +38,9 @@ from monitor.serializers import (
 )
 from django.core.exceptions import ValidationError
 from django.db import transaction
+import os 
+from minio import Minio
+from minio.error import S3Error
 
 def get_observations_by_site(request, site_id, format=None):
     try:
@@ -44,6 +55,66 @@ def get_observations_by_site(request, site_id, format=None):
         raise Http404("Site does not exist")
 
 
+# Use environment variables for Minio configuration
+minio_access_key = settings.MINIO_ACCESS_KEY
+minio_secret_key = settings.MINIO_SECRET_KEY
+minio_endpoint = settings.MINIO_ENDPOINT
+minio_bucket = settings.MINIO_AI_BUCKET
+secure_connection = os.getenv('SECURE_CONNECTION',False)
+
+def retrieve_file_from_minio(file_name):
+    try:
+        minio_client = Minio(
+            minio_endpoint,
+            access_key=minio_access_key,
+            secret_key=minio_secret_key,
+            secure=secure_connection
+        )
+
+        # Download the file from Minio
+        file_path = f'{settings.MINIO_ROOT}/{file_name}'
+        minio_client.fget_object(minio_bucket, file_name, file_path)
+
+        return file_path
+    except S3Error as err:
+        print(f"Error retrieving file from Minio: {err}")
+        return None
+
+file_name = "ai_image_calculation.h5"
+downloaded_file_path = retrieve_file_from_minio(file_name)
+if downloaded_file_path:
+    model = keras.models.load_model(downloaded_file_path)
+
+
+# section for ai score calculations
+# TODO move this into seperate file
+def classify_image(image):
+    img_array = tf.keras.utils.img_to_array(image)
+    img_array = tf.expand_dims(img_array, 0)
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+    predicted_class = classes[np.argmax(score)]
+    confidence = 100 * np.max(score)
+    return {'class': predicted_class, 'confidence': confidence}
+
+classes = [
+	'bugs_and_beetles',
+	'caddisflies',
+	'crabs_and_shrimps',
+	'damselflies',
+	'dragonflies',
+	'flat_worms',
+	'leeches',
+	'minnow_mayflies',
+	'other_mayflies',
+	'snails_clams_mussels',
+	'stoneflies',
+	'true_flies',
+	'worms'
+]
+
+
+# end of ai score calculation section
 
 @csrf_exempt
 @login_required
@@ -132,6 +203,7 @@ def upload_pest_image(request):
                     )
 
                 # Save images in the request object
+                classification_results = []
                 for key, image in request.FILES.items():
                     if 'pest_' in key:
                         group_id = key.split(':')[1]
@@ -144,12 +216,20 @@ def upload_pest_image(request):
                             pest_image.image = image
                             pest_image.save()
 
+
+		# Call classify_image with the entire request.FILES
+		result = classify_image(request.FILES)
+		
+		# Append the result to the classification_results list
+		classification_results.append(result)
+
                 return JsonResponse(
                     {
                         'status': 'success', 
                         'observation_id': observation.gid,
                         'site_id': site.gid,
-                        'pest_image_id': pest_image.id
+                        'pest_image_id': pest_image.id,
+                        'classification_results': classification_results
                     }
                 )
         except ValidationError as ve:
