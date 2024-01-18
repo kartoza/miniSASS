@@ -89,7 +89,6 @@ if downloaded_file_path:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-    print('image ',image)
     img_array = tf.keras.utils.img_to_array(image)
     img_array = tf.expand_dims(img_array, 0)
     predictions = model.predict(img_array)
@@ -217,9 +216,13 @@ def upload_pest_image(request):
                             )
                             pest_image.image = image
                             pest_image.save()
-                            print('image saved')
-                            result = classify_image(pest_image.image)
-                            classification_results.append(result)
+
+
+		# Call classify_image with the entire request.FILES
+		result = classify_image(request.FILES)
+		
+		# Append the result to the classification_results list
+		classification_results.append(result)
 
                 return JsonResponse(
                     {
