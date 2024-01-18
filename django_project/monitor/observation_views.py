@@ -73,7 +73,7 @@ def retrieve_file_from_minio(file_name):
 		)
 
 		# Download the file from Minio
-		file_path = f'{settings.MINIO_ROOT}/{file_name}'
+		file_path = '/home/web/django_project/monitor/' + file_name
 		minio_client.fget_object(minio_bucket, file_name, file_path)
 
 		return file_path
