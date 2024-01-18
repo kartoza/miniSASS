@@ -111,47 +111,23 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-              <div key={`${image.pest_id}`} className="relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
-                <Img
-                  className="h-28 md:h-auto object-cover w-28"
-                  key={`${image.pest_id}`}
-                  src={image.image}
-                  alt={`${image.pest_name}`}
-                  loading='lazy'
-                />
-                {/* Add the x icon here (adjust styles as needed) */}
-                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-                  ✖
-                </div>
-              </div>
-            ))}
+  <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${aiScore < 50 ? 'border-2 border-red-500' : ''}`}>
+    <Img
+      className="h-28 md:h-auto object-cover w-28"
+      key={`${image.pest_id}`}
+      src={image.image}
+      alt={`${image.pest_name}`}
+      loading='lazy'
+    />
+    {/* Add the x icon here (adjust styles as needed) */}
+    <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+      ✖
+    </div>
+  </div>
+))}
 
-              {/* {imageUrls.map((imageUrl, index) => (
-                <div key={`image-${index}`} className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
-                  <Img
-                    className="h-28 md:h-auto object-cover w-28"
-                    src={`${globalVariables.staticPath}${imageUrl}`}
-                    alt={`${imageUrl.name}`}
-                  /> */}
 
-                  {/* example of a bad image or image that failed to upload */}
-                  {/* {index === 2 && (
-                    <div className="border-2 border-red-500 border-solid p-1 relative w-28">
-                      <Img
-                        className="h-[104px] m-auto object-cover w-[104px]"
-                        src={`${staticPath}${imageUrl}`}
-                        alt="rectangleNinetySeven"
-                      />
-                      <Img
-                        className="absolute h-6 right-[4%] top-[4%] w-6"
-                        src={`${staticPath}img_iconamoonatten.svg`}
-                        alt="iconamoonatten"
-                      />
-                    </div>
-                  )} */}
-
-                {/* </div>
-              ))} */}
+              
 
               {/* Upload image section */}
               <div className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
