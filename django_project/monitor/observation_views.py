@@ -32,22 +32,23 @@ from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage, Pest
 )
 from monitor.serializers import (
-    ObservationsSerializer, 
-    ObservationPestImageSerializer, 
+    ObservationsSerializer,
+    ObservationPestImageSerializer,
     ObservationsAllFieldsSerializer
 )
 from django.core.exceptions import ValidationError
 from django.db import transaction
-import os 
+import os
 from minio import Minio
 from minio.error import S3Error
+
 
 def get_observations_by_site(request, site_id, format=None):
     try:
         site = Sites.objects.get(gid=site_id)
         observations = Observations.objects.filter(site=site)
         serializer = ObservationsAllFieldsSerializer(observations, many=True)
-        
+
         return JsonResponse(
             {'status': 'success', 'observations': serializer.data}
         )
@@ -60,7 +61,8 @@ minio_access_key = settings.MINIO_ACCESS_KEY
 minio_secret_key = settings.MINIO_SECRET_KEY
 minio_endpoint = settings.MINIO_ENDPOINT
 minio_bucket = settings.MINIO_AI_BUCKET
-secure_connection = os.getenv('SECURE_CONNECTION',False)
+secure_connection = os.getenv('SECURE_CONNECTION', False)
+
 
 def retrieve_file_from_minio(file_name):
     try:
@@ -76,9 +78,10 @@ def retrieve_file_from_minio(file_name):
         minio_client.fget_object(minio_bucket, file_name, file_path)
 
         return file_path
-    except S3Error as err:
+    except (S3Error, TypeError) as err:
         print(f"Error retrieving file from Minio: {err}")
         return None
+
 
 file_name = "ai_image_calculation.h5"
 downloaded_file_path = retrieve_file_from_minio(file_name)
@@ -101,20 +104,21 @@ def classify_image(image):
         print(f"Error during image classification: {e}")
         return {'error': str(e)}
 
+
 classes = [
-	'bugs_and_beetles',
-	'caddisflies',
-	'crabs_and_shrimps',
-	'damselflies',
-	'dragonflies',
-	'flat_worms',
-	'leeches',
-	'minnow_mayflies',
-	'other_mayflies',
-	'snails_clams_mussels',
-	'stoneflies',
-	'true_flies',
-	'worms'
+    'bugs_and_beetles',
+    'caddisflies',
+    'crabs_and_shrimps',
+    'damselflies',
+    'dragonflies',
+    'flat_worms',
+    'leeches',
+    'minnow_mayflies',
+    'other_mayflies',
+    'snails_clams_mussels',
+    'stoneflies',
+    'true_flies',
+    'worms'
 ]
 
 
@@ -125,7 +129,7 @@ classes = [
 def upload_pest_image(request):
     """
     This view function handles the upload of pest images, associating them with an observation and a site.
-    
+
     - Creates an empty site and observation.
     - Associates uploaded images with the observation.
     - Returns the observation ID, site ID, and image IDs for further processing.
@@ -169,11 +173,12 @@ def upload_pest_image(request):
 
                 try:
                     site = Sites.objects.get(gid=site_id)
-                    
+
                 except Sites.DoesNotExist:
-                    max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
+                    max_site_id = Sites.objects.all().aggregate(Max('gid'))[
+                        'gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
-    
+
                     site = Sites(
                         gid=new_site_id,
                         the_geom=Point(x=0, y=0, srid=4326),
@@ -193,10 +198,13 @@ def upload_pest_image(request):
                     site.save()
 
                 try:
-                    observation = Observations.objects.get(gid=observation_id, site=site)
+                    observation = Observations.objects.get(
+                        gid=observation_id, site=site)
                 except Observations.DoesNotExist:
-                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
-                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+                        'gid__max']
+                    new_observation_id = max_observation_id + \
+                        1 if max_observation_id is not None else 1
 
                     observation = Observations.objects.create(
                         gid=new_observation_id,
@@ -220,16 +228,12 @@ def upload_pest_image(request):
                             pest_image.image = image
                             pest_image.save()
 
-
-                # Call classify_image with the entire request.FILES
                 result = classify_image(request.FILES)
-                
-                # Append the result to the classification_results list
                 classification_results.append(result)
 
                 return JsonResponse(
                     {
-                        'status': 'success', 
+                        'status': 'success',
                         'observation_id': observation.gid,
                         'site_id': site.gid,
                         'pest_image_id': pest_image.id,
@@ -237,7 +241,6 @@ def upload_pest_image(request):
                     }
                 )
         except ValidationError as ve:
-            # Handle validation errors (e.g., invalid data)
             return JsonResponse({'status': 'error', 'message': str(ve)})
         except Exception as e:
             # Handle other exceptions
@@ -245,22 +248,24 @@ def upload_pest_image(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+
 @csrf_exempt
 @login_required
 def delete_pest_image(request, observation_pk, pk, **kwargs):
     if request.method == 'POST':
         try:
             # Check if observation_pk and pk are not empty, if empty, use values from kwargs
-            observation_id = observation_pk if observation_pk else kwargs.get('observation_pk')
+            observation_id = observation_pk if observation_pk else kwargs.get(
+                'observation_pk')
             image_id = pk if pk else kwargs.get('pk')
 
             if not observation_id or not image_id:
                 return JsonResponse({'status': 'error', 'message': 'Observation_pk and pk must be provided.'}, status=400)
 
-
             observation = get_object_or_404(Observations, gid=observation_id)
 
-            image = get_object_or_404(ObservationPestImage, id=image_id, observation=observation)
+            image = get_object_or_404(
+                ObservationPestImage, id=image_id, observation=observation)
 
             image.delete()
 
@@ -289,12 +294,16 @@ def create_observations(request):
             # Extract other fields from the payload
             score = Decimal(str(data.get('score', 0)))
             comment = datainput.get('notes', '')
-            water_clarity = Decimal(str(datainput.get('waterclaritycm', -9999) or -9999))
-            water_temp = Decimal(str(datainput.get('watertemperatureOne', -9999) or -9999))
+            water_clarity = Decimal(
+                str(datainput.get('waterclaritycm', -9999) or -9999))
+            water_temp = Decimal(
+                str(datainput.get('watertemperatureOne', -9999) or -9999))
             ph = Decimal(str(datainput.get('ph', -9999) or -9999))
-            diss_oxygen = Decimal(str(datainput.get('dissolvedoxygenOne', -9999) or -9999))
+            diss_oxygen = Decimal(
+                str(datainput.get('dissolvedoxygenOne', -9999) or -9999))
             diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
-            elec_cond = Decimal(str(datainput.get('electricalconduOne', -9999) or -9999))
+            elec_cond = Decimal(
+                str(datainput.get('electricalconduOne', -9999) or -9999))
             elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
             site_name = datainput.get('siteName', '')
             river_name = datainput.get('riverName', '')
@@ -304,7 +313,8 @@ def create_observations(request):
             obs_date = datainput.get('date')
             user = request.user
 
-            site_id_str = str(request.POST.get('siteId', datainput.get('selectedSite', '0')))
+            site_id_str = str(request.POST.get(
+                'siteId', datainput.get('selectedSite', '0')))
             observation_id_str = str(request.POST.get('observationId', '0'))
 
             # Remove leading and trailing whitespaces, and replace double quotes
@@ -318,7 +328,8 @@ def create_observations(request):
                 site_id = 0
 
             try:
-                observation_id = int(observation_id_str) if observation_id_str else 0
+                observation_id = int(
+                    observation_id_str) if observation_id_str else 0
             except (ValueError, TypeError):
                 observation_id = 0
 
@@ -328,18 +339,19 @@ def create_observations(request):
             except ValueError:
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
 
-
             # Check if the values are within a valid range
             if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
                 return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
 
-            create_site_or_observation = request.POST.get('create_site_or_observation', 'true').lower()
+            create_site_or_observation = request.POST.get(
+                'create_site_or_observation', 'true').lower()
 
             if create_site_or_observation == 'true':
                 try:
                     site = Sites.objects.get(gid=site_id)
                 except Sites.DoesNotExist:
-                    max_site_id = Sites.objects.all().aggregate(Max('gid'))['gid__max']
+                    max_site_id = Sites.objects.all().aggregate(Max('gid'))[
+                        'gid__max']
                     new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
                     if Sites.objects.filter(site_name=site_name).exists():
@@ -361,8 +373,10 @@ def create_observations(request):
                             site=site, image=image
                         )
 
-                max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
-                new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+                    'gid__max']
+                new_observation_id = max_observation_id + \
+                    1 if max_observation_id is not None else 1
                 observation = Observations(
                     gid=new_observation_id,
                     score=score,
@@ -389,15 +403,17 @@ def create_observations(request):
             elif create_site_or_observation == 'false':
                 try:
                     site = Sites.objects.get(gid=site_id)
-                    
+
                     for key, image in request.FILES.items():
                         if 'image_' in key:
                             SiteImage.objects.create(
                                 site=site, image=image
                             )
 
-                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))['gid__max']
-                    new_observation_id = max_observation_id + 1 if max_observation_id is not None else 1
+                    max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+                        'gid__max']
+                    new_observation_id = max_observation_id + \
+                        1 if max_observation_id is not None else 1
                     observation = Observations(
                         gid=observation_id if observation_id != 0 else new_observation_id,
                         score=score,
