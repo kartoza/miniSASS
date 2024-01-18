@@ -65,22 +65,22 @@ secure_connection = os.getenv('SECURE_CONNECTION', False)
 
 
 def retrieve_file_from_minio(file_name):
-	try:
-		minio_client = Minio(
-			"https://minio.do.kartoza.com/",
-			access_key=minio_access_key,
-			secret_key=minio_secret_key,
-			secure=secure_connection
-		)
+    try:
+        minio_client = Minio(
+            minio_endpoint,
+            access_key=minio_access_key,
+            secret_key=minio_secret_key,
+            secure=secure_connection
+        )
 
-		# Download the file from Minio
-		file_path = '/home/web/django_project/monitor/' + file_name
-		minio_client.fget_object(minio_bucket, file_name, file_path)
+        # Download the file from Minio
+        file_path = '/home/web/django_project/monitor/' + file_name
+        minio_client.fget_object(minio_bucket, file_name, file_path)
 
-		return file_path
-	except (S3Error, TypeError) as err:
-		print(f"Error retrieving file from Minio: {err}")
-		return None
+        return file_path
+    except S3Error as err:
+        print(f"Error retrieving file from Minio: {err}")
+        return None
 
 
 file_name = "ai_image_calculation.h5"
