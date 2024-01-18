@@ -392,13 +392,13 @@ const Home: React.FC = () => {
           <div className="flex flex-col mt-[25px] mt-5 relative md:top-[145px] sm:top-[200px] top-[30px] md:w-[98%]">
             <div>
               <Text
-                className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
+                className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto mb-[25px] sm:pl-[16px]"
                 size="txtRalewayRomanBold40"
               >
                 What is miniSASS?
               </Text>
             </div>
-            <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mx-auto md:px-5 relative md:top-20 sm:top-[130px] w-full">
+            <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mx-auto md:px-5 relative w-full">
               <div
                 className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] w-[50%] sm:w-full"
               >
@@ -406,7 +406,8 @@ const Home: React.FC = () => {
               </div>
               <div className="w-[75%] sm:w-full md:w-full">
                 <Text
-                className="md:h-auto leading-[136.40%] text-xl tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800"
+                className="md:h-auto leading-[136.40%] text-xl tracking-[0.40px] md:overflow-auto
+                sm:overflow-scroll text-base text-gray-800 text-justify"
                 size="txtRalewayRoman20"
               >
                 The mini stream assessment scoring system (miniSASS) simple and accessible citizen science tool for
@@ -425,8 +426,8 @@ const Home: React.FC = () => {
           {/* obeservations and map section */}
           <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[25px] recent-observations">
              {/* observations */}
-             <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative w-full sm:mt-[150px] md:mt-[150px]">
-              <div className="mb-[-50px] sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
+             <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative w-full sm:mt-[25px] md:mt-[25px]">
+              <div className="mb-[-40px] sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">
                 <Text
                   className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto"
                   size="txtRalewayRomanBold40"
@@ -481,7 +482,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* map */}
-            <div className="bg-blue-900 flex flex-col items-start justify-start max-w-full mt-[-50px] pl-[53px]
+            <div className="bg-blue-900 flex flex-col items-start justify-start max-w-full mt-[-80px] pl-[53px]
               pr-[134px] md:px-10 sm:px-5 py-[103px] w-full sm:mt-[50px] md:mt-[50px]">
               <div className="flex md:flex-col flex-row md:gap-10 gap-[89px] items-center justify-start max-w-[1350px] mx-auto w-full">
                 <Img
@@ -498,7 +499,7 @@ const Home: React.FC = () => {
                   </Text>
                   <Text
                     className="leading-[136.40%] mt-8 text-white-A700 text-xl w-full"
-                    size="txtRalewayRomanRegular20"
+                    size="txtRalewayRomanRegular20 text-justify"
                   >
                     <span className="text-white-A700 font-raleway text-left font-normal">
                       The most important feature of the new website is the

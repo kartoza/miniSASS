@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     closeModal();
   };
 
-  let className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mb-[-10px]";
+  let className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mt-[-75px]";
   if (hideLogo) {
     className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mt-[230px] mb-[-10px]";
   }
@@ -77,7 +77,7 @@ const Footer: React.FC<FooterProps> = (props) => {
               </a>
             </div>
             <div
-              className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full"
+              className="flex flex-row md:gap-10 gap-[67px] items-center justify-center sm:overflow-auto w-auto md:w-full mt-[-75px]"
               style={{marginLeft: '-5%'}}>
               <a href="https://www.wrc.org.za/" target="_blank" rel="noopener noreferrer">
                 <Img
@@ -104,7 +104,8 @@ const Footer: React.FC<FooterProps> = (props) => {
             </>
           }
 
-          <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px] md:w-[105%] sm:w-[110%] w-full">
+          <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px]
+            md:w-[105%] sm:w-[110%] w-full mt-[-75px] sm:mt-[-5px] mb-[-10px]">
             <div className="flex flex-col items-center justify-start mt-8 w-[85%] md:w-full">
               <div className="flex flex-col gap-10 items-center justify-start w-auto md:w-full">
                 <div className="bg-transparent flex flex-col items-start justify-start w-auto">
