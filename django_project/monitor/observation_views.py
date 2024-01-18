@@ -221,11 +221,11 @@ def upload_pest_image(request):
                             pest_image.save()
 
 
-		# Call classify_image with the entire request.FILES
-		result = classify_image(request.FILES)
-		
-		# Append the result to the classification_results list
-		classification_results.append(result)
+                # Call classify_image with the entire request.FILES
+                result = classify_image(request.FILES)
+                
+                # Append the result to the classification_results list
+                classification_results.append(result)
 
                 return JsonResponse(
                     {
