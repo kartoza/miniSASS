@@ -293,9 +293,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             );
         
             if(response.status == 200){
+              print('response data: ',response.data)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
-              setImageAiPrediction(response.data.classification_results)
+              setImageAiPrediction(response.data.classification_results[0])
               setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
