@@ -400,6 +400,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const [charCountSite, setCharCountSite] = useState(0);
   const [charCountRiver, setCharCountRiver] = useState(0);
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
   const maxCharLimit = 50;
 
   useEffect(() => {
@@ -424,20 +425,15 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
 
   const handleCloseSidebar = () => {
-    if(formValues.riverName ||
-      formValues.siteName ||
-      formValues.siteDescription ||
-      formValues.date ||
-      proceedToSavingData)
+    if(formValues.riverName || formValues.siteName || formValues.siteDescription || formValues.date || proceedToSavingData){
       setIsCloseDialogOpen(true)
+    }
     else {
       props.setSidebarOpen(false);
       props.resetMap();
       props.setCursor('')
     }
   };
-
-  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
 
   const handleCloseConfirm = () => {
     setIsCloseDialogOpen(false)
@@ -451,6 +447,16 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   return (
     <>
+      <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        value="logout"
+        open={isCloseDialogOpen}
+        onClose={handleDialogCancel}
+        onConfirm={handleCloseConfirm}
+        title="Confirm Close"
+        message="You have unsaved data ,are you sure want to close?"
+      />
       {!showScoreForm ? (
       <div className={props.className} style={{
         height: '75vh',
@@ -560,7 +566,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       if(selectSiteMode === 'SELECT_ON_MAP')
                         props.toggleMapSelection()
                     }
-                    props.resetMap()
                     setFieldValue('selectedSite', 'none');
                     setFieldValue('riverName', '');
                     setFieldValue('siteName', '');
