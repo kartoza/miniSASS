@@ -89,13 +89,17 @@ if downloaded_file_path:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-    img_array = tf.keras.utils.img_to_array(image)
-    img_array = tf.expand_dims(img_array, 0)
-    predictions = model.predict(img_array)
-    score = tf.nn.softmax(predictions[0])
-    predicted_class = classes[np.argmax(score)]
-    confidence = 100 * np.max(score)
-    return {'class': predicted_class, 'confidence': confidence}
+    try:
+        img_array = tf.keras.utils.img_to_array(image)
+        img_array = tf.expand_dims(img_array, 0)
+        predictions = model.predict(img_array)
+        score = tf.nn.softmax(predictions[0])
+        predicted_class = classes[np.argmax(score)]
+        confidence = 100 * np.max(score)
+        return {'class': predicted_class, 'confidence': confidence}
+    except Exception as e:
+        print(f"Error during image classification: {e}")
+        return {'error': str(e)}
 
 classes = [
 	'bugs_and_beetles',
