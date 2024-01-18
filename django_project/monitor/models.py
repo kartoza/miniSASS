@@ -148,6 +148,7 @@ class Observations(models.Model, DirtyFieldsMixin):
     caddisflies = models.BooleanField(default=False)
     true_flies = models.BooleanField(default=False)
     snails = models.BooleanField(default=False)
+    collector_name = models.CharField(max_length=100, blank=True, null=False)
     score = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     site = models.ForeignKey(
         Sites, on_delete=models.CASCADE, related_name='observation',
@@ -196,6 +197,8 @@ class Observations(models.Model, DirtyFieldsMixin):
                 self.is_validated = True
         if self.comment is None:
             self.comment = ''
+        if (self.collector_name is None or self.collector_name == '') and self.user:
+            self.collector_name = f'{self.user.first_name} {self.user.last_name}'.strip()
         return super(Observations, self).save(*args, **kwargs)
 
     def recalculate_score(self):

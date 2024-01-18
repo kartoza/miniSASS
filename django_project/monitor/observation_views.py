@@ -92,7 +92,6 @@ def upload_pest_image(request):
                     except (ValueError, TypeError):
                         observation_id = 0
 
-
                 try:
                     site = Sites.objects.get(gid=site_id)
                     
@@ -217,6 +216,7 @@ def create_observations(request):
             river_name = datainput.get('riverName', '')
             description = datainput.get('siteDescription', '')
             river_cat = datainput.get('rivercategory', 'rocky')
+            collector_name = datainput.get('collectorsname', '')
             obs_date = datainput.get('date')
             user = request.user
 
@@ -292,7 +292,8 @@ def create_observations(request):
                     diss_oxygen_unit=diss_oxygen_unit,
                     elec_cond=elec_cond,
                     elec_cond_unit=elec_cond_unit,
-                    obs_date=obs_date
+                    obs_date=obs_date,
+                    collector_name=collector_name
                 )
                 for db_fields in GroupScores.DB_FIELDS:
                     value = data.get(db_fields[0], False)
@@ -326,7 +327,8 @@ def create_observations(request):
                         diss_oxygen_unit=diss_oxygen_unit,
                         elec_cond=elec_cond,
                         elec_cond_unit=elec_cond_unit,
-                        obs_date=obs_date
+                        obs_date=obs_date,
+                        collector_name=collector_name
                     )
                     for db_fields in GroupScores.DB_FIELDS:
                         value = data.get(db_fields[0], False)
