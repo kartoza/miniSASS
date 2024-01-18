@@ -211,23 +211,21 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               </div>
             </div>
             <Button
-              className={uploadedFiles.length > 0 ?
-                `${defaultSaveButtonClass} hover:opacity-100` : `${defaultSaveButtonClass} opacity-50`
-              }
-              disabled={uploadedFiles.length === 0}
-              color="blue_gray_500"
-              size="xl"
-              variant="fill"
-              style={{
-                fontWeight: 'bold',
-              }}
-              onClick={() => {
-                onSubmit(uploadedFiles)
-                handleClearFile()
-              }}
-            >
-              Upload chosen files
-            </Button>
+  className={`${defaultSaveButtonClass} ${uploadedFiles.length > 0 ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
+  disabled={uploadedFiles.length === 0}
+  color="blue_gray_500"
+  size="xl"
+  variant="fill"
+  style={{
+    fontWeight: 'bold',
+  }}
+  onClick={() => {
+    onSubmit(uploadedFiles);
+    handleClearFile();
+  }}
+>
+  Upload chosen files
+</Button>
 
             {/* Hidden input element for file selection */}
             <input
