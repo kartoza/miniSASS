@@ -31,7 +31,8 @@ from monitor.views import (
     DownloadObservations,
     download_observations_filtered,
     get_schools,
-    detail
+    detail,
+    CheckSiteIsLand
 )
 
 router = DefaultRouter()
@@ -44,6 +45,11 @@ router.register(
 urlpatterns = [
     path('', index, name='monitor_index'),
     path('wms/~<str:wms_url>~<str:wms_params>', wms_get_feature_info),
+    path(
+        'sites/is-land/<str:lat>/<str:long>/',
+        CheckSiteIsLand.as_view(),
+        name='check-coordinate-is-land'
+    ),
     path('sites/<str:x>/<str:y>/<str:d>/', get_sites),
     path('closest_site/<str:x>/<str:y>/<str:d>/', get_closest_site),
     path('unique/<str:field>/', get_unique),

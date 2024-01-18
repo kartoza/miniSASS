@@ -128,7 +128,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   };
 
     // Fetching results
-  const zoomToLocation = React.useMemo(
+  const handleSelectSiteFromOption = React.useMemo(
     () =>
       debounce(
         (
@@ -641,7 +641,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                       setProceedToSavingData(true);
-                                      zoomToLocation(selectedOption.latitude, selectedOption.longitude)
+                                      handleSelectSiteFromOption(selectedOption.latitude, selectedOption.longitude)
                                     }
                                   }
                                 }}
