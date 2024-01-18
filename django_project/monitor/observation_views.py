@@ -205,6 +205,7 @@ def upload_pest_image(request):
                     )
 
                 # Save images in the request object
+                classification_results = []
                 for key, image in request.FILES.items():
                     if 'pest_' in key:
                         group_id = key.split(':')[1]
@@ -216,8 +217,8 @@ def upload_pest_image(request):
                             )
                             pest_image.image = image
                             pest_image.save()
-			    print('image saved')
-			    result = classify_image(pest_image.image)
+                            print('image saved')
+                            result = classify_image(pest_image.image)
                             classification_results.append(result)
 
                 return JsonResponse(
