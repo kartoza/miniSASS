@@ -78,7 +78,7 @@ def retrieve_file_from_minio(file_name):
         minio_client.fget_object(minio_bucket, file_name, file_path)
 
         return file_path
-    except S3Error as err:
+    except (S3Error, TypeError) as err:
         print(f"Error retrieving file from Minio: {err}")
         return None
 
