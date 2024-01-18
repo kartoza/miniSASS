@@ -92,13 +92,17 @@ if downloaded_file_path:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-    img_array = tf.keras.utils.img_to_array(image)
-    img_array = tf.expand_dims(img_array, 0)
-    predictions = model.predict(img_array)
-    score = tf.nn.softmax(predictions[0])
-    predicted_class = classes[np.argmax(score)]
-    confidence = 100 * np.max(score)
-    return {'class': predicted_class, 'confidence': confidence}
+    try:
+        img_array = tf.keras.utils.img_to_array(image)
+        img_array = tf.expand_dims(img_array, 0)
+        predictions = model.predict(img_array)
+        score = tf.nn.softmax(predictions[0])
+        predicted_class = classes[np.argmax(score)]
+        confidence = 100 * np.max(score)
+        return {'class': predicted_class, 'confidence': confidence}
+    except Exception as e:
+        print(f"Error during image classification: {e}")
+        return {'error': str(e)}
 
 
 classes = [
@@ -224,10 +228,7 @@ def upload_pest_image(request):
                             pest_image.image = image
                             pest_image.save()
 
-                # Call classify_image with the entire request.FILES
                 result = classify_image(request.FILES)
-
-                # Append the result to the classification_results list
                 classification_results.append(result)
 
                 return JsonResponse(
@@ -240,7 +241,6 @@ def upload_pest_image(request):
                     }
                 )
         except ValidationError as ve:
-            # Handle validation errors (e.g., invalid data)
             return JsonResponse({'status': 'error', 'message': str(ve)})
         except Exception as e:
             # Handle other exceptions
@@ -309,6 +309,7 @@ def create_observations(request):
             river_name = datainput.get('riverName', '')
             description = datainput.get('siteDescription', '')
             river_cat = datainput.get('rivercategory', 'rocky')
+            collector_name = datainput.get('collectorsname', '')
             obs_date = datainput.get('date')
             user = request.user
 
@@ -389,7 +390,8 @@ def create_observations(request):
                     diss_oxygen_unit=diss_oxygen_unit,
                     elec_cond=elec_cond,
                     elec_cond_unit=elec_cond_unit,
-                    obs_date=obs_date
+                    obs_date=obs_date,
+                    collector_name=collector_name
                 )
                 for db_fields in GroupScores.DB_FIELDS:
                     value = data.get(db_fields[0], False)
@@ -425,7 +427,8 @@ def create_observations(request):
                         diss_oxygen_unit=diss_oxygen_unit,
                         elec_cond=elec_cond,
                         elec_cond_unit=elec_cond_unit,
-                        obs_date=obs_date
+                        obs_date=obs_date,
+                        collector_name=collector_name
                     )
                     for db_fields in GroupScores.DB_FIELDS:
                         value = data.get(db_fields[0], False)
