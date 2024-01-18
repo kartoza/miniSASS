@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from "../Text";
 import { Field } from "formik";
+import {debounce} from '@mui/material/utils';
+import {globalVariables} from "../../utils";
+import axios from "axios";
 
 
 export interface DegreeInputInterface {
@@ -16,6 +19,19 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
   const min = label === 'Latitude' ? -90 : -180
   const max = -1 * min
 
+  const convertToSixDecimals = React.useMemo(
+    () =>
+      debounce(
+        (
+          value: number
+        ) => {
+          setCurrValue(Number(value).toFixed(6))
+        },
+        1000,
+      ),
+    [],
+  );
+
 
   useEffect(() => {
     if (!isNaN(currValue)) {
@@ -25,7 +41,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
   useEffect(() => {
     if (value) {
-      setCurrValue(value)
+      convertToSixDecimals(value)
     }
   }, [value]);
 
@@ -89,6 +105,41 @@ export interface DegreeInputsInterface {
 export default function DegreeInputs(
   { latitude, setLatitude, longitude, setLongitude, disabled }: DegreeInputsInterface
 ) {
+
+  const checkSiteIsLand = React.useMemo(
+    () =>
+      debounce(
+        (
+          lat: number,
+          long: number,
+        ) => {
+          if (lat != 0 || long != 0) {
+                      (
+            async () => {
+              try {
+                const response = await axios.get(`${globalVariables.baseUrl}/monitor/sites/is-land/${lat}/${long}/`);
+
+                if(response.status == 200){
+                  if (!response.data.is_land)
+                    alert('Your points seem to be in the sea or not on land masses!')
+                }
+
+              } catch (error) {
+
+              }
+            }
+          )()
+          }
+        },
+        1000,
+      ),
+    [],
+  );
+
+  useEffect(() => {
+    checkSiteIsLand(latitude, longitude)
+  }, [latitude, longitude]);
+
   return <>
     <DegreeInput
       label='Latitude'

@@ -26,6 +26,7 @@ from django.utils.encoding import smart_str
 from geopandas import GeoDataFrame
 from pandas import DataFrame
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
 from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage, Pest
@@ -628,3 +629,15 @@ def zoom_observation(request, obs_id):
         'coords_form': coords_form,
         'map_form': map_form
     })
+
+
+class CheckSiteIsLand(APIView):
+    def get(self, request, lat, long):
+        sql_query = '''
+            SELECT point_intersects_admin(%s, %s);
+        ''' % (lat, long)
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql_query)
+            is_land = cursor.fetchall()[0][0]
+            return Response({'is_land': is_land})

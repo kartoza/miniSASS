@@ -122,8 +122,8 @@ const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
-  // Fetching results
-  const zoomToLocation = React.useMemo(
+  // Zoom to location
+  const handleSelectSiteFromOption = React.useMemo(
     () =>
       debounce(
         (
@@ -420,22 +420,22 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-}, [proceedToSavingData,formValues]);
+  }, [proceedToSavingData,formValues]);
 
 
-const handleCloseSidebar = () => {
-  if(formValues.riverName ||
-    formValues.siteName ||
-    formValues.siteDescription ||
-    formValues.date || 
-    proceedToSavingData)
-    setIsCloseDialogOpen(true)
-  else {
-    props.setSidebarOpen(false);
-    props.resetMap();
-    props.setCursor('')
-  }
-};
+  const handleCloseSidebar = () => {
+    if(formValues.riverName ||
+      formValues.siteName ||
+      formValues.siteDescription ||
+      formValues.date ||
+      proceedToSavingData)
+      setIsCloseDialogOpen(true)
+    else {
+      props.setSidebarOpen(false);
+      props.resetMap();
+      props.setCursor('')
+    }
+  };
 
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
 
@@ -682,7 +682,7 @@ const handleCloseSidebar = () => {
                                       setFieldValue('rivercategory', selectedSite.rivercategory);
                                       setFieldValue('siteDescription', selectedSite.siteDescription);
                                       setProceedToSavingData(true);
-                                      zoomToLocation(selectedOption.latitude, selectedOption.longitude)
+                                      handleSelectSiteFromOption(selectedOption.latitude, selectedOption.longitude)
                                     }
                                   }
                                 }}
