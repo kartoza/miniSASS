@@ -22,6 +22,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 from minisass_authentication.models import UserProfile
 from minisass.models import GroupScores
@@ -54,26 +56,25 @@ def get_observations_by_site(request, site_id, format=None):
 
 
 # Use environment variables for Minio configuration
-minio_access_key = os.getenv('MINIO_ACCESS_KEY', '')
-minio_secret_key = os.getenv('MINIO_SECRET_KEY','')
-minio_endpoint = os.getenv('MINIO_ENDPOINT','')
-minio_bucket = os.getenv('MINIO_AI_BUCKET','')
+minio_access_key = settings.MINIO_ACCESS_KEY
+minio_secret_key = settings.MINIO_SECRET_KEY
+minio_endpoint = settings.MINIO_ENDPOINT
+minio_bucket = settings.MINIO_AI_BUCKET
 secure_connection = os.getenv('SECURE_CONNECTION',False)
 
 def retrieve_file_from_minio(file_name):
     try:
         minio_client = Minio(
-		minio_endpoint, 
-		access_key=minio_access_key, 
-		secret_key=minio_secret_key, 
-		secure=secure_connection
-	)
+            minio_endpoint,
+            access_key=minio_access_key,
+            secret_key=minio_secret_key,
+            secure=secure_connection
+        )
 
         # Download the file from Minio
-        file_path = '/home/web/django_project/monitor/' + file_name
+        file_path = f'{settings.MINIO_ROOT}/{file_name}'
         minio_client.fget_object(minio_bucket, file_name, file_path)
 
-       
         return file_path
     except S3Error as err:
         print(f"Error retrieving file from Minio: {err}")
