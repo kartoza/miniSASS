@@ -206,8 +206,9 @@ class Observations(models.Model, DirtyFieldsMixin):
                 if getattr(self, group.db_field):
                     score += group.sensitivity_score
                     checked_count += 1
-        self.score = score / checked_count
-        self.save()
+        if checked_count > 0:
+            self.score = score / checked_count
+            self.save()
 
     def __str__(self):
         return str(self.obs_date) + ': ' + self.site.site_name if self.site else ''
@@ -371,5 +372,3 @@ def post_save_image(sender, instance, created: ObservationPestImage, **kwargs):
 
     elif getattr(instance, 'send_to_ai_bucket', False):
         send_to_ai_bucket(instance)
-
-    instance.observation.recalculate_score()
