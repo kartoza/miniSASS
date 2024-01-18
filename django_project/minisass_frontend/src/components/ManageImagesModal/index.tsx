@@ -12,7 +12,8 @@ interface ManageImageProps {
   onClose: () => void;
   onSubmit: any;
   sensivityScore: string;
-  aiScore: string;
+  aiScore: number;
+  aiGroup: string;
   handleButtonClick: (id: any) => void;
   refetchImages: boolean;
 }
@@ -111,23 +112,21 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-  <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${aiScore < 50 ? 'border-2 border-red-500' : ''}`}>
-    <Img
-      className="h-28 md:h-auto object-cover w-28"
-      key={`${image.pest_id}`}
-      src={image.image}
-      alt={`${image.pest_name}`}
-      loading='lazy'
-    />
-    {/* Add the x icon here (adjust styles as needed) */}
-    <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-      ✖
-    </div>
-  </div>
-))}
+                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${aiScore < 50 ? 'border-2 border-red-500' : ''}`}>
+                  <Img
+                    className="h-28 md:h-auto object-cover w-28"
+                    key={`${image.pest_id}`}
+                    src={image.image}
+                    alt={`${image.pest_name}`}
+                    loading='lazy'
+                  />
+                  {/* Add the x icon here (adjust styles as needed) */}
+                  <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                    ✖
+                  </div>
+                </div>
+              ))}
 
-
-              
 
               {/* Upload image section */}
               <div className="flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full">
@@ -141,9 +140,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                 </div>
               </div>
             </List>
-
-
-              
 
 
             </div>
@@ -168,13 +164,13 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                 className="flex-1 text-base text-blue-900 tracking-[0.15px] w-auto"
                 size="txtRalewayRomanRegular16"
               >
-                AI Score:
+                AI Group:
               </Text>
               <Text
                 className="text-base text-black-900 tracking-[0.15px] w-auto"
                 size="txtRalewayRomanRegular16Black900"
               >
-                {aiScore}
+                {aiGroup}
               </Text>
             </div>
           </div>
