@@ -519,7 +519,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                       if(selectSiteMode === 'SELECT_ON_MAP')
                         props.toggleMapSelection()
                     }
-                    props.resetMap()
                     setFieldValue('selectedSite', 'none');
                     setFieldValue('riverName', '');
                     setFieldValue('siteName', '');
