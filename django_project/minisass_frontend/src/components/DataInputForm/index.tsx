@@ -127,7 +127,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     props.setCursor('')
   };
 
-    // Fetching results
+  // Zoom to location
   const handleSelectSiteFromOption = React.useMemo(
     () =>
       debounce(
