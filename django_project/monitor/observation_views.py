@@ -67,10 +67,10 @@ secure_connection = os.getenv('SECURE_CONNECTION', False)
 def retrieve_file_from_minio(file_name):
 	try:
 		minio_client = Minio(
-			minio_endpoint,
+			"https://minio.do.kartoza.com",
 			access_key=minio_access_key,
 			secret_key=minio_secret_key,
-			secure=secure_connection
+			secure=True
 		)
 
 		# Download the file from Minio
