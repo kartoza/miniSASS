@@ -16,6 +16,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [clearAll, setClearAll] = useState<boolean>(false);
+  const defaultSaveButtonClass = 'cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center ' +
+    'text-lg tracking-[0.81px] w-[100%] p-1';
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -142,7 +144,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
                   >
                     <Grid item xs={3}>
                       <Img
-                        className="h-[59px] mt-[111px]"
+                        className="h-[59px]"
                         src={`${globalVariables.staticPath}img_download.svg`}
                         alt="download"
                         style={{cursor: 'pointer'}}
@@ -183,7 +185,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               </div>
 
 
-              <div className="flex flex-col font-raleway items-start justify-start mb-[106px] p-[5px] w-auto sm:w-full">
+              <div className="flex flex-col font-raleway items-start justify-start p-[5px] w-auto sm:w-full">
                 <Grid container flexDirection="column" alignItems="center" justifyContent="center">
                   <Grid item xs={3}>
                     <button
@@ -209,7 +211,10 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit, ac
               </div>
             </div>
             <Button
-              className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[100%] opacity-50 hover:opacity-100 p-1"
+              className={uploadedFiles.length > 0 ?
+                `${defaultSaveButtonClass} hover:opacity-100` : `${defaultSaveButtonClass} opacity-50`
+              }
+              disabled={uploadedFiles.length === 0}
               color="blue_gray_500"
               size="xl"
               variant="fill"
