@@ -24,7 +24,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   isOpen, 
   onClose, 
   sensivityScore, 
-  aiScore, 
+  aiScore,
+  aiGroup,
   handleButtonClick,
   refetchImages
 }) => {
