@@ -14,6 +14,7 @@ import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
 import {debounce} from '@mui/material/utils';
 import LinearProgress from '@mui/material/LinearProgress';
 import {parse} from "wkt";
+import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
 
 type DataInputFormProps = Omit<
@@ -120,12 +121,6 @@ type SiteSelectionMode = keyof typeof SiteSelectionModes;
 const FETCH_SITES = globalVariables.baseUrl + '/monitor/sites/';
 
 const DataInputForm: React.FC<DataInputFormProps> = (props) => {
-
-  const handleCloseSidebar = () => {
-    props.setSidebarOpen(false);
-    props.resetMap();
-    props.setCursor('')
-  };
 
   // Zoom to location
   const handleSelectSiteFromOption = React.useMemo(
@@ -406,6 +401,52 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const [charCountSite, setCharCountSite] = useState(0);
   const [charCountRiver, setCharCountRiver] = useState(0);
   const maxCharLimit = 50;
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if(formValues.riverName ||
+        formValues.siteName ||
+        formValues.siteDescription ||
+        formValues.date || 
+        proceedToSavingData) {
+        const message = "You have unsaved data, are you sure you want to leave?";
+        event.returnValue = message;
+        return message;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [proceedToSavingData,formValues]);
+
+
+  const handleCloseSidebar = () => {
+    if(formValues.riverName ||
+      formValues.siteName ||
+      formValues.siteDescription ||
+      formValues.date ||
+      proceedToSavingData)
+      setIsCloseDialogOpen(true)
+    else {
+      props.setSidebarOpen(false);
+      props.resetMap();
+      props.setCursor('')
+    }
+  };
+
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+
+  const handleCloseConfirm = () => {
+    setIsCloseDialogOpen(false)
+    props.setSidebarOpen(false)
+  };
+
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
 
 
   return (
