@@ -1,6 +1,7 @@
 import os
 import boto3
 from django.conf import settings
+from sentry_sdk import capture_exception
 
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,8 +43,9 @@ def delete_from_minio(key: str, bucket: str=None):
             Bucket=bucket,
             Key=key,
         )
-    except Exception:
-        pass
+    except Exception as e:
+        if settings.SENTRY_KEY:
+            capture_exception(e)
 
 
 def send_to_minio(source, destination, bucket):
@@ -54,8 +56,10 @@ def send_to_minio(source, destination, bucket):
     s3 = get_s3_client()
     try:
         s3.upload_file(source, bucket, destination)
-    except Exception:
-        pass
+    except Exception as e:
+        # log to Sentry if fails to upload file
+        if settings.SENTRY_KEY:
+            capture_exception(e)
 
 
 def get_path_string(string: str):
