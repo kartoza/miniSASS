@@ -53,6 +53,7 @@ jobs:
         working-directory: .
         run: |
           cp .example.env .env
+          sed -i 's/context: deployment\/docker-s3-bucket/context: .\n      dockerfile: .\/deployment\/docker-s3-bucket\/Dockerfile/' docker-compose.yml
           docker compose build
           docker compose up -d db; sleep 180; docker compose up -d
       - name: Test django endpoint
