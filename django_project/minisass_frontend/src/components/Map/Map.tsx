@@ -449,7 +449,7 @@ export const Map = forwardRef((props: Interface, ref) => {
               "gid": 0,
               "site": {
                   "gid": data.site.gid,
-                  "images": [],
+                  "images": data.site.images,
                   "the_geom": `SRID=4326;POINT (${data.site.longitude} ${data.site.latitude})`,
                   "site_name": data.site.sitename,
                   "river_name": data.site.rivername,

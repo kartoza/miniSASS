@@ -134,10 +134,18 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
     rivercategory = serializers.CharField(source='river_cat')
     longitude = serializers.FloatField(source='the_geom.x')
     latitude = serializers.FloatField(source='the_geom.y')
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Sites
         fields = '__all__'
+
+
+    def get_images(self, obj: Sites):
+        """Return images of site."""
+        return SiteImageSerializer(
+            obj.siteimage_set.all(), many=True
+        ).data
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -155,6 +163,7 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
                 'sitedescription': data['sitedescription'],
                 'longitude': instance.the_geom.x,
                 'latitude': instance.the_geom.y,
+                'images': data['images'],
             },
             'observations': serializer.data,
         }
