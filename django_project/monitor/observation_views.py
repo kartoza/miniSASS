@@ -104,20 +104,25 @@ else:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-	if not model:
-		return {'error': 'Cannot load model'}
-	try:
-		# Converts a PIL Image instance to a Numpy array.
-		img_array = tf.keras.utils.img_to_array(image)
-		img_array = tf.expand_dims(img_array, 0)
-		predictions = model.predict(img_array)
-		score = tf.nn.softmax(predictions[0])
-		predicted_class = classes[np.argmax(score)]
-		confidence = 100 * np.max(score)
-		return {'class': predicted_class, 'confidence': confidence}
-	except Exception as e:
-		print(f"Error during image classification: {e}")
-		return {'error': str(e)}
+    if not model:
+        return {'error': 'Cannot load model'}
+    try:
+        # Resize the image to the target size
+        img = image.resize((224, 224))
+        
+        # Converts a PIL Image instance to a Numpy array.
+        img_array = tf.keras.utils.img_to_array(img)
+        img_array = tf.expand_dims(img_array, 0)
+        
+        predictions = model.predict(img_array)
+        score = tf.nn.softmax(predictions[0])
+        predicted_class = classes[np.argmax(score)]
+        confidence = 100 * np.max(score)
+        return {'class': predicted_class, 'confidence': confidence}
+    except Exception as e:
+        print(f"Error during image classification: {e}")
+        return {'error': str(e)}
+
 
 
 classes = [
