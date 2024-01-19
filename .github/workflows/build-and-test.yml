@@ -49,8 +49,6 @@ jobs:
           file: deployment/docker/Dockerfile
           push: false
           load: true
-          target: test
-          tags: kartoza/minisass:test
       - name: Run docker-compose services
         working-directory: .
         run: |
