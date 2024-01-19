@@ -93,16 +93,15 @@ class ObservationsSerializer(serializers.ModelSerializer):
 
     def get_collectorsname(self, obj):
         """Return collector name."""
-        try:
-            user_profile = UserProfile.objects.get(user=obj.user)
-        except UserProfile.DoesNotExist:
-            user_profile = None
-
-        return (
-            f"{user_profile.user.first_name} {user_profile.user.last_name}"
-            if user_profile and user_profile.user.first_name and user_profile.user.last_name
-            else user_profile.user.username if user_profile else ""
-        )
+        if obj.collector_name:
+            return obj.collector_name
+        else:
+            user = obj.user
+            return (
+                f"{user.first_name} {user.last_name}"
+                if user and user.first_name and user.last_name
+                else user.username if user else ""
+            )
 
     def get_organisationtype(self, obj):
         """Return organisation type."""
