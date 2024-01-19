@@ -32,6 +32,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
 
   const [imageUrls, setImages] = useState([])
+  const [isGroupMatching, setIsGroupMatching] = useState(false)
+  const [isScoreBelow50, setIsBelow50] = useState(0)
 
   const fetch_observation_images = async () => {
     const observationId = parseInt(localStorage.getItem('observationId'))
@@ -46,7 +48,16 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
         return image.pest_name.toLowerCase().replace(/\s+/g, '_') === formattedTitle;
       });
 
+      filteredImages.forEach((image) => {
+        if(image.pest_name.toLowerCase().replace(/\s+/g, '_') !== aiGroup.toLowerCase().replace(/\s+/g, '_')){
+          setIsGroupMatching(false)
+        }else {
+          setIsGroupMatching(true)
+        }
+      } 
+
       setImages(filteredImages);
+      setIsBelow50(aiScore)
     }
 
   }
@@ -113,19 +124,19 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${aiScore < 50 ? 'border-2 border-red-500' : ''}`}>
-                  <Img
-                    className="h-28 md:h-auto object-cover w-28"
-                    key={`${image.pest_id}`}
-                    src={image.image}
-                    alt={`${image.pest_name}`}
-                    loading='lazy'
-                  />
-                  {/* Add the x icon here (adjust styles as needed) */}
-                  <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-                    ✖
-                  </div>
-                </div>
+                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isMatchingGroup ? 'border-2 border-red-500' : ''} ${isMatchingGroup && isScoreBelow50 ? 'border-2 border-red-500' : ''}`}>
+            <Img
+                className="h-28 md:h-auto object-cover w-28"
+                key={`${image.pest_id}`}
+                src={image.image}
+                alt={`${image.pest_name}`}
+                loading='lazy'
+            />
+            {/* Add the x icon here (adjust styles as needed) */}
+            <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                ✖
+            </div>
+        </div>
               ))}
 
 
