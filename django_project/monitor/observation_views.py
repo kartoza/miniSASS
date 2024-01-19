@@ -240,17 +240,16 @@ def upload_pest_image(request):
 								observation=observation,
 								group=group
 							)
-							pest_image.image = image
-							pest_image.save()
+							try:
+								pest_image.image = image
+								pest_image.save()
 
-
-							# open uploaded image as Pillow object so it can be classified.
-							# Check if the uploaded file is an image
-							if pest_image.image.content_type.startswith('image'):
+								# Open the image for classification
 								result = classify_image(Image.open(pest_image.image))
 								classification_results.append(result)
-							else:
-								classification_results.append({'status': 'error', 'message': 'File is not a valid image.'})
+							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
+								# Handle image recognition errors
+								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
 
 				return JsonResponse(
 					{
