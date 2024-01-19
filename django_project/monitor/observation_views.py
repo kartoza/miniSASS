@@ -85,6 +85,7 @@ def retrieve_file_from_minio(file_name):
 			s3_client = get_s3_client()
 			try:
 				s3_client.download_file(settings.MINIO_AI_BUCKET, file_name, file_path)
+				return file_path
 			except botocore.exceptions.ClientError as e:
 				print(f"Error retrieving file from Minio: {e}")
 				return None
