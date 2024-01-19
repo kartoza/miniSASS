@@ -89,15 +89,16 @@ def retrieve_file_from_minio(file_name):
 				print(f"Error retrieving file from Minio: {e}")
 				return None
 
-file_name = "ai_image_calculation.h5"
-downloaded_file_path = retrieve_file_from_minio(file_name)
-if downloaded_file_path:
-	try:
-		model = keras.models.load_model(downloaded_file_path)
-	except OSError:
-		model = None
-else:
-	model = None
+# disabling AI section for now
+# file_name = "ai_image_calculation.h5"
+# downloaded_file_path = retrieve_file_from_minio(file_name)
+# if downloaded_file_path:
+# 	try:
+# 		model = keras.models.load_model(downloaded_file_path)
+# 	except OSError:
+# 		model = None
+# else:
+# 	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
@@ -241,9 +242,10 @@ def upload_pest_image(request):
 							pest_image.image = image
 							pest_image.save()
 
+							# disabling AI section for now
 							# open uploaded image as Pillow object so it can be classified.
-							result = classify_image(Image.open(image))
-							classification_results.append(result)
+							# result = classify_image(Image.open(image))
+							# classification_results.append(result)
 
 				return JsonResponse(
 					{
