@@ -35,8 +35,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [selectedPests, setSelectedPests] = useState('')
   const {dispatch, state} = useAuth();
 
-  console.debug(additionalData)
-
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
     handleCloseSidebar()
