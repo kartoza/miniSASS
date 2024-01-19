@@ -1,46 +1,45 @@
 import json
+import os
+from datetime import datetime
 from decimal import Decimal
+import botocore
 
+# dependencies for ai score calculations
+import numpy as np
+import tensorflow as tf
+from PIL import Image
+
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import Point
 from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics, mixins
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.utils.translation import gettext as _
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import Max
+from django.http import Http404
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from minio import Minio
+from minio.error import S3Error
+from rest_framework import generics, mixins
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
-from django.http import Http404
-from datetime import datetime
-
-# dependencies for ai score calculations
-from django.core.files.uploadedfile import InMemoryUploadedFile
-import numpy as np
-import tensorflow as tf
 from tensorflow import keras
-from django.core.files.storage import FileSystemStorage
-from django.conf import settings
 
-from minisass_authentication.models import UserProfile
 from minisass.models import GroupScores
-
+from minisass.utils import get_s3_client
+from minisass_authentication.models import UserProfile
 from monitor.models import (
-	Observations, Sites, SiteImage, ObservationPestImage, Pest
+	Observations, Sites, SiteImage, ObservationPestImage
 )
 from monitor.serializers import (
 	ObservationsSerializer,
 	ObservationPestImageSerializer,
 	ObservationsAllFieldsSerializer
 )
-from django.core.exceptions import ValidationError
-from django.db import transaction
-import os
-from minio import Minio
-from minio.error import S3Error
 
 
 def get_observations_by_site(request, site_id, format=None):
@@ -61,7 +60,7 @@ minio_access_key = settings.MINIO_ACCESS_KEY
 minio_secret_key = settings.MINIO_SECRET_KEY
 minio_endpoint = settings.MINIO_ENDPOINT
 minio_bucket = settings.MINIO_AI_BUCKET
-secure_connection = os.getenv('SECURE_CONNECTION', False)
+secure_connection = os.getenv('SECURE_CONNECTION', True)
 
 
 def retrieve_file_from_minio(file_name):
@@ -74,25 +73,39 @@ def retrieve_file_from_minio(file_name):
 		)
 
 		# Download the file from Minio
-		file_path = f'{settings.MINIO_ROOT}/{file_name}'
+		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
 		minio_client.fget_object(minio_bucket, file_name, file_path)
 
 		return file_path
-	except (S3Error, TypeError) as err:
-		print(f"Error retrieving file from Minio: {err}")
-		return None
-
+	except (S3Error, TypeError, ValueError):
+		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
+		if os.path.exists(file_path):
+			return file_path
+		else:
+			s3_client = get_s3_client()
+			try:
+				s3_client.download_file(settings.MINIO_AI_BUCKET, file_name, file_path)
+			except botocore.exceptions.ClientError as e:
+				print(f"Error retrieving file from Minio: {e}")
+				return None
 
 file_name = "ai_image_calculation.h5"
 downloaded_file_path = retrieve_file_from_minio(file_name)
 if downloaded_file_path:
-	model = keras.models.load_model(downloaded_file_path)
-
+	try:
+		model = keras.models.load_model(downloaded_file_path)
+	except OSError:
+		model = None
+else:
+	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
+	if not model:
+		return {'error': 'Cannot load model'}
 	try:
+		# Converts a PIL Image instance to a Numpy array.
 		img_array = tf.keras.utils.img_to_array(image)
 		img_array = tf.expand_dims(img_array, 0)
 		predictions = model.predict(img_array)
@@ -228,8 +241,9 @@ def upload_pest_image(request):
 							pest_image.image = image
 							pest_image.save()
 
-				result = classify_image(request.FILES)
-				classification_results.append(result)
+							# open uploaded image as Pillow object so it can be classified.
+							result = classify_image(Image.open(image))
+							classification_results.append(result)
 
 				return JsonResponse(
 					{
