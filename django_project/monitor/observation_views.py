@@ -91,15 +91,15 @@ def retrieve_file_from_minio(file_name):
 				return None
 
 # disabling AI section for now
-# file_name = "ai_image_calculation.h5"
-# downloaded_file_path = retrieve_file_from_minio(file_name)
-# if downloaded_file_path:
-# 	try:
-# 		model = keras.models.load_model(downloaded_file_path)
-# 	except OSError:
-# 		model = None
-# else:
-# 	model = None
+file_name = "ai_image_calculation.h5"
+downloaded_file_path = retrieve_file_from_minio(file_name)
+if downloaded_file_path:
+	try:
+		model = keras.models.load_model(downloaded_file_path)
+	except OSError:
+		model = None
+else:
+	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
