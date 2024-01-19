@@ -57,6 +57,7 @@ def send_to_minio(source, destination, bucket):
     try:
         s3.upload_file(source, bucket, destination)
     except Exception as e:
+        # log to Sentry if fails to upload file
         if settings.SENTRY_KEY:
             capture_exception(e)
 
