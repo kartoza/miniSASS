@@ -60,7 +60,7 @@ minio_access_key = settings.MINIO_ACCESS_KEY
 minio_secret_key = settings.MINIO_SECRET_KEY
 minio_endpoint = settings.MINIO_ENDPOINT
 minio_bucket = settings.MINIO_AI_BUCKET
-secure_connection = os.getenv('SECURE_CONNECTION', True)
+secure_connection = os.getenv('SECURE_CONNECTION', False)
 
 
 def retrieve_file_from_minio(file_name):

@@ -293,7 +293,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             if(response.status == 200){
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
-              setImageAiPrediction(response.data.classification_results[0])
+              // setImageAiPrediction(response.data.classification_results[0])
               setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
@@ -726,8 +726,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           onSubmit={null}
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
-          aiScore={imageAiPrediction.confidence}
-          aiGroup={imageAiPrediction.class}
+          aiScore={51}
+          aiGroup={'undefined'}
           handleButtonClick={handleButtonClick}
           refetchImages={refetchImages}
         />
