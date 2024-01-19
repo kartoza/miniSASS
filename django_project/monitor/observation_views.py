@@ -245,8 +245,8 @@ def upload_pest_image(request):
 
 							# disabling AI section for now
 							# open uploaded image as Pillow object so it can be classified.
-							# result = classify_image(Image.open(image))
-							# classification_results.append(result)
+							result = classify_image(Image.open(image))
+							classification_results.append(result)
 
 				return JsonResponse(
 					{
