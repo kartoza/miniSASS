@@ -673,9 +673,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                       parseFloat(siteWithObservations.observations[0].water_clarity) !== -9999
                                     )
                                       ? siteWithObservations.observations[0].water_clarity
-                                      : 'null'
+                                      : 'N/A'
                                   )
-                                  : 'null'
+                                  : 'N/A'
                               )
                           )}
 
@@ -704,9 +704,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                         parseFloat(siteWithObservations.observations[0].water_temp) !== -9999
                                       )
                                         ? siteWithObservations.observations[0].water_temp
-                                        : 'null'
+                                        : 'N/A'
                                     )
-                                    : 'null'
+                                    : 'N/A'
                                 )
                             )
                           }
@@ -737,9 +737,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                       parseFloat(siteWithObservations.observations[0].ph) !== -9999
                                     )
                                       ? siteWithObservations.observations[0].ph
-                                      : 'null'
+                                      : 'N/A'
                                   )
-                                  : 'null'
+                                  : 'N/A'
                               )
                           )
                         }
@@ -769,9 +769,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                         parseFloat(siteWithObservations.observations[0].diss_oxygen) !== -9999
                                       )
                                         ? siteWithObservations.observations[0].diss_oxygen + ' ' + siteWithObservations.observations[0].diss_oxygen_unit
-                                        : 'null'
+                                        : 'N/A'
                                     )
-                                    : 'null'
+                                    : 'N/A'
                                 )
                             )}
 
@@ -801,9 +801,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                                         parseFloat(siteWithObservations.observations[0].elec_cond) !== -9999
                                       )
                                         ? siteWithObservations.observations[0].elec_cond + ' ' + siteWithObservations.observations[0].elec_cond_unit
-                                        : 'null'
+                                        : 'N/A'
                                     )
-                                    : 'null'
+                                    : 'N/A'
                                 )
                             )}
 

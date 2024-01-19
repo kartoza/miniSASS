@@ -114,6 +114,9 @@ def classify_image(image):
         img_array = tf.keras.utils.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0)
         
+        # Preprocess the image (normalize pixel values to the range [0, 1])
+        img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
+
         predictions = model.predict(img_array)
         score = tf.nn.softmax(predictions[0])
         predicted_class = classes[np.argmax(score)]
@@ -122,6 +125,7 @@ def classify_image(image):
     except Exception as e:
         print(f"Error during image classification: {e}")
         return {'error': str(e)}
+
 
 
 
