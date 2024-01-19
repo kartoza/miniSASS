@@ -273,6 +273,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               data.append('riverName',additionalData?.riverName)
               data.append('siteDescription',additionalData?.siteDescription)
               data.append('rivercategory',additionalData?.rivercategory)
+              data.append('latitude',additionalData?.latitude)
+              data.append('longitude',additionalData?.longitude)
             }
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;

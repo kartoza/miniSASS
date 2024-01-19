@@ -199,16 +199,18 @@ def upload_pest_image(request):
 						'gid__max']
 					new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
-					site = Sites(
-						gid=new_site_id,
-						the_geom=Point(x=0, y=0, srid=4326),
-						user=user
-					)
-
 					site_name = request.POST.get('siteName', '')
 					river_name = request.POST.get('riverName', '')
 					description = request.POST.get('siteDescription', '')
 					river_cat = request.POST.get('rivercategory', 'rocky')
+					latitude = request.POST.get('latitude', 0)
+					longitude = request.POST.get('longitude', 0)
+
+					site = Sites(
+						gid=new_site_id,
+						the_geom=Point(x=float(longitude), y=float(latitude), srid=4326),
+						user=user
+					)
 
 					site.site_name = site_name
 					site.river_name = river_name
