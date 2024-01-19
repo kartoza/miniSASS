@@ -52,7 +52,7 @@ jobs:
       - name: Run docker-compose services
         working-directory: .
         run: |
-          cp .template.test.env .env
+          cp .example.env .env
           docker compose build
           docker compose up -d db; sleep 180; docker compose up -d
       - name: Test django endpoint
