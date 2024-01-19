@@ -243,10 +243,14 @@ def upload_pest_image(request):
 							pest_image.image = image
 							pest_image.save()
 
-							# disabling AI section for now
+
 							# open uploaded image as Pillow object so it can be classified.
-							result = classify_image(Image.open(image))
-							classification_results.append(result)
+							# Check if the uploaded file is an image
+							if pest_image.image.content_type.startswith('image'):
+								result = classify_image(Image.open(pest_image.image))
+								classification_results.append(result)
+							else:
+								classification_results.append({'status': 'error', 'message': 'File is not a valid image.'})
 
 				return JsonResponse(
 					{
