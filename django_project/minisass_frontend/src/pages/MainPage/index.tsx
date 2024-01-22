@@ -424,7 +424,7 @@ const Home: React.FC = () => {
           {/* end of section */}
 
           {/* obeservations and map section */}
-          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[25px] recent-observations">
+          <div className="flex flex-col md:gap-10 gap-28 items-center justify-start w-full sm:mt-[150px] md:mt-[150px] mt-[25px] recent-observations" style={{marginTop: '3%'}}>
              {/* observations */}
              <div className="flex flex-col gap-[58px] items-start justify-start max-w-[1450px] mx-auto md:px-5 relative w-full sm:mt-[25px] md:mt-[25px]">
               <div className="mb-[-40px] sm:bottom-[] flex flex-row md:gap-10 items-center justify-between max-w-[1450px] sm:relative sm:top-[50px] w-full">

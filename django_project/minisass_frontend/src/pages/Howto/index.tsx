@@ -42,7 +42,7 @@ const HowtoPage: React.FC = () => {
             ">
             <div className="flex flex-col items-center justify-start md:ml-[0] mt-[61px]">
               <Text
-                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[150px]"
+                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[185px]"
                 size="txtRalewayRomanBold42"
                 style={{marginBottom: '-30px'}}
               >
