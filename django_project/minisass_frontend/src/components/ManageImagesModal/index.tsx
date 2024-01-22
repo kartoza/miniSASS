@@ -56,7 +56,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
           setIsGroupMatching(true)
           break
         }
-      } 
+      });
 
       setImages(filteredImages);
       setIsBelow50(aiScore)
