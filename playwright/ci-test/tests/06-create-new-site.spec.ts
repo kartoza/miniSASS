@@ -39,8 +39,8 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'next' }).click();
   await page.locator('#checkbox-2').check();
   //await expect(page.getByText('17.00117.00')).toBeVisible();
-  //await page.getByRole('button', { name: 'Save' }).click();
-  //await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
   //await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
   //await page.getByRole('button', { name: 'Ok' }).click();
   //await page.getByRole('img', { name: 'close' }).click();
