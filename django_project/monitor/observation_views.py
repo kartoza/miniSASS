@@ -65,6 +65,22 @@ minio_endpoint = settings.MINIO_ENDPOINT
 minio_bucket = settings.MINIO_AI_BUCKET
 secure_connection = os.getenv('SECURE_CONNECTION', False)
 
+classes = [
+	'bugs_and_beetles',
+	'caddisflies',
+	'crabs_and_shrimps',
+	'damselflies',
+	'dragonflies',
+	'flat_worms',
+	'leeches',
+	'minnow_mayflies',
+	'other_mayflies',
+	'snails_clams_mussels',
+	'stoneflies',
+	'true_flies',
+	'worms'
+]
+
 
 def retrieve_file_from_minio(file_name):
 	try:
@@ -111,46 +127,32 @@ def classify_image(image):
         return {'error': 'Cannot load model'}
     try:
         # Resize the image to the target size
-        img = image.resize((224, 224))
+        # img = image.resize((224, 224))
         
-        # Converts a PIL Image instance to a Numpy array.
+
+	img = tf.keras.utils.load_img(
+	    image, target_size=(224, 224)
+	)
         img_array = tf.keras.utils.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0)
         
         # Preprocess the image (normalize pixel values to the range [0, 1])
-        img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
+        # img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
         predictions = model.predict(img_array)
 	print("Raw predictions:", predictions)
+	
         score = tf.nn.softmax(predictions[0])
         predicted_class = classes[np.argmax(score)]
         confidence = 100 * np.max(score)
+	
 	# Clear TensorFlow session to release resources
         clear_tensorflow_session()
+	
         return {'class': predicted_class, 'confidence': confidence}
     except Exception as e:
         print(f"Error during image classification: {e}")
         return {'error': str(e)}
-
-
-
-
-classes = [
-	'bugs_and_beetles',
-	'caddisflies',
-	'crabs_and_shrimps',
-	'damselflies',
-	'dragonflies',
-	'flat_worms',
-	'leeches',
-	'minnow_mayflies',
-	'other_mayflies',
-	'snails_clams_mussels',
-	'stoneflies',
-	'true_flies',
-	'worms'
-]
-
 
 # end of ai score calculation section
 
