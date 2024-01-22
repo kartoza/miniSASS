@@ -51,10 +51,8 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
       filteredImages.forEach((image) => {
         if(image.pest_name.toLowerCase().replace(/\s+/g, '_') !== aiGroup.toLowerCase().replace(/\s+/g, '_')){
           setIsGroupMatching(false)
-          break
         }else {
           setIsGroupMatching(true)
-          break
         }
       });
 
