@@ -42,7 +42,7 @@ from monitor.serializers import (
 )
 
 def clear_tensorflow_session():
-    tf.keras.backend.clear_session()
+	tf.keras.backend.clear_session()
 
 
 def get_observations_by_site(request, site_id, format=None):
@@ -123,36 +123,36 @@ else:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-    if not model:
-        return {'error': 'Cannot load model'}
-    try:
-        # Resize the image to the target size
-        # img = image.resize((224, 224))
-        
+	if not model:
+		return {'error': 'Cannot load model'}
+	try:
+		# Resize the image to the target size
+		# img = image.resize((224, 224))
+		
 
-	img = tf.keras.utils.load_img(
-	    image, target_size=(224, 224)
-	)
-        img_array = tf.keras.utils.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
-        
-        # Preprocess the image (normalize pixel values to the range [0, 1])
-        # img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
+		img = tf.keras.utils.load_img(
+			image, target_size=(224, 224)
+		)
+		img_array = tf.keras.utils.img_to_array(img)
+		img_array = tf.expand_dims(img_array, 0)
+		
+		# Preprocess the image (normalize pixel values to the range [0, 1])
+		# img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
-        predictions = model.predict(img_array)
-	print("Raw predictions:", predictions)
+		predictions = model.predict(img_array)
+		print("Raw predictions:", predictions)
 	
-        score = tf.nn.softmax(predictions[0])
-        predicted_class = classes[np.argmax(score)]
-        confidence = 100 * np.max(score)
+		score = tf.nn.softmax(predictions[0])
+		predicted_class = classes[np.argmax(score)]
+		confidence = 100 * np.max(score)
 	
-	# Clear TensorFlow session to release resources
-        clear_tensorflow_session()
+		# Clear TensorFlow session to release resources
+		clear_tensorflow_session()
 	
-        return {'class': predicted_class, 'confidence': confidence}
-    except Exception as e:
-        print(f"Error during image classification: {e}")
-        return {'error': str(e)}
+		return {'class': predicted_class, 'confidence': confidence}
+	except Exception as e:
+		print(f"Error during image classification: {e}")
+		return {'error': str(e)}
 
 # end of ai score calculation section
 
