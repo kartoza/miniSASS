@@ -121,6 +121,7 @@ def classify_image(image):
         img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
         predictions = model.predict(img_array)
+	print("Raw predictions:", predictions)
         score = tf.nn.softmax(predictions[0])
         predicted_class = classes[np.argmax(score)]
         confidence = 100 * np.max(score)
