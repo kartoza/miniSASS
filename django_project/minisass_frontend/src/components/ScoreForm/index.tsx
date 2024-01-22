@@ -389,7 +389,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               </div>
             </div>
           </div>
-          
         ) :
         (
 
