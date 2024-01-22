@@ -264,7 +264,7 @@ def upload_pest_image(request):
 								pest_image.save()
 
 								# Open the image for classification
-								result = classify_image(Image.open(image))
+								result = classify_image(image)
 								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
