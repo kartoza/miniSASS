@@ -109,7 +109,7 @@ def retrieve_file_from_minio(file_name):
 				print(f"Error retrieving file from Minio: {e}")
 				return None
 
-# disabling AI section for now
+
 file_name = "ai_image_calculation.h5"
 downloaded_file_path = retrieve_file_from_minio(file_name)
 if downloaded_file_path:
@@ -127,12 +127,8 @@ def classify_image(image):
 		return {'error': 'Cannot load model'}
 	try:
 		# Resize the image to the target size
-		# img = image.resize((224, 224))
+		img = image.resize((224, 224))
 		
-
-		img = tf.keras.utils.load_img(
-			image, target_size=(224, 224)
-		)
 		img_array = tf.keras.utils.img_to_array(img)
 		img_array = tf.expand_dims(img_array, 0)
 		
@@ -264,7 +260,7 @@ def upload_pest_image(request):
 								pest_image.save()
 
 								# Open the image for classification
-								result = classify_image(image)
+								result = classify_image(Image.open(image))
 								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
