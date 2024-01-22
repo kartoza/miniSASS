@@ -82,8 +82,8 @@ test.describe('test - use existing site', () => {
     await page.locator('input[name="electricalconduOne"]').fill('1');
     await page.getByRole('button', { name: 'next' }).click();
     await page.locator('#checkbox-5').check();
-    //await page.getByRole('button', { name: 'Save' }).click();
-    //await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
     //await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
     //await page.getByRole('button', { name: 'Ok' }).click();
     //await page.getByRole('img', { name: 'close' }).click();
