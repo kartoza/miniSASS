@@ -42,7 +42,7 @@ from monitor.serializers import (
 )
 
 def clear_tensorflow_session():
-    tf.keras.backend.clear_session()
+	tf.keras.backend.clear_session()
 
 
 def get_observations_by_site(request, site_id, format=None):
@@ -64,6 +64,22 @@ minio_secret_key = settings.MINIO_SECRET_KEY
 minio_endpoint = settings.MINIO_ENDPOINT
 minio_bucket = settings.MINIO_AI_BUCKET
 secure_connection = os.getenv('SECURE_CONNECTION', False)
+
+classes = [
+	'bugs_and_beetles',
+	'caddisflies',
+	'crabs_and_shrimps',
+	'damselflies',
+	'dragonflies',
+	'flat_worms',
+	'leeches',
+	'minnow_mayflies',
+	'other_mayflies',
+	'snails_clams_mussels',
+	'stoneflies',
+	'true_flies',
+	'worms'
+]
 
 
 def retrieve_file_from_minio(file_name):
@@ -107,50 +123,36 @@ else:
 # section for ai score calculations
 # TODO move this into seperate file
 def classify_image(image):
-    if not model:
-        return {'error': 'Cannot load model'}
-    try:
-        # Resize the image to the target size
-        img = image.resize((224, 224))
-        
-        # Converts a PIL Image instance to a Numpy array.
-        img_array = tf.keras.utils.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
-        
-        # Preprocess the image (normalize pixel values to the range [0, 1])
-        img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
+	if not model:
+		return {'error': 'Cannot load model'}
+	try:
+		# Resize the image to the target size
+		# img = image.resize((224, 224))
+		
 
-        predictions = model.predict(img_array)
-	print("Raw predictions:", predictions)
-        score = tf.nn.softmax(predictions[0])
-        predicted_class = classes[np.argmax(score)]
-        confidence = 100 * np.max(score)
-	# Clear TensorFlow session to release resources
-        clear_tensorflow_session()
-        return {'class': predicted_class, 'confidence': confidence}
-    except Exception as e:
-        print(f"Error during image classification: {e}")
-        return {'error': str(e)}
+		img = tf.keras.utils.load_img(
+			image, target_size=(224, 224)
+		)
+		img_array = tf.keras.utils.img_to_array(img)
+		img_array = tf.expand_dims(img_array, 0)
+		
+		# Preprocess the image (normalize pixel values to the range [0, 1])
+		# img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
-
-
-
-classes = [
-	'bugs_and_beetles',
-	'caddisflies',
-	'crabs_and_shrimps',
-	'damselflies',
-	'dragonflies',
-	'flat_worms',
-	'leeches',
-	'minnow_mayflies',
-	'other_mayflies',
-	'snails_clams_mussels',
-	'stoneflies',
-	'true_flies',
-	'worms'
-]
-
+		predictions = model.predict(img_array)
+		print("Raw predictions:", predictions)
+	
+		score = tf.nn.softmax(predictions[0])
+		predicted_class = classes[np.argmax(score)]
+		confidence = 100 * np.max(score)
+	
+		# Clear TensorFlow session to release resources
+		clear_tensorflow_session()
+	
+		return {'class': predicted_class, 'confidence': confidence}
+	except Exception as e:
+		print(f"Error during image classification: {e}")
+		return {'error': str(e)}
 
 # end of ai score calculation section
 
