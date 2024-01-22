@@ -43,14 +43,16 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
     
     if (get_observation_images.status === 200) {
         const filteredImages = get_observation_images.data.images.filter((image) => {
-        const formattedTitle = title.toLowerCase().replace(/\s+/g, '_');
+        var formattedTitle = title.toLowerCase().replace(/\s+/g, '_');
 
         return image.pest_name.toLowerCase().replace(/\s+/g, '_') === formattedTitle;
       });
 
       filteredImages.forEach((image) => {
         if(image.pest_name.toLowerCase().replace(/\s+/g, '_') !== aiGroup.toLowerCase().replace(/\s+/g, '_')){
-          setIsGroupMatching(false)
+          if(aiGroup.toLowerCase().replace(/\s+/g, '_') !== 'snails_clams_mussels')
+            setIsGroupMatching(false)
+          else setIsGroupMatching(true)
         }else {
           setIsGroupMatching(true)
         }
