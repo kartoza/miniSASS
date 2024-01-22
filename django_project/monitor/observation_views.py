@@ -41,6 +41,9 @@ from monitor.serializers import (
 	ObservationsAllFieldsSerializer
 )
 
+def clear_tensorflow_session():
+    tf.keras.backend.clear_session()
+
 
 def get_observations_by_site(request, site_id, format=None):
 	try:
@@ -121,6 +124,8 @@ def classify_image(image):
         score = tf.nn.softmax(predictions[0])
         predicted_class = classes[np.argmax(score)]
         confidence = 100 * np.max(score)
+	# Clear TensorFlow session to release resources
+        clear_tensorflow_session()
         return {'class': predicted_class, 'confidence': confidence}
     except Exception as e:
         print(f"Error during image classification: {e}")
@@ -256,7 +261,7 @@ def upload_pest_image(request):
 								pest_image.save()
 
 								# Open the image for classification
-								result = classify_image(Image.open(pest_image.image))
+								result = classify_image(Image.open(image))
 								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
