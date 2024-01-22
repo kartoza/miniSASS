@@ -54,6 +54,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
           break
         }else {
           setIsGroupMatching(true)
+          break
         }
       } 
 
