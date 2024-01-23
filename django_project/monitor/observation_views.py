@@ -110,15 +110,15 @@ def retrieve_file_from_minio(file_name):
 				return None
 
 
-# file_name = "ai_image_calculation.h5"
-# downloaded_file_path = retrieve_file_from_minio(file_name)
-# if downloaded_file_path:
-# 	try:
-# 		model = keras.models.load_model(downloaded_file_path)
-# 	except OSError:
-# 		model = None
-# else:
-# 	model = None
+file_name = "ai_image_calculation.h5"
+downloaded_file_path = retrieve_file_from_minio(file_name)
+if downloaded_file_path:
+	try:
+		model = keras.models.load_model(downloaded_file_path)
+	except OSError:
+		model = None
+else:
+	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
@@ -127,25 +127,48 @@ def classify_image(image):
 		return {'error': 'Cannot load model'}
 	try:
 		# Resize the image to the target size
-		img = image.resize((224, 224))
+		# img = image.resize((224, 224))
 		
-		img_array = tf.keras.utils.img_to_array(img)
-		img_array = tf.expand_dims(img_array, 0)
+		# img_array = tf.keras.utils.img_to_array(img)
+		# img_array = tf.expand_dims(img_array, 0)
 		
 		# Preprocess the image (normalize pixel values to the range [0, 1])
 		# img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
-		predictions = model.predict(img_array)
-		print("Raw predictions:", predictions)
-	
-		score = tf.nn.softmax(predictions[0])
-		predicted_class = classes[np.argmax(score)]
-		confidence = 100 * np.max(score)
+		# predictions = model.predict(img_array)
+
+		# score = tf.nn.softmax(predictions[0])
+		# predicted_class = classes[np.argmax(score)]
+		# confidence = 100 * np.max(score)
 	
 		# Clear TensorFlow session to release resources
-		clear_tensorflow_session()
+		# clear_tensorflow_session()
+
+		# Convert the image file to a PIL Image
+		pil_image = Image.open(image)
+
+		# Resize the image to 224x224 pixels
+		resized_image = pil_image.resize((224, 224))
+
+		# Convert the PIL Image to a NumPy array
+		img_array = np.array(resized_image) / 255.0  # Normalize pixel values to [0, 1]
+
+		# Expand the dimensions to match the model input shape (1, 224, 224, 3)
+		img_array = np.expand_dims(img_array, axis=0)
+
+		# Make predictions using the model
+		predictions = model.predict(img_array)
+
+		# Get the index of the highest prediction
+		highest_prediction_index = np.argmax(predictions)
+
+		# Get the label corresponding to the highest prediction
+		predicted_class = classes[highest_prediction_index]
+
+		# Get the confidence score for the highest prediction
+		confidence_score = float(predictions[0, highest_prediction_index])
 	
-		return {'class': predicted_class, 'confidence': confidence}
+		return {'class': predicted_class, 'confidence': confidence_score}
 	except Exception as e:
 		print(f"Error during image classification: {e}")
 		return {'error': str(e)}
@@ -153,13 +176,13 @@ def classify_image(image):
 # end of ai score calculation section
 
 def convert_to_int(value, default=0):
-    try:
-        return int(value)
-    except (ValueError, TypeError):
-        try:
-            return int(value.strip().replace('"', ''))
-        except (ValueError, TypeError):
-            return default
+	try:
+		return int(value)
+	except (ValueError, TypeError):
+		try:
+			return int(value.strip().replace('"', ''))
+		except (ValueError, TypeError):
+			return default
 		
 @csrf_exempt
 @login_required
@@ -253,8 +276,8 @@ def upload_pest_image(request):
 								pest_image.save()
 
 								# Open the image for classification
-								# result = classify_image(Image.open(image))
-								# classification_results.append(result)
+								result = classify_image(image)
+								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
 								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
