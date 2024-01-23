@@ -37,11 +37,22 @@ class SitesSerializer(serializers.ModelSerializer):
 
     images = serializers.SerializerMethodField()
 
-    def get_images(self, obj: Sites):
+    def get_images(self, obj):
         """Return images of site."""
         return SiteImageSerializer(
             obj.siteimage_set.all(), many=True
         ).data
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Fetch the latest observation for the current site
+        latest_observation = instance.observations_set.order_by('-obs_date').first()
+
+        if latest_observation:
+            representation['score'] = latest_observation.score
+
+        return representation
 
     class Meta:
         model = Sites
