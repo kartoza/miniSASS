@@ -195,7 +195,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'minisass_frontend',
     'minisass_authentication',
-    'monitor',
+    # 'monitor',
     'minisass'
 ]
 
