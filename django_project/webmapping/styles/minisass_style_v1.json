@@ -14,13 +14,13 @@
     "MiniSASS Observations": {
       "type": "vector",
       "tiles": [
-        "https://minisass.dev.do.kartoza.com/tiles/public.minisass_observations/{z}/{x}/{y}.pbf"
+        "https://minisass.org/tiles/public.minisass_observations/{z}/{x}/{y}.pbf"
       ],
       "minZoom": 0,
       "maxZoom": 14
     }
   },
-  "sprite": "https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/icons/minisass_sprites",
+  "sprite": "https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/icons/minisass_sprites_larger%402x",
   "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=cc4PpmmWZP73LjU1nsw3",
   "layers": [
     {
@@ -40,7 +40,7 @@
         "text-field": "",
         "icon-image": "crab_u_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -53,7 +53,7 @@
         "text-field": "",
         "icon-image": "crab_u",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -71,7 +71,7 @@
         "text-field": "",
         "icon-image": "crab_sm_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -89,7 +89,7 @@
         "text-field": "",
         "icon-image": "crab_sm",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -107,7 +107,7 @@
         "text-field": "",
         "icon-image": "crab_sm_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -125,7 +125,7 @@
         "text-field": "",
         "icon-image": "crab_sm",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -144,7 +144,7 @@
         "text-field": "",
         "icon-image": "crab_p_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -163,7 +163,7 @@
         "text-field": "",
         "icon-image": "crab_p",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -182,7 +182,7 @@
         "text-field": "",
         "icon-image": "crab_p_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -201,7 +201,7 @@
         "text-field": "",
         "icon-image": "crab_p",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -220,7 +220,7 @@
         "text-field": "",
         "icon-image": "crab_f_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -239,7 +239,7 @@
         "text-field": "",
         "icon-image": "crab_f",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -258,7 +258,7 @@
         "text-field": "",
         "icon-image": "crab_f_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -277,7 +277,7 @@
         "text-field": "",
         "icon-image": "crab_f",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -296,7 +296,7 @@
         "text-field": "",
         "icon-image": "crab_g_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -315,7 +315,7 @@
         "text-field": "",
         "icon-image": "crab_g",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -334,7 +334,7 @@
         "text-field": "",
         "icon-image": "crab_g_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -353,7 +353,7 @@
         "text-field": "",
         "icon-image": "crab_g",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -371,7 +371,7 @@
         "text-field": "",
         "icon-image": "crab_n_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -389,7 +389,7 @@
         "text-field": "",
         "icon-image": "crab_n",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -407,7 +407,7 @@
         "text-field": "",
         "icon-image": "crab_n_dirty",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]}
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]}
       }
     },
     {
@@ -425,7 +425,7 @@
         "text-field": "",
         "icon-image": "crab_n",
         "visibility": "visible",
-        "icon-size": {"stops": [[5, 1], [17, 4]]},
+        "icon-size": {"stops": [[5, 0.5], [17, 2]]},
         "icon-allow-overlap": false
       }
     }
