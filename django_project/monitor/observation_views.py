@@ -152,6 +152,15 @@ def classify_image(image):
 
 # end of ai score calculation section
 
+def convert_to_int(value, default=0):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        try:
+            return int(value.strip().replace('"', ''))
+        except (ValueError, TypeError):
+            return default
+		
 @csrf_exempt
 @login_required
 def upload_pest_image(request):
@@ -181,27 +190,11 @@ def upload_pest_image(request):
 				site_id = request.POST.get('siteId')
 				observation_id = request.POST.get('observationId')
 				user = request.user
-				try:
-					site_id = int(site_id)
-				except (ValueError, TypeError):
-					try:
-						site_id = site_id.strip().replace('"', '')
-						site_id = int(site_id)
-					except (ValueError, TypeError):
-						site_id = 0
-
-				try:
-					observation_id = int(observation_id)
-				except (ValueError, TypeError):
-					try:
-						observation_id = observation_id.strip().replace('"', '')
-						observation_id = int(observation_id)
-					except (ValueError, TypeError):
-						observation_id = 0
-
+				site_id = convert_to_int(site_id)
+				observation_id = convert_to_int(observation_id)
+				
 				try:
 					site = Sites.objects.get(gid=site_id)
-
 				except Sites.DoesNotExist:
 					max_site_id = Sites.objects.all().aggregate(Max('gid'))[
 						'gid__max']
