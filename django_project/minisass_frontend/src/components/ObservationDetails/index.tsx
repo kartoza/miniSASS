@@ -103,7 +103,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
 
   const updateScoreDisplay = (riverCategory, score) => {
-    console.debug(score)
     if (riverCategory === 'sandy') {
       if (score > 6.8) {
         setTitleColor("text-blue-600");
@@ -306,7 +305,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     } else {
       if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
         setLoading(false);
-        updateScoreDisplay(siteWithObservations.river_cat, siteWithObservations.observations[0].score); // on intial load
+        updateScoreDisplay(siteWithObservations.site.rivercategory, siteWithObservations.observations[0].score); // on intial load
         setObservationDetails(siteWithObservations.observations[0]); // on intial load
         setObservationList(siteWithObservations.observations)
 
