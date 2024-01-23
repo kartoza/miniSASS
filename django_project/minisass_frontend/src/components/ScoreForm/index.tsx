@@ -255,7 +255,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 pestImages[key].map((file, idx) => {
                   data.append('pest_' + idx + ':' + key, file);
                 });
-              
             }
           }
 
