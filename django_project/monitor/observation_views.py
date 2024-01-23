@@ -167,6 +167,8 @@ def classify_image(image):
 
 		# Get the confidence score for the highest prediction
 		confidence_score = float(predictions[0, highest_prediction_index])
+
+		clear_tensorflow_session()
 	
 		return {'class': predicted_class, 'confidence': confidence_score}
 	except Exception as e:
