@@ -110,15 +110,15 @@ def retrieve_file_from_minio(file_name):
 				return None
 
 
-file_name = "ai_image_calculation.h5"
-downloaded_file_path = retrieve_file_from_minio(file_name)
-if downloaded_file_path:
-	try:
-		model = keras.models.load_model(downloaded_file_path)
-	except OSError:
-		model = None
-else:
-	model = None
+# file_name = "ai_image_calculation.h5"
+# downloaded_file_path = retrieve_file_from_minio(file_name)
+# if downloaded_file_path:
+# 	try:
+# 		model = keras.models.load_model(downloaded_file_path)
+# 	except OSError:
+# 		model = None
+# else:
+# 	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
@@ -253,8 +253,8 @@ def upload_pest_image(request):
 								pest_image.save()
 
 								# Open the image for classification
-								result = classify_image(Image.open(image))
-								classification_results.append(result)
+								# result = classify_image(Image.open(image))
+								# classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
 								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
