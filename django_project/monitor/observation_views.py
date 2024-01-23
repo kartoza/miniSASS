@@ -110,15 +110,15 @@ def retrieve_file_from_minio(file_name):
 				return None
 
 
-# file_name = "ai_image_calculation.h5"
-# downloaded_file_path = retrieve_file_from_minio(file_name)
-# if downloaded_file_path:
-# 	try:
-# 		model = keras.models.load_model(downloaded_file_path)
-# 	except OSError:
-# 		model = None
-# else:
-# 	model = None
+file_name = "ai_image_calculation.h5"
+downloaded_file_path = retrieve_file_from_minio(file_name)
+if downloaded_file_path:
+	try:
+		model = keras.models.load_model(downloaded_file_path)
+	except OSError:
+		model = None
+else:
+	model = None
 
 # section for ai score calculations
 # TODO move this into seperate file
@@ -136,8 +136,7 @@ def classify_image(image):
 		# img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 
 		predictions = model.predict(img_array)
-		print("Raw predictions:", predictions)
-	
+
 		score = tf.nn.softmax(predictions[0])
 		predicted_class = classes[np.argmax(score)]
 		confidence = 100 * np.max(score)
