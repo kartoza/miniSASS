@@ -47,7 +47,7 @@ class SitesSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
 
         # Fetch the latest observation for the current site
-        latest_observation = instance.observations_set.order_by('-obs_date').first()
+        latest_observation = instance.observation.order_by('-obs_date').first()
 
         if latest_observation:
             representation['score'] = latest_observation.score
