@@ -134,6 +134,13 @@ class ObservationsSerializer(serializers.ModelSerializer):
         return ObservationPestImageSerializer(
             obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
         ).data
+
+    # Include the comment field explicitly
+    comment = serializers.CharField(allow_blank=True, default='')
+
+    def create(self, validated_data):
+        # Ensure that the 'comment' key is present in the validated_data
+        return super().create(validated_data)
      
 
 
@@ -177,7 +184,5 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
             },
             'observations': serializer.data,
         }
-
-        return combined_data
 
         return combined_data
