@@ -167,6 +167,8 @@ def classify_image(image):
 
 		# Get the confidence score for the highest prediction
 		confidence_score = float(predictions[0, highest_prediction_index])
+
+		clear_tensorflow_session()
 	
 		return {'class': predicted_class, 'confidence': confidence_score}
 	except Exception as e:
@@ -361,6 +363,7 @@ def create_observations(request):
 			description = datainput.get('siteDescription', '')
 			river_cat = datainput.get('rivercategory', 'rocky')
 			collector_name = datainput.get('collectorsname', '')
+			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
 			user = request.user
 
@@ -434,6 +437,7 @@ def create_observations(request):
 					site=site,
 					user=user,
 					comment=comment,
+					minisass_ml_score=ml_score,
 					water_clarity=water_clarity,
 					water_temp=water_temp,
 					ph=ph,
@@ -471,6 +475,7 @@ def create_observations(request):
 						site=site,
 						user=user,
 						comment=comment,
+						minisass_ml_score=ml_score,
 						water_clarity=water_clarity,
 						water_temp=water_temp,
 						ph=ph,

@@ -37,11 +37,22 @@ class SitesSerializer(serializers.ModelSerializer):
 
     images = serializers.SerializerMethodField()
 
-    def get_images(self, obj: Sites):
+    def get_images(self, obj):
         """Return images of site."""
         return SiteImageSerializer(
             obj.siteimage_set.all(), many=True
         ).data
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Fetch the latest observation for the current site
+        latest_observation = instance.observation.order_by('-obs_date').first()
+
+        if latest_observation:
+            representation['score'] = latest_observation.score
+
+        return representation
 
     class Meta:
         model = Sites
@@ -123,6 +134,13 @@ class ObservationsSerializer(serializers.ModelSerializer):
         return ObservationPestImageSerializer(
             obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
         ).data
+
+    # Include the comment field explicitly
+    comment = serializers.CharField(allow_blank=True, default='')
+
+    def create(self, validated_data):
+        # Ensure that the 'comment' key is present in the validated_data
+        return super().create(validated_data)
      
 
 
@@ -166,7 +184,5 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
             },
             'observations': serializer.data,
         }
-
-        return combined_data
 
         return combined_data

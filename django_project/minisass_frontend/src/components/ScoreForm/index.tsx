@@ -166,7 +166,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           setIsSuccessModalOpen(true);
         }
       }
-    } catch (error) {
+    } catch (exception) {
       setIsSavingData(false)
       setErrorMessage(error.message);
       setIsErrorModalOpen(true);
