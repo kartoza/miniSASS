@@ -135,9 +135,6 @@ def classify_image(image):
 		
 		img_array = tf.keras.utils.img_to_array(img)
 		
-		# Preprocess the image (normalize pixel values to the range [0, 1])
-		img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
-		
 		img_array = tf.expand_dims(img_array, 0)
 		
 		predictions = model.predict(img_array)
