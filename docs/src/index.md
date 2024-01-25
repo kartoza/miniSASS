@@ -6,7 +6,7 @@
 
 ## miniSASS Web Application and CMS
 
-Copyright (C) 2013-2014 Water Research Commission
+Copyright (C) CGIAR Initiative on Digital Innovation with UNICEF.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
@@ -18,9 +18,9 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <http://www.gnu.org/licenses/>.
 
-Contact: `Frank Sokolic` `frank@gis-solutions.co.za`
+Contact: `MiniSASS admin team` `info@minisass.org`
 
-A running instance is accessible through [miniSASS](https://minisass.org/en/)
+A running instance is accessible through [miniSASS](https://minisass.org/)
 
 ## Running your own instance
 
