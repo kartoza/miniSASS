@@ -148,6 +148,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'minisass.tensorflow_memory_limit.TensorFlowMemoryMiddleware',
 ]
 
 ROOT_URLCONF = 'minisass.urls'
