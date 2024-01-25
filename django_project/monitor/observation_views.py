@@ -20,6 +20,7 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from minio import Minio
 from minio.error import S3Error
 from rest_framework import generics, mixins
@@ -306,7 +307,7 @@ def delete_pest_image(request, observation_pk, pk, **kwargs):
 
 
 @csrf_exempt
-@login_required
+@require_POST
 def create_observations(request):
 	if request.method == 'POST':
 		try:
