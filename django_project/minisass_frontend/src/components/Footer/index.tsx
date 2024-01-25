@@ -120,7 +120,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <HashLink to="/howto#howto-title">
                       <Text
-                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                         size="txtRalewayExtraBold14WhiteA700"
                       >
                         How to
@@ -129,7 +129,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                      className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                       size="txtRalewayExtraBold14WhiteA700"
                       onClick={() => navigate("/map")}
                     >
@@ -138,7 +138,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   </li>
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <Text
-                      className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                      className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                       size="txtRalewayExtraBold14WhiteA700"
                       onClick={() => window.open('https://kartoza.github.io/miniSASS/', "_blank")}
                     >
@@ -148,7 +148,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   <li style={{ whiteSpace: 'nowrap' }}>
                     <a>
                       <Text
-                        className="text-sm text-white-A700 tracking-[0.98px] uppercase"
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                         size="txtRalewayExtraBold14WhiteA700"
                         onClick={openModal}
                       >
