@@ -16,7 +16,7 @@ from monitor.serializers import (
 )
 
 
-class SaveSiteImagesView(generics.CreateAPIView):
+class SaveSiteImagesView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     serializer_class = SiteImageSerializer
 
@@ -31,14 +31,22 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
         # Check if the site exists
         try:
-            site_image = Site.objects.get(gid=site_id)
+            site = Site.objects.get(gid=site_id)
         except Site.DoesNotExist:
             return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
 
         # Save images for the site
         images = request.FILES.getlist('images', [])
+        site_images = []
+
         for image in images:
-            SiteImage.objects.create(site=site, image=image)
+            try:
+                site_image = SiteImage(site=site, image=image)
+                site_image.full_clean()  # Validate model fields before saving
+                site_image.save()
+                site_images.append(site_image)
+            except Exception as e:
+                return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
 
