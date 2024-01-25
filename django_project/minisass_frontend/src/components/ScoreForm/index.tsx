@@ -343,7 +343,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const handleCloseSidebar = () => {
     if(proceedToSavingData)
       setIsCloseDialogOpen(true)
-    else setSidebarOpen(false)
+    else if(
+      additionalData.riverName !== '' && 
+      additionalData.siteName !== '' && 
+      additionalData.siteDescription !== '' && 
+      additionalData.date !== ''
+    )
+      setIsCloseDialogOpen(true)
+    else
+      setSidebarOpen(false)
   };
 
   const handleCloseConfirm = () => {
