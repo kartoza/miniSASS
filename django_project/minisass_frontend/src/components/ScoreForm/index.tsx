@@ -267,7 +267,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           data.append('observationId', JSON.stringify(observationId));
 
           if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
-            data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+            if(additionalData.selectedSite.value)
+              data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+            else data.append('siteId', JSON.stringify(additionalData.selectedSite));
           } else
             {
               data.append('siteId', JSON.stringify(siteId));
