@@ -17,7 +17,8 @@ from monitor.site_views import (
     AssessmentRetrieveUpdateDestroyView,
     SitesListCreateView,
     SiteRetrieveUpdateDestroyView,
-    SiteObservationsByLocation
+    SiteObservationsByLocation,
+    SaveSiteImagesView
 )
 from monitor.views import (
     index,
@@ -144,5 +145,10 @@ urlpatterns = [
         'observations/by-site/<int:site_id>/', 
         get_observations_by_site,
         name='observations-by-site'
+    ),
+    path(
+        'sites/<int:site_id>/save-images/', 
+        SaveSiteImagesView.as_view(), 
+        name='save_site_images'
     ),
 ]
