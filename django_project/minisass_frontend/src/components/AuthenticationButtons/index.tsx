@@ -186,6 +186,7 @@ function AuthenticationButtons() {
         onSubmit={handleLogin}  
         error_response={error}
         isAuthenticating={isAuthenticating}
+        openRegisterModal={openRegisterModal}
       />
       <RegistrationFormModal
         isOpen={isRegisterModalOpen} 

@@ -12,9 +12,10 @@ interface LoginFormModalProps {
   onSubmit: (data: { email: string; password: string; usernameForEmailRetrieval: string }) => void;
   error_response: string | null;
   isAuthenticating: boolean;
+  openRegisterModal: () => void;
 }
 
-const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubmit, error_response, isAuthenticating }) => {
+const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubmit, error_response, isAuthenticating, openRegisterModal }) => {
   const [formData, setFormData] = useState<{ email: string; password: string; usernameForEmailRetrieval: string }>({
     email: '',
     password: '',
@@ -22,6 +23,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
   });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const isMapPage = window.location.href.includes('/map')
 
   useEffect(() => {
     if (error_response === null) {
@@ -212,6 +214,14 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
                       Click here
                     </span>
                   </p>
+                  {isMapPage && <p style={{ textAlign: 'center' }}>
+                    <span style={{ color: 'gray' }}>
+                      No login?{' '}
+                    </span>
+                    <span className="common-pointer" style={{ color: '#539987' }} onClick={() => openRegisterModal()}>
+                      Register here
+                    </span>
+                  </p>}
 
                   <p style={{ textAlign: 'center', color: 'gray' }}>
                     The system no longer uses username for login.
