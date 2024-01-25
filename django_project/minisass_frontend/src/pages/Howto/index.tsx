@@ -46,7 +46,7 @@ const HowtoPage: React.FC = () => {
                 size="txtRalewayRomanBold42"
                 style={{marginBottom: '-30px'}}
               >
-                How to
+                How to do a miniSASS survey
               </Text>
             </div>
           </div>
@@ -60,7 +60,7 @@ const HowtoPage: React.FC = () => {
             className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
-            How to do a miniSASS survey
+            The miniSASS equipment
           </Text>
           <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px]
           md:relative md:top-[50px] w-full mt-[-40px]">
@@ -79,15 +79,16 @@ const HowtoPage: React.FC = () => {
               }}>https://www.groundtruth.co.za/our-products
               </span>
               <span>): What will you need?</span>
-              <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
-                <li>MiniSASS field sheet (for score calculations and dichotomous key for identifications) with a pencil
-                  to fill it out. Find this and other useful resources under the ‘Download Resources’ tab. Keep an eye
-                  out for the miniSASS app (coming soon) that will help you do your miniSASS survey.
+              <ul style={{listStyleType: 'disc', marginLeft: '20px'} }>
+                <li>Download the miniSASS app!  The miniSASS app will help you do your miniSASS survey. It includes
+                  a map to help navigate to sites, background information, and reference information and videos.
+                  It also helps with identifying your aquatic macroinvertebrates, generating your miniSASS score,
+                  and uploading your data!
                 </li>
-                <li>A miniSASS net (or a suitable home-made net). To make a homemade net, take any piece of wire, for
-                  example an old clothes hanger, and bend it into the shape of a net. Then tie ‘netting’ (any net-like
-                  material that will catch the creatures but let fine sand and water through) to the wire with a piece
-                  of string.
+                <li>If you do not want to use the app, make sure to have a miniSASS field sheet (for score calculations
+                  and dichotomous key for identifications) with a pencil to fill it out. Find this and other useful
+                  resources under the ‘For Educators’ section below. Remember to upload your data to the website if
+                  you do a survey using a physical sheet instead of the app.
                 </li>
                 <li>A white tray for sorting the macroinvertebrates sampled (can be a simple white ice-cream tub).</li>
                 <li>Gumboots or waders.</li>
@@ -100,10 +101,26 @@ const HowtoPage: React.FC = () => {
                   without some help.
                 </li>
                 <li>A charged cellphone in case of emergencies.</li>
-                <li>Look into taking a clarity tube as well so you can measure the clarity of the stream too!
-                  This is not part of the miniSASS, but clarity shows how many suspended solids are in the
-                  stream / river, which is also very useful data. Low clarity indicates lots of dirt or solids in the
-                  river / stream, often telling us something about upstream processes.
+                <li>Look into taking a clarity tube as well so you can measure the clarity of the stream too! This is
+                  not part of the miniSASS, but clarity shows how many suspended solids are in the stream / river,
+                  which is also very useful data. Low clarity indicates lots of dirt or solids in the river / stream,
+                  often telling us something about upstream processes.
+                </li>
+                <li>While doing a miniSASS, you may also want to measure water temperature, pH, dissolved oxygen, or
+                  electrical conductivity. The miniSASS app and website allow you to record those data, the more the
+                  merrier! Please note what instruments you use to measure them with in your notes.
+                </li>
+                <li>You can get your miniSASS equipment from {" "}
+                  <span className="underline text-blue-900 cursor-pointer" onClick={() => {
+                    window.open(
+                      'https://www.groundtruth.co.za/our-products',
+                      "_blank",
+                      "noreferrer"
+                    );
+                  }}>https://www.groundtruth.co.za/our-products
+                  </span>
+                  , or create
+                  your own home made kit!
                 </li>
               </ul>
             </Text>
@@ -253,7 +270,7 @@ const HowtoPage: React.FC = () => {
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
             >
-              <YouTubeVideo videoId="XY_p8usHx4Q" width="100%" height="400px" playButtonColor="green"/>
+              <YouTubeVideo videoId="8RATZXY2jyo" width="100%" height="400px" playButtonColor="green"/>
             </div>
           </div>
 

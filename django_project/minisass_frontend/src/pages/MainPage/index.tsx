@@ -410,13 +410,13 @@ const Home: React.FC = () => {
                 sm:overflow-scroll text-base text-gray-800 text-justify"
                 size="txtRalewayRoman20"
               >
-                The mini stream assessment scoring system (miniSASS) simple and accessible citizen science tool for
-                  monitoring the water quality and health of stream and river systems. You collect a sample
-                  of aquatic macroinvertebrates (small, but large enough to see animals with no internal skeletons)
-                  from a site in a stream or river. The community of these aquatic macroinvertebrates present then
-                  tells you about the water quality and health of the stream or river based on the concept that
-                  different groups of aquatic macroinvertebrates have different tolerances and sensitivities to
-                  disturbance and pollution.
+                The mini stream assessment scoring system (miniSASS) is a simple and accessible citizen science tool
+                  for monitoring the water quality and health of stream and river systems. You collect a sample of
+                  aquatic macroinvertebrates (small, but large enough to see animals with no internal skeletons) from
+                  a site in a stream or river. The community of these aquatic macroinvertebrates present then tells
+                  you about the water quality and health of the stream or river based on the concept that different
+                  groups of aquatic macroinvertebrates have different tolerances and sensitivities to disturbance and
+                  pollution.
               </Text>
               </div>
             </div>
