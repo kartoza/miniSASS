@@ -5,16 +5,45 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from monitor.models import SiteImage, Sites, Assessment
 from django.contrib.gis.measure import D
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 
 from monitor.serializers import (
     AssessmentSerializer,
     SitesSerializer,
-    SitesWithObservationsSerializer
+    SitesWithObservationsSerializer,
+    SiteImageSerializer
 )
 
 
+class SaveSiteImagesView(generics.CreateAPIView):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    serializer_class = SiteImageSerializer
+
+    def create(self, request, *args, **kwargs):
+        # Extract site ID from the URL
+        site_id = kwargs.get('site_id')
+
+        try:
+            site_id = int(site_id)
+        except ValueError:
+            return Response({'error': 'Invalid site ID'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the site exists
+        try:
+            site_image = Site.objects.get(pk=site_id)
+        except Site.DoesNotExist:
+            return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Save images for the site
+        images = request.FILES.getlist('images', [])
+        for image in images:
+            SiteImage.objects.create(site=site, image=image)
+
+        return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
+
 class SitesListCreateView(generics.ListCreateAPIView):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     queryset = Sites.objects.all()
     serializer_class = SitesSerializer
 
