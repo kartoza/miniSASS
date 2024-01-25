@@ -42,7 +42,7 @@ const HowtoPage: React.FC = () => {
             ">
             <div className="flex flex-col items-center justify-start md:ml-[0] mt-[61px]">
               <Text
-                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[185px]"
+                className="sm:text-[32px] md:text-[38px] text-[42px] text-blue-900 ml-[185px] sm:ml-[0px]"
                 size="txtRalewayRomanBold42"
                 style={{marginBottom: '-30px'}}
               >
@@ -125,20 +125,7 @@ const HowtoPage: React.FC = () => {
               </ul>
             </Text>
           </div>
-        </div>
-        {/* end of section */}
-
-
-        {/* MiniSASS survey: How to do a miniSASS assessment */}
-        <div
-          className="flex flex-col gap-[46px] items-end justify-start max-w-[1450px] mt-[50px] mx-auto md:px-5 md:relative md:top-20 sm:top-[90px]w-full">
-          <Text
-            className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
-            size="txtRalewayRomanBold40"
-          >
-            MiniSASS survey: How to do a miniSASS assessment
-          </Text>
-          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
+                    <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
           md:relative md:top-[50px] w-full mt-[-40px]">
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
@@ -150,23 +137,6 @@ const HowtoPage: React.FC = () => {
             >
               <YouTubeVideo videoId="_-L-Xs4QJRg" width="100%" height="400px" playButtonColor="green"/>
             </div>
-          </div>
-          <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px]
-          md:relative md:top-[50px] w-full mt-[-40px]">
-            <Text
-              className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
-              size="txtRalewayRomanRegular16Gray800"
-            >
-              <ul style={{listStyleType: 'disc', marginLeft: '20px'}}>
-                <li>Go prepared (get all the equipment).</li>
-                <li>Safety first! MiniSASS is better with a friend or group. Be sure to let people
-                  know where you will be. Rivers may contain various toxins, harmful pollutants,
-                  or dangerous animals. It is important to wear appropriate clothing and be watchful
-                  for any dangers. Gumboots / Waders / Wellingtons will protect your feet from the sharp
-                  rocks harmful things in the water. Life jackets are recommended.
-                </li>
-              </ul>
-            </Text>
           </div>
         </div>
         {/* end of section */}
@@ -194,19 +164,11 @@ const HowtoPage: React.FC = () => {
                 className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
                 size="txtRalewayRomanRegular16Gray800"
               >
-                Find a suitable site at your stream / river. MiniSASS cannot be done on stagnant water like ponds, dams
-                and wetlands. It is very important to check whether the sample area has flowing water, if not then a
-                miniSASS cannot be done there.
-                <br/><br/>
-                Remember, the best site is a safe site! If your site is safe, then pick a spot that has as many of the
-                habitats (rocks, vegetation, and gravel, sand, and mud (GSM)) as possible to sample for the most variety
-                of macroinvertebrates. Classifying your stream / river: A “Rocky” section of a stream / river has loose
-                rocks instream and is often found closer to the source of the river. Sections of streams / rivers
-                without any loose rocks instream are termed “Sandy” and are often found towards the mouth of the stream
-                / river.
-                <br/><br/>
-                Note down the location where you are doing your miniSASS survey – save it on a phone or GPS. Your exact
-                location is very important information!
+                Safety first! MiniSASS is better with a friend or group. Be sure to let people
+                  know where you will be. Rivers may contain various toxins, harmful pollutants,
+                  or dangerous animals. It is important to wear appropriate clothing and be watchful
+                  for any dangers. Gumboots / Waders / Wellingtons will protect your feet from the sharp
+                  rocks harmful things in the water. Life jackets are recommended.
               </Text>
             </div>
           </div>
@@ -238,12 +200,19 @@ const HowtoPage: React.FC = () => {
                 className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
                 size="txtRalewayRomanRegular16Gray800"
               >
-                Sample as many habitats in the stream as possible for a total of 5 minutes. Get energetic with sampling!
-                Make sure to kick up the rocks, gravel, sand, and mud, to dislodge the macroinvertebrates and get them
-                in your net. You can pick up and search under rocks as well, washing the creatures you find into you net
-                as well. Scoop in and around the vegetation to make sure you get the critters hiding there as well.
-                Keep an eye out for clams, mussels, crabs, snails, and anything else you might not easily catch in the
-                net.
+                Find a suitable site at your stream / river. MiniSASS cannot be done on stagnant water like ponds, dams
+                and wetlands. It is very important to check whether the sample area has flowing water, if not then a
+                miniSASS cannot be done there.
+                <br/><br/>
+                Remember, the best site is a safe site! If your site is safe, then pick a spot that has as many of the
+                habitats (rocks, vegetation, and gravel, sand, and mud (GSM)) as possible to sample for the most variety
+                of macroinvertebrates. Classifying your stream / river: A “Rocky” section of a stream / river has loose
+                rocks instream and is often found closer to the source of the river. Sections of streams / rivers
+                without any loose rocks instream are termed “Sandy” and are often found towards the mouth of the stream
+                / river.
+                <br/><br/>
+                Note down the location where you are doing your miniSASS survey – save it on a phone or GPS. Your exact
+                location is very important information!
               </Text>
             </div>
           </div>
@@ -280,6 +249,13 @@ const HowtoPage: React.FC = () => {
               className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
               size="txtRalewayRomanRegular16Gray800"
             >
+              Sample as many habitats in the stream as possible for a total of 5 minutes. Get energetic with sampling!
+              Make sure to kick up the rocks, gravel, sand, and mud, to dislodge the macroinvertebrates and get them
+              in your net. You can pick up and search under rocks as well, washing the creatures you find into you net
+              as well. Scoop in and around the vegetation to make sure you get the critters hiding there as well.
+              Keep an eye out for clams, mussels, crabs, snails, and anything else you might not easily catch in the
+              net.
+              <br/><br/>
               Run some water through your net in the stream or using a bucket to filter out most of the mud and grit you
               may have gotten in the net. The cleaner your sample, the easier it is to find and identify all the
               macroinvertebrates.
