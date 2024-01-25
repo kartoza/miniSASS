@@ -31,3 +31,7 @@
   width: 100%;
   height: 180px; /* Adjust height of the embedded video */
 }
+
+li {
+  cursor: text !important;
+}
