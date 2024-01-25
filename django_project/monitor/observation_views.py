@@ -354,7 +354,7 @@ def create_observations(request):
 
 			# Check if the strings are not empty before attempting conversion
 			try:
-				site_id = int(site_id_str) if site_id_str else 0
+				site_id = int(site_id_str) if site_id_str else int(datainput.get('selectedSite', 0))
 			except (ValueError, TypeError):
 				site_id = 0
 
