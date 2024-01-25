@@ -161,6 +161,15 @@ const Footer: React.FC<FooterProps> = (props) => {
                   </li>
                 </ul>
 
+                <div className="bg-transparent flex flex-col items-start justify-start w-auto">
+                  <a href="https://www.youtube.com/@groundtruthcitizenscience" target="_blank" rel="noopener noreferrer">
+                    <Img
+                      className="h-6 w-6"
+                      src={`${globalVariables.staticPath}img_riyoutubefill_white_a700.svg`}
+                      alt="riyoutubefill_One"
+                    />
+                  </a>
+                </div>
 
                 <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1180px] w-full">
                   <Text
@@ -168,18 +177,9 @@ const Footer: React.FC<FooterProps> = (props) => {
                     size="txtRalewayRomanRegular16WhiteA700"
                   >
                     <span className="text-white-A700 font-raleway text-left font-normal">
-                      CGIAR Initiative on Digital Innovation and UNICEF.
+                      © CGIAR Initiative on Digital Innovation with UNICEF.
                     </span>
                   </Text>
-                  <div className="flex flex-row gap-2.5 items-start justify-start w-auto">
-                    <a href="https://www.youtube.com/@groundtruthcitizenscience" target="_blank" rel="noopener noreferrer">
-                      <Img
-                        className="h-6 w-6"
-                        src={`${globalVariables.staticPath}img_riyoutubefill_white_a700.svg`}
-                        alt="riyoutubefill_One"
-                      />
-                    </a>
-                  </div>
                 </div>
 
 

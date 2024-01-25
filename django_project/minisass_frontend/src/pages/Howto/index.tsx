@@ -69,16 +69,7 @@ const HowtoPage: React.FC = () => {
                 text-base text-gray-800"
               size="txtRalewayRomanRegular16Gray800"
             >
-              <span>MiniSASS Equipment (</span>
-              <span className="underline text-blue-900 cursor-pointer" onClick={() => {
-                window.open(
-                  'https://www.groundtruth.co.za/our-products',
-                  "_blank",
-                  "noreferrer"
-                );
-              }}>https://www.groundtruth.co.za/our-products
-              </span>
-              <span>): What will you need?</span>
+              <span>What will you need?</span>
               <ul style={{listStyleType: 'disc', marginLeft: '20px'} }>
                 <li>Download the miniSASS app!  The miniSASS app will help you do your miniSASS survey. It includes
                   a map to help navigate to sites, background information, and reference information and videos.
@@ -89,6 +80,11 @@ const HowtoPage: React.FC = () => {
                   and dichotomous key for identifications) with a pencil to fill it out. Find this and other useful
                   resources under the ‘For Educators’ section below. Remember to upload your data to the website if
                   you do a survey using a physical sheet instead of the app.
+                </li>
+                <li>A miniSASS net (or a suitable home-made net). To make a homemade net, take any piece of wire, for
+                  example an old clothes hanger, and bend it into the shape of a net. Then tie ‘netting’ (any net-like
+                  material that will catch the creatures but let fine sand and water through) to the wire with a piece
+                  of string.
                 </li>
                 <li>A white tray for sorting the macroinvertebrates sampled (can be a simple white ice-cream tub).</li>
                 <li>Gumboots or waders.</li>
