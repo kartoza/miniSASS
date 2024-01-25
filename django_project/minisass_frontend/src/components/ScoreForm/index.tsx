@@ -130,7 +130,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
       } else if (additionalData.selectedSite) {
-        localStorage.setItem('siteId', additionalData.selectedSite.value)
+        if(additionalData.selectedSite.value)
+          localStorage.setItem('siteId', additionalData.selectedSite.value)
+        else
+          localStorage.setItem('siteId', additionalData.selectedSite)
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
       } else {
