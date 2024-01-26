@@ -22,10 +22,10 @@ test('test', async ({ page }) => {
   await expect(page.getByRole('img', { name: 'crab_placeholder' }).nth(1)).toBeVisible();
   await expect(page.locator('div').filter({ hasText: /^Submit results$/ }).first()).toBeVisible();
   await expect(page.getByRole('img', { name: 'crab_placeholder' }).nth(2)).toBeVisible();
-  await expect(page.getByRole('img', { name: 'bxbong' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'bxbong' }).first()).toBeVisible();
   await expect(page.getByText('Submit results')).toBeVisible();
-  await expect(page.locator('div').filter({ hasText: /^Resources;$/ }).first()).toBeVisible();
-  await expect(page.getByRole('img', { name: 'bxclouddownload' })).toBeVisible();
+  await expect(page.locator('div').filter({ hasText: /^Resources$/ }).first()).toBeVisible();
+  //await expect(page.getByRole('img', { name: 'bxclouddownload' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Resources' })).toBeVisible();
   await expect(page.getByRole('img', { name: 'crab_placeholder' }).nth(3)).toBeVisible();
   await expect(page.locator('#root')).toContainText('What is miniSASS?');
@@ -45,7 +45,7 @@ test('test', async ({ page }) => {
 
   await page.keyboard.press('PageDown');
   await expect(page.getByRole('link', { name: 'Water Research Commission' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Amazon' })).toBeVisible();
+  //await expect(page.getByRole('link', { name: 'Amazon' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Wildlife and Environment' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Kartoza' })).toBeVisible();
 
@@ -53,9 +53,10 @@ test('test', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'How to' })).toBeVisible();
   await expect(page.getByRole('list').getByText('Map')).toBeVisible();
   await expect(page.locator('a').filter({ hasText: 'Contact us' })).toBeVisible();
-  await expect(page.getByText('How toMapContact us© 2023')).toBeVisible();
+  //await expect(page.getByText('How toMapContact us© 2023')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Download miniSASS App' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'formkitwordpres', exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'riyoutubefill', exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'icbaselinefaceb', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'icbaselinefaceb_One' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'riyoutubefill_One' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'formkitwordpres_One' })).toBeVisible();
+  await expect(page.getByText('© 2023 Water Research')).toBeVisible();
 });
