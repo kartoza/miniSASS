@@ -344,14 +344,12 @@ def create_observations(request):
 			obs_date = datainput.get('date')
 			user = request.user
 
-			user_id = datainput.get('user_id', 0)  # Extract user_id from form data
+			
 
-			if not request.user and user_id:
-				# If request.user is empty and user_id is provided, get the user
-				try:
+			if hasattr(request.user, '_wrapped') and getattr(request.user, '_wrapped', None) is not None:
+					user_id = datainput.get('user_id', 0)  # Extract user_id from form data
+					# Use user_id if available, or create a default user
 					user = User.objects.get(pk=user_id)
-				except User.DoesNotExist:
-					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 			site_id_str = str(request.POST.get('siteId','0'))
