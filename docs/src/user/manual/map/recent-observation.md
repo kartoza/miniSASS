@@ -89,8 +89,14 @@ This icon visually represents the location on the map where the uploaded observa
 
 ## Footer Options
 
-1. **Home**: Navigate to the home page by clicking on the `Home` link.
+![footer option](./img/map-25.png)
 
-2. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](../how-to/how-to.md).
+1. **How To**: Navigate to the how-to page by clicking on the `How To` link. For detailed how-to instructions, refer to the [how-to page documentation](../how-to/how-to.md).
 
-3. **Map**: Navigate to the map page by clicking on the `Map` link.
+2. **Map**: Navigate to the map page by clicking on the `Map` link. For detailed map instructions, refer to the [map page documentation](map.md).
+
+3. **Documentation:** Access comprehensive documentation to explore detailed information, usage guides, and helpful resources. Enhance understanding and make the most out of the platform by referring to the documentation. 
+
+4. **Contact Us:** Have questions, feedback, or need assistance? Feel free to reach out to the dedicated support team. Click on the `Contact Us` link to open the contact page. For detailed contact page instructions, refer to the [contact page documentation](../contact-us.md)
+
+5. **YouTube Icon:** Click on the `YouTube` icon, to open the [GroundTruth Citizen Science](https://www.youtube.com/@groundtruthcitizenscience) channel playlist.
