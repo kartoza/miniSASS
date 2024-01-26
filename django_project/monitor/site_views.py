@@ -39,7 +39,7 @@ class SaveSiteImagesView(generics.CreateAPIView):
         images = request.FILES.items()
         site_images = []
 
-        for image in images:
+        for field_name, image in images:
             try:
                 site_image = SiteImage(site=site, image=image)
                 site_image.full_clean()  # Validate model fields before saving
