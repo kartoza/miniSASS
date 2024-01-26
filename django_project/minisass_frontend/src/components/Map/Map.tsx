@@ -450,17 +450,17 @@ export const Map = forwardRef((props: Interface, ref) => {
       };
 
       // get icon size in meter.
-      // Currently, the icon size is 60 x 74 pixels so we'll just assume it's 67 pixels.
+      // Currently, the icon size is 60 x 74 pixels so we'll just assume it's diameter is 67 pixels, meaning the radius is 34.
       // On zoom level lower than 5, it's not scaled.
       // Starting from on zoom level  5, it's scaled to 1/2 the size.
       // Starting from on zoom level 17, it's scaled to 2x the size.
-      const iconSizeMeter = (zoomLevel, meterPerPixel) => {
+      const iconRadiusMeter = (zoomLevel, meterPerPixel) => {
         if (zoomLevel < 5) {
-          return 67 * meterPerPixel;
-        } else if (zoomLevel < 17) {
           return 34 * meterPerPixel;
+        } else if (zoomLevel < 17) {
+          return 17 * meterPerPixel;
         } else {
-          return 134 * meterPerPixel;
+          return 67 * meterPerPixel;
         }
       }
 
@@ -488,7 +488,7 @@ export const Map = forwardRef((props: Interface, ref) => {
 
           // Check if the site falls within the icon radius, to prevent getting closest site
           // when clicking on nowhere e.g. Pacific Ocean
-          const iconRadius = iconSizeMeter(map.getZoom(), mpp)
+          const iconRadius = iconRadiusMeter(map.getZoom(), mpp)
 
           // if the site falls within the icon radius, use the sites_gid.
           if (distanceMeter < iconRadius) {
