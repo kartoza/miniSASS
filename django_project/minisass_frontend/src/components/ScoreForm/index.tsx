@@ -160,6 +160,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       if(response.status == 200){
         setIsSavingData(false)
         setIsCloseDialogOpen(false)
+        additionalData.riverName = ''
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
         if (response.data.status.includes('error')) {
@@ -354,11 +355,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData.siteName !== '' && 
       additionalData.siteDescription !== '' && 
       additionalData.date !== ''
-    ){
-      if(!proceedToSavingData)
-        setIsCloseDialogOpen(false)
-      else setIsCloseDialogOpen(true)
-    }
+    )
+      setIsCloseDialogOpen(true)
     else
       setSidebarOpen(false)
   };
