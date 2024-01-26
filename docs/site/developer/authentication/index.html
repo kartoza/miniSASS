@@ -1591,7 +1591,7 @@
 <h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h2>
 <p>Uses JSON Web Tokens, which are encoded tokens containing user information.
 With every request made, the token will be validated for the logged in user.
-The token expires after a certain interval ,which means on the frontend there should be a mechanism
+The token expires after a certain interval, which means on the frontend there should be a mechanism
 to refresh the token for example a function to constantly check and determine if the user is still logged in, if so refresh the token.</p>
 <h2 id="how-to-use">How to use<a class="headerlink" href="#how-to-use" title="Permanent link">&para;</a></h2>
 <h3 id="current_domain-httpsminisassstadokartozacom">current_domain: https://minisass.sta.do.kartoza.com/<a class="headerlink" href="#current_domain-httpsminisassstadokartozacom" title="Permanent link">&para;</a></h3>
@@ -1603,14 +1603,15 @@ This API only allows 2 methods:</p>
 <li>POST</li>
 <li>OPTIONS</li>
 </ol>
-<p><strong>POST</strong>: used to submit user credentials . The credentials are accepted in the form of:
+<p><strong>POST</strong>: used to submit user credentials. The credentials are accepted in the form of:
     i. application/json
     ii. application/x-www-form-urlencoded
     iii. multipart/form-data</p>
 <div class="highlight"><pre><span></span><code>**example usage**:
 {
-    &quot;username&quot;: &quot;test_user&quot;,
-    &quot;password&quot;: &quot;test_password&quot;
+    &quot;email&quot;: &quot;test@gmail.com&quot;,
+    &quot;password&quot;: &quot;test_password&quot;,
+    &quot;usernameForEmailRetrieval&quot;: &quot;test_username&quot;
 }
 </code></pre></div>
 <p><strong>OPTIONS</strong>: Returns the documentation available for the login api (basic description).</p>
@@ -1713,7 +1714,7 @@ returns a success message and a 200 ok.
 <p><strong>Additional Info</strong>:
     The user will receive an email with the instructions on how to reset their forgotten password.</p>
 <h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
-<p>The <code>Authentication API</code>, is responsible for login , registration and password reset.</p>
+<p>The `Authentication API, is responsible for login, registration and password reset.</p>
 
 
 
