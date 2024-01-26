@@ -431,6 +431,7 @@ def user_login(request):
                 'access_token': str(access_token),
                 'refresh_token': str(RefreshToken.for_user(user)),
                 'is_authenticated': True,
+                'user_id': user.pk,
                 'is_admin': request.user.is_staff if request.user.is_authenticated else None,
                 'is_password_enforced': get_is_user_password_enforced(request.user, password)
             }
