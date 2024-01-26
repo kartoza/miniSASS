@@ -1223,6 +1223,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#managing-tables-on-the-administration-site" class="md-nav__link">
+    Managing Tables on the Administration Site
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-tables" class="md-nav__link">
     Adding Tables
   </a>
@@ -1239,6 +1246,20 @@
           <li class="md-nav__item">
   <a href="#delete-record-of-tables" class="md-nav__link">
     Delete Record of Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-tips" class="md-nav__link">
+    Usage Tips
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-notes" class="md-nav__link">
+    Additional Notes
   </a>
   
 </li>
@@ -1553,6 +1574,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#managing-tables-on-the-administration-site" class="md-nav__link">
+    Managing Tables on the Administration Site
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-tables" class="md-nav__link">
     Adding Tables
   </a>
@@ -1569,6 +1597,20 @@
           <li class="md-nav__item">
   <a href="#delete-record-of-tables" class="md-nav__link">
     Delete Record of Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-tips" class="md-nav__link">
+    Usage Tips
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-notes" class="md-nav__link">
+    Additional Notes
   </a>
   
 </li>
@@ -1601,27 +1643,515 @@
 <h2 id="important-tables-to-manage">Important Tables to Manage<a class="headerlink" href="#important-tables-to-manage" title="Permanent link">&para;</a></h2>
 <p>There are a variety of tables to manage on the Django Admin site but the two key ones are the <a href="#users-table">Users Table</a> and the <a href="#observations-table">Observations Table</a>.</p>
 <h3 id="users-table">Users Table<a class="headerlink" href="#users-table" title="Permanent link">&para;</a></h3>
-<!-- Main focus on changing novice user to expert user -->
-
+<p>The Django admin user table is a central component within the Django admin interface, providing a comprehensive view of user-related data for the application. This table serves as a management hub for user accounts, offering essential information about each user in a tabular format.</p>
+<p><img alt="User Table" src="../img/django-admin-1.png" /></p>
+<ol>
+<li>
+<p><strong>User:</strong> Click on the <code>Users</code> to view the users table.</p>
+<p><img alt="User Table" src="../img/django-admin-2.png" /></p>
+<ol>
+<li><strong>Search Functionality:</strong> The User Table provides a powerful search functionality allowing the administrators to search user records based on various criteria. To perform a search, locate the search bar at the top right corner of the User Table.
+The administrators can search by:<ul>
+<li>Username</li>
+<li>Email Address</li>
+<li>First Name</li>
+<li>Last Name</li>
+</ul>
+</li>
+</ol>
+<p>Simply enter the relevant information into the search bar and hit enter to display matching records.</p>
+<ol start="2">
+<li>
+<p><strong>Action Dropdown:</strong> Administrators can perform batch actions on selected user records using the <code>Action Dropdown</code>. To select multiple records, use the checkbox in front of each user record. Once selected, open the Action Dropdown and choose the desired action, e.g., Delete selected users. Confirm the action and the selected records will be processed accordingly. This feature streamlines bulk user management tasks, enhancing efficiency for administrators.</p>
+</li>
+<li>
+<p><strong>User Name:</strong> Clicking on the username of a user opens a detailed view of that user's record. A new page will open, providing comprehensive information about the selected user.</p>
+<p><img alt="User Record" src="../img/django-admin-3.png" /></p>
+<ol>
+<li>
+<p><strong>Username:</strong> The administrator can see the user's username here.</p>
+</li>
+<li>
+<p><strong>Change Password Form</strong> The administrator can click on <code>this form</code> link, to change the user password. When the administrator clicks on this link opens the change password page.</p>
+<p><img alt="Change Password" src="../img/django-admin-4.png" /></p>
+<ol>
+<li>
+<p><strong>Password:</strong> This field requires administrators to enter the user's new password.</p>
+<p><strong>Password Requirements:</strong>
+- Your password can’t be too similar to your other personal information.
+- Your password must contain at least 8 characters.
+- Your password can’t be a commonly used password.
+- Your password can’t be entirely numeric.</p>
+</li>
+<li>
+<p><strong>Password (again):</strong> The administrators are required to re-enter the new password for confirmation. This field ensures accuracy and helps prevent input errors.</p>
+</li>
+<li>
+<p><strong>Change Password Button:</strong> After entering the new password and confirmation, users can click the <code>CHANGE PASSWORD</code> button to submit the form. Upon successful submission, the system will update the user's password, enhancing the security of their account.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Personal Information Section:</strong> The Personal Info section of the User Table contains essential information about each user, facilitating easy identification and management.</p>
+<ul>
+<li>
+<p><strong>First Name:</strong> Displays the first name of the user. Administrators can view and edit this field to update user details.</p>
+</li>
+<li>
+<p><strong>Last Name:</strong> Displays the last name of the user. Administrators can view and edit this field to update user details.</p>
+</li>
+<li>
+<p><strong>Email Address:</strong> Displays the email address associated with the user's account. Administrators can view and edit this field to update user details.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Permission Section:</strong> The Permission Section allows administrators to assign specific permissions to users, tailoring their access and roles within the application.</p>
+<ul>
+<li>
+<p><strong>Active:</strong> Checkbox indicating whether the user account is active or inactive. Administrators can toggle this checkbox to control user account status.</p>
+</li>
+<li>
+<p><strong>Staff Status:</strong> Checkbox granting staff status to the user. Staff status provides additional privileges within the application. Administrators can manage staff status by checking or unchecking the checkbox.</p>
+</li>
+<li>
+<p><strong>Superuser Status:</strong> Checkbox granting superuser status to the user. Superusers have elevated privileges, often including full control over the application. Administrators can assign or remove superuser status by checking or unchecking the checkbox.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>History Button:</strong> The History button allows administrators to access the history log of the user, providing insights into changes and activities related to the user account.</p>
+</li>
+</ol>
+<p><img alt="Group and Permission" src="../img/django-admin-5.png" /></p>
+<ol start="6">
+<li>
+<p><strong>Group (+):</strong> Administrators can create user groups by clicking on the plus icon. Upon clicking the plus icon, a popup window will open, allowing administrators to define the group's details. In the popup, administrators can specify:</p>
+<p><img alt="Group" src="../img/django-admin-6.png" /></p>
+<ul>
+<li><strong>Group Name:</strong> A unique identifier for the group.</li>
+<li><strong>Permissions:</strong> Assign specific permissions to the group, determining the access levels for members.</li>
+</ul>
+<p>After providing the necessary information, administrators can save the group.</p>
+</li>
+<li>
+<p><strong>Permissions:</strong> Available permissions for the group. Administrators can choose permissions from the list and assign them to the user.</p>
+</li>
+<li>
+<p><strong>Arrow:</strong> Using these arrows, administrators can add or remove the permissions to the user.</p>
+</li>
+<li>
+<p><strong>Choose All:</strong> The button to choose all of the permissions and assign them to the user.</p>
+</li>
+<li>
+<p><strong>Remove All:</strong> The button to choose all of the permissions and remove them from the user.</p>
+</li>
+<li>
+<p><strong>Organisation Type:</strong> The administrator can view and edit the <code>organisations type</code> using this dropdown.</p>
+</li>
+<li>
+<p><strong>Icons</strong> The administrator can use the icons to perform many actions.</p>
+<ul>
+<li>
+<p><strong>Edit Icon:</strong> Allows administrators to edit the selected organisation type. Clicking the edit icon opens a form where the administrator can modify the details of the chosen organisation type.</p>
+</li>
+<li>
+<p><strong>Plus Icon:</strong> Enables administrators to add a new organisation type. Clicking the plus icon triggers the creation of a new organisation type, often through a dedicated form.</p>
+</li>
+<li>
+<p><strong>Cross Icon:</strong> Provides a quick option to delete an organisation type.  Clicking the cross icon initiates the deletion process, prompting users to confirm their action before permanently removing the selected organisation type.</p>
+</li>
+<li>
+<p><strong>Eye Icon:</strong> Allows users to view details or information associated with the selected organisation type. Clicking the eye icon redirects to a page displaying comprehensive details about the chosen organisation type.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Is Expert Checkbox:</strong> Indicates whether a user has been approved as an expert in the system. Administrators can manually check or uncheck this checkbox to set or revoke expert status for a user.</p>
+</li>
+<li>
+<p><strong>Expert Approval Status:</strong></p>
+<ul>
+<li><strong>APPROVED:</strong> The user has been approved as an expert.</li>
+<li><strong>REJECTED:</strong> The user's expert status has been rejected.</li>
+</ul>
+<p><strong>Set by Approval Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code>- If approved, set Expert approval status to APPROVED.
+- If rejected, set Expert approval status to REJECTED.
+</code></pre></div>
+</li>
+<li>
+<p><strong>Certificate Field:</strong>  Allows administrators to upload user certificates as a part of the expert approval process.</p>
+</li>
+<li>
+<p><strong>Save:</strong> Save the current record and then get redirected to the Django Admin Table/record list.</p>
+</li>
+<li>
+<p><strong>Save and add another:</strong> Save the current record and then be redirected to a new page to add a new record.</p>
+</li>
+<li>
+<p><strong>Save and continue editing:</strong> Save the current record while still showing the current record.</p>
+</li>
+<li>
+<p><strong>Delete button:</strong> Delete the currently opened record. It will take administrators to a confirmation page.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Adding a New User:</strong> The administrators can create a new user by clicking on the <code>add user</code> button, when the administrators click on this button a new page opens for adding the user record.</p>
+<p><img alt="Add User" src="../img/django-admin-8.png" /></p>
+<ol>
+<li>
+<p><strong>Username:</strong> Administrators should enter a unique username for the new user. It should be 150 characters, or less, and may contain only letters, digits, and the characters '@', '.', '+', '-', and '_'.</p>
+</li>
+<li>
+<p><strong>Password:</strong> Administrators should create a strong password for the user. The password must meet these criteria:</p>
+<ul>
+<li>password can not be too similar to your other personal information.</li>
+<li>password must contain at least 8 characters.</li>
+<li>password can not be a commonly used password.</li>
+<li>password can not be entirely numeric.</li>
+</ul>
+</li>
+<li>
+<p><strong>Confirm Password:</strong> Re-enter the same password in the confirmation field to verify accuracy.</p>
+</li>
+</ol>
+<p><img alt="Add User Profile" src="../img/django-admin-9.png" /></p>
+<ol start="4">
+<li>
+<p><strong>Organisation Type:</strong> The administrator can add the <code>organisation type</code> using the dropdown.</p>
+</li>
+<li>
+<p><strong>Is Expert Checkbox:</strong> Indicates whether a user has been approved as an expert in the system. Administrators can manually check or uncheck this checkbox to set or revoke expert status for a user.</p>
+</li>
+<li>
+<p><strong>Expert Approval status:</strong> The administrator can choose the <code>Expert approval status</code> from the dropdown for the user.</p>
+</li>
+<li>
+<p><strong>Certificate Field:</strong>  Allows administrators to upload user certificates as a part of the expert approval process.</p>
+</li>
+<li>
+<p><strong>Save:</strong> Save the current record and then get redirected to the Django Admin Table/record list.</p>
+</li>
+<li>
+<p><strong>Save and add another:</strong> Save the current record and then be redirected to a new page to add a new record.</p>
+</li>
+<li>
+<p><strong>Save and continue editing:</strong> Save the current record while still showing the current record.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Filters:</strong> The administrators can filter the user table using the available filters at the right side of the tables. </p>
+<p><img alt="Filtered Tables" src="../img/django-admin-10.png" /></p>
+</li>
+</ol>
+</li>
+</ol>
 <h3 id="observations-table">Observations Table<a class="headerlink" href="#observations-table" title="Permanent link">&para;</a></h3>
-<!-- Validating images that are dirty -->
-
+<p><img alt="Observation Table" src="../img/django-admin-11.png" /></p>
+<ol>
+<li>
+<p><strong>Search Functionality:</strong> The Observation Table provides a search functionality allowing the administrators to search records based on the site name and river name.</p>
+</li>
+<li>
+<p><strong>Action Dropdown:</strong> The Action Dropdown offers various options to perform batch actions on selected observation records.</p>
+<p>Options include:
+- Delete selected Observations: Permanently remove the selected observation records.
+- Mark selected observations as verified (clean): Indicate that selected observations are verified or clean.
+- Mark selected observations as unverified (dirty): Indicate that selected observations are unverified or dirty.</p>
+</li>
+<li>
+<p><strong>Username:</strong> Clicking on the username in the Observation Table redirects administrators to a detailed page containing specific user observation data.</p>
+<p><img alt="observation record" src="../img/django-admin-12.png" /></p>
+<ol>
+<li><strong>User Selection:</strong> Select a user from the dropdown menu to associate the observation with a specific user.</li>
+</ol>
+<ul>
+<li>Edit Icon: Allows administrators to edit user details.</li>
+<li>Plus Icon: Opens a form for adding a new user.</li>
+<li>Eye Icon: Redirects administrators to a detailed page showing user-specific data.</li>
+</ul>
+<ol start="2">
+<li>
+<p><strong>Available Groups:</strong> Checkbox options for different observation groups:</p>
+<ul>
+<li>Flatworms</li>
+<li>Worms</li>
+<li>Leeches</li>
+<li>Crabs Shrimps</li>
+<li>Stoneflies</li>
+<li>Minnow Mayflies</li>
+<li>Other Mayflies</li>
+<li>Damselflies</li>
+<li>Dragonflies</li>
+<li>Bugs Beetles</li>
+<li>Caddisflies</li>
+<li>True Flies</li>
+<li>Snails</li>
+</ul>
+<p>Check the relevant groups that apply to the observation.</p>
+</li>
+<li>
+<p><strong>Score of Selected Groups:</strong> Numerical score associated with the selected observation groups.</p>
+</li>
+<li>
+<p><strong>History Button:</strong> The History button allows administrators to access the history log of the observation, providing insights into changes and activities related to the observation.</p>
+</li>
+</ol>
+<p><img alt="observation record" src="../img/django-admin-13.png" /></p>
+<ol start="5">
+<li>
+<p><strong>Site:</strong> Select a site from the dropdown menu to associate with the observation.</p>
+<p><strong>Icons:</strong>
+- Edit Icon: Allows administrators to edit site details.
+- Plus Icon: Opens a form for adding a new site.
+- Eye Icon: Redirects administrators to a detailed page showing site-specific data.</p>
+</li>
+<li>
+<p><strong>Observation Date Field:</strong> Date picker to select the observation date.</p>
+</li>
+<li>
+<p><strong>Flag Field:</strong> Labels the observation data as clean or dirty based on user status (expert or novice). Use the Flag field to distinguish between automatically accepted and manually validated data. </p>
+<p><strong>Automated Validation:</strong></p>
+<ul>
+<li>Expert users' contributions are automatically accepted as clean data.</li>
+<li>Novice users' contributions are flagged as dirty and require manual validation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Is Validated Section:</strong> Checkbox for Validation Status. Flags whether the observation correctness has been manually validated.</p>
+</li>
+<li>
+<p><strong>Dissolved Oxygen Unit:</strong> Dropdowns to select the unit of measurement (e.g., mg/l for Dissolved Oxygen)</p>
+</li>
+<li>
+<p><strong>Electrical Conductivity Unit:</strong> Dropdowns to select the unit of measurement (e.g., mS/m for Electrical Conductivity).</p>
+</li>
+</ol>
+<p><img alt="observation record" src="../img/django-admin-14.png" /></p>
+<ol start="11">
+<li>
+<p><strong>Pest Column:</strong> Administrators can choose the pest group from the dropdown.</p>
+<p><strong>Icons:</strong>
+- Edit Icon: Allows administrators to edit pest group details.
+- Plus Icon: Opens a form for adding a new pest group.
+- Eye Icon: Redirects administrators to a detailed page showing pest group-specific data.</p>
+</li>
+<li>
+<p><strong>Image Column:</strong> Administrators can click on the image to view it for validation. Images uploaded by novice users need manual validation by administrators.</p>
+</li>
+<li>
+<p><strong>Valid Column:</strong> The checkbox is checked by default if the image is uploaded by an expert user. For novice users, the checkbox is unchecked, indicating that manual validation is required.</p>
+</li>
+<li>
+<p><strong>Delete Column:</strong> Checkbox available for deleting the pest record. Check the checkbox to select the pest record for deletion.</p>
+</li>
+<li>
+<p><strong>Save:</strong> Save the current record and then get redirected to the Django Admin Table/record list.</p>
+</li>
+<li>
+<p><strong>Save and add another:</strong> Save the current record and then be redirected to a new page to add a new record.</p>
+</li>
+<li>
+<p><strong>Save and continue editing:</strong> Save the current record while still showing the current record.</p>
+</li>
+<li>
+<p><strong>Delete button:</strong> Delete the currently opened record. It will take administrators to a confirmation page.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Add Observation:</strong> The <code>add observation</code> button allows administrators to create new observation records directly from the <code>Observation Table</code>.</p>
+<p><img alt="add observation" src="../img/django-admin-15.png" /></p>
+<p>To create a new pest observation, administrators must follow a structured process and provide essential information for accurate and detailed records.</p>
+<ol>
+<li><strong>User Selection:</strong> Begin by choosing the user associated with the observation from the available user dropdown. This step attributes the observation to a specific contributor.</li>
+</ol>
+<ul>
+<li>Edit Icon: Allows administrators to edit user details.</li>
+<li>Plus Icon: Opens a form for adding a new user.</li>
+<li>Eye Icon: Redirects administrators to a detailed page showing user-specific data.</li>
+</ul>
+<ol start="2">
+<li><strong>Available Groups:</strong> Checkbox options for different observation groups:
+- Flatworms
+- Worms
+- Leeches
+- Crabs Shrimps
+- Stoneflies
+- Minnow Mayflies
+- Other Mayflies
+- Damselflies
+- Dragonflies
+- Bugs Beetles
+- Caddisflies
+- True Flies
+- Snails</li>
+</ol>
+<p>The administrator needs to check the relevant groups that they want to apply to the observation.</p>
+<ol start="3">
+<li>
+<p><strong>Site:</strong> The administrator needs to select a site from the dropdown menu to associate with the observation.</p>
+<p><strong>Icons:</strong>
+- Edit Icon: Allows administrators to edit site details.
+- Plus Icon: Opens a form for adding a new site.
+- Eye Icon: Redirects administrators to a detailed page showing site-specific data.</p>
+</li>
+</ol>
+<p><img alt="add observation" src="../img/django-admin-16.png" /></p>
+<ol start="4">
+<li>
+<p><strong>Observation Date Field:</strong> The administrator needs to use the date picker to select the observation date.</p>
+</li>
+<li>
+<p><strong>Flag Field:</strong> Labels the observation data as clean or dirty based on user status (expert or novice). Use the Flag field to distinguish between automatically accepted and manually validated data. </p>
+<ul>
+<li>If a user is anexpert user choose the flag <code>clean</code> for the user.</li>
+<li>If a user is a novice user choose the flag <code>dirty</code> for the user.</li>
+</ul>
+</li>
+<li>
+<p><strong>Is Validated Section:</strong> Checkbox for Validation Status. Flags whether the observation correctness has been manually validated.</p>
+</li>
+<li>
+<p><strong>Pest Column:</strong> Administrators need to choose the pest group from the dropdown for the observation.</p>
+<p><strong>Icons:</strong>
+- Edit Icon: Allows administrators to edit pest group details.
+- Plus Icon: Opens a form for adding a new pest group.
+- Eye Icon: Redirects administrators to a detailed page showing pest group-specific data.</p>
+</li>
+<li>
+<p><strong>Image Column:</strong> Administrators need to click on the <code>choose image</code> button, to upload the image.</p>
+</li>
+<li>
+<p><strong>Valid Column:</strong> The administrator needs to check the checkbox if the observation correctness has been verified.</p>
+<ul>
+<li>For expert-contributed observations, the <code>Valid</code> status is checked by default, assuming they are accurate.</li>
+<li>For novice-contributed observations, the administrator must manually check the checkbox after validating the observation for correctness.</li>
+</ul>
+</li>
+<li>
+<p><strong>Save:</strong> Save the current record and then get redirected to the Django Admin Table/record list.</p>
+</li>
+<li>
+<p><strong>Save and add another:</strong> Save the current record and then be redirected to a new page to add a new record.</p>
+</li>
+<li>
+<p><strong>Save and continue editing:</strong> Save the current record while still showing the current record.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Filter:</strong> Administrators can filter observations based on cleanliness status - dirty or clean. Click on the available filters to view observations specific to either clean or dirty status.</p>
+<ul>
+<li><strong>Filtered by the <code>dirty</code> flag.</strong></li>
+</ul>
+<p><img alt="filtered by flag" src="../img/django-admin-17.png" /></p>
+</li>
+</ol>
 <h2 id="other-tables-to-manage">Other Tables to Manage<a class="headerlink" href="#other-tables-to-manage" title="Permanent link">&para;</a></h2>
 <p>There are other tables that can be managed by administrative users and these are the <a href="#group-scores">Group Scores</a>, <a href="#mobile-apps">Mobile Apps</a>, and <a href="#videos">Videos</a></p>
 <h3 id="group-scores">Group Scores<a class="headerlink" href="#group-scores" title="Permanent link">&para;</a></h3>
-<!-- Shouldn't need to be changed but can be -->
-
+<p><img alt="group scores table" src="../img/django-admin-18.png" /></p>
+<ol>
+<li>
+<p><strong>Group Scores:</strong> The administrators can click on the group to view the group's table.</p>
+<p><img alt="group scores" src="../img/django-admin-19.png" /></p>
+<ol>
+<li>
+<p><strong>Group:</strong> </p>
+<ul>
+<li>The administrator can view or edit the details of a specific group.</li>
+<li>When the administrator clicks on the name of the particular group, a change page will open, allowing the administrator to view or edit the details of that specific group.</li>
+</ul>
+<p><img alt="edit/view group scores" src="../img/django-admin-20.png" /></p>
+</li>
+<li>
+<p><strong>ADD GROUP SCORE:</strong> </p>
+<ul>
+<li>The administrator can create a new group.</li>
+<li>When the administrator clicks on the <code>ADD GROUP SCORE</code> button, a new add group score page will open, allowing the administrator to add a new group.</li>
+</ul>
+<p><img alt="add group scores" src="../img/django-admin-21.png" /></p>
+</li>
+</ol>
+</li>
+</ol>
 <h3 id="mobile-apps">Mobile Apps<a class="headerlink" href="#mobile-apps" title="Permanent link">&para;</a></h3>
-<!-- Current version where app can be added, can add new apk if needed -->
-
+<p><img alt="mobile apps" src="../img/django-admin-22.png" /></p>
+<ol>
+<li>
+<p><strong>Mobile Apps:</strong> Click on the <code>Mobile Apps</code> to open the mobile apps table.</p>
+</li>
+<li>
+<p><strong>Current version:</strong> The current version of the <code>miniSASS Mobile App</code>.</p>
+</li>
+<li>
+<p><strong>ADD MOBILE APPS:</strong> The administrators can add the new version of the miniSASS mobile app by using this button.</p>
+</li>
+</ol>
 <h3 id="videos">Videos<a class="headerlink" href="#videos" title="Permanent link">&para;</a></h3>
-<!-- can store videos, but we'd have to do front end work to display them -->
-
+<p><img alt="mobile apps" src="../img/django-admin-23.png" /></p>
+<ol>
+<li>
+<p><strong>Videos:</strong> Click on the <code>Videos</code> to open the videos table.</p>
+</li>
+<li>
+<p><strong>View Video:</strong> Click on the name of the video to view or edit the video link.</p>
+</li>
+<li>
+<p><strong>ADD VIDEO:</strong> Administrators can upload videos using this button. To display the video on the website, additional front-end development work is required.</p>
+</li>
+</ol>
 <h2 id="general-table-management">General Table Management<a class="headerlink" href="#general-table-management" title="Permanent link">&para;</a></h2>
 <p>All of the tables on the administration site follow similar structures and as such can be managed in similar ways.</p>
+<h3 id="managing-tables-on-the-administration-site">Managing Tables on the Administration Site<a class="headerlink" href="#managing-tables-on-the-administration-site" title="Permanent link">&para;</a></h3>
+<p>All tables on the administration site adhere to a consistent structure, facilitating uniform management procedures. The following points outline the general approach for adding, editing, and deleting records across various tables:</p>
 <h3 id="adding-tables">Adding Tables<a class="headerlink" href="#adding-tables" title="Permanent link">&para;</a></h3>
+<ul>
+<li>To add a new record, locate the <code>Add &lt;table name&gt;</code> button typically available on the respective table page.</li>
+<li>Click on the button to initiate the creation of a new entry.</li>
+<li>Follow the prompts or fill in the required fields in the form that opens.</li>
+<li>Submit the form to add the new record to the table.</li>
+</ul>
 <h3 id="editing-tables">Editing Tables<a class="headerlink" href="#editing-tables" title="Permanent link">&para;</a></h3>
+<ul>
+<li>For editing existing records, clicking on the name of the record will open a change record page, allowing the administrators to view or edit the record.</li>
+<li>Update the necessary information or fields as required.</li>
+<li>Save the changes to update the record.</li>
+</ul>
 <h3 id="delete-record-of-tables">Delete Record of Tables<a class="headerlink" href="#delete-record-of-tables" title="Permanent link">&para;</a></h3>
+<p>To delete a record, administrators can follow these steps using the action dropdown:</p>
+<p><strong>Select Record:</strong>
+- Checkmark the checkbox available in front of the specific record that needs deletion.</p>
+<p><strong>Open Action Dropdown:</strong>
+- Locate the action dropdown, often positioned near the table header or the selected record.</p>
+<p><strong>Choose Delete Option:</strong>
+- Open the dropdown menu and select the <code>Delete</code> option.</p>
+<p><strong>Initiate Deletion:</strong>
+- After selecting the delete option, click the <code>Go</code> button to initiate the deletion process.</p>
+<p>To delete a record, administrators can utilise the following steps from the change page:</p>
+<p><strong>Navigate to the Change Page:</strong>
+- Access the change page of the specific record that needs deletion by clicking on the record name.</p>
+<p><strong>Locate Delete Button:</strong>
+On the change page, find the <code>Delete</code> button.</p>
+<p><strong>Initiate Deletion:</strong>
+- Click the <code>Delete</code> button to initiate the deletion process for the record.</p>
+<h3 id="usage-tips">Usage Tips<a class="headerlink" href="#usage-tips" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ensure accuracy when adding or editing records by double-checking the entered information.</li>
+<li>Exercise caution when deleting records, as this action is typically irreversible.</li>
+<li>Follow any specific guidelines or procedures outlined in the system documentation for individual tables.</li>
+</ul>
+<h3 id="additional-notes">Additional Notes<a class="headerlink" href="#additional-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Consistent table structures streamline the process of managing data on the administration site.</li>
+<li>Users familiar with one table's management procedures can easily adapt to others with similar structures.</li>
+<li>Refer to the system documentation for any unique features or requirements specific to individual tables.</li>
+<li>By adhering to these general guidelines, administrators can effectively manage tables on the administration site, maintaining data accuracy and system efficiency.</li>
+</ul>
 
 
 
