@@ -108,7 +108,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       fieldsToCheck.forEach(field => {
         if (datainput[field] === '') {
-          datainput[field] = null;
+          datainput[field] = 'NA';
         }
       });
       
@@ -388,7 +388,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               </div>
             </div>
           </div>
-          
         ) :
         (
 
