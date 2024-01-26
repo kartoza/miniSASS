@@ -16,7 +16,7 @@ from monitor.serializers import (
 )
 
 
-class SaveSiteImagesView(APIView):
+class SaveSiteImagesView(generics.CreateAPIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     serializer_class = SiteImageSerializer
 
