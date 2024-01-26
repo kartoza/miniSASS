@@ -55,7 +55,7 @@ jobs:
           cp .example.env .env
           sed -i 's/context: deployment\/docker-s3-bucket/context: .\n      dockerfile: .\/deployment\/docker-s3-bucket\/Dockerfile/' docker-compose.yml
           docker compose build
-          docker compose up -d db; sleep 180; docker compose up -d
+          docker compose up -d db; sleep 180; docker compose up -d; sleep 120
       - name: Test django endpoint
         run: |
           curl http://localhost:61122/
