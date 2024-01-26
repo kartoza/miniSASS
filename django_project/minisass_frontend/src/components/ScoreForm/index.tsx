@@ -130,7 +130,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
       } else if (additionalData.selectedSite) {
-        localStorage.setItem('siteId', additionalData.selectedSite.value)
+        if(additionalData.selectedSite.value)
+          localStorage.setItem('siteId', additionalData.selectedSite.value)
+        else
+          localStorage.setItem('siteId', additionalData.selectedSite)
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
       } else {
@@ -264,7 +267,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           data.append('observationId', JSON.stringify(observationId));
 
           if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
-            data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+            if(additionalData.selectedSite.value)
+              data.append('siteId', JSON.stringify(additionalData.selectedSite.value));
+            else data.append('siteId', JSON.stringify(additionalData.selectedSite));
           } else
             {
               data.append('siteId', JSON.stringify(siteId));
@@ -343,7 +348,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const handleCloseSidebar = () => {
     if(proceedToSavingData)
       setIsCloseDialogOpen(true)
-    else setSidebarOpen(false)
+    else if(
+      additionalData.riverName !== '' && 
+      additionalData.siteName !== '' && 
+      additionalData.siteDescription !== '' && 
+      additionalData.date !== ''
+    )
+      setIsCloseDialogOpen(true)
+    else
+      setSidebarOpen(false)
   };
 
   const handleCloseConfirm = () => {
