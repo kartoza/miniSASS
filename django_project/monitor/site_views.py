@@ -115,15 +115,20 @@ class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
     queryset = Assessment.objects.all()
     serializer_class = AssessmentSerializer
 
+
 class SiteObservationsByLocation(APIView):
     def get(self, request, latitude, longitude):
         try:
             received_latitude = round(float(latitude), 2)
             received_longitude = round(float(longitude), 2)
+            gid = request.GET.get('gid', 0)
 
-            site = Sites.objects.filter(
-                the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
-            ).first()
+            if int(gid) != 0:
+                site = Sites.objects.get(gid=gid)
+            else:
+                site = Sites.objects.filter(
+                    the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
+                ).first()
 
             if site:
                 serializer = SitesWithObservationsSerializer(site)
