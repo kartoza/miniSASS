@@ -344,7 +344,7 @@ def create_observations(request):
 			obs_date = datainput.get('date')
 			user = request.user
 
-			user_id = datainput.get('date')('user_id', 0)  # Extract user_id from form data
+			user_id = datainput.get('user_id', 0)  # Extract user_id from form data
 
 			if not request.user and user_id:
 				# If request.user is empty and user_id is provided, get the user
