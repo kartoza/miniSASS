@@ -41,19 +41,19 @@ test('test', async ({ page }) => {
   await page.locator('input[name="electricalconduOne"]').fill('3');
   await page.getByRole('button', { name: 'next' }).click();
   await page.waitForLoadState('domcontentloaded');
-  await page.locator('#checkbox-102').check();
+  await page.locator('#checkbox-2').check();
   //await expect(page.getByText('17.00117.00')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Save' })).toBeEnabled();
   await page.waitForLoadState('domcontentloaded');
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible({timeout: 300000});
-  //await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
-  //await page.getByRole('button', { name: 'Ok' }).click();
-  //await page.getByRole('img', { name: 'close' }).click();
-  //await page.getByRole('button', { name: 'Home' }).click();
+  await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
+  await page.getByRole('button', { name: 'Ok' }).click();
+  await page.getByRole('img', { name: 'close' }).click();
+  await page.getByRole('button', { name: 'Home' }).click();
 
-  //await expect(page.getByText('test')).toBeVisible();
-  //await expect(page.getByText('Username: kartoza_admin').first()).toBeVisible();
-  //await expect(page.getByText('Organisation:').first()).toBeVisible();
+  await expect(page.getByText('test')).toBeVisible();
+  await expect(page.getByText('Username: kartoza_admin').first()).toBeVisible();
+  await expect(page.getByText('Organisation:').first()).toBeVisible();
   //await expect(page.getByText('Score:17.00')).toBeVisible();
 });

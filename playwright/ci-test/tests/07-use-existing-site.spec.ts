@@ -48,9 +48,9 @@ test.describe('test - use existing site', () => {
     await page.locator('#checkbox-2').check();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
-    //await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
-    //await page.getByRole('button', { name: 'Ok' }).click();
-    //await page.getByRole('img', { name: 'close' }).click();
+    await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
+    await page.getByRole('button', { name: 'Ok' }).click();
+    await page.getByRole('img', { name: 'close' }).click();
 
 
   });
@@ -84,9 +84,9 @@ test.describe('test - use existing site', () => {
     await page.locator('#checkbox-5').check();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
-    //await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
-    //await page.getByRole('button', { name: 'Ok' }).click();
-    //await page.getByRole('img', { name: 'close' }).click();
+    await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
+    await page.getByRole('button', { name: 'Ok' }).click();
+    await page.getByRole('img', { name: 'close' }).click();
   });
 
 });
