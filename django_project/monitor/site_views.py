@@ -31,7 +31,7 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
         # Check if the site exists
         try:
-            site = Site.objects.get(gid=site_id)
+            site = Sites.objects.get(gid=site_id)
         except Site.DoesNotExist:
             return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
 
