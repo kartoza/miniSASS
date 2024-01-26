@@ -1,5 +1,6 @@
 import json
 import multiprocessing
+from queue import Queue
 import os
 from datetime import datetime
 from decimal import Decimal
@@ -161,10 +162,10 @@ def convert_to_int(value, default=0):
 			return default
 
 
-def process_image_classification(image, observation):
+def process_image_classification(image, observation, classification_results):
 	try:
 		result = classify_image(image)
-		return result
+		classification_results.put(result)
 	except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 		return {'status': 'error', 'message': f'Error recognizing image: {str(e)}'}
 
@@ -247,7 +248,7 @@ def upload_pest_image(request):
 
 				# Save images in the request object
 				processes = []
-				classification_results = []
+				classification_results = Queue()
 				for key, image in request.FILES.items():
 					if 'pest_' in key:
 						group_id = key.split(':')[1]
@@ -261,8 +262,9 @@ def upload_pest_image(request):
 								pest_image.image = image
 								pest_image.save()
 
-								p = multiprocessing.Process(
-									target=process_image_classification, args=(image, observation))
+								p = multiprocessing.Processes(
+									target=process_image_classification, args=(image, observation, classification_results)
+								)
 								processes.append(p)
 								p.start()
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
@@ -272,9 +274,10 @@ def upload_pest_image(request):
 				for p in processes:
 					p.join()
 
-				for p in processes:
-					if p.exitcode == 0:
-						classification_results.append(p.result)
+				while not classification_results.empty():
+					result = classification_results.get()
+					if not result['status'] == 'error':
+						classification_results.append(result)
 
 				return JsonResponse(
 					{
