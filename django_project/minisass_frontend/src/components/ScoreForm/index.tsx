@@ -354,8 +354,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData.siteName !== '' && 
       additionalData.siteDescription !== '' && 
       additionalData.date !== ''
-    )
-      setIsCloseDialogOpen(true)
+    ){
+      if(!proceedToSavingData)
+        setIsCloseDialogOpen(false)
+      else setIsCloseDialogOpen(true)
+    }
     else
       setSidebarOpen(false)
   };
