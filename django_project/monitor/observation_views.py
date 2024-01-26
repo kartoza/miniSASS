@@ -344,7 +344,7 @@ def create_observations(request):
 			obs_date = datainput.get('date')
 			user = request.user
 
-			site_id_str = str(request.POST.get('siteId'),'0')
+			site_id_str = str(request.POST.get('siteId','0'))
 			selectedSite = 0
 			if site_id_str.lower() == 'undefined':
 				selectedSite = int(datainput.get('selectedSite', 0))
