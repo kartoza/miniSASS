@@ -159,6 +159,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       if(response.status == 200){
         setIsSavingData(false)
+        setIsCloseDialogOpen(false)
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
         if (response.data.status.includes('error')) {
