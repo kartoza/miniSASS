@@ -36,10 +36,10 @@ class SaveSiteImagesView(generics.CreateAPIView):
             return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
 
         # Save images for the site
-        images = request.FILES.getlist('images', [])
+        images = request.FILES.items()
         site_images = []
 
-        for image in images:
+        for field_name, image in images:
             try:
                 site_image = SiteImage(site=site, image=image)
                 site_image.full_clean()  # Validate model fields before saving
