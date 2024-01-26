@@ -29,6 +29,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from tensorflow import keras
+from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from minisass.models import GroupScores
 from minisass.utils import get_s3_client
@@ -339,6 +343,16 @@ def create_observations(request):
 			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
 			user = request.user
+
+			user_id = datainput.get('date')('user_id', 0)  # Extract user_id from form data
+
+			if not request.user and user_id:
+				# If request.user is empty and user_id is provided, get the user
+				try:
+					user = User.objects.get(pk=user_id)
+				except User.DoesNotExist:
+					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 			site_id_str = str(request.POST.get('siteId','0'))
 			selectedSite = 0
