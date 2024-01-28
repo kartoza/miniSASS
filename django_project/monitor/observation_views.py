@@ -347,7 +347,7 @@ def create_observations(request):
 			if request.user.is_authenticated:
 			    # If the user is authenticated, use request.user
 			    user = request.user
-			else user_id:
+			else:
 			    # If user_id is provided, get the user
 			    try:
 				user_id = int(datainput.get('user_id', 0))
