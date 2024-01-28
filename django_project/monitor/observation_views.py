@@ -349,7 +349,7 @@ def create_observations(request):
 				user = request.user
 			else:
 				# If user_id is provided, get the user
-				user_id = int(datainput.get('user_id', 0))
+				user_id = int(request.POST.get('user_id', 0))
 				try:
 					user = User.objects.get(pk=user_id)
 				except User.DoesNotExist:
