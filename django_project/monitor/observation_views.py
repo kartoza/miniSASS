@@ -342,14 +342,20 @@ def create_observations(request):
 			collector_name = datainput.get('collectorsname', '')
 			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
-			user = request.user
 
-			
 
-			if hasattr(request.user, '_wrapped') and getattr(request.user, '_wrapped', None) is not None:
-					user_id = datainput.get('user_id', 0)  # Extract user_id from form data
-					# Use user_id if available, or create a default user
+			if request.user.is_authenticated:
+				# If the user is authenticated, use request.user
+				user = request.user
+			else:
+				# If user_id is provided, get the user
+				user_id = int(datainput.get('user_id', 0))
+				try:
 					user = User.objects.get(pk=user_id)
+				except User.DoesNotExist:
+					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 			site_id_str = str(request.POST.get('siteId','0'))
