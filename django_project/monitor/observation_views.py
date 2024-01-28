@@ -353,7 +353,7 @@ def create_observations(request):
 				try:
 					user = User.objects.get(pk=user_id)
 				except User.DoesNotExist:
-					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
