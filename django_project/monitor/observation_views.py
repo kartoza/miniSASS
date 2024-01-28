@@ -345,15 +345,16 @@ def create_observations(request):
 
 
 			if request.user.is_authenticated:
-			    # If the user is authenticated, use request.user
-			    user = request.user
+				# If the user is authenticated, use request.user
+				user = request.user
 			else:
-			    # If user_id is provided, get the user
-			    try:
+				# If user_id is provided, get the user
 				user_id = int(datainput.get('user_id', 0))
-			        user = User.objects.get(pk=user_id)
-			    except User.DoesNotExist:
-			        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+				try:
+					user = User.objects.get(pk=user_id)
+				except User.DoesNotExist:
+					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 
