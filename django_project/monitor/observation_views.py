@@ -349,11 +349,11 @@ def create_observations(request):
 				user = request.user
 			else:
 				# If user_id is provided, get the user
-				user_id = int(datainput.get('user_id', 0))
+				user_id = int(request.POST.get('user_id', 0))
 				try:
 					user = User.objects.get(pk=user_id)
 				except User.DoesNotExist:
-					return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
