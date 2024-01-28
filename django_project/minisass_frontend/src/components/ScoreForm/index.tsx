@@ -11,7 +11,6 @@ import {useAuth} from "../../AuthContext";
 import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
 
-
 interface ScoreFormProps {
   onCancel: () => void;
   additionalData: {};
