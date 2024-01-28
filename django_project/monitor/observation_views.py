@@ -343,19 +343,17 @@ def create_observations(request):
 			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
 
-			if request.user.is_anonymous:
-			    # The user is not authenticated (anonymous user)
-			    user_id = int(datainput.get('user_id', 0))  # Extract user_id from form data
-			
-			    # Use user_id to get the user if provided
-			    if user_id:
-			        try:
-			            user = User.objects.get(pk=user_id)
-			        except User.DoesNotExist:
-			            return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-			else:
-			    # The user is authenticated
+
+			if request.user.is_authenticated:
+			    # If the user is authenticated, use request.user
 			    user = request.user
+			else user_id:
+			    # If user_id is provided, get the user
+			    try:
+				user_id = int(datainput.get('user_id', 0))
+			        user = User.objects.get(pk=user_id)
+			    except User.DoesNotExist:
+			        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
