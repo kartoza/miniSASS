@@ -517,7 +517,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               type="button"
                               className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
                               shape="round"
-                              color="blue_gray_500"
+                              color="red_500"
                               size="xs"
                               variant="fill"
                               // disabled upload buttons
