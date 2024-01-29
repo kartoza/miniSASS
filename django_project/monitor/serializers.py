@@ -139,7 +139,8 @@ class ObservationsSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(allow_blank=True, default='')
 
     def create(self, validated_data):
-        # Ensure that the 'comment' key is present in the validated_data
+        if 'comment' not in validated_data:
+            validated_data['comment'] = ''
         return super().create(validated_data)
      
 
