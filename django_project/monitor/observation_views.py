@@ -266,9 +266,9 @@ def upload_pest_image(request):
 								pest_image.image = image
 								pest_image.save()
 
-								p = multiprocessing.Processes(
-									target=process_image_classification, args=(image, observation, classification_results)
-								)
+								p = multiprocessing.Process(
+						                    target=process_image_classification, args=(image, observation, classification_results)
+						                )
 								processes.append(p)
 								p.start()
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
