@@ -278,10 +278,10 @@ def upload_pest_image(request):
 				for p in processes:
 					p.join()
 
+				results_list = []
 				while not classification_results.empty():
-					result = classification_results.get()
-					if not result['status'] == 'error':
-						classification_results.append(result)
+				    results_list.append(classification_results.get())
+
 
 				return JsonResponse(
 					{
@@ -289,7 +289,7 @@ def upload_pest_image(request):
 						'observation_id': observation.gid,
 						'site_id': site.gid,
 						'pest_image_id': pest_image.id,
-						'classification_results': classification_results
+						'classification_results': results_list = []
 					}
 				)
 		except ValidationError as ve:
