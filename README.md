@@ -1,4 +1,4 @@
-![Image Tag](https://img.shields.io/badge/Staging%20Image%20Tag:-v1.0.1--16eeb67--sta-blue.svg)
+![Image Tag](https://img.shields.io/badge/Staging%20Image%20Tag:-v1.0.1--70f71b7--sta-blue.svg)
 ![Jenkins Status](https://img.shields.io/badge/Staging%20Jenkins%20Build%20Status:-SUCCESS-green.svg)
 
 miniSASS
