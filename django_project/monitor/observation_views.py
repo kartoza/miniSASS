@@ -289,7 +289,7 @@ def upload_pest_image(request):
 						'observation_id': observation.gid,
 						'site_id': site.gid,
 						'pest_image_id': pest_image.id,
-						'classification_results': results_list = []
+						'classification_results': results_list
 					}
 				)
 		except ValidationError as ve:
