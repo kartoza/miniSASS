@@ -35,10 +35,15 @@ class SaveSiteImagesView(generics.CreateAPIView):
         except Site.DoesNotExist:
             return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Save images for the site
-        images = request.FILES.items()
+        # Check if the 'images' field is present in the request.FILES
+        if 'images' in request.FILES:
+            images = request.FILES.getlist('images', [])
+        else:
+            # fallback to using request.FILES.items()
+            images = request.FILES.items()
+        
         site_images = []
-
+        
         for field_name, image in images:
             try:
                 site_image = SiteImage(site=site, image=image)
@@ -47,6 +52,7 @@ class SaveSiteImagesView(generics.CreateAPIView):
                 site_images.append(site_image)
             except Exception as e:
                 return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
         return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
 

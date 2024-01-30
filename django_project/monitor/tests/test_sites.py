@@ -30,6 +30,35 @@ class SitesListCreateViewTestCase(TestCase):
         # Create a user for authentication
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
 
+    def test_multiple_image_upload(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        
+        # Create multiple SimpleUploadedFile instances as a simulation of image files
+        image_files = [
+            SimpleUploadedFile("image1.jpg", b"file_content", content_type="image/jpeg"),
+            SimpleUploadedFile("image2.jpg", b"file_content", content_type="image/jpeg"),
+        ]
+
+        # Create a dictionary to simulate the request data
+        request_data = {
+            'images': image_files,
+        }
+
+        url = reverse('save_site_images')
+
+        # Use the client to perform a POST request with the provided data
+        response = client.post(url, request_data, format='multipart')
+
+        # Check if the response status code is 201 (HTTP_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check if the images were saved in the SiteImage model
+        saved_images = SiteImage.objects.filter(site=self.site)
+
+        # Assert that the number of saved images matches the number of provided images
+        self.assertEqual(saved_images.count(), len(image_files))
+
     def test_create_site_with_images(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
