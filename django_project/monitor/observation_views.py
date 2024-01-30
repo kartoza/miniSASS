@@ -301,7 +301,6 @@ def convert_to_int(value, default=0):
 # 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 @csrf_exempt
-@login_required
 def upload_pest_image(request):
 	"""
 	This view function handles the upload of pest images, associating them with an observation and a site.
@@ -328,9 +327,19 @@ def upload_pest_image(request):
 
 				site_id = request.POST.get('siteId')
 				observation_id = request.POST.get('observationId')
-				user = request.user
 				site_id = convert_to_int(site_id)
 				observation_id = convert_to_int(observation_id)
+
+				if request.user.is_authenticated:
+					# If the user is authenticated, use request.user
+					user = request.user
+				else:
+					# If user_id is provided, get the user
+					user_id = int(request.POST.get('user_id', 0))
+					try:
+						user = User.objects.get(pk=user_id)
+					except User.DoesNotExist:
+						return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 				try:
 					site = Sites.objects.get(gid=site_id)
