@@ -792,7 +792,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           )}
         </Modal>
         
-<ManageImagesModal
+        <ManageImagesModal
           title={manageImagesModalData.groups}
           isOpen={isManageImagesModalOpen}
           onClose={closeManageImagesModal}
@@ -802,7 +802,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           aiScore={manageImagesModalData.saved_group_prediction?.confidence}
           aiGroup={manageImagesModalData.saved_group_prediction?.class}
           handleButtonClick={handleButtonClick}
-          refetchImages={true}
+          refetchImages={refetchImages}
         />
       </div>
     </>
