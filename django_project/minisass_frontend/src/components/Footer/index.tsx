@@ -7,6 +7,7 @@ import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
 import { globalVariables } from "../../utils";
+import "./styles.css"
 
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -42,6 +43,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     <>
       <footer className={props.className}>
         <div className={className}>
+          <div className={`logos-container ${className}`}>
           {!hideLogo &&
             <>
               <div
@@ -103,6 +105,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             </div>
             </>
           }
+          </div>
 
           <div className="bg-blue-900 flex flex-col items-center justify-end p-6 sm:px-5 rounded-tl-[65px]
             md:w-[105%] sm:w-[110%] w-full mt-[-75px] sm:mt-[-5px] mb-[-10px]">
