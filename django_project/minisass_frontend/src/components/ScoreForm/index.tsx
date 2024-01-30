@@ -17,6 +17,28 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface MlPrediction {
+  class: string;
+  confidence: number;
+  ml_prediction: string;
+}
+
+const initialMlPredictions: MlPrediction[] = [
+  { class: 'Flat Worms', confidence: 0 , ml_prediction: ''},
+  { class: 'Leeches', confidence: 0 , ml_prediction: ''},
+  { class: 'Crabs or Shrimps', confidence: 0 , ml_prediction: ''},
+  { class: 'Stoneflies', confidence: 0 , ml_prediction: ''},
+  { class: 'Minnow Mayflies', confidence: 0 , ml_prediction: ''},
+  { class: 'Other Mayflies', confidence: 0 , ml_prediction: ''},
+  { class: 'Damselflies', confidence: 0 , ml_prediction: ''},
+  { class: 'Dragonflies', confidence: 0 , ml_prediction: ''},
+  { class: 'Bugs or Beetles', confidence: 0 , ml_prediction: ''},
+  { class: 'Caddisflies', confidence: 0 , ml_prediction: ''},
+  { class: 'True Flies', confidence: 0 , ml_prediction: ''},
+  { class: 'Snails', confidence: 0 , ml_prediction: ''},
+  { class: 'Worms', confidence: 0 , ml_prediction: ''},
+];
+
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
@@ -31,7 +53,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [openImagePestId, setOpenImagePestId] = useState(0);
   const [pestImages, setPestImages] = useState({});
   const [isSavingData, setIsSavingData] = useState(false);
-  const [selectedPests, setSelectedPests] = useState('')
+  const [selectedPests, setSelectedPests] = useState('');
+  const [mlPredictions, setMlPredictions] = useState<MlPrediction[]>(initialMlPredictions);
   const {dispatch, state} = useAuth();
 
   const closeSuccessModal = () => {
@@ -65,7 +88,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     groups: '',
     sensetivityScore: '',
     id: '',
-    images: []
+    images: [],
+    saved_group_prediction: {}
   });
 
   const handleButtonClick = (id) => {
@@ -227,11 +251,26 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setIsManageImagesModalOpen(true);
     setRefetchImages(true)
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
+    var index_count = 0;
+    var matching_index = 0;
+    const saved_group_prediction = mlPredictions.map((prediction) => {
+      const matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+      if (matchx) {
+        matching_index=index_count
+        return {
+          'class': prediction.ml_prediction,
+          'confidence': prediction.confidence
+        }
+       }
+       index_count ++
+    });
+    
     setManageImagesModalData({
       'groups': groups,
       'sensetivityScore': sensetivityScore,
       'id': id,
-      'images': pest_images
+      'images': pest_images,
+      'saved_group_prediction': saved_group_prediction[matching_index]
     });
   };
 
@@ -302,8 +341,23 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setSiteId(response.data.site_id)
               if(response.data.classification_results[0]?.error)
                 setImageAiPrediction({'class': 'undefined', 'confidence': 0})
-              else 
+              else {
                 setImageAiPrediction(response.data.classification_results[0])
+                const updatedMlPredictions = mlPredictions.map((prediction) => {
+                const matchx = (selectedPests.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+              
+                if (matchx) {
+                    return {
+                      ...prediction,
+                      ml_prediction: response.data.classification_results[0].class,
+                      confidence: response.data.classification_results[0].confidence,
+                    };
+                  }
+                
+                  return prediction;
+                });
+                setMlPredictions(updatedMlPredictions);
+              }
               setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
@@ -542,7 +596,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                       'groups': props.name,
                                       'sensetivityScore': props.sensitivity_score,
                                       'id': props.id,
-                                      'images': pestImages[props.id]
+                                      'images': pestImages[props.id],
+                                      'saved_group_prediction': {}
                                     });
 
                                     uploadImages(pestImages)
@@ -744,8 +799,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           onSubmit={null}
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
-          aiScore={imageAiPrediction?.confidence}
-          aiGroup={imageAiPrediction?.class}
+          aiScore={manageImagesModalData.saved_group_prediction?.confidence}
+          aiGroup={manageImagesModalData.saved_group_prediction?.class}
           handleButtonClick={handleButtonClick}
           refetchImages={refetchImages}
         />
