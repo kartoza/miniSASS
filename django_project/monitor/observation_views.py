@@ -166,13 +166,139 @@ def convert_to_int(value, default=0):
 			return default
 
 
-def process_image_classification(image, observation, classification_results):
-	try:
-		result = classify_image(image)
-		classification_results.put(result)
-	except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
-		return {'status': 'error', 'message': f'Error recognizing image: {str(e)}'}
+# def process_image_classification(image, observation, classification_results):
+# 	try:
+# 		result = classify_image(image)
+# 		classification_results.put(result)
+# 	except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
+# 		return {'status': 'error', 'message': f'Error recognizing image: {str(e)}'}
 
+
+# @csrf_exempt
+# @login_required
+# def upload_pest_image(request):
+# 	"""
+# 	This view function handles the upload of pest images, associating them with an observation and a site.
+
+# 	- Creates an empty site and observation.
+# 	- Associates uploaded images with the observation.
+# 	- Returns the observation ID, site ID, and image IDs for further processing.
+
+# 	Note:
+# 	- The function saves user uploads before saving the observation to facilitate AI calculations on the images.
+# 	- The returned image IDs can be used for image deletion if the user decides to change their selection.
+
+# 	Expected Data:
+# 	- 'datainput' object: Contains additional information about the observation.
+# 	- 'observationID': Specifies the ID for the observation.
+# 	- Uploaded files: Images to be associated with the observation.
+
+# 	:param request: The HTTP request object.
+# 	:return: JsonResponse with status, observation ID, site ID, and pest image IDs.
+# 	"""
+# 	if request.method == 'POST':
+# 		try:
+# 			with transaction.atomic():
+
+# 				site_id = request.POST.get('siteId')
+# 				observation_id = request.POST.get('observationId')
+# 				user = request.user
+# 				site_id = convert_to_int(site_id)
+# 				observation_id = convert_to_int(observation_id)
+
+# 				try:
+# 					site = Sites.objects.get(gid=site_id)
+# 				except Sites.DoesNotExist:
+# 					max_site_id = Sites.objects.all().aggregate(Max('gid'))[
+# 						'gid__max']
+# 					new_site_id = max_site_id + 1 if max_site_id is not None else 1
+
+# 					site_name = request.POST.get('siteName', '')
+# 					river_name = request.POST.get('riverName', '')
+# 					description = request.POST.get('siteDescription', '')
+# 					river_cat = request.POST.get('rivercategory', 'rocky')
+# 					latitude = request.POST.get('latitude', 0)
+# 					longitude = request.POST.get('longitude', 0)
+
+# 					site = Sites(
+# 						gid=new_site_id,
+# 						the_geom=Point(x=float(longitude), y=float(latitude), srid=4326),
+# 						user=user
+# 					)
+
+# 					site.site_name = site_name
+# 					site.river_name = river_name
+# 					site.description = description
+# 					site.river_cat = river_cat
+# 					site.user = user
+# 					site.save()
+
+# 				try:
+# 					observation = Observations.objects.get(
+# 						gid=observation_id, site=site)
+# 				except Observations.DoesNotExist:
+# 					max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+# 						'gid__max']
+# 					new_observation_id = max_observation_id + \
+# 						1 if max_observation_id is not None else 1
+
+# 					observation = Observations.objects.create(
+# 						gid=new_observation_id,
+# 						site=site,
+# 						user=user,
+# 						comment='',
+# 						obs_date=datetime.now()
+# 					)
+
+# 				# Save images in the request object
+# 				processes = []
+# 				classification_results = Queue()
+# 				for key, image in request.FILES.items():
+# 					if 'pest_' in key:
+# 						group_id = key.split(':')[1]
+# 						if group_id:
+# 							group = GroupScores.objects.get(id=group_id)
+# 							pest_image = ObservationPestImage.objects.create(
+# 								observation=observation,
+# 								group=group
+# 							)
+# 							try:
+# 								pest_image.image = image
+# 								pest_image.save()
+
+# 								p = multiprocessing.Process(
+# 						                    target=process_image_classification, args=(image, observation, classification_results)
+# 						                )
+# 								processes.append(p)
+# 								p.start()
+# 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
+# 								# Handle image recognition errors
+# 								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
+
+# 				for p in processes:
+# 					p.join()
+
+# 				results_list = []
+# 				while not classification_results.empty():
+# 				    results_list.append(classification_results.get())
+
+
+# 				return JsonResponse(
+# 					{
+# 						'status': 'success',
+# 						'observation_id': observation.gid,
+# 						'site_id': site.gid,
+# 						'pest_image_id': pest_image.id,
+# 						'classification_results': results_list
+# 					}
+# 				)
+# 		except ValidationError as ve:
+# 			return JsonResponse({'status': 'error', 'message': str(ve)})
+# 		except Exception as e:
+# 			# Handle other exceptions
+# 			return JsonResponse({'status': 'error', 'message': str(e)})
+
+# 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 @csrf_exempt
 @login_required
@@ -251,8 +377,7 @@ def upload_pest_image(request):
 					)
 
 				# Save images in the request object
-				processes = []
-				classification_results = Queue()
+				classification_results = []
 				for key, image in request.FILES.items():
 					if 'pest_' in key:
 						group_id = key.split(':')[1]
@@ -266,22 +391,12 @@ def upload_pest_image(request):
 								pest_image.image = image
 								pest_image.save()
 
-								p = multiprocessing.Process(
-						                    target=process_image_classification, args=(image, observation, classification_results)
-						                )
-								processes.append(p)
-								p.start()
+								# Open the image for classification
+								result = classify_image(image)
+								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
 								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
-
-				for p in processes:
-					p.join()
-
-				results_list = []
-				while not classification_results.empty():
-				    results_list.append(classification_results.get())
-
 
 				return JsonResponse(
 					{
@@ -289,7 +404,7 @@ def upload_pest_image(request):
 						'observation_id': observation.gid,
 						'site_id': site.gid,
 						'pest_image_id': pest_image.id,
-						'classification_results': results_list
+						'classification_results': classification_results
 					}
 				)
 		except ValidationError as ve:
