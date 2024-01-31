@@ -10,7 +10,6 @@ from monitor.observation_views import (
     ObservationImageViewSet,
     get_observations_by_site,
     upload_pest_image,
-    upload_pest_image_mobile,
     delete_pest_image
 )
 from monitor.site_views import (
@@ -103,11 +102,6 @@ urlpatterns = [
         'upload-pest-images/', 
         upload_pest_image,
         name='upload-pest-images'
-    ),
-    path(
-        'upload-pest-images-mobile/', 
-        upload_pest_image_mobile,
-        name='upload-pest-images-mobile'
     ),
     path(
         'observation-images/<int:observation_pk>/delete/<int:pk>/',
