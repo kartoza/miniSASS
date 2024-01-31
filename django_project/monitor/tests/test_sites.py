@@ -29,6 +29,12 @@ class SitesListCreateViewTestCase(TestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
+        self.site = Sites.objects.create(
+            site_name='Test Site',
+            river_name='Test River',
+            the_geom=Point(0, 0),
+            user=self.user
+        )
 
     def test_multiple_image_upload(self):
         client = APIClient()
@@ -45,7 +51,7 @@ class SitesListCreateViewTestCase(TestCase):
             'images': image_files,
         }
 
-        url = reverse('save_site_images')
+        url = reverse('save_site_images', kwargs={'site_id': self.site.gid})
 
         # Use the client to perform a POST request with the provided data
         response = client.post(url, request_data, format='multipart')

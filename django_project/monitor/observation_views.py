@@ -48,6 +48,7 @@ from monitor.serializers import (
 	ObservationsAllFieldsSerializer
 )
 
+
 def clear_tensorflow_session():
 	tf.keras.backend.clear_session()
 
@@ -99,18 +100,21 @@ def retrieve_file_from_minio(file_name):
 		)
 
 		# Download the file from Minio
-		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
+		file_path = os.path.join(
+			settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
 		minio_client.fget_object(minio_bucket, file_name, file_path)
 
 		return file_path
 	except (S3Error, TypeError, ValueError):
-		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
+		file_path = os.path.join(
+			settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
 		if os.path.exists(file_path):
 			return file_path
 		else:
 			s3_client = get_s3_client()
 			try:
-				s3_client.download_file(settings.MINIO_AI_BUCKET, file_name, file_path)
+				s3_client.download_file(
+					settings.MINIO_AI_BUCKET, file_name, file_path)
 				return file_path
 			except botocore.exceptions.ClientError as e:
 				print(f"Error retrieving file from Minio: {e}")
@@ -129,6 +133,8 @@ else:
 
 # section for ai score calculations
 # TODO move this into seperate file
+
+
 def classify_image(image):
 	if not model:
 		return {'error': 'Cannot load model'}
@@ -357,7 +363,8 @@ def upload_pest_image(request):
 
 					site = Sites(
 						gid=new_site_id,
-						the_geom=Point(x=float(longitude), y=float(latitude), srid=4326),
+						the_geom=Point(x=float(longitude),
+									   y=float(latitude), srid=4326),
 						user=user
 					)
 
@@ -405,7 +412,8 @@ def upload_pest_image(request):
 								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
-								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
+								classification_results.append(
+									{'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
 
 				return JsonResponse(
 					{
@@ -489,7 +497,6 @@ def create_observations(request):
 			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
 
-
 			if request.user.is_authenticated:
 				# If the user is authenticated, use request.user
 				user = request.user
@@ -501,10 +508,7 @@ def create_observations(request):
 				except User.DoesNotExist:
 					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-			site_id_str = str(request.POST.get('siteId','0'))
+			site_id_str = str(request.POST.get('siteId', '0'))
 			selectedSite = 0
 			if site_id_str.lower() == 'undefined':
 				selectedSite = int(datainput.get('selectedSite', 0))
@@ -698,10 +702,10 @@ class ObservationRetrieveView(APIView):
 
 
 class ObservationImageViewSet(
-	mixins.RetrieveModelMixin,
-	mixins.DestroyModelMixin,
-	mixins.ListModelMixin,
-	GenericViewSet
+		mixins.RetrieveModelMixin,
+		mixins.DestroyModelMixin,
+		mixins.ListModelMixin,
+		GenericViewSet
 ):
 	"""Return images of observation"""
 	serializer_class = ObservationPestImageSerializer
@@ -720,7 +724,7 @@ class ObservationImageViewSet(
 			Observations, pk=self.kwargs['observation_pk']
 		)
 		if not request.user.is_authenticated or (
-				not request.user.is_staff and request.user != observation.user
+			not request.user.is_staff and request.user != observation.user
 		):
 			raise PermissionDenied()
 		return super().destroy(request, *args, **kwargs)
@@ -733,7 +737,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
 
 class ObservationRetrieveUpdateDeleteView(
-	generics.RetrieveUpdateDestroyAPIView
+		generics.RetrieveUpdateDestroyAPIView
 ):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
