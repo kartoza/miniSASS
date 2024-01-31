@@ -48,6 +48,7 @@ from monitor.serializers import (
 	ObservationsAllFieldsSerializer
 )
 
+
 def clear_tensorflow_session():
 	tf.keras.backend.clear_session()
 
@@ -99,18 +100,21 @@ def retrieve_file_from_minio(file_name):
 		)
 
 		# Download the file from Minio
-		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
+		file_path = os.path.join(
+			settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
 		minio_client.fget_object(minio_bucket, file_name, file_path)
 
 		return file_path
 	except (S3Error, TypeError, ValueError):
-		file_path = os.path.join(settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
+		file_path = os.path.join(
+			settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
 		if os.path.exists(file_path):
 			return file_path
 		else:
 			s3_client = get_s3_client()
 			try:
-				s3_client.download_file(settings.MINIO_AI_BUCKET, file_name, file_path)
+				s3_client.download_file(
+					settings.MINIO_AI_BUCKET, file_name, file_path)
 				return file_path
 			except botocore.exceptions.ClientError as e:
 				print(f"Error retrieving file from Minio: {e}")
@@ -129,6 +133,8 @@ else:
 
 # section for ai score calculations
 # TODO move this into seperate file
+
+
 def classify_image(image):
 	if not model:
 		return {'error': 'Cannot load model'}
@@ -357,7 +363,8 @@ def upload_pest_image(request):
 
 					site = Sites(
 						gid=new_site_id,
-						the_geom=Point(x=float(longitude), y=float(latitude), srid=4326),
+						the_geom=Point(x=float(longitude),
+									   y=float(latitude), srid=4326),
 						user=user
 					)
 
@@ -405,7 +412,8 @@ def upload_pest_image(request):
 								classification_results.append(result)
 							except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError) as e:
 								# Handle image recognition errors
-								classification_results.append({'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
+								classification_results.append(
+									{'status': 'error', 'message': f'Error recognizing image: {str(e)}'})
 
 				return JsonResponse(
 					{
@@ -421,6 +429,75 @@ def upload_pest_image(request):
 		except Exception as e:
 			# Handle other exceptions
 			return JsonResponse({'status': 'error', 'message': str(e)})
+
+	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+@csrf_exempt
+def upload_pest_image_mobile(request):
+	if request.method == 'POST':
+		try:
+			site_id = request.POST.get('siteId')
+			observation_id = request.POST.get('observationId')
+			site_id = convert_to_int(site_id)
+			observation_id = convert_to_int(observation_id)
+
+			if request.user.is_authenticated:
+				# If the user is authenticated, use request.user
+				user = request.user
+			else:
+				# If user_id is provided, get the user
+				user_id = int(request.POST.get('user_id', 0))
+				try:
+					user = User.objects.get(pk=user_id)
+				except User.DoesNotExist:
+					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+			try:
+				site = Sites.objects.get(gid=site_id)
+			except Sites.DoesNotExist:
+				return JsonResponse({'status': 'error', 'message': 'Site does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+			try:
+				observation = Observations.objects.get(
+					gid=observation_id, site=site)
+			except Observations.DoesNotExist:
+				max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+					'gid__max']
+				new_observation_id = max_observation_id + \
+					1 if max_observation_id is not None else 1
+
+				observation = Observations.objects.create(
+					gid=new_observation_id,
+					site=site,
+					user=user,
+					comment='',
+					obs_date=datetime.now()
+				)
+
+			for key, image in request.FILES.items():
+				if 'pest_' in key:
+					group_id = key.split(':')[1]
+					if group_id:
+						group = GroupScores.objects.get(id=group_id)
+						pest_image = ObservationPestImage.objects.create(
+							observation=observation,
+							group=group
+						)
+						pest_image.image = image
+						pest_image.save()
+
+			return JsonResponse(
+				{
+					'status': 'success',
+					'observation_id': observation.gid,
+					'site_id': site.gid,
+					'pest_image_id': pest_image.id
+				}
+
+			)
+		except ValidationError as ve:
+			return JsonResponse({'status': 'error', 'message': str(ve)})
 
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
@@ -489,7 +566,6 @@ def create_observations(request):
 			ml_score = datainput.get('ml_score', 0)
 			obs_date = datainput.get('date')
 
-
 			if request.user.is_authenticated:
 				# If the user is authenticated, use request.user
 				user = request.user
@@ -501,10 +577,7 @@ def create_observations(request):
 				except User.DoesNotExist:
 					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-			site_id_str = str(request.POST.get('siteId','0'))
+			site_id_str = str(request.POST.get('siteId', '0'))
 			selectedSite = 0
 			if site_id_str.lower() == 'undefined':
 				selectedSite = int(datainput.get('selectedSite', 0))
@@ -698,10 +771,10 @@ class ObservationRetrieveView(APIView):
 
 
 class ObservationImageViewSet(
-	mixins.RetrieveModelMixin,
-	mixins.DestroyModelMixin,
-	mixins.ListModelMixin,
-	GenericViewSet
+		mixins.RetrieveModelMixin,
+		mixins.DestroyModelMixin,
+		mixins.ListModelMixin,
+		GenericViewSet
 ):
 	"""Return images of observation"""
 	serializer_class = ObservationPestImageSerializer
@@ -720,7 +793,7 @@ class ObservationImageViewSet(
 			Observations, pk=self.kwargs['observation_pk']
 		)
 		if not request.user.is_authenticated or (
-				not request.user.is_staff and request.user != observation.user
+			not request.user.is_staff and request.user != observation.user
 		):
 			raise PermissionDenied()
 		return super().destroy(request, *args, **kwargs)
@@ -733,7 +806,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
 
 class ObservationRetrieveUpdateDeleteView(
-	generics.RetrieveUpdateDestroyAPIView
+		generics.RetrieveUpdateDestroyAPIView
 ):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
