@@ -39,6 +39,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     className = "flex flex-col md:gap-10 gap-28 items-center justify-center mt-2.5 w-full mt-[230px] mb-[-10px]";
   }
 
+  
   return (
     <>
       <footer className={props.className}>
