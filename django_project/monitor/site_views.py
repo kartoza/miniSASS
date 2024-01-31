@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from monitor.models import SiteImage, Sites, Assessment
+from monitor.models import SiteImage, Sites, Assessment, Observations, ObservationPestImage
 from django.contrib.gis.measure import D
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
@@ -12,8 +12,43 @@ from monitor.serializers import (
     AssessmentSerializer,
     SitesSerializer,
     SitesWithObservationsSerializer,
-    SiteImageSerializer
+    SiteImageSerializer,
+    ObservationPestImageSerializer
 )
+
+class SaveObservationImagesView(generics.CreateAPIView):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    serializer_class = ObservationPestImageSerializer
+
+    def create(self, request, *args, **kwargs):
+        # Extract site ID from the URL
+        observation_id = kwargs.get('observationId')
+
+        try:
+            observation_id = int(observation_id)
+        except ValueError:
+            return Response({'error': 'Invalid observation ID'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the observation exists
+        try:
+            observation = Observations.objects.get(gid=observation_id)
+        except Observations.DoesNotExist:
+            return Response({'error': 'observation not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        for key, image in request.FILES.items():
+				if 'pest_' in key:
+					group_id = key.split(':')[1]
+					if group_id:
+						group = GroupScores.objects.get(id=group_id)
+						pest_image = ObservationPestImage.objects.create(
+							observation=observation,
+							group=group
+						)
+						pest_image.image = image
+						pest_image.save()
+
+
+        return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
 
 
 class SaveSiteImagesView(generics.CreateAPIView):
