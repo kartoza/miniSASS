@@ -159,7 +159,7 @@ urlpatterns = [
         name='save_site_images'
     ),
     path(
-        'sites/<int:observationId>/save-images/', 
+        'observations/<int:observationId>/save-images/', 
         SaveObservationImagesView.as_view(), 
         name='save_observation_images'
     ),
