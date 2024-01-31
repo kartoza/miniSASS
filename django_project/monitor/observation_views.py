@@ -433,7 +433,6 @@ def upload_pest_image(request):
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
-@csrf_exempt
 def upload_pest_image_mobile(request):
 	if request.method == 'POST':
 		try:
