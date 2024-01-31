@@ -345,7 +345,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 setImageAiPrediction(response.data.classification_results[0])
                 const updatedMlPredictions = mlPredictions.map((prediction) => {
                 var matchx = (selectedPests.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
-                if(selectedPests.toLowerCase().replace(/\s+/g, '_') === 'snails') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails'){
+                if(selectedPests.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
                   matchx = true;
                 }
 
