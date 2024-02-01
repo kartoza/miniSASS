@@ -73,10 +73,10 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
 		# Check if the 'images' field is present in the request.FILES
 		if 'images' in request.FILES:
-			images = request.FILES.getlist('images', [])
+		    images = request.FILES.getlist('images', [])
 		else:
-			# fallback to using request.FILES directly
-			images = request.FILES.items()
+		    # fallback to using request.FILES directly
+		    images = request.FILES.values()
 
 		site_images = []
 
