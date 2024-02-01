@@ -80,7 +80,7 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
 		site_images = []
 
-		for field_name, image in images:
+		for image in images:
 		    try:
 		        # Check if the image is a tuple (field name, file)
 		        if isinstance(image, tuple):
