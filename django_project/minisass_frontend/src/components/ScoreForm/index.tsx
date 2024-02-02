@@ -93,8 +93,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   });
 
   const handleButtonClick = (id) => {
-    setIsAddMore(true)
+    setIsAddMore(true);
     setOpenImagePestId(id);
+    setRefetchImages(true); //trigger refetching of images
   };
 
   const [checkboxStates, setCheckboxStates] = useState(
