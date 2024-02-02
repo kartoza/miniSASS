@@ -89,7 +89,7 @@ type DataInputFormProps = Omit<
     resetSiteDetails: (details: {}) => void;
     useSelectOnSite: (isSelectOnSite: boolean) => void;
     setCursor: (cursor: string) => void;
-    setIsDisableNavigations: : React.Dispatch<React.SetStateAction<boolean>>;
+    setIsDisableNavigations: React.Dispatch<React.SetStateAction<boolean>>;
   }>;
 
 const inputOptionsList = [
