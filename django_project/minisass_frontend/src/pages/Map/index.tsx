@@ -37,10 +37,8 @@ const MapPage: React.FC = () => {
       setSidebarOpen(prev => {
         if(prev === false){
           setIdxActive(1)
-          setIsDisableNavigations(true);
-        }else {
-          setIsDisableNavigations(false);
         }
+        setIsDisableNavigations(!prev);
         return !prev;
       });
     } else {
