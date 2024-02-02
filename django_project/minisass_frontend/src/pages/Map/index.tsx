@@ -29,6 +29,7 @@ const MapPage: React.FC = () => {
   const details = params.get("details");
   const open_add_record = params.get("open_add_record");
   const [idxActive, setIdxActive] = useState(open_add_record ? 1 : 0);
+  const [isDisbleNavigations, setIsDisbleNavigations] = useState(false);
 
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
@@ -36,6 +37,9 @@ const MapPage: React.FC = () => {
       setSidebarOpen(prev => {
         if(prev === false){
           setIdxActive(1)
+          setIsDisbleNavigations(false);
+        }else {
+          setIsDisbleNavigations(true);
         }
         return !prev;
       });
@@ -156,7 +160,10 @@ const MapPage: React.FC = () => {
 
                   {/* navigation bar */}
                   <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
-                    <NavigationBar activePage="map" />
+                    { !isDisbleNavigations && (
+                        <NavigationBar activePage="map" 
+                      )
+                    }
                   </div>
                 </div>
               </div>
