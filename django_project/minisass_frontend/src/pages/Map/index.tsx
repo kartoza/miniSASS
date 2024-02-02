@@ -39,6 +39,7 @@ const MapPage: React.FC = () => {
           setIdxActive(1)
         }
         setIsDisableNavigations(!prev);
+        console.log('prev value ', prev);
         return !prev;
       });
     } else {
