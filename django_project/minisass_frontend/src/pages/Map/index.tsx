@@ -230,6 +230,7 @@ const MapPage: React.FC = () => {
                 resetMap={resetMap}
                 setCursor={setCursor}
                 useSelectOnSite={useSelectOnSite}
+                setIsDisableNavigations={setIsDisableNavigations}
               />
             </div>
           </div>
