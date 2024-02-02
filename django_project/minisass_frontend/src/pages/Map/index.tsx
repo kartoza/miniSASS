@@ -34,7 +34,6 @@ const MapPage: React.FC = () => {
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
     setIsDisableNavigations(!isDisableNavigations);
-    console.log('prev value ', isDisableNavigations);
     if (state.isAuthenticated) {
       setSidebarOpen(prev => {
         if(prev === false){
@@ -159,7 +158,7 @@ const MapPage: React.FC = () => {
 
                   {/* navigation bar */}
                   <div className="flex md:flex-1 flex-col gap-2 items-center justify-start mb-1.5 w-[100%] md:w-full">
-                    { isDisableNavigations && (
+                    { !isDisableNavigations && (
                         <NavigationBar activePage="map" />
                       )
                     }
