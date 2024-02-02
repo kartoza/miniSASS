@@ -52,6 +52,7 @@ type DataInputFormProps = Omit<
   | "siteDetails"
   | "resetSiteDetails"
   | "useSelectOnSite"
+  | "setIsDisableNavigations"
 > &
   Partial<{
     datainputform: string;
@@ -87,7 +88,8 @@ type DataInputFormProps = Omit<
     siteDetails: {};
     resetSiteDetails: (details: {}) => void;
     useSelectOnSite: (isSelectOnSite: boolean) => void;
-    setCursor: (cursor: string) => void
+    setCursor: (cursor: string) => void;
+    setIsDisableNavigations: : React.Dispatch<React.SetStateAction<boolean>>;
   }>;
 
 const inputOptionsList = [
@@ -417,6 +419,10 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+
+    if(proceedToSavingData)
+      props.setIsDisableNavigations(false)
+    else props.setIsDisableNavigations(true)
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
