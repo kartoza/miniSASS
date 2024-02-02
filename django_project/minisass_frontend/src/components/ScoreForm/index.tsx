@@ -349,7 +349,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 if(selectedPests.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
                   matchx = true;
                 }
-                if(selectedPests.toLowerCase().replace(/\s+/g, '_')..includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
                   matchx = true;
                 }
 
