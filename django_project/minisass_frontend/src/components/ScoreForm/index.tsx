@@ -93,8 +93,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   });
 
   const handleButtonClick = (id) => {
-    setIsAddMore(true)
+    setIsAddMore(true);
     setOpenImagePestId(id);
+    setRefetchImages(true); //trigger refetching of images
   };
 
   const [checkboxStates, setCheckboxStates] = useState(
@@ -346,6 +347,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 const updatedMlPredictions = mlPredictions.map((prediction) => {
                 var matchx = (selectedPests.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
                 if(selectedPests.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
+                  matchx = true;
+                }
+                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
                   matchx = true;
                 }
 

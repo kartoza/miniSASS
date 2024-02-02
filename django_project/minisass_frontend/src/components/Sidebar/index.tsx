@@ -18,7 +18,8 @@ interface SidebarProps {
   siteDetails: {};
   resetSiteDetails: (details: {}) => void;
   useSelectOnSite: (isSelectOnSite: boolean) => void;
-  setCursor: (cursor: string) => void
+  setCursor: (cursor: string) => void;
+  setIsDisableNavigations: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -35,7 +36,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   siteDetails,
   resetSiteDetails,
   useSelectOnSite,
-  setCursor
+  setCursor,
+  setIsDisableNavigations
 }) => {
   return (
     <div
@@ -68,6 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           resetSiteDetails={resetSiteDetails}
           useSelectOnSite={useSelectOnSite}
           setCursor={setCursor}
+          setIsDisableNavigations={setIsDisableNavigations}
         />
       )}
       
