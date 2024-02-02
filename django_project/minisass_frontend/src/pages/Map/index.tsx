@@ -33,12 +33,12 @@ const MapPage: React.FC = () => {
 
   const handleSidebarToggle = () => {
     setIsObservationDetails(false);
-    setIsDisableNavigations(!isDisableNavigations);
     if (state.isAuthenticated) {
       setSidebarOpen(prev => {
         if(prev === false){
           setIdxActive(1)
         }
+        setIsDisableNavigations(!prev);
         return !prev;
       });
     } else {
