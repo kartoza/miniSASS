@@ -73,21 +73,26 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
 		# Check if the 'images' field is present in the request.FILES
 		if 'images' in request.FILES:
-			images = request.FILES.getlist('images', [])
+		    images = request.FILES.getlist('images', [])
 		else:
-			# fallback to using request.FILES directly
-			images = request.FILES.items()
+		    # fallback to using request.FILES directly
+		    images = request.FILES.values()
 
 		site_images = []
 
 		for image in images:
-			try:
-				site_image = SiteImage(site=site, image=image)
-				site_image.full_clean()  # Validate model fields before saving
-				site_image.save()
-				site_images.append(site_image)
-			except Exception as e:
-				return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		    try:
+		        # Check if the image is a tuple (field name, file)
+		        if isinstance(image, tuple):
+		            image = image[1]
+		
+		        site_image = SiteImage(site=site, image=image)
+		        site_image.full_clean()  # Validate model fields before saving
+		        site_image.save()
+		        site_images.append(site_image)
+		    except Exception as e:
+		        return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 		return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
 
