@@ -420,10 +420,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
-    if(proceedToSavingData)
-      props.setIsDisableNavigations(true)
-    else props.setIsDisableNavigations(false)
-
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
