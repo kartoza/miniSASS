@@ -59,7 +59,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
       });
 
       setImages(filteredImages);
-      setIsBelow50(aiScore)
     }
 
   }
@@ -70,6 +69,10 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
     }
     
   }, [isOpen, refetchImages]);
+
+  useEffect(() => {
+    setIsBelow50(aiScore)
+  }, [aiGroup, aiScore]);
 
 
   function saveImages(): void {
