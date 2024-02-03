@@ -7,11 +7,16 @@ import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
 import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
+interface NavigationProps {
+    path: string;
+}
+
 function NavigationBar(props) {
   const { activePage } = props;
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+  const [navigateTo, setNavigation] = useState('/');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -31,6 +36,12 @@ function NavigationBar(props) {
 
   const handleCloseConfirm = () => {
     setIsCloseDialogOpen(false);
+    navigateTo({ path: navigateTo })
+  };
+
+  const navigateTo = ({ path }: NavigationProps): void => {
+    const navigate = useNavigate();
+    navigate(path);
   };
 
 
@@ -43,8 +54,8 @@ function NavigationBar(props) {
         open={isCloseDialogOpen}
         onClose={handleDialogCancel}
         onConfirm={handleCloseConfirm}
-        title="Confirm Close"
-        message="The observation form is open ,are you sure you want to navigate away from this page, this will cause any unsaved data to be lost?"
+        title="Confirm Navigation"
+        message="The data input form is open ,are you sure you want to navigate away from this page, this will cause any unsaved data to be lost?"
       />
       
       <AuthenticationButtons />
@@ -60,8 +71,12 @@ function NavigationBar(props) {
             color={activePage === 'home' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
-            onClick={() => { setIsCloseDialogOpen(true); navigate("/"); }}
-            disabled={props.isDisableNavigations}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+                setNavigation('/')
+              }
+            }}
           >
             Home
           </Button>
@@ -73,8 +88,12 @@ function NavigationBar(props) {
             color={activePage === 'howto' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'howto' ? 'fill' : 'outline'}
-            onClick={() => { setIsCloseDialogOpen(true); navigate("/howto") }}
-            disabled={props.isDisableNavigations}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+                setNavigation('/howto')
+              }
+            }}
           >
             How to
           </Button>
@@ -89,10 +108,9 @@ function NavigationBar(props) {
             onClick={() => { 
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
-              } 
-              navigate("/map") 
+                setNavigation('/map')
+              }
             }}
-            disabled={props.isDisableNavigations}
           >
             Map
           </Button>
@@ -116,7 +134,6 @@ function NavigationBar(props) {
 
       <div className="mb-[12px] sticky mr-[-15px]">
           <Button
-          onClick={() => navigate('/mobile-app')}
           className="cursor-pointer font-semibold leading-[normal] relative rounded-bl-[15px] rounded-tl-[15px]
           text-base text-center w-full"
           shape="square"
@@ -124,9 +141,9 @@ function NavigationBar(props) {
           size="xs"
           variant="fill"
           onClick={() => {
-            console.log('reached')
             if (props.isDisableNavigations) {
               setIsCloseDialogOpen(true);
+              setNavigation('/mobile-app')
             }
           }}
         >
