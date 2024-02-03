@@ -4,8 +4,7 @@ import AuthenticationButtons from '../../components/AuthenticationButtons';
 import { useNavigate } from "react-router-dom";
 import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
-import { ContactFormData } from '../../components/ContactFormModal/types'; 
-
+import { ContactFormData } from '../../components/ContactFormModal/types';
 
 function NavigationBar(props) {
   const { activePage } = props;
@@ -21,25 +20,12 @@ function NavigationBar(props) {
   };
 
   const handleFormSubmit = (formData: ContactFormData) => {
-    // Handle form submission (formData) here
-    console.log(formData);
+    // console.log(formData); // for debug
 
     // Close the modal after submission
     closeModal();
   };
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
-
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
-
-  // Define the replacement path
-  const replacementPath = 'static/images/';
-
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
 
   return (
     <>
@@ -57,6 +43,7 @@ function NavigationBar(props) {
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
             onClick={() => navigate("/")}
+            disabled={props.isNavigationsDisabled}
           >
             Home
           </Button>
