@@ -18,7 +18,10 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+    
+    if(props.isDisableNavigations){
+      setLogoutOpen(true);
+    } else setAnchorEl(event.currentTarget);
   };
 
   const handleClickLogout = () => {
@@ -66,13 +69,7 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { 
-          if(props.isDisableNavigations){
-            setLogoutOpen(true)
-          } else {
-            props.setUpdateProfileOpen(true)
-          }
-        }}>Profile</MenuItem>
+        <MenuItem onClick={() => props.setUpdateProfileOpen(true) }}>Profile</MenuItem>
         <MenuItem onClick={() => {
           navigate(`/recent-activity`);
         }}>
