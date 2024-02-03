@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
+import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
 function NavigationBar(props) {
   const { activePage } = props;
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -20,15 +22,31 @@ function NavigationBar(props) {
   };
 
   const handleFormSubmit = (formData: ContactFormData) => {
-    // console.log(formData); // for debug
-
-    // Close the modal after submission
     closeModal();
+  };
+
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
+
+  const handleCloseConfirm = () => {
+    setIsCloseDialogOpen(false);
   };
 
 
   return (
     <>
+      <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        value="logout"
+        open={isCloseDialogOpen}
+        onClose={handleDialogCancel}
+        onConfirm={handleCloseConfirm}
+        title="Confirm Close"
+        message="The observation form is open ,are you sure you want to navigate away from this page, this will cause any unsaved data to be lost?"
+      />
+      
       <AuthenticationButtons />
 
       <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
@@ -42,7 +60,7 @@ function NavigationBar(props) {
             color={activePage === 'home' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
-            onClick={() => navigate("/")}
+            onClick={() => { setIsCloseDialogOpen(true); navigate("/"); }}
             disabled={props.isDisableNavigations}
           >
             Home
@@ -55,7 +73,8 @@ function NavigationBar(props) {
             color={activePage === 'howto' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'howto' ? 'fill' : 'outline'}
-            onClick={() => navigate("/howto")}
+            onClick={() => { setIsCloseDialogOpen(true); navigate("/howto") }}
+            disabled={props.isDisableNavigations}
           >
             How to
           </Button>
@@ -67,7 +86,13 @@ function NavigationBar(props) {
             color={activePage === 'map' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'map' ? 'fill' : 'outline'}
-            onClick={() => navigate("/map")}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+              } 
+              navigate("/map") 
+            }}
+            disabled={props.isDisableNavigations}
           >
             Map
           </Button>
@@ -98,6 +123,12 @@ function NavigationBar(props) {
           color="blue_900"
           size="xs"
           variant="fill"
+          onClick={() => {
+            if (props.isDisableNavigations) {
+              setIsCloseDialogOpen(true);
+            }
+          }}
+          disabled={props.isDisableNavigations}
         >
           Download miniSASS App
         </Button>
