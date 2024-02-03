@@ -124,11 +124,11 @@ function NavigationBar(props) {
           size="xs"
           variant="fill"
           onClick={() => {
+            console.log('reached')
             if (props.isDisableNavigations) {
               setIsCloseDialogOpen(true);
             }
           }}
-          disabled={props.isDisableNavigations}
         >
           Download miniSASS App
         </Button>
