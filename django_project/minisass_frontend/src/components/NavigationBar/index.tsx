@@ -74,7 +74,7 @@ function NavigationBar(props) {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/')
-              }
+              } else {navigate("/")}
             }}
           >
             Home
@@ -91,7 +91,7 @@ function NavigationBar(props) {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/howto')
-              }
+              }else {navigate("/howto")}
             }}
           >
             How to
@@ -108,7 +108,7 @@ function NavigationBar(props) {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/map')
-              }
+              }else {navigate("/map")}
             }}
           >
             Map
@@ -143,7 +143,7 @@ function NavigationBar(props) {
             if (props.isDisableNavigations) {
               setIsCloseDialogOpen(true);
               setNavigation('/mobile-app')
-            }
+            }else {navigate("/mobile-app")}
           }}
         >
           Download miniSASS App
