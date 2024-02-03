@@ -18,10 +18,12 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('navigations enabled', props.isDisableNavigations)
+    setAnchorEl(event.currentTarget);
     
     if(props.isDisableNavigations){
       setLogoutOpen(true);
-    } else setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClickLogout = () => {
