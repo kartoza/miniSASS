@@ -16,7 +16,7 @@ function NavigationBar(props) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
-  const [navigateTo, setNavigation] = useState('/');
+  const [navigateLocation, setNavigation] = useState('/');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -36,11 +36,10 @@ function NavigationBar(props) {
 
   const handleCloseConfirm = () => {
     setIsCloseDialogOpen(false);
-    navigateTo({ path: navigateTo })
+    navigateTo({ path: navigateLocation })
   };
 
   const navigateTo = ({ path }: NavigationProps): void => {
-    const navigate = useNavigate();
     navigate(path);
   };
 
