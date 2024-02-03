@@ -69,7 +69,7 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => props.setUpdateProfileOpen(true) }}>Profile</MenuItem>
+        <MenuItem onClick={() => props.setUpdateProfileOpen(true) }>Profile</MenuItem>
         <MenuItem onClick={() => {
           navigate(`/recent-activity`);
         }}>
