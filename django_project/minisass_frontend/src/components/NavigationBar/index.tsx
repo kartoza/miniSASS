@@ -43,7 +43,7 @@ function NavigationBar(props) {
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
             onClick={() => navigate("/")}
-            disabled={props.isNavigationsDisabled}
+            disabled={props.isDisableNavigations}
           >
             Home
           </Button>
