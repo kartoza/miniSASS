@@ -11,7 +11,7 @@ import ConfirmationDialogRawProps from "../ConfirmationDialog";
 import ConfirmationDialogRaw from "../ConfirmationDialog";
 
 
-export default function UserMenu(props: {setUpdateProfileOpen: void}) {
+export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNavigations: boolean}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [logoutOpen, setLogoutOpen] = React.useState(false);
   const { dispatch, state } = useAuth();
@@ -66,7 +66,13 @@ export default function UserMenu(props: {setUpdateProfileOpen: void}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => props.setUpdateProfileOpen(true)}>Profile</MenuItem>
+        <MenuItem onClick={() => { 
+          if(props.isDisableNavigations){
+            setLogoutOpen(true)
+          } else {
+            props.setUpdateProfileOpen(true)
+          }
+        }}>Profile</MenuItem>
         <MenuItem onClick={() => {
           navigate(`/recent-activity`);
         }}>
