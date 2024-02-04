@@ -9,6 +9,7 @@ import { ContactFormData } from '../../components/ContactFormModal/types';
 import { globalVariables } from "../../utils";
 import "./styles.css"
 
+
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
