@@ -13,17 +13,18 @@ import ConfirmationDialogRaw from "../ConfirmationDialog";
 
 export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNavigations: boolean}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorElTemp, setAnchorTemp] = React.useState<null | HTMLElement>(null);
   const [logoutOpen, setLogoutOpen] = React.useState(false);
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
   const { dispatch, state } = useAuth();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('navigations enabled', props.isDisableNavigations)
-    setAnchorEl(event.currentTarget);
-    
+     
     if(props.isDisableNavigations){
-      setLogoutOpen(true);
-    }
+      setIsCloseDialogOpen(true)
+      setAnchorTemp(event.currentTarget)
+    } else setAnchorEl(event.currentTarget);
   };
 
   const handleClickLogout = () => {
@@ -47,6 +48,15 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
     setLogoutOpen(false)
   };
 
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
+
+  const handleCloseConfirm = () => {
+    setIsCloseDialogOpen(false);
+    setAnchorEl(anchorElTemp)
+  };
+
   return (
     <>
     <ConfirmationDialogRaw
@@ -58,6 +68,16 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
       onConfirm={handleLogoutConfirm}
       title="Log out"
       message="Are you sure you want to log out?"
+    />
+    <ConfirmationDialogRaw
+      id="confirm-dialog"
+      keepMounted
+      value="logout"
+      open={isCloseDialogOpen}
+      onClose={handleDialogCancel}
+      onConfirm={handleCloseConfirm}
+      title="Confirm Action"
+      message="The actions available on this menu will navigate away from this page, losing any unsaved data on the form. Are you sure you want to continue ?"
     />
     <div className="h-[35px] w-[35px]">
       <Img
