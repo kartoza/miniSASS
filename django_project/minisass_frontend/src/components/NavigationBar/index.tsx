@@ -57,7 +57,7 @@ function NavigationBar(props) {
         message="The data input form is open ,are you sure you want to navigate away from this page, this will cause any unsaved data to be lost?"
       />
       
-      <AuthenticationButtons />
+      <AuthenticationButtons isDisableNavigations={props.isDisableNavigations} />
 
       <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
         <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0
