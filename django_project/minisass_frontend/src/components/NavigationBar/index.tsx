@@ -4,13 +4,19 @@ import AuthenticationButtons from '../../components/AuthenticationButtons';
 import { useNavigate } from "react-router-dom";
 import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
-import { ContactFormData } from '../../components/ContactFormModal/types'; 
+import { ContactFormData } from '../../components/ContactFormModal/types';
+import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 
+interface NavigationProps {
+    path: string;
+}
 
 function NavigationBar(props) {
   const { activePage } = props;
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+  const [navigateLocation, setNavigation] = useState('/');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -21,29 +27,37 @@ function NavigationBar(props) {
   };
 
   const handleFormSubmit = (formData: ContactFormData) => {
-    // Handle form submission (formData) here
-    console.log(formData);
-
-    // Close the modal after submission
     closeModal();
   };
 
-  // Get the current URL using window.location.href
-  const currentURL = window.location.href;
+  const handleDialogCancel = () => {
+    setIsCloseDialogOpen(false)
+  };
 
-  // Extract the base URL (everything up to the first single forward slash '/')
-  const parts = currentURL.split('/');
-  const baseUrl = parts[0] + '//' + parts[2]; // Reconstruct the base URL
+  const handleCloseConfirm = () => {
+    setIsCloseDialogOpen(false);
+    navigateTo({ path: navigateLocation })
+  };
 
-  // Define the replacement path
-  const replacementPath = 'static/images/';
+  const navigateTo = ({ path }: NavigationProps): void => {
+    navigate(path);
+  };
 
-  // Construct the new URL with the replacement path
-  const newURL = baseUrl + '/' + replacementPath;
 
   return (
     <>
-      <AuthenticationButtons />
+      <ConfirmationDialogRaw
+        id="logout-dialog"
+        keepMounted
+        value="logout"
+        open={isCloseDialogOpen}
+        onClose={handleDialogCancel}
+        onConfirm={handleCloseConfirm}
+        title="Confirm Navigation"
+        message="The data input form is open ,are you sure you want to navigate away from this page, this will cause any unsaved data to be lost?"
+      />
+      
+      <AuthenticationButtons isDisableNavigations={props.isDisableNavigations} />
 
       <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
         <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0
@@ -56,7 +70,12 @@ function NavigationBar(props) {
             color={activePage === 'home' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
-            onClick={() => navigate("/")}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+                setNavigation('/')
+              } else {navigate("/")}
+            }}
           >
             Home
           </Button>
@@ -68,7 +87,12 @@ function NavigationBar(props) {
             color={activePage === 'howto' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'howto' ? 'fill' : 'outline'}
-            onClick={() => navigate("/howto")}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+                setNavigation('/howto')
+              }else {navigate("/howto")}
+            }}
           >
             How to
           </Button>
@@ -80,7 +104,12 @@ function NavigationBar(props) {
             color={activePage === 'map' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'map' ? 'fill' : 'outline'}
-            onClick={() => navigate("/map")}
+            onClick={() => { 
+              if (props.isDisableNavigations) {
+                setIsCloseDialogOpen(true);
+                setNavigation('/map')
+              }else {navigate("/map")}
+            }}
           >
             Map
           </Button>
@@ -104,13 +133,18 @@ function NavigationBar(props) {
 
       <div className="mb-[12px] sticky mr-[-15px]">
           <Button
-          onClick={() => navigate('/mobile-app')}
           className="cursor-pointer font-semibold leading-[normal] relative rounded-bl-[15px] rounded-tl-[15px]
           text-base text-center w-full"
           shape="square"
           color="blue_900"
           size="xs"
           variant="fill"
+          onClick={() => {
+            if (props.isDisableNavigations) {
+              setIsCloseDialogOpen(true);
+              setNavigation('/mobile-app')
+            }else {navigate("/mobile-app")}
+          }}
         >
           Download miniSASS App
         </Button>

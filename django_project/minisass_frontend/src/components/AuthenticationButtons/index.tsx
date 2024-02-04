@@ -12,7 +12,7 @@ import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
 
 
-function AuthenticationButtons() {
+function AuthenticationButtons(props) {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
@@ -152,7 +152,7 @@ function AuthenticationButtons() {
                 // justifyContent="center"
           >
             <Grid item xs={3} className="w-full">
-              <UserMenu setUpdateProfileOpen={setProfileModalOpen}/>
+              <UserMenu setUpdateProfileOpen={setProfileModalOpen} isDisableNavigations={props.isDisableNavigations} />
             </Grid>
           </Grid>
         ) : (
