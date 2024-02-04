@@ -255,7 +255,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     var index_count = 0;
     var matching_index = 0;
     const saved_group_prediction = mlPredictions.map((prediction) => {
-      const matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+    var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+    if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
+        matchx = true;
+      }
+      if(groups.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+          matchx = true;
+      }
+      
       if (matchx) {
         matching_index=index_count
         return {
