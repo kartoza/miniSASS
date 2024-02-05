@@ -255,7 +255,17 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     var index_count = 0;
     var matching_index = 0;
     const saved_group_prediction = mlPredictions.map((prediction) => {
-      const matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+    var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
+    if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
+        matchx = true;
+     }
+    if(groups.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+        matchx = true;
+      }
+      if(groups.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
+        matchx = true;
+      }
+      
       if (matchx) {
         matching_index=index_count
         return {
@@ -352,6 +362,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
                   matchx = true;
                 }
+                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
+                  matchx = true;
+                }
+
+                  console.log('debug match: ',matchx,' v ',selectedPests)
 
               
                 if (matchx) {
