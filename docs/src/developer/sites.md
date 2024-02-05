@@ -91,7 +91,8 @@ Returns a JSON object:
     "description": "test",
     "river_cat": "rocky",
     "time_stamp": "2023-12-01T13:41:45.930873+02:00",
-    "user": 1
+    "user": 1,
+    "images": []
 }
 ```
 
@@ -127,7 +128,7 @@ Any field can be updated on the site
 #### prerequisites
   - authenticated user or user_id supplied in the request object.
   - format:'multipart' (recommended), Form, JSON
-    - Example Payload:
+    Example Payload:
     ```
     {
         'images': image_files,
@@ -150,5 +151,6 @@ This API allows:
 - Updating a specific site (PUT METHOD WITH ID PARAMETER)
 - Creating a new site (POST METHOD WITH REQUIRED FIELDS)
 - Deleting a specific site (DELETE METHOD WITH REQUIRED FIELDS)
+- Saving images to a specific site (POST METHOD WITH SITE ID PARAM AND REQUIRED FIELDS IN REQUEST OBJECT)
 
 The API is subject to changes and improvements, so always refer back to see any updates.
