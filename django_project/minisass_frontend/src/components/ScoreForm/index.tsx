@@ -204,7 +204,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
-    console.log('checkbox id ',id)
     setCheckboxStates((prevState) => {
       const updatedCheckboxStates = {
         ...prevState,
@@ -218,15 +217,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_numberOfGroups = temp_checkedGroups.length;
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
-      console.log('newly added group ',newlyAddedGroup)
-      
-
       setCheckedGroups(temp_checkedGroups)
-      if(temp_checkedGroups.length > 0){
-        console.log('order of groups ',temp_checkedGroups)
-        console.log('debug value ',temp_checkedGroups[temp_checkedGroups.length-1].name, ' temp_checkedGroups.length ',temp_checkedGroups.length)
+      if(temp_checkedGroups.length > 0)
         setSelectedPests(newlyAddedGroup.name)
-      }
       
       // disabled upload buttons
       const newCheckedState = [...isCheckboxChecked];
@@ -260,12 +253,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const openManageImagesModal = (id, groups, sensetivityScore, pest_images) => {
     setIsManageImagesModalOpen(true);
     setRefetchImages(true)
-    console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
+    // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     var index_count = 0;
     var matching_index = 0;
     console.log('group predictions current state: ',mlPredictions)
     const saved_group_prediction = mlPredictions.map((prediction) => {
-      console.log('comparisons: groups->',groups.toLowerCase().replace(/\s+/g, '_'), ' prediction', prediction.class.toLowerCase().replace(/\s+/g, '_'))
     var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
     if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
         matchx = true;
@@ -278,7 +270,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
       
       if (matchx) {
-        console.log('index of match: ',index_count)
         matching_index=index_count
         return {
           'class': prediction.ml_prediction,
@@ -379,8 +370,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   matchx = true;
                 }
 
-                  console.log('debug match: ',matchx,' v ',selectedPests)
-
               
                 if (matchx) {
                     return {
@@ -393,7 +382,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
                   return prediction;
                 });
-                console.log('updated predictions ',updatedMlPredictions)
                 setMlPredictions(updatedMlPredictions);
               }
               setPestImages({})
