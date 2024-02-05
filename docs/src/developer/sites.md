@@ -125,10 +125,11 @@ Any field can be updated on the site
 #### Endpoint: `/monitor/sites/<site_id>/save-images/`
 
 - **POST METHOD**: uses a post method to upload images.
+  
 #### prerequisites
   - authenticated user or user_id supplied in the request object.
-  - format:'multipart' (recommended), Form, JSON
-    Example Payload:
+  - format:'multipart' (recommended), Form, JSON.
+  - Example Payload:
     ```
     {
         'images': image_files,
