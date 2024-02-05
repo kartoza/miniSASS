@@ -212,15 +212,20 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       };
 
       const temp_checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
+      // Find the newly added group
+      const newlyAddedGroup = scoreGroups.find((group) => group.id === id);
       const temp_totalScore = temp_checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
       const temp_numberOfGroups = temp_checkedGroups.length;
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
+
+      console.log('newly added group ',newlyAddedGroup)
+      
 
       setCheckedGroups(temp_checkedGroups)
       if(temp_checkedGroups.length > 0){
         console.log('order of groups ',temp_checkedGroups)
         console.log('debug value ',temp_checkedGroups[temp_checkedGroups.length-1].name, ' temp_checkedGroups.length ',temp_checkedGroups.length)
-        setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
+        setSelectedPests(newlyAddedGroup.name)
       }
       
       // disabled upload buttons
