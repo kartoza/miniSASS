@@ -258,9 +258,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
     if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
         matchx = true;
+     }
+    if(groups.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+        matchx = true;
       }
-      if(groups.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
-          matchx = true;
+      if(groups.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
+        matchx = true;
       }
       
       if (matchx) {
@@ -357,6 +360,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   matchx = true;
                 }
                 if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+                  matchx = true;
+                }
+                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
                   matchx = true;
                 }
 
