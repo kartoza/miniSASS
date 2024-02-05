@@ -216,8 +216,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
-      if(temp_checkedGroups.length > 0)
+      if(temp_checkedGroups.length > 0){
+        console.log('debug value ',temp_checkedGroups[temp_checkedGroups.length-1].name, ' temp_checkedGroups.length ',temp_checkedGroups.length)
         setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
+      }
       
       // disabled upload buttons
       const newCheckedState = [...isCheckboxChecked];
