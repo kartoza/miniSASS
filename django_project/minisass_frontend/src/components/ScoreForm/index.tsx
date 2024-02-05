@@ -366,6 +366,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   matchx = true;
                 }
 
+                  console.log('debug match: ',matchx,' v ',selectedPests)
+
               
                 if (matchx) {
                     return {
