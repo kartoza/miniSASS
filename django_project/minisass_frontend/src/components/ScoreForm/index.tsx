@@ -204,6 +204,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
+    console.log('checkbox id ',id)
     setCheckboxStates((prevState) => {
       const updatedCheckboxStates = {
         ...prevState,
@@ -217,6 +218,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       setCheckedGroups(temp_checkedGroups)
       if(temp_checkedGroups.length > 0){
+        console.log('order of groups ',temp_checkedGroups)
         console.log('debug value ',temp_checkedGroups[temp_checkedGroups.length-1].name, ' temp_checkedGroups.length ',temp_checkedGroups.length)
         setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
       }
