@@ -27,7 +27,8 @@ Returns an HTTP 200 OK and an array of the sites stored in the database.
         "description": "test",
         "river_cat": "rocky",
         "time_stamp": "2023-12-01T13:41:45.930873+02:00",
-        "user": 1
+        "user": 1,
+        "images": []
     },
     {
         "gid": 3,
@@ -37,7 +38,8 @@ Returns an HTTP 200 OK and an array of the sites stored in the database.
         "description": "testing",
         "river_cat": "rocky",
         "time_stamp": "2023-12-01T14:13:46.123655+02:00",
-        "user": 1
+        "user": 1,
+        "images": []
     }
 ]
 ```
@@ -75,7 +77,7 @@ Returns an HTTP 201 Created.
 
 ![Sites CRUD API](./img/site_crud_api.png)
 
-#### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
+#### Endpoint: `/monitor/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
 
 - **GET METHOD**: Retrieve details of a specific site by its ID.
 
@@ -96,7 +98,7 @@ Returns a JSON object:
 
 ### 4. Update a Site
 
-#### Endpoint: `/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
+#### Endpoint: `/monitor/sites/<site_id>/` (e.g., `https://{current_domain}/monitor/sites/1/`)
 
 Any field can be updated on the site
 
@@ -111,9 +113,34 @@ Any field can be updated on the site
 
 ### 5. Delete a Site
 
-#### Endpoint: `/sites/<site_id>/`
+#### Endpoint: `/monitor/sites/<site_id>/`
 
 - **DELETE METHOD**: Delete a specific site by its ID.
+
+### 6. Adding images to a Site
+
+![Sites IMAGES API](./img/save_site_images.png)
+
+#### Endpoint: `/monitor/sites/<site_id>/save-images/`
+
+- **POST METHOD**: uses a post method to upload images.
+#### prerequisites
+  - authenticated user or user_id supplied in the request object.
+  - format:'multipart' (recommended), Form, JSON
+    - Example Payload:
+    ```
+    {
+        'images': image_files,
+        'user_id': 1
+    }
+    ```
+
+#### Responses
+  - HTTP_201_CREATED: when the image/s is/are successfully saved.
+  - HTTP_400_BAD_REQUEST: invalid site id supplied (non integer ,unconvertable string char etc).
+  - HTTP_404_NOT_FOUND: no site exist with specified id.
+  - HTTP_500_INTERNAL_SERVER_ERROR: provided image is invalid or something unexpected occured.
+
 
 ## Summary
 
