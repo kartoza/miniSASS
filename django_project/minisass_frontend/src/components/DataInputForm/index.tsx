@@ -1382,7 +1382,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
         </div>
       </div>
       ): (
-        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} proceedToSavingData={proceedToSavingData} setProceedToSavingData={setProceedToSavingData} />
+        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} proceedToSavingData={proceedToSavingData} setProceedToSavingData={setProceedToSavingData} setIsDisableNavigations={setIsDisableNavigations} />
       )}
     </>
   );
