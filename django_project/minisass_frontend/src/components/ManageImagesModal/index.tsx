@@ -71,10 +71,9 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   }, [isOpen, refetchImages]);
 
   useEffect(() => {
+    console.log('ai score value ',aiScore)
     setIsBelow50(aiScore)
   }, [aiGroup, aiScore]);
-
-  console.log('ai score ',aiScore)
 
 
   function saveImages(): void {
