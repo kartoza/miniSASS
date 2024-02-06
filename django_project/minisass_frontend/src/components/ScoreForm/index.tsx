@@ -91,7 +91,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     sensetivityScore: '',
     id: '',
     images: [],
-    saved_group_prediction: {}
+    saved_group_prediction: {
+        class: '',
+        confidence: 50
+    }
   });
 
   const handleButtonClick = (id) => {
@@ -379,6 +382,16 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                       confidence: response.data.classification_results[0].confidence,
                     };
                     matchx = false
+
+                    // Update the state
+                    setManageImagesModalData(prevState => ({
+                        ...prevState,
+                        saved_group_prediction: {
+                            ...prevState.saved_group_prediction,
+                            class: response.data.classification_results[0].class,
+                            confidence: response.data.classification_results[0].confidence
+                        }
+                    }));
                   }
                 
                   return prediction;
