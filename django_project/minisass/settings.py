@@ -148,8 +148,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'minisass.tensorflow_memory_limit.TensorFlowMemoryMiddleware',
+    'minisass.tensorflow_memory_limit.TensorFlowMemoryMiddleware'
 ]
+
+# Google analytics
+GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
+GOOGLE_ANALYTICS = {
+    'google_analytics_id': os.getenv('GOOGLE_ANALYTICS_TRACKING_CODE', ''),
+}
 
 ROOT_URLCONF = 'minisass.urls'
 
@@ -197,7 +203,8 @@ INSTALLED_APPS = [
     'minisass_frontend',
     'minisass_authentication',
     'monitor',
-    'minisass'
+    'minisass',
+    'google_analytics'
 ]
 
 
