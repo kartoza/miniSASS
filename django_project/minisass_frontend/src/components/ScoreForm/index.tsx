@@ -19,6 +19,7 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setProceedToSavingData: React.Dispatch<React.SetStateAction<boolean>>;
   proceedToSavingData: boolean;
+  setIsDisableNavigations: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface MlPrediction {
@@ -44,7 +45,7 @@ const initialMlPredictions: MlPrediction[] = [
 ];
 
 
-const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData, setIsDisableNavigations }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -203,6 +204,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         }else {
           setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
+          setIsDisableNavigations(false)
         }
       }
     } catch (exception) {
@@ -489,6 +491,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     deleteObservation(parseInt(storedObservationId));
     setIsCloseDialogOpen(false);
     setSidebarOpen(false);
+    setIsDisableNavigations(false)
   };
 
   const handleDialogCancel = () => {
