@@ -211,13 +211,15 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       };
 
       const temp_checkedGroups = scoreGroups.filter((group) => updatedCheckboxStates[group.id]);
+      // Find the newly added group
+      const newlyAddedGroup = scoreGroups.find((group) => group.id === id);
       const temp_totalScore = temp_checkedGroups.reduce((acc, curr) => acc + parseFloat(curr.sensitivity_score), 0);
       const temp_numberOfGroups = temp_checkedGroups.length;
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
       if(temp_checkedGroups.length > 0)
-        setSelectedPests(temp_checkedGroups[temp_checkedGroups.length-1].name)
+        setSelectedPests(newlyAddedGroup.name)
       
       // disabled upload buttons
       const newCheckedState = [...isCheckboxChecked];
@@ -251,12 +253,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const openManageImagesModal = (id, groups, sensetivityScore, pest_images) => {
     setIsManageImagesModalOpen(true);
     setRefetchImages(true)
-    console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
+    // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     var index_count = 0;
     var matching_index = 0;
     console.log('group predictions current state: ',mlPredictions)
     const saved_group_prediction = mlPredictions.map((prediction) => {
-      console.log('comparisons: groups->',groups.toLowerCase().replace(/\s+/g, '_'), ' prediction', prediction.class.toLowerCase().replace(/\s+/g, '_'))
     var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
     if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
         matchx = true;
@@ -269,7 +270,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
       
       if (matchx) {
-        console.log('index of match: ',index_count)
         matching_index=index_count
         return {
           'class': prediction.ml_prediction,
@@ -370,8 +370,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   matchx = true;
                 }
 
-                  console.log('debug match: ',matchx,' v ',selectedPests)
-
               
                 if (matchx) {
                     return {
@@ -384,7 +382,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
                   return prediction;
                 });
-                console.log('updated predictions ',updatedMlPredictions)
                 setMlPredictions(updatedMlPredictions);
               }
               setPestImages({})
