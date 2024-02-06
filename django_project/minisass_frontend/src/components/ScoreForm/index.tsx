@@ -9,6 +9,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import {useAuth} from "../../AuthContext";
 import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 interface ScoreFormProps {
@@ -58,6 +60,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [selectedPests, setSelectedPests] = useState('');
   const [mlPredictions, setMlPredictions] = useState<MlPrediction[]>(initialMlPredictions);
   const {dispatch, state} = useAuth();
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -309,6 +312,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [imageAiPrediction, setImageAiPrediction] = useState({});
 
   const uploadImages = async (pestImages) => {
+    setIsUploadingImage(true)
 
     for (const key in pestImages) {
       if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
@@ -361,6 +365,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             );
         
             if(response.status == 200){
+              setIsUploadingImage(false)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
               if(response.data.classification_results[0]?.error)
@@ -626,44 +631,46 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 }/>
                               </>
                           )}
-                          {buttonState.showManageImages && (
-                            <><Button
-                              type="button"
-                              className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                              shape="round"
-                              color="red_500"
-                              size="xs"
-                              variant="fill"
-                              // disabled upload buttons
-                              disabled={!isCheckboxChecked[props.id] ? true : false}
-                              style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id]  ? 1 : 0.5 }}
-                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
-                            >
-                              Manage Images
-                              {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
-                            </Button><UploadModal
-                                key={`image-${props.id}`}
-                                isOpen={openImagePestId === props.id && isAddMore}
-                                onClose={closeUploadModal}
-                                onSubmit={
-                                  
-                                  files => {
-                                    pestImages[props.id] = files;
-                                    setPestImages({ ...pestImages });
-                                    setOpenImagePestId(0);
-                                    setIsAddMore(false);
-                                    setManageImagesModalData({
-                                      'groups': props.name,
-                                      'sensetivityScore': props.sensitivity_score,
-                                      'id': props.id,
-                                      'images': pestImages[props.id],
-                                      'saved_group_prediction': {}
-                                    });
-
-                                    uploadImages(pestImages)
-
-                                  } } /></>
+                          {isUploadingImage ? (
+                              <CircularProgress />
+                          ) : (
+                              <Button
+                                  type="button"
+                                  className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                                  shape="round"
+                                  color="red_500"
+                                  size="xs"
+                                  variant="fill"
+                                  // disabled upload buttons
+                                  disabled={!isCheckboxChecked[props.id] ? true : false}
+                                  style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5 }}
+                                  onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
+                              >
+                                  Manage Images
+                                  {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
+                              </Button>
                           )}
+                          
+                          <UploadModal
+                              key={`image-${props.id}`}
+                              isOpen={openImagePestId === props.id && isAddMore}
+                              onClose={closeUploadModal}
+                              onSubmit={files => {
+                                  pestImages[props.id] = files;
+                                  setPestImages({ ...pestImages });
+                                  setOpenImagePestId(0);
+                                  setIsAddMore(false);
+                                  setManageImagesModalData({
+                                      groups: props.name,
+                                      sensetivityScore: props.sensitivity_score,
+                                      id: props.id,
+                                      images: pestImages[props.id],
+                                      saved_group_prediction: {}
+                                  });
+                                  uploadImages(pestImages);
+                              }}
+                          />
+
                         </React.Fragment>
                       );
                     }
