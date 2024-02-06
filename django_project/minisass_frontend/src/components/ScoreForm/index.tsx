@@ -642,7 +642,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                           {buttonState.showManageImages && (
                           <>
                               {isUploadingImage ? (
-                                  <CircularProgress style={{ color: '#288b31', marginLeft: '15px' }} />
+                                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <CircularProgress style={{ color: '#288b31' }} />
+                                </div>
                               ) : (
                                   <>
                                       <Button
