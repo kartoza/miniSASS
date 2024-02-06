@@ -393,6 +393,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                         }
                     }));
                   }
+
+                  console.log('saved values ',manageImagesModalData)
                 
                   return prediction;
                 });
