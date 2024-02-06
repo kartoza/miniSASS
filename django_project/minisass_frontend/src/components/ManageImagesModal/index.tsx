@@ -71,6 +71,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
   useEffect(() => {
     if(isOpen && refetchImages){
+      console.log('current ai group and score ',aiGroup, ' ',aiScore)
       fetch_observation_images()
     }
     
