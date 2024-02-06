@@ -280,6 +280,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           'confidence': prediction.confidence
         }
         matchx = false
+        const data = {
+          'class': prediction.ml_prediction,
+          'confidence': prediction.confidence
+        }
+        localStorage.setItem('manageImagesModalData', JSON.stringify(data));
        }
        index_count ++
     });
