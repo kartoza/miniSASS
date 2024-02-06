@@ -283,11 +283,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           'confidence': prediction.confidence
         }
         matchx = false
-        const data = {
-          'class': prediction.ml_prediction,
-          'confidence': prediction.confidence
-        }
-        localStorage.setItem('manageImagesModalData', JSON.stringify(data));
        }
        index_count ++
     });
@@ -405,6 +400,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   }
 
                   console.log('saved values ',manageImagesModalData)
+
+                  const data = {
+                    'class': response.data.classification_results[0].class,
+                    'confidence': response.data.classification_results[0].confidence
+                  }
+                  localStorage.setItem('manageImagesModalData', JSON.stringify(data));
                 
                   return prediction;
                 });
