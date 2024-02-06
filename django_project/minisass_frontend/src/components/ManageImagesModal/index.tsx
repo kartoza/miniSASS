@@ -49,13 +49,19 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
       });
 
       filteredImages.forEach((image) => {
-        if(image.pest_name.toLowerCase().replace(/\s+/g, '_') !== title.toLowerCase().replace(/\s+/g, '_')){
-          if(aiGroup.toLowerCase().replace(/\s+/g, '_') !== 'snails_clams_mussels')
-            setIsGroupMatching(false)
-          else setIsGroupMatching(true)
-        }else {
+        if(image.pest_name.toLowerCase().replace(/\s+/g, '_') === aiGroup.toLowerCase().replace(/\s+/g, '_')){
           setIsGroupMatching(true)
-        }
+        } else
+        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
+            setIsGroupMatching(true)
+        }else
+        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
+            setIsGroupMatching(true)
+        }else
+        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('snails')){
+            setIsGroupMatching(true)
+        }else setIsGroupMatching(false)
+        
       });
 
       setImages(filteredImages);
@@ -65,16 +71,16 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
   useEffect(() => {
     if(isOpen && refetchImages){
+      console.log('current ai group and score ',aiGroup, ' ',aiScore)
       fetch_observation_images()
     }
     
   }, [isOpen, refetchImages]);
 
   useEffect(() => {
+    console.log('ai score value ',aiScore)
     setIsBelow50(aiScore)
   }, [aiGroup, aiScore]);
-
-  console.log('ai score ',aiScore)
 
 
   function saveImages(): void {
@@ -131,7 +137,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : (!isGroupMatching && aiScore < 50 ? 'border-2 border-red-500' : '')}`}>
+                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : (isGroupMatching && aiScore < 50 ? 'border-2 border-red-500' : '')}`}>
                     <Img
                         className="h-28 md:h-auto object-cover w-28"
                         key={`${image.pest_id}`}
