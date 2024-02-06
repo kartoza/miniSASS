@@ -328,7 +328,7 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 1. **pest_0:10** Represents a pest image. If uploading multiple pest images, it would be `pest_0`, `pest_1`, etc.
 -  ":10" is the id of the group to which the pest should be uploaded to.
 - ``` grouping ids 
-    bugs or beetles: 10 (staging) , 23 (production)
+    bugs or beetles: 10 (staging), 23 (production)
     Caddisflies: 11 (staging), 24 (production)
     crabs or shrimps: 4 (staging), 17 (production)
     Damselflies: 8 (staging), 21 (production)
