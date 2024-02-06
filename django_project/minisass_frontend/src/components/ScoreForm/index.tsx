@@ -24,19 +24,19 @@ interface MlPrediction {
 }
 
 const initialMlPredictions: MlPrediction[] = [
-  { class: 'Flat Worms', confidence: 0 , ml_prediction: ''},
-  { class: 'Leeches', confidence: 0 , ml_prediction: ''},
-  { class: 'Crabs or Shrimps', confidence: 0 , ml_prediction: ''},
-  { class: 'Stoneflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Minnow Mayflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Other Mayflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Damselflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Dragonflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Bugs or Beetles', confidence: 0 , ml_prediction: ''},
-  { class: 'Caddisflies', confidence: 0 , ml_prediction: ''},
-  { class: 'True Flies', confidence: 0 , ml_prediction: ''},
-  { class: 'Snails', confidence: 0 , ml_prediction: ''},
-  { class: 'Worms', confidence: 0 , ml_prediction: ''},
+  { class: 'Flat Worms', confidence: 50 , ml_prediction: ''},
+  { class: 'Leeches', confidence: 50 , ml_prediction: ''},
+  { class: 'Crabs or Shrimps', confidence: 50 , ml_prediction: ''},
+  { class: 'Stoneflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Minnow Mayflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Other Mayflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Damselflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Dragonflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Bugs or Beetles', confidence: 50 , ml_prediction: ''},
+  { class: 'Caddisflies', confidence: 50 , ml_prediction: ''},
+  { class: 'True Flies', confidence: 50 , ml_prediction: ''},
+  { class: 'Snails', confidence: 50 , ml_prediction: ''},
+  { class: 'Worms', confidence: 50 , ml_prediction: ''},
 ];
 
 
@@ -399,12 +399,23 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   }
 
   useEffect(() => {
+      const handleUnload = () => {
+          const storedObservationId = localStorage.getItem('observationId') || 0;
+          deleteObservation(parseInt(storedObservationId));
+      };
+  
+      window.addEventListener('unload', handleUnload);
+  
+      return () => {
+          window.removeEventListener('unload', handleUnload);
+      };
+  }, []);
+
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (proceedToSavingData) {
         const message = "You have unsaved data, are you sure you want to leave?";
         event.returnValue = message;
-        const storedObservationId = localStorage.getItem('observationId') || 0;
-        deleteObservation(parseInt(storedObservationId));
         return message;
         
       }
