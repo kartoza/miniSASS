@@ -383,7 +383,7 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 
 - Example payload
 ```json
-"observationdId": 1 , //the id of the observation to which the images will be attached
+"observationdId": 1, //the id of the observation to which the images will be attached
 "pest_0:10": (binary) // selected image file
 ```
 
