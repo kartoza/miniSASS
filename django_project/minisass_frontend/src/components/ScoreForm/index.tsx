@@ -24,19 +24,19 @@ interface MlPrediction {
 }
 
 const initialMlPredictions: MlPrediction[] = [
-  { class: 'Flat Worms', confidence: 0 , ml_prediction: ''},
-  { class: 'Leeches', confidence: 0 , ml_prediction: ''},
-  { class: 'Crabs or Shrimps', confidence: 0 , ml_prediction: ''},
-  { class: 'Stoneflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Minnow Mayflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Other Mayflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Damselflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Dragonflies', confidence: 0 , ml_prediction: ''},
-  { class: 'Bugs or Beetles', confidence: 0 , ml_prediction: ''},
-  { class: 'Caddisflies', confidence: 0 , ml_prediction: ''},
-  { class: 'True Flies', confidence: 0 , ml_prediction: ''},
-  { class: 'Snails', confidence: 0 , ml_prediction: ''},
-  { class: 'Worms', confidence: 0 , ml_prediction: ''},
+  { class: 'Flat Worms', confidence: 50 , ml_prediction: ''},
+  { class: 'Leeches', confidence: 50 , ml_prediction: ''},
+  { class: 'Crabs or Shrimps', confidence: 50 , ml_prediction: ''},
+  { class: 'Stoneflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Minnow Mayflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Other Mayflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Damselflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Dragonflies', confidence: 50 , ml_prediction: ''},
+  { class: 'Bugs or Beetles', confidence: 50 , ml_prediction: ''},
+  { class: 'Caddisflies', confidence: 50 , ml_prediction: ''},
+  { class: 'True Flies', confidence: 50 , ml_prediction: ''},
+  { class: 'Snails', confidence: 50 , ml_prediction: ''},
+  { class: 'Worms', confidence: 50 , ml_prediction: ''},
 ];
 
 
@@ -256,7 +256,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     var index_count = 0;
     var matching_index = 0;
-    console.log('group predictions current state: ',mlPredictions)
     const saved_group_prediction = mlPredictions.map((prediction) => {
     var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
     if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
@@ -398,6 +397,19 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
     }
   }
+
+  useEffect(() => {
+      const handleUnload = () => {
+          const storedObservationId = localStorage.getItem('observationId') || 0;
+          deleteObservation(parseInt(storedObservationId));
+      };
+  
+      window.addEventListener('unload', handleUnload);
+  
+      return () => {
+          window.removeEventListener('unload', handleUnload);
+      };
+  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
