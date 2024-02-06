@@ -434,7 +434,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
       props.setSidebarOpen(false);
       props.resetMap();
       props.setCursor('');
-      props.setIsDisableNavigations(false);
       setProceedToSavingData(false)
     }
   };
@@ -442,6 +441,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleCloseConfirm = () => {
     setIsCloseDialogOpen(false)
     props.setSidebarOpen(false)
+    props.setIsDisableNavigations(false);
   };
 
   const handleDialogCancel = () => {
