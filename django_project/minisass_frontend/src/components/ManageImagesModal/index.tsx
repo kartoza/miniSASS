@@ -152,7 +152,9 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {isFetchingImages ? (
-                <CircularProgress style={{ color: '#288b31' , marginLeft: '15px', marginTop: '10px' }} />
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
+                  <CircularProgress style={{ color: '#288b31' }} />
+              </div>
             ) : (
                 imageUrls
                     .filter(image => image.pest_name === title)
