@@ -434,7 +434,8 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
     else {
       props.setSidebarOpen(false);
       props.resetMap();
-      props.setCursor('')
+      props.setCursor('');
+      setProceedToSavingData(false)
     }
   };
 
