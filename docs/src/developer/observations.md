@@ -19,7 +19,7 @@ The Observations API facilitates users in creating observations for various site
 The API expects a JSON payload containing the following fields:
 
 - `create_site_or_observation`: variable containing true or false value on whether to create a new site and attach an observation to it or use an existing one.
-- `siteId`: interger value provided create_site_or_observation is false.
+- `siteId`: integer value provided create_site_or_observation is false.
 - `image_0`: these can be added from _0 to _10 or more. This is for attaching site images which will be retrieved from the request object.
 - `user_id`: variable containing user id if not authenticated.
 - `data`: object containing all the data below.
