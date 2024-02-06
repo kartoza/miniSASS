@@ -139,7 +139,7 @@ Any field can be updated on the site
 
 #### Responses
   - HTTP_201_CREATED: when the image/s is/are successfully saved.
-  - HTTP_400_BAD_REQUEST: invalid site id supplied (non integer ,unconvertable string char etc).
+  - HTTP_400_BAD_REQUEST: invalid site id supplied (non integer, unconvertable string char etc).
   - HTTP_404_NOT_FOUND: no site exist with specified id.
   - HTTP_500_INTERNAL_SERVER_ERROR: provided image is invalid or something unexpected occurred.
 
