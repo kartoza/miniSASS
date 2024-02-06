@@ -71,9 +71,10 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   }, [isOpen, refetchImages]);
 
   useEffect(() => {
-    console.log('ai score ',aiScore)
     setIsBelow50(aiScore)
   }, [aiGroup, aiScore]);
+
+  console.log('ai score ',aiScore)
 
 
   function saveImages(): void {
@@ -130,7 +131,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : ''} ${isGroupMatching && isScoreBelow50 < 50 ? 'border-2 border-red-500' : ''}`}>
+                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : ''} ${isGroupMatching && aiScore < 50 ? 'border-2 border-red-500' : ''}`}>
                     <Img
                         className="h-28 md:h-auto object-cover w-28"
                         key={`${image.pest_id}`}
