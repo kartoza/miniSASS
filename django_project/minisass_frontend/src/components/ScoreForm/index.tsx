@@ -16,6 +16,7 @@ interface ScoreFormProps {
   additionalData: {};
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setProceedToSavingData: React.Dispatch<React.SetStateAction<boolean>>;
+  proceedToSavingData: boolean;
 }
 
 interface MlPrediction {
@@ -41,7 +42,7 @@ const initialMlPredictions: MlPrediction[] = [
 ];
 
 
-const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
