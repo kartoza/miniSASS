@@ -636,10 +636,11 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 }/>
                               </>
                           )}
-                          {isUploadingImage ? (
-                              <CircularProgress style={{ color: '#288b31' ,marginLeft: '5px' }} />
-                          ) : (
-                              buttonState.showManageImages && (
+                          {buttonState.showManageImages && (
+                          <>
+                              {isUploadingImage ? (
+                                  <CircularProgress style={{ color: '#288b31', marginLeft: '15px' }} />
+                              ) : (
                                   <>
                                       <Button
                                           type="button"
@@ -649,7 +650,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                           size="xs"
                                           variant="fill"
                                           // disabled upload buttons
-                                          disabled={!isCheckboxChecked[props.id]}
+                                          disabled={!isCheckboxChecked[props.id] ? true : false}
                                           style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5 }}
                                           onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
                                       >
@@ -676,8 +677,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                           }}
                                       />
                                   </>
-                              )
-                          )}
+                              )}
+                          </>
+                      )}
+
                         </React.Fragment>
                       );
                     }
