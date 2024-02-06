@@ -60,7 +60,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
         }else
         if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('snails')){
             setIsGroupMatching(true)
-        }
+        }else setIsGroupMatching(false)
         
       });
 
