@@ -870,6 +870,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           aiGroup={manageImagesModalData.saved_group_prediction?.class}
           handleButtonClick={handleButtonClick}
           refetchImages={refetchImages}
+          isUploadingImage={isUploadingImage}
         />
       </div>
     </>
