@@ -256,7 +256,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
     var index_count = 0;
     var matching_index = 0;
-    console.log('group predictions current state: ',mlPredictions)
     const saved_group_prediction = mlPredictions.map((prediction) => {
     var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
     if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
@@ -404,6 +403,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       if (proceedToSavingData) {
         const message = "You have unsaved data, are you sure you want to leave?";
         event.returnValue = message;
+        const storedObservationId = localStorage.getItem('observationId') || 0;
+        deleteObservation(parseInt(storedObservationId));
         return message;
         
       }
