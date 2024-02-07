@@ -12,7 +12,6 @@ import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-
 interface ScoreFormProps {
   onCancel: () => void;
   additionalData: {};
@@ -21,28 +20,6 @@ interface ScoreFormProps {
   proceedToSavingData: boolean;
   setIsDisableNavigations: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-interface MlPrediction {
-  class: string;
-  confidence: number;
-  ml_prediction: string;
-}
-
-const initialMlPredictions: MlPrediction[] = [
-  { class: 'Flat Worms', confidence: 50 , ml_prediction: ''},
-  { class: 'Leeches', confidence: 50 , ml_prediction: ''},
-  { class: 'Crabs or Shrimps', confidence: 50 , ml_prediction: ''},
-  { class: 'Stoneflies', confidence: 50 , ml_prediction: ''},
-  { class: 'Minnow Mayflies', confidence: 50 , ml_prediction: ''},
-  { class: 'Other Mayflies', confidence: 50 , ml_prediction: ''},
-  { class: 'Damselflies', confidence: 50 , ml_prediction: ''},
-  { class: 'Dragonflies', confidence: 50 , ml_prediction: ''},
-  { class: 'Bugs or Beetles', confidence: 50 , ml_prediction: ''},
-  { class: 'Caddisflies', confidence: 50 , ml_prediction: ''},
-  { class: 'True Flies', confidence: 50 , ml_prediction: ''},
-  { class: 'Snails', confidence: 50 , ml_prediction: ''},
-  { class: 'Worms', confidence: 50 , ml_prediction: ''},
-];
 
 
 const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData, setIsDisableNavigations }) => {
@@ -96,11 +73,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     groups: '',
     sensetivityScore: '',
     id: '',
-    images: [],
-    saved_group_prediction: {
-        class: '',
-        confidence: 50
-    }
+    images: []
   });
 
   const handleButtonClick = (id) => {
@@ -268,37 +241,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setIsManageImagesModalOpen(true);
     setRefetchImages(true)
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
-    var index_count = 0;
-    var matching_index = 0;
-    const saved_group_prediction = mlPredictions.map((prediction) => {
-    var matchx = (groups.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
-    if(groups.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
-        matchx = true;
-     }
-    if(groups.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
-        matchx = true;
-      }
-      if(groups.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
-        matchx = true;
-      }
-      
-      if (matchx) {
-        matching_index=index_count
-        return {
-          'class': prediction.ml_prediction,
-          'confidence': prediction.confidence
-        }
-        matchx = false
-       }
-       index_count ++
-    });
     
     setManageImagesModalData({
       'groups': groups,
       'sensetivityScore': sensetivityScore,
       'id': id,
-      'images': pest_images,
-      'saved_group_prediction': saved_group_prediction[matching_index]
+      'images': pest_images
     });
   };
 
@@ -310,7 +258,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
-  const [imageAiPrediction, setImageAiPrediction] = useState({});
 
   const uploadImages = async (pestImages) => {
     setIsUploadingImage(true)
@@ -369,59 +316,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               setIsUploadingImage(false)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
-              if(response.data.classification_results[0]?.error)
-                setImageAiPrediction({'class': 'undefined', 'confidence': 0})
-              else {
-                setImageAiPrediction(response.data.classification_results[0])
-                const updatedMlPredictions = mlPredictions.map((prediction) => {
-                var matchx = (selectedPests.toLowerCase().replace(/\s+/g, '_') === prediction.class.toLowerCase().replace(/\s+/g, '_'));
-                if(selectedPests.toLowerCase().replace(/\s+/g, '_') === 'snails' && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('snails')){
-                  matchx = true;
-                }
-                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('crabs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
-                  matchx = true;
-                }
-                if(selectedPests.toLowerCase().replace(/\s+/g, '_').includes('bugs') && prediction.class.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
-                  matchx = true;
-                }
-
-              
-                if (matchx) {
-                    return {
-                      ...prediction,
-                      ml_prediction: response.data.classification_results[0].class,
-                      confidence: response.data.classification_results[0].confidence,
-                    };
-                    matchx = false
-
-                    // Update the state
-                    setManageImagesModalData(prevState => ({
-                        ...prevState,
-                        saved_group_prediction: {
-                            ...prevState.saved_group_prediction,
-                            class: response.data.classification_results[0].class,
-                            confidence: response.data.classification_results[0].confidence
-                        }
-                    }));
-                  }
-
-                  const data = {
-                    'class': response.data.classification_results[0].class,
-                    'confidence': response.data.classification_results[0].confidence
-                  }
-                  localStorage.setItem('manageImagesModalData', JSON.stringify(data));
-                
-                  return prediction;
-                });
-                setMlPredictions(updatedMlPredictions);
-              }
               setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
               localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
               setRefetchImages(true)
             }
-
           }catch( exception ){
             console.log(exception.message);
           }
@@ -879,8 +779,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           onSubmit={null}
           id={manageImagesModalData.id}
           sensivityScore={manageImagesModalData.sensetivityScore}
-          aiScore={manageImagesModalData.saved_group_prediction?.confidence}
-          aiGroup={manageImagesModalData.saved_group_prediction?.class}
           handleButtonClick={handleButtonClick}
           refetchImages={refetchImages}
         />

@@ -247,6 +247,8 @@ class ObservationPestImage(models.Model):
         upload_to=observation_pest_image_path, max_length=250, storage=settings.MINION_STORAGE
     )
     valid = models.BooleanField(default=False)
+    ml_prediction = models.CharField(max_length=255, null=True, blank=True)
+    ml_score = models.FloatField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Check image as valid if uploaded by expert.
