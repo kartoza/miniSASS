@@ -62,7 +62,8 @@ class UserProfile(models.Model):
     )
     expert_approval_status = models.CharField(
         default=REJECTED_STATUS,
-        choices=EXPERT_APPROVAL_STATUS
+        choices=EXPERT_APPROVAL_STATUS,
+        max_length=255
     )
     certificate = models.FileField(
         null=True, blank=True,
