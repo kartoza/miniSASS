@@ -124,12 +124,17 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                         console.log('values in image ',image)
                         const mlPrediction = image.ml_prediction;
                         const mlScore = image.ml_score;
-                        const isMlPredictionMatching = mlPrediction.includes(title.toLowerCase().replace(/\s+/g, '_'));
+                        var isMlPredictionMatching = image.ml_prediction === image.pest_name.toLowerCase().replace(/\s+/g, '_'));
+                        if(image.ml_prediction.includes('crabs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs'))
+                          isMlPredictionMatching = true
+                        else if(image.ml_prediction.includes('snails') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails'))
+                          isMlPredictionMatching = true
+
                         const isScoreBelow50 = mlScore < 50;
 
                         console.log('isMlPredictionMatching ',isMlPredictionMatching)
                         console.log('isScoreBelow50 ',isScoreBelow50)
-                        console.log('title ',title, ' vs ',mlPrediction)
+                        console.log('pest_name ',image.pest_name, ' vs ',mlPrediction)
             
                         return (
                             <div 
@@ -199,7 +204,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                   className="text-base text-black-900 tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular16Black900"
               >
-                  {imageUrls.length > 0 ? imageUrls[imageUrls.length - 1].ml_prediction : 'no prediction saved on image'}
+                  {imageUrls.length > 0 ? imageUrls[0].ml_prediction : 'no prediction saved on image'}
               </Text>
           </div>
           </div>
