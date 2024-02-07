@@ -13,8 +13,6 @@ interface ManageImageProps {
   onClose: () => void;
   onSubmit: any;
   sensivityScore: string;
-  aiScore: number;
-  aiGroup: string;
   handleButtonClick: (id: any) => void;
   refetchImages: boolean;
 }
@@ -33,10 +31,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
 
   const [imageUrls, setImages] = useState([])
-  const [isGroupMatching, setIsGroupMatching] = useState(false)
-  const [isScoreBelow50, setIsBelow50] = useState(0)
   const [isFetchingImages, setIsFetchingImages] = useState(false)
-  const [savedPrediction, setSavedPrediction] = useState('')
 
   const fetch_observation_images = async () => {
     setIsFetchingImages(true)
@@ -51,42 +46,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
         return image.pest_name.toLowerCase().replace(/\s+/g, '_') === formattedTitle;
       });
-
-      const savedData = JSON.parse(localStorage.getItem('manageImagesModalData'));
-      console.log('debug saved data ',savedData)
-
-      filteredImages.forEach((image) => {
-          if (savedData) {
-              if (image.pest_name.toLowerCase().replace(/\s+/g, '_') === savedData.class?.toLowerCase().replace(/\s+/g, '_')) {
-                  setIsGroupMatching(true);
-                  setSavedPrediction(savedData.class)
-                  setIsBelow50(savedData.confidence);
-              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('crabs')) {
-                  setIsGroupMatching(true);
-                  setSavedPrediction(savedData.class)
-                  setIsBelow50(savedData.confidence);
-              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('bugs')) {
-                  setIsGroupMatching(true);
-                  setSavedPrediction(savedData.class)
-                  setIsBelow50(savedData.confidence);
-              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('snails')) {
-                  setIsGroupMatching(true);
-                  setSavedPrediction(savedData.class)
-                  setIsBelow50(savedData.confidence);
-              } else {
-                  setIsGroupMatching(false);
-                  setSavedPrediction(savedData.class)
-                  setIsBelow50(savedData.confidence);
-              }
-          } else {
-              setIsGroupMatching(false);
-              setSavedPrediction(aiGroup)
-              setIsBelow50(0);
-          }
-      });
-
-      console.log('debug assignments ',savedPrediction, ' score ',isScoreBelow50)
-    
       setImages(filteredImages);
       setIsFetchingImages(false)
     }
@@ -99,10 +58,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
     }
     
   }, [isOpen, refetchImages]);
-
-  useEffect(() => {
-    setIsBelow50(aiScore)
-  }, [aiGroup, aiScore]);
 
 
   function saveImages(): void {
@@ -160,35 +115,40 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
 
             {isFetchingImages ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <CircularProgress style={{ color: '#288b31' }} />
-              </div>
+                    <CircularProgress style={{ color: '#288b31' }} />
+                </div>
             ) : (
                 imageUrls
-                  .filter(image => image.pest_name === title)
-                  .map((image, index) => (
-                      <div 
-                          key={`${image.pest_id}`} 
-                          className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full 
-                              ${(!isGroupMatching || (isGroupMatching && isScoreBelow50 < 50)) ? 'border-2 border-red-500' : ''}
-                          `}
-                      >
-                          <span>{image.pest_name}</span>
-                          <span>{title}</span>
-                          <Img
-                              className="h-28 md:h-auto object-cover w-28"
-                              key={`${image.pest_id}`}
-                              src={image.image}
-                              alt={`${image.pest_name}`}
-                              loading='lazy'
-                          />
-                          {/* Add the x icon here (adjust styles as needed) */}
-                          <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-                              ✖
-                          </div>
-                      </div>
-                  ))
-
+                    .filter(image => image.pest_name === title)
+                    .map((image, index) => {
+                        const mlPrediction = image.ml_prediction;
+                        const mlScore = image.ml_score;
+                        const isMlPredictionMatching = mlPrediction.includes(title);
+                        const isScoreBelow50 = mlScore < 50;
+            
+                        return (
+                            <div 
+                                key={`${image.pest_id}`} 
+                                className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full 
+                                    ${(isMlPredictionMatching && !isScoreBelow50) ? '' : 'border-2 border-red-500'}
+                                `}
+                            >
+                                <Img
+                                    className="h-28 md:h-auto object-cover w-28"
+                                    key={`${image.pest_id}`}
+                                    src={image.image}
+                                    alt={`${image.pest_name}`}
+                                    loading='lazy'
+                                />
+                                {/* Add the x icon here (adjust styles as needed) */}
+                                <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                                    ✖
+                                </div>
+                            </div>
+                        );
+                    })
             )}
+
 
 
 
@@ -225,18 +185,18 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             </div>
             <div className="flex flex-row gap-[17px] items-start justify-start w-full">
               <Text
-                className="flex-1 text-base text-blue-900 tracking-[0.15px] w-auto"
-                size="txtRalewayRomanRegular16"
+                  className="flex-1 text-base text-blue-900 tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular16"
               >
-                ML Prediction:
+                  ML Prediction:
               </Text>
               <Text
                   className="text-base text-black-900 tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular16Black900"
               >
-                  {aiGroup ? aiGroup : savedPrediction.class}
+                  {imageUrls.length > 0 ? imageUrls[imageUrls.length - 1].ml_prediction : 'no prediction saved on image'}
               </Text>
-            </div>
+          </div>
           </div>
           <div className="bg-gray-100 flex flex-col items-start justify-start px-4 py-1.5 rounded">
             <div className="flex flex-col items-start justify-start py-2 w-full">
