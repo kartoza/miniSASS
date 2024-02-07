@@ -172,8 +172,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                               ${(!isGroupMatching || (isGroupMatching && isScoreBelow50 < 50)) ? 'border-2 border-red-500' : ''}
                           `}
                       >
-                          <span>{image.pest_name}</span>
-                          <span>{title}</span>
                           <Img
                               className="h-28 md:h-auto object-cover w-28"
                               key={`${image.pest_id}`}
