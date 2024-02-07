@@ -124,10 +124,10 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                         console.log('values in image ',image)
                         const mlPrediction = image.ml_prediction;
                         const mlScore = image.ml_score;
-                        var isMlPredictionMatching = image.ml_prediction === image.pest_name.toLowerCase().replace(/\s+/g, '_'));
-                        if(image.ml_prediction.includes('crabs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs'))
+                        var isMlPredictionMatching = image.ml_prediction === image.pest_name.toLowerCase().replace(/\s+/g, '_');
+                        if(mlPrediction.includes('crabs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs'))
                           isMlPredictionMatching = true
-                        else if(image.ml_prediction.includes('snails') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails'))
+                        else if(mlPrediction.includes('snails') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails'))
                           isMlPredictionMatching = true
 
                         const isScoreBelow50 = mlScore < 50;
