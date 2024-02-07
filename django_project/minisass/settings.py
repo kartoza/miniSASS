@@ -152,10 +152,10 @@ MIDDLEWARE = [
 ]
 
 # Google analytics
-GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
-GOOGLE_ANALYTICS = {
-    'google_analytics_id': os.getenv('GOOGLE_ANALYTICS_TRACKING_CODE', ''),
-}
+# GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
+# GOOGLE_ANALYTICS = {
+#     'google_analytics_id': os.getenv('GOOGLE_ANALYTICS_TRACKING_CODE', ''),
+# }
 
 ROOT_URLCONF = 'minisass.urls'
 
@@ -204,7 +204,7 @@ INSTALLED_APPS = [
     'minisass_authentication',
     'monitor',
     'minisass',
-    'google_analytics'
+    # 'google_analytics'
 ]
 
 

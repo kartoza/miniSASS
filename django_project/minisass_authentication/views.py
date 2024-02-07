@@ -208,7 +208,8 @@ def activate_account(request, uidb64, token):
         redirect_url = reverse('home') + '?activation_complete=true'
         return HttpResponseRedirect(redirect_url)
     else:
-        user.delete()
+        if user is not None:
+            user.delete()
         return HttpResponseBadRequest('Invalid token or expired')
 
 
