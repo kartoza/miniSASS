@@ -405,8 +405,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                     }));
                   }
 
-                  console.log('saved values ',manageImagesModalData)
-
                   const data = {
                     'class': response.data.classification_results[0].class,
                     'confidence': response.data.classification_results[0].confidence
