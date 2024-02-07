@@ -61,7 +61,6 @@ class UserProfile(models.Model):
         help_text='Flag whether user has been enforced to use strong password'
     )
     expert_approval_status = models.CharField(
-        max_length=255,
         default=REJECTED_STATUS,
         choices=EXPERT_APPROVAL_STATUS
     )
