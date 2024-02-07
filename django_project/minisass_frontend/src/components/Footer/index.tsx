@@ -197,6 +197,7 @@ const Footer: React.FC<FooterProps> = (props) => {
   );
 };
 
+
 Footer.defaultProps = {};
 
 export default Footer;
