@@ -427,6 +427,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
 
   const handleCloseSidebar = () => {
+    setIsDisableNavigations(false)
     if(formValues.riverName || formValues.siteName || formValues.siteDescription || formValues.date || proceedToSavingData){
       setIsCloseDialogOpen(true)
     }
@@ -446,6 +447,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
   const handleDialogCancel = () => {
     setIsCloseDialogOpen(false)
+    setIsDisableNavigations(true)
   };
 
 
