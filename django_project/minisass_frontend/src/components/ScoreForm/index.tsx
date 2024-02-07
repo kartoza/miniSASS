@@ -36,7 +36,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [pestImages, setPestImages] = useState({});
   const [isSavingData, setIsSavingData] = useState(false);
   const [selectedPests, setSelectedPests] = useState('');
-  const [mlPredictions, setMlPredictions] = useState<MlPrediction[]>(initialMlPredictions);
   const {dispatch, state} = useAuth();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [allowSaving, setAllowSaving] = useState(false);
