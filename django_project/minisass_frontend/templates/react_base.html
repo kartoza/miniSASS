@@ -31,7 +31,12 @@
 
 <body>
 
-  <div id="root"></div>
+  <div id="root">
+    {% load google_analytics_tags %}
+    <div style="display:none">
+        <img src="{% google_analytics %}" width="0" height="0" />
+    </div>
+  </div>
 
   {% if dev_mode %}
   <!-- This url will be different for each type of app. Point it to your main js file. -->
