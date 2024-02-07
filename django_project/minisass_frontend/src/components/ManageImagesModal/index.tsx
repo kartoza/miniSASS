@@ -36,6 +36,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   const [isGroupMatching, setIsGroupMatching] = useState(false)
   const [isScoreBelow50, setIsBelow50] = useState(0)
   const [isFetchingImages, setIsFetchingImages] = useState(false)
+  const [savedPrediction, setSavedPrediction] = useState('')
 
   const fetch_observation_images = async () => {
     setIsFetchingImages(true)
@@ -58,22 +59,28 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
           if (savedData) {
               if (image.pest_name.toLowerCase().replace(/\s+/g, '_') === savedData.class?.toLowerCase().replace(/\s+/g, '_')) {
                   setIsGroupMatching(true);
+                  setSavedPrediction(savedData.class)
                   setIsBelow50(savedData.confidence);
               } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('crabs')) {
                   setIsGroupMatching(true);
+                  setSavedPrediction(savedData.class)
                   setIsBelow50(savedData.confidence);
               } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('bugs')) {
                   setIsGroupMatching(true);
+                  setSavedPrediction(savedData.class)
                   setIsBelow50(savedData.confidence);
               } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('snails')) {
                   setIsGroupMatching(true);
+                  setSavedPrediction(savedData.class)
                   setIsBelow50(savedData.confidence);
               } else {
                   setIsGroupMatching(false);
-                  setIsBelow50(0);
+                  setSavedPrediction(savedData.class)
+                  setIsBelow50(savedData.confidence);
               }
           } else {
               setIsGroupMatching(false);
+              setSavedPrediction(aiGroup)
               setIsBelow50(0);
           }
       });
@@ -152,27 +159,33 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {isFetchingImages ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <CircularProgress style={{ color: '#288b31' }} />
               </div>
             ) : (
                 imageUrls
-                    .filter(image => image.pest_name === title)
-                    .map((image, index) => (
-                        <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : (isGroupMatching && isScoreBelow50 < 50 ? 'border-2 border-red-500' : '')}`}>
-                            <Img
-                                className="h-28 md:h-auto object-cover w-28"
-                                key={`${image.pest_id}`}
-                                src={image.image}
-                                alt={`${image.pest_name}`}
-                                loading='lazy'
-                            />
-                            {/* Add the x icon here (adjust styles as needed) */}
-                            <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-                                ✖
-                            </div>
-                        </div>
-                    ))
+                  .filter(image => image.pest_name === title)
+                  .map((image, index) => (
+                      <div 
+                          key={`${image.pest_id}`} 
+                          className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full 
+                              ${(!isGroupMatching && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes(savedPrediction.toLowerCase().replace(/\s+/g, '_'))) ? 'border-2 border-red-500' : 
+                                  ((isGroupMatching && isScoreBelow50 < 50 && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes(savedPrediction.toLowerCase().replace(/\s+/g, '_')))) ? 'border-2 border-red-500' : ''}
+                          `}
+                      >
+                          <Img
+                              className="h-28 md:h-auto object-cover w-28"
+                              key={`${image.pest_id}`}
+                              src={image.image}
+                              alt={`${image.pest_name}`}
+                              loading='lazy'
+                          />
+                          {/* Add the x icon here (adjust styles as needed) */}
+                          <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                              ✖
+                          </div>
+                      </div>
+                  ))
             )}
 
 
@@ -216,10 +229,10 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                 ML Prediction:
               </Text>
               <Text
-                className="text-base text-black-900 tracking-[0.15px] w-auto"
-                size="txtRalewayRomanRegular16Black900"
+                  className="text-base text-black-900 tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular16Black900"
               >
-                {aiGroup}
+                  {aiGroup ? aiGroup : savedPrediction.class}
               </Text>
             </div>
           </div>
