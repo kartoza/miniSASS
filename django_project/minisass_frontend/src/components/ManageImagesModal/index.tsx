@@ -114,17 +114,22 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
             >
 
             {isFetchingImages ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft:'10px', marginTop: '5px' }}>
                     <CircularProgress style={{ color: '#288b31' }} />
                 </div>
             ) : (
                 imageUrls
                     .filter(image => image.pest_name === title)
                     .map((image, index) => {
+                        console.log('values in image ',image)
                         const mlPrediction = image.ml_prediction;
                         const mlScore = image.ml_score;
-                        const isMlPredictionMatching = mlPrediction.includes(title);
+                        const isMlPredictionMatching = mlPrediction.includes(title.toLowerCase().replace(/\s+/g, '_'));
                         const isScoreBelow50 = mlScore < 50;
+
+                        console.log('isMlPredictionMatching ',isMlPredictionMatching)
+                        console.log('isScoreBelow50 ',isScoreBelow50)
+                        console.log('title ',title, ' vs ',mlPrediction)
             
                         return (
                             <div 
