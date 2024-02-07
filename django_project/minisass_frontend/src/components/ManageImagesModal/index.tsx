@@ -4,6 +4,7 @@ import { Button, Img, List, Text } from "../../components";
 import Modal from 'react-modal';
 import { globalVariables } from "../../utils";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface ManageImageProps {
   title: string;
@@ -34,8 +35,10 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
   const [imageUrls, setImages] = useState([])
   const [isGroupMatching, setIsGroupMatching] = useState(false)
   const [isScoreBelow50, setIsBelow50] = useState(0)
+  const [isFetchingImages, setIsFetchingImages] = useState(false)
 
   const fetch_observation_images = async () => {
+    setIsFetchingImages(true)
     const observationId = parseInt(localStorage.getItem('observationId'))
     const GET_OBSERVATION = globalVariables.baseUrl + `/monitor/observations/observation-details/${observationId}/`
 
@@ -48,30 +51,42 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
         return image.pest_name.toLowerCase().replace(/\s+/g, '_') === formattedTitle;
       });
 
+      const savedData = JSON.parse(localStorage.getItem('manageImagesModalData'));
+      console.log('debug saved data ',savedData)
+
       filteredImages.forEach((image) => {
-        if(image.pest_name.toLowerCase().replace(/\s+/g, '_') === aiGroup.toLowerCase().replace(/\s+/g, '_')){
-          setIsGroupMatching(true)
-        } else
-        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('crabs')){
-            setIsGroupMatching(true)
-        }else
-        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('bugs')){
-            setIsGroupMatching(true)
-        }else
-        if(image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && aiGroup.toLowerCase().replace(/\s+/g, '_').includes('snails')){
-            setIsGroupMatching(true)
-        }else setIsGroupMatching(false)
-        
+          if (savedData) {
+              if (image.pest_name.toLowerCase().replace(/\s+/g, '_') === savedData.class?.toLowerCase().replace(/\s+/g, '_')) {
+                  setIsGroupMatching(true);
+                  setIsBelow50(savedData.confidence);
+              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('crabs')) {
+                  setIsGroupMatching(true);
+                  setIsBelow50(savedData.confidence);
+              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('bugs')) {
+                  setIsGroupMatching(true);
+                  setIsBelow50(savedData.confidence);
+              } else if (image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails') && savedData.class?.toLowerCase().replace(/\s+/g, '_').includes('snails')) {
+                  setIsGroupMatching(true);
+                  setIsBelow50(savedData.confidence);
+              } else {
+                  setIsGroupMatching(false);
+                  setIsBelow50(0);
+              }
+          } else {
+              setIsGroupMatching(false);
+              setIsBelow50(0);
+          }
       });
 
+    
       setImages(filteredImages);
+      setIsFetchingImages(false)
     }
 
   }
 
   useEffect(() => {
     if(isOpen && refetchImages){
-      console.log('current ai group and score ',aiGroup, ' ',aiScore)
       fetch_observation_images()
     }
     
@@ -136,21 +151,30 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
               orientation="horizontal"
             >
 
-            {imageUrls.filter(image => image.pest_name === title).map((image, index) => (
-                <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : (isGroupMatching && aiScore < 50 ? 'border-2 border-red-500' : '')}`}>
-                    <Img
-                        className="h-28 md:h-auto object-cover w-28"
-                        key={`${image.pest_id}`}
-                        src={image.image}
-                        alt={`${image.pest_name}`}
-                        loading='lazy'
-                    />
-                    {/* Add the x icon here (adjust styles as needed) */}
-                    <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
-                        ✖
-                    </div>
-                </div>
-              ))}
+            {isFetchingImages ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
+                  <CircularProgress style={{ color: '#288b31' }} />
+              </div>
+            ) : (
+                imageUrls
+                    .filter(image => image.pest_name === title)
+                    .map((image, index) => (
+                        <div key={`${image.pest_id}`} className={`relative flex flex-1 flex-col h-28 items-center justify-start sm:ml-[0] w-full ${!isGroupMatching ? 'border-2 border-red-500' : (isGroupMatching && isScoreBelow50 < 50 ? 'border-2 border-red-500' : '')}`}>
+                            <Img
+                                className="h-28 md:h-auto object-cover w-28"
+                                key={`${image.pest_id}`}
+                                src={image.image}
+                                alt={`${image.pest_name}`}
+                                loading='lazy'
+                            />
+                            {/* Add the x icon here (adjust styles as needed) */}
+                            <div className="absolute top-0 right-0 m-2 cursor-pointer" onClick={() => handleRemoveImage(image.id)}>
+                                ✖
+                            </div>
+                        </div>
+                    ))
+            )}
+
 
 
               {/* Upload image section */}

@@ -9,6 +9,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import {useAuth} from "../../AuthContext";
 import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 interface ScoreFormProps {
@@ -17,6 +19,7 @@ interface ScoreFormProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setProceedToSavingData: React.Dispatch<React.SetStateAction<boolean>>;
   proceedToSavingData: boolean;
+  setIsDisableNavigations: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface MlPrediction {
@@ -42,7 +45,7 @@ const initialMlPredictions: MlPrediction[] = [
 ];
 
 
-const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData }) => {
+const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSidebarOpen, setProceedToSavingData, proceedToSavingData, setIsDisableNavigations }) => {
   const [scoreGroups, setScoreGroups] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -58,6 +61,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [selectedPests, setSelectedPests] = useState('');
   const [mlPredictions, setMlPredictions] = useState<MlPrediction[]>(initialMlPredictions);
   const {dispatch, state} = useAuth();
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [allowSaving, setAllowSaving] = useState(false);
+  
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -198,6 +204,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         }else {
           setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
+          setIsDisableNavigations(false)
         }
       }
     } catch (exception) {
@@ -223,8 +230,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const temp_averageScore = temp_numberOfGroups !== 0 ? temp_totalScore / temp_numberOfGroups : 0;
 
       setCheckedGroups(temp_checkedGroups)
-      if(temp_checkedGroups.length > 0)
+      if(temp_checkedGroups.length > 0){
         setSelectedPests(newlyAddedGroup.name)
+        setAllowSaving(true)
+      }else setAllowSaving(false)
       
       // disabled upload buttons
       const newCheckedState = [...isCheckboxChecked];
@@ -304,6 +313,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [imageAiPrediction, setImageAiPrediction] = useState({});
 
   const uploadImages = async (pestImages) => {
+    setIsUploadingImage(true)
 
     for (const key in pestImages) {
       if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
@@ -356,6 +366,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             );
         
             if(response.status == 200){
+              setIsUploadingImage(false)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
               if(response.data.classification_results[0]?.error)
@@ -395,6 +406,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                   }
 
                   console.log('saved values ',manageImagesModalData)
+
+                  const data = {
+                    'class': response.data.classification_results[0].class,
+                    'confidence': response.data.classification_results[0].confidence
+                  }
+                  localStorage.setItem('manageImagesModalData', JSON.stringify(data));
                 
                   return prediction;
                 });
@@ -474,6 +491,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     deleteObservation(parseInt(storedObservationId));
     setIsCloseDialogOpen(false);
     setSidebarOpen(false);
+    setIsDisableNavigations(false)
   };
 
   const handleDialogCancel = () => {
@@ -622,43 +640,52 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               </>
                           )}
                           {buttonState.showManageImages && (
-                            <><Button
-                              type="button"
-                              className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                              shape="round"
-                              color="red_500"
-                              size="xs"
-                              variant="fill"
-                              // disabled upload buttons
-                              disabled={!isCheckboxChecked[props.id] ? true : false}
-                              style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id]  ? 1 : 0.5 }}
-                              onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
-                            >
-                              Manage Images
-                              {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
-                            </Button><UploadModal
-                                key={`image-${props.id}`}
-                                isOpen={openImagePestId === props.id && isAddMore}
-                                onClose={closeUploadModal}
-                                onSubmit={
-                                  
-                                  files => {
-                                    pestImages[props.id] = files;
-                                    setPestImages({ ...pestImages });
-                                    setOpenImagePestId(0);
-                                    setIsAddMore(false);
-                                    setManageImagesModalData({
-                                      'groups': props.name,
-                                      'sensetivityScore': props.sensitivity_score,
-                                      'id': props.id,
-                                      'images': pestImages[props.id],
-                                      'saved_group_prediction': {}
-                                    });
+                          <>
+                              {isUploadingImage ? (
+                                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <CircularProgress style={{ color: '#288b31' }} />
+                                </div>
+                              ) : (
+                                  <>
+                                      <Button
+                                          type="button"
+                                          className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                                          shape="round"
+                                          color="red_500"
+                                          size="xs"
+                                          variant="fill"
+                                          // disabled upload buttons
+                                          disabled={!isCheckboxChecked[props.id] ? true : false}
+                                          style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5 }}
+                                          onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
+                                      >
+                                          Manage Images
+                                          {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
+                                      </Button>
+                                      <UploadModal
+                                          key={`image-${props.id}`}
+                                          isOpen={openImagePestId === props.id && isAddMore}
+                                          onClose={closeUploadModal}
+                                          onSubmit={files => {
+                                              pestImages[props.id] = files;
+                                              setPestImages({ ...pestImages });
+                                              setOpenImagePestId(0);
+                                              setIsAddMore(false);
+                                              setManageImagesModalData({
+                                                  'groups': props.name,
+                                                  'sensetivityScore': props.sensitivity_score,
+                                                  'id': props.id,
+                                                  'images': pestImages[props.id],
+                                                  'saved_group_prediction': {}
+                                              });
+                                              uploadImages(pestImages);
+                                          }}
+                                      />
+                                  </>
+                              )}
+                          </>
+                      )}
 
-                                    uploadImages(pestImages)
-
-                                  } } /></>
-                          )}
                         </React.Fragment>
                       );
                     }
@@ -705,9 +732,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               variant="fill"
               onClick={handleSave}
               style={{
-                opacity: proceedToSavingData ? 1 : 0.5,
+                opacity: (proceedToSavingData && allowSaving) ? 1 : 0.5,
               }}
-              disabled={!proceedToSavingData}
+              disabled={(!proceedToSavingData && !allowSaving)}
             >
               Save
             </Button>

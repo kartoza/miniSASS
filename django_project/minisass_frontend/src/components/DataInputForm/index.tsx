@@ -427,7 +427,6 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
 
 
   const handleCloseSidebar = () => {
-    props.setIsDisableNavigations(false);
     if(formValues.riverName || formValues.siteName || formValues.siteDescription || formValues.date || proceedToSavingData){
       setIsCloseDialogOpen(true)
     }
@@ -442,6 +441,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
   const handleCloseConfirm = () => {
     setIsCloseDialogOpen(false)
     props.setSidebarOpen(false)
+    props.setIsDisableNavigations(false);
   };
 
   const handleDialogCancel = () => {
@@ -1382,7 +1382,14 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
         </div>
       </div>
       ): (
-        <ScoreForm onCancel={handleHideScoreForm} additionalData={formValues} setSidebarOpen={props.setSidebarOpen} proceedToSavingData={proceedToSavingData} setProceedToSavingData={setProceedToSavingData} />
+        <ScoreForm 
+          onCancel={handleHideScoreForm} 
+          additionalData={formValues} 
+          setSidebarOpen={props.setSidebarOpen} 
+          proceedToSavingData={proceedToSavingData} 
+          setProceedToSavingData={setProceedToSavingData} 
+          setIsDisableNavigations={props.setIsDisableNavigations} 
+        />
       )}
     </>
   );
