@@ -121,21 +121,20 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                 imageUrls
                     .filter(image => image.pest_name === title)
                     .map((image, index) => {
-                        console.log('values in image ',image)
                         const mlPrediction = image.ml_prediction;
                         const mlScore = image.ml_score;
-                        var isMlPredictionMatching = image.ml_prediction === image.pest_name.toLowerCase().replace(/\s+/g, '_');
-                        if(mlPrediction.includes('crabs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs'))
+                        var isMlPredictionMatching = false;
+                        if(image.ml_prediction === image.pest_name.toLowerCase().replace(/\s+/g, '_'))
+                          isMlPredictionMatching = true
+                        else if(mlPrediction.includes('crabs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('crabs'))
                           isMlPredictionMatching = true
                         else if(mlPrediction.includes('snails') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('snails'))
+                          isMlPredictionMatching = true
+                        else if(mlPrediction.includes('bugs') && image.pest_name.toLowerCase().replace(/\s+/g, '_').includes('bugs'))
                           isMlPredictionMatching = true
 
                         const isScoreBelow50 = mlScore < 50;
 
-                        console.log('isMlPredictionMatching ',isMlPredictionMatching)
-                        console.log('isScoreBelow50 ',isScoreBelow50)
-                        console.log('pest_name ',image.pest_name, ' vs ',mlPrediction)
-            
                         return (
                             <div 
                                 key={`${image.pest_id}`} 
@@ -158,7 +157,6 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                         );
                     })
             )}
-
 
 
 
@@ -204,7 +202,7 @@ const ManageImagesModal: React.FC<ManageImageProps> = ({
                   className="text-base text-black-900 tracking-[0.15px] w-auto"
                   size="txtRalewayRomanRegular16Black900"
               >
-                  {imageUrls.length > 0 ? imageUrls[0].ml_prediction : 'no prediction saved on image'}
+                  {imageUrls.length > 0 ? imageUrls[0].ml_prediction : 'no prediction available'}
               </Text>
           </div>
           </div>
