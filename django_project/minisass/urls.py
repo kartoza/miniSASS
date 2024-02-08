@@ -41,7 +41,7 @@ urlpatterns = [
     path("recent-activity/", TemplateView.as_view(template_name="react_base.html"), name="recent_activity"),
 
     # google analytics path
-    # re_path('djga/', include('google_analytics.urls')),
+    re_path('djga/', include('google_analytics.urls')),
 ]
 
 if settings.DEBUG:
