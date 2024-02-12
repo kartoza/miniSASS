@@ -95,9 +95,31 @@ test('test', async ({ page }) => {
   await page.getByRole('link', { name: 'View site' }).click();
   await page.getByRole('button', { name: 'Map', exact: true }).click();
   await page.getByRole('button', { name: 'Add Record' }).click();
+
+  await page.getByPlaceholder('River name').click();
+  await page.getByPlaceholder('River name').fill('test');
+  await page.getByPlaceholder('Site name').click();
+  await page.getByPlaceholder('Site name').fill('test');
+  await page.locator('textarea[name="siteDescription"]').click();
+  await page.locator('textarea[name="siteDescription"]').fill('test');
+  await page.getByRole('button', { name: 'Select on map' }).click();
+  await page.getByLabel('Map').click({
+    position: {
+      x: 525,
+      y: 198
+    }
+  });
+  await page.getByLabel('Map').click({
+    position: {
+      x: 581,
+      y: 298
+    }
+  });
+  await page.getByPlaceholder('01.01.2024').fill('2024-01-19');
+
   await page.getByRole('button', { name: 'next' }).click();
   
-  await expect(page.getByText('Crabs or Shrimps')).toBeVisible();
+  await expect(page.getByText('Crabs or Shrimps')).toBeVisible({timeout: 20000});
   await expect(page.getByText('Stoneflies')).toBeVisible();
   await expect(page.getByText('Minnow Mayflies')).toBeVisible();
   await expect(page.getByText('Other Mayflies')).toBeVisible();

@@ -126,7 +126,7 @@ services:
     restart: always
 
   tiles:
-    image: pramsey/pg_tileserv
+    image: pramsey/pg_tileserv:latest-amd64
     volumes:
       - ./deployment/config/pg_tileserv.toml:/etc/pg_tileserv.toml
     restart: always
