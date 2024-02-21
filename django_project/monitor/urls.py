@@ -7,6 +7,7 @@ from monitor.observation_views import (
     ObservationRetrieveView,
     RecentObservationListView,
     create_observations,
+    get_all_observations,
     ObservationImageViewSet,
     get_observations_by_site,
     upload_pest_image,
@@ -121,7 +122,13 @@ urlpatterns = [
         name='observation-details'
     ),
 
-        path(
+    path(
+        'observations-list/', 
+        get_all_observations, 
+        name='get_all_observations'
+    ),
+
+    path(
         'site-observations/<latitude>/<longitude>/', 
         SiteObservationsByLocation.as_view(), 
         name='site-observations'
