@@ -740,6 +740,9 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 	serializer_class = ObservationsSerializer
 	permission_classes = [IsAuthenticated]
 
+class ObservationListView(generics.ListAPIView):
+    queryset = Observations.objects.all()
+    serializer_class = ObservationsSerializer
 
 class ObservationRetrieveUpdateDeleteView(
 		generics.RetrieveUpdateDestroyAPIView
