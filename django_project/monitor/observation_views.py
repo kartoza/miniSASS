@@ -740,9 +740,54 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 	serializer_class = ObservationsSerializer
 	permission_classes = [IsAuthenticated]
 
+# class ObservationListView(generics.ListAPIView):
+#     queryset = Observations.objects.all()
+#     serializer_class = ObservationsSerializer
+
+
 class ObservationListView(generics.ListAPIView):
-    queryset = Observations.objects.all()
     serializer_class = ObservationsSerializer
+
+    def get_queryset(self):
+        queryset = Observations.objects.all().order_by('-obs_date')
+        return queryset
+
+    def build_recent_observations(self, queryset):
+        serialized_data = self.serializer_class(queryset, many=True).data
+
+        observations = []
+
+        for observation in serialized_data:
+            site = observation['site']
+            site_longitude = site['longitude']
+            site_latitude = site['latitude']
+
+            try:
+                user_profile = UserProfile.objects.get(
+                    user=observation['user'])
+                username = user_profile.user.username
+                organisation = user_profile.organisation_name
+            except UserProfile.DoesNotExist:
+                username = ''
+                organisation = ''
+
+            observations.append({
+                'observation': observation['gid'],
+                'site': site['site_name'],
+                'username': username,
+                'organisation': organisation,
+                'obs_date': observation['obs_date'],
+                'score': observation['score'],
+                'longitude': site_longitude,
+                'latitude': site_latitude,
+            })
+
+        return observations
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        observations = self.build_recent_observations(queryset)
+        return Response(observations)
 
 class ObservationRetrieveUpdateDeleteView(
 		generics.RetrieveUpdateDestroyAPIView
