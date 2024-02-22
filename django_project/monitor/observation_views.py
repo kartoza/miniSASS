@@ -22,7 +22,7 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from minio import Minio
 from minio.error import S3Error
 from rest_framework import generics, mixins
@@ -738,6 +738,15 @@ class ObservationImageViewSet(
 class ObservationListCreateView(generics.ListCreateAPIView):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
+	permission_classes = [IsAuthenticated]
+
+
+@csrf_exempt
+@require_GET
+def get_all_observations(request):
+    observations = Observations.objects.all()
+    serializer = ObservationsSerializer(observations, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 class ObservationRetrieveUpdateDeleteView(
