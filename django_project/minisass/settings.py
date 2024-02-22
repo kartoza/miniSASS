@@ -14,8 +14,7 @@ ALLOWED_HOSTS = ['*']
 
 INTERNAL_IPS = ['127.0.0.1']
 
-# fbis ip address will come here todo
-WHITELISTED_IP_ADDRESSES = ['195.201.33.49','159.69.33.238']
+WHITELISTED_IP_ADDRESSES = os.getenv('WHITELISTED_IP_ADDRESSES', '').split(',')
 
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
