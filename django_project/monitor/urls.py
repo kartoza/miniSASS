@@ -7,7 +7,6 @@ from monitor.observation_views import (
     ObservationRetrieveView,
     RecentObservationListView,
     create_observations,
-    get_all_observations,
     ObservationImageViewSet,
     get_observations_by_site,
     upload_pest_image,
@@ -120,12 +119,6 @@ urlpatterns = [
         'observations/observation-details/<int:pk>/',
         ObservationRetrieveView.as_view(),
         name='observation-details'
-    ),
-
-    path(
-        'observations-list/', 
-        get_all_observations, 
-        name='get_all_observations'
     ),
 
     path(

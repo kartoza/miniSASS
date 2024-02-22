@@ -22,7 +22,7 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST
 from minio import Minio
 from minio.error import S3Error
 from rest_framework import generics, mixins
@@ -39,6 +39,7 @@ from rest_framework import status
 from minisass.models import GroupScores
 from minisass.utils import get_s3_client
 from minisass_authentication.models import UserProfile
+from minisass_authentication import IsAuthenticatedOrWhitelisted
 from monitor.models import (
 	Observations, Sites, SiteImage, ObservationPestImage
 )
@@ -738,15 +739,7 @@ class ObservationImageViewSet(
 class ObservationListCreateView(generics.ListCreateAPIView):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
-	permission_classes = [IsAuthenticated]
-
-
-@csrf_exempt
-@require_GET
-def get_all_observations(request):
-    observations = Observations.objects.all()
-    serializer = ObservationsSerializer(observations, many=True)
-    return JsonResponse(serializer.data, safe=False)
+	permission_classes = [IsAuthenticatedOrWhitelisted]
 
 
 class ObservationRetrieveUpdateDeleteView(
