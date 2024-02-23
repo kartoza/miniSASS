@@ -39,7 +39,7 @@ from rest_framework import status
 from minisass.models import GroupScores
 from minisass.utils import get_s3_client
 from minisass_authentication.models import UserProfile
-from minisass_authentication import IsAuthenticatedOrWhitelisted
+from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
 from monitor.models import (
 	Observations, Sites, SiteImage, ObservationPestImage
 )
