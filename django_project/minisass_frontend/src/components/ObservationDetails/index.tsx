@@ -66,8 +66,17 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
     maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
   } else if (observationList.length > 1) {
-    maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
-    minDate = dayjs(observationList[observationList.length - 1].obs_date).format('YYYY-MM-DD');
+    
+    // Loop through the observation list to find the minimum and maximum dates
+    for (let i = 1; i < observationList.length; i++) {
+        const currentDate = dayjs(observationList[i].obs_date).format('YYYY-MM-DD');
+        if (currentDate < minDate) {
+            minDate = currentDate;
+        }
+        if (currentDate > maxDate) {
+            maxDate = currentDate;
+        }
+    }
   }
 
   const fetchObservations = async () => {
