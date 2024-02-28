@@ -70,6 +70,9 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   } else if (observationList.length > 1) {
     
     // Loop through the observation list to find the minimum and maximum dates
+    let minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+    let maxDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
+
     for (let i = 1; i < observationList.length; i++) {
         const currentDate = dayjs(observationList[i].obs_date).format('YYYY-MM-DD');
         if (dayjs(currentDate).isBefore(minDate)) {
@@ -186,20 +189,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   useEffect(() => {
     if (siteWithObservations.observations && siteWithObservations.observations.length > 0) {
       setTabbedImages(observations);
-
-      console.log('use effect trigerred')
-      console.log('observations :',observations)
-
-      for (let i = 1; i < observations.length; i++) {
-          const currentDate = dayjs(observations[i].obs_date).format('YYYY-MM-DD');
-          if (currentDate < minDate) {
-              minDate = currentDate;
-          }
-          if (currentDate > maxDate) {
-              maxDate = currentDate;
-          }
-      }
-      
     }
   }, [observations]);
 
