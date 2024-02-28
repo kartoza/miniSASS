@@ -734,7 +734,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          Ph:
+                          pH:
                         </Text>
                         <Text
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
@@ -798,7 +798,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                           size="txtRalewayRomanRegular18"
                         >
-                          Electrical Conduct:
+                          Electrical Conductivity:
                         </Text>
                         <Text
                           className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
