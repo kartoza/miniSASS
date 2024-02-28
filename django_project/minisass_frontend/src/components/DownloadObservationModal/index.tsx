@@ -55,6 +55,7 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
 
   useEffect(() => {
     setFormData({ ...formData, startDate: dayjs(dateRange[1]), endDate: dayjs(dateRange[1]) });
+      console.log('provided date ranges ',dateRange)
   }, [dateRange]);
 
   const handleSubmit = (e: FormEvent) => {
