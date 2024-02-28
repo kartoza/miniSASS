@@ -27,6 +27,11 @@
     }
   </script>
   {% endif %}
+
+  {% load google_analytics_tags %}
+  <div style="display:none">
+      <img src="{% google_analytics %}" width="0" height="0" />
+  </div>
 </head>
 
 <body>
