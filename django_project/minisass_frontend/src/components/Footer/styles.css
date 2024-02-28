@@ -1,0 +1,15 @@
+@keyframes moveRightToLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.logos-container {
+  overflow: hidden;
+
+  width: 50%;
+  animation: moveRightToLeft 20s linear infinite;
+}
