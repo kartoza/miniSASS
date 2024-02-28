@@ -1,5 +1,5 @@
-![Image Tag](https://img.shields.io/badge/Staging%20Image%20Tag:-v1.0.3--22b78bf--sta-blue.svg)
-![Jenkins Status](https://img.shields.io/badge/Staging%20Jenkins%20Build%20Status:-SUCCESS-green.svg)
+![Staging Tag](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lgkgh/889dd6c34a68d9461b1fd8cdb56b8a21/raw/minisass_build-tag.json)
+![Staging Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lgkgh/889dd6c34a68d9461b1fd8cdb56b8a21/raw/minisass_build-status.json)
 
 miniSASS
 ========
