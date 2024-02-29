@@ -177,7 +177,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                     size="txtRalewayRomanRegular16WhiteA700"
                   >
                     <span className="text-white-A700 font-raleway text-left font-normal">
-                      © CGIAR Initiative on Digital Innovation with UNICEF.
+                      © International Water Management Institute (IWMI) and UNICEF.
                     </span>
                   </Text>
                 </div>
