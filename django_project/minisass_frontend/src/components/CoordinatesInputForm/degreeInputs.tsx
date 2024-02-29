@@ -57,7 +57,13 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
     <Field
       id={label}
       value={currValue}
-      type="number"
+      type="text" // Change type to text
+      onBlur={(evt) => {
+        const value = parseFloat(evt.target.value);
+        if (!isNaN(value)) {
+          setCurrValue(Number(value.toFixed(6))); // Round to 6 decimal places
+        }
+      }}
       disabled={disabled}
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
       wrapClassName="sm:w-full"
