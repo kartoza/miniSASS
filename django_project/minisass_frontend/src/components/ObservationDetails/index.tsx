@@ -532,10 +532,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                         size="txtRalewayRomanRegular18"
                       >
                         {observationDetails.latitude !== undefined && observationDetails.latitude !== null
-                          ? observationDetails.latitude
+                          ? Number(observationDetails.latitude).toFixed(6)
                           : (siteWithObservations.observations.length > 0
-                            ? siteWithObservations.observations[0].latitude
-                            : '0')}
+                            ? Number(siteWithObservations.observations[0].latitude).toFixed(6)
+                            : '0')
+                        }
                       </Text>
                     </div><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
                       <Text
@@ -549,10 +550,11 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                         size="txtRalewayRomanRegular18"
                       >
                         {observationDetails.longitude !== undefined && observationDetails.longitude !== null
-                          ? observationDetails.longitude
+                          ? Number(observationDetails.longitude).toFixed(6)
                           : (siteWithObservations.observations.length > 0
-                            ? siteWithObservations.observations[0].longitude
-                            : '0')}
+                            ? Number(siteWithObservations.observations[0].longitude).toFixed(6)
+                            : '0')
+                        }
                       </Text>
                     </div><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
                       <Text
