@@ -90,7 +90,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
             value = min
           }
         }
-        setCurrValue(value)
+        
       }}
     />
   </div>
