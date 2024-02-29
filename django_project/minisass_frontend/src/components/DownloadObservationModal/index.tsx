@@ -267,12 +267,10 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DatePicker', 'DatePicker']}>
             <DatePicker
-              className={'start-date'}
               label="Start Date"
               format="DD-MM-YYYY"
               value={formData.startDate}
               onChange={(newValue) => setFormData({ ...formData, startDate: newValue })}
-              style={{zIndex: '0!important'}}
               minDate={dayjs(dateRange[0])}
               maxDate={dayjs(dateRange[1])}
             />
