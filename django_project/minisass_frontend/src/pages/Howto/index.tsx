@@ -121,8 +121,8 @@ const HowtoPage: React.FC = () => {
               </ul>
             </Text>
           </div>
-                    <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
-          md:relative md:top-[50px] w-full mt-[-40px]">
+          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
+            md:relative md:top-[50px] w-full mt-[-40px]">
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
             >
@@ -321,7 +321,7 @@ const HowtoPage: React.FC = () => {
             className="max-w-[1450px] md:max-w-full sm:pr-5 pr-[35px] sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-full sm:mt-[50px]"
             size="txtRalewayRomanBold40"
           >
-            Uploading your miniSASS score
+            Walkthrough and Uploading your miniSASS score
           </Text>
 
           <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
@@ -329,7 +329,7 @@ const HowtoPage: React.FC = () => {
               <div
                 className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
               >
-                <YouTubeVideo videoId="uUJTrkZKL6U" width="100%" height="400px" playButtonColor="green"/>
+                <YouTubeVideo videoId="C1CbzcWwHiM" width="100%" height="400px" playButtonColor="green"/>
               </div>
               <div
                 className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
@@ -338,12 +338,21 @@ const HowtoPage: React.FC = () => {
               </div>
             </div>
 
-          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
-            md:relative md:top-[50px] w-full mt-[-40px]">
+          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14 md:relative md:top-[50px] w-full mt-[-40px]">
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
             >
-              <YouTubeVideo videoId="C1CbzcWwHiM" width="100%" height="400px" playButtonColor="green"/>
+              <YouTubeVideo videoId="uUJTrkZKL6U" width="100%" height="400px" playButtonColor="green"/>
+            </div>
+            <div className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]">
+              <Text
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
+                size="txtRalewayRomanRegular16Gray800"
+              >
+                Upload your data!
+                Register on the miniSASS website if you have not already and upload your data by clicking on the ‘Submit
+                Results’ button and fill in all the fields. Great job!
+              </Text>
             </div>
           </div>
           
