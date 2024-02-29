@@ -39,11 +39,11 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
     }
   }, [currValue]);
 
-  useEffect(() => {
-    if (value) {
-      convertToSixDecimals(value)
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (value) {
+  //     convertToSixDecimals(value)
+  //   }
+  // }, [value]);
 
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
@@ -58,6 +58,9 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       id={label}
       value={currValue}
       type="number"
+      onBlur={(evt) => {
+        convertToSixDecimals(evt.target.value)
+      }}
       disabled={disabled}
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
       wrapClassName="sm:w-full"
