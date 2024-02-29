@@ -326,23 +326,27 @@ const HowtoPage: React.FC = () => {
 
           <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
             md:relative md:top-[50px] w-full mt-[-40px]">
-            <div
-              className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
-            >
-              <YouTubeVideo videoId="uUJTrkZKL6U" width="100%" height="400px" playButtonColor="green"/>
+              <div
+                className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
+              >
+                <YouTubeVideo videoId="uUJTrkZKL6U" width="100%" height="400px" playButtonColor="green"/>
+              </div>
+              <div
+                className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
+              >
+                <YouTubeVideo videoId="eUAr6n5gSqE" width="100%" height="400px" playButtonColor="green"/>
+              </div>
             </div>
-            <div
-              className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
-            >
-              <YouTubeVideo videoId="eUAr6n5gSqE" width="100%" height="400px" playButtonColor="green"/>
-            </div>
+
+          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14
+            md:relative md:top-[50px] w-full mt-[-40px]">
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
             >
               <YouTubeVideo videoId="C1CbzcWwHiM" width="100%" height="400px" playButtonColor="green"/>
             </div>
-            
           </div>
+          
         </div>
         {/* end of section */}
 
