@@ -1,0 +1,8 @@
+/* scrollbar.css */
+::-webkit-scrollbar {
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  height: 6px;
+}
