@@ -250,7 +250,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
           label: 'No Images',
           content: (
             <div className="flex items-center justify-center w-[500px] sm:w-full h-[100px] md:h-auto overflow-hidden">
-              <span className="text-gray-500">No Images Available On Site</span>
+              <span className="text-gray-500">No Images available for site</span>
             </div>
           )
         }]
