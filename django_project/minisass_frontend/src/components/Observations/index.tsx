@@ -110,7 +110,7 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {props?.usernamejimtaylOne.length > 35 ? `${props.usernamejimtaylOne.substring(0, 35)}...` : props.usernamejimtaylOne}
+            {props?.usernamejimtaylOne.length > 35 ? `${props.usernamejimtaylOne.substring(0, 28)}...` : props.usernamejimtaylOne}
           </Text>
           <Text
             className="text-base text-gray-800 w-full"
@@ -121,7 +121,7 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {props?.organisation.length > 35 ? `${props.organisation.substring(0, 35)}...` : props.organisation}
+            {props?.organisation.length > 35 ? `${props.organisation.substring(0, 28)}...` : props.organisation}
           </Text>
           <Text
             className="text-base text-gray-800 w-full"
