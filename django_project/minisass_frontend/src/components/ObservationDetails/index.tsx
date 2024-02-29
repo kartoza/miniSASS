@@ -62,7 +62,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   let minDate = dayjs().format('YYYY-MM-DD');
   let maxDate = dayjs().format('YYYY-MM-DD');
-  console.log('obs list ',observationList);
   
   if (observationList.length == 1) {
     minDate = dayjs(observationList[0].obs_date).format('YYYY-MM-DD');
@@ -76,14 +75,12 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
     for (let i = 1; i < observationList.length; i++) {
         const currentDate = dayjs(observationList[i].obs_date).format('YYYY-MM-DD');
         if (dayjs(currentDate).isBefore(minDate)) {
-            minDate = currentDate;  // Update minDate if currentDate is earlier
+            minDate = currentDate;
         }
         if (dayjs(currentDate).isAfter(maxDate)) {
-            maxDate = currentDate;  // Update maxDate if currentDate is later
+            maxDate = currentDate;
         }
     }
-    console.log('Min Date:', minDate);
-    console.log('Max Date:', maxDate);
   }
 
   const fetchObservations = async () => {
@@ -250,18 +247,10 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       if (images.length === 0) {
         allImages = [{
           id: `tab-image-${observation.obs_date}-1`,
-          label: 'Empty Image',
+          label: '',
           content: (
-            <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full alabasta" style={{ marginTop: '10%' }}>
-              {
-                // Render placeholder if no images are available
-                <img
-                  className="h-[152px] md:h-auto object-cover w-[164px] alabasta"
-                  src={`${globalVariables.staticPath}images_placeholder.png`}
-                  alt="No Images Available"
-                  loading='lazy'
-                />
-              }
+            <div className="flex items-center justify-center w-[566px] sm:w-full h-[152px] md:h-auto">
+              <span className="text-gray-500">No Images Available On Site</span>
             </div>
           )
         }]
