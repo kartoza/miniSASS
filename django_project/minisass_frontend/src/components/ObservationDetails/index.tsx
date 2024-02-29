@@ -336,7 +336,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   return (
     <div className={classname}
     style={{
-        height: '75vh',
+        height: '73.5vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}
