@@ -104,14 +104,24 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
           <Text
             className="text-base text-gray-800 w-full"
             size="txtRalewayRomanRegular16"
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
           >
-            {props?.usernamejimtaylOne}
+            {props?.usernamejimtaylOne.length > 15 ? `${props.usernamejimtaylOne.substring(0, 15)}...` : props.usernamejimtaylOne}
           </Text>
           <Text
             className="text-base text-gray-800 w-full"
             size="txtRalewayRomanRegular16"
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
           >
-            {props?.organisation}
+            {props?.organisation.length > 15 ? `${props.organisation.substring(0, 15)}...` : props.organisation}
           </Text>
           <Text
             className="text-base text-gray-800 w-full"
