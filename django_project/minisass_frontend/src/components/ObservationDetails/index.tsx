@@ -247,7 +247,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       if (images.length === 0) {
         allImages = [{
           id: `tab-image-${observation.obs_date}-1`,
-          label: '',
           content: (
             <div className="flex items-center justify-center w-[566px] sm:w-full h-[152px] md:h-auto">
               <span className="text-gray-500">No Images Available On Site</span>
@@ -336,7 +335,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   return (
     <div className={classname}
     style={{
-        height: '73.5vh',
+        height: '74.5vh',
         overflowY: 'auto',
         overflowX: 'auto',
       }}
