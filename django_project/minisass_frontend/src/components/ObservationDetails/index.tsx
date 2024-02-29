@@ -247,6 +247,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       if (images.length === 0) {
         allImages = [{
           id: `tab-image-${observation.obs_date}-1`,
+          label: 'No Images',
           content: (
             <div className="flex items-center justify-center w-[566px] sm:w-full h-[100px] md:h-auto overflow-hidden">
               <span className="text-gray-500">No Images Available On Site</span>
