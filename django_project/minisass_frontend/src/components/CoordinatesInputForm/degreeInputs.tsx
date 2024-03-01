@@ -39,12 +39,6 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
     }
   }, [currValue]);
 
-  // useEffect(() => {
-  //   if (value) {
-  //     convertToSixDecimals(value)
-  //   }
-  // }, [value]);
-
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
     style={{ marginBottom: "2%" }}
@@ -60,6 +54,8 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       type="number"
       onBlur={(evt) => {
         convertToSixDecimals(evt.target.value)
+        globalVariables.checkIsLand = true
+        console.log('check triggered')
       }}
       disabled={disabled}
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
@@ -140,8 +136,12 @@ export default function DegreeInputs(
   );
 
   useEffect(() => {
-    checkSiteIsLand(latitude, longitude)
-  }, [latitude, longitude]);
+    console.log('variable state ',globalVariables.checkIsLand)
+    if(globalVariables.checkIsLand){
+      checkSiteIsLand(latitude, longitude)
+      globalVariables.checkIsLand = false
+    }
+  }, [latitude, longitude,globalVariables.checkIsLand]); //this might cause crash testing
 
   return <>
     <DegreeInput
