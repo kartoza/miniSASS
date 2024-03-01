@@ -338,7 +338,7 @@ const HowtoPage: React.FC = () => {
               </div>
             </div>
 
-          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14 md:relative md:top-[50px] w-full mt-[-40px]">
+          <div className="flex md:flex-col flex-row max-w-[1450px] gap-14 md:relative md:top-[50px] w-full mt-[-40px] mt-[3%]">
             <div
               className="sm:flex-1 md:h-auto object-cover rounded-bl-[25px] rounded-br-[25px] rounded-tr-[25px] sm:w-full w-[50%]"
             >
