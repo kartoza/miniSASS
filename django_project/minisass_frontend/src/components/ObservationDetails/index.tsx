@@ -249,7 +249,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
           id: `tab-image-${observation.obs_date}-1`,
           label: 'No Images',
           content: (
-            <div className="flex items-center justify-center w-[300px] sm:w-full h-[50px] md:h-auto overflow-hidden">
+            <div className="flex items-center justify-center w-[566px] sm:w-full h-[152px] md:h-auto overflow-hidden">
               <span className="text-gray-500">No Images available for site</span>
             </div>
           )
@@ -267,7 +267,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
         id: `tab${index + 1}`,
         label: observation.obs_date,
         content: (
-          <div className="flex flex-row gap-2.5 items-start justify-start overflow-auto w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
+          <div className="flex flex-row gap-2.5 items-start justify-start overflow-hidden w-[566px] sm:w-full" style={{ marginTop: '10%' }}>
             <TabbedContent
               tabsData={imageTabsData[observation.obs_date] ? imageTabsData[observation.obs_date] : []}
               activeTabIndex={imageTabIndex}
