@@ -49,10 +49,10 @@ class ObservationsAdmin(admin.ModelAdmin):
         'flag',
         'is_validated'
     )
-    list_filter = ('flag', 'is_validated')
+    list_filter = ('flag', 'is_validated',('obs_date', admin.DateFieldListFilter)
     search_fields = ('site__site_name', 'site__river_name')
     autocomplete_fields = ('site', 'user')
-    actions = [make_verified, make_unverified, download_records]
+    actions = [make_verified, make_unverified, 'download_records']
     inlines = (ObservationPestImageInline,)
 
     def save_formset(self, request, form, formset, change):
