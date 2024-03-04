@@ -11,7 +11,6 @@ from .models import (
     ObservationPestImage,
     Pest
 )
-from .forms import DateRangeForm
 
 
 def make_verified(modeladmin, request, queryset):
@@ -49,10 +48,10 @@ class ObservationsAdmin(admin.ModelAdmin):
         'flag',
         'is_validated'
     )
-    list_filter = ('flag', 'is_validated',('obs_date', admin.DateFieldListFilter)
+    list_filter = ('flag', 'is_validated',('obs_date', admin.DateFieldListFilter))
     search_fields = ('site__site_name', 'site__river_name')
     autocomplete_fields = ('site', 'user')
-    actions = [make_verified, make_unverified, 'download_records']
+    # actions = [make_verified, make_unverified, 'download_records']
     inlines = (ObservationPestImageInline,)
 
     def save_formset(self, request, form, formset, change):
@@ -73,14 +72,6 @@ class ObservationsAdmin(admin.ModelAdmin):
         observation.recalculate_score()
 
     def download_records(self, request, queryset):
-        form = DateRangeForm(request.POST or None)  # Initialize the form
-
-        if form.is_valid():
-            start_date = form.cleaned_data.get('start_date')
-            end_date = form.cleaned_data.get('end_date')
-
-            queryset = queryset.filter(obs_date__range=[start_date, end_date])
-            
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="observations.csv"'
 
@@ -93,6 +84,7 @@ class ObservationsAdmin(admin.ModelAdmin):
 
         return response
     download_records.short_description = "Download selected records"
+    actions = [make_verified, make_unverified, 'download_records']
 
 
 class SiteImageInline(admin.TabularInline):
