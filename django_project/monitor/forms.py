@@ -3,6 +3,9 @@ from django.forms import ModelForm, Textarea, Select, DateInput
 
 from monitor.models import Sites, Observations, ObservationPestImage
 
+class DateRangeForm(forms.Form):
+    start_date = forms.DateField(label='Start Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(label='End Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
 
 # Form based on the Sites model
 class SiteForm(ModelForm):
