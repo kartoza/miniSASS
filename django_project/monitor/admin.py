@@ -1,4 +1,5 @@
 from django.contrib import admin
+import csv
 
 from monitor.forms import ObservationPestImageForm
 from .models import (
@@ -9,6 +10,7 @@ from .models import (
     ObservationPestImage,
     Pest
 )
+from .forms import DateRangeForm
 
 
 def make_verified(modeladmin, request, queryset):
@@ -69,6 +71,28 @@ class ObservationsAdmin(admin.ModelAdmin):
         super().save_formset(request, form, formset, change)
         observation.recalculate_score()
 
+    def download_records(self, request, queryset):
+        form = DateRangeForm(request.POST or None)  # Initialize the form
+
+        if form.is_valid():
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
+
+            queryset = queryset.filter(obs_date__range=[start_date, end_date])
+            
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="observations.csv"'
+
+        writer = csv.writer(response)
+        # testing TODO add all rows
+        writer.writerow(['obs_date'])
+
+        for obj in queryset:
+            writer.writerow([obj.obs_date])
+
+        return response
+    download_records.short_description = "Download selected records"
+
 
 class SiteImageInline(admin.TabularInline):
     model = SiteImage
@@ -89,3 +113,4 @@ class SitesAdmin(admin.ModelAdmin):
 
 admin.site.register(ObservationPestImage)
 admin.site.register(Assessment, admin.ModelAdmin)
+admin.site.add_action('download_records')
