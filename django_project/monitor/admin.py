@@ -93,6 +93,8 @@ class ObservationsAdmin(admin.ModelAdmin):
         return response
     download_records.short_description = "Download selected records"
 
+    actions = ['download_records']
+
 
 class SiteImageInline(admin.TabularInline):
     model = SiteImage
@@ -113,4 +115,3 @@ class SitesAdmin(admin.ModelAdmin):
 
 admin.site.register(ObservationPestImage)
 admin.site.register(Assessment, admin.ModelAdmin)
-admin.site.add_action('download_records')
