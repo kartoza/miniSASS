@@ -1,5 +1,6 @@
 from django.contrib import admin
 import csv
+from django.http import HttpResponse
 
 from monitor.forms import ObservationPestImageForm
 from .models import (
@@ -51,7 +52,7 @@ class ObservationsAdmin(admin.ModelAdmin):
     list_filter = ('flag', 'is_validated')
     search_fields = ('site__site_name', 'site__river_name')
     autocomplete_fields = ('site', 'user')
-    actions = [make_verified, make_unverified]
+    actions = [make_verified, make_unverified, download_records]
     inlines = (ObservationPestImageInline,)
 
     def save_formset(self, request, form, formset, change):
@@ -92,8 +93,6 @@ class ObservationsAdmin(admin.ModelAdmin):
 
         return response
     download_records.short_description = "Download selected records"
-
-    actions = ['download_records']
 
 
 class SiteImageInline(admin.TabularInline):
