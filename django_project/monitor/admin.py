@@ -154,7 +154,6 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.true_flies),
                     smart_str(obs.snails),
                     smart_str(obs.score),
-                    smart_str(flag),
                     smart_str(obs.water_clarity),
                     smart_str(obs.water_temp),
                     smart_str(obs.ph),
