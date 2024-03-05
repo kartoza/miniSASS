@@ -117,10 +117,6 @@ class ObservationsAdmin(admin.ModelAdmin):
             ])
 
         for obs in queryset:
-            if obs['flag'] == 'clean':
-                flag = 'Verified'
-            else:
-                flag = 'Unverified'
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
@@ -222,9 +218,9 @@ class SitesAdmin(admin.ModelAdmin):
                 'Site Location',
                 'Created By',
                 'User Organization Name',
-                'User Is Expert Status'
+                'User Expert Status'
                 'User Country', 
-                'Time Stamp'
+                'Site Created On'
             ])
 
         for site in queryset:
@@ -245,9 +241,9 @@ class SitesAdmin(admin.ModelAdmin):
                     smart_str(site.river_cat), 
                     smart_str(f"Longitude: {site.the_geom.x}, Latitude: {site.the_geom.y}"),
                     smart_str(site.user.email),
-                    smart_str(user_organization_name), 
-                    smart_str(user_country), 
+                    smart_str(user_organization_name),
                     smart_str(user_is_expert), 
+                    smart_str(user_country),
                     smart_str(site.time_stamp)
                 ]
             )
