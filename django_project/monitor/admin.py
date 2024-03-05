@@ -126,13 +126,15 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
+
+            obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
             writer.writerow(
                 [
                     smart_str(obs.user.username),
                     smart_str(user_organization_name),
                     smart_str(user_country),
                     smart_str(user_is_expert),
-                    smart_str(obs.obs_date),
+                    smart_str(obs_date_str),
                     smart_str(obs.site.site_name),
                     smart_str(obs.site.river_name),
                     smart_str(obs.site.river_cat),
@@ -218,9 +220,9 @@ class SitesAdmin(admin.ModelAdmin):
                 'Site Location',
                 'Created By',
                 'User Organization Name',
-                'User Expert Status'
+                'User Expert Status',
                 'User Country', 
-                'Site Created On'
+                'Site Creation Date'
             ])
 
         for site in queryset:
