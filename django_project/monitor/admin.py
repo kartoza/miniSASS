@@ -81,6 +81,9 @@ class ObservationsAdmin(admin.ModelAdmin):
         writer.writerow(
             [
                 smart_str("User name"),
+                smart_str("User Organization"),
+                smart_str("User Country"),
+                smart_str("User Expert Status"),
                 smart_str("Obs Date"),
                 smart_str("Site name"),
                 smart_str("River name"),
@@ -117,9 +120,21 @@ class ObservationsAdmin(admin.ModelAdmin):
                 flag = 'Verified'
             else:
                 flag = 'Unverified'
+            try:
+                user_profile = obs.user.userprofile
+                user_organization_name = user_profile.organisation_name
+                user_country = user_profile.country
+                user_is_expert = userprofile.is_expert
+            except (UserProfile.DoesNotExist, AttributeError):
+                user_organization_name = "N/A"
+                user_country = "N/A"
+                user_is_expert = False
             writer.writerow(
                 [
                     smart_str(obs.user.username),
+                    smart_str(user_organization_name),
+                    smart_str(user_country),
+                    smart_str(user_is_expert),
                     smart_str(obs.obs_date),
                     smart_str(obs.site.site_name),
                     smart_str(obs.site.river_name),
@@ -199,6 +214,7 @@ class SitesAdmin(admin.ModelAdmin):
                 'River Name', 
                 'Description', 
                 'River Category',
+                'Site Location',
                 'Created By',
                 'User Organization Name',
                 'User Is Expert Status'
@@ -207,16 +223,22 @@ class SitesAdmin(admin.ModelAdmin):
             ])
 
         for site in queryset:
-            user_profile = site.user.userprofile
-            user_organization_name = user_profile.organisation_name
-            user_country = user_profile.country
-            user_is_expert = userprofile.is_expert
+            try:
+                user_profile = site.user.userprofile
+                user_organization_name = user_profile.organisation_name
+                user_country = user_profile.country
+                user_is_expert = user_profile.is_expert
+            except (UserProfile.DoesNotExist, AttributeError):
+                user_organization_name = "N/A"
+                user_country = "N/A"
+                user_is_expert = False
             writer.writerow(
                 [
                     smart_str(site.site_name), 
                     smart_str(site.river_name), 
                     smart_str(site.description), 
                     smart_str(site.river_cat), 
+                    smart_str(f"Longitude: {site.the_geom.x}, Latitude: {site.the_geom.y}"),
                     smart_str(site.user.email),
                     smart_str(user_organization_name), 
                     smart_str(user_country), 
