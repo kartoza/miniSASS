@@ -180,6 +180,7 @@ class SitesAdmin(admin.ModelAdmin):
     list_max_show_all = 1000
     list_display = (
         'site_name',
+        'river_name',
         'user',
         'user_organization_name',
         'user_country',
@@ -188,13 +189,16 @@ class SitesAdmin(admin.ModelAdmin):
     )
 
     def user_organization_name(self, obj):
-        return obj.user.userprofile.organisation_name
+        user_profile = obj.user.userprofile if hasattr(obj.user, 'userprofile') else None
+        return user_profile.organisation_name if user_profile else None
 
     def user_country(self, obj):
-        return obj.user.userprofile.country
+        user_profile = obj.user.userprofile if hasattr(obj.user, 'userprofile') else None
+        return user_profile.country if user_profile else None
 
     def user_is_expert(self, obj):
-        return obj.user.userprofile.is_expert
+        user_profile = obj.user.userprofile if hasattr(obj.user, 'userprofile') else None
+        return user_profile.is_expert if user_profile else None
 
     user_organization_name.short_description = 'User Organization Name'
     user_country.short_description = 'User Country'
