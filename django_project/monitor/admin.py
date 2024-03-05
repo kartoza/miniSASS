@@ -121,7 +121,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
                 user_country = user_profile.country
-                user_is_expert = userprofile.is_expert
+                user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
