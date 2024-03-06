@@ -95,10 +95,21 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
     <div className={props.className}>
       <div className="flex flex-col gap-2 items-start justify-start w-full">
         <Text
-          className={`${titleColor} text-lg w-full`}
-          size="txtRalewayBold18Green800"
+            className={`${titleColor} text-lg w-full`}
+            size="txtRalewayBold18Green800"
         >
-          {props?.username}
+            {(
+                props?.organisation.length > 35 || 
+                props?.usernamejimtaylOne.length > 35
+            ) ? (
+                props?.username.length > 15 ? 
+                    `${props.username.substring(0, 15)}...` : 
+                    props.username
+            ) : (
+                props?.username.length > 23 ? 
+                    `${props.username.substring(0, 20)}...` : 
+                    props.username
+            )}
         </Text>
         <div className="flex flex-col items-start justify-start w-full">
           <Text
