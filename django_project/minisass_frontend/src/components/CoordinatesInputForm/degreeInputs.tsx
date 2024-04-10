@@ -53,7 +53,6 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       id={label}
       value={currValue}
       type="number"
-      step="any"
       onBlur={(evt) => {
         convertToSixDecimals(evt.target.value)
         globalVariables.checkIsLand = true
@@ -68,7 +67,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       min={min}
       max={max}
       placeholder="0.000000"
-      step={0.0001}
+      step="any"
       style={{
         width: '300px',
         maxWidth: '300px',
