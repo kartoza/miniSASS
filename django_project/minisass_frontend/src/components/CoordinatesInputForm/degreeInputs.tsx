@@ -52,10 +52,10 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
       id={label}
       value={currValue}
       type="number"
+      step="any"
       onBlur={(evt) => {
         convertToSixDecimals(evt.target.value)
         globalVariables.checkIsLand = true
-        console.log('check triggered')
       }}
       disabled={disabled}
       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
@@ -136,12 +136,12 @@ export default function DegreeInputs(
   );
 
   useEffect(() => {
-    console.log('variable state ',globalVariables.checkIsLand)
+    // console.log('variable state ',globalVariables.checkIsLand)
     if(globalVariables.checkIsLand){
       checkSiteIsLand(latitude, longitude)
       globalVariables.checkIsLand = false
     }
-  }, [latitude, longitude,globalVariables.checkIsLand]); //this might cause crash testing
+  }, [latitude, longitude,globalVariables.checkIsLand]);
 
   return <>
     <DegreeInput
