@@ -16,8 +16,9 @@ export interface DegreeInputInterface {
 /** Degree input form. **/
 function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface) {
   const [currValue, setCurrValue] = useState(value)
-  const min = label === 'Latitude' ? -90 : -180
-  const max = -1 * min
+  const min = label === 'Latitude' ? -90.000000 : -180.000000;
+  const max = -1 * min;
+
 
   const convertToSixDecimals = React.useMemo(
     () =>
