@@ -47,30 +47,30 @@ export default function CoordinatesInputForm(
 
   useEffect(() => {
     console.log('debug coordinates: ', selectedCoordinates)
+    console.log('select on map value: ',selectOnMap)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
 
-  }, [selectedCoordinates]);
+  }, [selectOnMap, selectedCoordinates]);
 
   return <div className='CoordinatesInputForm'>
     {!selectOnMap ? (
-    <RadioGroup
-      value={type}
-      onChange={(evt) => setType(evt.target.value)}
-      row
-    >
-      <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
-      <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
-    </RadioGroup>
-    ): (
       <RadioGroup
-      value={`Degree`}
-      onChange={(evt) => setType(evt.target.value)}
-      row
-    >
-      <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
-    </RadioGroup>
-
+        value={type}
+        onChange={(evt) => setType(evt.target.value)}
+        row
+      >
+        <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
+        <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
+      </RadioGroup>
+    ):(
+      <RadioGroup
+        value={`Degree`}
+        onChange={(evt) => setType(evt.target.value)}
+        row
+      >
+        <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
+      </RadioGroup>
     )}
     {selectOnMap ?
     (
