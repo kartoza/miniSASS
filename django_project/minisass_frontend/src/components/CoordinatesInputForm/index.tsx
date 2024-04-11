@@ -30,13 +30,8 @@ export default function CoordinatesInputForm(
 ) {
   const [type, setType] = useState<string>(defaultType)
 
-  // use updater functions on select on map
-  const [latitude, setLat] = useState(0); // Initial value
-  const [longitude, setLong] = useState(0);
-
   /** set latitude **/
   const setLatitude = (val) => {
-    console.log('val in setLat: ',val);
     if (val) {
       setFieldValue('latitude', val)
     }
@@ -51,13 +46,9 @@ export default function CoordinatesInputForm(
 
   useEffect(() => {
     console.log('debug coordinates: ', selectedCoordinates)
-    console.log('select on map value: ',selectOnMap)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
-    setLat(selectedCoordinates.latitude)
-    setLong(selectedCoordinates.longitude)
-
-  }, [selectOnMap, selectedCoordinates]);
+  }, [selectedCoordinates]);
 
   return <div className='CoordinatesInputForm'>
     {!selectOnMap ? (
@@ -72,7 +63,10 @@ export default function CoordinatesInputForm(
     ):(
       <RadioGroup
         value={`Degree`}
-        onChange={(evt) => setType(evt.target.value)}
+        onChange={(evt) => {
+          console.log('evt target value: ',evt.target.value); // testing
+          setType(evt.target.value);
+        }}
         row
       >
         <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
@@ -85,8 +79,14 @@ export default function CoordinatesInputForm(
         latitude={selectedCoordinates.latitude.toFixed(6)}
         longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
-        setLatitude={setLat}
-        setLongitude={setLong}
+        setLatitude={() => {
+            setFieldValue('latitude', selectedCoordinates.latitude);
+            handleMapClick(Number(selectedCoordinates.latitude), Number(values.longitude))
+          }}
+        setLongitude={() => {
+          setFieldValue('longitude', selectedCoordinates.longitude);
+          handleMapClick(Number(values.latitude), Number(selectedCoordinates.longitude))
+        }}
     />) :
       type === 'Degree' ?
         <DegreeInputs
