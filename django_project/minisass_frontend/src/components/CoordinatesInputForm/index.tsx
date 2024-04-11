@@ -30,6 +30,10 @@ export default function CoordinatesInputForm(
 ) {
   const [type, setType] = useState<string>(defaultType)
 
+  // use updater functions on select on map
+  const [latitude, setLat] = useState(0); // Initial value
+  const [longitude, setLong] = useState(0);
+
   /** set latitude **/
   const setLatitude = (val) => {
     console.log('val in setLat: ',val);
@@ -50,6 +54,8 @@ export default function CoordinatesInputForm(
     console.log('select on map value: ',selectOnMap)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
+    setLat(selectedCoordinates.latitude)
+    setLong(selectedCoordinates.longitude)
 
   }, [selectOnMap, selectedCoordinates]);
 
@@ -79,14 +85,8 @@ export default function CoordinatesInputForm(
         latitude={selectedCoordinates.latitude.toFixed(6)}
         longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
-        setLatitude={(value) => {
-          setFieldValue('latitude', value);
-          handleMapClick(Number(value), Number(values.longitude))
-        }}
-        setLongitude={(value) => {
-          setFieldValue('longitude', value);
-          handleMapClick(Number(values.latitude), Number(value))
-        }}
+        setLatitude={setLat}
+        setLongitude={setLong}
     />) :
       type === 'Degree' ?
         <DegreeInputs
