@@ -35,6 +35,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
 
   useEffect(() => {
+    console.log('currValue : ',value)
     if (!isNaN(currValue)) {
       onChange(currValue)
     }
@@ -142,6 +143,13 @@ export default function DegreeInputs(
       globalVariables.checkIsLand = false
     }
   }, [latitude, longitude,globalVariables.checkIsLand]);
+
+  useEffect(() => {
+    console.log('any triggered use effect') // testing
+    console.log('lat: ',latitude)
+    console.log('long: ',longitude)
+    console.log('disabled: ',disabled)
+  }, [latitude, longitude ,disabled]);
 
   return <>
     <DegreeInput
