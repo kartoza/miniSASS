@@ -45,6 +45,7 @@ export default function CoordinatesInputForm(
   }
 
   useEffect(() => {
+    console.log('debug coordinates: ', selectedCoordinates)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
 
@@ -74,17 +75,21 @@ export default function CoordinatesInputForm(
     (
 
       <DegreeInputs
-      latitude={values.latitude}
-      longitude={values.longitude}
-      disabled={disabled}
-      setLatitude={(value) => {
-        setFieldValue('latitude', value);
-        handleMapClick(Number(value), Number(values.longitude))
-      }}
-      setLongitude={(value) => {
-        setFieldValue('longitude', value);
-        handleMapClick(Number(values.latitude), Number(value))
-      }}
+        latitude={selectedCoordinates.latitude}
+        longitude={selectedCoordinates.longitude}
+        disabled={disabled}
+        setLatitude={(value) => {
+          console.log('Latitude:', value); //testing
+          console.log('long in values.:', values.longitude); //testing
+          setFieldValue('latitude', value);
+          handleMapClick(Number(value), Number(values.longitude))
+        }}
+        setLongitude={(value) => {
+          console.log('longitude:', value); //testing
+          console.log('in values.:', values); //testing
+          setFieldValue('longitude', value);
+          handleMapClick(Number(values.latitude), Number(value))
+        }}
     />) :
       type === 'Degree' ?
         <DegreeInputs
@@ -92,10 +97,12 @@ export default function CoordinatesInputForm(
           longitude={values.longitude}
           disabled={disabled}
           setLatitude={(value) => {
+            console.log('Latitude:', value); //testing
             setFieldValue('latitude', value);
             handleMapClick(Number(value), Number(values.longitude))
           }}
           setLongitude={(value) => {
+            console.log('longitude:', value); //testing
             setFieldValue('longitude', value);
             handleMapClick(Number(values.latitude), Number(value))
           }}
