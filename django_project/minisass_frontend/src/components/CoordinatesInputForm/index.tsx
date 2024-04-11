@@ -30,8 +30,13 @@ export default function CoordinatesInputForm(
 ) {
   const [type, setType] = useState<string>(defaultType)
 
+  // use updater functions on select on map
+  const [latitude, setLat] = useState(0); // Initial value
+  const [longitude, setLong] = useState(0);
+
   /** set latitude **/
   const setLatitude = (val) => {
+    console.log('val in setLat: ',val);
     if (val) {
       setFieldValue('latitude', val)
     }
@@ -46,50 +51,42 @@ export default function CoordinatesInputForm(
 
   useEffect(() => {
     console.log('debug coordinates: ', selectedCoordinates)
+    console.log('select on map value: ',selectOnMap)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
+    setLat(selectedCoordinates.latitude)
+    setLong(selectedCoordinates.longitude)
 
-  }, [selectedCoordinates]);
+  }, [selectOnMap, selectedCoordinates]);
 
   return <div className='CoordinatesInputForm'>
     {!selectOnMap ? (
-    <RadioGroup
-      value={type}
-      onChange={(evt) => setType(evt.target.value)}
-      row
-    >
-      <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
-      <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
-    </RadioGroup>
-    ): (
       <RadioGroup
-      value={`Degree`}
-      onChange={(evt) => setType(evt.target.value)}
-      row
-    >
-      <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
-    </RadioGroup>
-
+        value={type}
+        onChange={(evt) => setType(evt.target.value)}
+        row
+      >
+        <FormControlLabel value="DMS" control={<Radio/>} label="DMS"/>
+        <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
+      </RadioGroup>
+    ):(
+      <RadioGroup
+        value={`Degree`}
+        onChange={(evt) => setType(evt.target.value)}
+        row
+      >
+        <FormControlLabel value="Degree" control={<Radio/>} label="Degree"/>
+      </RadioGroup>
     )}
     {selectOnMap ?
     (
 
       <DegreeInputs
-        latitude={selectedCoordinates.latitude}
-        longitude={selectedCoordinates.longitude}
+        latitude={selectedCoordinates.latitude.toFixed(6)}
+        longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
-        setLatitude={(value) => {
-          console.log('Latitude:', value); //testing
-          console.log('long in values.:', values.longitude); //testing
-          setFieldValue('latitude', value);
-          handleMapClick(Number(value), Number(values.longitude))
-        }}
-        setLongitude={(value) => {
-          console.log('longitude:', value); //testing
-          console.log('in values.:', values); //testing
-          setFieldValue('longitude', value);
-          handleMapClick(Number(values.latitude), Number(value))
-        }}
+        setLatitude={setLat}
+        setLongitude={setLong}
     />) :
       type === 'Degree' ?
         <DegreeInputs
@@ -97,12 +94,10 @@ export default function CoordinatesInputForm(
           longitude={values.longitude}
           disabled={disabled}
           setLatitude={(value) => {
-            console.log('Latitude:', value); //testing
             setFieldValue('latitude', value);
             handleMapClick(Number(value), Number(values.longitude))
           }}
           setLongitude={(value) => {
-            console.log('longitude:', value); //testing
             setFieldValue('longitude', value);
             handleMapClick(Number(values.latitude), Number(value))
           }}
