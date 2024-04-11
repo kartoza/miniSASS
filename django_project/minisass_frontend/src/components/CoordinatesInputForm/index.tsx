@@ -79,11 +79,9 @@ export default function CoordinatesInputForm(
         latitude={selectedCoordinates.latitude.toFixed(6)}
         longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
-        setLatitude={() => {
-            setFieldValue('latitude', selectedCoordinates.latitude);
-            handleMapClick(Number(selectedCoordinates.latitude), Number(values.longitude))
-          }}
+        setLatitude={setLatitude}
         setLongitude={() => {
+          console.log('executed on passing value')
           setFieldValue('longitude', selectedCoordinates.longitude);
           handleMapClick(Number(values.latitude), Number(selectedCoordinates.longitude))
         }}
