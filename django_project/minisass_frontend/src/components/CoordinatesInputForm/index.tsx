@@ -76,8 +76,8 @@ export default function CoordinatesInputForm(
     (
 
       <DegreeInputs
-        latitude={selectedCoordinates.latitude}
-        longitude={selectedCoordinates.longitude}
+        latitude={selectedCoordinates.latitude.toFixed(6)}
+        longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
         setLatitude={(value) => {
           setFieldValue('latitude', value);
