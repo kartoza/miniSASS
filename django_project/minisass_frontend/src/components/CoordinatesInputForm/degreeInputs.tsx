@@ -15,7 +15,6 @@ export interface DegreeInputInterface {
 
 /** Degree input form. **/
 function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface) {
-  console.log('curr value from use state: ',value)
   const [currValue, setCurrValue] = useState(value)
   const min = label === 'Latitude' ? -90.000000 : -180.000000;
   const max = -1 * min;
@@ -36,10 +35,11 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
 
   useEffect(() => {
-    console.log('currValue : ',value)
-    if (!isNaN(currValue)) {
-      onChange(currValue)
+    if (!isNaN(value)) {
+      console.log('assigning value ',value)
+      onChange(value)
     }
+    setCurrValue(value)
   }, [value,currValue]);
 
   return <div
@@ -160,11 +160,11 @@ export default function DegreeInputs(
   }, [longitude]);
 
   // useEffect to log changes in latitude, longitude, and disabled props
-  useEffect(() => {
-    console.log('Latitude:', localLatitude);
-    console.log('Longitude:', localLongitude);
-    console.log('Disabled:', disabled);
-  }, [localLatitude, localLongitude, disabled]);
+  // useEffect(() => {
+  //   console.log('Latitude:', localLatitude);
+  //   console.log('Longitude:', localLongitude);
+  //   console.log('Disabled:', disabled);
+  // }, [localLatitude, localLongitude, disabled]);
 
   return <>
     <DegreeInput
