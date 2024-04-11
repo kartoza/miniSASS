@@ -32,6 +32,7 @@ export default function CoordinatesInputForm(
 
   /** set latitude **/
   const setLatitude = (val) => {
+    console.log('val in setLat: ',val);
     if (val) {
       setFieldValue('latitude', val)
     }
@@ -79,14 +80,10 @@ export default function CoordinatesInputForm(
         longitude={selectedCoordinates.longitude}
         disabled={disabled}
         setLatitude={(value) => {
-          console.log('Latitude:', value); //testing
-          console.log('long in values.:', values.longitude); //testing
           setFieldValue('latitude', value);
           handleMapClick(Number(value), Number(values.longitude))
         }}
         setLongitude={(value) => {
-          console.log('longitude:', value); //testing
-          console.log('in values.:', values); //testing
           setFieldValue('longitude', value);
           handleMapClick(Number(values.latitude), Number(value))
         }}
@@ -97,12 +94,10 @@ export default function CoordinatesInputForm(
           longitude={values.longitude}
           disabled={disabled}
           setLatitude={(value) => {
-            console.log('Latitude:', value); //testing
             setFieldValue('latitude', value);
             handleMapClick(Number(value), Number(values.longitude))
           }}
           setLongitude={(value) => {
-            console.log('longitude:', value); //testing
             setFieldValue('longitude', value);
             handleMapClick(Number(values.latitude), Number(value))
           }}
