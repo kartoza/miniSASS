@@ -40,7 +40,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
     if (!isNaN(currValue)) {
       onChange(currValue)
     }
-  }, [onChange, currValue]);
+  }, [value,currValue]);
 
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
