@@ -15,6 +15,7 @@ export interface DegreeInputInterface {
 
 /** Degree input form. **/
 function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface) {
+  console.log('curr value from use state: ',value)
   const [currValue, setCurrValue] = useState(value)
   const min = label === 'Latitude' ? -90.000000 : -180.000000;
   const max = -1 * min;
@@ -39,7 +40,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
     if (!isNaN(currValue)) {
       onChange(currValue)
     }
-  }, [currValue]);
+  }, [onChange, currValue]);
 
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
