@@ -144,25 +144,45 @@ export default function DegreeInputs(
     }
   }, [latitude, longitude,globalVariables.checkIsLand]);
 
+
+  const [localLatitude, setLocalLatitude] = useState(latitude);
+  const [localLongitude, setLocalLongitude] = useState(longitude);
+
+  // Update local latitude state when latitude prop changes
   useEffect(() => {
-    console.log('any triggered use effect') // testing
-    console.log('lat: ',latitude)
-    console.log('long: ',longitude)
-    console.log('disabled: ',disabled)
-  }, [latitude, longitude ,disabled]);
+    setLocalLatitude(latitude);
+  }, [latitude]);
+
+  // Update local longitude state when longitude prop changes
+  useEffect(() => {
+    setLocalLongitude(longitude);
+  }, [longitude]);
+
+  // useEffect to log changes in latitude, longitude, and disabled props
+  useEffect(() => {
+    console.log('Latitude:', localLatitude);
+    console.log('Longitude:', localLongitude);
+    console.log('Disabled:', disabled);
+  }, [localLatitude, localLongitude, disabled]);
 
   return <>
     <DegreeInput
-      label='Latitude'
-      value={latitude}
-      onChange={setLatitude}
-      disabled={disabled}
-    />
-    <DegreeInput
-      label='Longitude'
-      value={longitude}
-      onChange={setLongitude}
-      disabled={disabled}
-    />
+        label='Latitude'
+        value={localLatitude}
+        onChange={(value) => {
+          setLocalLatitude(value); // Update local state
+          setLatitude(value); // Update parent state
+        }}
+        disabled={disabled}
+      />
+      <DegreeInput
+        label='Longitude'
+        value={localLongitude}
+        onChange={(value) => {
+          setLocalLongitude(value); // Update local state
+          setLongitude(value); // Update parent state
+        }}
+        disabled={disabled}
+      />
   </>
 }
