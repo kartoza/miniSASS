@@ -74,12 +74,13 @@ export default function CoordinatesInputForm(
     {selectOnMap ?
     (
       <DegreeInputs
-        latitude={selectedCoordinates.latitude.toFixed(6)}
-        longitude={selectedCoordinates.longitude.toFixed(6)}
+        latitude={selectedCoordinates.latitude !== null ? selectedCoordinates.latitude.toFixed(6) : 0.000000}
+        longitude={selectedCoordinates.longitude !== null ? selectedCoordinates.longitude.toFixed(6) : 0.000000}
         disabled={disabled}
         setLatitude={setLatitude}
         setLongitude={setLongitude}
-    />) :
+      />
+    ) :
       type === 'Degree' ?
         <DegreeInputs
           latitude={values.latitude}

@@ -35,12 +35,17 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
 
   useEffect(() => {
+    if (!isNaN(currValue)) {
+      onChange(currValue)
+    }
+  }, [currValue]);
+  
+  useEffect(() => {
     if (!isNaN(value) && disabled) {
-      console.log('assigning value ',value)
       onChange(value)
       setCurrValue(value)
     }
-  }, [value,currValue]);
+  }, [value]);
 
   return <div
     className="flex sm:flex-col flex-row gap-3 items-center justify-between w-[541px] sm:w-full"
@@ -146,39 +151,18 @@ export default function DegreeInputs(
     }
   }, [latitude, longitude,globalVariables.checkIsLand]);
 
-
-  const [localLatitude, setLocalLatitude] = useState(latitude);
-  const [localLongitude, setLocalLongitude] = useState(longitude);
-
-  // Update local latitude state when latitude prop changes
-  useEffect(() => {
-    setLocalLatitude(latitude);
-  }, [latitude]);
-
-  // Update local longitude state when longitude prop changes
-  useEffect(() => {
-    setLocalLongitude(longitude);
-  }, [longitude]);
-
-
   return <>
     <DegreeInput
-        label='Latitude'
-        value={localLatitude}
-        onChange={(value) => {
-          setLocalLatitude(value); // Update local state
-          setLatitude(value); // Update parent state
-        }}
-        disabled={disabled}
-      />
-      <DegreeInput
-        label='Longitude'
-        value={localLongitude}
-        onChange={(value) => {
-          setLocalLongitude(value);
-          setLongitude(value);
-        }}
-        disabled={disabled}
-      />
+      label='Latitude'
+      value={latitude}
+      onChange={setLatitude}
+      disabled={disabled}
+    />
+    <DegreeInput
+      label='Longitude'
+      value={longitude}
+      onChange={setLongitude}
+      disabled={disabled}
+    />
   </>
 }
