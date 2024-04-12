@@ -45,7 +45,7 @@ export default function CoordinatesInputForm(
   }
 
   useEffect(() => {
-    console.log('debug coordinates: ', selectedCoordinates)
+    // console.log('debug coordinates: ', selectedCoordinates)
     setLatitude(selectedCoordinates.latitude)
     setLongitude(selectedCoordinates.longitude)
   }, [selectedCoordinates]);
@@ -64,7 +64,6 @@ export default function CoordinatesInputForm(
       <RadioGroup
         value={`Degree`}
         onChange={(evt) => {
-          console.log('evt target value: ',evt.target.value); // testing
           setType(evt.target.value);
         }}
         row
@@ -74,19 +73,12 @@ export default function CoordinatesInputForm(
     )}
     {selectOnMap ?
     (
-
       <DegreeInputs
         latitude={selectedCoordinates.latitude.toFixed(6)}
         longitude={selectedCoordinates.longitude.toFixed(6)}
         disabled={disabled}
-        setLatitude={() => {
-            setFieldValue('latitude', selectedCoordinates.latitude);
-            handleMapClick(Number(selectedCoordinates.latitude), Number(values.longitude))
-          }}
-        setLongitude={() => {
-          setFieldValue('longitude', selectedCoordinates.longitude);
-          handleMapClick(Number(values.latitude), Number(selectedCoordinates.longitude))
-        }}
+        setLatitude={() => {setLatitude}
+        setLongitude={() => {setLongitude}
     />) :
       type === 'Degree' ?
         <DegreeInputs

@@ -35,11 +35,11 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
 
   useEffect(() => {
-    if (!isNaN(value)) {
+    if (!isNaN(value) && disabled) {
       console.log('assigning value ',value)
       onChange(value)
+      setCurrValue(value)
     }
-    setCurrValue(value)
   }, [value,currValue]);
 
   return <div
@@ -80,6 +80,7 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
         marginRight: '-2%'
       }}
       onChange={(evt) => {
+        console.log('on change in field')
         let value = evt.target.value
         if (!isNaN(parseFloat(evt.target.value))) {
           if (value > max) {
@@ -159,12 +160,6 @@ export default function DegreeInputs(
     setLocalLongitude(longitude);
   }, [longitude]);
 
-  // useEffect to log changes in latitude, longitude, and disabled props
-  // useEffect(() => {
-  //   console.log('Latitude:', localLatitude);
-  //   console.log('Longitude:', localLongitude);
-  //   console.log('Disabled:', disabled);
-  // }, [localLatitude, localLongitude, disabled]);
 
   return <>
     <DegreeInput
@@ -180,8 +175,8 @@ export default function DegreeInputs(
         label='Longitude'
         value={localLongitude}
         onChange={(value) => {
-          setLocalLongitude(value); // Update local state
-          setLongitude(value); // Update parent state
+          setLocalLongitude(value);
+          setLongitude(value);
         }}
         disabled={disabled}
       />
