@@ -35,9 +35,10 @@ function DegreeInput({ label, value, onChange, disabled }: DegreeInputInterface)
 
 
   useEffect(() => {
-    if (!isNaN(value) && !disabled) {
+    if (!isNaN(value) && disabled) {
       console.log('assigning value ',value)
       onChange(value)
+      setCurrValue(value)
     }
   }, [value,currValue]);
 
