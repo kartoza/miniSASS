@@ -172,7 +172,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         localStorage.setItem('siteId', JSON.stringify(0))
         if (response.data.status.includes('error')) {
           setErrorMessage(response.data.message);
-          setIsErrorModalOpen(true);
+          if("Site name already exists" === response.data.message){
+            setIsCloseSiteDialogOpen(true);
+          }
+          else setIsErrorModalOpen(true);
         }else {
           setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
@@ -181,9 +184,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
     } catch (exception) {
       setIsSavingData(false)
-      // setErrorMessage(error.message);
-      // setIsErrorModalOpen(true);
-      setIsCloseSiteDialogOpen(true);
+      setErrorMessage(exception.message);
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -403,6 +405,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const handleSiteCloseConfirm = () => {
     // save site but with existing site id
+    console.log('save observation to existing site')
   };
 
   
@@ -762,7 +765,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
               <br />
             <Text size="txtRalewayBold18" className="text-red-500">
-              {error.message ? (
+              {errorMessage.message ? (
                  <div>
                   <Text size="txtRalewayBold18" className="text-red-500">
                     Something unexpectedly went wrong. Please try again.
