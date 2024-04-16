@@ -52,21 +52,27 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   useEffect(() => {
     const fetchScoreGroups = async () => {
-      try {
-        setIsSavingData(true)
-        const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
-        if(response.status == 200){
-          setScoreGroups(response.data);
-          setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })))
-          setIsSavingData(false)
-        } else; // TODO trigger a retry in about 3 seconds
-      } catch (error) {
-        console.error('Error fetching score groups:', error);
-      }
+        try {
+            setIsSavingData(true);
+            const response = await axios.get(`${globalVariables.baseUrl}/group-scores/`);
+            if (response.status === 200) {
+                setScoreGroups(response.data);
+                setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })));
+                setIsSavingData(false);
+            } else {
+                // Retry after 5 seconds
+                setTimeout(fetchScoreGroups, 5000);
+            }
+        } catch (error) {
+            console.error('Error fetching score groups:', error);
+            // Retry after 5 seconds
+            setTimeout(fetchScoreGroups, 5000);
+        }
     };
 
     fetchScoreGroups();
-  }, []);
+}, []);
+
 
   const [manageImagesModalData, setManageImagesModalData] = useState({
     groups: '',
@@ -90,7 +96,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [siteId, setSiteId] = useState(0);
 
   // Function to log the state of checkboxes
-  const handleSave = async (saveToExistingSite) => {
+  const handleSave = async (saveToExistingSite  = false) => {
     setIsSavingData(true)
     try {
       
@@ -406,7 +412,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
 
   const handleSiteCloseConfirm = () => {
-    handleSave(True)
+    handleSave(true)
   };
 
   
@@ -433,7 +439,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         onClose={handleSiteDialogCancel}
         onConfirm={handleSiteCloseConfirm}
         title="Cannot Save Observation"
-        message="You chose create new site but the sitename you provided already exists, should the observation be saved to this site instead?"
+        message="You chose create new site but the Site name you provided already exists, should the observation be saved to this site instead?"
       />
       
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
