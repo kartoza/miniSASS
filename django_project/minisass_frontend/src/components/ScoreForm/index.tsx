@@ -156,6 +156,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
+      console.log('saveToSite val: ',saveToExistingSite)
       if(saveToExistingSite === true){
         form_data.append('saveToSite', JSON.stringify(true));
       }else form_data.append('saveToSite', JSON.stringify(false));
@@ -182,7 +183,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             setIsCloseSiteDialogOpen(true);
           }else {
             if(response.data.message === "")
-              setErrorMessage("something unexpecttedly went wrong please contact the system administrator via the contact us form.");
+              setErrorMessage("something unexpectedly went wrong, please try again. If the issue should persist ,contact the system administrator via the contact us form describing the problem you're facing.");
             else setErrorMessage(response.data.message)
             setIsErrorModalOpen(true);
           }
