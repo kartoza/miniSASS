@@ -181,8 +181,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       }
     } catch (exception) {
       setIsSavingData(false)
-      setErrorMessage(error.message);
-      setIsErrorModalOpen(true);
+      // setErrorMessage(error.message);
+      // setIsErrorModalOpen(true);
+      setIsCloseSiteDialogOpen(true);
     }
   };
 
@@ -368,6 +369,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
   
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+  const [isCloseSiteDialogOpen, setIsCloseSiteDialogOpen] = React.useState(false);
 
   const handleCloseSidebar = () => {
     if(proceedToSavingData)
@@ -395,6 +397,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setIsCloseDialogOpen(false)
   };
 
+  const handleSiteDialogCancel = () => {
+    setIsCloseSiteDialogOpen(false)
+  };
+
+  const handleSiteCloseConfirm = () => {
+    // save site but with existing site id
+  };
+
   
   
   return (
@@ -409,6 +419,17 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         onConfirm={handleCloseConfirm}
         title="Confirm Close"
         message="You have unsaved data ,are you sure want to close?"
+      />
+
+      <ConfirmationDialogRaw
+        id="site-dialog"
+        keepMounted
+        value="SiteError"
+        open={isCloseSiteDialogOpen}
+        onClose={handleSiteDialogCancel}
+        onConfirm={handleSiteCloseConfirm}
+        title="Cannot Create New Site"
+        message="You chose create new site but the sitename you provided already exists should the observation be saved to this site instead?"
       />
       
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
