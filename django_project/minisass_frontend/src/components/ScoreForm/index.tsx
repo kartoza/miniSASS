@@ -433,7 +433,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         onClose={handleSiteDialogCancel}
         onConfirm={handleSiteCloseConfirm}
         title="Cannot Save Observation"
-        message="You chose create new site but the sitename you provided already exists, should the observation be saved to this site instead?"
+        message="You chose create new site but the Site name you provided already exists, should the observation be saved to this site instead?"
       />
       
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
