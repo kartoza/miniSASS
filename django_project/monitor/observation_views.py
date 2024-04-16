@@ -559,17 +559,21 @@ def create_observations(request):
 					new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
 					if Sites.objects.filter(site_name=site_name).exists():
-						return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
-
-					site = Sites.objects.create(
-						gid=new_site_id,
-						site_name=site_name,
-						river_name=river_name,
-						description=description,
-						river_cat=river_cat,
-						the_geom=Point(x=longitude, y=latitude, srid=4326),
-						user=user
-					)
+						saveToSite = request.POST.get('saveToSite', 'false').lower()
+						if saveToSite == 'true':
+					        	site = Sites.objects.get(site_name=site_name)	
+						else:
+							return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
+					else:
+						site = Sites.objects.create(
+							gid=new_site_id,
+							site_name=site_name,
+							river_name=river_name,
+							description=description,
+							river_cat=river_cat,
+							the_geom=Point(x=longitude, y=latitude, srid=4326),
+							user=user
+						)
 
 				for key, image in request.FILES.items():
 					if 'image_' in key:
