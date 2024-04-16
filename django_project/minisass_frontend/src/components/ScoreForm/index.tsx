@@ -90,7 +90,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [siteId, setSiteId] = useState(0);
 
   // Function to log the state of checkboxes
-  const handleSave = async () => {
+  const handleSave = async (saveToExistingSite) => {
     setIsSavingData(true)
     try {
       
@@ -152,6 +152,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
+      if(saveToExistingSite)
+        form_data.append('saveToSite', JSON.stringify(true));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -404,8 +406,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
 
   const handleSiteCloseConfirm = () => {
-    // save site but with existing site id
-    console.log('save observation to existing site')
+    handleSave(True)
   };
 
   
@@ -431,8 +432,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         open={isCloseSiteDialogOpen}
         onClose={handleSiteDialogCancel}
         onConfirm={handleSiteCloseConfirm}
-        title="Cannot Create New Site"
-        message="You chose create new site but the sitename you provided already exists should the observation be saved to this site instead?"
+        title="Cannot Save Observation"
+        message="You chose create new site but the sitename you provided already exists, should the observation be saved to this site instead?"
       />
       
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
