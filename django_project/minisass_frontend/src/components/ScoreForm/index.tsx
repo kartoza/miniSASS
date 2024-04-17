@@ -156,7 +156,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
-      console.log('saveToSite val: ',saveToExistingSite)
       if(saveToExistingSite === true){
         form_data.append('saveToSite', JSON.stringify(true));
       }else form_data.append('saveToSite', JSON.stringify(false));
@@ -416,6 +415,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const handleSiteCloseConfirm = () => {
     handleSave(true)
+    setIsCloseSiteDialogOpen(false)
   };
 
   
