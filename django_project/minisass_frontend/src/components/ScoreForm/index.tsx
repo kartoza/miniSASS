@@ -60,12 +60,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 setButtonStates(response.data.map(score => ({ id: score.id, showManageImages: false })));
                 setIsSavingData(false);
             } else {
-                // Retry after 5 seconds
                 setTimeout(fetchScoreGroups, 5000);
             }
         } catch (error) {
             console.error('Error fetching score groups:', error);
-            // Retry after 5 seconds
             setTimeout(fetchScoreGroups, 5000);
         }
     };
@@ -158,8 +156,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
-      if(saveToExistingSite)
+      console.log('saveToSite val: ',saveToExistingSite)
+      if(saveToExistingSite === true){
         form_data.append('saveToSite', JSON.stringify(true));
+      }else form_data.append('saveToSite', JSON.stringify(false));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -179,11 +179,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
         if (response.data.status.includes('error')) {
-          setErrorMessage(response.data.message);
           if("Site name already exists" === response.data.message){
             setIsCloseSiteDialogOpen(true);
+          }else {
+            if(response.data.message === "")
+              setErrorMessage("something unexpectedly went wrong, please try again. If the issue should persist ,contact the system administrator via the contact us form describing the problem you're facing.");
+            else setErrorMessage(response.data.message)
+            setIsErrorModalOpen(true);
           }
-          else setIsErrorModalOpen(true);
         }else {
           setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
