@@ -94,7 +94,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [siteId, setSiteId] = useState(0);
 
   // Function to log the state of checkboxes
-  const handleSave = async (saveToExistingSite  = false) => {
+  const handleSave = async () => {
     setIsSavingData(true)
     try {
       
@@ -157,9 +157,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
       console.log('saveToSite val: ',saveToExistingSite)
-      if(saveToExistingSite === true){
-        form_data.append('saveToSite', JSON.stringify(true));
-      }else form_data.append('saveToSite', JSON.stringify(false));
+      const saveToSite = localStorage.getItem('saveToSite') || false;
+      form_data.append('saveToSite', JSON.stringify(saveToSite));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
@@ -178,6 +177,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         additionalData.riverName = ''
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
+        localStorage.setItem('saveToSite', false)
         if (response.data.status.includes('error')) {
           if("Site name already exists" === response.data.message){
             setIsCloseSiteDialogOpen(true);
@@ -197,6 +197,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       setIsSavingData(false)
       setErrorMessage(exception.message);
       setIsErrorModalOpen(true);
+      localStorage.setItem('saveToSite', false)
     }
   };
 
@@ -415,7 +416,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   };
 
   const handleSiteCloseConfirm = () => {
-    handleSave(true)
+    localStorage.setItem('saveToSite', true)
   };
 
   
