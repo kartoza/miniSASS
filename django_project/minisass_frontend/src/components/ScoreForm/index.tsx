@@ -156,8 +156,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       const site_id = localStorage.getItem('siteId') || siteId;
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
-      console.log('saveToSite val: ',saveToExistingSite)
       const saveToSite = localStorage.getItem('saveToSite') || false;
+      console.log('saveToSite', saveToSite)
       form_data.append('saveToSite', JSON.stringify(saveToSite));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
