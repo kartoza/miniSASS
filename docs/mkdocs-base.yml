@@ -45,6 +45,7 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
+                  - Quickstart: user/quickstart/index.md
                   - Manual:
                         - user/manual/index.md
                         - Landing Page: user/manual/landing-page.md
