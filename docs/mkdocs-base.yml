@@ -45,6 +45,7 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
+                  - Quickstart: user/quickstart/index.md
                   - Guide:
                         - user/guide/index.md
                         - Register-Login-Logout: user/guide/register-login-logout.md
