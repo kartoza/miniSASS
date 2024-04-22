@@ -32,13 +32,13 @@ On the register page, you will find several fields that need to be completed. Fi
 
 After filling in all the required fields, double-check to ensure accuracy. Click on 2️⃣ the `Register` button to proceed.
 
-On successful submition you will see the registration in progress message. To complete the regstration process you need to activate your account.
+On successful submission you will see the registration in progress message. To complete the registration process you need to activate your account.
 
 ![registration in progress](./img/register-login-logout-3.png)
 
 ## How do I Activate account
 
-Go to your email and check the activation email for the account activation sended by the miniSASS.
+Go to your email and check the activation email for the account activation sent by the miniSASS.
 
 ![Activate Account Email](./img/register-login-logout-4.png)
 
@@ -58,7 +58,7 @@ Click on the 1️⃣ login button to access the login page.
 
 ![Login](./img/register-login-logout-5.png)
 
-On the login page fill the email address and the password in the 1️⃣ corosponding fields. Once you have entered your email address and password, click on the 2️⃣ `Login` button to proceed.
+On the login page fill the email address and the password in the 1️⃣ corresponding fields. Once you have entered your email address and password, click on the 2️⃣ `Login` button to proceed.
 
 ![Login form](./img/register-login-logout-6.png)
 
