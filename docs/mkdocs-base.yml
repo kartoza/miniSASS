@@ -45,7 +45,14 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
+<<<<<<< HEAD
                   - Quickstart: user/quickstart/index.md
+=======
+                  - Guide:
+                        - user/guide/index.md
+                        - Register-Login-Logout: user/guide/register-login-logout.md
+                        - Forgot Password: user/guide/forgot-password.md
+>>>>>>> eaad217d... Update the YML and index file
                   - Manual:
                         - user/manual/index.md
                         - Landing Page: user/manual/landing-page.md
