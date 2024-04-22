@@ -38,13 +38,13 @@ The miniSASS Registration Form allows users to create a new account by providing
 
 **Register Button:** Once all the required information is entered, click the `Register` button to submit the registration.
 
-On successful submition you will see the registration in progress message. To complete the regstration process you need to activate your account￼.
+On successful submission you will see the registration in progress message. To complete the registration process you need to activate your account￼.
 
 ![Message](./img/quick-start-3.png)
 
 **Activating Account**
 
-Go to your email and check the activation email for the account activation sended by the miniSASS.
+Go to your email and check the activation email for the account activation sent by the miniSASS.
 
 ![Activate Account Email](./img/quick-start-4.png)
 
@@ -68,7 +68,7 @@ Fill the required information in the respective fields and click on the login bu
 
 ![Login Page](./img/quick-start-7.png)
 
-You can use the `Retrieve Email Address` button, to retrieve the email addrese using your username in case you forgot your associate email address with the username.
+You can use the `Retrieve Email Address` button, to retrieve the email address using your username in case you forgot your email address associated with the username.
 
 After successful login you will be redirected to the miniSASS home page.
 
