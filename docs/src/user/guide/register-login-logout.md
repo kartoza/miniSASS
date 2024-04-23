@@ -72,7 +72,7 @@ On any page within the miniSASS platform, look for the profile icon. This icon i
 
 ![Logout 1](./img/register-login-logout-7.png)
 
- Simply click on the `Logout` option. This action will open a confirmation popup. Click on the 1️⃣ `Yes` to out of your miniSASS account.
+ Simply click on the `Logout` option. This action will open a confirmation popup. Click on the 1️⃣ `Yes` to logout from your miniSASS account.
 
 ![Logout 2](./img/register-login-logout-8.png)
 
