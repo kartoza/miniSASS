@@ -12,7 +12,7 @@ After clicking on this button, you will be redirected to the map page where you 
 
 ![add record button](./img/upload-2.png)
 
-Upon clicking on this button the add record form will open. This form have four sections
+Upon clicking on this button the add record form will open. This form has four sections
 
 ## Site details section
 
@@ -22,7 +22,7 @@ For the site details you can create a new site or can select an existing site. T
 
 ### Create New Site option
 
-By default the create new site option is selected. Fill the 1️⃣ required filds and upload the image of the site. To upload the image of the site click on the 2️⃣ `Upload site images` button.
+By default the create new site option is selected. Fill the 1️⃣ required fields and upload the image of the site. To upload the image of the site click on the 2️⃣ `Upload site images` button.
 
 ![create new site](./img/upload-4.png)
 
@@ -32,7 +32,7 @@ Upon clicking the popup will open, where you can select the images from the syst
 
 ### Use Existing Site option
 
-Select this option by clickng on the 1️⃣ `Use Existing Site` radio button.
+Select this option by clicking on the 1️⃣ `Use Existing Site` radio button.
 
 ![use existing site](./img/upload-6.png)
 
@@ -68,22 +68,22 @@ Upon selecting the site on the map latitude and longitude will be filled automat
 
 ### Type in coordinates option
 
-In this option you can enter the coordinates manually via two different types. You can either enter DMS coorrdinates or degree coordinate.
+In this option you can enter the coordinates manually via two different types. You can either enter DMS coordinates or degree coordinate.
 
 By default the degree coordinates (latitude and longitude) is selected.
 
 ![degree coordinates](./img/upload-12.png)
 
-To enter the DMS coordinates click on the redio button available in front of the DMS.
+To enter the DMS coordinates click on the radio button available in front of the DMS.
 
 ![DMS coordinates](./img/upload-13.png)
 
 
 ## Observation details section
 
-Enter the collectors name and the notes in the 1️⃣ available fields and select the 2️⃣ date from the calander.
+Enter the collectors name and the notes in the 1️⃣ available fields and select the 2️⃣ date from the calendar.
 
-![observation ditails](./img/upload-14.png)
+![observation details](./img/upload-14.png)
 
 To select the date from the calendar click on the calendar icon available in the date field.
 
@@ -91,17 +91,17 @@ To select the date from the calendar click on the calendar icon available in the
 
 ## Measurements section
 
-Enter the measurment details in the 1️⃣ available fields. and the click on the 
+Enter the measurement details in the 1️⃣ available fields and the click on the next button
 
-![measurment](./img/upload-16.png)
+![measurement](./img/upload-16.png)
 
->Note: If the `Next` button is not clickable and the incomplete form message (Incomplete form. Please scroll up to complete the highlighted fields.) shown on the form that means you have forgotten to fill the required field.
+>Note: If the `Next` button is not clickable and the incomplete form message (Incomplete form. Please scroll up to complete the highlighted fields.) is shown on the form that means you have forgotten to fill the required fields.
 
-Fill all the required fields to proceed further. After filling all the required fields the incomplete form message will not show on the page and the `Next` button will be clickable. Click on the 1️⃣ next button for next step of data uploading.
+Fill all of the required fields to proceed further. After filling all the required fields the incomplete form message will not show on the page and the `Next` button will be clickable. Click on the 1️⃣ next button for next step of data uploading.
 
-![measurment](./img/upload-17.png)
+![measurement](./img/upload-17.png)
 
-Upon clicking the next button the score form will open. Where you can select the group by clicking on the checkbox available in front of the group name and upload the images by clickin on the `Upload images` button available after the name of the group.
+Upon clicking the next button the score form will open. Where you can select the group by clicking on the checkbox available in front of the group name and upload the images by clicking on the `Upload images` button available after the name of the group.
 
 ![group score](./img/upload-18.png)
 
