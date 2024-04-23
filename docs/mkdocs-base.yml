@@ -49,6 +49,7 @@ nav:
                   - Guide:
                         - user/guide/index.md
                         - Register-Login-Logout: user/guide/register-login-logout.md
+                        - Forgot Password: user/guide/forgot-password.md
                   - Manual:
                         - user/manual/index.md
                         - Landing Page: user/manual/landing-page.md
