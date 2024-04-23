@@ -18,11 +18,11 @@ On successful submission the success message will be displayed.
 
 Upon initiating the password reset process, you will receive an email containing a link to reset your password. You have three options to access the password update page:
 
-Within the email, there will be a 1️⃣ button labeled `Reset Password`. You can click on this button to be directed to the password update page. Alternatively, you can simply click on the 2️⃣ `Click Here` link provided in the email. This will also take you to the password update page. Or you can manually copy the provided link 3️⃣ from the email and paste it into your web browser's address bar. Press Enter to navigate to the password update page.
+Within the email, there will be a 1️⃣ button labelled `Reset Password`. You can click on this button to be directed to the password update page. Alternatively, you can simply click on the 2️⃣ `Click Here` link provided in the email. This will also take you to the password update page. Or you can manually copy the provided link 3️⃣ from the email and paste it into your web browser's address bar. Press Enter to navigate to the password update page.
 
 ![reset password email](./img/forgot-password-4.png)
 
-Upon clicking on any of three ptions you will be redirected to the update password page. Enter the new password into the 1️⃣ password fields and click on the 2️⃣ `Reset` button to reset the password.
+Upon clicking on any of three options you will be redirected to the update password page. Enter the new password into the 1️⃣ password fields and click on the 2️⃣ `Reset` button to reset the password.
 
 ![update password form](./img/forgot-password-5.png)
 
