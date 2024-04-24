@@ -103,7 +103,7 @@ const Footer: React.FC<FooterProps> = (props) => {
               <a href="https://kartoza.com/" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${globalVariables.staticPath}uMngeni-uThukela_ logo .jpg`}
+                  src={`${globalVariables.staticPath}uMngeni-uThukela_ logo.jpg`}
                   alt="uMngeni-uThukela"
                 />
               </a>
