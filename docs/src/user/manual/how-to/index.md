@@ -12,3 +12,5 @@ license: This program is free software; you can redistribute it and/or modify it
 
 # How To
 <!-- To Be Populated -->
+
+* **[How To:](./how-to.md)** This page explains how to use the `miniSASS` tool and its functionalities in detail.
