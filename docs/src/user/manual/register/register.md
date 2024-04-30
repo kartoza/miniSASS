@@ -60,7 +60,7 @@ The miniSASS Register form allows users to create a new account and participate 
 
 3. **Register Button:** Once all the required information is entered, click the `Register` button to submit the registration.
 
-On successful submition the success message will be shown.
+On successful submission the success message will be shown.
 
 ![Success message](./img/register-7.png)
 
