@@ -18,13 +18,13 @@ By default, the legend is shown on the map page but you can hide the legend for 
 
 ![legend](./img/map-3.png)
 
-Upon clicking, the legend will be hidden.
+Upon clicking the icon, the legend will be hidden.
 
 ![legend](./img/map-4.png)
 
 ## How can I search for the site?
 
-You can search for the desired site on the map by typing into the 1️⃣ search bar located at the top right corner.
+You can search for the desired site on the map by typing into the 1️⃣ search bar located in the top right corner.
 
 ![search bar](./img/map-5.png)
 
@@ -46,7 +46,7 @@ To change the layer click on the 1️⃣ layer icon available in the bottom left
 
 ![layer icon](./img/map-9.png)
 
-Upon clicking the popup will open, where you can select the layer. To select the `Satellite` layer click on the 1️⃣ radio button available in front of the satellite.
+Upon clicking the icon, the popup will open, where you can select the layer. To select the `Satellite` layer click on the 1️⃣ radio button available in front of the satellite.
 
 ![satellite layer](./img/map-16.png)
 
