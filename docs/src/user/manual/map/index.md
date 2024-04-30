@@ -14,5 +14,6 @@ license: This program is free software; you can redistribute it and/or modify it
 
 This section of documentation pertains to the map that users interact with on the platform. It consists of:
 
-* **[The Map:](./map.md)**
-* **[Recent Observations:](./recent-observation.md)**
+* **[The Map:](./map.md)** This section explains the basic layout and functions of the map interface, helping users understand how to navigate the map efficiently.
+
+* **[Recent Observations:](./recent-observation.md)** This page explains how users can view recent observations.
