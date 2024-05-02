@@ -6,6 +6,10 @@ Welcome to the miniSASS user guide. In this section of the documentation, we aim
 
 * **[Profile:](./profile.md)** This guide will walk you through the process of managing your profile, changing your password and uploading a certificate.
 
+* **[Upload Data:](./upload.md)** This guide will walk you through the process of uploading the data.
+
+* **[Profile:](./profile.md)** This guide will walk you through the process of managing your profile, changing your password and upload certificate.
+
 * **[Forgot Password:](./forgot-password.md)** This guide will walk you through the process of the forgot password functionality. 
 
 * **[Map:](./map.md)** This guide will walk you through how you can make the most of the map.
