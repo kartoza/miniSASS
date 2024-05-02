@@ -6,7 +6,7 @@ summary: The mini stream assessment scoring system (miniSASS) is a simple and ac
 date: 27-11-2023
 some_url: https://minisass.org/
 copyright: Copyright 2023, miniSASS
-contact:
+contact: nicholas@groundtruth.co.za, info@minisass.org
 license: This program is free software; you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 ---
 
