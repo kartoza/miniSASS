@@ -113,6 +113,11 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		return Response(serializer.data)
 
 	def create(self, request, *args, **kwargs):
+		# Get the highest gid value
+                highest_gid = Sites.objects.latest('gid').gid if Sites.objects.exists() else 0
+                # Increment the gid value
+                new_gid = highest_gid + 1
+
 		# Extract data from the request payload
 		site_data = request.data.get('site_data', {})
 		images = request.FILES.getlist('images', [])
@@ -130,6 +135,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 		# Create a new site
 		site = Sites.objects.create(
+			gid=new_gid,
 			site_name=site_name,
 			river_name=river_name,
 			description=description,
