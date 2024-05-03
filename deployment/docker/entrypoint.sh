@@ -53,6 +53,10 @@ fi
 # create super user if one doesn't exist
 python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('${DJANGO_SUPERUSER_USERNAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" 2>/dev/null || echo 'Superuser already exists, skipping.'
 
+echo 'Updating active field for all users...'
+export PGPASSWORD="${POSTGRES_PASS}"
+psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -c "UPDATE auth_user SET is_active = TRUE;"
+
 
 # Run tests
 echo 'Running tests.'
