@@ -119,6 +119,8 @@ def request_password_reset(request):
 
     try:
         user = User.objects.get(email=email)
+    except User.MultipleObjectsReturned:
+        return Response({'error': 'Multiple users found for this email address'}, status=status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
