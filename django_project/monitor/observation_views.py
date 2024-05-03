@@ -681,10 +681,16 @@ class RecentObservationListView(generics.ListAPIView):
 			except UserProfile.DoesNotExist:
 				user_profile = None
 
+			try:
+                               user_obj = User.objects.get(id=observation['user'])
+                               first_name = user_obj.first_name
+                        except User.DoesNotExist:
+                               first_name = None
+
 			recent_observations.append({
 				'observation': observation['gid'],
 				'site': observation['site']['site_name'],
-				'username': user_profile.user.username if user_profile else "",
+				'username': first_name,
 				'organisation': user_profile.organisation_name if user_profile else "",
 				'time_stamp': observation['time_stamp'],
 				'obs_date': observation['obs_date'],
