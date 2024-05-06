@@ -73,25 +73,25 @@ class SaveSiteImagesView(generics.CreateAPIView):
 
 		# Check if the 'images' field is present in the request.FILES
 		if 'images' in request.FILES:
-		    images = request.FILES.getlist('images', [])
+			images = request.FILES.getlist('images', [])
 		else:
-		    # fallback to using request.FILES directly
-		    images = request.FILES.values()
+			# fallback to using request.FILES directly
+			images = request.FILES.values()
 
 		site_images = []
 
 		for image in images:
-		    try:
-		        # Check if the image is a tuple (field name, file)
-		        if isinstance(image, tuple):
-		            image = image[1]
+			try:
+				# Check if the image is a tuple (field name, file)
+				if isinstance(image, tuple):
+					image = image[1]
 		
-		        site_image = SiteImage(site=site, image=image)
-		        site_image.full_clean()  # Validate model fields before saving
-		        site_image.save()
-		        site_images.append(site_image)
-		    except Exception as e:
-		        return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+				site_image = SiteImage(site=site, image=image)
+				site_image.full_clean()  # Validate model fields before saving
+				site_image.save()
+				site_images.append(site_image)
+			except Exception as e:
+				return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 		return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
@@ -114,9 +114,9 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 	def create(self, request, *args, **kwargs):
 		# Get the highest gid value
-                highest_gid = Sites.objects.latest('gid').gid if Sites.objects.exists() else 0
-                # Increment the gid value
-                new_gid = highest_gid + 1
+		highest_gid = Sites.objects.latest('gid').gid if Sites.objects.exists() else 0
+		# Increment the gid value
+		new_gid = highest_gid + 1
 
 		# Extract data from the request payload
 		site_data = request.data.get('site_data', {})
@@ -191,4 +191,3 @@ class SiteObservationsByLocation(APIView):
 				return Response([], status=status.HTTP_404_NOT_FOUND)
 		except Sites.DoesNotExist:
 			return Response([], status=status.HTTP_404_NOT_FOUND)
-
