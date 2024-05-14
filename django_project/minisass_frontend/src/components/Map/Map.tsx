@@ -566,7 +566,7 @@ export const Map = forwardRef((props: Interface, ref) => {
               "elec_cond_unit": "S/m",
               "user": 0
           }]
-          }else {
+          }else if (data.observations[0].organisationtype == null){
             data.observations[0].organisationtype = {
                   "id": 0,
                   "rank": 0,
