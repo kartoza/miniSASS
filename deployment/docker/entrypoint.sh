@@ -57,36 +57,6 @@ echo 'Updating active field for all users...'
 export PGPASSWORD="${POSTGRES_PASS}"
 psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -c "UPDATE auth_user SET is_active = TRUE;"
 
-# delete all the james smith and their related objects
-echo 'Deleting specific users and their related data...'
-psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" <<EOF
-DELETE FROM user_profile WHERE id IN (
-    SELECT u.id
-    FROM auth_user u
-    WHERE u.first_name = 'James'
-      AND u.last_name = 'Smith'
-      AND DATE(u.date_joined) = DATE(u.last_login)
-      AND DATE(u.date_joined) < '2023-01-01'
-);
-
-DELETE FROM password_history WHERE user_id IN (
-    SELECT u.id
-    FROM auth_user u
-    WHERE u.first_name = 'James'
-      AND u.last_name = 'Smith'
-      AND DATE(u.date_joined) = DATE(u.last_login)
-      AND DATE(u.date_joined) < '2023-01-01'
-);
-
-DELETE FROM auth_user WHERE id IN (
-    SELECT u.id
-    FROM auth_user u
-    WHERE u.first_name = 'James'
-      AND u.last_name = 'Smith'
-      AND DATE(u.date_joined) = DATE(u.last_login)
-      AND DATE(u.date_joined) < '2023-01-01'
-);
-EOF
 
 # Run tests
 echo 'Running tests.'
