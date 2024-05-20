@@ -58,10 +58,19 @@ class Command(BaseCommand):
 			primary_user = users.first()  # Keep the first user as the primary
 
 			for user in users.exclude(id=primary_user.id):
-				# Reassign related objects to primary user
-				UserProfile.objects.filter(user=user).update(user=primary_user)
+				# Handle UserProfile
+				if UserProfile.objects.filter(user=primary_user).exists():
+					UserProfile.objects.filter(user=user).delete()
+				else:
+					UserProfile.objects.filter(user=user).update(user=primary_user)
+
+				# Handle PasswordHistory
 				PasswordHistory.objects.filter(user=user).update(user=primary_user)
+
+				# Handle Sites
 				Sites.objects.filter(user=user).update(user=primary_user)
+
+				# Handle Observations
 				Observations.objects.filter(user=user).update(user=primary_user)
 
 				# Delete the duplicate user
