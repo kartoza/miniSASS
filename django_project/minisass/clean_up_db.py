@@ -31,11 +31,11 @@ class Command(BaseCommand):
         )
 
         for user in users_to_delete:
-            UserProfile.objects.filter(user=user).delete()
-            PasswordHistory.objects.filter(user=user).delete()
-            Sites.objects.filter(user=user).delete()
-            Observations.objects.filter(user=user).delete()
-            user.delete()
+        	UserProfile.objects.filter(user=user).delete()
+		PasswordHistory.objects.filter(user=user).delete()
+	        Sites.objects.filter(user=user).delete()
+	        Observations.objects.filter(user=user).delete()
+	        user.delete()
 
         self.stdout.write(self.style.SUCCESS('Successfully deleted specific users based on criteria.'))
 
