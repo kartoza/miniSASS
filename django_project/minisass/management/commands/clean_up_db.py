@@ -13,7 +13,7 @@ from monitor.models import (
 	Sites
 )
 from django.contrib.sites.models import Site
-from django.db.models import F, Count
+from django.db.models import F, Count, Q
 from django.db.models.functions import TruncDate
 
 
@@ -23,20 +23,30 @@ class Command(BaseCommand):
 	def handle(self, *args, **kwargs):
 		self.delete_specific_users()
 		self.merge_duplicate_users()
+		self.update_anonymous_users()
 
 	@transaction.atomic
 	def delete_specific_users(self):
-		# Filter users whose first name is 'James', last name is 'Smith',
-		# the date portion of date_joined and last_login are the same, 
-		# and date_joined is before January 1, 2023
+		"""
+			1.If the first name is 'James' and last name is 'Smith', the user should be deleted,
+			if the date joined and last login are the same and before 2023.
+			2.If the first name and last name are not empty, check if the username is the same as the first name. 
+			If they match, delete the user if the date joined and last login are the same and before 2023.
+		"""
 		users_to_delete = User.objects.annotate(
 			date_joined_date=TruncDate('date_joined'),
 			last_login_date=TruncDate('last_login')
 		).filter(
-			first_name='James',
-			last_name='Smith',
-			date_joined_date=F('last_login_date'),
-			date_joined__lt='2023-01-01'
+			Q(
+				first_name='James',
+				last_name='Smith',
+				date_joined_date=F('last_login_date'),
+				date_joined__lt='2023-01-01'
+			) | Q(
+				~Q(first_name='') & ~Q(last_name='') & Q(username=F('first_name')),
+				date_joined_date=F('last_login_date'),
+				date_joined__lt='2023-01-01'
+			)
 		)
 
 		for user in users_to_delete:
@@ -47,6 +57,22 @@ class Command(BaseCommand):
 			user.delete()
 
 		self.stdout.write(self.style.SUCCESS('Successfully deleted specific users based on criteria.'))
+
+	@transaction.atomic
+	def update_anonymous_users(self):
+		users_to_update = User.objects.filter(
+			Q(first_name__isnull=True) | Q(first_name='') |
+			Q(username__isnull=True) | Q(username='')
+		)
+
+		for user in users_to_update:
+			if not user.first_name:
+				user.first_name = 'Anonymous'
+			if not user.username:
+				user.username = user.email
+			user.save()
+
+		self.stdout.write(self.style.SUCCESS('Successfully updated anonymous users.'))
 
 
 	@transaction.atomic
