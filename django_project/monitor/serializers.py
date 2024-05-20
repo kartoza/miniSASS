@@ -112,9 +112,9 @@ class ObservationsSerializer(serializers.ModelSerializer):
         else:
             user = obj.user
             return (
-                f"{user.first_name} {user.last_name}"
-                if user and user.first_name and user.last_name
-                else user.username if user else ""
+                f"{user.first_name}"
+                if user and user.first_name
+                else "Anonymous"
             )
 
     def get_organisationtype(self, obj):

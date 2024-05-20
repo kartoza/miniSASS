@@ -44,57 +44,63 @@ const EnforePasswordChangeModal: React.FC<Props> = ({
 
   return (
     <>
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={{
-        content: {
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          width: '100%',
-          maxWidth: '43vw',
-          background: 'white',
-          border: 'none',
-          borderRadius: '0px 25px 25px 25px',
-        },
-      }}
-    >
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onClose}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            maxWidth: '43vw',
+            background: 'white',
+            border: 'none',
+            borderRadius: '0px 25px 25px 25px',
+          },
+        }}
+      >
         <div>
           <h3
-              style={{
-                fontFamily: 'Raleway',
-                fontStyle: 'normal',
-                fontWeight: 700,
-                alignItems: 'flex-start',
-                fontSize: '24px',
-                lineHeight: '136.4%',
-                color: '#539987',
-              }}
-            >
-              Password needs update
-            </h3>
-            <br />
+            style={{
+              fontFamily: 'Raleway',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              alignItems: 'flex-start',
+              fontSize: '24px',
+              lineHeight: '136.4%',
+              color: '#539987',
+            }}
+          >
+            Profile Update Required!
+          </h3>
+          <br />
           <Typography>
-            Please update your password to access the new site
+            Dear User,
+            <br /><br />
+            We have noticed that your profile requires updates. To continue using the site, please ensure the following:
+            <ul>
+              <li>Your password is updated with the new security constraints.</li>
+              <li>Set your first name if it is currently set to "Anonymous".</li>
+            </ul>
+            Having a proper first name helps us attribute observations accurately to you.
           </Typography>
-
           <Button
               className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{ marginLeft: "65%" }}
+              style={{ marginLeft: "70%" }}
               onClick={onClose}
             >
-              Ok
+              Update
             </Button>
         </div>
-    </Modal>
-  </>
+      </Modal>
+    </>
   );
 };
 

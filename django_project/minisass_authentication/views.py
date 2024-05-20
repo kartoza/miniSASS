@@ -428,6 +428,12 @@ def user_login(request):
 			
 			access_token = RefreshToken.for_user(user).access_token
 
+			# Check if first name is "Anonymous"
+			if user.first_name == "Anonymous":
+				is_profile_updated = False
+			else:
+				is_profile_updated = get_is_user_password_enforced(user, password)
+
 			user_data = {
 				'username': user.username,
 				'email': user.email,
@@ -436,7 +442,7 @@ def user_login(request):
 				'is_authenticated': True,
 				'user_id': user.pk,
 				'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-				'is_password_enforced': get_is_user_password_enforced(request.user, password)
+				'is_profile_updated': is_profile_updated
 			}
 
 			return Response(user_data, status=status.HTTP_200_OK)
