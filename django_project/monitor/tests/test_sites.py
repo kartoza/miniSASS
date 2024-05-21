@@ -18,7 +18,7 @@ class SitesListCreateViewTestCase(TestCase):
 	def image_field(self, name, file_name):
 		"""Return image field with name and file_name."""
 		image_path = os.path.join(
-			os.path.abspath(os.path.dirname(__file__)), file_name
+			os.path.abspath(os.path.dirname(__file__)), 'test_image.png'
 		)
 		
 		# Determine content type based on file extension
