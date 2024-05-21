@@ -346,7 +346,7 @@ class CheckIsExpertTest(APITestCase):
                 'organisation_name': '',
                 'country': None,
                 'is_expert': False,
-                'is_password_enforced': True,
+                'is_profile_updated': True,
                 'expert_approval_status': 'REJECTED',
                 'certificate': None,
                 'user': self.user.id,
@@ -383,7 +383,7 @@ class LoginTest(APITestCase):
             user.email,
         )
         self.assertTrue(
-            response.json()['is_password_enforced']
+            response.json()['is_profile_updated']
         )
 
     def test_login_weak_password(self):
@@ -409,6 +409,6 @@ class LoginTest(APITestCase):
             user.email,
         )
         self.assertFalse(
-            response.json()['is_password_enforced']
+            response.json()['is_profile_updated']
         )
 
