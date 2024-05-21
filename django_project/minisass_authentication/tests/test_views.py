@@ -346,7 +346,7 @@ class CheckIsExpertTest(APITestCase):
                 'organisation_name': '',
                 'country': None,
                 'is_expert': False,
-                'is_profile_updated': True,
+                'is_password_enforced': True,
                 'expert_approval_status': 'REJECTED',
                 'certificate': None,
                 'user': self.user.id,
