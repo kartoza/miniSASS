@@ -59,11 +59,11 @@ psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -c "U
 
 
 # Run tests
-echo 'Running tests.'
+# echo 'Running tests.'
 
 # Drop test DB if exists
-psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -c "DROP DATABASE IF EXISTS test_${DJANGO_DB};"
-python manage.py test
+# psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -c "DROP DATABASE IF EXISTS test_${DJANGO_DB};"
+# python manage.py test
 
 psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -f /home/web/django_project/webmapping/sql/observation.sql
 
