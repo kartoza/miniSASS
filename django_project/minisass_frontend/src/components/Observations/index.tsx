@@ -99,13 +99,6 @@ const Observations: React.FC<DesktopTwoColumnscoreProps> = (props) => {
             size="txtRalewayBold18Green800"
         >
             {(
-                props?.organisation.length > 35 || 
-                props?.usernamejimtaylOne.length > 35
-            ) ? (
-                props?.username.length > 15 ? 
-                    `${props.username.substring(0, 15)}...` : 
-                    props.username
-            ) : (
                 props?.username.length > 23 ? 
                     `${props.username.substring(0, 20)}...` : 
                     props.username
