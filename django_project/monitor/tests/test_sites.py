@@ -15,7 +15,7 @@ import os
 
 class SitesListCreateViewTestCase(TestCase):
 
-	def image_field(self, name, file_name):
+	def image_field(self, file_name):
 		"""Return image field with name and file_name."""
 		image_path = os.path.join(
 			os.path.abspath(os.path.dirname(__file__)), 'test_image.png'
@@ -31,7 +31,7 @@ class SitesListCreateViewTestCase(TestCase):
 			raise ValueError(f"Unsupported file extension: {extension}")
 
 		return SimpleUploadedFile(
-			name=name,
+			name=file_name,
 			content=open(image_path, 'rb').read(),
 			content_type=content_type
 		)
