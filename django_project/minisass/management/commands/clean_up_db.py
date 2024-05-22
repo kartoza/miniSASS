@@ -15,6 +15,7 @@ from monitor.models import (
 from django.contrib.sites.models import Site
 from django.db.models import F, Count, Q
 from django.db.models.functions import TruncDate
+import logging
 
 
 class Command(BaseCommand):
@@ -118,11 +119,15 @@ class Command(BaseCommand):
 			'user': user,
 			'login_url': login_url,
 		})
-		send_mail(
-			subject,
-			message,
-			settings.CONTACT_US_RECEPIENT_EMAIL,
-			[user.email],
-			fail_silently=False,
-			html_message=message,
-		)
+		try:
+			send_mail(
+				subject,
+				message,
+				settings.CONTACT_US_RECEPIENT_EMAIL,
+				[user.email],
+				fail_silently=False,  # Log the error instead of failing silently
+				html_message=message,
+			)
+		except Exception as e:
+			logger = logging.getLogger(__name__)
+			logger.error(f"Failed to send notification email to {user.email}: {e}")
