@@ -28,7 +28,7 @@ class BaseObservationsModelTest(TestCase):
 	"""
 	Base Test for Observation Test.
 	"""
-	def image_field(self, name, file_name):
+	def image_field(self, file_name):
 		"""Return image field with name and file_name."""
 		image_path = os.path.join(
 			os.path.abspath(os.path.dirname(__file__)), 'test_image.png'
