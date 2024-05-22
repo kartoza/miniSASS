@@ -44,7 +44,7 @@ class BaseObservationsModelTest(TestCase):
 			raise ValueError(f"Unsupported file extension: {extension}")
 
 		return SimpleUploadedFile(
-			name=name,
+			name=file_name,
 			content=open(image_path, 'rb').read(),
 			content_type=content_type
 		)
