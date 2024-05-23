@@ -195,6 +195,38 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 ## Landing Page After Login
 
+![Profile Update and Password Security Prompt](./img/landing-page-26.png)
+
+**Profile Update and Password Security Prompt:** Upon logging into the platform, users may encounter a profile update prompt or a password security prompt, depending on their account status. These prompts are designed to enhance user experience, ensure account security, and maintain the integrity of the platform.
+
+**Profile Update Required**
+
+    - Users who see the profile update required popup are those whose first name is currently set to `Anonymous` in their profile settings.
+
+    - The platform encourages users to personalise their accounts by updating their first name to reflect their actual identity.
+
+    - This initiative aims to foster a more engaging and personalised user experience while promoting transparency and authenticity within the community.
+
+**Password Security Prompt**
+
+    - Users may also encounter a popup if their current password does not meet the updated security constraints implemented by the platform.
+
+    - Users are prompted to update their password to comply with the new security standards, which may include requirements such as minimum character length, special character usage, and periodic password updates.
+
+    - By ensuring that all passwords adhere to the latest security protocols, the platform mitigates the risk of unauthorised access and unauthorised data breaches.
+
+    - Users are guided through the password update process, where they can securely create a new password that meets the specified criteria, thus reinforcing the overall security posture of the platform.
+
+1. **Update Button** Click on the `Update` button to proceed with updating either your password or providing your first name. 
+
+![Update password form](./img/landing-page-27.png)
+
+Upon clicking, the user will be directed to the update password form. If the user's password is deemed weak, they will be prompted to set a strong password. 
+
+![Update profile form](./img/landing-page-28.png)
+
+However, if the user's password is already strong, they can opt to click on the profile option to provide their first name.
+
 ![miniSASS Landing Page](./img/landing-page-21.png)
 
 1. **Home**: Navigate to the home page by clicking on the `Home` link.
