@@ -99,6 +99,8 @@ Ready to explore the health of the local river? Grab the collection kit, follow 
 
 3. **Details**: The details section provides information about the observation uploader's username, organisation name, and the date of upload for a more detailed insight.
 
+    >NOTE: The MiniSASS prioritises user privacy by refraining from displaying users' details publicly. Instead of exposing personal information, the system ensures that only the user's first name, as per their profile form, is visible to others. In cases where users opt not to provide a first name, the system defaults to displaying "Anonymous," safeguarding their identity while maintaining a level of anonymity.
+
 - For detailed recent observation instructions, refer to the [recent observation documentation](./map/recent-observation.md).
 
 4. **View Details**: Click on the `View Details` link to access comprehensive information about the observation.
