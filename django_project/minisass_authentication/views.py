@@ -40,6 +40,10 @@ from minisass_authentication.serializers import (
 from minisass_authentication.utils import get_is_user_password_enforced
 
 User = get_user_model()
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -331,7 +335,12 @@ class UpdateUser(APIView):
 	permission_classes = [IsAuthenticated]
 
 	def get(self, request):
-		return Response(UserUpdateSerializer(request.user).data)
+		try:
+			user_data = UserUpdateSerializer(request.user).data
+			return Response(user_data)
+		except Exception as e:
+			logger.error(f"Error retrieving user data: {e}", exc_info=True)
+			return JsonResponse({'error': str(e)}, status=500)
 
 	def post(self, request):
 		serializer = UserUpdateSerializer(

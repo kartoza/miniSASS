@@ -30,9 +30,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     name = serializers.CharField(source='first_name')
     surname = serializers.CharField(source='last_name')
-    organisation_type = serializers.CharField(source='userprofile.organisation_type.description')
-    organisation_name = serializers.CharField(source='userprofile.organisation_name')
-    country = serializers.CharField(source='userprofile.country')
+    organisation_type = serializers.CharField(source='userprofile.organisation_type.description', required=False, allow_null=True)
+    organisation_name = serializers.CharField(source='userprofile.organisation_name', required=False, allow_null=True)
+    country = serializers.CharField(source='userprofile.country', required=False, allow_null=True)
     is_expert = serializers.SerializerMethodField()
 
     def get_is_expert(self, obj):
@@ -53,26 +53,27 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     def save(self, old_user):
         user_dict = self.validated_data
-        user_profile_dict = self.validated_data.pop('userprofile')
+        user_profile_dict = self.validated_data.pop('userprofile', {})
 
-        organisation_type = user_profile_dict['organisation_type']['description']
-        organisation_name = user_profile_dict['organisation_name']
-        country = user_profile_dict['country']
+        organisation_type_desc = user_profile_dict.get('organisation_type', {}).get('description', None)
+        organisation_name = user_profile_dict.get('organisation_name', '')
+        country = user_profile_dict.get('country', '')
+
         User.objects.filter(id=old_user.id).update(**user_dict)
-        if organisation_type:
+        
+        organisation_type = None
+        if organisation_type_desc:
             try:
-                organisation_type = Lookup.objects.get(
-                    description__iexact=organisation_type
-                )
+                organisation_type = Lookup.objects.get(description__iexact=organisation_type_desc)
             except Lookup.DoesNotExist:
-                organisation_type, _ = Lookup.objects.get_or_create(description=organisation_type)
-        defaults = {}
+                organisation_type, _ = Lookup.objects.get_or_create(description=organisation_type_desc)
+        
+        defaults = {
+            'organisation_name': organisation_name,
+            'country': country
+        }
         if organisation_type:
             defaults['organisation_type'] = organisation_type
-        if organisation_type:
-            defaults['organisation_name'] = organisation_name
-        if country:
-            defaults['country'] = country
 
         user_profile, created = UserProfile.objects.update_or_create(
             user=old_user,
@@ -86,6 +87,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'username', 'email', 'name', 'surname',
             'organisation_type', 'organisation_name', 'country', 'is_expert'
         )
+
 
 
 class CertificateSerializer(serializers.ModelSerializer):
