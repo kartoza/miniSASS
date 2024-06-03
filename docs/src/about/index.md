@@ -25,3 +25,7 @@ license: This program is free software; you can redistribute it and/or modify it
 ## License
 
 Published under AGPL-3. See the [full license](./license.md) text.
+
+## Images Storage
+
+This documentation explains how images are stored in MiniSASS.
