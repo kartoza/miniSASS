@@ -95,3 +95,4 @@ nav:
         - About:
                   - about/index.md
                   - License: about/license.md
+                  - Images Storage: about/images_storage.md
