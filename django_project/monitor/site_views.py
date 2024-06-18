@@ -196,16 +196,22 @@ class SiteObservationsByLocation(APIView):
 
 class SitesWithObservationsView(APIView):
 	def get(self, request):
-		# Fetch query parameters
-		start_date_str = request.query_params.get('start_date', None)
-		start_date = parse_date(start_date_str) if start_date_str else None
+		try:
+			start_date_str = request.query_params.get('start_date', None)
+			start_date = parse_date(start_date_str) if start_date_str else None
 
-		if start_date:
-			observations = Observations.objects.filter(obs_date__gte=start_date)
-			site_ids = observations.values_list('site_id', flat=True).distinct()
-			sites = sites.filter(gid__in=site_ids)
-		else:
-			sites = Sites.objects.all()
+			if start_date_str and not start_date:
+				return Response({"error": "Invalid date format. Please use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
 
-		serializer = SitesWithObservationsSerializer(sites, many=True)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+			if start_date:
+				observations = Observations.objects.filter(obs_date__gte=start_date)
+				site_ids = observations.values_list('site_id', flat=True).distinct()
+				sites = Sites.objects.filter(gid__in=site_ids)
+			else:
+				sites = Sites.objects.all()
+
+			serializer = SitesWithObservationsSerializer(sites, many=True)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+
+		except Exception as e:
+			return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
