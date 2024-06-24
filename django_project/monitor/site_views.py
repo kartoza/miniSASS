@@ -7,6 +7,7 @@ from monitor.models import SiteImage, Sites, Assessment, Observations, Observati
 from django.contrib.gis.measure import D
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from minisass.models import GroupScores
+from django.utils.dateparse import parse_date
 
 
 from monitor.serializers import (
@@ -191,3 +192,22 @@ class SiteObservationsByLocation(APIView):
 				return Response([], status=status.HTTP_404_NOT_FOUND)
 		except Sites.DoesNotExist:
 			return Response([], status=status.HTTP_404_NOT_FOUND)
+		
+
+class SitesWithObservationsView(APIView):
+	def get(self, request):
+		start_date_str = request.query_params.get('start_date', None)
+		start_date = parse_date(start_date_str) if start_date_str else None
+
+		if start_date_str and not start_date:
+			return Response({"error": "Invalid date format. Please use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+
+		if start_date:
+			observations = Observations.objects.filter(obs_date__gte=start_date)
+			site_ids = observations.values_list('site_id', flat=True).distinct()
+			sites = Sites.objects.filter(gid__in=site_ids)
+		else:
+			sites = Sites.objects.all()
+
+		serializer = SitesWithObservationsSerializer(sites, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
