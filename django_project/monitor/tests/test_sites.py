@@ -41,14 +41,16 @@ class SitesListCreateViewTestCase(TestCase):
             river_name="River 1",
             description="Description 1",
             river_cat="Cat 1",
-            the_geom=Point(0, 0)
+            the_geom=Point(0, 0),
+            user=self.user
         )
         self.site2 = Sites.objects.create(
             site_name="Site 2",
             river_name="River 2",
             description="Description 2",
             river_cat="Cat 2",
-            the_geom=Point(0, 0)
+            the_geom=Point(0, 0),
+            user=self.user
         )
         # Create test observations
         self.observation1 = Observations.objects.create(
