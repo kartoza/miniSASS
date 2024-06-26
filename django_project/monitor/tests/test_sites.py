@@ -91,7 +91,7 @@ class SitesListCreateViewTestCase(TestCase):
         
         # Check structure and content of the response
         self.assertIn('site', response.data[0])
-        self.assertIn('observations', response.data[0])
+        self.assertIn('observations', response.data[1])
         self.assertEqual(response.data[0]['site']['gid'], self.site.gid)
         self.assertEqual(response.data[1]['site']['gid'], self.site1.gid)
 
