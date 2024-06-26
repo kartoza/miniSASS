@@ -87,13 +87,13 @@ class SitesListCreateViewTestCase(TestCase):
         url = reverse('sites-with-observations')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
         
         # Check structure and content of the response
         self.assertIn('site', response.data[0])
         self.assertIn('observations', response.data[0])
-        self.assertEqual(response.data[0]['site']['gid'], self.site1.gid)
-        self.assertEqual(response.data[1]['site']['gid'], self.site2.gid)
+        self.assertEqual(response.data[0]['site']['gid'], self.site.gid)
+        self.assertEqual(response.data[1]['site']['gid'], self.site1.gid)
 
     def test_get_sites_with_observations_filtered_by_date(self):
         url = reverse('sites-with-observations')
