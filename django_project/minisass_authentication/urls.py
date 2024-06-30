@@ -26,7 +26,7 @@ from minisass_authentication.views import (
 
 
 urlpatterns = [
-    path('api/generate_special_token/<str:username>', generate_special_token, name='generate_special_token'),
+    path('api/generate-special-token/<str:username>', generate_special_token, name='generate_special_token'),
     path('api/request-reset/', request_password_reset, name='request_password_reset'),
     path('api/verify-password-reset/<uidb64>/<token>/', verify_password_reset, name='verify_password_reset'),
     path('api/update-password-reset/<uid>/<token>/', update_password, name='update_password_reset'),
