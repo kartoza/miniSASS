@@ -190,3 +190,84 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
         }
 
         return combined_data
+
+class ObservationsDataOnlySerializer(serializers.ModelSerializer):
+	"""Serializer of observation."""
+	collector_name = serializers.SerializerMethodField()
+	images = serializers.SerializerMethodField()
+	
+
+	class Meta:
+		model = Observations
+		fields = '__all__'
+		
+	
+	def get_collector_name(self, obj):
+		if obj.collector_name:
+			return obj.collector_name
+		else:
+			user = obj.user
+			return (
+				f"{user.first_name}"
+				if user and user.first_name
+				else "Anonymous"
+			)
+
+	def get_images(self, obj: Observations):
+		"""Return images of site."""
+		return ObservationPestImageSerializer(
+			obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
+		).data
+
+	comment = serializers.CharField(allow_blank=True, default='')
+
+	def create(self, validated_data):
+		if 'comment' not in validated_data:
+			validated_data['comment'] = ''
+		return super().create(validated_data)
+	 
+
+class SitesAndObservationsSerializer(serializers.ModelSerializer):
+	sitename = serializers.CharField(source='site_name')
+	rivername = serializers.CharField(source='river_name')
+	sitedescription = serializers.CharField(source='description')
+	rivercategory = serializers.CharField(source='river_cat')
+	observations = serializers.SerializerMethodField()
+	images = serializers.SerializerMethodField()
+
+	def get_images(self, obj: Sites):
+		return ObservationPestImageSerializer(
+			obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
+		).data
+
+	class Meta:
+		model = Sites
+		fields = [
+			'gid', 
+			'sitename', 
+			'rivername', 
+			'sitedescription', 
+			'rivercategory',
+			'images', 
+			'observations'
+		]
+
+	def get_observations(self, obj):
+		observations = Observations.objects.filter(site=obj).order_by('-obs_date', '-gid')
+		return ObservationsDataOnlySerializer(observations, many=True).data
+
+	def to_representation(self, instance):
+		data = super().to_representation(instance)
+		combined_data = {
+			'site': {
+				'gid': data['gid'],
+				'sitename': data['sitename'],
+				'rivername': data['rivername'],
+				'rivercategory': data['rivercategory'],
+				'sitedescription': data['sitedescription'],
+				'images': data['images'],
+				'observations': data['observations'],
+			},
+			
+		}
+		return combined_data
