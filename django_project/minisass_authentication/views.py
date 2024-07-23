@@ -38,6 +38,10 @@ from minisass_authentication.serializers import (
 	UserProfileSerializer
 )
 from minisass_authentication.utils import get_is_user_password_enforced
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from datetime import timedelta
 
 User = get_user_model()
 import logging
@@ -45,6 +49,20 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
+def generate_special_token(request, email):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+
+    if not user.is_staff and not user.is_superuser:
+        return Response({'error': 'User is not an admin'}, status=403)
+
+    token = AccessToken.for_user(user)
+    # Set a very long expiration time, e.g., 100 years
+    token.set_exp(lifetime=timedelta(days=365 * 100))
+
+    return JsonResponse({'token': str(token)}, status=200)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
