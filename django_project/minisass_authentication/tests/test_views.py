@@ -11,6 +11,44 @@ from django.utils.http import (
 from django.contrib.auth.tokens import default_token_generator
 from minisass_authentication.tests.factories import UserFactory
 from minisass_authentication.models import PENDING_STATUS
+from rest_framework import status
+
+
+class GenerateSpecialTokenTest(APITestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='testpassword'
+        )
+
+    def test_generate_token_success(self):
+        # Use the user's email to generate a token
+        url = reverse('generate_special_token', args=[self.user.email])
+        response = self.client.post(url)
+
+        # Check that the response is successful
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('token', response.json())
+
+    def test_generate_token_user_not_found(self):
+        # Use a non-existent email
+        url = reverse('generate_special_token', args=['nonexistent@example.com'])
+        response = self.client.post(url)
+
+        # Check that the response indicates the user was not found
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.json(), {'error': 'User not found'})
+
+    def test_generate_token_invalid_email_format(self):
+        # Attempt to use an invalid email format
+        url = reverse('generate_special_token', args=['invalid-email-format'])
+        response = self.client.post(url)
+
+        # Check that the response indicates the user was not found (since email format is not checked)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.json(), {'error': 'User not found'})
 
 
 class PasswordResetTest(APITestCase):
