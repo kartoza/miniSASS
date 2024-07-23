@@ -502,7 +502,8 @@ export const Map = forwardRef((props: Interface, ref) => {
     
         if (response.data) {
           window.location.href = window.location.href.split('?')[0];
-          const data = response.data;
+          var data = response.data;
+          console.log('debug ',data)
           if (data.observations.length === 0) {
             data.observations = [{
               "gid": 0,
@@ -565,7 +566,16 @@ export const Map = forwardRef((props: Interface, ref) => {
               "elec_cond_unit": "S/m",
               "user": 0
           }]
+          }else if (data.observations[0].organisationtype == null){
+            data.observations[0].organisationtype = {
+                  "id": 0,
+                  "rank": 0,
+                  "description": "N/A",
+                  "active": true,
+                  "container": null
+              }
           }
+
           if(!props.isSelectSiteOnMap)
             props.openObservationForm(data);
           else props.setSiteDetails(response.data.site);

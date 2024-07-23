@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Merge Notification</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="background-color: #0e4981; color: #fff; text-align: center; padding: 20px; border-radius: 8px;">
+            <span style="font-size: 24px; font-weight: bold;">miniSASS</span>
+        </div>
+
+        <h2>Account Merge Notification</h2>
+        <p>Dear {{ user.username }},</p>
+        <p>We have identified multiple accounts registered with your email address and have merged them into a single account to ensure data consistency and better user experience.</p>
+        <p>Please log in to your account and update your password at your earliest convenience to ensure your account's security:</p>
+        <p><a href="{{ login_url }}" style="display: inline-block; padding: 10px 20px; background-color: #288b31; color: #fff; text-decoration: none; border-radius: 5px;">Login to miniSASS</a></p>
+        <p>If the button above doesn't work, you can also <a href="{{ login_url }}" style="color: #007bff; text-decoration: none;">click here</a> or copy and paste the following link into your browser:</p>
+        <p>{{ login_url }}</p>
+        <p>If you have any questions, feel free to contact us.</p>
+        <p>Thank you,<br> The miniSASS Team</p>
+    </div>
+</body>
+</html>

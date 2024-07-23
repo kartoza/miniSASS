@@ -32,14 +32,18 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
         settextColor('bg-red-100 text-red-600')
       }
     } catch (error) {
-      // Handle API request errors, e.g., network issues or server errors
-      console.error(error);
       if (error.response?.data) {
-        setResetErrors([error.response?.data.error]);
+         const errorMessage = error.response.data.error;
+      if (errorMessage.includes("Multiple users found")) {
+        // Display a message informing the user to contact the system admin
+        setResetErrors(["Multiple users found for this email address. Please contact the system administrator."]);
       } else {
-        setResetErrors(["Password update failed. Please try again later."]);
+        setResetErrors([errorMessage]);
       }
-      settextColor('bg-red-100 text-red-600')
+    } else {
+      setResetErrors(["Password update failed. Please try again later."]);
+    }
+    settextColor('bg-red-100 text-red-600');
     }
   };
 

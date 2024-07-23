@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 from io import BytesIO
 from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils.timezone import now, timedelta
 import os
 
 class SitesListCreateViewTestCase(TestCase):
@@ -35,7 +36,86 @@ class SitesListCreateViewTestCase(TestCase):
             the_geom=Point(0, 0),
             user=self.user
         )
+        self.site1 = Sites.objects.create(
+            site_name="Site 1",
+            river_name="River 1",
+            description="Description 1",
+            river_cat="Cat 1",
+            the_geom=Point(0, 0),
+            user=self.user
+        )
+        self.site2 = Sites.objects.create(
+            site_name="Site 2",
+            river_name="River 2",
+            description="Description 2",
+            river_cat="Cat 2",
+            the_geom=Point(0, 0),
+            user=self.user
+        )
+        # Create test observations
+        self.observation1 = Observations.objects.create(
+            site=self.site1,
+            user=self.user,
+            obs_date=now().date(),
+            score=50,
+            comment="test_observation",
+            water_clarity="2.0",
+            water_temp="1.2",
+            ph="1.0",
+            diss_oxygen="2.40",
+            diss_oxygen_unit="%DO",
+            elec_cond="2.50",
+            elec_cond_unit="mS/m"
+        )
+        self.observation2 = Observations.objects.create(
+            site=self.site2,
+            user=self.user,
+            obs_date=now().date() - timedelta(days=10),
+            score=60,
+            comment="test_observation",
+            water_clarity="2.0",
+            water_temp="1.2",
+            ph="1.0",
+            diss_oxygen="2.40",
+            diss_oxygen_unit="%DO",
+            elec_cond="2.50",
+            elec_cond_unit="mS/m"
+        )
 
+
+    def test_get_all_sites_with_observations(self):
+        url = reverse('sites-with-observations')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        
+        # Check structure and content of the response
+        self.assertIn('site', response.data[0])
+        self.assertIn('observations', response.data[1])
+        self.assertEqual(response.data[0]['site']['gid'], self.site.gid)
+        self.assertEqual(response.data[1]['site']['gid'], self.site1.gid)
+
+    def test_get_sites_with_observations_filtered_by_date(self):
+        url = reverse('sites-with-observations')
+        start_date = (now().date() - timedelta(days=5)).isoformat()
+        response = self.client.get(url, {'start_date': start_date})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        
+        # Check structure and content of the response
+        self.assertIn('site', response.data[0])
+        self.assertIn('observations', response.data[0])
+        self.assertEqual(response.data[0]['site']['gid'], self.site1.gid)
+
+    def test_get_sites_with_observations_with_no_data(self):
+        # Test the case where no observations match the date filter
+        url = reverse('sites-with-observations')
+        start_date = (now().date() + timedelta(days=1)).isoformat()
+        response = self.client.get(url, {'start_date': start_date})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
+
+    
     def test_multiple_image_upload(self):
         client = APIClient()
         client.force_authenticate(user=self.user)

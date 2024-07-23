@@ -85,7 +85,7 @@ function AuthenticationButtons(props) {
         dispatch({ type: 'LOGIN', payload: userData });
         localStorage.setItem('authState', JSON.stringify({ userData }));
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
-        if (!userData.is_password_enforced) {
+        if (!userData.is_profile_updated) {
           setIsEnforcePasswordOpen(true)
         }
         setError(null);

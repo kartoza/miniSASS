@@ -45,6 +45,14 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
+                  - Quickstart: user/quickstart/index.md
+                  - Guide:
+                        - user/guide/index.md
+                        - Register-Login-Logout: user/guide/register-login-logout.md
+                        - Upload Data: user/guide/upload.md
+                        - Profile: user/guide/profile.md
+                        - Forgot Password: user/guide/forgot-password.md
+                        - Map: user/guide/map.md
                   - Manual:
                         - user/manual/index.md
                         - Landing Page: user/manual/landing-page.md
@@ -87,3 +95,4 @@ nav:
         - About:
                   - about/index.md
                   - License: about/license.md
+                  - Images Storage: about/images_storage.md

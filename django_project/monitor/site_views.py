@@ -7,6 +7,7 @@ from monitor.models import SiteImage, Sites, Assessment, Observations, Observati
 from django.contrib.gis.measure import D
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from minisass.models import GroupScores
+from django.utils.dateparse import parse_date
 
 
 from monitor.serializers import (
@@ -68,30 +69,30 @@ class SaveSiteImagesView(generics.CreateAPIView):
 		# Check if the site exists
 		try:
 			site = Sites.objects.get(gid=site_id)
-		except Site.DoesNotExist:
+		except Sites.DoesNotExist:
 			return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
 
 		# Check if the 'images' field is present in the request.FILES
 		if 'images' in request.FILES:
-		    images = request.FILES.getlist('images', [])
+			images = request.FILES.getlist('images', [])
 		else:
-		    # fallback to using request.FILES directly
-		    images = request.FILES.values()
+			# fallback to using request.FILES directly
+			images = request.FILES.values()
 
 		site_images = []
 
 		for image in images:
-		    try:
-		        # Check if the image is a tuple (field name, file)
-		        if isinstance(image, tuple):
-		            image = image[1]
+			try:
+				# Check if the image is a tuple (field name, file)
+				if isinstance(image, tuple):
+					image = image[1]
 		
-		        site_image = SiteImage(site=site, image=image)
-		        site_image.full_clean()  # Validate model fields before saving
-		        site_image.save()
-		        site_images.append(site_image)
-		    except Exception as e:
-		        return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+				site_image = SiteImage(site=site, image=image)
+				site_image.full_clean()  # Validate model fields before saving
+				site_image.save()
+				site_images.append(site_image)
+			except Exception as e:
+				return Response({'error': f'Error saving image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 		return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
@@ -113,6 +114,11 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		return Response(serializer.data)
 
 	def create(self, request, *args, **kwargs):
+		# Get the highest gid value
+		highest_gid = Sites.objects.latest('gid').gid if Sites.objects.exists() else 0
+		# Increment the gid value
+		new_gid = highest_gid + 1
+
 		# Extract data from the request payload
 		site_data = request.data.get('site_data', {})
 		images = request.FILES.getlist('images', [])
@@ -130,6 +136,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 		# Create a new site
 		site = Sites.objects.create(
+			gid=new_gid,
 			site_name=site_name,
 			river_name=river_name,
 			description=description,
@@ -185,4 +192,22 @@ class SiteObservationsByLocation(APIView):
 				return Response([], status=status.HTTP_404_NOT_FOUND)
 		except Sites.DoesNotExist:
 			return Response([], status=status.HTTP_404_NOT_FOUND)
+		
 
+class SitesWithObservationsView(APIView):
+	def get(self, request):
+		start_date_str = request.query_params.get('start_date', None)
+		start_date = parse_date(start_date_str) if start_date_str else None
+
+		if start_date_str and not start_date:
+			return Response({"error": "Invalid date format. Please use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+
+		if start_date:
+			observations = Observations.objects.filter(obs_date__gte=start_date)
+			site_ids = observations.values_list('site_id', flat=True).distinct()
+			sites = Sites.objects.filter(gid__in=site_ids)
+		else:
+			sites = Sites.objects.all()
+
+		serializer = SitesWithObservationsSerializer(sites, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)

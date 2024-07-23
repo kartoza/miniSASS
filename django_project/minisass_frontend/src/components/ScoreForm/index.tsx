@@ -157,7 +157,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       form_data.append('observationId', JSON.stringify(obs_id));
       form_data.append('siteId', JSON.stringify(site_id));
       const saveToSite = localStorage.getItem('saveToSite') || false;
-      console.log('saveToSite', saveToSite)
       form_data.append('saveToSite', JSON.stringify(saveToSite));
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
@@ -174,7 +173,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       if(response.status == 200){
         setIsSavingData(false)
         setIsCloseDialogOpen(false)
-        additionalData.riverName = ''
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
         localStorage.setItem('saveToSite', false)
@@ -190,7 +188,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         }else {
           setProceedToSavingData(false);
           setIsSuccessModalOpen(true);
-          setIsDisableNavigations(false)
+          setIsDisableNavigations(false);
         }
       }
     } catch (exception) {
@@ -417,6 +415,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const handleSiteCloseConfirm = () => {
     localStorage.setItem('saveToSite', true)
+    handleSave(true)
+    setIsCloseSiteDialogOpen(false)
   };
 
   
