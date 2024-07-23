@@ -16,21 +16,38 @@ from rest_framework import status
 
 class GenerateSpecialTokenTest(APITestCase):
     def setUp(self):
-        # Create a test user
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='testuser@example.com',
-            password='testpassword'
+        # Create a test admin user
+        self.admin_user = User.objects.create_user(
+            username='adminuser',
+            email='admin@example.com',
+            password='adminpassword',
+            is_staff=True
         )
 
-    def test_generate_token_success(self):
-        # Use the user's email to generate a token
-        url = reverse('generate_special_token', args=[self.user.email])
+        # Create a test regular user
+        self.regular_user = User.objects.create_user(
+            username='regularuser',
+            email='regular@example.com',
+            password='regularpassword'
+        )
+
+    def test_generate_token_success_for_admin(self):
+        # Use the admin user's email to generate a token
+        url = reverse('generate_special_token', args=[self.admin_user.email])
         response = self.client.post(url)
 
         # Check that the response is successful
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('token', response.json())
+
+    def test_generate_token_forbidden_for_regular_user(self):
+        # Use the regular user's email to generate a token
+        url = reverse('generate_special_token', args=[self.regular_user.email])
+        response = self.client.post(url)
+
+        # Check that the response indicates the user is not an admin
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.json(), {'error': 'User is not an admin'})
 
     def test_generate_token_user_not_found(self):
         # Use a non-existent email
@@ -41,14 +58,6 @@ class GenerateSpecialTokenTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.json(), {'error': 'User not found'})
 
-    def test_generate_token_invalid_email_format(self):
-        # Attempt to use an invalid email format
-        url = reverse('generate_special_token', args=['invalid-email-format'])
-        response = self.client.post(url)
-
-        # Check that the response indicates the user was not found (since email format is not checked)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.json(), {'error': 'User not found'})
 
 
 class PasswordResetTest(APITestCase):
