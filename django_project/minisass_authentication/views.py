@@ -50,17 +50,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 @api_view(['POST'])
-def generate_special_token(request, username):
+def generate_special_token(request, email):
     try:
-        user = User.objects.get(username=username)
+        user = User.objects.get(email=email)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=404)
 
     token = AccessToken.for_user(user)
-    # Set a very long expiration time, e.g., 100 years
     token.set_exp(lifetime=timedelta(days=365 * 100))
 
-    return Response({'token': str(token)})
+    return JsonResponse({'token': str(token)}, status=200)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
