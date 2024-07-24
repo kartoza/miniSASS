@@ -11,6 +11,7 @@ Django==4.2.7
 django-appconf==1.0.5
 django-classy-tags==4.1.0
 django-dirtyfields==1.9.2
+django-preferences==1.0.0
 django-filer==3.1.0
 django-formtools==2.4.1
 django-js-asset==2.1.0
