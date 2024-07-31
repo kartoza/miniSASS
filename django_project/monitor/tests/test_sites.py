@@ -89,9 +89,13 @@ class SitesListCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
         
-        # Check structure and content of the response
+        # Check that the 'site' key is present
         self.assertIn('site', response.data[0])
-        self.assertIn('observations', response.data[1])
+        
+        # Check that the 'observations' key is present within the 'site'
+        self.assertIn('observations', response.data[0]['site'])
+
+        # Check the validity of the returned data
         self.assertEqual(response.data[0]['site']['gid'], self.site.gid)
         self.assertEqual(response.data[1]['site']['gid'], self.site1.gid)
 
@@ -104,7 +108,7 @@ class SitesListCreateViewTestCase(TestCase):
         
         # Check structure and content of the response
         self.assertIn('site', response.data[0])
-        self.assertIn('observations', response.data[0])
+        self.assertIn('observations', response.data[0]['site'])
         self.assertEqual(response.data[0]['site']['gid'], self.site1.gid)
 
     def test_get_sites_with_observations_with_no_data(self):

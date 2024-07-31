@@ -15,7 +15,8 @@ from monitor.serializers import (
 	SitesSerializer,
 	SitesWithObservationsSerializer,
 	SiteImageSerializer,
-	ObservationPestImageSerializer
+	ObservationPestImageSerializer,
+	SitesAndObservationsSerializer
 )
 
 class SaveObservationImagesView(generics.CreateAPIView):
@@ -195,6 +196,7 @@ class SiteObservationsByLocation(APIView):
 		
 
 class SitesWithObservationsView(APIView):
+	serializer_class = SitesAndObservationsSerializer
 	def get(self, request):
 		start_date_str = request.query_params.get('start_date', None)
 		start_date = parse_date(start_date_str) if start_date_str else None
@@ -209,5 +211,5 @@ class SitesWithObservationsView(APIView):
 		else:
 			sites = Sites.objects.all()
 
-		serializer = SitesWithObservationsSerializer(sites, many=True)
+		serializer = self.serializer_class(sites, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
