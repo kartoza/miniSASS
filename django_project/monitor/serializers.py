@@ -236,8 +236,9 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 	images = serializers.SerializerMethodField()
 
 	def get_images(self, obj: Sites):
-		return ObservationPestImageSerializer(
-			obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
+		"""Return images of site."""
+		return SiteImageSerializer(
+			obj.siteimage_set.all(), many=True
 		).data
 
 	class Meta:
