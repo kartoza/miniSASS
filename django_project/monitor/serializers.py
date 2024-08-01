@@ -10,6 +10,7 @@ from monitor.models import (
 	Assessment,
 	Pest
 )
+from django.contrib.sites.models import Site
 
 
 class ObservationsAllFieldsSerializer(serializers.ModelSerializer):
@@ -214,10 +215,16 @@ class ObservationsDataOnlySerializer(serializers.ModelSerializer):
 			)
 
 	def get_images(self, obj: Observations):
-		"""Return images of site."""
-		return ObservationPestImageSerializer(
-			obj.observationpestimage_set.all().order_by('pest__name', '-id'), many=True
-		).data
+		"""Return images of observation with full URL paths."""
+		domain = Site.objects.get_current().domain
+		images = obj.observationpestimage_set.all().order_by('pest__name', '-id')
+		return [
+			{
+				'id': image.id,
+				'image': f'https://{domain}{image.image.url}'
+			}
+			for image in images
+		]
 
 	comment = serializers.CharField(allow_blank=True, default='')
 
@@ -236,10 +243,16 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 	images = serializers.SerializerMethodField()
 
 	def get_images(self, obj: Sites):
-		"""Return images of site."""
-		return SiteImageSerializer(
-			obj.siteimage_set.all(), many=True
-		).data
+		"""Return images of site with full URL paths."""
+		domain = Site.objects.get_current().domain
+		images = obj.siteimage_set.all()
+		return [
+			{
+				'id': image.id,
+				'image': f'https://{domain}{image.image.url}'
+			}
+			for image in images
+		]
 
 	class Meta:
 		model = Sites
