@@ -218,13 +218,13 @@ class ObservationsDataOnlySerializer(serializers.ModelSerializer):
 		"""Return images of observation with full URL paths."""
 		domain = Site.objects.get_current().domain
 		images = obj.observationpestimage_set.all().order_by('pest__name', '-id')
-		return [
-			{
-				'id': image.id,
-				'image': f'https://{domain}{image.image.url}'
-			}
-			for image in images
-		]
+		serialized_images = ObservationPestImageSerializer(images, many=True).data
+		
+		for image in serialized_images:
+			if 'image' in image:
+				image['image'] = f'https://{domain}{image["image"]}'
+		
+		return serialized_images
 
 	comment = serializers.CharField(allow_blank=True, default='')
 
@@ -246,13 +246,13 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 		"""Return images of site with full URL paths."""
 		domain = Site.objects.get_current().domain
 		images = obj.siteimage_set.all()
-		return [
-			{
-				'id': image.id,
-				'image': f'https://{domain}{image.image.url}'
-			}
-			for image in images
-		]
+		serialized_images = SiteImageSerializer(images, many=True).data
+		
+		for image in serialized_images:
+			if 'image' in image:
+				image['image'] = f'https://{domain}{image["image"]}'
+		
+		return serialized_images
 
 	class Meta:
 		model = Sites
