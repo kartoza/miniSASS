@@ -211,5 +211,5 @@ class SitesWithObservationsView(APIView):
 		else:
 			sites = Sites.objects.all()
 
-		serializer = self.serializer_class(sites, many=True)
+		serializer = self.serializer_class(sites, many=True, context={'request': request})
 		return Response(serializer.data, status=status.HTTP_200_OK)
