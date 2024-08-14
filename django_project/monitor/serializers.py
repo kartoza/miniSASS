@@ -7,10 +7,8 @@ from monitor.models import (
 	ObservationPestImage,
 	Sites,
 	SiteImage,
-	Assessment,
-	Pest
+	Assessment
 )
-from django.contrib.sites.models import Site
 
 
 class ObservationsAllFieldsSerializer(serializers.ModelSerializer):
@@ -216,13 +214,13 @@ class ObservationsDataOnlySerializer(serializers.ModelSerializer):
 
 	def get_images(self, obj: Observations):
 		"""Return images of observation with full URL paths."""
-		domain = Site.objects.get_current().domain
+		request = self.context.get('request')
 		images = obj.observationpestimage_set.all().order_by('pest__name', '-id')
 		serialized_images = ObservationPestImageSerializer(images, many=True).data
 		
 		for image in serialized_images:
-			if 'image' in image:
-				image['image'] = f'https://{domain}{image["image"]}'
+			if 'image' in image and request:
+				image['image'] = request.build_absolute_uri(image['image'])
 		
 		return serialized_images
 
@@ -244,13 +242,13 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 
 	def get_images(self, obj: Sites):
 		"""Return images of site with full URL paths."""
-		domain = Site.objects.get_current().domain
+		request = self.context.get('request')
 		images = obj.siteimage_set.all()
 		serialized_images = SiteImageSerializer(images, many=True).data
 		
 		for image in serialized_images:
-			if 'image' in image:
-				image['image'] = f'https://{domain}{image["image"]}'
+			if 'image' in image and request:
+				image['image'] = request.build_absolute_uri(image['image'])
 		
 		return serialized_images
 
@@ -268,7 +266,7 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 
 	def get_observations(self, obj):
 		observations = Observations.objects.filter(site=obj).order_by('-obs_date', '-gid')
-		return ObservationsDataOnlySerializer(observations, many=True).data
+		return ObservationsDataOnlySerializer(observations, many=True, context=self.context).data
 
 	def to_representation(self, instance):
 		data = super().to_representation(instance)
