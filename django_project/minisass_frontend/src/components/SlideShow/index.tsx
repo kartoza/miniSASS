@@ -3,7 +3,7 @@ import { Img } from "../../components/Img";
 import { Fade } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import { globalVariables } from "../../utils";
-import Banner from "../../components/Banner";
+import Banner from "../Banner";
 
 // Define an array of images for the slideshow TODO get the images list from the api
 const slideshowImages = [
