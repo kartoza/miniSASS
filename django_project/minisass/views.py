@@ -35,11 +35,24 @@ class GetMobileApp(APIView):
 
 def get_announcements(request):
     current_time = now()
+    
+    user_is_authenticated = request.user.is_authenticated if request.user else False
 
     announcements = Announcement.objects.filter(
         publish_start__lte=current_time,
-        publish_end__gte=current_time
-    ).values('title', 'content', 'dismissal_type')
+        publish_end__gte=current_time,
+        site_wide=True
+    )
+    
+    if user_is_authenticated:
+        announcements = announcements | Announcement.objects.filter(
+            publish_start__lte=current_time,
+            publish_end__gte=current_time,
+            members_only=True
+        )
+    else:
+        announcements = announcements.exclude(members_only=True)
 
-    return JsonResponse(list(announcements), safe=False)
+    announcements_data = announcements.values('title', 'content', 'dismissal_type')
+    return JsonResponse(list(announcements_data), safe=False)
 
