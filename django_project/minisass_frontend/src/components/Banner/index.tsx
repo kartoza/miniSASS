@@ -5,24 +5,33 @@ import { globalVariables } from '../../utils';
 const Banner: React.FC = () => {
   const [visible, setVisible] = useState(true);
   const [announcements, setAnnouncements] = useState([]);
+  const [dismissalType, setDismissalType] = useState<number | null>(null);
 
-  const announcements_url = globalVariables.baseUrl + '/api/announcements/'
+  const announcements_url = globalVariables.baseUrl + '/announcements/';
+  
+  // Fetch announcements from the API
   useEffect(() => {
     fetch(announcements_url)
       .then((response) => response.json())
-      .then((data) => setAnnouncements(data))
+      .then((data) => {
+        setAnnouncements(data);
+        if (data.length > 0) {
+          setDismissalType(data[0].dismissal_type);
+        }
+      })
       .catch((error) => console.error('Error fetching announcements:', error));
   }, []);
 
+  // Handle visibility based on dismissal type
   useEffect(() => {
-    if (visible) {
+    if (dismissalType !== 1 && visible) {
       const timer = setTimeout(() => {
         setVisible(false);
       }, 15000);
 
       return () => clearTimeout(timer);
     }
-  }, [visible]);
+  }, [visible, dismissalType]);
 
   const bannerStyle: React.CSSProperties = {
     backgroundColor: '#003f81',
@@ -50,7 +59,6 @@ const Banner: React.FC = () => {
     color: 'white',
     background: 'transparent',
     border: 'none',
-    marginTop: '2%',
     display: 'flex',
     alignItems: 'center'
   };
@@ -67,9 +75,11 @@ const Banner: React.FC = () => {
               </div>
             ))}
           </div>
-          <button onClick={() => setVisible(false)} style={buttonStyle}>
-            <AiOutlineClose size={24} />
-          </button>
+          {(dismissalType !== 1) && (
+            <button onClick={() => setVisible(false)} style={buttonStyle}>
+              <AiOutlineClose size={24} />
+            </button>
+          )}
         </div>
       )}
     </>
