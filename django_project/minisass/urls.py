@@ -7,7 +7,8 @@ from django.views.i18n import JavaScriptCatalog
 from minisass.views import (
     GroupScoresListView,
     VideoListView,
-    GetMobileApp
+    GetMobileApp,
+    get_announcements
 )
 
 from minisass_frontend.views import ReactHomeView
@@ -18,6 +19,7 @@ urlpatterns = [
     path('group-scores/', GroupScoresListView.as_view(), name='group-scores'),
     path('videos/', VideoListView.as_view(), name='video-list'),
     path('mobile-app/', GetMobileApp.as_view(), name='get-mobile-app'),
+    path('announcements/', get_announcements, name='get_announcements'),
 
     path('jsi18n/<str:packages>/', JavaScriptCatalog.as_view(), name='javascript-catalog'),  # Use JavaScriptCatalog directly
     path('admin/', admin.site.urls),
