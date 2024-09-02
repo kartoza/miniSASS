@@ -206,6 +206,9 @@ INSTALLED_APPS = [
     'minisass_authentication',
     'monitor',
     'minisass',
+    'pinax.announcements',
+    'bootstrapform',
+    'pinax.templates',
     # 'google_analytics'
 ]
 

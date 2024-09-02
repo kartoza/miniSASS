@@ -1,17 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
+import { globalVariables } from '../../utils';
 
 const Banner: React.FC = () => {
   const [visible, setVisible] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
+  const [showCloseButton, setShowCloseButton] = useState(false);
+
+  const announcements_url = globalVariables.baseUrl + '/announcements/';
+  
+  // Fetch announcements from the API
+  useEffect(() => {
+    fetch(announcements_url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          setAnnouncements(data);
+          const shouldShowCloseButton = data.some(announcement => announcement.dismissal_type !== 1);
+          setShowCloseButton(shouldShowCloseButton);
+          setVisible(true); 
+        } else {
+          setVisible(false);
+        }
+      })
+      .catch((error) => console.error('Error fetching announcements:', error));
+  }, []);
 
   useEffect(() => {
-    if(visible)
+    if (showCloseButton && visible) {
       const timer = setTimeout(() => {
         setVisible(false);
       }, 15000);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [visible, showCloseButton]);
 
   const bannerStyle: React.CSSProperties = {
     backgroundColor: '#003f81',
@@ -32,15 +55,13 @@ const Banner: React.FC = () => {
 
   const textStyle: React.CSSProperties = {
     flex: 1,
-    textAlign: 'center',
-    marginTop: '2%'
+    textAlign: 'center'
   };
 
   const buttonStyle: React.CSSProperties = {
     color: 'white',
     background: 'transparent',
     border: 'none',
-    marginTop: '2%',
     display: 'flex',
     alignItems: 'center'
   };
@@ -49,15 +70,19 @@ const Banner: React.FC = () => {
     <>
       {visible && (
         <div style={bannerStyle}>
-          <span style={textStyle}>
-            The miniSASS site will undergo routine maintenance on Friday, 30th August 2024. We apologize for any inconvenience caused by the brief downtime.
-          </span>
-          <button
-            onClick={() => setVisible(false)}
-            style={buttonStyle}
-          >
-            <AiOutlineClose size={24} />
-          </button>
+          <div style={textStyle}>
+            {announcements.map((announcement, index) => (
+              <div key={index}>
+                <strong>{announcement.title}</strong><br />
+                {announcement.content}
+              </div>
+            ))}
+          </div>
+          {showCloseButton && (
+            <button onClick={() => setVisible(false)} style={buttonStyle}>
+              <AiOutlineClose size={24} />
+            </button>
+          )}
         </div>
       )}
     </>
