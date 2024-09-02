@@ -13,6 +13,7 @@ from minisass.serializers import (
 )
 from django.http import JsonResponse
 from pinax.announcements.models import Announcement
+from django.utils.timezone import now
 
 class GroupScoresListView(generics.ListAPIView):
     queryset = GroupScores.objects.all().order_by('name')
@@ -33,6 +34,12 @@ class GetMobileApp(APIView):
 
 
 def get_announcements(request):
-    announcements = Announcement.objects.all().values('title', 'content', 'dismissal_type')
+    current_time = now()
+
+    announcements = Announcement.objects.filter(
+        publish_start__lte=current_time,
+        publish_end__gte=current_time
+    ).values('title', 'content', 'dismissal_type')
+
     return JsonResponse(list(announcements), safe=False)
 
