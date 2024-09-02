@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
+import { globalVariables } from '../../utils';
 
 const Banner: React.FC = () => {
   const [visible, setVisible] = useState(true);
   const [announcements, setAnnouncements] = useState([]);
 
+  const announcements_url = globalVariables.baseUrl + '/api/announcements/'
   useEffect(() => {
-    fetch('/api/announcements/')
+    fetch(announcements_url)
       .then((response) => response.json())
       .then((data) => setAnnouncements(data))
       .catch((error) => console.error('Error fetching announcements:', error));
