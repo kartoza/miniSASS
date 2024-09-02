@@ -3,9 +3,9 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { globalVariables } from '../../utils';
 
 const Banner: React.FC = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
-  const [dismissalType, setDismissalType] = useState<number | null>(null);
+  const [showCloseButton, setShowCloseButton] = useState(false);
 
   const announcements_url = globalVariables.baseUrl + '/announcements/';
   
@@ -14,24 +14,27 @@ const Banner: React.FC = () => {
     fetch(announcements_url)
       .then((response) => response.json())
       .then((data) => {
-        setAnnouncements(data);
         if (data.length > 0) {
-          setDismissalType(data[0].dismissal_type);
+          setAnnouncements(data);
+          const shouldShowCloseButton = data.some(announcement => announcement.dismissal_type !== 1);
+          setShowCloseButton(shouldShowCloseButton);
+          setVisible(true); 
+        } else {
+          setVisible(false);
         }
       })
       .catch((error) => console.error('Error fetching announcements:', error));
   }, []);
 
-  // Handle visibility based on dismissal type
   useEffect(() => {
-    if (dismissalType !== 1 && visible) {
+    if (showCloseButton && visible) {
       const timer = setTimeout(() => {
         setVisible(false);
       }, 15000);
 
       return () => clearTimeout(timer);
     }
-  }, [visible, dismissalType]);
+  }, [visible, showCloseButton]);
 
   const bannerStyle: React.CSSProperties = {
     backgroundColor: '#003f81',
@@ -65,7 +68,7 @@ const Banner: React.FC = () => {
 
   return (
     <>
-      {visible && announcements.length > 0 && (
+      {visible && (
         <div style={bannerStyle}>
           <div style={textStyle}>
             {announcements.map((announcement, index) => (
@@ -75,7 +78,7 @@ const Banner: React.FC = () => {
               </div>
             ))}
           </div>
-          {(dismissalType !== 1) && (
+          {showCloseButton && (
             <button onClick={() => setVisible(false)} style={buttonStyle}>
               <AiOutlineClose size={24} />
             </button>
