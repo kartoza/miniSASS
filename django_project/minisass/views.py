@@ -11,6 +11,8 @@ from minisass.serializers import (
     VideoSerializer,
     MobileAppSerializer
 )
+from django.http import JsonResponse
+from pinax.announcements.models import Announcement
 
 class GroupScoresListView(generics.ListAPIView):
     queryset = GroupScores.objects.all().order_by('name')
@@ -28,3 +30,9 @@ class GetMobileApp(APIView):
     def get(self, request):
         mobile_app = MobileApp.objects.filter(active=True).order_by('-id').first()
         return Response(self.serializer_class(mobile_app).data)
+
+
+def get_announcements(request):
+    announcements = Announcement.objects.all().values('title', 'content', 'dismissal_type')
+    return JsonResponse(list(announcements), safe=False)
+
