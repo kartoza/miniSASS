@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 
 const Banner: React.FC = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, 15000);
+    if(visible)
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, 15000);
 
     return () => clearTimeout(timer);
   }, []);
