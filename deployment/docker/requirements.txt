@@ -34,6 +34,8 @@ lxml==4.9.3
 oauthlib==3.2.2
 packaging==23.2
 Pillow==10.1.0
+pinax-announcements==4.0.1
+pinax-templates==3.0.0
 platformdirs==3.11.0
 psycopg2==2.9.9
 pycparser==2.21
