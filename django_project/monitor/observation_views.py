@@ -32,7 +32,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from tensorflow import keras
 from django.contrib.auth.models import User
-from rest_framework.response import Response
 from rest_framework import status
 
 
@@ -60,11 +59,10 @@ def get_observations_by_site(request, site_id, format=None):
 		observations = Observations.objects.filter(site=site)
 		serializer = ObservationsAllFieldsSerializer(observations, many=True)
 
-		return JsonResponse(
-			{'status': 'success', 'observations': serializer.data}
-		)
-	except Sites.DoesNotExist:
-		raise Http404("Site does not exist")
+		return JsonResponse({'status': 'success', 'observations': serializer.data})
+	
+	except Sites.DoesNotExist as e:
+		return JsonResponse({'status': 'error', 'message': 'Site does not exist'}, status=404)
 
 
 # Use environment variables for Minio configuration
