@@ -440,13 +440,10 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		self.assertEqual(response['Content-Type'], 'application/json')
 
 	def test_observations_by_nonexistent_site_id(self):
-			self.client.login(email='test@gmail.com', password='testuserpassword')
-	
-			url = reverse('observations-by-site', kwargs={'site_id': 999})
-	
-			# Check if the Sites.DoesNotExist exception is raised
-			with self.assertRaises(Sites.DoesNotExist):
-				self.client.get(url)
+	        self.client.login(email='test@gmail.com', password='testuserpassword')
+	        url = reverse('observations-by-site', kwargs={'site_id': 999})
+	        response = self.client.get(url)
+	        self.assertEqual(response.status_code, 404)
 
 	def test_expert_auto_validated_observation(self):
 		"""
