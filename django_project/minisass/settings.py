@@ -165,7 +165,10 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = os.environ.get(
+    'SMTP_EMAIL', 'noreply@noreply.kartoza.com')
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+EMAIL_BACKEND = 'minisass.resend_email.ResendBackend'
 EMAIL_HOST = os.getenv('SMTP_HOST', 'smtp')
 EMAIL_PORT = os.getenv('SMTP_PORT', '25')
 EMAIL_HOST_USER = os.getenv('SMTP_HOST_USER', 'noreply@kartoza.com')
@@ -176,10 +179,6 @@ SERVER_EMAIL = os.environ.get('SMTP_EMAIL', 'noreply@kartoza.com')
 CONTACT_US_RECEPIENT_EMAIL = 'info@minisass.org'
 EXPERT_APPROVAL_RECIPIENT_EMAIL = 'info@minisass.org'
 
-# django registration/auth settings
-# ACCOUNT_ACTIVATION_DAYS = 7
-# LOGIN_REDIRECT_URL = '/'
-# AUTH_PROFILE_MODULE = "minisass_authentication.UserProfile"
 
 SENTRY_KEY = os.environ.get('SENTRY_KEY', '')
 if SENTRY_KEY != '':
