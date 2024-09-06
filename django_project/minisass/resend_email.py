@@ -2,17 +2,17 @@ import base64
 import mimetypes
 
 import requests
-from preferences import preferences
+from django.conf import settings
 from django.core.mail.backends.base import BaseEmailBackend
 
 
 class ResendBackend(BaseEmailBackend):
-    """
-    A Django email backend that uses the Resend API.
-    """
+    """A Django email backend that uses the Resend API."""
+
     def send_messages(self, email_messages):
         """
         Send a list of email messages using the Resend API.
+
         :param email_messages: List of Django email messages.
         :return: The number of successfully sent messages.
         """
@@ -29,17 +29,13 @@ class ResendBackend(BaseEmailBackend):
     def _send_via_resend(self, email):
         """
         Send a single email via Resend.
+
         :param email: A Django EmailMessage object.
         :return: The response from the Resend API.
         """
-        resend_api_key = preferences.SiteSetting.resend_api_key
-        from_email = (
-            preferences.SiteSetting.default_from_email if
-            preferences.SiteSetting.default_from_email else
-            email.from_email
-        )
+        resend_api_key = settings.RESEND_API_KEY
+        from_email = settings.DEFAULT_FROM_EMAIL
 
-        # Prepare the payload for the Resend API request
         payload = {
             "from": from_email,
             "to": email.to,
@@ -88,4 +84,6 @@ class ResendBackend(BaseEmailBackend):
         # Make the request to the Resend API
         resend_url = "https://api.resend.com/emails"
         response = requests.post(resend_url, json=payload, headers=headers)
+        if response.status_code != 200:
+            raise ConnectionError(response.text)
         return response
