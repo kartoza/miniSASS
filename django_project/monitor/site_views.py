@@ -217,21 +217,41 @@ class SitesWithObservationsView(APIView):
 							"gid": 1,
 							"sitename": "Sample Site",
 							"rivername": "Sample River",
-							"rivercategory": "Category 1",
-							"sitedescription": "Description of the site",
+							"rivercategory": "rocky",
+							"sitedescription": "This is a description of the sample site.",
 							"images": [
 								{
 									"id": 1,
-									"image": "https://minisass.rog/path/to/image.jpg",
-									"description": "Image description"
+									"image": "https://minisass.org/path/to/image.jpg"
+								},
+								{
+									"id": 2,
+									"image": "https://example.com/path/to/another-image.jpg"
 								}
 							],
 							"observations": [
 								{
 									"obs_id": 123,
 									"obs_date": "2024-08-21",
-									"parameter": "Parameter Example",
-									"value": 12.5
+									"ml_score": "5.0",
+									"collector_name": "John Doe",
+									"score": 3.45,
+									"comment": "Observation comment",
+									"is_validated": True,
+									"water_clarity": 2.5,
+									"water_temp": 20.3,
+									"ph": 7.2,
+									"diss_oxygen": 8.5,
+									"diss_oxygen_unit": "mgl",
+									"elec_cond": 0.5,
+									"elec_cond_unit": "mS/m",
+									"images": [
+										{
+											"id": 1,
+											"image": "https://example.com/path/to/obs-image.jpg",
+											"description": "Observation image description"
+										}
+									]
 								}
 							]
 						}
