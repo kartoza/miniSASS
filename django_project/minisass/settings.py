@@ -6,6 +6,7 @@ import os
 from django.core.files.storage import FileSystemStorage
 
 from minisass.utils import absolute_path
+from drf_yasg import openapi
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -91,6 +92,17 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': openapi.Info(
+        title="miniSASS API's",
+        default_version='v1',
+        description="Describes the public API's",
+        terms_of_service="minisass.org",
+        contact=openapi.Contact(email=""),
+        license=openapi.License(name="BSD License"),
+    ),
 }
 
 # Password validation
@@ -197,6 +209,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.gis',
     # custom apps here:
