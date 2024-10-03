@@ -52,6 +52,8 @@ After choosing the Http Request, you will receive the following window.
 
     `https://minisass.org/monitor/sites-with-observations/?start_date=2024-04-13`
 
+    > Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
+
 ### Make a GET Request
 
 Use your selected tool to perform a GET request to the constructed URL.
@@ -72,9 +74,57 @@ To check how to make request click on [request process](#2-create-a-new-request)
 
 - Once you send the request, the API will return the data in data body.
 
-    This is an example of data you will recieve after  sending the request via [Postman](#1-using-postman).
+    Here are examples of the responses you will receive after sending the request via [Postman](#1-using-postman).
+
+    ### 200 OK
+
+    **Request With a Specified Date:**
+
+    - The  API will return a list of sites with observations from the specified date.
+
+    - The URL should be in the following format:
+
+    `https://minisass.org/monitor/sites-with-observations/?start_date=2024-03-09`
 
     ![Request Body](./img/3rd-party-api-access-4.png)
+
+    1. **200 OK:** This status code indicates that the request was successful, and the response data will be returned in the body.
+
+    **Request Without a Specified Date:** If the start date is not specified or provided, the API returns a **200 OK** status code along with all available sites and observations.
+    
+    - The URL without date  will look like this:
+
+    `https://minisass.org/monitor/sites-with-observations`
+
+    ![Request Without Date](./img/3rd-party-api-access-16.png)
+
+    ### 400 Bad Request:
+
+     If the date is not provided in the correct `YYYY-MM-DD` format, you will receive a **404 Bad Request** error with an **error message**.
+
+    ![Error Message](./img/3rd-party-api-access-15.png)
+
+    1.  **400 Bad Request:** This status code indicates that the request was invalid or cannot be processed.
+
+    2. **error:**  This is the error message returned by the API. In our case, the error occurs due to an invalid date format. The correct format should be **YYYY-MM-DD**.
+
+    ### 500 Internal Server Error
+
+    ![500 Internal Server Error](./img/3rd-party-api-access-17.png)
+
+    1.**500 Internal Server Error:** The server returned a 500 Internal Server Error, indicating that the API is currently down and unable to process the request.
+
+    ### Here are the actions you can take after receiving a **200 OK** status code:
+
+    ### Site Image
+
+    The user can also download the site/observation image by clicking on the image URL provided in the response.
+
+    ![Site/Observation Image](./img/3rd-party-api-access-20.png)
+
+    Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
+
+    ![Site/Observation Image](./img/3rd-party-api-access-21.png)
 
     The user can also choose different response formats by clicking on the 1️⃣ dropdown, such as JSON, XML, text etc.
 
@@ -104,9 +154,55 @@ The user can directly send the request using a browser by pasting the URL into t
 
 - Press Enter to send the request.
 
-- The browser will display the response in the browser window.
+- The browser will display one of the following responses in the browser window.
+
+### HTTP 200 OK
+
+**Request With a Specified Date**
+
+- The  API will return a list of sites with observations from the specified date.
+
+- The URL should be in the following format:
+
+`https://minisass.org/monitor/sites-with-observations/?start_date=2024-03-09`
 
 ![Browser Response](./img/3rd-party-api-access-9.png)
+
+1. **200 OK:** This status code indicates that the request was successful and the response body contains the requested data.
+
+**Request Without a Specified Date**
+
+- The API will return a list of all sites with observations.
+
+- The URL without date will look like this:
+
+`https://minisass.org/monitor/sites-with-observations`
+
+### HTTP 400 Bad Request
+
+If the date is not provided in the correct `YYYY-MM-DD` format, you will receive a **404 Bad Request** error with an error message.
+
+![400 Bad Request](./img/3rd-party-api-access-18.png)
+
+1. **400 Bad Request:** This status code indicates the request was invalid or couldn't be processed. The response body will include an **error message**, which in this case is **Invalid date format**. Please use **YYYY-MM-DD**.
+
+### HTTP 500 Internal Server Error
+
+![500 Internal Server Error](./img/3rd-party-api-access-19.png)
+
+1. **500 Internal Server Error:** The server returned a 500 Internal Server Error, indicating that the API is currently down and unable to process the request.
+
+### After receiving the 200 OK status code, the user will be able to perform the following actions:
+
+### Site Image
+
+The user can also download the site/observation image by clicking on the image URL provided in the response.
+
+![Site/Observation Image](./img/3rd-party-api-access-20.png)
+
+Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
+
+![Site/Observation Image](./img/3rd-party-api-access-21.png)
 
 User can also choose response format between JSON and api.
 
