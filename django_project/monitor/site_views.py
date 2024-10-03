@@ -8,6 +8,8 @@ from django.contrib.gis.measure import D
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from minisass.models import GroupScores
 from django.utils.dateparse import parse_date
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 from monitor.serializers import (
@@ -197,6 +199,48 @@ class SiteObservationsByLocation(APIView):
 
 class SitesWithObservationsView(APIView):
 	serializer_class = SitesAndObservationsSerializer
+	@swagger_auto_schema(
+		manual_parameters=[
+			openapi.Parameter(
+				'start_date', 
+				openapi.IN_QUERY, 
+				description="Start date in YYYY-MM-DD format", 
+				type=openapi.TYPE_STRING
+			)
+		],
+		responses={
+			200: openapi.Response(
+				description="Successful response",
+				examples={
+					"application/json": {
+						"site": {
+							"gid": 1,
+							"sitename": "Sample Site",
+							"rivername": "Sample River",
+							"rivercategory": "Category 1",
+							"sitedescription": "Description of the site",
+							"images": [
+								{
+									"id": 1,
+									"image": "https://minisass.rog/path/to/image.jpg",
+									"description": "Image description"
+								}
+							],
+							"observations": [
+								{
+									"obs_id": 123,
+									"obs_date": "2024-08-21",
+									"parameter": "Parameter Example",
+									"value": 12.5
+								}
+							]
+						}
+					}
+				}
+			),
+			400: openapi.Response(description="Invalid date format"),
+		}
+	)
 	def get(self, request):
 		start_date_str = request.query_params.get('start_date', None)
 		start_date = parse_date(start_date_str) if start_date_str else None
