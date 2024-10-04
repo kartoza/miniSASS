@@ -1,52 +1,51 @@
+import os
 import json
 import multiprocessing
 from queue import Queue
-import os
 from datetime import datetime
 from decimal import Decimal
-import botocore
 
-# dependencies for ai score calculations
+# External libraries
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
 from PIL import Image
+from minio import Minio
+from minio.error import S3Error
+import botocore
 
+# Django imports
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
-from django.core.exceptions import PermissionDenied
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import Max
-from django.http import Http404
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from minio import Minio
-from minio.error import S3Error
-from rest_framework import generics, mixins
+
+# Django Rest Framework imports
+from rest_framework import generics, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
-from tensorflow import keras
-from django.contrib.auth.models import User
-from rest_framework import status
 
-
+# Custom modules and models
 from minisass.models import GroupScores
 from minisass.utils import get_s3_client
 from minisass_authentication.models import UserProfile
 from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
-from monitor.models import (
-	Observations, Sites, SiteImage, ObservationPestImage
-)
+from monitor.models import Observations, Sites, SiteImage, ObservationPestImage
 from monitor.serializers import (
-	ObservationsSerializer,
-	ObservationPestImageSerializer,
-	ObservationsAllFieldsSerializer
+    ObservationsSerializer,
+    ObservationPestImageSerializer,
+    ObservationsAllFieldsSerializer
 )
+
 
 
 def clear_tensorflow_session():
