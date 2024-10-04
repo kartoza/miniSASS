@@ -210,7 +210,7 @@ class UpdateUserTest(APITestCase):
 
     def test_not_authenticated(self):
         response = self.client.get(self.url)
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 403)
 
     def test_update_works(self):
         self.client.force_authenticate(self.user)
@@ -339,7 +339,7 @@ class CheckAuthenticationStatusTest(APITestCase):
 
     def test_check_authentication_status_unauthenticated(self):
         response = self.client.get(self.url)
-        self.assertEquals(response.status_code, 401)
+        self.assertEquals(response.status_code, 403)
         self.assertEquals(
             response.json(),
             {'detail': 'Authentication credentials were not provided.'}
