@@ -41,12 +41,12 @@ from minisass.utils import get_s3_client
 from minisass_authentication.models import UserProfile
 from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
 from monitor.models import (
-    Observations, Sites, SiteImage, ObservationPestImage
+	Observations, Sites, SiteImage, ObservationPestImage
 )
 from monitor.serializers import (
-    ObservationsSerializer,
-    ObservationPestImageSerializer,
-    ObservationsAllFieldsSerializer
+	ObservationsSerializer,
+	ObservationPestImageSerializer,
+	ObservationsAllFieldsSerializer
 )
 
 
@@ -593,11 +593,9 @@ class ObservationImageViewSet(
 			if getattr(self, 'swagger_fake_view', False):
 				return ObservationPestImage.objects.none()
 
-			observation_pk = self.kwargs.get('observation_pk')
-			if not observation_pk:
-				raise ValueError("Missing 'observation_pk' in URL")
-	
-			observation = get_object_or_404(Observations, pk=observation_pk)
+			observation = get_object_or_404(
+					Observations, pk=self.kwargs['observation_pk']
+			)
 			return observation.observationpestimage_set.all()
 
 	def destroy(self, request, *args, **kwargs):
