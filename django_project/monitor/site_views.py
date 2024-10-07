@@ -205,7 +205,6 @@ class SitesWithObservationsView(APIView):
 	serializer_class = SitesAndObservationsSerializer
 	@swagger_auto_schema(
 		operation_description="Retrieve detailed information about a site, including its observations and images.",
-		tags=["Sites and Observations"],
 		manual_parameters=[
 			openapi.Parameter(
 				'start_date', 
