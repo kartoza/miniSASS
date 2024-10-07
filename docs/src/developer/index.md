@@ -19,3 +19,4 @@ List of Developer documents:
 - **[Sites:](./sites.md)** Documentation regarding the Sites API.
 - **[Observations:](./observations.md)** Documentation regarding the Observations API.
 - **[Profile API:](./profile.md)** Documentation regarding the Profile API.
+- **[3RD Party API:](./3rd-party-api-access.md)** Documentation regarding the 3rd party API access.
