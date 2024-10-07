@@ -24,7 +24,7 @@ To interact with the API, you can use tools like Postman, cURL, or any programmi
 
 ### 2. Create a New Request
 
-Open `Postman` then click on 1️⃣ New and then choose 2️⃣ Http Request.
+Open `Postman` then click on 1️⃣ `New` and then choose 2️⃣ `HTTP` Request.
 
 ![New Http Request](./img/3rd-party-api-access-1.png)
 
@@ -204,6 +204,19 @@ Click on the 1️⃣ `image` to open the image in your browser, where you can ea
 
 ![Site/Observation Image](./img/3rd-party-api-access-21.png)
 
+#### DownLoad Image:
+
+* Right click on the image  and select **Save Image As**.
+
+    ![Download Image](./img/3rd-party-api-access-35.png)
+
+    
+* Choose a location to save the image and click 1️⃣ `Save`.
+
+    ![Save Image](./img/3rd-party-api-access-36.png)
+
+    The following process will download the image in the `jpg` format.
+
 User can also choose response format between JSON and api.
 
 - Click on the 1️⃣ dropdown to select the response format.
@@ -227,3 +240,107 @@ User can also choose response format between JSON and api.
     * **Api Format**
 
         ![Api format](./img/3rd-party-api-access-14.png)
+
+## Other ways to access the API
+
+**Here are two URLs through which user can retrieve/download the site observation data:**
+
+### Swagger
+
+Enables users to interact with the API using Swagger UI.
+
+`https://minisass.org.com/swagger/`
+
+#### Accessing the API using Swagger
+
+1. Click on this URL: `https://minisass.org.com/swagger/`, which will redirect you to the Swagger site.
+
+    ![Swagger Site](./img/3rd-party-api-access-22.png)
+
+2. Click  on the `GET /monitor/sites-with-observations` endpoint.
+
+    ![Endpoints Image](./img/3rd-party-api-access-23.png)
+
+3. This is the api dashboard which will appear after clicking on the endpoint `GET  /monitor/sites-with-observations`.
+
+    ![Api Dashboard](./img/3rd-party-api-access-24.png)
+
+    1. **Try it out:** This option allows you to interact with the API directly.
+
+    2. **start_date:**  This is the date from which you want to retrieve the data.
+
+    3. **Response content type:** This is the format in which you will receive the data.
+
+    4. **Example value:** Click on 4️⃣ `Example Value`, and it will display a sample of the data you will receive. 
+
+        ![Example Value](./img/3rd-party-api-access-34.png)
+
+4. Click on 1️⃣ `Try it out` to access the API, which will enable you to enter the 2️⃣ `start date` in the format `YYYY-MM-DD`.
+
+    ![Access Api](./img/3rd-party-api-access-25.png)
+
+    >Note: If the `start_date` is provided, the API will return data from that specified date. If not, it will return all site observation data.
+
+5. Click on 1️⃣ `Execute` to retrieve the data, or choose 2️⃣ `Cancel` to abort the process.
+
+    ![Execute Api](./img/3rd-party-api-access-26.png)
+
+6. These are the examples of responses you will receive in the response body.
+    
+    * ** Code 200:** This is the response you will receive along with the data if the request is successful.
+    
+    ![Response Body](./img/3rd-party-api-access-27.png)
+
+    * **Code 400:**  This is the response you will receive if the request is not successful.
+
+    ![400 Error](./img/3rd-party-api-access-28.png)
+
+    In our case, we received 1️⃣ a **400 Bad Request** code along with 2️⃣ an **error** message due to an invalid date format.
+
+7. After receiving the response, the user can download the received data by clicking on the 1️⃣ **Download** button.
+
+    ![Download](./img/3rd-party-api-access-29.png)
+
+8.  The downloaded file will be in the `json` format. Here is the example of data you will receive in the downloaded file.
+
+    ![Downloaded Data](./img/3rd-party-api-access-30.png)
+
+    * **Image:** This is the site image URL. Clicking on it will redirect you to the browser, where you can download the site observation image.
+
+        ![Site/Observation Image](./img/3rd-party-api-access-21.png)
+
+    To download the image click [here](#download-image)
+
+### Redoc URL
+
+The Redoc URL is the URL where you can access the API documentation.
+
+`https://minisass.org.com/redoc/#tag/monitor/operation/monitor_site-observations_read`
+
+#### Accessing the Api using Redoc
+
+1. Click on this URL: `https://minisass.org.com/redoc/#tag/monitor/operation/monitor_site-observations_read`, which will redirect you to the Redoc documentation site.
+
+    ![Redoc Site](./img/3rd-party-api-access-31.png)
+
+2. Click on 1️⃣ `Search` to look for the API you want to access, or simply click on 2️⃣ `Monitor`, which will open a dropdown menu.
+
+    ![Access Redoc](./img/3rd-party-api-access-32.png)
+
+3. Click  on 1️⃣ `monitor_sites-with-observations_list` to access the API.
+
+    ![Access Redoc](./img/3rd-party-api-access-33.png)
+
+    1. **monitor_sites-with-observations_list:** By clicking on this, the user will be able to access the API.
+
+    2. **start_date:**  This is the start date of the observation.
+
+    3. **Responses:**  These are the examples of responses you will receive if the request is successful.
+    
+        *  **200:**  This is the response you will receive if the request is successful.
+
+        * **400:** This is the response you will receive, along with an error message, if the request is not successful.
+
+    4. **Endpoints:** The API endpoint GET /monitor/sites-with-observations/ is used to retrieve sites along with their observations.
+
+    5. **Response samples:** Displaying the content type of the response along with the response body containing an example of the response.
