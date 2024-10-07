@@ -27,7 +27,7 @@ interface DownloadObservationFormProps {
   dateRange: string[];
 }
 
-const DOWNLOAD_OBSERVATIONS_URL = globalVariables.baseUrl + '/monitor/observations/download-v2'
+const DOWNLOAD_OBSERVATIONS_URL = globalVariables.baseUrl + '/monitor/observations/download-v2/'
 
 const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpen, onClose,
                                                                            siteId, dateRange}) => {
