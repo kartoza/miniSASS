@@ -103,7 +103,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         const parsedState = JSON.parse(storedState);
         const user_email = parsedState.userData.email;
         const user_level = await axios.get(
-          `${globalVariables.baseUrl}/authentication/api/user-profile/is-expert/${user_email}`
+          `${globalVariables.baseUrl}/authentication/api/user-profile/is-expert/${user_email}/`
         );
 
         if(user_level.data.is_expert){
