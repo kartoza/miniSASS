@@ -1,6 +1,6 @@
 # Accessing the miniSASS 3rd Party API
 
-This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data.
+This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data. The first section outlines the API and using a service like Postman and the second section outlines the use of Swagger as a standardized way to access the API.
 
 ## API Endpoint
 
