@@ -55,7 +55,6 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
 
   useEffect(() => {
     setFormData({ ...formData, startDate: dayjs(dateRange[0]), endDate: dayjs(dateRange[1]) });
-      console.log('provided date ranges ',dateRange)
   }, [dateRange]);
 
   const handleSubmit = (e: FormEvent) => {
@@ -91,12 +90,12 @@ const DownloadObservationForm: React.FC<DownloadObservationFormProps> = ({ isOpe
       } else {
         setIsError(true);
         setShowHeading(false);
-        setResponseMessage(JSON.stringify(response.data));
+        setResponseMessage('Error failed to download Observations');
       }
     } catch (error) {
       setIsError(true);
       setShowHeading(false);
-      setResponseMessage(error.message);
+      setResponseMessage('Error failed to download Observations');
     }
   };
 
