@@ -594,7 +594,7 @@ class ObservationImageViewSet(
 				return ObservationPestImage.objects.none()
 
 			observation_pk = self.kwargs.get('observation_pk')
-			if not observation_pk:
+			if observation_pk is None:
 				raise ValueError("Missing 'observation_pk' in URL")
 	
 			observation = get_object_or_404(Observations, pk=observation_pk)
