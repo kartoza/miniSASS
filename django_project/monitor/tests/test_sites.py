@@ -30,6 +30,11 @@ class SitesListCreateViewTestCase(TestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
+        self.user_token = User.objects.create_superuser(
+            username='testuser2', 
+            password='testpassword', 
+            email='test@example2.com'
+        )
         self.site = Sites.objects.create(
             site_name='Test Site',
             river_name='Test River',
@@ -81,6 +86,15 @@ class SitesListCreateViewTestCase(TestCase):
             elec_cond="2.50",
             elec_cond_unit="mS/m"
         )
+        self.token = self.generate_token_for_user(self.user_token.email)
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+
+    def generate_token_for_user(self, email):
+        url = reverse('generate_special_token', args=[email])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        return response.json().get('token')
 
 
     def test_get_all_sites_with_observations(self):
@@ -118,6 +132,16 @@ class SitesListCreateViewTestCase(TestCase):
         response = self.client.get(url, {'start_date': start_date})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+
+    def test_get_sites_with_observations_without_token(self):
+        # Remove token authentication for this request
+        self.client.credentials()
+        
+        url = reverse('sites-with-observations')
+        response = self.client.get(url)
+
+        # Expect 401 Unauthorized without a token
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     
     def test_multiple_image_upload(self):
