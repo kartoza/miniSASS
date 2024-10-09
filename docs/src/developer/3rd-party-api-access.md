@@ -23,9 +23,14 @@ The API can be accessed at the following URL:
 ### Create a New Request
 
 Open Postman, click on 1️⃣ `New`, and select 2️⃣ `HTTP` to begin.
+Open Postman, click on 1️⃣ `New`, and select 2️⃣ `HTTP` to begin.
 
 [![New Http Request](./img/3rd-party-api-access-1.png)](./img/3rd-party-api-access-1.png)
+[![New Http Request](./img/3rd-party-api-access-1.png)](./img/3rd-party-api-access-1.png)
 
+After choosing the Http Request, you will receive the following window. You can construct the API URL and send the request.
+
+> Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
 After choosing the Http Request, you will receive the following window. You can construct the API URL and send the request.
 
 > Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
@@ -38,6 +43,9 @@ After choosing the Http Request, you will receive the following window. You can 
 
     `https://minisass.org/monitor/sites-with-observations/?start_date=2024-04-13`
 
+Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed URL into the 2️⃣ `input` field, ensuring it is in the correct format. After verifying the URL format, click the 3️⃣ `Send` button to send the request.
+
+[![Http Request](./img/3rd-party-api-access-2.png)](./img/3rd-party-api-access-2.png)
 Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed URL into the 2️⃣ `input` field, ensuring it is in the correct format. After verifying the URL format, click the 3️⃣ `Send` button to send the request.
 
 [![Http Request](./img/3rd-party-api-access-2.png)](./img/3rd-party-api-access-2.png)
@@ -85,25 +93,31 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
     The user can also download the site/observation image by clicking on the image URL provided in the response.
 
     [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
+    [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
 
     Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
 
+    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
     [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
     The user can also choose different response formats by clicking on the 1️⃣ dropdown, such as JSON, XML, text etc.
 
     [![Response Format](./img/3rd-party-api-access-5.png)](./img/3rd-party-api-access-5.png)
+    [![Response Format](./img/3rd-party-api-access-5.png)](./img/3rd-party-api-access-5.png)
 
     * **Json Format**
         
+        [![Json Format](./img/3rd-party-api-access-6.png)](./img/3rd-party-api-access-6.png)
         [![Json Format](./img/3rd-party-api-access-6.png)](./img/3rd-party-api-access-6.png)
 
     *  **Xml Format**
 
         [![Xml Response](./img/3rd-party-api-access-7.png)](./img/3rd-party-api-access-7.png)
+        [![Xml Response](./img/3rd-party-api-access-7.png)](./img/3rd-party-api-access-7.png)
 
     * **Text Format**
 
+        [![Text Response](./img/3rd-party-api-access-8.png)](./img/3rd-party-api-access-8.png)
         [![Text Response](./img/3rd-party-api-access-8.png)](./img/3rd-party-api-access-8.png)
 
 - You can use the data as per your needs.
@@ -129,6 +143,7 @@ The user can directly send the request using a browser by pasting the URL into t
 `https://minisass.org/monitor/sites-with-observations/?start_date=2024-03-09`
 
 [![Browser Response](./img/3rd-party-api-access-9.png)](./img/3rd-party-api-access-9.png)
+[![Browser Response](./img/3rd-party-api-access-9.png)](./img/3rd-party-api-access-9.png)
 
 1. **200 OK:** This status code indicates that the request was successful and the response body contains the requested data.
 
@@ -144,6 +159,7 @@ The user can directly send the request using a browser by pasting the URL into t
 
 If the date is not provided in the correct `YYYY-MM-DD` format, you will receive a **404 Bad Request** error with an error message.
 
+[![400 Bad Request](./img/3rd-party-api-access-18.png)](./img/3rd-party-api-access-18.png)
 [![400 Bad Request](./img/3rd-party-api-access-18.png)](./img/3rd-party-api-access-18.png)
 
 1. **400 Bad Request:** This status code indicates the request was invalid or couldn't be processed. The response body will include an **error message**, which in this case is **Invalid date format**. Please use **YYYY-MM-DD**.
@@ -210,13 +226,21 @@ User can also choose response format between JSON and api.
 ### Swagger
 
 Accessing the API using Swagger
+Accessing the API using Swagger
 
+- Click [here](https://minisass.org.com/swagger/), to redirect to the swagger.
 - Click [here](https://minisass.org/swagger/), to redirect to the swagger.
 
     [![Swagger Site](./img/3rd-party-api-access-22.png)](./img/3rd-party-api-access-22.png)
 
 - Choose `GET /monitor/sites-with-observations` endpoint.
+    [![Swagger Site](./img/3rd-party-api-access-22.png)](./img/3rd-party-api-access-22.png)
 
+- Choose `GET /monitor/sites-with-observations` endpoint.
+
+    [![Endpoints Image](./img/3rd-party-api-access-23.png)](./img/3rd-party-api-access-23.png)
+
+- This is the api dashboard which will appear after clicking on the endpoint `GET  /monitor/sites-with-observations`.
     [![Endpoints Image](./img/3rd-party-api-access-23.png)](./img/3rd-party-api-access-23.png)
 
 - This is the api dashboard which will appear after clicking on the endpoint `GET  /monitor/sites-with-observations`.
@@ -256,9 +280,11 @@ Accessing the API using Swagger
     In our case, we received 1️⃣ a **400 Bad Request** code along with 2️⃣ an **error** message due to an invalid date format.
 
 - After receiving the response, the user can download the received data by clicking on the 1️⃣ **Download** button.
+- After receiving the response, the user can download the received data by clicking on the 1️⃣ **Download** button.
 
     [![Download](./img/3rd-party-api-access-29.png)](./img/3rd-party-api-access-29.png)
 
+- The downloaded file will be in the `json` format. Here is the example of data you will receive in the downloaded file.
 - The downloaded file will be in the `json` format. Here is the example of data you will receive in the downloaded file.
 
     [![Downloaded Data](./img/3rd-party-api-access-30.png)](./img/3rd-party-api-access-30.png)
@@ -266,7 +292,9 @@ Accessing the API using Swagger
     * **Image:** This is the site image URL. Clicking on it will redirect you to the browser, where you can download the site observation image.
 
         [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+        [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
+    **To view the process for downloading the image, click [here](#download-image).**
     **To view the process for downloading the image, click [here](#download-image).**
 
 ### Redoc URL
@@ -281,7 +309,13 @@ Click on 1️⃣ `Search` to look for the API you want to access, or simply clic
 [![Access Redoc](./img/3rd-party-api-access-32.png)](./img/3rd-party-api-access-32.png)
 
 Click on 1️⃣ `monitor_sites-with-observations_list` to access the API.
+[![Access Redoc](./img/3rd-party-api-access-32.png)](./img/3rd-party-api-access-32.png)
 
+Click on 1️⃣ `monitor_sites-with-observations_list` to access the API.
+
+[![Access Redoc](./img/3rd-party-api-access-33.png)](./img/3rd-party-api-access-33.png)
+
+1. **monitor_sites-with-observations_list:** By clicking on this, the user will be able to access the API documentation.
 [![Access Redoc](./img/3rd-party-api-access-33.png)](./img/3rd-party-api-access-33.png)
 
 1. **monitor_sites-with-observations_list:** By clicking on this, the user will be able to access the API documentation.
