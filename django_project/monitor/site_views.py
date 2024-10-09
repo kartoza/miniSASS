@@ -20,6 +20,7 @@ from minisass.models import GroupScores
 from django.utils.dateparse import parse_date
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
 
 
 from monitor.serializers import (
@@ -203,6 +204,7 @@ class SiteObservationsByLocation(APIView):
 
 class SitesWithObservationsView(APIView):
 	serializer_class = SitesAndObservationsSerializer
+	permission_classes = [IsAuthenticatedOrWhitelisted]
 	@swagger_auto_schema(
 		operation_description="Retrieve detailed information about a site, including its observations and images.",
 		manual_parameters=[
