@@ -30,6 +30,8 @@ class SitesListCreateViewTestCase(TestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
         self.site = Sites.objects.create(
             site_name='Test Site',
             river_name='Test River',
@@ -118,6 +120,14 @@ class SitesListCreateViewTestCase(TestCase):
         response = self.client.get(url, {'start_date': start_date})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+
+    def test_get_sites_with_observations_without_authentication(self):
+        self.client.delete
+        self.client = APIClient()
+        
+        url = reverse('sites-with-observations')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     
     def test_multiple_image_upload(self):
