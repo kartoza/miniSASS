@@ -211,7 +211,7 @@ User can also choose response format between JSON and api.
 
 Accessing the API using Swagger
 
-- Click [here](https://minisass.org.com/swagger/), to redirect to the swagger.
+- Click [here](https://minisass.org/swagger/), to redirect to the swagger.
 
     [![Swagger Site](./img/3rd-party-api-access-22.png)](./img/3rd-party-api-access-22.png)
 
@@ -271,7 +271,7 @@ Accessing the API using Swagger
 
 ### Redoc URL
 
-Click [here](https://minisass.org.com/redoc/#tag/monitor/operation/monitor_site-observations_read), to access the redoc documentation site.
+Click [here](https://minisass.org/redoc/#tag/monitor/operation/monitor_site-observations_read), to access the redoc documentation site.
 <!--  -->
 [![Redoc Site](./img/3rd-party-api-access-31.png)](./img/3rd-party-api-access-31.png)
 
