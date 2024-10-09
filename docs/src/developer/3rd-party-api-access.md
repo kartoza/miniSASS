@@ -14,15 +14,13 @@ The API can be accessed at the following URL:
 
 ## Step-by-Step Procedure
 
-### Set Up Your Environment: 
+**Set Up Your Environment:** To interact with the API, you can use tools like Postman, cURL, or any programming language that supports HTTP requests.
 
-To interact with the API, you can use tools like Postman, cURL, or any programming language that supports HTTP requests.
-
-### 1. Using Postman
+### Using Postman
 
 - **Download and Install Postman:** If you have not already, download Postman from Postman’s [official website](https://www.postman.com/).
 
-### 2. Create a New Request
+### Create a New Request
 
 Open Postman, click on 1️⃣ `New`, and select 2️⃣ `HTTP` to begin.
 
@@ -50,47 +48,39 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     Here are examples of the responses you will receive after sending the request via [Postman](#1-using-postman).
 
-    ### 200 OK
+    #### 200 OK
 
     **Request With a Specified Date:**
 
     - The  API will return a list of sites with observations from the specified date.
 
-    - The URL should be in the following format:
+    - The URL should be in the following format: `https://minisass.org/monitor/sites-with-observations/?start_date=2024-03-09`
 
-    `https://minisass.org/monitor/sites-with-observations/?start_date=2024-03-09`
+    This status code 1️⃣ `200 OK` indicates that the request was successful, and the response data will be returned in the body.
 
     [![Request Body](./img/3rd-party-api-access-4.png)](./img/3rd-party-api-access-4.png)
 
-    1. **200 OK:** This status code indicates that the request was successful, and the response data will be returned in the body.
-
     **Request Without a Specified Date:** If the start date is not specified or provided, the API returns a **200 OK** status code along with all available sites and observations.
     
-    - The URL without date  will look like this:
-
-    `https://minisass.org/monitor/sites-with-observations`
+    - The URL without date  will look like this: `https://minisass.org/monitor/sites-with-observations`
 
     [![Request Without Date](./img/3rd-party-api-access-16.png)](./img/3rd-party-api-access-16.png)
 
-    ### 400 Bad Request:
+    #### 400 Bad Request:
 
-     If the date is not provided in the correct `YYYY-MM-DD` format, you will receive a **404 Bad Request** error with an **error message**.
+     If the date is not provided in the correct `YYYY-MM-DD` format, you will receive 1️⃣ `404 Bad Request` error with the 2️⃣ `error message`.
 
     [![Error Message](./img/3rd-party-api-access-15.png)](./img/3rd-party-api-access-15.png)
 
-    1.  **400 Bad Request:** This status code indicates that the request was invalid or cannot be processed.
+    #### 500 Internal Server Error
 
-    2. **error:**  This is the error message returned by the API. In our case, the error occurs due to an invalid date format. The correct format should be **YYYY-MM-DD**.
-
-    ### 500 Internal Server Error
+    The server return the 1️⃣ `500 Internal Server Error`, indicating that the API is currently down and unable to process the request.
 
     [![500 Internal Server Error](./img/3rd-party-api-access-17.png)](./img/3rd-party-api-access-17.png)
 
-    1.**500 Internal Server Error:** The server returned a 500 Internal Server Error, indicating that the API is currently down and unable to process the request.
+    #### Here are the actions you can take after receiving a **200 OK** status code:
 
-    ### Here are the actions you can take after receiving a **200 OK** status code:
-
-    ### Site Image
+    #### Site Image
 
     The user can also download the site/observation image by clicking on the image URL provided in the response.
 
@@ -118,9 +108,7 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
 - You can use the data as per your needs.
 
-**Another Way to Make Request**
-
-**In Browser:**
+### Make Request Using Browser
 
 The user can directly send the request using a browser by pasting the URL into the browser's address bar along with the date from which they want to retrieve data.
 
@@ -130,7 +118,7 @@ The user can directly send the request using a browser by pasting the URL into t
 
 - The browser will display one of the following responses in the browser window.
 
-### HTTP 200 OK
+#### HTTP 200 OK
 
 **Request With a Specified Date**
 
@@ -152,7 +140,7 @@ The user can directly send the request using a browser by pasting the URL into t
 
 `https://minisass.org/monitor/sites-with-observations`
 
-### HTTP 400 Bad Request
+#### HTTP 400 Bad Request
 
 If the date is not provided in the correct `YYYY-MM-DD` format, you will receive a **404 Bad Request** error with an error message.
 
@@ -160,11 +148,11 @@ If the date is not provided in the correct `YYYY-MM-DD` format, you will receive
 
 1. **400 Bad Request:** This status code indicates the request was invalid or couldn't be processed. The response body will include an **error message**, which in this case is **Invalid date format**. Please use **YYYY-MM-DD**.
 
-### HTTP 500 Internal Server Error
+#### HTTP 500 Internal Server Error
+
+The server return the `500 Internal Server Error`, indicating that the API is currently down and unable to process the request.
 
 [![500 Internal Server Error](./img/3rd-party-api-access-19.png)](./img/3rd-party-api-access-19.png)
-
-1. **500 Internal Server Error:** The server returned a 500 Internal Server Error, indicating that the API is currently down and unable to process the request.
 
 ### After receiving the 200 OK status code, the user will be able to perform the following actions:
 
