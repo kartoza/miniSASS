@@ -38,6 +38,20 @@ jobs:
 
     - name: Copy .example.env to .env
       run: cp .example.env .env
+      
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Build Django Container with Cache
+      run: |
+        docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache \
+                            --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
+                            -t minisass/django -f deployment/docker/Dockerfile .
 
     - name: Start Docker Compose services
       run: |
@@ -46,7 +60,7 @@ jobs:
     - name: Wait for PostGIS to be ready
       run: |
         docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml \
-          run --rm db bash -c "until pg_isready -h db -U ${POSTGRES_USER}; do sleep 1; done"
+          exec db bash -c "until pg_isready -h localhost -U ${POSTGRES_USER}; do sleep 1; done"
 
     - name: Run Django tests
       run: |
