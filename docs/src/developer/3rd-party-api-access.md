@@ -1,18 +1,30 @@
 # Accessing the miniSASS 3rd Party API
 
-This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data. The first section outlines the API and using a service like Postman and the second section outlines the use of Swagger as a standardized way to access the API.
+This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data. The first section outlines the API and using a service like Postman and the second section outlines the use of Swagger as a standardised way to access the API.
 
-## API Endpoint
+## Api for token generation
+
+### API Endpoint
+
+The API can be accessed at the following URL:
+
+`http://minisass.org/authentication/api/generate-special-token/test_mail.com`
+
+> Note: Replace `test_email.com` with your valid mail id.
+
+## Api for accessing site observation data
+
+### API Endpoint
 
 The API can be accessed at the following URL:
 
 `https://minisass.org/monitor/sites-with-observations/?start_date=YYYY-MM-DD`
 
-## Parameters
+### Parameters
 
 - **start_date:** Specify the date from which you want to retrieve data. Format: YYYY-MM-DD.
 
-## Step-by-Step Procedure
+## Step-by-Step Procedure to Generate Token and Make Request
 
 **Set Up Your Environment:** To interact with the API, you can use tools like Postman, cURL, or any programming language that supports HTTP requests.
 
@@ -33,7 +45,35 @@ After choosing the Http Request, you will receive the following window. You can 
 > Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
 After choosing the Http Request, you will receive the following window. You can construct the API URL and send the request.
 
-> Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
+#### Generate Token:
+
+- **URL:** `http://minisass.org/authentication/api/generate-special-token/test_mail.com`
+
+    >Note: Replace `test_mail.com` with your valid mail id.
+
+* Select the `GET` from the 1️⃣ `method` dropdown and enter the URL into the 2️⃣ `input` field, ensuring it is in the correct format. After verifying the URL, click the 3️⃣ `Send` button to send the request.
+
+[![Http Request](./img/3rd-party-api-access-2.png)](./img/3rd-party-api-access-2.png)
+
+* After the request is sent, you will receive a response with the generated token in default json format you can use this token to further process.
+
+[![Token Response](./img/3rd-party-api-access-37.png)](./img/3rd-party-api-access-37.png)
+
+#### How to use this token 
+
+Click on the 1️⃣ Authorisation, and select 2️⃣ `Bearer Token` from the `Auth Type` dropdown menu. Enter the token in the 3️⃣ `Token` input field.
+
+[![Add Token](./img/3rd-party-api-access-38.png)](./img/3rd-party-api-access-38.png)
+
+**401 Unauthorised**
+
+If the user requests site observation data without providing the `Token`, the server will return a 1️⃣ 401 Unauthorised response along with the following 2️⃣ detail: "Authentication credentials were not provided".
+
+[![Unauthorise Error](./img/3rd-party-api-access-39.png)](./img/3rd-party-api-access-39.png)
+
+#### Make Request for the data
+
+    > Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
 
 * Use the base URL and append your desired start date in the following format:
 
@@ -123,6 +163,16 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 - You can use the data as per your needs.
 
 ### Make Request Using Browser
+
+#### Generate Token:
+
+- Enter the [Generate Token API](#api-for-token-generation) into the browser address bar and press `Enter` to send the request and generate the token.
+
+    [![Browser](./img/3rd-party-api-access-40.png)](./img/3rd-party-api-access-40.png)
+
+- After successfully completing the request, the user will receive the token in the response. The user can then copy the token and use it for further requests.
+
+    [![Browser Token](./img/3rd-party-api-access-41.png)](./img/3rd-party-api-access-41.png)
 
 The user can directly send the request using a browser by pasting the URL into the browser's address bar along with the date from which they want to retrieve data.
 
