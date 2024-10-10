@@ -55,9 +55,6 @@ def generate_special_token(request, email):
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
 
-    if not user.is_staff and not user.is_superuser:
-        return JsonResponse({'error': 'User is not an admin'}, status=403)
-
     token = AccessToken.for_user(user)
     # Set a very long expiration time, e.g., 100 years
     token.set_exp(lifetime=timedelta(days=365 * 100))
