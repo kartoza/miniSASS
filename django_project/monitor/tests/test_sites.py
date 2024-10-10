@@ -13,6 +13,7 @@ from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.timezone import now, timedelta
 import os
+from rest_framework_simplejwt.tokens import AccessToken
 
 class SitesListCreateViewTestCase(TestCase):
 
