@@ -86,15 +86,15 @@ class SitesListCreateViewTestCase(TestCase):
             elec_cond="2.50",
             elec_cond_unit="mS/m"
         )
-        self.token = self.generate_token_for_user(self.user_token.email)
+        self.token = self.generate_token_for_user(self.user_token)
         self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
-    def generate_token_for_user(self, email):
-        url = reverse('generate_special_token', args=[email])
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        return response.json().get('token')
+    def generate_token_for_user(self, user):
+        token = AccessToken.for_user(user)
+        token.set_exp(lifetime=timedelta(days=365 * 100))
+        
+        return str(token)
 
 
     def test_get_all_sites_with_observations(self):
