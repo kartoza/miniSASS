@@ -12,12 +12,46 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: kartoza/postgis:16-3.4
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -h localhost -p 5432 -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        env:
+          POSTGRES_DB: minisass
+          POSTGRES_USER: docker
+          POSTGRES_PASSWORD: docker
+
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
     - name: Copy docker-compose.override.template.yml to docker-compose.override.yml
       run: cp docker-compose.override.template.yml docker-compose.override.yml
+
     - name: Copy .example.env to .env
       run: cp .example.env .env
-    - name: Build Docker Compose services
+
+    - name: Start Docker Compose services
       run: |
-        docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml build django --no-cache
+        docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml up -d db minio django
+      # Wait for PostGIS container to be healthy before running tests
+    - name: Wait for PostGIS to be ready
+      run: |
+        docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml \
+          run --rm db bash -c "until pg_isready -h db -U ${POSTGRES_USER}; do sleep 1; done"
+
+    - name: Run Django tests
+      run: |
+        docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml exec django \
+          bash -c "python manage.py test"
+          
+    - name: Stop and remove services
+      run: docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml down
