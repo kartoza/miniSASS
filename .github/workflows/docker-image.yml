@@ -45,6 +45,7 @@ jobs:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ github.event.pull_request.number }}
         restore-keys: |
+          ${{ runner.os }}-buildx-${{ github.event.pull_request.number }}
           ${{ runner.os }}-buildx-
 
     - name: Build Django Container with Cache
