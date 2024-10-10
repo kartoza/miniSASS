@@ -14,5 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: make build
+    - name: Copy docker-compose.override.template.yml to docker-compose.override.yml
+      working-directory: ./deployment
+      run: cp docker-compose.override.template.yml docker-compose.override.yml
+    - name: Build Docker Compose services
+      working-directory: ./deployment
+      run: |
+        docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml build --no-cache
