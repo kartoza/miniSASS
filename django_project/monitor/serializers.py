@@ -235,6 +235,8 @@ class ObservationsDataOnlySerializer(serializers.ModelSerializer):
 class SitesAndObservationsSerializer(serializers.ModelSerializer):
 	sitename = serializers.CharField(source='site_name')
 	rivername = serializers.CharField(source='river_name')
+	longitude = serializers.FloatField(source='the_geom.x')
+	latitude = serializers.FloatField(source='the_geom.y')
 	sitedescription = serializers.CharField(source='description')
 	rivercategory = serializers.CharField(source='river_cat')
 	observations = serializers.SerializerMethodField()
