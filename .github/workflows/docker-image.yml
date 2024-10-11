@@ -56,6 +56,10 @@ jobs:
     - name: Start Docker Compose services
       run: |
         docker compose --env-file .env -p minisass -f docker-compose.yml -f docker-compose.override.yml up -d db minio django
+      env:
+        BUILDKIT_PROGRESS: plain
+        DOCKER_BUILDKIT: 1
+        BUILDX_CACHE_PATH: /tmp/.buildx-cache
       # Wait for PostGIS container to be healthy before running tests
     - name: Wait for PostGIS to be ready
       run: |
