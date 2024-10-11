@@ -279,6 +279,8 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 				'rivername': data['rivername'],
 				'rivercategory': data['rivercategory'],
 				'sitedescription': data['sitedescription'],
+				'longitude': data['longitude'],
+				'latitude': data['latitude'],
 				'images': data['images'],
 				'observations': data['observations'],
 			},
