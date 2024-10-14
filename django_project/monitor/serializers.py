@@ -259,7 +259,9 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 		fields = [
 			'gid', 
 			'sitename', 
-			'rivername', 
+			'rivername',
+			'longitude',
+			'latitude',
 			'sitedescription', 
 			'rivercategory',
 			'images', 
