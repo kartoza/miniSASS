@@ -3,6 +3,7 @@ import csv
 from django.utils.encoding import smart_str
 from django.http import HttpResponse
 from minisass_authentication.models import UserProfile
+from django.contrib.sites.models import Site
 
 from monitor.forms import ObservationPestImageForm
 from .models import (
@@ -256,3 +257,4 @@ class SitesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ObservationPestImage)
+admin.site.unregister(Site)
