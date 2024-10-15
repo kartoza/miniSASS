@@ -6,7 +6,6 @@ from minisass_authentication.models import UserProfile
 
 from monitor.forms import ObservationPestImageForm
 from .models import (
-    Assessment,
     Sites,
     Observations,
     SiteImage,
@@ -257,4 +256,3 @@ class SitesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ObservationPestImage)
-admin.site.register(Assessment, admin.ModelAdmin)
