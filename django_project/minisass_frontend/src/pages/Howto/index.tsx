@@ -554,20 +554,98 @@ const HowtoPage: React.FC = () => {
           <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between max-w-[1450px]
           md:relative md:top-[50px] w-full mt-[-40px]">
             <Text
-              className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
-              size="txtRalewayRomanRegular16Gray800"
+                className="md:h-auto leading-[136.40%] tracking-[0.40px] md:overflow-auto sm:overflow-scroll text-base text-gray-800 text-justify"
+                size="txtRalewayRomanRegular16Gray800"
             >
+              Graham, P. M. (2012). Reassessment of the miniSASS biomonitoring tools as a resource for environmental
+              education in the river health programme and cross-linking to with the National Curriculum Statement.
+              Water Research Commission (WRC) Report No. KV 240/12. Pretoria, South Africa, p. 123. Available at
+              <a href="https://www.wrc.org.za/wp-content/uploads/mdocs/KV%20240%20web.pdf ">
+                <u> https://www.wrc.org.za/wp-content/uploads/mdocs/KV%20240%20web.pdf</u>
+              </a>
+              <br/><br/>
+              Graham, P. M., Burton, S., & Gibixego, A. (2015). miniSASS Data Management: Development of an online
+              map-based data portal. Water Research Commission (WRC) Report No. TT 639/15. Pretoria, South Africa,
+              p. 25. Available at
+              <a href="https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20639-15.pdf">
+                <u> https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20639-15.pdf</u>
+              </a>
+              <br/><br/>
               Graham, P. M., Dickens, C. W. S., & Taylor, J. (2004). miniSASS—A novel technique for community
               participation in river health monitoring and management. African Journal of Aquatic Science, 29(1), 25–35.
-              https://doi.org/10.2989/16085910409503789
+              <a href=" https://doi.org/10.2989/16085910409503789 ">
+                <u> https://doi.org/10.2989/16085910409503789</u>
+              </a>
               <br/><br/>
               Graham, P. M., & Taylor, J. (2018). Development of citizen science water resource monitoring tools and
-              communities of practice for South Africa, Africa and the world (P. M. Graham & J. Taylor, Eds.). Water
-              Research Commission (WRC) Report No. TT 763/18.
+              communities of practice for South Africa, Africa and the world (P. M. Graham & J. Taylor, Eds.).
+              Water Research Commission (WRC) Report No. TT 763/18. Pretoria, South Africa, p. 142. Available at
+              <a href="https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20763%20web.pdf">
+                <u> https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20763%20web.pdf</u>
+              </a>
               <br/><br/>
-              Taylor, J., Graham, P. M., Louw, A. J., Lepheana, A. T., Madikizela, B., Dickens, C. W. S., Chapman, D. V,
-              & Warner, S. (2022). Social change innovations, citizen science, miniSASS and the SDGs. Water Policy,
-              24(5), 708–717. https://doi.org/10.2166/wp.2021.264
+              Koen, R. C. J., & Koen, F. J. (2023). Aquatic macroinvertebrate image dataset. Harvard Dataverse.
+              <a href="https://doi.org/10.7910/DVN/1QQPJ5">
+                <u> https://doi.org/10.7910/DVN/1QQPJ5</u>
+              </a>
+              <br/><br/>
+              Koen, R. C. J., Koen, F. J., Pattinson, N. B., Dickens, C. W. S., & Graham, P. M. (2023). Digitally
+              improving the identification of aquatic macroinvertebrates for indices used in biomonitoring.
+              International Water Management Institute (IWMI). CGIAR Initiative on Digital Innovation. Colombo,
+              Sri Lanka, p. 10. Available at
+              <a href="https://hdl.handle.net/10568/138246">
+                <u> https://hdl.handle.net/10568/138246</u>
+              </a>
+              <br/><br/>
+              Pattinson, N. B., Koen, R. C. J., & Koen, F. J. (2022). Artificial intelligence-based biomonitoring of
+              water quality. International Water Management Institute (IWMI). CGIAR Initiative on Digital Innovation.
+              Colombo, Sri Lanka, p. 32. Available at
+              <a href="https://hdl.handle.net/10568/128025">
+                <u> https://hdl.handle.net/10568/128025</u>
+              </a>
+              <br/><br/>
+              Pattinson, N. B., Russell, C., Taylor, J., Dickens, C. W. S., Koen, R. C. J., Koen, F. J., & Graham,
+              P. M. (2023). Digital innovation with miniSASS, a citizen science biomonitoring tool.
+              International Water Management Institute (IWMI). CGIAR Initiative on Digital Innovation.
+              Colombo, Sri Lanka, p. 11. Available at
+              <a href="https://hdl.handle.net/10568/134498">
+                <u> https://hdl.handle.net/10568/134498</u>
+              </a>
+              <br/><br/>
+              Pattinson, N. B., Taylor, J., Dickens, C. W. S., & Graham, P. M. (2023). Digital innovation in citizen
+              science water quality monitoring in developing countries. International Water Management Institute (IWMI).
+              CGIAR Initiative on Digital Innovation. Colombo, Sri Lanka, p. 52.
+              <a href="https://doi.org/10.5337/2024.201">
+                <u> https://doi.org/10.5337/2024.201</u>
+              </a>
+              <br/><br/>
+              Russell, C., Sithole, N. S. Z., Tshabalala, G., Kotze, D., & Taylor, J. (2024). Citizen science online
+              training and learning system. Water Research Commission (WRC) Report No. TT 933/23. Pretoria,
+              South Africa, p. 136. Available at
+              <a href="https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20933%20final%20web.pdf ">
+                <u> https://www.wrc.org.za/wp-content/uploads/mdocs/TT%20933%20final%20web.pdf </u>
+              </a>
+              <br/><br/>
+              Taylor, J., Graham, P. M., Louw, A. J., Lepheana, A. T., Madikizela, B., Dickens, C. W. S., Chapman,
+              D. V, & Warner, S. (2022). Social change innovations, citizen science, miniSASS and the SDGs.
+              Water Policy, 24(5), 708–717.
+              <a href="https://doi.org/10.2166/wp.2021.264">
+                <u> https://doi.org/10.2166/wp.2021.264</u>
+              </a>
+              <br/><br/>
+              Tengö, M., Austin, B. J., Danielsen, F., & Fernández-Llamazares, Á. (2021). Creating synergies between
+              citizen science and Indigenous and local knowledge. BioScience, 71(5), 503–518.
+              <a href="https://doi.org/10.1093/biosci/biab023">
+                <u> https://doi.org/10.1093/biosci/biab023</u>
+              </a>
+              <br/><br/>
+              UNEP. (2021). Progress on ambient water quality. Tracking SDG 6 series: Global indicator 6.3.2 updates
+              and acceleration needs. See page 16: “FOCUS BOX 2. MINISASS – CITIZEN BIOMONITORING FOR INDICATOR 6.3.2”.
+              Available at
+              <a href="https://www.unwater.org/sites/default/files/app/uploads/2021/09/SDG6_Indicator_Report_632_Progress-on-Ambient-Water-Quality_2021_EN.pdf">
+                <u> https://www.unwater.org/sites/default/files/app/uploads/2021/09/SDG6_Indicator_Report_632_Progress-on-Ambient-Water-Quality_2021_EN.pdf</u>
+              </a>
+              <br/><br/>
             </Text>
           </div>
         </div>
