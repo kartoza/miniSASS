@@ -76,6 +76,46 @@ On the login page fill the email address and the password in the 1️⃣ corresp
 
 On successful login you will be redirected to the home page of the miniSASS.
 
+## Why Am I Seeing the Profile Update Popup?
+
+The profile update popup appears for users under specific circumstances to ensure the security and accuracy of their account information. This guide aims to clarify why you might encounter this popup and how to address the required updates.
+
+**Reasons for Seeing the Profile Update Popup:** You are seeing the profile update popup for one of the following reasons:
+
+**First Name Set to Anonymous:**
+
+If your account's first name is currently set to "Anonymous," the system prompts you to update your profile upon login. This helps personalise your account and ensures accurate attribution of your observations within the platform.
+
+Click on the 1️⃣ `Update` button for the update profile option.
+
+![Update button](./img/register-login-logout-9.png)
+
+Upon clicking on the `Update` button, the update password form will open, along with other options. You can click on the 1️⃣ `PROFILE` option, to navigate to the update profile page. 
+
+![Update password](./img/register-login-logout-11.png)
+
+Here, you can fill in your first name in the 1️⃣ `Name` field and save the changes to avoid encountering the popup upon subsequent logins.
+
+![Profile form](./img/register-login-logout-10.png)
+
+**Password Security Constraints:**
+
+If your password does not meet the updated security constraints implemented by the site, you will be prompted to update your password when logging in. This is crucial for enhancing the security of your account and protecting your data from potential threats.
+
+Click on the 1️⃣ `Update` button, to update your password.
+
+![Update button](./img/register-login-logout-9.png)
+
+To avoid encountering the popup upon logging in, update your password according to the provided instructions. ensure your password meets the following criteria:
+
+    - Include at least one uppercase letter.
+    - Include at least one lowercase letter.
+    - Include at least one digit.
+    - Include at least one special character.
+    - Ensure the password is at least 6 characters long.
+
+![Update password](./img/register-login-logout-12.png)
+
 ## How do I logout?
 
 Logging out of your miniSASS account is a straightforward process. Follow these simple steps to ensure a secure logout.
