@@ -32,12 +32,22 @@ class UserProfileInline(admin.StackedInline):
     verbose_name_plural = 'UserProfile'
 
 
+def correct_country(modeladmin, request, queryset):
+    for user in queryset:
+        if user.userprofile:
+            if user.userprofile.country in ['ZA', 'SA', 'South Africa', '9']:
+                user.userprofile.country = 'ZA'
+                user.userprofile.save()
+correct_country.short_description = "Correct Country"
+
+
 class UserAdmin(BaseUserAdmin):
     inlines = (UserProfileInline, )
     list_filter = (
         'userprofile__expert_approval_status', 'userprofile__is_expert',
         'is_staff', 'is_superuser', 'is_active'
     )
+    actions = [correct_country]
 
 
 class PasswordHistoryAdmin(admin.ModelAdmin):
