@@ -1,18 +1,60 @@
 # Accessing the miniSASS 3rd Party API
 
-This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data. The first section outlines the API and using a service like Postman and the second section outlines the use of Swagger as a standardized way to access the API.
+This guide provides a detailed procedure for accessing the miniSASS 3rd party API, allowing you to retrieve site and observation data. The first section outlines the API and using a service like Postman and the second section outlines the use of Swagger as a standardised way to access the API.
 
-## API Endpoint
+## Access Token
+
+In order to access the miniSASS third-party API, users are required to request an access token. This token is essential for authentication and will enable you to interact with the API securely.
+
+### How to request for the access token:
+
+> Note: Only registered users will be able to get the access token. So make sure you are registered on the miniSASS.
+
+- Go to the miniSASS official website. Click [here](https://minisass.org/) to visit the website.
+
+- Click on the 1️⃣ `CONTACT US` button in the navigation bar.
+
+    [![Minisass website](./img/3rd-party-api-access-42.png)](./img/3rd-party-api-access-42.png)
+
+- Fill out the `Contact Form` provided below to submit your request.
+
+    [![Contact Form](./img/3rd-party-api-access-43.png)](./img/3rd-party-api-access-43.png)
+
+    **1. Name**: Enter your name.
+
+    **2. Email**: Enter your registered email address, where you will receive the access token.
+
+    **3. Phone Number**: Enter your phone number.
+
+    **4. Message**: Enter your message in the following format
+    
+    ```
+    Dear miniSASS Admin,
+
+    My name is [Your Name], and I am a [Your Profession/Role]. I would like to request an API token for accessing data from the miniSASS platform.
+
+    Purpose of data access: Briefly explain why you need the data, e.g., for research, analysis, project work, etc.
+
+    Intended use of data: Describe how the data will be used, e.g., environmental studies, GIS mapping, etc.
+    ```
+
+    **5. Submit**: Click on the `Submit` button to send your request.
+
+    After submitting the form, you will receive an API access token at your registered email address. You can use this token to access the miniSASS 3rd party API.
+
+## Api for accessing site observation data
+
+### API Endpoint
 
 The API can be accessed at the following URL:
 
 `https://minisass.org/monitor/sites-with-observations/?start_date=YYYY-MM-DD`
 
-## Parameters
+### Parameters
 
 - **start_date:** Specify the date from which you want to retrieve data. Format: YYYY-MM-DD.
 
-## Step-by-Step Procedure
+## Step-by-Step Procedure to Make Request Using the Access Token
 
 **Set Up Your Environment:** To interact with the API, you can use tools like Postman, cURL, or any programming language that supports HTTP requests.
 
@@ -26,7 +68,19 @@ Open Postman, click on 1️⃣ `New`, and select 2️⃣ `HTTP` to begin.
 
 [![New Http Request](./img/3rd-party-api-access-1.png)](./img/3rd-party-api-access-1.png)
 
-After choosing the Http Request, you will receive the following window. You can construct the API URL and send the request.
+#### How to use access token 
+
+Click on the 1️⃣ `Authorisation`, and select 2️⃣ `Bearer Token` from the `Auth Type` dropdown menu. Enter the token you get on the email in the 3️⃣ `Token` input field.
+
+[![Add Token](./img/3rd-party-api-access-38.png)](./img/3rd-party-api-access-38.png)
+
+**401 Unauthorised**
+
+If the user requests site observation data without providing the `Token`, the server will return a 1️⃣ `401 Unauthorised` response along with the following 2️⃣ `detail: Authentication credentials were not provided` message.
+
+[![Unauthorised Error](./img/3rd-party-api-access-39.png)](./img/3rd-party-api-access-39.png)
+
+#### Make Request for the data
 
 > Note: Ensure that the date is in the correct format (YYYY-MM-DD) to avoid errors.
 
@@ -60,7 +114,9 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     [![Request Body](./img/3rd-party-api-access-4.png)](./img/3rd-party-api-access-4.png)
 
-    **Request Without a Specified Date:** If the start date is not specified or provided, the API returns a **200 OK** status code along with all available sites and observations.
+    **Request Without a Specified Date:** 
+    
+    - If the start date is not specified or provided, the API returns a **200 OK** status code along with all available sites and observations.
     
     - The URL without date  will look like this: `https://minisass.org/monitor/sites-with-observations`
 
@@ -68,7 +124,7 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     #### 400 Bad Request:
 
-     If the date is not provided in the correct `YYYY-MM-DD` format, you will receive 1️⃣ `404 Bad Request` error with the 2️⃣ `error message`.
+     If the date is not provided in the correct `YYYY-MM-DD` format, you will receive 1️⃣ `400 Bad Request` error with the 2️⃣ `error message: Inavid date format. Please use YYYY-MM-DD` message.
 
     [![Error Message](./img/3rd-party-api-access-15.png)](./img/3rd-party-api-access-15.png)
 
@@ -94,9 +150,9 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     [![Response Format](./img/3rd-party-api-access-5.png)](./img/3rd-party-api-access-5.png)
 
-    * **Json Format**
+    * **JSON Format**
         
-        [![Json Format](./img/3rd-party-api-access-6.png)](./img/3rd-party-api-access-6.png)
+        [![JSON Format](./img/3rd-party-api-access-6.png)](./img/3rd-party-api-access-6.png)
 
     *  **Xml Format**
 
@@ -111,6 +167,8 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 ### Make Request Using Browser
 
 The user can directly send the request using a browser by pasting the URL into the browser's address bar along with the date from which they want to retrieve data.
+
+**Here is the process:**
 
 - Open your browser and paste the constructed URL into the address bar.
 
@@ -166,7 +224,7 @@ Click on the 1️⃣ `image` to open the image in your browser, where you can ea
 
 [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
-#### DownLoad Image:
+#### Download Image:
 
 * Right click on the image  and select **Save Image As**.
 
@@ -183,13 +241,13 @@ User can also choose response format between JSON and api.
 
 - Click on the 1️⃣ dropdown to select the response format.
 
-    [![Format Response](./img/3rd-party-api-access-10.png)(./img/3rd-party-api-access-10.png)]
+    [![Format Response](./img/3rd-party-api-access-10.png)](./img/3rd-party-api-access-10.png)
 
 - The response will be displayed in the selected format.
 
-    * **Json Format**
+    * **JSON Format**
 
-        [![Json Response](./img/3rd-party-api-access-11.png)](./img/3rd-party-api-access-11.png)
+        [![JSON Response](./img/3rd-party-api-access-11.png)](./img/3rd-party-api-access-11.png)
 
         Click on 1️⃣ `Pretty print` to display the response in a readable format.
 
@@ -223,15 +281,15 @@ Accessing the API using Swagger
 
     [![Api Dashboard](./img/3rd-party-api-access-24.png)](./img/3rd-party-api-access-24.png)
 
-    1. **Try it out:** This option allows you to interact with the API directly.
+    **1. Try it out:** This option allows you to interact with the API directly.
 
-    2. **start_date:**  This is the date from which you want to retrieve the data.
+    **2. start_date:**  This is the date from which you want to retrieve the data.
 
-    3. **Response content type:** This is the format in which you will receive the data.
+    **3. Response content type:** This is the format in which you will receive the data.
 
-    4. **Example value:** Click on 4️⃣ `Example Value`, and it will display a sample of the data you will receive. 
+    **4. Example value:** Click on 4️⃣ `Example Value`, and it will display a sample of the data you will receive. 
 
-        [![Example Value](./img/3rd-party-api-access-34.png)](./img/3rd-party-api-access-34.png)
+    [![Example Value](./img/3rd-party-api-access-34.png)](./img/3rd-party-api-access-34.png)
 
 - Click on 1️⃣ `Try it out` to access the API, which will enable you to enter the 2️⃣ `start date` in the format `YYYY-MM-DD`.
 
@@ -245,7 +303,7 @@ Accessing the API using Swagger
 
 - These are the examples of responses you will receive in the response body.
     
-    * ** Code 200:** This is the response you will receive along with the data if the request is successful.
+    * **Code 200:** This is the response you will receive along with the data if the request is successful.
     
     [![Response Body](./img/3rd-party-api-access-27.png)](./img/3rd-party-api-access-27.png)
 
@@ -253,7 +311,7 @@ Accessing the API using Swagger
 
     [![400 Error](./img/3rd-party-api-access-28.png)](./img/3rd-party-api-access-28.png)
 
-    In our case, we received 1️⃣ a **400 Bad Request** code along with 2️⃣ an **error** message due to an invalid date format.
+    In our case, we received 1️⃣ a `400 Bad Request` code along with 2️⃣ an `error: Inavid date format. Please use YYYY-MM-DD` message.
 
 - After receiving the response, the user can download the received data by clicking on the 1️⃣ **Download** button.
 
