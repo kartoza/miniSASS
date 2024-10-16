@@ -36,6 +36,7 @@ class ObservationPestImageInline(admin.TabularInline):
     fields = ('group', 'image', 'image_preview', 'valid')
     readonly_fields = ('image_preview', )
 
+
 @admin.register(Observations)
 class ObservationsAdmin(admin.ModelAdmin):
     list_max_show_all = 1000
