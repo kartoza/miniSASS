@@ -1,6 +1,10 @@
 from django import forms
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from minisass_authentication.models import Lookup
+
 
 def get_organisation_types():
     result = [('','-- Select a Type --')]
@@ -8,8 +12,10 @@ def get_organisation_types():
     result.extend([(itm.id, itm.description) for itm in qs])
     return result
 
+
 def get_organisation_names():
     return []
+
 
 def get_countries():
     result = [('','-- Select a Country --')]
@@ -17,11 +23,13 @@ def get_countries():
     result.extend([(itm.id, itm.description) for itm in qs])
     return result
 
+
 def get_countries_old():
     result = [('','-- Select a Country --')]
     qs = Lookup.objects.filter(container__description='Country', active=True).order_by('rank', 'description')
     result.extend([(itm.id, itm.description) for itm in qs])
     return result
+
 
 class MiniSASSRegistrationForm(forms.Form):
     """ Add fields for firstname, lastname, and organisation
@@ -52,7 +60,8 @@ class MiniSASSRegistrationForm(forms.Form):
         label=_("Country"),
         required=False,
         help_text=_("Please select a country"),
-        choices=get_countries()
+        # choices=get_countries()
+        choices=[]
     )
 
     def clean(self):
@@ -63,3 +72,18 @@ class MiniSASSRegistrationForm(forms.Form):
         # You can add custom validation here if needed
 
         return cleaned_data
+
+
+class CustomUserAdminForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = self.cleaned_data['email']  # Use email as the username
+        if commit:
+            user.save()
+        return user
