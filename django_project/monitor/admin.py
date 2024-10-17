@@ -8,7 +8,6 @@ from django.contrib.gis.geos import Point
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
-from leaflet.admin import LeafletGeoAdmin
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
 from django.contrib.sites.models import Site
