@@ -1,11 +1,18 @@
 import csv
+from collections import OrderedDict
+from django import forms
+from django.conf import settings
 from django.contrib import admin
-from django.utils.encoding import smart_str
+from django.contrib.gis import admin as geo_admin
+from django.contrib.gis.geos import Point
 from django.http import HttpResponse
+from django.utils.encoding import smart_str
+from django.utils.safestring import mark_safe
+from leaflet.admin import LeafletGeoAdmin
 from minisass_authentication.models import UserProfile
+from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
 from django.contrib.sites.models import Site
 
-from monitor.forms import ObservationPestImageForm
 from .models import (
     Sites,
     Observations,
@@ -174,7 +181,28 @@ class SiteImageInline(admin.TabularInline):
 
 
 @admin.register(Sites)
-class SitesAdmin(admin.ModelAdmin):
+class SitesAdmin(geo_admin.OSMGeoAdmin):
+    form = CustomGeoAdminForm
+    class Media:
+        js = (
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',  # Ensure jQuery is available
+            'admin/js/latlon_map_update.js',  # Custom JS file to handle lat/lon updates
+        )
+
+    def latitude(self, obj):
+        return obj.the_geom.y if obj.the_geom else None
+
+    def longitude(self, obj):
+        return obj.the_geom.x if obj.the_geom else None
+
+    latitude.short_description = 'Latitude'
+    longitude.short_description = 'Longitude'
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        context['osm_widget'] = True
+        return super().render_change_form(request, context, *args, **kwargs)
+
+
     list_max_show_all = 1000
     list_display = (
         'site_name',
@@ -213,15 +241,15 @@ class SitesAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(
             [
-                'Site Name', 
-                'River Name', 
-                'Description', 
+                'Site Name',
+                'River Name',
+                'Description',
                 'River Category',
                 'Site Location',
                 'Created By',
                 'User Organization Name',
                 'User Expert Status',
-                'User Country', 
+                'User Country',
                 'Site Creation Date'
             ])
 
@@ -237,14 +265,14 @@ class SitesAdmin(admin.ModelAdmin):
                 user_is_expert = False
             writer.writerow(
                 [
-                    smart_str(site.site_name), 
-                    smart_str(site.river_name), 
-                    smart_str(site.description), 
-                    smart_str(site.river_cat), 
+                    smart_str(site.site_name),
+                    smart_str(site.river_name),
+                    smart_str(site.description),
+                    smart_str(site.river_cat),
                     smart_str(f"Longitude: {site.the_geom.x}, Latitude: {site.the_geom.y}"),
                     smart_str(site.user.email),
                     smart_str(user_organization_name),
-                    smart_str(user_is_expert), 
+                    smart_str(user_is_expert),
                     smart_str(user_country),
                     smart_str(site.time_stamp)
                 ]
