@@ -118,6 +118,10 @@ class ObservationsAdmin(admin.ModelAdmin):
             ])
 
         for obs in queryset:
+            if obs.flag == 'clean':
+                flag = 'Verified'
+            else:
+                flag = 'Unverified'
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
@@ -155,6 +159,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.true_flies),
                     smart_str(obs.snails),
                     smart_str(obs.score),
+                    smart_str(flag),
                     smart_str(obs.water_clarity),
                     smart_str(obs.water_temp),
                     smart_str(obs.ph),
