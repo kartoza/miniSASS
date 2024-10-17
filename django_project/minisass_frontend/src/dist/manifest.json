@@ -1,192 +1,125 @@
 {
-  "_Close-635c4be8.js": {
-    "file": "assets/Close-635c4be8.js",
+  "_axios-e1f5db5b.js": {
+    "file": "assets/axios-e1f5db5b.js",
     "imports": [
       "index.html",
-      "_index-0b0828ae.js"
+      "_index-e5e1206a.js"
     ]
   },
-  "_TextField-2c94e1a0.js": {
-    "file": "assets/TextField-2c94e1a0.js",
-    "imports": [
-      "index.html",
-      "_index-0b0828ae.js",
-      "_jsx-runtime_commonjs-proxy-3d28d999.js",
-      "_index-50484810.js"
-    ]
-  },
-  "_index-0b0828ae.js": {
-    "css": [
-      "assets/index-4c80aeb1.css"
-    ],
-    "file": "assets/index-0b0828ae.js",
-    "imports": [
-      "index.html",
-      "_index-50484810.js"
-    ]
-  },
-  "_index-50484810.js": {
-    "file": "assets/index-50484810.js",
+  "_index-7cc2125e.js": {
+    "file": "assets/index-7cc2125e.js",
     "imports": [
       "index.html"
     ]
   },
-  "_index-5202373c.js": {
-    "file": "assets/index-5202373c.js",
+  "_index-cbd8ca95.js": {
+    "file": "assets/index-cbd8ca95.js",
     "imports": [
       "index.html",
-      "_index-50484810.js",
-      "_index-0b0828ae.js"
+      "_index-e5e1206a.js",
+      "_axios-e1f5db5b.js"
     ]
   },
-  "_index-88621a9c.js": {
-    "file": "assets/index-88621a9c.js",
+  "_index-e5e1206a.js": {
+    "file": "assets/index-e5e1206a.js",
     "imports": [
       "index.html"
-    ]
-  },
-  "_index-df9cb52a.js": {
-    "file": "assets/index-df9cb52a.js",
-    "imports": [
-      "index.html",
-      "_index-50484810.js",
-      "_index-0b0828ae.js"
-    ]
-  },
-  "_jsx-runtime_commonjs-proxy-3d28d999.js": {
-    "file": "assets/jsx-runtime_commonjs-proxy-3d28d999.js",
-    "imports": [
-      "index.html",
-      "_index-0b0828ae.js"
     ]
   },
   "index.css": {
-    "file": "assets/index-4c80aeb1.css",
+    "file": "assets/index-3515a435.css",
     "src": "index.css"
   },
   "index.html": {
     "css": [
-      "assets/index-9eba7b7e.css"
+      "assets/index-3515a435.css"
     ],
     "dynamicImports": [
       "pages/Howto/index.tsx",
       "pages/MainPage/index.tsx",
       "pages/Map/index.tsx",
       "pages/Home.tsx",
-      "pages/PasswordReset/index.tsx",
-      "pages/RecentActivity/index.tsx",
-      "pages/MobileApp/index.tsx"
+      "pages/DataInputForm/index.tsx",
+      "pages/PasswordReset/index.tsx"
     ],
-    "file": "assets/index-b3fdcd5c.js",
+    "file": "assets/index-f256b669.js",
     "isEntry": true,
     "src": "index.html"
   },
+  "pages/DataInputForm/index.tsx": {
+    "file": "assets/index-941cc3d6.js",
+    "imports": [
+      "index.html",
+      "_index-e5e1206a.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/DataInputForm/index.tsx"
+  },
   "pages/Home.tsx": {
-    "file": "assets/Home-604f416b.js",
+    "file": "assets/Home-3a54ee5c.js",
     "imports": [
       "index.html"
     ],
     "isDynamicEntry": true,
     "src": "pages/Home.tsx"
   },
-  "pages/Howto/index.css": {
-    "file": "assets/index-50de1301.css",
-    "src": "pages/Howto/index.css"
-  },
   "pages/Howto/index.tsx": {
-    "css": [
-      "assets/index-50de1301.css"
-    ],
-    "file": "assets/index-8a979176.js",
+    "file": "assets/index-7ce2f342.js",
     "imports": [
       "index.html",
-      "_index-50484810.js",
-      "_index-0b0828ae.js",
-      "_index-88621a9c.js"
+      "_index-e5e1206a.js",
+      "_index-7cc2125e.js",
+      "_axios-e1f5db5b.js",
+      "_index-cbd8ca95.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/Howto/index.tsx"
   },
   "pages/MainPage/index.css": {
-    "file": "assets/index-971feee7.css",
+    "file": "assets/index-55a6a47c.css",
     "src": "pages/MainPage/index.css"
   },
   "pages/MainPage/index.tsx": {
     "css": [
-      "assets/index-971feee7.css"
+      "assets/index-55a6a47c.css"
     ],
-    "file": "assets/index-22c91571.js",
+    "file": "assets/index-b679a8b9.js",
     "imports": [
       "index.html",
-      "_index-50484810.js",
-      "_index-df9cb52a.js",
-      "_index-0b0828ae.js",
-      "_index-88621a9c.js"
+      "_index-e5e1206a.js",
+      "_index-7cc2125e.js",
+      "_axios-e1f5db5b.js",
+      "_index-cbd8ca95.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/MainPage/index.tsx"
   },
   "pages/Map/index.css": {
-    "file": "assets/index-948cb0f0.css",
+    "file": "assets/index-dbd1375b.css",
     "src": "pages/Map/index.css"
   },
   "pages/Map/index.tsx": {
     "css": [
-      "assets/index-948cb0f0.css"
+      "assets/index-dbd1375b.css"
     ],
-    "file": "assets/index-5c198f0b.js",
+    "file": "assets/index-dee19ae4.js",
     "imports": [
       "index.html",
-      "_index-50484810.js",
-      "_index-0b0828ae.js",
-      "_index-df9cb52a.js",
-      "_jsx-runtime_commonjs-proxy-3d28d999.js",
-      "_TextField-2c94e1a0.js",
-      "_Close-635c4be8.js"
+      "_index-e5e1206a.js",
+      "_axios-e1f5db5b.js",
+      "_index-cbd8ca95.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/Map/index.tsx"
   },
-  "pages/MobileApp/index.css": {
-    "file": "assets/index-21aabcc4.css",
-    "src": "pages/MobileApp/index.css"
-  },
-  "pages/MobileApp/index.tsx": {
-    "css": [
-      "assets/index-21aabcc4.css"
-    ],
-    "file": "assets/index-726ca09e.js",
-    "imports": [
-      "index.html",
-      "_index-5202373c.js",
-      "_index-50484810.js",
-      "_jsx-runtime_commonjs-proxy-3d28d999.js",
-      "_index-0b0828ae.js",
-      "_Close-635c4be8.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "pages/MobileApp/index.tsx"
-  },
   "pages/PasswordReset/index.tsx": {
-    "file": "assets/index-f59afb36.js",
+    "file": "assets/index-503bc451.js",
     "imports": [
       "index.html",
-      "_index-50484810.js"
+      "_index-e5e1206a.js",
+      "_axios-e1f5db5b.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/PasswordReset/index.tsx"
-  },
-  "pages/RecentActivity/index.tsx": {
-    "file": "assets/index-1434b158.js",
-    "imports": [
-      "index.html",
-      "_index-5202373c.js",
-      "_index-0b0828ae.js",
-      "_TextField-2c94e1a0.js",
-      "_index-50484810.js",
-      "_jsx-runtime_commonjs-proxy-3d28d999.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "pages/RecentActivity/index.tsx"
   }
 }
