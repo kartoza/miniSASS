@@ -34,6 +34,8 @@ lxml==4.9.3
 oauthlib==3.2.2
 packaging==23.2
 Pillow==10.1.0
+pinax-announcements==4.0.1
+pinax-templates==3.0.0
 platformdirs==3.11.0
 psycopg2==2.9.9
 pycparser==2.21
@@ -57,6 +59,7 @@ webencodings==0.5.1
 zope.interface==6.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
+drf-yasg==1.21.7
 PyJWT==2.8.0
 pytz==2023.3.post1
 sentry-sdk==1.14.0

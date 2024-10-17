@@ -3,11 +3,25 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from monitor.models import SiteImage, Sites, Assessment, Observations, ObservationPestImage
+from monitor.models import (
+	SiteImage,
+	Sites,
+	Assessment,
+	Observations,
+	ObservationPestImage
+)
 from django.contrib.gis.measure import D
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import (
+	MultiPartParser,
+	FormParser,
+	JSONParser
+)
 from minisass.models import GroupScores
 from django.utils.dateparse import parse_date
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 from monitor.serializers import (
@@ -24,9 +38,7 @@ class SaveObservationImagesView(generics.CreateAPIView):
 	serializer_class = ObservationPestImageSerializer
 
 	def create(self, request, *args, **kwargs):
-		# Extract site ID from the URL
 		observation_id = kwargs.get('observationId')
-
 		try:
 			observation_id = int(observation_id)
 		except ValueError:
@@ -59,9 +71,7 @@ class SaveSiteImagesView(generics.CreateAPIView):
 	serializer_class = SiteImageSerializer
 
 	def create(self, request, *args, **kwargs):
-		# Extract site ID from the URL
 		site_id = kwargs.get('site_id')
-
 		try:
 			site_id = int(site_id)
 		except ValueError:
@@ -115,9 +125,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		return Response(serializer.data)
 
 	def create(self, request, *args, **kwargs):
-		# Get the highest gid value
 		highest_gid = Sites.objects.latest('gid').gid if Sites.objects.exists() else 0
-		# Increment the gid value
 		new_gid = highest_gid + 1
 
 		# Extract data from the request payload
@@ -197,6 +205,72 @@ class SiteObservationsByLocation(APIView):
 
 class SitesWithObservationsView(APIView):
 	serializer_class = SitesAndObservationsSerializer
+	authentication_classes = [JWTAuthentication]
+	permission_classes = [IsAuthenticated]
+	@swagger_auto_schema(
+		operation_description="Retrieve detailed information about a site, including its observations and images.",
+		manual_parameters=[
+			openapi.Parameter(
+				'start_date', 
+				openapi.IN_QUERY, 
+				description="Start date in YYYY-MM-DD format", 
+				type=openapi.TYPE_STRING
+			)
+		],
+		responses={
+			200: openapi.Response(
+				description="Successful response",
+				examples={
+					"application/json": {
+						"site": {
+							"gid": 1,
+							"sitename": "Sample Site",
+							"rivername": "Sample River",
+							"rivercategory": "rocky",
+							"sitedescription": "This is a description of the sample site.",
+							"images": [
+								{
+									"id": 1,
+									"image": "https://minisass.org/path/to/image.jpg"
+								},
+								{
+									"id": 2,
+									"image": "https://example.com/path/to/another-image.jpg"
+								}
+							],
+							"observations": [
+								{
+									"obs_id": 123,
+									"obs_date": "2024-08-21",
+									"ml_score": "5.0",
+									"collector_name": "John Doe",
+									"score": 3.45,
+									"comment": "Observation comment",
+									"is_validated": True,
+									"water_clarity": 2.5,
+									"water_temp": 20.3,
+									"ph": 7.2,
+									"diss_oxygen": 8.5,
+									"diss_oxygen_unit": "mgl",
+									"elec_cond": 0.5,
+									"elec_cond_unit": "mS/m",
+									"images": [
+										{
+											"id": 1,
+											"image": "https://example.com/path/to/obs-image.jpg",
+											"description": "Observation image description"
+										}
+									]
+								}
+							]
+						}
+					}
+				}
+			),
+			400: openapi.Response(description="Invalid date format"),
+		},
+		tags=['Sites with Observations']
+	)
 	def get(self, request):
 		start_date_str = request.query_params.get('start_date', None)
 		start_date = parse_date(start_date_str) if start_date_str else None

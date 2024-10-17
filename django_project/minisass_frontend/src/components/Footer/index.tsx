@@ -50,7 +50,7 @@ const Footer: React.FC<FooterProps> = (props) => {
               <a href="https://www.groundtruth.co.za" target="_blank" rel="noopener noreferrer">
                 <Img
                   className="h-[100px] md:h-auto object-contain"
-                  src={`${globalVariables.staticPath}img_image6.jpg`}
+                  src={`${globalVariables.staticPath}img_image6.png`}
                   alt="Ground Truth"
                 />
               </a>

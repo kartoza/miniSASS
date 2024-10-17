@@ -1,71 +1,58 @@
+# Standard library imports
 import json
 import multiprocessing
-from queue import Queue
 import os
+from queue import Queue
 from datetime import datetime
 from decimal import Decimal
-import botocore
 
-# dependencies for ai score calculations
+# Third-party dependencies
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
 from PIL import Image
+import botocore
+from minio import Minio
+from minio.error import S3Error
 
+# Django imports
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import Point
-from django.core.exceptions import PermissionDenied
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import Max
-from django.http import Http404
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from minio import Minio
-from minio.error import S3Error
-from rest_framework import generics, mixins
+
+# Django REST framework imports
+from rest_framework import generics, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
-from tensorflow import keras
-from django.contrib.auth.models import User
-from rest_framework.response import Response
-from rest_framework import status
 
-
+# Project-specific imports (minisass and monitor)
 from minisass.models import GroupScores
 from minisass.utils import get_s3_client
 from minisass_authentication.models import UserProfile
 from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
 from monitor.models import (
-	Observations, Sites, SiteImage, ObservationPestImage
+    Observations, Sites, SiteImage, ObservationPestImage
 )
 from monitor.serializers import (
-	ObservationsSerializer,
-	ObservationPestImageSerializer,
-	ObservationsAllFieldsSerializer
+    ObservationsSerializer,
+    ObservationPestImageSerializer,
+    ObservationsAllFieldsSerializer
 )
+
 
 
 def clear_tensorflow_session():
 	tf.keras.backend.clear_session()
-
-
-def get_observations_by_site(request, site_id, format=None):
-	try:
-		site = Sites.objects.get(gid=site_id)
-		observations = Observations.objects.filter(site=site)
-		serializer = ObservationsAllFieldsSerializer(observations, many=True)
-
-		return JsonResponse(
-			{'status': 'success', 'observations': serializer.data}
-		)
-	except Sites.DoesNotExist:
-		raise Http404("Site does not exist")
-
 
 # Use environment variables for Minio configuration
 minio_access_key = settings.MINIO_ACCESS_KEY
@@ -91,6 +78,18 @@ classes = [
 ]
 
 
+def get_observations_by_site(request, site_id, format=None):
+	try:
+		site = Sites.objects.get(gid=site_id)
+		observations = Observations.objects.filter(site=site)
+		serializer = ObservationsAllFieldsSerializer(observations, many=True)
+
+		return JsonResponse({'status': 'success', 'observations': serializer.data})
+	
+	except Sites.DoesNotExist as e:
+		return JsonResponse({'status': 'error', 'message': 'Site does not exist'}, status=404)
+
+
 def retrieve_file_from_minio(file_name):
 	try:
 		minio_client = Minio(
@@ -99,7 +98,6 @@ def retrieve_file_from_minio(file_name):
 			secret_key=minio_secret_key,
 			secure=secure_connection
 		)
-
 		# Download the file from Minio
 		file_path = os.path.join(
 			settings.MINIO_ROOT, settings.MINIO_BUCKET, file_name)
@@ -132,8 +130,6 @@ if downloaded_file_path:
 else:
 	model = None
 
-# section for ai score calculations
-# TODO move this into seperate file
 
 
 def classify_image(image):
@@ -592,11 +588,17 @@ class ObservationImageViewSet(
 	serializer_class = ObservationPestImageSerializer
 
 	def get_queryset(self):
-		"""Return queryset."""
-		observation = get_object_or_404(
-			Observations, pk=self.kwargs['observation_pk']
-		)
-		return observation.observationpestimage_set.all()
+			"""Return queryset."""
+			# Short-circuit during schema generation for Swagger
+			if getattr(self, 'swagger_fake_view', False):
+				return ObservationPestImage.objects.none()
+
+			observation_pk = self.kwargs.get('observation_pk')
+			if observation_pk is None:
+				raise ValueError("Missing 'observation_pk' in URL")
+	
+			observation = get_object_or_404(Observations, pk=observation_pk)
+			return observation.observationpestimage_set.all()
 
 	def destroy(self, request, *args, **kwargs):
 		# TODO:

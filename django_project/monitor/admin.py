@@ -11,9 +11,9 @@ from django.utils.safestring import mark_safe
 from leaflet.admin import LeafletGeoAdmin
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
+from django.contrib.sites.models import Site
 
 from .models import (
-    Assessment,
     Sites,
     Observations,
     SiteImage,
@@ -286,4 +286,4 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
 
 
 admin.site.register(ObservationPestImage)
-admin.site.register(Assessment, admin.ModelAdmin)
+admin.site.unregister(Site)

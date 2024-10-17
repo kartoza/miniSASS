@@ -45,7 +45,7 @@ build:
 	@echo "------------------------------------------------------------------"
 	@echo "Building in production mode"
 	@echo "------------------------------------------------------------------"
-	@docker-compose -p $(PROJECT_ID) build --no-cache
+	@docker-compose -p $(PROJECT_ID) build
 
 nginx:
 	@echo
@@ -87,6 +87,13 @@ shell:
 	@echo "Shelling in in production mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) exec django /bin/bash
+
+dev-shell:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Shelling in in development mode"
+	@echo "------------------------------------------------------------------"
+	@docker-compose -p $(PROJECT_ID) exec dev /bin/bash
 
 db-bash:
 	@echo

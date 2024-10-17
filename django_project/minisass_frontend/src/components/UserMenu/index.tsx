@@ -100,7 +100,7 @@ export default function UserMenu(props: {setUpdateProfileOpen: void, isDisableNa
         {
           state.user.is_admin &&
           <Link
-            href={`${globalVariables.baseUrl}/admin`}
+            href={`${globalVariables.baseUrl}/admin/`}
             style={{textDecoration: 'none', color: 'inherit'}}
           >
             <MenuItem

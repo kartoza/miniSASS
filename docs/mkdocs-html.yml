@@ -2,7 +2,7 @@
 # Configuration
 theme:
   name: material
-  logo: 
+  logo: img/img_minisasslogo1.png
   language: en
   direction: ltr
   include_search_page: false
