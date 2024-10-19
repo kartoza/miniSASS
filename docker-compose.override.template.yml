@@ -24,7 +24,6 @@ services:
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media
-      - ./django_project:/home/web/django_project
       # Images on the platform will be stored here
       - minio_images:/home/web/minio
     environment:
