@@ -66,6 +66,9 @@ jobs:
           echo "Waiting for PostGIS to be healthy..."
           sleep 5
         done
+        
+    - name: Wait for PostGIS
+      run: sleep 30
 
     - name: Run Django migrate
       run: make migrate
