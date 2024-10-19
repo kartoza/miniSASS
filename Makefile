@@ -140,7 +140,7 @@ migrate:
 	@echo "------------------------------------------------------------------"
 	@echo "Running migrate static in production mode"
 	@echo "------------------------------------------------------------------"
-	@docker-compose exec django python manage.py migrate
+	@docker compose exec django python manage.py migrate
 
 # --------------- help --------------------------------
 
