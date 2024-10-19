@@ -62,10 +62,10 @@ jobs:
       # Wait for PostGIS container to be healthy before running tests
     - name: Wait for PostGIS to be ready
       run: |
-        export POSTGRES_USER=${POSTGRES_USER:-docker}
-        export POSTGRES_PASS=${POSTGRES_PASS:-docker}
-        docker compose --env-file .example.env -p minisass -f docker-compose.yml -f docker-compose.override.yml \
-          exec db bash -c "until pg_isready -h localhost -U $POSTGRES_USER; do sleep 1; done"
+        until [ "$(docker inspect --format='{{json .State.Health.Status}}' $(docker compose ps -q db))" == "\"healthy\"" ]; do
+          echo "Waiting for PostGIS to be healthy..."
+          sleep 5
+        done
 
     - name: Run Django migrate
       run: make migrate
