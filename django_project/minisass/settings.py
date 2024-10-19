@@ -40,6 +40,8 @@ DATABASES = {
     }
 }
 
+print(DATABASES)
+
 
 TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGE_CODE = 'en'
