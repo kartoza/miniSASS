@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
     environment:
-      - POSTGRES_DB=${POSTGIS_DB:-minisass}
+      - POSTGRES_DB=${POSTGIS_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
       - POSTGRES_PASS=${POSTGRES_PASS:-docker}
       - ALLOW_IP_RANGE=${ALLOW_IP_RANGE:-0.0.0.0/0}
@@ -22,7 +22,7 @@ services:
       - "32769:5432"
     restart: always
     healthcheck:
-      test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d minisass"
+      test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d minisass_data"
       interval: 5s
       timeout: 10s
       retries: 30
@@ -88,6 +88,8 @@ services:
       # Images on the platform will be stored here
       - minio_images:/home/web/minio
     environment:
+      - AWS_ACCESS_KEY=${MINIO_ROOT_USER:-minisass_admin}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD:-secure_minio_secret}
       - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
       - POSTGRES_PASS=${POSTGRES_PASS:-docker}
@@ -96,10 +98,11 @@ services:
       - SENTRY_KEY=${SENTRY_KEY:-}
       - MINIO_ROOT=/home/web/minio
       - MINIO_BUCKET=${BUCKET:-demo}
-      - MINIO_ACCESS_KEY=${AWS_ACCESS_KEY}
-      - MINIO_SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minisass_admin}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-secure_minio_secret}
       - MINIO_AI_BUCKET=${BUCKET}
       - MINIO_ENDPOINT=${MINIO_URL:-http://minio:9000}
+      - MINIO_URL=${MINIO_URL:-http://minio:9000}
       - ALLOWED_HOSTS='*'
       - DEV_SETUP=${DEV_SETUP}
     depends_on:

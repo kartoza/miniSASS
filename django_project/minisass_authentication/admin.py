@@ -1,10 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from minisass_authentication.models import Lookup, UserProfile, PasswordHistory
-from minisass_authentication.forms import CustomUserAdminForm
-from django import forms
 
 
 @admin.register(Lookup)
