@@ -66,7 +66,10 @@ jobs:
         export POSTGRES_PASS=${POSTGRES_PASS:-docker}
         docker compose --env-file .example.env -p minisass -f docker-compose.yml -f docker-compose.override.yml \
           exec db bash -c "until pg_isready -h localhost -U $POSTGRES_USER; do sleep 1; done"
-  
+
+    - name: Run Django migrate
+      run: make migrate
+
     - name: Run Django tests
       run: make test
           
