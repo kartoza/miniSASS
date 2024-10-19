@@ -88,6 +88,8 @@ services:
       # Images on the platform will be stored here
       - minio_images:/home/web/minio
     environment:
+      - AWS_ACCESS_KEY=${MINIO_ROOT_USER}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
       - DJANGO_DB=${POSTGRES_DB:-minisass_data}
       - POSTGRES_USER=${POSTGRES_USER:-docker}
       - POSTGRES_PASS=${POSTGRES_PASS:-docker}
@@ -100,6 +102,7 @@ services:
       - MINIO_SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
       - MINIO_AI_BUCKET=${BUCKET}
       - MINIO_ENDPOINT=${MINIO_URL:-http://minio:9000}
+      - MINIO_URL=${MINIO_URL:-http://minio:9000}
       - ALLOWED_HOSTS='*'
       - DEV_SETUP=${DEV_SETUP}
     depends_on:

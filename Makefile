@@ -26,6 +26,20 @@ web:
 	@# We add --no-recreate so that it does not destroy & recreate the db container
 	@docker-compose up -d
 
+main:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running main services for testing"
+	@echo "------------------------------------------------------------------"
+	@docker compose up -d db minio django
+
+test:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running test"
+	@echo "------------------------------------------------------------------"7
+	@docker compose exec django bash -c "python manage.py test"
+	
 dev:
 	@echo
 	@echo "------------------------------------------------------------------"

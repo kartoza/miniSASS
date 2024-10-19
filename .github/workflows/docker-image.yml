@@ -54,8 +54,7 @@ jobs:
                             --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
                             -t minisass/django -f deployment/docker/Dockerfile .
     - name: Start Docker Compose services
-      run: |
-        docker compose --env-file .env -p minisass -f docker-compose.yml -f docker-compose.override.yml up -d db minio django
+      run: make main
       env:
         BUILDKIT_PROGRESS: plain
         DOCKER_BUILDKIT: 1
@@ -65,13 +64,11 @@ jobs:
       run: |
         export POSTGRES_USER=${POSTGRES_USER:-docker}
         export POSTGRES_PASS=${POSTGRES_PASS:-docker}
-        docker compose --env-file .env -p minisass -f docker-compose.yml -f docker-compose.override.yml \
+        docker compose --env-file .example.env -p minisass -f docker-compose.yml -f docker-compose.override.yml \
           exec db bash -c "until pg_isready -h localhost -U $POSTGRES_USER; do sleep 1; done"
   
     - name: Run Django tests
-      run: |
-        docker compose --env-file .env -p minisass -f docker-compose.yml -f docker-compose.override.yml exec django \
-          bash -c "python manage.py test"
+      run: make test
           
     - name: Stop and remove services
       run: docker compose -p minisass -f docker-compose.yml -f docker-compose.override.yml down
