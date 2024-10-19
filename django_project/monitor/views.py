@@ -72,6 +72,7 @@ def send_email_observation(observation, new_site=False):
 
     send_mail(email_subject, email_content, email_sender, [observation.user.email])
 
+
 def index(request):
     site_form = SiteForm()
     observation_form = ObservationForm(initial={'site': '1', 'score': '0.0'})
@@ -113,13 +114,16 @@ def index(request):
         'map_form': map_form
     })
 
+
 def observations(request):
     observations = Observations.objects.order_by('-time_stamp')[:10]
     return render(request, 'monitor/observations.html', {'observations': observations})
 
+
 def detail(request, monitor_id):
     observation = get_object_or_404(Observations, pk=monitor_id)
     return render(request, 'monitor/detail.html', {'observation': observation})
+
 
 def wms_get_feature_info(request, wms_url, wms_params):
     url = 'http://' + wms_url
@@ -129,6 +133,7 @@ def wms_get_feature_info(request, wms_url, wms_params):
         return HttpResponse(response.content, content_type='text/xml')
     else:
         return HttpResponse('Error in WMS request', status=500)
+
 
 def get_sites(request, x, y, d):
     select_query = '''
@@ -152,6 +157,7 @@ def get_sites(request, x, y, d):
         sites_returned = cursor.fetchall()
 
     return render(request, 'monitor/sites.html', {'sites': sites_returned})
+
 
 def get_closest_site(request, x, y, d):
     xy_point = 'POINT(' + x + ' ' + y + ')'
@@ -178,9 +184,16 @@ def get_schools(request):
     schools_returned = Schools.objects.filter(school__istartswith=search_str).order_by('school')
     return render(request, 'monitor/schools.html', {'schools': schools_returned})
 
+
 def get_observations(request, site_id):
     observations = Observations.objects.filter(site=site_id).order_by('obs_date')
     return render(request, 'monitor/site_observations.html', {'observations': observations})
+
+
+def get_actual_value(val):
+    if val is None or int(val) == -9999:
+        return ''
+    return val
 
 
 class DownloadObservations(APIView):
@@ -258,12 +271,12 @@ class DownloadObservations(APIView):
                 smart_str(obs.snails),
                 smart_str(obs.score),
                 smart_str(flag),
-                smart_str(obs.water_clarity),
-                smart_str(obs.water_temp),
-                smart_str(obs.ph),
-                smart_str(obs.diss_oxygen),
+                smart_str(get_actual_value(obs.water_clarity)),
+                smart_str(get_actual_value(obs.water_temp)),
+                smart_str(get_actual_value(obs.ph)),
+                smart_str(get_actual_value(obs.diss_oxygen)),
                 smart_str(obs.diss_oxygen_unit),
-                smart_str(obs.elec_cond),
+                smart_str(get_actual_value(obs.elec_cond)),
                 smart_str(obs.elec_cond_unit),
                 smart_str(obs.comment),
             ]
@@ -505,12 +518,12 @@ def download_observations(request, site_id):
             smart_str(obs.snails),
             smart_str(obs.score),
             smart_str(flag),
-            smart_str(obs.water_clarity),
-            smart_str(obs.water_temp),
-            smart_str(obs.ph),
-            smart_str(obs.diss_oxygen),
+            smart_str(get_actual_value(obs.water_clarity)),
+            smart_str(get_actual_value(obs.water_temp)),
+            smart_str(get_actual_value(obs.ph)),
+            smart_str(get_actual_value(obs.diss_oxygen)),
             smart_str(obs.diss_oxygen_unit),
-            smart_str(obs.elec_cond),
+            smart_str(get_actual_value(obs.elec_cond)),
             smart_str(obs.elec_cond_unit),
             smart_str(obs.comment),
         ])
@@ -601,6 +614,7 @@ def download_observations_filtered(request, filter_string):
             smart_str(obs['comment']),
         ])
     return response
+
 
 def zoom_observation(request, obs_id):
     try:

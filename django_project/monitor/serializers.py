@@ -235,6 +235,8 @@ class ObservationsDataOnlySerializer(serializers.ModelSerializer):
 class SitesAndObservationsSerializer(serializers.ModelSerializer):
 	sitename = serializers.CharField(source='site_name')
 	rivername = serializers.CharField(source='river_name')
+	longitude = serializers.FloatField(source='the_geom.x')
+	latitude = serializers.FloatField(source='the_geom.y')
 	sitedescription = serializers.CharField(source='description')
 	rivercategory = serializers.CharField(source='river_cat')
 	observations = serializers.SerializerMethodField()
@@ -257,7 +259,9 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 		fields = [
 			'gid', 
 			'sitename', 
-			'rivername', 
+			'rivername',
+			'longitude',
+			'latitude',
 			'sitedescription', 
 			'rivercategory',
 			'images', 
@@ -277,6 +281,8 @@ class SitesAndObservationsSerializer(serializers.ModelSerializer):
 				'rivername': data['rivername'],
 				'rivercategory': data['rivercategory'],
 				'sitedescription': data['sitedescription'],
+				'longitude': data['longitude'],
+				'latitude': data['latitude'],
 				'images': data['images'],
 				'observations': data['observations'],
 			},

@@ -1,12 +1,18 @@
-from django.contrib import admin
 import csv
-from django.utils.encoding import smart_str
+from collections import OrderedDict
+from django import forms
+from django.conf import settings
+from django.contrib import admin
+from django.contrib.gis import admin as geo_admin
+from django.contrib.gis.geos import Point
 from django.http import HttpResponse
+from django.utils.encoding import smart_str
+from django.utils.safestring import mark_safe
 from minisass_authentication.models import UserProfile
+from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
+from django.contrib.sites.models import Site
 
-from monitor.forms import ObservationPestImageForm
 from .models import (
-    Assessment,
     Sites,
     Observations,
     SiteImage,
@@ -35,6 +41,7 @@ class ObservationPestImageInline(admin.TabularInline):
     autocomplete_fields = ('group', )
     fields = ('group', 'image', 'image_preview', 'valid')
     readonly_fields = ('image_preview', )
+
 
 @admin.register(Observations)
 class ObservationsAdmin(admin.ModelAdmin):
@@ -117,6 +124,10 @@ class ObservationsAdmin(admin.ModelAdmin):
             ])
 
         for obs in queryset:
+            if obs.flag == 'clean':
+                flag = 'Verified'
+            else:
+                flag = 'Unverified'
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
@@ -154,6 +165,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.true_flies),
                     smart_str(obs.snails),
                     smart_str(obs.score),
+                    smart_str(flag),
                     smart_str(obs.water_clarity),
                     smart_str(obs.water_temp),
                     smart_str(obs.ph),
@@ -173,7 +185,28 @@ class SiteImageInline(admin.TabularInline):
 
 
 @admin.register(Sites)
-class SitesAdmin(admin.ModelAdmin):
+class SitesAdmin(geo_admin.OSMGeoAdmin):
+    form = CustomGeoAdminForm
+    class Media:
+        js = (
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',  # Ensure jQuery is available
+            'admin/js/latlon_map_update.js',  # Custom JS file to handle lat/lon updates
+        )
+
+    def latitude(self, obj):
+        return obj.the_geom.y if obj.the_geom else None
+
+    def longitude(self, obj):
+        return obj.the_geom.x if obj.the_geom else None
+
+    latitude.short_description = 'Latitude'
+    longitude.short_description = 'Longitude'
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        context['osm_widget'] = True
+        return super().render_change_form(request, context, *args, **kwargs)
+
+
     list_max_show_all = 1000
     list_display = (
         'site_name',
@@ -212,15 +245,15 @@ class SitesAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(
             [
-                'Site Name', 
-                'River Name', 
-                'Description', 
+                'Site Name',
+                'River Name',
+                'Description',
                 'River Category',
                 'Site Location',
                 'Created By',
                 'User Organization Name',
                 'User Expert Status',
-                'User Country', 
+                'User Country',
                 'Site Creation Date'
             ])
 
@@ -236,14 +269,14 @@ class SitesAdmin(admin.ModelAdmin):
                 user_is_expert = False
             writer.writerow(
                 [
-                    smart_str(site.site_name), 
-                    smart_str(site.river_name), 
-                    smart_str(site.description), 
-                    smart_str(site.river_cat), 
+                    smart_str(site.site_name),
+                    smart_str(site.river_name),
+                    smart_str(site.description),
+                    smart_str(site.river_cat),
                     smart_str(f"Longitude: {site.the_geom.x}, Latitude: {site.the_geom.y}"),
                     smart_str(site.user.email),
                     smart_str(user_organization_name),
-                    smart_str(user_is_expert), 
+                    smart_str(user_is_expert),
                     smart_str(user_country),
                     smart_str(site.time_stamp)
                 ]
@@ -257,4 +290,4 @@ class SitesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ObservationPestImage)
-admin.site.register(Assessment, admin.ModelAdmin)
+admin.site.unregister(Site)

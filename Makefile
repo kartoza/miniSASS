@@ -102,6 +102,13 @@ shell:
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) exec django /bin/bash
 
+dev-shell:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Shelling in in development mode"
+	@echo "------------------------------------------------------------------"
+	@docker-compose -p $(PROJECT_ID) exec dev /bin/bash
+
 db-bash:
 	@echo
 	@echo "------------------------------------------------------------------"

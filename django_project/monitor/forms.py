@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.gis.geos import Point
 from django.forms import ModelForm, Textarea, Select, DateInput
 
 from monitor.models import Sites, Observations, ObservationPestImage
@@ -66,3 +67,31 @@ class MapForm(forms.Form):
     edit_site = forms.CharField()
     error = forms.CharField()
     saved_obs = forms.CharField()
+
+
+class CustomGeoAdminForm(forms.ModelForm):
+    latitude = forms.FloatField(required=False, label='Latitude')
+    longitude = forms.FloatField(required=False, label='Longitude')
+
+    class Meta:
+        model = Sites
+        fields = ['the_geom', 'latitude', 'longitude', 'site_name', 'river_name',
+                  'description', 'river_cat', 'user', 'assessment']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Pre-fill lat/lng from the existing point field if available
+        if self.instance and self.instance.the_geom:
+            self.fields['latitude'].initial = self.instance.the_geom.y
+            self.fields['longitude'].initial = self.instance.the_geom.x
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = cleaned_data.get('latitude')
+        lng = cleaned_data.get('longitude')
+
+        if lat is not None and lng is not None:
+            cleaned_data['the_geom'] = Point(lng, lat)
+
+        return cleaned_data
