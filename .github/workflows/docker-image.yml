@@ -48,12 +48,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-${{ github.event.pull_request.number }}
           ${{ runner.os }}-buildx-
-
-    - name: Build Django Container with Cache
-      run: |
-        docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache \
-                            --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
-                            -t minisass/django -f deployment/docker/Dockerfile .
     - name: Start Docker Compose services
       run: make main
       env:

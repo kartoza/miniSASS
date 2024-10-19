@@ -18,7 +18,9 @@ services:
     entrypoint: [ ]
   
   django:
-    image: minisass/django
+    build:
+      context: .
+      dockerfile: ./deployment/docker/Dockerfile
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media
