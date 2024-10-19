@@ -26,6 +26,7 @@ jobs:
           POSTGRES_DB: minisass_data
           POSTGRES_USER: docker
           POSTGRES_PASSWORD: docker
+          ALLOW_IP_RANGE: 0.0.0.0/0
 
     steps:
     - uses: actions/checkout@v4
