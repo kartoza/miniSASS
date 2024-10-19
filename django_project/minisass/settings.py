@@ -35,7 +35,8 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER', ''),
         'PASSWORD': os.getenv('POSTGRES_PASS', ''),
         'HOST': os.getenv('DATABASE_HOST', ''),
-        'PORT': os.getenv('DATABASE_PORT', '')
+        'PORT': os.getenv('DATABASE_PORT', ''),
+        'OPTIONS': {'sslmode': 'require'}
     }
 }
 
