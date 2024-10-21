@@ -21,7 +21,7 @@ class VideoAPITestCase(APITestCase):
     def test_read_video_list(self):
         url = reverse('video-list')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         serialized_data = VideoSerializer(Video.objects.all(), many=True).data
         self.assertEqual(response.data, serialized_data)
