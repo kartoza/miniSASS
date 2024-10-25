@@ -136,6 +136,8 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     #### Here are the actions you can take after receiving a **200 OK** status code:
 
+    - The downloaded data includes several key details about the sites.Some of them are :
+
     #### Site Image
 
     The user can also download the site/observation image by clicking on the image URL provided in the response.
@@ -145,6 +147,10 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
     Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
 
     [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+
+    * **Location:** User will also get the geographic coordinates of the site in the downloaded data.
+
+        [![Location Coordinates Image](./img/3rd-party-api-access-46.png)](./img/3rd-party-api-access-46.png)
 
     The user can also choose different response formats by clicking on the 1️⃣ dropdown, such as JSON, XML, text etc.
 
@@ -214,28 +220,34 @@ The server return the `500 Internal Server Error`, indicating that the API is cu
 
 ### After receiving the 200 OK status code, the user will be able to perform the following actions:
 
-### Site Image
+- The downloaded data includes several key details about the sites.Some of them are :
 
-The user can also download the site/observation image by clicking on the image URL provided in the response.
+    ### Site Image
 
-[![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
+    The user can also download the site/observation image by clicking on the image URL provided in the response.
 
-Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
+    [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
 
-[![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+    Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
 
-#### Download Image:
+    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
-* Right click on the image  and select **Save Image As**.
+    #### Download Image:
 
-    [![Download Image](./img/3rd-party-api-access-35.png)](./img/3rd-party-api-access-35.png)
+    * Right click on the image  and select **Save Image As**.
+
+        [![Download Image](./img/3rd-party-api-access-35.png)](./img/3rd-party-api-access-35.png)
 
     
-* Choose a location to save the image and click 1️⃣ `Save`.
+    * Choose a location to save the image and click 1️⃣ `Save`.
 
-    [![Save Image](./img/3rd-party-api-access-36.png)](./img/3rd-party-api-access-36.png)
+        [![Save Image](./img/3rd-party-api-access-36.png)](./img/3rd-party-api-access-36.png)
 
     The following process will download the image in the `jpg` format.
+
+    * **Location:** User will also get the geographic coordinates of the site in the downloaded data.
+
+        [![Save Image](./img/3rd-party-api-access-45.png)](./img/3rd-party-api-access-45.png)
 
 User can also choose response format between JSON and api.
 
