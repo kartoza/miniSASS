@@ -319,13 +319,23 @@ Accessing the API using Swagger
 
 - The downloaded file will be in the `json` format. Here is the example of data you will receive in the downloaded file.
 
-    [![Downloaded Data](./img/3rd-party-api-access-30.png)](./img/3rd-party-api-access-30.png)
+[![Downloaded Data Example](./img/3rd-party-api-access-44.png)](./img/3rd-party-api-access-44.png)
+
+- The downloaded data includes several key details about the sites.Some of them are :
 
     * **Image:** This is the site image URL. Clicking on it will redirect you to the browser, where you can download the site observation image.
 
-        [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+    [![Downloaded Data](./img/3rd-party-api-access-30.png)](./img/3rd-party-api-access-30.png)
+
+    * The image below is an example of a site observation image that you will receive as part of the site observation data.
+
+    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
     **To view the process for downloading the image, click [here](#download-image).**
+
+    * **Location:** User will also get the geographic coordinates of the site in the downloaded data.
+
+    [![Site Location Image](./img/3rd-party-api-access-45.png)](./img/3rd-party-api-access-45.png)
 
 ### Redoc URL
 
