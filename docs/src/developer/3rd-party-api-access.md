@@ -136,19 +136,23 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
     #### Here are the actions you can take after receiving a **200 OK** status code:
 
-    #### Site Image
+    - The downloaded data includes several key details about the sites.Some of them are :
 
-    The user can also download the site/observation image by clicking on the image URL provided in the response.
+        **Site Image:** The user can also download the site/observation image by clicking on the image URL provided in the response.
 
-    [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
+        [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
 
-    Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
+        Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
 
-    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+        [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
-    The user can also choose different response formats by clicking on the 1️⃣ dropdown, such as JSON, XML, text etc.
+        **Location:** User will also get the geographic coordinates of the site in the downloaded data.
 
-    [![Response Format](./img/3rd-party-api-access-5.png)](./img/3rd-party-api-access-5.png)
+        [![Location Coordinates Image](./img/3rd-party-api-access-46.png)](./img/3rd-party-api-access-46.png)
+
+        The user can also choose different response formats by clicking on the 1️⃣ dropdown, such as JSON, XML, text etc.
+
+        [![Response Format](./img/3rd-party-api-access-5.png)](./img/3rd-party-api-access-5.png)
 
     * **JSON Format**
         
@@ -214,28 +218,36 @@ The server return the `500 Internal Server Error`, indicating that the API is cu
 
 ### After receiving the 200 OK status code, the user will be able to perform the following actions:
 
-### Site Image
+- The downloaded data includes several key details about the sites.Some of them are :
 
-The user can also download the site/observation image by clicking on the image URL provided in the response.
+    #### Site Image
 
-[![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
+    The user can also download the site/observation image by clicking on the image URL provided in the response.
 
-Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
+    [![Site/Observation Image](./img/3rd-party-api-access-20.png)](./img/3rd-party-api-access-20.png)
 
-[![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+    Click on the 1️⃣ `image` to open the image in your browser, where you can easily download it.
 
-#### Download Image:
+    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
-* Right click on the image  and select **Save Image As**.
+    ##### Download Image:
 
-    [![Download Image](./img/3rd-party-api-access-35.png)](./img/3rd-party-api-access-35.png)
+    * Right click on the image  and select **Save Image As**.
+
+        [![Download Image](./img/3rd-party-api-access-35.png)](./img/3rd-party-api-access-35.png)
 
     
-* Choose a location to save the image and click 1️⃣ `Save`.
+    * Choose a location to save the image and click 1️⃣ `Save`.
 
-    [![Save Image](./img/3rd-party-api-access-36.png)](./img/3rd-party-api-access-36.png)
+        [![Save Image](./img/3rd-party-api-access-36.png)](./img/3rd-party-api-access-36.png)
 
-    The following process will download the image in the `jpg` format.
+        The following process will download the image in the `jpg` format.
+
+    #### Location
+    
+    User will also get the geographic coordinates of the site in the downloaded data.
+
+    [![Save Image](./img/3rd-party-api-access-45.png)](./img/3rd-party-api-access-45.png)
 
 User can also choose response format between JSON and api.
 
@@ -319,13 +331,23 @@ Accessing the API using Swagger
 
 - The downloaded file will be in the `json` format. Here is the example of data you will receive in the downloaded file.
 
-    [![Downloaded Data](./img/3rd-party-api-access-30.png)](./img/3rd-party-api-access-30.png)
+[![Downloaded Data Example](./img/3rd-party-api-access-44.png)](./img/3rd-party-api-access-44.png)
+
+- The downloaded data includes several key details about the sites.Some of them are :
 
     * **Image:** This is the site image URL. Clicking on it will redirect you to the browser, where you can download the site observation image.
 
-        [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
+    [![Downloaded Data](./img/3rd-party-api-access-30.png)](./img/3rd-party-api-access-30.png)
+
+    * The image below is an example of a site observation image that you will receive as part of the site observation data.
+
+    [![Site/Observation Image](./img/3rd-party-api-access-21.png)](./img/3rd-party-api-access-21.png)
 
     **To view the process for downloading the image, click [here](#download-image).**
+
+    * **Location:** User will also get the geographic coordinates of the site in the downloaded data.
+
+    [![Site Location Image](./img/3rd-party-api-access-45.png)](./img/3rd-party-api-access-45.png)
 
 ### Redoc URL
 
