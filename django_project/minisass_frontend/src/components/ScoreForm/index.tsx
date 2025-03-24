@@ -10,6 +10,9 @@ import Typography from '@mui/material/Typography';
 import {useAuth} from "../../AuthContext";
 import ConfirmationDialogRaw from "../../components/ConfirmationDialog";
 import CircularProgress from '@mui/material/CircularProgress';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 interface ScoreFormProps {
@@ -39,6 +42,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const {dispatch, state} = useAuth();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [allowSaving, setAllowSaving] = useState(false);
+  const [acceptPrivacyPolicy, setAcceptPrivacyPolicy] = useState(false);
   
 
   const closeSuccessModal = () => {
@@ -463,225 +467,259 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         ) :
         (
 
-        <div className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
           <div
-            className="flex flex-row gap-80 w-auto sm:w-full"
-          >
-            <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
-              Score
-            </Text>
-            <Img
-              className="h-6 w-6 common-pointer"
-              src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
-              alt="close"
-              style={{
-                marginLeft: '118px'
-              }}
-              onClick={handleCloseSidebar}
-            />
-          </div>
-          <div className="flex flex-row items-center justify-between w-[71%] md:w-full">
-            <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
-              Groups
-            </Text>
-            <Text className="text-blue-900 text-lg" size="txtRalewayBold18" style={{ marginRight: "10%" }}>
-              Sensitivity Score
-            </Text>
-          </div>
+            className=" flex flex-col gap-3  items-start justify-start p-3 md:px-5 rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] shadow-bs w-[568px] sm:w-full">
+            <div
+              className="flex flex-row gap-80 w-auto sm:w-full"
+            >
+              <Text className="text-2xl md:text-[22px] text-blue-900 sm:text-xl w-auto" size="txtRalewayBold24">
+                Score
+              </Text>
+              <Img
+                className="h-6 w-6 common-pointer"
+                src={`${globalVariables.staticPath}img_icbaselineclose.svg`}
+                alt="close"
+                style={{
+                  marginLeft: '118px'
+                }}
+                onClick={handleCloseSidebar}
+              />
+            </div>
+            <div className="flex flex-row items-center justify-between w-[71%] md:w-full">
+              <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
+                Groups
+              </Text>
+              <Text className="text-blue-900 text-lg" size="txtRalewayBold18" style={{marginRight: "10%"}}>
+                Sensitivity Score
+              </Text>
+            </div>
 
-          {/* Tabular-like structure */}
-          <div className="sm:gap-5 items-start justify-start overflow-x-auto w-full">
-            {scoreGroups.map((props, index) => (
-              <div key={`Row${index}`} className="flex flex-row items-center justify-between w-full">
-                {/* Column 1 - Groups with Information Modal */}
-                <div className="flex items-center justify-start w-[200px]">
-                  <div className="flex flex-col items-center justify-start w-[42px]">
-                    <div className="flex flex-col items-start justify-start p-[9px] w-[42px]">
-                      <input
-                        type="checkbox"
-                        id={`checkbox-${props.id}`}
-                        checked={checkboxStates[props.id]}
-                        onChange={() => handleCheckboxChange(props.id)}
-                        style={{ borderRadius: '4px' }}
-                      ></input>
+            {/* Tabular-like structure */}
+            <div className="sm:gap-5 items-start justify-start overflow-x-auto w-full">
+              {scoreGroups.map((props, index) => (
+                <div key={`Row${index}`} className="flex flex-row items-center justify-between w-full">
+                  {/* Column 1 - Groups with Information Modal */}
+                  <div className="flex items-center justify-start w-[200px]">
+                    <div className="flex flex-col items-center justify-start w-[42px]">
+                      <div className="flex flex-col items-start justify-start p-[9px] w-[42px]">
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${props.id}`}
+                          checked={checkboxStates[props.id]}
+                          onChange={() => handleCheckboxChange(props.id)}
+                          style={{borderRadius: '4px'}}
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start justify-start w-auto">
+                      <Text
+                        className="text-base text-gray-800 tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular16"
+                      >
+                        {props?.name}
+                      </Text>
                     </div>
                   </div>
-                  <div className="flex flex-col items-start justify-start w-auto">
-                    <Text
-                      className="text-base text-gray-800 tracking-[0.15px] w-auto"
-                      size="txtRalewayRomanRegular16"
-                    >
-                      {props?.name}
+
+                  {/* Column 2 - Sensitivity Score */}
+                  <div className="flex sm:flex-1 flex-col font-roboto gap-4 items-start justify-start w-[100px]">
+                    <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
+                      {props.sensitivity_score}
                     </Text>
                   </div>
-                </div>
 
-                {/* Column 2 - Sensitivity Score */}
-                <div className="flex sm:flex-1 flex-col font-roboto gap-4 items-start justify-start w-[100px]">
-                  <Text className="text-blue-900 text-lg" size="txtRalewayBold18">
-                    {props.sensitivity_score}
-                  </Text>
-                </div>
-
-                {/* Column 3 - Select or Manage Images Button */}
-                <div className="flex sm:flex-1 flex-col font-raleway gap-2 items-start justify-start w-[210px]" style={{ marginBottom: '2%' }}>
-                  {buttonStates.map((buttonState, btnIndex) => {
-                    if (buttonState.id === props.id) {
-                      return (
-                        <React.Fragment key={`Button-${btnIndex}`}>
-                          {!buttonState.showManageImages && (
-                            <>
-                              <Button
-                                id={`button-${props.id}`}
-                                type="button"
-                                className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                                shape="round"
-                                color="blue_gray_500"
-                                size="xs"
-                                variant="fill"
-                                // disabled upload buttons
-                                disabled={!isCheckboxChecked[props.id] ? true : false}
-                                style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id]  ? 1 : 0.5 }}
-                                onClick={() => handleButtonClick(props.id)}
-                              >
-                                Upload images
-                                {pestImages[props.id]?.length ? <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images uploaded)</div> : null}
-                              </Button>
-                              <UploadModal
-                                key={`image-${props.id}`}
-                                isOpen={openImagePestId === props.id && isAddMore} 
-                                onClose={closeUploadModal}
-                                onSubmit={
-                                  files => {
-                                    pestImages[props.id] = files
-                                    setPestImages({...pestImages})
-                                    setOpenImagePestId(0)
-                                    setIsAddMore(false)
-                                    const updatedButtonStates = buttonStates.map(buttonState => {
-                                      if (buttonState.id === props.id) {
-                                        return { ...buttonState, showManageImages: !buttonState.showManageImages };
-                                      }
-                                      return buttonState;
-                                    });
-                                    setButtonStates(updatedButtonStates);
-                                    uploadImages(pestImages)
-                                  }
-                                }/>
+                  {/* Column 3 - Select or Manage Images Button */}
+                  <div className="flex sm:flex-1 flex-col font-raleway gap-2 items-start justify-start w-[210px]"
+                       style={{marginBottom: '2%'}}>
+                    {buttonStates.map((buttonState, btnIndex) => {
+                      if (buttonState.id === props.id) {
+                        return (
+                          <React.Fragment key={`Button-${btnIndex}`}>
+                            {!buttonState.showManageImages && (
+                              <>
+                                <Button
+                                  id={`button-${props.id}`}
+                                  type="button"
+                                  className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                                  shape="round"
+                                  color="blue_gray_500"
+                                  size="xs"
+                                  variant="fill"
+                                  // disabled upload buttons
+                                  disabled={!isCheckboxChecked[props.id] ? true : false}
+                                  style={{marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5}}
+                                  onClick={() => handleButtonClick(props.id)}
+                                >
+                                  Upload images
+                                  {pestImages[props.id]?.length ?
+                                    <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images
+                                      uploaded)</div> : null}
+                                </Button>
+                                <UploadModal
+                                  key={`image-${props.id}`}
+                                  isOpen={openImagePestId === props.id && isAddMore}
+                                  onClose={closeUploadModal}
+                                  onSubmit={
+                                    files => {
+                                      pestImages[props.id] = files
+                                      setPestImages({...pestImages})
+                                      setOpenImagePestId(0)
+                                      setIsAddMore(false)
+                                      const updatedButtonStates = buttonStates.map(buttonState => {
+                                        if (buttonState.id === props.id) {
+                                          return {...buttonState, showManageImages: !buttonState.showManageImages};
+                                        }
+                                        return buttonState;
+                                      });
+                                      setButtonStates(updatedButtonStates);
+                                      uploadImages(pestImages)
+                                    }
+                                  }/>
                               </>
-                          )}
-                          {buttonState.showManageImages && (
-                          <>
-                              {isUploadingImage ? (
-                                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft:'11px' }}>
-                                    <CircularProgress style={{ color: '#288b31' }} />
-                                </div>
-                              ) : (
+                            )}
+                            {buttonState.showManageImages && (
+                              <>
+                                {isUploadingImage ? (
+                                  <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginLeft: '11px'
+                                  }}>
+                                    <CircularProgress style={{color: '#288b31'}}/>
+                                  </div>
+                                ) : (
                                   <>
-                                      <Button
-                                          type="button"
-                                          className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
-                                          shape="round"
-                                          color="red_500"
-                                          size="xs"
-                                          variant="fill"
-                                          // disabled upload buttons
-                                          disabled={!isCheckboxChecked[props.id] ? true : false}
-                                          style={{ marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5 }}
-                                          onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
-                                      >
-                                          Manage Images
-                                          {pestImages[props.id]?.length ? <div style={{ fontSize: "0.8rem" }}>({pestImages[props.id]?.length} images uploaded)</div> : null}
-                                      </Button>
-                                      <UploadModal
-                                          key={`image-${props.id}`}
-                                          isOpen={openImagePestId === props.id && isAddMore}
-                                          onClose={closeUploadModal}
-                                          onSubmit={files => {
-                                              pestImages[props.id] = files;
-                                              setPestImages({ ...pestImages });
-                                              setOpenImagePestId(0);
-                                              setIsAddMore(false);
-                                              setManageImagesModalData({
-                                                  'groups': props.name,
-                                                  'sensetivityScore': props.sensitivity_score,
-                                                  'id': props.id,
-                                                  'images': pestImages[props.id],
-                                                  'saved_group_prediction': {}
-                                              });
-                                              uploadImages(pestImages);
-                                          }}
-                                      />
+                                    <Button
+                                      type="button"
+                                      className="!text-white-A700 cursor-pointer font-raleway min-w-[198px] text-center text-lg tracking-[0.81px]"
+                                      shape="round"
+                                      color="red_500"
+                                      size="xs"
+                                      variant="fill"
+                                      // disabled upload buttons
+                                      disabled={!isCheckboxChecked[props.id] ? true : false}
+                                      style={{marginTop: '10px', opacity: isCheckboxChecked[props.id] ? 1 : 0.5}}
+                                      onClick={() => openManageImagesModal(props.id, props.name, props.sensitivity_score, pestImages[props.id])}
+                                    >
+                                      Manage Images
+                                      {pestImages[props.id]?.length ?
+                                        <div style={{fontSize: "0.8rem"}}>({pestImages[props.id]?.length} images
+                                          uploaded)</div> : null}
+                                    </Button>
+                                    <UploadModal
+                                      key={`image-${props.id}`}
+                                      isOpen={openImagePestId === props.id && isAddMore}
+                                      onClose={closeUploadModal}
+                                      onSubmit={files => {
+                                        pestImages[props.id] = files;
+                                        setPestImages({...pestImages});
+                                        setOpenImagePestId(0);
+                                        setIsAddMore(false);
+                                        setManageImagesModalData({
+                                          'groups': props.name,
+                                          'sensetivityScore': props.sensitivity_score,
+                                          'id': props.id,
+                                          'images': pestImages[props.id],
+                                          'saved_group_prediction': {}
+                                        });
+                                        uploadImages(pestImages);
+                                      }}
+                                    />
                                   </>
-                              )}
-                          </>
-                      )}
+                                )}
+                              </>
+                            )}
 
-                        </React.Fragment>
-                      );
-                    }
-                    return null;
-                  })}
+                          </React.Fragment>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Display calculated values */}
-          <div className="flex flex-row gap-[17px] items-start justify-start w-auto">
-            <Text
-              className="leading-[136.40%] text-blue-900 text-lg"
-              size="txtRalewayBold18"
-            >
-              <>
-                Total score:
-                <br />
-                Number of groups:
-                <br />
-                Average score:
-              </>
-            </Text>
-            <Text
-              className="leading-[136.40%] text-black-900 text-lg"
-              size="txtRalewayRomanRegular18"
-            >
-              <>
-                {isNaN(totalScore) ? 0 : totalScore.toFixed(2)}<br />
-                {numberOfGroups}<br />
-                {isNaN(averageScore) ? 0 : averageScore.toFixed(2)}
-              </>
-            </Text>
-          </div>
+            {/* Display calculated values */}
+            <div className="flex flex-row gap-[17px] items-start justify-start w-auto">
+              <Text
+                className="leading-[136.40%] text-blue-900 text-lg"
+                size="txtRalewayBold18"
+              >
+                <>
+                  Total score:
+                  <br/>
+                  Number of groups:
+                  <br/>
+                  Average score:
+                </>
+              </Text>
+              <Text
+                className="leading-[136.40%] text-black-900 text-lg"
+                size="txtRalewayRomanRegular18"
+              >
+                <>
+                  {isNaN(totalScore) ? 0 : totalScore.toFixed(2)}<br/>
+                  {numberOfGroups}<br/>
+                  {isNaN(averageScore) ? 0 : averageScore.toFixed(2)}
+                </>
+              </Text>
+            </div>
 
-          {/* Save and Cancel Buttons */}
-          <div className="flex flex-row gap-3 items-start justify-start w-auto">
-            <Button
-              className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-              shape="round"
-              color="blue_gray_500"
-              size="xs"
-              variant="fill"
-              onClick={handleSave}
-              style={{
-                opacity: (proceedToSavingData && allowSaving) ? 1 : 0.5,
-              }}
-              disabled={(!proceedToSavingData && !allowSaving)}
-            >
-              Save
-            </Button>
-            <Button
-              className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-              shape="round"
-              color="red_500"
-              size="xs"
-              variant="fill"
-              onClick={onCancel}
-            >
-              Back
-            </Button>
-          </div>
+            {/* Accept Privacy Policy */}
+            <div className="flex flex-row gap-[17px] items-start justify-start w-auto">
+            <FormGroup>
+                  <FormControlLabel
+                    required
+                    control={
+                      <Checkbox
+                        checked={acceptPrivacyPolicy}
+                        onChange={(e) => setAcceptPrivacyPolicy(e.target.checked)}
+                      />
+                    }
+                    label={
+                      <>
+                        I agree to the collection and processing of my personal data in accordance with the{' '}
+                        <a href="/#/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+                          Privacy Policy
+                        </a>.
+                      </>
+                    }
+                  />
+                </FormGroup>
+            </div>
 
-        </div>
-      )}
+            {/* Save and Cancel Buttons */}
+            <div className="flex flex-row gap-3 items-start justify-start w-auto">
+              <Button
+                className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="blue_gray_500"
+                size="xs"
+                variant="fill"
+                onClick={handleSave}
+                style={{
+                  opacity: (proceedToSavingData && allowSaving && acceptPrivacyPolicy) ? 1 : 0.5,
+                }}
+                disabled={(!proceedToSavingData && !allowSaving && !acceptPrivacyPolicy)}
+              >
+                Save
+              </Button>
+              <Button
+                className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="red_500"
+                size="xs"
+                variant="fill"
+                onClick={onCancel}
+              >
+                Back
+              </Button>
+            </div>
+
+          </div>
+        )}
         {/* Success Modal */}
         <Modal
           isOpen={isSuccessModalOpen}
@@ -705,10 +743,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           {isSuccessModalOpen && (
             <div>
               <h3
-                  style={{
-                    fontFamily: 'Raleway',
-                    fontStyle: 'normal',
-                    fontWeight: 700,
+                style={{
+                  fontFamily: 'Raleway',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
                     alignItems: 'flex-start',
                     fontSize: '24px',
                     lineHeight: '136.4%',
