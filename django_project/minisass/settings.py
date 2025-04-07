@@ -170,6 +170,7 @@ MIDDLEWARE = [
 # GOOGLE_ANALYTICS = {
 #     'google_analytics_id': os.getenv('GOOGLE_ANALYTICS_TRACKING_CODE', ''),
 # }
+GOOGLE_ANALYTICS_TRACKING_CODE = os.getenv('GOOGLE_ANALYTICS_TRACKING_CODE', '')
 
 ROOT_URLCONF = 'minisass.urls'
 
