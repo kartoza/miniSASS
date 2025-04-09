@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { globalVariables } from '../../utils';
 import axios from 'axios';
 import LinearProgress from '@mui/material/LinearProgress/LinearProgress';
+import ReactGA from "react-ga4";
 
 interface LoginFormModalProps {
   isOpen: boolean;
@@ -82,6 +83,10 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
   };
 
   function handleEmailRetrieval(): void {
+    ReactGA.event("retrieve_email_address", {
+      category: "User Engagement",
+      label: "Retrieve Email Address",
+    });
     throw new Error('Function not implemented.');
   }
 

@@ -7,6 +7,7 @@ import ContactFormModal from '../../components/ContactFormModal';
 import { useState } from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
 import { globalVariables } from "../../utils";
+import ReactGA from "react-ga4";
 
 type FooterProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -147,7 +148,13 @@ const Footer: React.FC<FooterProps> = (props) => {
                     <Text
                       className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                       size="txtRalewayExtraBold14WhiteA700"
-                      onClick={() => window.open('https://kartoza.github.io/miniSASS/', "_blank")}
+                      onClick={() => {
+                        ReactGA.event("documentation", {
+                          category: "User Engagement",
+                          label: "Clicked Documentation",
+                        });
+                        window.open('https://kartoza.github.io/miniSASS/', "_blank")
+                      }}
                     >
                       Documentation
                     </Text>

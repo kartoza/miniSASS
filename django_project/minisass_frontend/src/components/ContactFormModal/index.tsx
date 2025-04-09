@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import { ContactFormData } from '../../components/ContactFormModal/types';
 import { Button ,Img } from "../../components";
 import Modal from 'react-modal';
@@ -6,6 +6,7 @@ import axios from 'axios'
 import { globalVariables } from '../../utils';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
+import ReactGA from "react-ga4";
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -20,6 +21,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
     phone: '',
     message: '',
   };
+
+  useEffect(() => {
+    ReactGA.event("contact_us", {
+      category: "User Engagement",
+      label: "Open Contact Us Form",
+    });
+  }, []);
 
   const [formData, setFormData] = useState<ContactFormData>(initialState);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
