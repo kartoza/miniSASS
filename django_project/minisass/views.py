@@ -6,7 +6,7 @@ from minisass.models import (
     Video,
     MobileApp
 )
-from minisass.serializers import (
+from minisass.serializers.serializers import (
     GroupScoresSerializer,
     VideoSerializer,
     MobileAppSerializer

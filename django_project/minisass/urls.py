@@ -10,6 +10,10 @@ from minisass.views import (
     GetMobileApp,
     get_announcements
 )
+from minisass.api_views.privacy_policy import (
+    PrivacyPolicyConsentStatusView,
+    PrivacyPolicyConsentCreateView,
+)
 from minisass_frontend.views import ReactHomeView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -57,6 +61,18 @@ urlpatterns = [
     path("password-reset/", TemplateView.as_view(template_name="react_base.html"), name="password_reset"),
     path("howto/", TemplateView.as_view(template_name="react_base.html"), name="how_to"),
     path("recent-activity/", TemplateView.as_view(template_name="react_base.html"), name="recent_activity"),
+
+    # privacy policy
+    path(
+        "privacy-policy/check/",
+        PrivacyPolicyConsentStatusView.as_view(),
+        name="privacy-policy-check"
+    ),
+    path(
+        "privacy-policy/consent/",
+        PrivacyPolicyConsentCreateView.as_view(),
+        name="privacy-policy-consent"
+    ),
 
     # google analytics path
     # re_path('djga/', include('google_analytics.urls')),
