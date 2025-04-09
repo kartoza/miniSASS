@@ -3,7 +3,6 @@ import Routes from "./Routes";
 
 function App() {
 
-    // STEP 4: Session Duration
   useEffect(() => {
     const startTime = Date.now();
 
