@@ -22,20 +22,6 @@ const RouteTracker = () => {
   return null;
 };
 
-// // In your top-level component like App.tsx or Routes.tsx
-// useEffect(() => {
-//   const handleBeforeUnload = () => {
-//     ReactGA.event({
-//       category: "Session",
-//       action: "End",
-//       label: "User closed or navigated away"
-//     });
-//   };
-//
-//   window.addEventListener("beforeunload", handleBeforeUnload);
-//   return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-// }, []);
-
 
 const ProjectRoutes = () => {
   useEffect(() => {

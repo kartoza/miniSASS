@@ -39,6 +39,10 @@ const MobileApp: React.FC = () => {
             <Box style={{ width:"100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
               <Button
                 onClick={() => {
+                  ReactGA.event("download_mobile_app_btn_click", {
+                    category: "User Engagement",
+                    label: "Clicked Download miniSASS Mobile App Button",
+                  });
                   if (mobileApp) {
                     window.open(mobileApp, '_blank')
                   } else {
