@@ -1,5 +1,6 @@
 import BaseContainer from '../../components/BaseContainer/';
 import React, {useEffect, useState} from "react";
+import ReactGA from "react-ga4";
 import {Grid} from '@mui/material'
 import {Text} from "../../components";
 import Button from '@mui/material/Button';

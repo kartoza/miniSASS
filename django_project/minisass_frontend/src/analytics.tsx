@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
 
 export const initGA = () => {
@@ -7,15 +5,10 @@ export const initGA = () => {
 };
 
 export const trackPageView = (path: string) => {
-  console.log('send page tracking')
-  ReactGA.send({ hitType: "pageview", page: path });
+  console.log('send page tracking: ' + path)
+  ReactGA.event("page_view", {
+    page_location: window.location.href,
+    page_path: path,
+    page_title: document.title,
+  });
 };
-
-export function usePageTracking() {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log('send page tracking')
-    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
-  }, [location]);
-}
