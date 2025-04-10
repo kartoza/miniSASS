@@ -14,7 +14,7 @@ from minisass.api_views.privacy_policy import (
     PrivacyPolicyConsentStatusView,
     PrivacyPolicyConsentCreateView,
 )
-from minisass_frontend.views import ReactHomeView
+from minisass_frontend.views import ReactBaseView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -48,7 +48,7 @@ urlpatterns = [
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 
     # Make the home path the default URL
-    path("", ReactHomeView.as_view(), name="home"),
+    path("", ReactBaseView.as_view(), name="home"),
 
     # Include authentication URLs
     path('authentication/', include('minisass_authentication.urls')),
@@ -57,10 +57,10 @@ urlpatterns = [
     path('monitor/', include('monitor.urls')),
 
     # map frontend urls to backend
-    path("map/", TemplateView.as_view(template_name="react_base.html"), name="map"),
-    path("password-reset/", TemplateView.as_view(template_name="react_base.html"), name="password_reset"),
-    path("howto/", TemplateView.as_view(template_name="react_base.html"), name="how_to"),
-    path("recent-activity/", TemplateView.as_view(template_name="react_base.html"), name="recent_activity"),
+    path("map/", ReactBaseView.as_view(template_name="react_base.html"), name="map"),
+    path("password-reset/", ReactBaseView.as_view(template_name="react_base.html"), name="password_reset"),
+    path("howto/", ReactBaseView.as_view(template_name="react_base.html"), name="how_to"),
+    path("recent-activity/", ReactBaseView.as_view(template_name="react_base.html"), name="recent_activity"),
 
     # privacy policy
     path(

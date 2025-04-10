@@ -1,5 +1,5 @@
-import React from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { HashRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import NotFound from "pages/NotFound";
 const Howto = React.lazy(() => import("./pages/Howto"));
 const Home = React.lazy(() => import("./pages/MainPage"));
@@ -9,12 +9,30 @@ const PasswordResetPage = React.lazy(() => import("./pages/PasswordReset"));
 const RecentActivity = React.lazy(() => import("./pages/RecentActivity"));
 const MobileApp = React.lazy(() => import("./pages/MobileApp"));
 const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
+
+import { initGA, trackPageView } from "./analytics";
+
+const RouteTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location]);
+
+  return null;
+};
+
 
 const ProjectRoutes = () => {
+  useEffect(() => {
+    initGA();
+  }, []);
+
   return (
     <React.Suspense fallback={<><LinearProgress color="success" /></>}>
       <Router>
+        <RouteTracker />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
@@ -31,4 +49,5 @@ const ProjectRoutes = () => {
     </React.Suspense>
   );
 };
+
 export default ProjectRoutes;

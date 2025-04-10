@@ -98,13 +98,15 @@ function AuthenticationButtons(props) {
         if (!userData.is_profile_updated) {
           setIsEnforcePasswordOpen(true)
         }
-        if (!userData.is_agreed_to_privacy_policy) {
-          const localConsent = localStorage.getItem("hasPrivacyConsent");
+        const localConsent = localStorage.getItem("hasPrivacyConsent");
 
-          if (localConsent === "true" || localConsent === "false") {
-            // User already gave consent before, so send it to backend silently
-            const agree = localConsent === "true";
+        if (localConsent === "true" || localConsent === "false") {
+          // User already gave consent before, so send it to backend silently
+          const agree = localConsent === "true";
 
+          // If consent in local storage is not equal to consent on server,
+          // update consent on server
+          if (userData.is_agreed_to_privacy_policy !== agree) {
             try {
               axios.defaults.headers.common["Authorization"] = `Bearer ${userData.access_token}`;
               await axios.post(
@@ -115,10 +117,11 @@ function AuthenticationButtons(props) {
             } catch (err) {
               console.error("Failed to sync privacy consent with backend:", err);
             }
-          } else {
-            // No local consent found, show the modal
-            setIsPrivacyConsentModalOpen(true);
           }
+
+        } else {
+          // No local consent found, show the modal
+          setIsPrivacyConsentModalOpen(true);
         }
         setError(null);
         setLoginModalOpen(false)

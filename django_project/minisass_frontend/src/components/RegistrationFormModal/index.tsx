@@ -8,6 +8,7 @@ import { SelectMenuOption } from "../../components/Countries/types";
 import { globalVariables } from '../../utils';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
+import ReactGA from "react-ga4";
 
 
 interface RegistrationFormModalProps {
@@ -55,6 +56,13 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   // Default this to a country's code to preselect it
   const [country, setCountry] = useState<SelectMenuOption["value"]>("ZA");
+
+  useEffect(() => {
+    ReactGA.event("open_registration_form", {
+      category: "User Engagement",
+      label: "Open Registration Form",
+    });
+  }, []);
 
   useEffect(() => {
     if (error_response === false) {
@@ -206,6 +214,10 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
   };
 
   const handleSubmit = (e: FormEvent) => {
+    ReactGA.event("click_register_btn", {
+      category: "User Engagement",
+      label: "Click Register Button",
+    });
     e.preventDefault();
 
     if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {

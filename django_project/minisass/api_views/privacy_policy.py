@@ -82,15 +82,18 @@ class PrivacyPolicyConsentCreateView(APIView):
         except PrivacyPolicy.DoesNotExist:
             return Response({"detail": "Privacy policy not found."}, status=404)
 
-        if PrivacyPolicyConsent.objects.filter(user=request.user, policy=policy).exists():
-            return Response({"detail": "Consent already recorded."}, status=400)
-
-        consent = PrivacyPolicyConsent.objects.create(
+        consent, _ = PrivacyPolicyConsent.objects.get_or_create(
             user=request.user,
             policy=policy,
-            consent_given=agree,
-            consent_date=now(),
-            ip_address=request.META.get("REMOTE_ADDR")
+            defaults={
+                'consent_given': agree,
+                'consent_date': now(),
+                'ip_address': request.META.get("REMOTE_ADDR")
+            }
         )
+        consent.consent_given = agree
+        consent.consent_date = now()
+        consent.ip_address = request.META.get("REMOTE_ADDR")
+        consent.save()
 
         return Response(PrivacyPolicyConsentSerializer(consent).data, status=status.HTTP_201_CREATED)
