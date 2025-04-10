@@ -9,7 +9,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
 from minisass.models import Video, GroupScores, MobileApp
-from minisass.serializers import VideoSerializer, GroupScoresSerializer
+from minisass.serializers.serializers import VideoSerializer, GroupScoresSerializer
 
 
 class VideoAPITestCase(APITestCase):
