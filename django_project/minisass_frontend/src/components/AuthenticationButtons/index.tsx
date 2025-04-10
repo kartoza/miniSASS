@@ -99,7 +99,26 @@ function AuthenticationButtons(props) {
           setIsEnforcePasswordOpen(true)
         }
         if (!userData.is_agreed_to_privacy_policy) {
-          openPrivacyModal();
+          const localConsent = localStorage.getItem("hasPrivacyConsent");
+
+          if (localConsent === "true" || localConsent === "false") {
+            // User already gave consent before, so send it to backend silently
+            const agree = localConsent === "true";
+
+            try {
+              axios.defaults.headers.common["Authorization"] = `Bearer ${userData.access_token}`;
+              await axios.post(
+                `${globalVariables.baseUrl}/privacy-policy/consent/`,
+                { agree: agree },
+                { headers: { "Content-Type": "application/json" } }
+              );
+            } catch (err) {
+              console.error("Failed to sync privacy consent with backend:", err);
+            }
+          } else {
+            // No local consent found, show the modal
+            setIsPrivacyConsentModalOpen(true);
+          }
         }
         setError(null);
         setLoginModalOpen(false)
@@ -220,7 +239,11 @@ function AuthenticationButtons(props) {
         isOpen={isEnforcePasswordOpen}
         onClose={handleEnforcePassword}
       />
-      <PrivacyConsentModal open={isPrivacyConsentModalOpen} onClose={closePrivacyModal} />
+      <PrivacyConsentModal
+        open={isPrivacyConsentModalOpen}
+        onClose={closePrivacyModal}
+        setOpen={setIsPrivacyConsentModalOpen}
+        forceShow />
     </div>
   );
 }

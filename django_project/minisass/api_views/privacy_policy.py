@@ -78,7 +78,7 @@ class PrivacyPolicyConsentCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        agree = json.loads(request.data.get("agree", False))
+        agree = request.data.get("agree", False)
         try:
             policy = PrivacyPolicy.objects.order_by("-published_at").first()
         except PrivacyPolicy.DoesNotExist:

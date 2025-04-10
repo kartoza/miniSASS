@@ -1,4 +1,4 @@
-import axios from "axios";
+import { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -8,35 +8,44 @@ import {
   Typography,
   Link,
 } from "@mui/material";
+import axios from "axios";
 import { globalVariables } from "../../utils";
-import {useAuth} from "../../AuthContext";
+import { useAuth } from "../../AuthContext";
 
 const PRIVACY_CONSENT_API = globalVariables.baseUrl + "/privacy-policy/consent/";
 
 export interface PrivacyConsentModalProps {
-  open: boolean;
-  onClose: () => void;
-  setOpen: (open: boolean) => void;
+  open?: boolean;
+  forceShow?: boolean;
+  onClose?: () => void;
+  setOpen?: (open: boolean) => void;
 }
 
+export default function PrivacyConsentModal({
+  open,
+  forceShow,
+  onClose,
+  setOpen,
+}: PrivacyConsentModalProps) {
+  const { state } = useAuth();
+  const hasConsent = localStorage.getItem("hasPrivacyConsent");
 
-export default function PrivacyConsentModal(props: PrivacyConsentModalProps) {
-  const {dispatch, state} = useAuth();
-
+  useEffect(() => {
+    if (!hasConsent && !forceShow && setOpen) {
+      setOpen(true);
+    }
+  }, [hasConsent, forceShow, setOpen]);
 
   const sendConsent = async (agree: boolean) => {
     try {
-      let formData = new FormData();
-      formData.append('agree', JSON.stringify(agree));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
-      const response = await axios.post(PRIVACY_CONSENT_API, formData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+      axios.defaults.headers.common["Authorization"] = `Bearer ${state.user.access_token}`;
+      const response = await axios.post(
+        PRIVACY_CONSENT_API,
+        { agree },
+        { headers: { "Content-Type": "application/json" } }
       );
-      if (response.status === 201) {
-        props.onClose();
+      if (response.status === 201 && onClose) {
+        onClose();
       }
     } catch (error) {
       console.error("Error sending consent:", error);
@@ -46,17 +55,17 @@ export default function PrivacyConsentModal(props: PrivacyConsentModalProps) {
   const handleAccept = async () => {
     localStorage.setItem("hasPrivacyConsent", "true");
     await sendConsent(true);
+    if (setOpen) setOpen(false);
   };
 
   const handleDecline = async () => {
     localStorage.setItem("hasPrivacyConsent", "false");
     await sendConsent(false);
-    // Optionally block access or show a message here
+    if (setOpen) setOpen(false);
   };
 
-
   return (
-    <Dialog open={props.open} maxWidth="sm" fullWidth>
+    <Dialog open={!!open} maxWidth="sm" fullWidth className='privacy-modal'>
       <DialogTitle>Privacy Policy Consent</DialogTitle>
       <DialogContent>
         <Typography>
