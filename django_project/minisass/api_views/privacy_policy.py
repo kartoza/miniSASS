@@ -2,6 +2,7 @@ import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.utils.timezone import now
 from minisass.models.privacy_policy import PrivacyPolicy, PrivacyPolicyConsent
 from minisass.serializers.privacy_policy import PrivacyPolicySerializer, PrivacyPolicyConsentSerializer
@@ -26,6 +27,7 @@ class PrivacyPolicyConsentStatusView(APIView):
         }
     }
     """
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -40,15 +42,11 @@ class PrivacyPolicyConsentStatusView(APIView):
         ).exists()
 
         return Response({
-            "has_consented": has_consented,
+            "is_agreed_to_privacy_policy": has_consented,
             "policy": PrivacyPolicySerializer(latest_policy).data
         })
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class PrivacyPolicyConsentCreateView(APIView):
     """
     POST /privacy-policy/consent/

@@ -10,14 +10,16 @@ export default defineConfig({
   base: isProd ? "/static/" : "/",
   root: "./src",
   plugins: [tsconfigPaths(), react()],
-  server: !isProd
-    ? {
-        proxy: {
-          "/static": "http://localhost:5000",
-          "/authentication": "http://localhost:5000",
-          "/monitor": "http://localhost:5000",
-          "/admin": "http://localhost:5000",
-        },
-      }
-    : undefined,
+  // server: !isProd
+  //   ? {
+  //       proxy: {
+  //         "/static": "http://0.0.0.0:5000",
+  //         "/authentication": "http://0.0.0.0:5000",
+  //         "/monitor": "http://0.0.0.0:5000",
+  //         "/admin": "http://0.0.0.0:5000",
+  //       },
+  //       host: "0.0.0.0", // or use "0.0.0.0" for LAN access
+  //       port: 5173,
+  //     }
+  //   : undefined,
 });
