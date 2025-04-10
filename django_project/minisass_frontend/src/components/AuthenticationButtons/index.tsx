@@ -7,6 +7,7 @@ import UserMenu from '../../components/UserMenu';
 import RegistrationFormModal from '../../components/RegistrationFormModal/index';
 import UserFormModal from '../../components/UserForm/index';
 import EnforcePasswordChange from '../../components/EnforcePasswordChange';
+import PrivacyConsentModal from '../../components/PrivacyConsentModal';
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
@@ -17,6 +18,7 @@ function AuthenticationButtons(props) {
   const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isPrivacyConsentModalOpen, setIsPrivacyConsentModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
@@ -52,6 +54,14 @@ function AuthenticationButtons(props) {
     setError(null);
   };
 
+  const openPrivacyModal = () => {
+    setIsPrivacyConsentModalOpen(true);
+  };
+
+  const closePrivacyModal = () => {
+    setIsPrivacyConsentModalOpen(false);
+  };
+
   const closeProfileModal = () => {
     setProfileModalOpen(false);
     setUpdateProfileInProgress(false);
@@ -79,7 +89,7 @@ function AuthenticationButtons(props) {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (response.status === 200) {
         const userData = response.data;
         dispatch({ type: 'LOGIN', payload: userData });
@@ -87,6 +97,9 @@ function AuthenticationButtons(props) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
         if (!userData.is_profile_updated) {
           setIsEnforcePasswordOpen(true)
+        }
+        if (!userData.is_agreed_to_privacy_policy) {
+          openPrivacyModal();
         }
         setError(null);
         setLoginModalOpen(false)
@@ -207,6 +220,7 @@ function AuthenticationButtons(props) {
         isOpen={isEnforcePasswordOpen}
         onClose={handleEnforcePassword}
       />
+      <PrivacyConsentModal open={isPrivacyConsentModalOpen} onClose={closePrivacyModal} />
     </div>
   );
 }

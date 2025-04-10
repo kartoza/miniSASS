@@ -1,3 +1,4 @@
+import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -43,7 +44,11 @@ class PrivacyPolicyConsentStatusView(APIView):
             "policy": PrivacyPolicySerializer(latest_policy).data
         })
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
+# @method_decorator(csrf_exempt, name='dispatch')
 class PrivacyPolicyConsentCreateView(APIView):
     """
     POST /privacy-policy/consent/
@@ -69,12 +74,13 @@ class PrivacyPolicyConsentCreateView(APIView):
     - 400: if the user already gave consent
     - 404: if the policy does not exist
     """
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        policy_id = request.data.get("policy_id")
+        agree = json.loads(request.data.get("agree", False))
         try:
-            policy = PrivacyPolicy.objects.get(id=policy_id)
+            policy = PrivacyPolicy.objects.order_by("-published_at").first()
         except PrivacyPolicy.DoesNotExist:
             return Response({"detail": "Privacy policy not found."}, status=404)
 
@@ -84,7 +90,7 @@ class PrivacyPolicyConsentCreateView(APIView):
         consent = PrivacyPolicyConsent.objects.create(
             user=request.user,
             policy=policy,
-            consent_given=True,
+            consent_given=agree,
             consent_date=now(),
             ip_address=request.META.get("REMOTE_ADDR")
         )

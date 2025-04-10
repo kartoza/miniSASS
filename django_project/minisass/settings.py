@@ -10,10 +10,6 @@ from drf_yasg import openapi
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
 ALLOWED_HOSTS = ['*']
 
 INTERNAL_IPS = ['127.0.0.1']
@@ -21,9 +17,24 @@ INTERNAL_IPS = ['127.0.0.1']
 WHITELISTED_IP_ADDRESSES = os.getenv('WHITELISTED_IP_ADDRESSES', '').split(',')
 
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-    CORS_ALLOW_CREDENTIALS = True
+# if DEBUG:
+#     CORS_ALLOWED_ORIGINS = [
+#         "http://localhost:5173",
+#         "http://0.0.0.0:5173",
+#         "http://localhost:5000",
+#         "http://0.0.0.0:5000",
+#     ]
+#     CSRF_TRUSTED_ORIGINS = [
+#         "http://localhost:5173",
+#         "http://0.0.0.0:5173",
+#         "http://localhost:5000",
+#         "http://0.0.0.0:5000",
+#     ]
+#     CORS_ALLOW_ALL_ORIGINS = True
+#     CORS_ALLOW_CREDENTIALS = True
+#     # For CSRF token access in JavaScript
+#     CSRF_COOKIE_HTTPONLY = False
+#     # CSRF_COOKIE_SAMESITE = "Lax"
 SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
 
 
