@@ -1,0 +1,54 @@
+[
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Snails", "sensitivity_score": 4.00, "db_field": "snails" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "True Flies", "sensitivity_score": 2.00, "db_field": "true_flies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Caddisflies", "sensitivity_score": 9.00, "db_field": "caddisflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Bugs or Beetles", "sensitivity_score": 5.00, "db_field": "bugs_beetles" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Dragonflies", "sensitivity_score": 6.00, "db_field": "dragonflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Damselflies", "sensitivity_score": 4.00, "db_field": "damselflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Other Mayflies", "sensitivity_score": 11.00, "db_field": "other_mayflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Minnow Mayflies", "sensitivity_score": 5.00, "db_field": "minnow_mayflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Stoneflies", "sensitivity_score": 17.00, "db_field": "stoneflies" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Crabs or Shrimps", "sensitivity_score": 6.00, "db_field": "crabs_shrimps" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Leeches", "sensitivity_score": 2.00, "db_field": "leeches" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Worms", "sensitivity_score": 2.00, "db_field": "worms" }
+  },
+  {
+    "model": "minisass.groupscores",
+    "fields": { "name": "Flat Worms", "sensitivity_score": 3.00, "db_field": "flatworms" }
+  }
+]

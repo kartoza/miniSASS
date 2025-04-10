@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
-                ('file', models.FileField(null=True, upload_to=minisass.models.mobile_app_path)),
+                ('file', models.FileField(null=True, upload_to=minisass.models.models.mobile_app_path)),
                 ('active', models.BooleanField(default=False)),
             ],
         ),

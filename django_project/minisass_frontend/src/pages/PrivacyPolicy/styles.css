@@ -1,0 +1,10 @@
+.scrolling-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px; /* Adjust the gap between tiles */
+  padding: 20px 0; /* Adjust padding as needed */
+}
+
+li {
+  cursor: text !important;
+}

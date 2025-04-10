@@ -37,7 +37,10 @@ from minisass_authentication.serializers import (
 from minisass_authentication.serializers import (
 	UserProfileSerializer
 )
-from minisass_authentication.utils import get_is_user_password_enforced
+from minisass_authentication.utils import (
+	get_is_user_password_enforced,
+	get_user_privacy_consent
+)
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -444,8 +447,10 @@ def user_login(request):
 			# Check if first name is "Anonymous"
 			if user.first_name == "Anonymous":
 				is_profile_updated = False
+				has_consented = False
 			else:
 				is_profile_updated = get_is_user_password_enforced(user, password)
+				has_consented = get_user_privacy_consent(user)
 
 			user_data = {
 				'username': user.username,
@@ -455,7 +460,8 @@ def user_login(request):
 				'is_authenticated': True,
 				'user_id': user.pk,
 				'is_admin': request.user.is_staff if request.user.is_authenticated else None,
-				'is_profile_updated': is_profile_updated
+				'is_profile_updated': is_profile_updated,
+				'is_agreed_to_privacy_policy': has_consented,
 			}
 
 			return Response(user_data, status=status.HTTP_200_OK)
