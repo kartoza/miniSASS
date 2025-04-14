@@ -42,3 +42,4 @@ data
 
 .env
 docs/mkdocs.yml
+/django_project/minisass_frontend/src/dist/*

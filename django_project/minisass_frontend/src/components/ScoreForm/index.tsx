@@ -39,7 +39,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const {dispatch, state} = useAuth();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [allowSaving, setAllowSaving] = useState(false);
-  
+
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
@@ -97,7 +97,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const handleSave = async (saveToExistingSite  = false) => {
     setIsSavingData(true)
     try {
-      
+
       const storedState = localStorage.getItem('authState');
       if (storedState) {
         const parsedState = JSON.parse(storedState);
@@ -122,7 +122,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           datainput[field] = null;
         }
       });
-      
+
       // Create an object with the data to be saved
       const observationsData = {
         score:averageScore,
@@ -218,14 +218,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         setSelectedPests(newlyAddedGroup.name)
         setAllowSaving(true)
       }else setAllowSaving(false)
-      
+
       // disabled upload buttons
       const newCheckedState = [...isCheckboxChecked];
       newCheckedState[id] = !newCheckedState[id];
       setIsCheckboxChecked(newCheckedState);
 
       if(temp_checkedGroups.length > 0)
-        if (additionalData.selectedSite && additionalData.date) 
+        if (additionalData.selectedSite && additionalData.date)
           setProceedToSavingData(true)
         else if (additionalData.latitude && additionalData.longitude && additionalData.riverName && additionalData.siteName && additionalData.siteDescription && additionalData.date)
           setProceedToSavingData(true)
@@ -252,7 +252,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setIsManageImagesModalOpen(true);
     setRefetchImages(true)
     // console.log('assigning ', groups, ' ', sensetivityScore, ' ', ' ', id, ' and and images ',pest_images)
-    
+
     setManageImagesModalData({
       'groups': groups,
       'sensetivityScore': sensetivityScore,
@@ -276,7 +276,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     for (const key in pestImages) {
       if (Object.prototype.hasOwnProperty.call(pestImages, key)) {
         const currentArray = pestImages[key];
-    
+
         if (currentArray.length > 0) {
           var data = new FormData();
 
@@ -290,7 +290,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
           const storedObservationId = localStorage.getItem('observationId') || 0;
           const storedSiteId = localStorage.getItem('siteId') || 0;
-          
+
           data.append('observationId', JSON.stringify(observationId));
 
           if (typeof additionalData.selectedSite !== 'undefined' && additionalData.selectedSite !== null && additionalData.selectedSite !== "") {
@@ -322,7 +322,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 }
               }
             );
-        
+
             if(response.status == 200){
               setIsUploadingImage(false)
               setObservationId(response.data.observation_id)
@@ -336,7 +336,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           }catch( exception ){
             console.log(exception.message);
           }
-        } 
+        }
       }
     }
   }
@@ -346,9 +346,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           const storedObservationId = localStorage.getItem('observationId') || 0;
           deleteObservation(parseInt(storedObservationId));
       };
-  
+
       window.addEventListener('unload', handleUnload);
-  
+
       return () => {
           window.removeEventListener('unload', handleUnload);
       };
@@ -360,7 +360,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         const message = "You have unsaved data, are you sure you want to leave?";
         event.returnValue = message;
         return message;
-        
+
       }
     };
 
@@ -378,7 +378,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       setError(error);
     }
   };
-  
+
   const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
   const [isCloseSiteDialogOpen, setIsCloseSiteDialogOpen] = React.useState(false);
 
@@ -386,9 +386,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     if(proceedToSavingData)
       setIsCloseDialogOpen(true)
     else if(
-      additionalData.riverName !== '' && 
-      additionalData.siteName !== '' && 
-      additionalData.siteDescription !== '' && 
+      additionalData.riverName !== '' &&
+      additionalData.siteName !== '' &&
+      additionalData.siteDescription !== '' &&
       additionalData.date !== ''
     )
       setIsCloseDialogOpen(true)
@@ -417,8 +417,8 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
     setIsCloseSiteDialogOpen(false)
   };
 
-  
-  
+
+
   return (
     <>
 
@@ -443,7 +443,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         title="Cannot Save Observation"
         message="You chose create new site but the Site name you provided already exists, should the observation be saved to this site instead?"
       />
-      
+
       <div className="flex flex-col font-raleway items-center justify-start mx-auto p-0.5 w-full"
         style={{
           height: '75vh',
@@ -459,7 +459,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               </div>
             </div>
           </div>
-          
+
         ) :
         (
 
@@ -549,7 +549,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                               </Button>
                               <UploadModal
                                 key={`image-${props.id}`}
-                                isOpen={openImagePestId === props.id && isAddMore} 
+                                isOpen={openImagePestId === props.id && isAddMore}
                                 onClose={closeUploadModal}
                                 onSubmit={
                                   files => {

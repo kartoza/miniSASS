@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Routes from "./Routes";
+import PrivacyConsentModal from "./components/PrivacyConsentModal"
 
 function App() {
-
+  const [consentModalOpen, setConsentModalOpen] = useState(false);
   useEffect(() => {
     const startTime = Date.now();
 
@@ -19,7 +20,12 @@ function App() {
     };
   }, []);
 
-  return <Routes />;
+  return (
+    <>
+      <PrivacyConsentModal open={consentModalOpen} setOpen={setConsentModalOpen} />
+      <Routes />
+    </>
+  );
 }
 
 export default App;

@@ -124,8 +124,9 @@ const Footer: React.FC<FooterProps> = (props) => {
                   />
                 </div>
 
-                <ul className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list md:ml-[50px]">
-                  <li style={{ whiteSpace: 'nowrap' }}>
+                <ul
+                  className="flex sm:flex-col flex-row gap-[19px] items-start justify-start w-auto md:w-full common-column-list md:ml-[50px]">
+                  <li style={{whiteSpace: 'nowrap'}}>
                     <HashLink to="/howto#howto-title">
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
@@ -135,7 +136,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       </Text>
                     </HashLink>
                   </li>
-                  <li style={{ whiteSpace: 'nowrap' }}>
+                  <li style={{whiteSpace: 'nowrap'}}>
                     <Text
                       className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                       size="txtRalewayExtraBold14WhiteA700"
@@ -144,7 +145,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       Map
                     </Text>
                   </li>
-                  <li style={{ whiteSpace: 'nowrap' }}>
+                  <li style={{whiteSpace: 'nowrap'}}>
                     <Text
                       className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
                       size="txtRalewayExtraBold14WhiteA700"
@@ -159,7 +160,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                       Documentation
                     </Text>
                   </li>
-                  <li style={{ whiteSpace: 'nowrap' }}>
+                  <li style={{whiteSpace: 'nowrap'}}>
                     <a>
                       <Text
                         className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
@@ -168,15 +169,26 @@ const Footer: React.FC<FooterProps> = (props) => {
                       >
                         Contact us
                       </Text>
-                      
+
                       {/* ContactFormModal opens when isModalOpen is true */}
-                      <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit} />
+                      <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit}/>
                     </a>
+                  </li>
+                  <li style={{whiteSpace: 'nowrap'}}>
+                    <HashLink to="/privacy-policy#privacy-policy-title">
+                      <Text
+                        className="text-sm text-white-A700 tracking-[0.98px] uppercase cursor-pointer"
+                        size="txtRalewayExtraBold14WhiteA700"
+                      >
+                        Privacy Policy
+                      </Text>
+                    </HashLink>
                   </li>
                 </ul>
 
                 <div className="bg-transparent flex flex-col items-start justify-start w-auto">
-                  <a href="https://www.youtube.com/@groundtruthcitizenscience" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.youtube.com/@groundtruthcitizenscience" target="_blank"
+                     rel="noopener noreferrer">
                     <Img
                       className="h-6 w-6"
                       src={`${globalVariables.staticPath}img_riyoutubefill_white_a700.svg`}
