@@ -1,63 +1,62 @@
 {
-  "_Close-6d48af70.js": {
-    "file": "assets/Close-6d48af70.js",
+  "_Close-a9035f4f.js": {
+    "file": "assets/Close-a9035f4f.js",
     "imports": [
       "index.html",
-      "_index-61a5b665.js"
+      "_index-a8a62179.js"
     ]
   },
-  "_TextField-37e9e457.js": {
-    "file": "assets/TextField-37e9e457.js",
+  "_TextField-c4f6fa76.js": {
+    "file": "assets/TextField-c4f6fa76.js",
     "imports": [
       "index.html",
-      "_index-61a5b665.js",
-      "_jsx-runtime_commonjs-proxy-a11178fc.js",
-      "_index-d1d3455d.js"
+      "_index-a8a62179.js",
+      "_jsx-runtime_commonjs-proxy-a070d4fb.js"
     ]
   },
-  "_index-0f4606ca.js": {
-    "file": "assets/index-0f4606ca.js",
-    "imports": [
-      "index.html",
-      "_index-d1d3455d.js",
-      "_index-61a5b665.js"
-    ]
-  },
-  "_index-3dffdf6e.js": {
-    "file": "assets/index-3dffdf6e.js",
-    "imports": [
-      "index.html"
-    ]
-  },
-  "_index-61a5b665.js": {
+  "_index-a8a62179.js": {
     "css": [
       "assets/index-4c80aeb1.css"
     ],
-    "file": "assets/index-61a5b665.js",
+    "file": "assets/index-a8a62179.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js"
+      "_index-e3184a56.js"
     ]
   },
-  "_index-c8d1d5e3.js": {
-    "file": "assets/index-c8d1d5e3.js",
+  "_index-ba67c7c6.js": {
+    "file": "assets/index-ba67c7c6.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js",
-      "_index-61a5b665.js"
+      "_index-e3184a56.js",
+      "_index-a8a62179.js"
     ]
   },
-  "_index-d1d3455d.js": {
-    "file": "assets/index-d1d3455d.js",
+  "_index-dd314230.js": {
+    "file": "assets/index-dd314230.js",
+    "imports": [
+      "index.html",
+      "_index-e3184a56.js",
+      "_index-a8a62179.js"
+    ]
+  },
+  "_index-e01bdd9b.js": {
+    "file": "assets/index-e01bdd9b.js",
     "imports": [
       "index.html"
     ]
   },
-  "_jsx-runtime_commonjs-proxy-a11178fc.js": {
-    "file": "assets/jsx-runtime_commonjs-proxy-a11178fc.js",
+  "_index-e3184a56.js": {
+    "file": "assets/index-e3184a56.js",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_jsx-runtime_commonjs-proxy-a070d4fb.js": {
+    "file": "assets/jsx-runtime_commonjs-proxy-a070d4fb.js",
     "imports": [
       "index.html",
-      "_index-61a5b665.js"
+      "_index-a8a62179.js"
     ]
   },
   "index.css": {
@@ -66,7 +65,7 @@
   },
   "index.html": {
     "css": [
-      "assets/index-f480363e.css"
+      "assets/index-d725a867.css"
     ],
     "dynamicImports": [
       "pages/Howto/index.tsx",
@@ -75,14 +74,15 @@
       "pages/Home.tsx",
       "pages/PasswordReset/index.tsx",
       "pages/RecentActivity/index.tsx",
-      "pages/MobileApp/index.tsx"
+      "pages/MobileApp/index.tsx",
+      "pages/PrivacyPolicy/index.tsx"
     ],
-    "file": "assets/index-532e7518.js",
+    "file": "assets/index-cff7f535.js",
     "isEntry": true,
     "src": "index.html"
   },
   "pages/Home.tsx": {
-    "file": "assets/Home-5c8c63b8.js",
+    "file": "assets/Home-4a9d1d52.js",
     "imports": [
       "index.html"
     ],
@@ -97,12 +97,12 @@
     "css": [
       "assets/index-50de1301.css"
     ],
-    "file": "assets/index-0fcd460b.js",
+    "file": "assets/index-3d2f270f.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js",
-      "_index-61a5b665.js",
-      "_index-3dffdf6e.js"
+      "_index-e3184a56.js",
+      "_index-a8a62179.js",
+      "_index-e01bdd9b.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/Howto/index.tsx"
@@ -115,13 +115,13 @@
     "css": [
       "assets/index-d9e755db.css"
     ],
-    "file": "assets/index-aa37b0a2.js",
+    "file": "assets/index-a473d9e7.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js",
-      "_index-c8d1d5e3.js",
-      "_index-61a5b665.js",
-      "_index-3dffdf6e.js"
+      "_index-e3184a56.js",
+      "_index-ba67c7c6.js",
+      "_index-a8a62179.js",
+      "_index-e01bdd9b.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/MainPage/index.tsx"
@@ -134,15 +134,15 @@
     "css": [
       "assets/index-0f6d8175.css"
     ],
-    "file": "assets/index-01528fae.js",
+    "file": "assets/index-549d5a81.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js",
-      "_index-61a5b665.js",
-      "_index-c8d1d5e3.js",
-      "_jsx-runtime_commonjs-proxy-a11178fc.js",
-      "_TextField-37e9e457.js",
-      "_Close-6d48af70.js"
+      "_index-e3184a56.js",
+      "_index-a8a62179.js",
+      "_index-ba67c7c6.js",
+      "_jsx-runtime_commonjs-proxy-a070d4fb.js",
+      "_TextField-c4f6fa76.js",
+      "_Close-a9035f4f.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/Map/index.tsx"
@@ -155,36 +155,53 @@
     "css": [
       "assets/index-21aabcc4.css"
     ],
-    "file": "assets/index-7014296d.js",
+    "file": "assets/index-da4312f7.js",
     "imports": [
       "index.html",
-      "_index-0f4606ca.js",
-      "_index-d1d3455d.js",
-      "_jsx-runtime_commonjs-proxy-a11178fc.js",
-      "_index-61a5b665.js",
-      "_Close-6d48af70.js"
+      "_index-dd314230.js",
+      "_index-e3184a56.js",
+      "_jsx-runtime_commonjs-proxy-a070d4fb.js",
+      "_index-a8a62179.js",
+      "_Close-a9035f4f.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/MobileApp/index.tsx"
   },
   "pages/PasswordReset/index.tsx": {
-    "file": "assets/index-4d402f35.js",
+    "file": "assets/index-83ed59d4.js",
     "imports": [
       "index.html",
-      "_index-d1d3455d.js"
+      "_index-e3184a56.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/PasswordReset/index.tsx"
   },
-  "pages/RecentActivity/index.tsx": {
-    "file": "assets/index-a8db2194.js",
+  "pages/PrivacyPolicy/index.css": {
+    "file": "assets/index-cd259d3a.css",
+    "src": "pages/PrivacyPolicy/index.css"
+  },
+  "pages/PrivacyPolicy/index.tsx": {
+    "css": [
+      "assets/index-cd259d3a.css"
+    ],
+    "file": "assets/index-6b8ec038.js",
     "imports": [
       "index.html",
-      "_index-0f4606ca.js",
-      "_index-61a5b665.js",
-      "_TextField-37e9e457.js",
-      "_index-d1d3455d.js",
-      "_jsx-runtime_commonjs-proxy-a11178fc.js"
+      "_index-e3184a56.js",
+      "_index-a8a62179.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/PrivacyPolicy/index.tsx"
+  },
+  "pages/RecentActivity/index.tsx": {
+    "file": "assets/index-7cecb0ab.js",
+    "imports": [
+      "index.html",
+      "_index-dd314230.js",
+      "_TextField-c4f6fa76.js",
+      "_index-e3184a56.js",
+      "_jsx-runtime_commonjs-proxy-a070d4fb.js",
+      "_index-a8a62179.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/RecentActivity/index.tsx"

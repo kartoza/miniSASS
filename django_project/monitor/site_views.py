@@ -21,7 +21,7 @@ from django.utils.dateparse import parse_date
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 from monitor.serializers import (
@@ -114,6 +114,12 @@ class SitesListCreateView(generics.ListCreateAPIView):
 	parser_classes = [MultiPartParser, FormParser, JSONParser]
 	queryset = Sites.objects.all()
 	serializer_class = SitesSerializer
+	authentication_classes = [JWTAuthentication]
+
+	def get_permissions(self):
+		if self.request.method == 'POST':
+			return [IsAuthenticated()]
+		return [AllowAny()]
 
 	def list(self, request):
 		queryset = self.get_queryset()
@@ -169,6 +175,16 @@ class SitesListCreateView(generics.ListCreateAPIView):
 class SiteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Sites.objects.all()
 	serializer_class = SitesSerializer
+	authentication_classes = [JWTAuthentication]
+
+	def get_permissions(self):
+		if self.request.method in ['POST', 'PUT', 'PATCH']:
+			return [IsAuthenticated()]
+		return [AllowAny()]
+
+	def update(self, request, *args, **kwargs):
+		request.data['user'] = request.user.pk
+		return super().update(request, *args, **kwargs)
 
 
 class AssessmentListCreateView(generics.ListCreateAPIView):
