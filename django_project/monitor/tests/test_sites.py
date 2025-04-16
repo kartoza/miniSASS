@@ -292,6 +292,7 @@ class SitesListCreateViewTestCase(TestCase):
 
 
     def test_list_site_filter(self):
+        client = APIClient()
         Sites.objects.create(
             user=self.user,
             site_name='Cape Town',
