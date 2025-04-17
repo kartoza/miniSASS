@@ -253,7 +253,46 @@ class SitesListCreateViewTestCase(TestCase):
         images_count = SiteImage.objects.filter(site_id=site_id).count()
         self.assertEqual(images_count, 0)
 
+    def test_create_site_not_authenticated(self):
+        client = APIClient()
+        data = {}
+
+        # Make a POST request
+        url = reverse('sites-list-create')
+        response = client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_update_site(self):
+        client = APIClient()
+
+        # Prepare the request data without images
+        data = {
+            'site_name': 'Updated Site',
+            'river_name': 'Updated River',
+            'description': 'Updated Description',
+            'river_cat': 'rocky'
+        }
+        # Make a POST request to update site
+        url = reverse('site-retrieve-update-destroy', args=[self.site.gid])
+
+        # test unauthorized
+        response = client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        # test authorize
+        client.force_authenticate(user=self.user)
+        response = client.patch(url, data, format='json')
+        # Check if the response status code is 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check if the site is created without images
+        self.assertEqual(response.data['site_name'], 'Updated Site')
+        self.assertEqual(response.data['river_name'], 'Updated River')
+        self.assertEqual(response.data['description'], 'Updated Description')
+
+
     def test_list_site_filter(self):
+        client = APIClient()
         Sites.objects.create(
             user=self.user,
             site_name='Cape Town',
@@ -264,8 +303,6 @@ class SitesListCreateViewTestCase(TestCase):
             site_name='Limpopo',
             the_geom=Point(1, 1)
         )
-        client = APIClient()
-        client.force_authenticate(user=self.user)
         url = reverse('sites-list-create')
         response = client.get(f'{url}?site_name=mpo', format='json')
         self.assertEquals(len(response.json()), 1)

@@ -26,9 +26,13 @@ def get_user_privacy_consent(user):
     if not latest_policy:
         return True
 
-    has_consented = PrivacyPolicyConsent.objects.filter(
+    consents = PrivacyPolicyConsent.objects.filter(
         user=user,
-        policy=latest_policy,
-        consent_given=True
-    ).exists()
-    return has_consented
+        policy=latest_policy
+    )
+
+    if not consents.exists():
+        return None
+    else:
+        consent = consents.first()
+        return consent.consent_given

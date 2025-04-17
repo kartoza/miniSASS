@@ -34,6 +34,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Project-specific imports (minisass and monitor)
 from minisass.models import GroupScores
@@ -332,6 +333,12 @@ def delete_pest_image(request, observation_pk, pk, **kwargs):
 def create_observations(request):
 	if request.method == 'POST':
 		try:
+			auth_result = JWTAuthentication().authenticate(request)
+
+			if auth_result is None:
+				return Response({'detail': 'Token not valid'}, status=401)
+
+			request.user, request.auth = auth_result
 
 			longitude = 0
 			latitude = 0
