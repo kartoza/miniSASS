@@ -7,7 +7,7 @@ from monitor.observation_views import (
     ObservationRetrieveUpdateDeleteView,
     ObservationRetrieveView,
     RecentObservationListView,
-    create_observations,
+    ObservationCreateView,
     ObservationImageViewSet,
     get_observations_by_site,
     upload_pest_image,
@@ -91,7 +91,7 @@ urlpatterns = [
     ),
     path(
         'observations-create/',
-        create_observations,
+        ObservationCreateView.as_view(),
         name='create_observations'
     ),
     path(
