@@ -422,12 +422,6 @@ class ObservationImageViewSet(
 		return super().destroy(request, *args, **kwargs)
 
 
-class ObservationCreateView(generics.CreateAPIView):
-	queryset = Observations.objects.all()
-	serializer_class = ObservationsSerializer
-	permission_classes = [IsAuthenticatedOrWhitelisted]
-
-
 class ObservationListCreateView(generics.ListCreateAPIView):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
