@@ -622,14 +622,13 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 									pest_image.image = image
 									pest_image.save()
 
-									# # Open the image for classification
-									# result = classify_image(image)
-									# if 'error' not in result:
-									# 	# Save classification results to the ObservationPestImage instance
-									# 	pest_image.ml_prediction = result['class']
-									# 	pest_image.ml_score = result['confidence']
-									# 	pest_image.save()
-									# classification_results.append(result)
+									# Open the image for classification
+									result = classify_image(image)
+									if 'error' not in result:
+										# Save classification results to the ObservationPestImage instance
+										pest_image.ml_prediction = result['class']
+										pest_image.ml_score = result['confidence']
+										pest_image.save()
 								except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError):
 									pass
 
