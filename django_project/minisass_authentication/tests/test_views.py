@@ -1,5 +1,5 @@
 from django.test import TestCase
-from unittest.mock import  patch
+from unittest.mock import patch
 from minisass_authentication.models import Lookup
 from rest_framework.test import APITestCase
 from django.urls import reverse
@@ -12,7 +12,6 @@ from django.contrib.auth.tokens import default_token_generator
 from minisass_authentication.tests.factories import UserFactory
 from minisass_authentication.models import PENDING_STATUS
 from rest_framework import status
-
 
 
 class PasswordResetTest(APITestCase):
@@ -414,3 +413,25 @@ class LoginTest(APITestCase):
             response.json()['is_profile_updated']
         )
 
+
+class TestContactUs(APITestCase):
+    """
+    Test Contact Us view.
+    """
+
+    @mock.patch('minisass_authentication.views.send_mail')
+    def test_contact_us(self, mock_mail):
+        """
+        Test Contact Us works without phone number and without login.
+        """
+
+        url = reverse('contact_us')
+        payload = {
+            'name': 'Name',
+            'email': 'name@kartoza.com',
+            'phone': '',
+            'message': 'Test message'
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEquals(response.status_code, 200)
+        mock_mail.assert_called_once()
