@@ -41,13 +41,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    SendContactUsEmail(formData)
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
+    SendContactUsEmail(formData);
   };
 
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -69,6 +63,12 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
       if (response.status === 200) {
         setSendingMessage(false)
         setMessageSent(true)
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+        });
       } else {
         setIsError(true);
         setShowHeading(false);
@@ -97,7 +97,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ isOpen, onClose, on
   };
 
   const isFormValid = (): boolean => {
-    return formData.phone.length >= 10 && /\S+@\S+\.\S+/.test(formData.email) && formData.message.trim().length > 0;
+    return /\S+@\S+\.\S+/.test(formData.email) && formData.message.trim().length > 0;
   };
 
   

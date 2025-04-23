@@ -17,15 +17,17 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import (
 	api_view,
 	permission_classes
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
 from minisass_authentication.models import UserProfile, Lookup, PasswordHistory
 from minisass_authentication.serializers import (
@@ -97,6 +99,8 @@ def check_is_expert(request, email):
 
 
 @api_view(['POST'])
+@authentication_classes([])  # disable auth for this endpoint
+@permission_classes([AllowAny])  # make sure it's public
 def contact_us(request):
 	email = request.data.get('email')
 	name = request.data.get('name')
