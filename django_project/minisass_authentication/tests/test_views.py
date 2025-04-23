@@ -419,7 +419,7 @@ class TestContactUs(APITestCase):
     Test Contact Us view.
     """
 
-    @mock.patch('minisass_authentication.views.send_mail')
+    @patch('minisass_authentication.views.send_mail')
     def test_contact_us(self, mock_mail):
         """
         Test Contact Us works without phone number and without login.
