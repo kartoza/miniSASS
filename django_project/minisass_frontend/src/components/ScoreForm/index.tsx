@@ -162,7 +162,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.user.access_token}`;
       const response = await axios.post(
-        `${globalVariables.baseUrl}/monitor/observations-create/`,
+        `${globalVariables.baseUrl}/monitor/observations/`,
         form_data,
         {
           headers: {

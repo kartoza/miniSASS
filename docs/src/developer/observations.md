@@ -18,7 +18,7 @@ The Observations API facilitates users in creating observations for various site
 
 ## Endpoints
 
-1. **CREATE** `https://{current_domain}/monitor/observations-create/`
+1. **CREATE** `https://{current_domain}/monitor/observations/`
 
 - **Request Type**: POST
 - **Authentication**: User authentication required (Login)
@@ -160,7 +160,7 @@ const observationsData = {
   }
 };
 
-axios.post(`${current_domain}/monitor/observations-create/`, observationsData);
+axios.post(`${current_domain}/monitor/observations/`, observationsData);
 ```
 
 2. **GET RECENT OBSERVATIONS** `https://{current_domain}/monitor/observations/recent-observations/`

@@ -328,204 +328,6 @@ def delete_pest_image(request, observation_pk, pk, **kwargs):
 		return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
 
-@csrf_exempt
-@require_POST
-def create_observations(request):
-	if request.method == 'POST':
-		try:
-			auth_result = JWTAuthentication().authenticate(request)
-
-			if auth_result is None:
-				return Response({'detail': 'Token not valid'}, status=401)
-
-			request.user, request.auth = auth_result
-
-			longitude = 0
-			latitude = 0
-
-			# Parse JSON data from the request body
-			data = json.loads(request.POST.get('data', '{}'))
-
-			# Extract datainput from the payload
-			datainput = data.get('datainput', {})
-
-			# Extract other fields from the payload
-			score = Decimal(str(data.get('score', 0)))
-			comment = datainput.get('notes', '')
-			water_clarity = Decimal(
-				str(datainput.get('waterclaritycm', -9999) or -9999))
-			water_temp = Decimal(
-				str(datainput.get('watertemperatureOne', -9999) or -9999))
-			ph = Decimal(str(datainput.get('ph', -9999) or -9999))
-			diss_oxygen = Decimal(
-				str(datainput.get('dissolvedoxygenOne', -9999) or -9999))
-			diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
-			elec_cond = Decimal(
-				str(datainput.get('electricalconduOne', -9999) or -9999))
-			elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
-			site_name = datainput.get('siteName', '')
-			river_name = datainput.get('riverName', '')
-			description = datainput.get('siteDescription', '')
-			river_cat = datainput.get('rivercategory', 'rocky')
-			collector_name = datainput.get('collectorsname', '')
-			ml_score = datainput.get('ml_score', 0)
-			obs_date = datainput.get('date')
-
-			if request.user.is_authenticated:
-				# If the user is authenticated, use request.user
-				user = request.user
-			else:
-				# If user_id is provided, get the user
-				user_id = int(request.POST.get('user_id', 0))
-				try:
-					user = User.objects.get(pk=user_id)
-				except User.DoesNotExist:
-					return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
-			site_id_str = str(request.POST.get('siteId', '0'))
-			selectedSite = 0
-			if site_id_str.lower() == 'undefined':
-				selectedSite = int(datainput.get('selectedSite', 0))
-
-			observation_id_str = str(request.POST.get('observationId', '0'))
-
-			# Remove leading and trailing whitespaces, and replace double quotes
-			site_id_str = site_id_str.strip().replace('"', '')
-			observation_id_str = observation_id_str.strip().replace('"', '')
-
-			# Check if the strings are not empty before attempting conversion
-			try:
-				site_id = int(site_id_str) if site_id_str else selectedSite
-			except (ValueError, TypeError):
-				site_id = selectedSite
-
-			try:
-				observation_id = int(
-					observation_id_str) if observation_id_str else 0
-			except (ValueError, TypeError):
-				observation_id = 0
-
-			try:
-				latitude = float(str(datainput.get('latitude', 0)))
-				longitude = float(str(datainput.get('longitude', 0)))
-			except ValueError:
-				return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
-
-			# Check if the values are within a valid range
-			if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
-				return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
-
-			create_site_or_observation = request.POST.get(
-				'create_site_or_observation', 'true').lower()
-
-			if create_site_or_observation == 'true':
-				try:
-					site = Sites.objects.get(gid=site_id)
-				except Sites.DoesNotExist:
-					max_site_id = Sites.objects.all().aggregate(Max('gid'))[
-						'gid__max']
-					new_site_id = max_site_id + 1 if max_site_id is not None else 1
-
-					if Sites.objects.filter(site_name=site_name).exists():
-						saveToSite = request.POST.get('saveToSite', 'false').lower()
-						if saveToSite == 'true':
-								site = Sites.objects.get(site_name=site_name)	
-						else:
-							return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
-					else:
-						site = Sites.objects.create(
-							gid=new_site_id,
-							site_name=site_name,
-							river_name=river_name,
-							description=description,
-							river_cat=river_cat,
-							the_geom=Point(x=longitude, y=latitude, srid=4326),
-							user=user
-						)
-
-				for key, image in request.FILES.items():
-					if 'image_' in key:
-						SiteImage.objects.create(
-							site=site, image=image
-						)
-
-				max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
-					'gid__max']
-				new_observation_id = max_observation_id + \
-					1 if max_observation_id is not None else 1
-				observation = Observations(
-					gid=new_observation_id,
-					score=score,
-					site=site,
-					user=user,
-					comment=comment,
-					minisass_ml_score=ml_score,
-					water_clarity=water_clarity,
-					water_temp=water_temp,
-					ph=ph,
-					diss_oxygen=diss_oxygen,
-					diss_oxygen_unit=diss_oxygen_unit,
-					elec_cond=elec_cond,
-					elec_cond_unit=elec_cond_unit,
-					obs_date=obs_date,
-					collector_name=collector_name
-				)
-				for db_fields in GroupScores.DB_FIELDS:
-					value = data.get(db_fields[0], False)
-					setattr(observation, db_fields[0], value)
-				observation.save()
-				return JsonResponse(
-					{'status': 'success', 'observation_id': observation.gid})
-
-			elif create_site_or_observation == 'false':
-				try:
-					site = Sites.objects.get(gid=site_id)
-
-					for key, image in request.FILES.items():
-						if 'image_' in key:
-							SiteImage.objects.create(
-								site=site, image=image
-							)
-
-					max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
-						'gid__max']
-					new_observation_id = max_observation_id + \
-						1 if max_observation_id is not None else 1
-					observation = Observations(
-						gid=observation_id if observation_id != 0 else new_observation_id,
-						score=score,
-						site=site,
-						user=user,
-						comment=comment,
-						minisass_ml_score=ml_score,
-						water_clarity=water_clarity,
-						water_temp=water_temp,
-						ph=ph,
-						diss_oxygen=diss_oxygen,
-						diss_oxygen_unit=diss_oxygen_unit,
-						elec_cond=elec_cond,
-						elec_cond_unit=elec_cond_unit,
-						obs_date=obs_date,
-						collector_name=collector_name
-					)
-					for db_fields in GroupScores.DB_FIELDS:
-						value = data.get(db_fields[0], False)
-						setattr(observation, db_fields[0], value)
-					observation.save()
-
-					return JsonResponse(
-						{'status': 'success', 'observation_id': observation.gid})
-
-				except Sites.DoesNotExist:
-					return JsonResponse({'status': 'error', 'message': 'cannot find site to save observation to'})
-
-		except Exception as e:
-			return JsonResponse({'status': 'error', 'message': str(e)})
-
-	return JsonResponse(
-		{'status': 'error', 'message': 'Invalid request method'})
-
-
 class RecentObservationListView(generics.ListAPIView):
 	serializer_class = ObservationsSerializer
 
@@ -624,6 +426,225 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 	queryset = Observations.objects.all()
 	serializer_class = ObservationsSerializer
 	permission_classes = [IsAuthenticatedOrWhitelisted]
+	authentication_classes = [JWTAuthentication]
+
+	def create(self, request, *args, **kwargs):
+		if request.method == 'POST':
+			try:
+				longitude = 0
+				latitude = 0
+
+				# Parse JSON data from the request body
+				data = json.loads(request.data.get('data', '{}'))
+
+				# Extract datainput from the payload
+				datainput = data.get('datainput', {})
+
+				# Extract other fields from the payload
+				score = Decimal(str(data.get('score', 0)))
+				comment = datainput.get('notes', '')
+				water_clarity = Decimal(
+					str(datainput.get('waterclaritycm', -9999) or -9999))
+				print(water_clarity)
+				water_temp = Decimal(
+					str(datainput.get('watertemperatureOne', -9999) or -9999))
+				ph = Decimal(str(datainput.get('ph', -9999) or -9999))
+				diss_oxygen = Decimal(
+					str(datainput.get('dissolvedoxygenOne', -9999) or -9999))
+				diss_oxygen_unit = datainput.get('dissolvedoxygenOneUnit', 'mgl')
+				elec_cond = Decimal(
+					str(datainput.get('electricalconduOne', -9999) or -9999))
+				elec_cond_unit = datainput.get('electricalconduOneUnit', 'mS/m')
+				site_name = datainput.get('siteName', '')
+				river_name = datainput.get('riverName', '')
+				description = datainput.get('siteDescription', '')
+				river_cat = datainput.get('rivercategory', 'rocky')
+				collector_name = datainput.get('collectorsname', '')
+				ml_score = datainput.get('ml_score', 0)
+				obs_date = datainput.get('date')
+
+				if request.user.is_authenticated:
+					# If the user is authenticated, use request.user
+					user = request.user
+				else:
+					# If user_id is provided, get the user
+					user_id = int(request.data.get('user_id', 0))
+					try:
+						user = User.objects.get(pk=user_id)
+					except User.DoesNotExist:
+						return JsonResponse({'status': 'error', 'message': 'User not found'},
+											status=status.HTTP_404_NOT_FOUND)
+
+				site_id_str = str(request.data.get('siteId', '0'))
+				selectedSite = 0
+				if site_id_str.lower() == 'undefined':
+					selectedSite = int(datainput.get('selectedSite', 0))
+
+				observation_id_str = str(request.data.get('observationId', '0'))
+
+				# Remove leading and trailing whitespaces, and replace double quotes
+				site_id_str = site_id_str.strip().replace('"', '')
+				observation_id_str = observation_id_str.strip().replace('"', '')
+
+				# Check if the strings are not empty before attempting conversion
+				try:
+					site_id = int(site_id_str) if site_id_str else selectedSite
+				except (ValueError, TypeError):
+					site_id = selectedSite
+
+				try:
+					observation_id = int(
+						observation_id_str) if observation_id_str else 0
+				except (ValueError, TypeError):
+					observation_id = 0
+
+				try:
+					latitude = float(str(datainput.get('latitude', 0)))
+					longitude = float(str(datainput.get('longitude', 0)))
+				except ValueError:
+					return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+
+				# Check if the values are within a valid range
+				if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
+					return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
+
+				create_site_or_observation = request.data.get(
+					'create_site_or_observation', 'true').lower()
+
+				if create_site_or_observation == 'true':
+					try:
+						site = Sites.objects.get(gid=site_id)
+					except Sites.DoesNotExist:
+						max_site_id = Sites.objects.all().aggregate(Max('gid'))[
+							'gid__max']
+						new_site_id = max_site_id + 1 if max_site_id is not None else 1
+
+						if Sites.objects.filter(site_name=site_name).exists():
+							saveToSite = request.data.get('saveToSite', 'false').lower()
+							if saveToSite == 'true':
+								site = Sites.objects.get(site_name=site_name)
+							else:
+								return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
+						else:
+							site = Sites.objects.create(
+								gid=new_site_id,
+								site_name=site_name,
+								river_name=river_name,
+								description=description,
+								river_cat=river_cat,
+								the_geom=Point(x=longitude, y=latitude, srid=4326),
+								user=user
+							)
+
+					for key, image in request.FILES.items():
+						if 'image_' in key:
+							SiteImage.objects.create(
+								site=site, image=image
+							)
+
+					max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+						'gid__max']
+					new_observation_id = max_observation_id + \
+										 1 if max_observation_id is not None else 1
+					observation = Observations(
+						gid=new_observation_id,
+						score=score,
+						site=site,
+						user=user,
+						comment=comment,
+						minisass_ml_score=ml_score,
+						water_clarity=water_clarity,
+						water_temp=water_temp,
+						ph=ph,
+						diss_oxygen=diss_oxygen,
+						diss_oxygen_unit=diss_oxygen_unit,
+						elec_cond=elec_cond,
+						elec_cond_unit=elec_cond_unit,
+						obs_date=obs_date,
+						collector_name=collector_name
+					)
+					for db_fields in GroupScores.DB_FIELDS:
+						value = data.get(db_fields[0], False)
+						setattr(observation, db_fields[0], value)
+					observation.save()
+					return JsonResponse(
+						{'status': 'success', 'observation_id': observation.gid})
+
+				elif create_site_or_observation == 'false':
+					try:
+						site = Sites.objects.get(gid=site_id)
+
+						for key, image in request.FILES.items():
+							if 'image_' in key:
+								SiteImage.objects.create(
+									site=site, image=image
+								)
+
+						max_observation_id = Observations.objects.all().aggregate(Max('gid'))[
+							'gid__max']
+						new_observation_id = max_observation_id + \
+											 1 if max_observation_id is not None else 1
+						observation = Observations(
+							gid=observation_id if observation_id != 0 else new_observation_id,
+							score=score,
+							site=site,
+							user=user,
+							comment=comment,
+							minisass_ml_score=ml_score,
+							water_clarity=water_clarity,
+							water_temp=water_temp,
+							ph=ph,
+							diss_oxygen=diss_oxygen,
+							diss_oxygen_unit=diss_oxygen_unit,
+							elec_cond=elec_cond,
+							elec_cond_unit=elec_cond_unit,
+							obs_date=obs_date,
+							collector_name=collector_name
+						)
+						for db_fields in GroupScores.DB_FIELDS:
+							value = data.get(db_fields[0], False)
+							setattr(observation, db_fields[0], value)
+						observation.save()
+
+						# Handle uploaded pest images
+						for key, image in request.FILES.items():
+							print(key, image)
+
+							if key.startswith("pest_"):
+								# Do something with each file — like saving to a model
+								group_name = key.split(':')[1]
+								group = GroupScores.objects.get(db_field=group_name)
+								pest_image = ObservationPestImage.objects.create(
+									observation=observation,
+									group=group
+								)
+								try:
+									pest_image.image = image
+									pest_image.save()
+
+									# Open the image for classification
+									result = classify_image(image)
+									if 'error' not in result:
+										# Save classification results to the ObservationPestImage instance
+										pest_image.ml_prediction = result['class']
+										pest_image.ml_score = result['confidence']
+										pest_image.save()
+								except (OSError, Image.DecompressionBombError, Image.UnidentifiedImageError):
+									pass
+
+						return JsonResponse(
+							{'status': 'success', 'observation_id': observation.gid},
+							status=201
+						)
+
+					except Sites.DoesNotExist:
+						return JsonResponse({'status': 'error', 'message': 'cannot find site to save observation to'})
+
+			except Exception as e:
+				return JsonResponse({'status': 'error', 'message': str(e)})
+
+		return JsonResponse(
+			{'status': 'error', 'message': 'Invalid request method'})
 
 
 class ObservationRetrieveUpdateDeleteView(
