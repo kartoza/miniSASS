@@ -242,7 +242,7 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="selected_sites.csv"'
 
-        writer = csv.writer(response)
+        writer = csv.writer(response, quoting=csv.QUOTE_ALL)
         writer.writerow(
             [
                 'Site Name',
@@ -257,7 +257,7 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                 'Site Creation Date'
             ])
 
-        for site in queryset:
+        for site in queryset.order_by('site_name'):
             try:
                 user_profile = site.user.userprofile
                 user_organization_name = user_profile.organisation_name
