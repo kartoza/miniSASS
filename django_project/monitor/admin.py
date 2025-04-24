@@ -10,7 +10,7 @@ from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from django.contrib.sites.models import Site
 from minisass_authentication.models import UserProfile
-from minisass_authentication.contants import COUNTRIES
+from minisass_authentication.constants import COUNTRIES
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
 
 from .models import (
