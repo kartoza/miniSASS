@@ -34,11 +34,20 @@ class UserProfileInline(admin.StackedInline):
 
 
 def correct_country(modeladmin, request, queryset):
+    country_mapping = {
+        'ZA': 'ZA', '9': 'ZA', 'South Africa': 'ZA', 'MY': 'MY', 'Kenya': 'KE', 'NA': 'NA', 'None': 'ZA',
+        '101': 'IN', '109': 'ZA', '16': 'ZA', '104': 'IT', '169': 'TZ', '73': 'DK', '81': 'ES', '188': 'MG',
+        '55': 'CA', '87': 'GB', '135': 'ZA', '144': 'PL', '166': 'TR', '17': 'MW', '133': 'MX', 'N/A': 'ZA',
+        '239': 'AU', '14': 'ZW'
+    }
+
     for user in queryset:
         if user.userprofile:
-            if user.userprofile.country in ['ZA', 'SA', 'South Africa', '9']:
-                user.userprofile.country = 'ZA'
-                user.userprofile.save()
+            user.userprofile.country = country_mapping.get(
+                user.userprofile.country,
+                user.userprofile.country
+            )
+            user.userprofile.save()
 correct_country.short_description = "Correct Country"
 
 

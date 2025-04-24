@@ -70,7 +70,7 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return f"{self.organisation_type}: {self.organisation_name or 'Unknown'}"
+        return self.user.username
 
     def save(self, *args, **kwargs):
         if self.expert_approval_status == APPROVED_STATUS and self.certificate:
