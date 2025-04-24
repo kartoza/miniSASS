@@ -1,3 +1,4 @@
+import json
 from django.contrib.gis.geos import Point
 from rest_framework import generics
 from rest_framework import status
@@ -136,7 +137,10 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 		# Extract data from the request payload
 		site_data = request.data.get('site_data', {})
+		if isinstance(site_data, str):
+			site_data = json.loads(site_data)
 		images = request.FILES.getlist('images', [])
+		# breakpoint()
 
 		# Extract site data
 		site_name = site_data.get('site_name', '')
