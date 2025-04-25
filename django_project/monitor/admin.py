@@ -91,6 +91,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("User name"),
                 smart_str("User Organization"),
                 smart_str("User Country"),
+                smart_str("Country"),
                 smart_str("User Expert Status"),
                 smart_str("Obs Date"),
                 smart_str("Site name"),
@@ -144,6 +145,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.user.username),
                     smart_str(user_organization_name),
                     smart_str(user_country),
+                    smart_str(obs.site.country),
                     smart_str(user_is_expert),
                     smart_str(obs_date_str),
                     smart_str(obs.site.site_name),
@@ -213,9 +215,9 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
         'river_name',
         'user',
         'user_organization_name',
-        'user_country',
         'user_is_expert',
         'time_stamp',
+        'country'
     )
 
     def user_organization_name(self, obj):
@@ -254,7 +256,8 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                 'User Organization Name',
                 'User Expert Status',
                 'User Country',
-                'Site Creation Date'
+                'Site Creation Date',
+                'Country',
             ])
 
         for site in queryset.order_by('site_name'):
@@ -278,7 +281,8 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                     smart_str(user_organization_name),
                     smart_str(user_is_expert),
                     smart_str(user_country),
-                    smart_str(site.time_stamp)
+                    smart_str(site.time_stamp),
+                    smart_str(site.country)
                 ]
             )
 

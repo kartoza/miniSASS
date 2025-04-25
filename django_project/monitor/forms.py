@@ -76,7 +76,7 @@ class CustomGeoAdminForm(forms.ModelForm):
     class Meta:
         model = Sites
         fields = ['the_geom', 'latitude', 'longitude', 'site_name', 'river_name',
-                  'description', 'river_cat', 'user', 'assessment']
+                  'description', 'river_cat', 'user', 'assessment', 'country']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

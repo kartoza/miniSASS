@@ -2,6 +2,7 @@ import os
 import shutil
 import time
 
+from geopy.geocoders import Nominatim
 from dirtyfields import DirtyFieldsMixin
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -73,6 +74,7 @@ class Sites(models.Model):
     time_stamp = models.DateTimeField(auto_now=True)
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE,blank=True,null=True)
     objects = models.Manager()
+    country = models.CharField(max_length=3, blank=True, null=False)
 
     class Meta:
         db_table = 'sites'
@@ -89,6 +91,18 @@ class Sites(models.Model):
             settings.MINIO_BUCKET,
             f'{self.gid}'
         )
+
+    def save(self, *args, **kwargs):
+        if not self.country:
+            app = Nominatim(user_agent="minisass")
+            try:
+                location = app.reverse(f"{self.the_geom.y}, {self.the_geom.x}").raw
+                self.country = location.get('address', {}).get('country_code', 'N/A').upper()
+            except AttributeError:
+                pass
+
+        super().save(*args, **kwargs)
+
 
 def site_image_path(instance, filename):
     return os.path.join(
