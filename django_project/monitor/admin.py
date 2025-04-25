@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.gis import admin as geo_admin
+from leaflet.admin import LeafletGeoAdmin
 from django.contrib.gis.geos import Point
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
@@ -185,7 +185,7 @@ class SiteImageInline(admin.TabularInline):
 
 
 @admin.register(Sites)
-class SitesAdmin(geo_admin.OSMGeoAdmin):
+class SitesAdmin(LeafletGeoAdmin):
     form = CustomGeoAdminForm
     class Media:
         js = (

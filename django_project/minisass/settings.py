@@ -229,6 +229,7 @@ INSTALLED_APPS = [
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
+    'leaflet',
     'minisass_frontend',
     'minisass_authentication',
     'monitor',

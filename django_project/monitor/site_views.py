@@ -207,7 +207,7 @@ class SiteObservationsByLocation(APIView):
 				site = Sites.objects.get(gid=gid)
 			else:
 				site = Sites.objects.filter(
-					the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=5000))
+					the_geom__distance_lte=(Point(received_longitude, received_latitude, srid=4326), D(m=100))
 				).first()
 
 			if site:
