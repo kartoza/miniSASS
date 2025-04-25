@@ -476,7 +476,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                   </button>
               </div>
               {isSiteDetailsOpen && (
-                <><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
                     <Text
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
@@ -489,21 +490,24 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                     >
                       {observationDetails.rivername ? observationDetails.rivername : siteDetails.river_name}
                     </Text>
-                  </div><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        Site name:
-                      </Text>
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {observationDetails.sitename ? observationDetails.sitename : siteDetails.site_name}
-                      </Text>
-                    </div>
-                   <div className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full" style={{ marginTop: '3%' }}>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      Site name:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.sitename ? observationDetails.sitename : siteDetails.site_name}
+                    </Text>
+                  </div>
+                  <div
+                    className="flex sm:flex-col flex-row gap-3 h-[75px] md:h-auto items-start justify-between w-[541px] sm:w-full"
+                    style={{marginTop: '3%'}}>
                     <Text
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto self-end"
                       size="txtRalewayRomanRegular18"
@@ -520,80 +524,103 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                     </div>
                   </div>
                   <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        Latitude:
-                      </Text>
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {observationDetails.latitude !== undefined && observationDetails.latitude !== null
-                          ? Number(observationDetails.latitude).toFixed(6)
-                          : (siteWithObservations.observations.length > 0
-                            ? Number(siteWithObservations.observations[0].latitude).toFixed(6)
-                            : '0')
-                        }
-                      </Text>
-                    </div><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        Longitude:
-                      </Text>
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {observationDetails.longitude !== undefined && observationDetails.longitude !== null
-                          ? Number(observationDetails.longitude).toFixed(6)
-                          : (siteWithObservations.observations.length > 0
-                            ? Number(siteWithObservations.observations[0].longitude).toFixed(6)
-                            : '0')
-                        }
-                      </Text>
-                    </div><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        River category:
-                      </Text>
-                      <Text
-                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
-                        size="txtRalewayRomanRegular18"
-                      >
-                        {observationDetails.rivercategory ? observationDetails.rivercategory : siteDetails.river_cat}
-                      </Text>
-                    </div></>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
-              <div className="flex items-center gap-3">
-                <Text
-                  className="text-blue-900 text-lg w-auto"
-                  size="txtRalewayBold18Blue900"
-                >
-                  Observation details
-                </Text>
-                <button onClick={toggleObservationDetails} className="focus:outline-none">
-                    {isObservationDetailsOpen ? <FaAngleDown /> : <FaAngleUp />}
-                </button>
-              </div>
-
-              {isObservationDetailsOpen && (
-                <><div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
                     <Text
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >
-                      Date:
+                      Country:
                     </Text>
                     <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.site.country ?
+                        observationDetails.site.country
+                        : (siteWithObservations.observations.length > 0
+                          ? siteWithObservations.observations[0].site.country
+                          : 'N/A')
+                      }
+                    </Text>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      Latitude:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.latitude !== undefined && observationDetails.latitude !== null
+                        ? Number(observationDetails.latitude).toFixed(6)
+                        : (siteWithObservations.observations.length > 0
+                          ? Number(siteWithObservations.observations[0].latitude).toFixed(6)
+                          : '0')
+                      }
+                    </Text>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      Longitude:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.longitude !== undefined && observationDetails.longitude !== null
+                        ? Number(observationDetails.longitude).toFixed(6)
+                        : (siteWithObservations.observations.length > 0
+                          ? Number(siteWithObservations.observations[0].longitude).toFixed(6)
+                          : '0')
+                      }
+                    </Text>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      River category:
+                    </Text>
+                    <Text
+                      className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                      size="txtRalewayRomanRegular18"
+                    >
+                      {observationDetails.rivercategory ? observationDetails.rivercategory : siteDetails.river_cat}
+                    </Text>
+                  </div>
+                </>
+              )}
+            </div>
+
+        <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
+          <div className="flex items-center gap-3">
+            <Text
+              className="text-blue-900 text-lg w-auto"
+              size="txtRalewayBold18Blue900"
+            >
+              Observation details
+            </Text>
+            <button onClick={toggleObservationDetails} className="focus:outline-none">
+              {isObservationDetailsOpen ? <FaAngleDown/> : <FaAngleUp/>}
+            </button>
+          </div>
+
+          {isObservationDetailsOpen && (
+            <>
+              <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                <Text
+                  className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                  size="txtRalewayRomanRegular18"
+                >
+                  Date:
+                </Text>
+                <Text
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >

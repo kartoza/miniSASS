@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.sites.models import Site
 from django.contrib.gis import admin as geo_admin
 from django.contrib.gis.geos import Point
 from django.http import HttpResponse
@@ -10,7 +11,7 @@ from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
-from django.contrib.sites.models import Site
+from minisass_authentication.constants import COUNTRIES_DICT
 
 from .models import (
     Sites,
@@ -91,7 +92,6 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("User name"),
                 smart_str("User Organization"),
                 smart_str("User Country"),
-                smart_str("Country"),
                 smart_str("User Expert Status"),
                 smart_str("Obs Date"),
                 smart_str("Site name"),
@@ -99,6 +99,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("River category"),
                 smart_str("Latitude"),
                 smart_str("Longitude"),
+                smart_str("Country"),
                 smart_str("Flatworms"),
                 smart_str("Worms"),
                 smart_str("Leeches"),
@@ -133,11 +134,14 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
                 user_country = user_profile.country
+                user_country = COUNTRIES_DICT.get(user_country, user_country)
+                country = COUNTRIES_DICT.get(obs.site.country, obs.site.country)
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
+                country = "N/A"
 
             obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
             writer.writerow(
@@ -145,7 +149,6 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.user.username),
                     smart_str(user_organization_name),
                     smart_str(user_country),
-                    smart_str(obs.site.country),
                     smart_str(user_is_expert),
                     smart_str(obs_date_str),
                     smart_str(obs.site.site_name),
@@ -153,6 +156,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.site.river_cat),
                     smart_str(obs.site.the_geom.y),
                     smart_str(obs.site.the_geom.x),
+                    smart_str(country),
                     smart_str(obs.flatworms),
                     smart_str(obs.worms),
                     smart_str(obs.leeches),
@@ -256,20 +260,25 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                 'User Organization Name',
                 'User Expert Status',
                 'User Country',
-                'Site Creation Date',
                 'Country',
+                'Site Creation Date'
             ])
+        writer = csv.writer(response, quoting=csv.QUOTE_ALL)
 
         for site in queryset.order_by('site_name'):
             try:
                 user_profile = site.user.userprofile
                 user_organization_name = user_profile.organisation_name
                 user_country = user_profile.country
+                user_country = COUNTRIES_DICT.get(user_country, user_country)
+                country = COUNTRIES_DICT.get(site.country, site.country)
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
+                country = "N/A"
+
             writer.writerow(
                 [
                     smart_str(site.site_name),
@@ -281,8 +290,8 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                     smart_str(user_organization_name),
                     smart_str(user_is_expert),
                     smart_str(user_country),
-                    smart_str(site.time_stamp),
-                    smart_str(site.country)
+                    smart_str(country),
+                    smart_str(site.time_stamp)
                 ]
             )
 
