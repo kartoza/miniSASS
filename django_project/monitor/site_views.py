@@ -199,8 +199,8 @@ class AssessmentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 class SiteObservationsByLocation(APIView):
 	def get(self, request, latitude, longitude):
 		try:
-			received_latitude = round(float(latitude), 2)
-			received_longitude = round(float(longitude), 2)
+			received_latitude = float(latitude)
+			received_longitude = float(longitude)
 			gid = request.GET.get('gid', 0)
 
 			if int(gid) != 0:
