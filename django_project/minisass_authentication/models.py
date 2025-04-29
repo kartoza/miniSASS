@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -45,6 +46,11 @@ class Lookup(models.Model):
 
 
 class UserProfile(models.Model):
+    class UploadPreference(models.TextChoices):
+        WIFI = 'wifi', _('Wi-fi Only')
+        MOBILE = 'mobile', _('Mobile Data Only')
+        BOTH = 'both', _('Wi-Fi and Mobile Data')
+
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False)
     organisation_type = models.ForeignKey(
@@ -67,6 +73,12 @@ class UserProfile(models.Model):
     certificate = models.FileField(
         null=True, blank=True,
         upload_to=certificate_path, storage=settings.MINION_STORAGE
+    )
+    upload_preference = models.CharField(
+        max_length=10,
+        choices=UploadPreference.choices,
+        default=UploadPreference.WIFI,
+        help_text='Preferred network    type for uploads'
     )
 
     def __str__(self):
