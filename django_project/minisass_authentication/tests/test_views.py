@@ -159,12 +159,13 @@ class UpdateUserTest(APITestCase):
             "organisation_type": "School",
             "organisation_name": "New School",
             "country": "ZA",
+            "upload_preference": "both"
         }
         self.url = reverse('profile-update')
 
     def test_not_authenticated(self):
         response = self.client.get(self.url)
-        self.assertEquals(response.status_code, 403)
+        self.assertEquals(response.status_code, 401)
 
     def test_update_works(self):
         self.client.force_authenticate(self.user)
@@ -351,7 +352,8 @@ class CheckIsExpertTest(APITestCase):
                 'expert_approval_status': 'REJECTED',
                 'certificate': None,
                 'user': self.user.id,
-                'organisation_type': None
+                'organisation_type': None,
+                'upload_preference': 'wifi'
             }
         )
 
