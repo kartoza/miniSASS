@@ -28,6 +28,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from minisass_authentication.models import UserProfile, Lookup, PasswordHistory
 from minisass_authentication.serializers import (
@@ -344,6 +345,7 @@ class UpdateUser(APIView):
 	Endpoint to update user profile and password
 	"""
 	permission_classes = [IsAuthenticated]
+	authentication_classes = [JWTAuthentication]
 
 	def get(self, request):
 		try:
