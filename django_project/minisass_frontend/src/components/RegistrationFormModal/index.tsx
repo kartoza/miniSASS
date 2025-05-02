@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Modal from 'react-modal';
+import { HashLink } from 'react-router-hash-link';
 import { Button , Img} from "../../components";
 import Select from "react-select";
 import CountrySelector from "../../components/Countries/selector";
@@ -564,7 +565,17 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                     onChange={(e) => setAgreed(e.target.checked)}
                   />
                 }
-                label="I have read and agree to Privacy Policy"
+                label={
+                  <span>
+                    I have read and agree to{' '}
+                    <HashLink
+                      to="/privacy-policy#privacy-policy-title"
+                      style={{ color: '#0e4981', textDecoration: 'none' }}
+                    >
+                      Privacy Policy
+                    </HashLink>
+                  </span>
+                }
               />
             </div>
 
