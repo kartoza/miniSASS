@@ -2,8 +2,9 @@ import { test as setup, expect } from '@playwright/test';
 
 let url = '/';
 
-let username = 'admin';
-let password = 'admin';
+let username = 'kartoza_admin';
+let useremail = 'tinashe@kartoza.com';
+let password = 'Gs10w29k8*&';
 const authFile = 'auth.json'
 
 
@@ -14,11 +15,11 @@ setup('test', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'Login' })).toBeVisible();
 
-  await expect(page.getByPlaceholder('Username')).toBeEmpty();
+  await expect(page.getByPlaceholder('Email').first()).toBeEmpty();
 
-  await page.getByPlaceholder('Username').click();
+  await page.getByPlaceholder('Email').first().click();
 
-  await page.getByPlaceholder('Username').fill(username);
+  await page.getByPlaceholder('Email').first().fill(useremail);
 
   await page.getByPlaceholder('Password').click();
 

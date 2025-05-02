@@ -31,7 +31,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    baseURL: process.env.STAGING === '1' ? 'https://minisass.sta.do.kartoza.com/#/' : 'http://localhost:61122/#/'
+    baseURL: process.env.STAGING === '1' ? 'https://minisass.sta.do.kartoza.com/#/' : 'http://localhost:61122/#/',
+    permissions: ['geolocation'],
+    geolocation: { latitude: -29.696373, longitude: 22.809105 },
   },
 
   /* Configure projects for major browsers */

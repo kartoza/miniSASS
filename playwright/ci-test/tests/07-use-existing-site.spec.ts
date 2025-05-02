@@ -20,22 +20,20 @@ test.describe('test - use existing site', () => {
     await page.getByPlaceholder('River name').fill('demo2');
     await page.getByPlaceholder('Site name').click();
     await page.getByPlaceholder('Site name').fill('demo2');
-    await page.locator('input[name="siteDescription"]').click();
-    await page.locator('input[name="siteDescription"]').fill('downstream demo');
+    //await page.locator('input[name="siteDescription"]').click();
+    await page.locator('textarea[name="siteDescription"]').fill('downstream demo');
     await page.locator('select[name="rivercategory"]').selectOption('rocky');
 
-    await page.getByRole('button', { name: 'Select on map' }).click();
-    await page.getByLabel('Map').click({
-      position: {
-        x: 444,
-        y: 267
-      }
-    });
+    await page.getByRole('button', { name: 'Type in coordinates' }).click();
+    await expect(page.getByText('Degree')).toBeVisible();
+    await page.locator('#Latitude').fill('-25.000000');
+    await page.locator('#Longitude').fill('22.000000');
+
     await page.getByPlaceholder('01.01.2024').fill('2024-01-10');
     await page.getByPlaceholder('Collectors name:').click();
     await page.getByPlaceholder('Collectors name:').fill('admin');
-    await page.locator('input[name="notes"]').click();
-    await page.locator('input[name="notes"]').fill('downstream demo2');
+    //await page.locator('input[name="notes"]').click();
+    await page.locator('textarea[name="notes"]').fill('downstream demo2');
     await page.getByPlaceholder('Water clarity (cm):').click();
     await page.getByPlaceholder('Water clarity (cm):').fill('5');
     await page.getByPlaceholder('Water temperature (°C):').click();
@@ -47,7 +45,7 @@ test.describe('test - use existing site', () => {
     await page.locator('input[name="electricalconduOne"]').click();
     await page.locator('input[name="electricalconduOne"]').fill('2');
     await page.getByRole('button', { name: 'next' }).click();
-    await page.locator('#checkbox-54').check();
+    await page.locator('#checkbox-2').check();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
     await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
@@ -70,8 +68,8 @@ test.describe('test - use existing site', () => {
     await page.getByPlaceholder('01.01.2024').fill('2024-01-11');
     await page.getByPlaceholder('Collectors name:').click();
     await page.getByPlaceholder('Collectors name:').fill('admin');
-    await page.locator('input[name="notes"]').click();
-    await page.locator('input[name="notes"]').fill('upstream demo');
+    //await page.locator('input[name="notes"]').click();
+    await page.locator('textarea[name="notes"]').fill('upstream demo');
     await page.getByPlaceholder('Water clarity (cm):').click();
     await page.getByPlaceholder('Water clarity (cm):').fill('4');
     await page.getByPlaceholder('Water temperature (°C):').click();
@@ -83,7 +81,7 @@ test.describe('test - use existing site', () => {
     await page.locator('input[name="electricalconduOne"]').click();
     await page.locator('input[name="electricalconduOne"]').fill('1');
     await page.getByRole('button', { name: 'next' }).click();
-    await page.locator('#checkbox-54').check();
+    await page.locator('#checkbox-5').check();
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByRole('heading', { name: 'Observation Saved.' })).toBeVisible();
     await expect(page.getByRole('dialog')).toContainText('The record was saved successfully.');
