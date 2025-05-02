@@ -31,7 +31,7 @@ export default function PrivacyConsentModal({
   const hasConsent = localStorage.getItem("hasPrivacyConsent");
 
   useEffect(() => {
-    if (!hasConsent && !forceShow && setOpen) {
+    if (!hasConsent && !forceShow && setOpen && !window.location.href.includes('privacy-policy')) {
       setOpen(true);
     }
   }, [hasConsent, forceShow, setOpen]);
@@ -58,31 +58,26 @@ export default function PrivacyConsentModal({
     if (setOpen) setOpen(false);
   };
 
-  const handleDecline = async () => {
-    localStorage.setItem("hasPrivacyConsent", "false");
-    await sendConsent(false);
-    if (setOpen) setOpen(false);
-  };
-
   return (
     <Dialog open={!!open} maxWidth="sm" fullWidth className='privacy-modal'>
-      <DialogTitle>Privacy Policy Consent</DialogTitle>
+      <DialogTitle>We've updated our Privacy Policy</DialogTitle>
       <DialogContent>
         <Typography>
-          We use cookies and analytics to improve your experience. By clicking{" "}
-          <strong>Accept</strong>, you agree to our{" "}
+          We encourage you to review our updated {" "}
           <Link href="/#/privacy-policy" target="_blank" rel="noopener">
             Privacy Policy
-          </Link>
-          .
+          </Link>.
+          By continuing, you agree to the updated terms listed there.
         </Typography>
       </DialogContent>
-      <DialogActions>
-        <Button variant="contained" onClick={handleAccept} color="primary">
-          Accept
-        </Button>
-        <Button variant="outlined" onClick={handleDecline} color="secondary">
-          Decline
+      <DialogActions sx={{ p: 2, display: 'block' }}>
+        <Button
+          variant="contained"
+          onClick={handleAccept}
+          color="primary"
+          fullWidth
+        >
+          Continue
         </Button>
       </DialogActions>
     </Dialog>

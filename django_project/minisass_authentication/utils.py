@@ -1,3 +1,4 @@
+from django.utils.timezone import now
 from minisass_authentication.models import UserProfile
 from minisass_authentication.serializers import UpdatePasswordSerializer
 from minisass.models.privacy_policy import PrivacyPolicy, PrivacyPolicyConsent
@@ -36,3 +37,26 @@ def get_user_privacy_consent(user):
     else:
         consent = consents.first()
         return consent.consent_given
+
+
+def create_privacy_policy_consent(request, user):
+    agree = request.data.get("agree", False)
+    policy = PrivacyPolicy.objects.order_by("-published_at").first()
+    if not policy:
+        return None
+
+    consent, _ = PrivacyPolicyConsent.objects.get_or_create(
+        user=user,
+        policy=policy,
+        defaults={
+            'consent_given': agree,
+            'consent_date': now(),
+            'ip_address': request.META.get("REMOTE_ADDR")
+        }
+    )
+    consent.consent_given = agree
+    consent.consent_date = now()
+    consent.ip_address = request.META.get("REMOTE_ADDR")
+    consent.save()
+
+    return consent

@@ -8,6 +8,8 @@ import { SelectMenuOption } from "../../components/Countries/types";
 import { globalVariables } from '../../utils';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import ReactGA from "react-ga4";
 
 
@@ -50,7 +52,9 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
     country: 'ZA',
     password: '',
     confirmPassword: '',
+    agree: true,
   });
+  const [agreed, setAgreed] = useState(false);
 
   const [formErrors, setFormErrors] = useState<Partial<RegistrationFormData>>({});
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
@@ -222,18 +226,18 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
 
     if (validateForm() && !Object.values(remainingRequirements).some((requirement) => requirement)) {
       onSubmit(formData);
-      setFormErrors({});
-      setFormData({
-        username: '',
-        name: '',
-        surname: '',
-        email: '',
-        organizationType: '',
-        organizationName: '',
-        country: 'ZA',
-        password: '',
-        confirmPassword: '',
-      });
+      // setFormErrors({});
+      // setFormData({
+      //   username: '',
+      //   name: '',
+      //   surname: '',
+      //   email: '',
+      //   organizationType: '',
+      //   organizationName: '',
+      //   country: 'ZA',
+      //   password: '',
+      //   confirmPassword: '',
+      // });
     }
   };
 
@@ -399,11 +403,15 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
               marginTop: '5px'
             }}
           >
-            <div 
-            style={{ display: 'flex', flexDirection: applyDeviceStyles? 'column': 'row', gap: applyDeviceStyles? '10px':'40px' }}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: applyDeviceStyles ? 'column' : 'row',
+                gap: applyDeviceStyles ? '10px' : '40px'
+              }}
             >
-              <div style={{ flex: 1, flexDirection: 'column'  }}>
-                <label>Email:</label><br />
+              <div style={{flex: 1, flexDirection: 'column'}}>
+                <label>Email:</label><br/>
                 <input
                   type="email"
                   name="email"
@@ -411,113 +419,131 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                   onChange={handleInputChange}
                   onBlur={handleEmailBlur}
                   placeholder="Email"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.email && <span style={{ color: 'red' }}>{formErrors.email}</span>}
+                <br/>
+                {formErrors.email && <span style={{color: 'red'}}>{formErrors.email}</span>}
               </div>
             </div>
-            <div 
-            style={{ display: 'flex', flexDirection: applyDeviceStyles? 'column': 'row', gap: applyDeviceStyles? '10px':'40px' }}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: applyDeviceStyles ? 'column' : 'row',
+                gap: applyDeviceStyles ? '10px' : '40px'
+              }}
             >
-              <div style={{  }}>
-                <label>Name:</label><br />
+              <div style={{}}>
+                <label>Name:</label><br/>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.name && <span style={{ color: 'red' }}>{formErrors.name}</span>}
+                <br/>
+                {formErrors.name && <span style={{color: 'red'}}>{formErrors.name}</span>}
               </div>
-              <div style={{ }}>
-                <label>Surname:</label><br />
+              <div style={{}}>
+                <label>Surname:</label><br/>
                 <input
                   type="text"
                   name="surname"
                   value={formData.surname}
                   onChange={handleInputChange}
                   placeholder="Surname"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.surname && <span style={{ color: 'red' }}>{formErrors.surname}</span>}
+                <br/>
+                {formErrors.surname && <span style={{color: 'red'}}>{formErrors.surname}</span>}
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: applyDeviceStyles? 'column': 'row', gap: applyDeviceStyles? '10px':'40px' }}>
-              <div style={{ flex: 1, flexDirection: 'column' ,marginLeft: '0px'}}>
-                <label>Organisation Name:</label><br />
+            <div style={{
+              display: 'flex',
+              flexDirection: applyDeviceStyles ? 'column' : 'row',
+              gap: applyDeviceStyles ? '10px' : '40px'
+            }}>
+              <div style={{flex: 1, flexDirection: 'column', marginLeft: '0px'}}>
+                <label>Organisation Name:</label><br/>
                 <input
                   type="text"
                   name="organizationName"
                   value={formData.organizationName}
                   onChange={handleInputChange}
                   placeholder="Organization Name"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.organizationName && <span style={{ color: 'red' }}>{formErrors.organizationName}</span>}
+                <br/>
+                {formErrors.organizationName && <span style={{color: 'red'}}>{formErrors.organizationName}</span>}
               </div>
-              <div style={{ height:'20px'}}>
+              <div style={{height: '20px'}}>
                 <label>Organisation Type:</label>
-                <br />
+                <br/>
                 <Select
                   name="organizationType"
                   placeholder="Select an organization"
                   value={organisationOptions.find(option => option.value === formData.organizationType)}
                   onChange={(selectedOption) => {
-                    setFormErrors({ ...formErrors, organizationType: '' });
-                    setFormData({ ...formData, organizationType: selectedOption.value });
+                    setFormErrors({...formErrors, organizationType: ''});
+                    setFormData({...formData, organizationType: selectedOption.value});
                   }}
                   options={organisationOptions}
                   styles={customStyles}
                 />
-                {formErrors.organizationType && <span style={{ color: 'red' }}>{formErrors.organizationType}</span>}
+                {formErrors.organizationType && <span style={{color: 'red'}}>{formErrors.organizationType}</span>}
               </div>
             </div>
-            {applyDeviceStyles && (<><br /><br /></>)}
-            
-            <div style={{ display: 'flex', flexDirection: applyDeviceStyles? 'column': 'row', gap: applyDeviceStyles? '10px':'40px' ,width: '200px' }}>
-              <div style={{  }}>
-                <label>Password:</label><br />
+            {applyDeviceStyles && (<><br/><br/></>)}
+
+            <div style={{
+              display: 'flex',
+              flexDirection: applyDeviceStyles ? 'column' : 'row',
+              gap: applyDeviceStyles ? '10px' : '40px',
+              width: '200px'
+            }}>
+              <div style={{}}>
+                <label>Password:</label><br/>
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Password"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.password && <span style={{ color: 'red' }}>{formErrors.password}</span>}
+                <br/>
+                {formErrors.password && <span style={{color: 'red'}}>{formErrors.password}</span>}
                 {formData.password && (
-                  <div style={{  }}>
-                    {remainingRequirements.uppercase && <span style={{ color: 'red' }}>At least one uppercase letter is required.<br /></span>}
-                    {remainingRequirements.lowercase && <span style={{ color: 'red' }}>At least one lowercase letter is required.<br /></span>}
-                    {remainingRequirements.digit && <span style={{ color: 'red' }}>At least one digit is required.<br /></span>}
-                    {remainingRequirements.specialCharacter && <span style={{ color: 'red' }}>At least one special character is required.<br /></span>}
-                    {remainingRequirements.length && <span style={{ color: 'red' }}>Password must be at least 6 characters long.<br /></span>}
+                  <div style={{}}>
+                    {remainingRequirements.uppercase &&
+											<span style={{color: 'red'}}>At least one uppercase letter is required.<br/></span>}
+                    {remainingRequirements.lowercase &&
+											<span style={{color: 'red'}}>At least one lowercase letter is required.<br/></span>}
+                    {remainingRequirements.digit &&
+											<span style={{color: 'red'}}>At least one digit is required.<br/></span>}
+                    {remainingRequirements.specialCharacter &&
+											<span style={{color: 'red'}}>At least one special character is required.<br/></span>}
+                    {remainingRequirements.length &&
+											<span style={{color: 'red'}}>Password must be at least 6 characters long.<br/></span>}
                   </div>
                 )}
               </div>
-              <div style={{  }}>
-                <label>Confirm Password:</label><br />
+              <div style={{}}>
+                <label>Confirm Password:</label><br/>
                 <input
                   type="password"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="Confirm Password"
-                  style={{ borderRadius: '4px' }}
+                  style={{borderRadius: '4px'}}
                 />
-                <br />
-                {formErrors.confirmPassword && <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>}
+                <br/>
+                {formErrors.confirmPassword && <span style={{color: 'red'}}>{formErrors.confirmPassword}</span>}
               </div>
             </div>
-            <div style={{ width: '223px'}}>
+            <div style={{width: '230px'}}>
               <label>Country:</label>
               <CountrySelector
                 id={"country-selector"}
@@ -526,23 +552,37 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
                 onChange={setCountry}
                 selectedValue={COUNTRIES.find((option) => option.value === country)}
               />
-              {formErrors.country && <span style={{ color: 'red' }}>{formErrors.country}</span>}
-              </div>
+              {formErrors.country && <span style={{color: 'red'}}>{formErrors.country}</span>}
+            </div>
 
-              <div style={{ }}>
-                
-              </div>
+            <div style={{width: '446px'}}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="agree"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                  />
+                }
+                label="I have read and agree to Privacy Policy"
+              />
+            </div>
+
+            <div style={{}}>
+
+            </div>
 
             {error_response && (
-              <div style={{ color: 'red' }}>{error_response}</div>
+              <div style={{color: 'red'}}>{error_response}</div>
             )}
             <Button
               className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
               color="blue_gray_500"
               size="xs"
               variant="fill"
-              style={{  marginLeft: applyDeviceStyles? "":"65%" }}
+              style={{marginLeft: applyDeviceStyles ? "" : "65%"}}
               onClick={handleSubmit}
+              disabled={!agreed}
             >
               Register
             </Button>
@@ -551,7 +591,7 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({
       )
       )}
     </Modal>
-  </>
+    </>
   );
 };
 
