@@ -44,6 +44,7 @@ from minisass_authentication.utils import (
 	get_is_user_password_enforced,
 	get_user_privacy_consent
 )
+from minisass_authentication.utils import create_privacy_policy_consent
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -322,17 +323,18 @@ def register(request):
 						'activation_link': activation_link,
 						'name': username
 					})
-					send_mail(
-						mail_subject,
-						None,
-						settings.CONTACT_US_RECEPIENT_EMAIL,
-						[user_email],
-						html_message=message
-					)
+					create_privacy_policy_consent(request, user)
+					# send_mail(
+					# 	mail_subject,
+					# 	None,
+					# 	settings.CONTACT_US_RECEPIENT_EMAIL,
+					# 	[user_email],
+					# 	html_message=message
+					# )
 
 				else:
 					return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
-				
+
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 			
 			except IntegrityError:

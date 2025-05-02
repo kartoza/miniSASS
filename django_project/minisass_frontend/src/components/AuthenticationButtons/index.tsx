@@ -164,8 +164,12 @@ function AuthenticationButtons(props) {
         }
       }
     } catch (error) {
-      setLoading(false)
-      setError(error.message);
+      setLoading(false);
+      if (error.response.data && error.response.data.error) {
+          setError(error.response.data.error);
+        } else {
+          setError(error.message);
+        }
     }
   };
 

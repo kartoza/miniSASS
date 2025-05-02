@@ -11,7 +11,10 @@ from django.utils.http import (
 from django.contrib.auth.tokens import default_token_generator
 from minisass_authentication.tests.factories import UserFactory
 from minisass_authentication.models import PENDING_STATUS
+from minisass.models.privacy_policy import PrivacyPolicy
 from rest_framework import status
+
+from minisass_authentication.utils import get_user_privacy_consent
 
 
 class PasswordResetTest(APITestCase):
@@ -99,6 +102,12 @@ class ActivateAccountTestCase(TestCase):
 
 class RegisterTest(APITestCase):
 
+    def setUp(self):
+        super().setUp()
+        PrivacyPolicy.objects.create(
+            version='1'
+        )
+
     def test_register_valid_data(self):
         valid_data = {
            'surname': 'Doe',
@@ -108,13 +117,16 @@ class RegisterTest(APITestCase):
            'organizationType': 'NGO',
            'country': 'SA',
            'email': 'em@gmail.com',
-           'password': 'p'
+           'password': 'p',
+            'agree': True
         }
 
         url = reverse('register')
         response = self.client.post(url, valid_data, format='json')
 
         self.assertEqual(response.status_code, 201)
+        consent = get_user_privacy_consent(User.objects.get(email=valid_data['email']))
+        self.assertIsNotNone(consent)
 
     def test_register_invalid_data(self):
         # Prepare invalid user registration data
@@ -139,7 +151,8 @@ class RegisterTest(APITestCase):
            'organizationType': 'Consultancy',
            'country': 'SA',
            'email': 'em@gmail.com',
-           'password': 'p'
+           'password': 'p',
+            'agree': True
         }
 
         url = reverse('register')
@@ -159,7 +172,7 @@ class UpdateUserTest(APITestCase):
             "organisation_type": "School",
             "organisation_name": "New School",
             "country": "ZA",
-            "upload_preference": "both"
+            "upload_preference": "both",
         }
         self.url = reverse('profile-update')
 
