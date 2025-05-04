@@ -1,17 +1,18 @@
 import csv
+import pycountry
 from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 from django.contrib.gis.geos import Point
+from django.contrib.sites.models import Site
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
-from django.contrib.sites.models import Site
-from minisass_authentication.constants import COUNTRIES_DICT
+
 
 from .models import (
     Sites,
@@ -133,9 +134,10 @@ class ObservationsAdmin(admin.ModelAdmin):
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
-                user_country = user_profile.country
-                user_country = COUNTRIES_DICT.get(user_country, user_country)
-                country = COUNTRIES_DICT.get(obs.site.country, obs.site.country)
+                user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
+                user_country = user_country_lookup.name if user_country_lookup else user_profile.country
+                country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
+                country = country_lookup.name if country_lookup else obs.site.country
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"
@@ -269,9 +271,10 @@ class SitesAdmin(LeafletGeoAdmin):
             try:
                 user_profile = site.user.userprofile
                 user_organization_name = user_profile.organisation_name
-                user_country = user_profile.country
-                user_country = COUNTRIES_DICT.get(user_country, user_country)
-                country = COUNTRIES_DICT.get(site.country, site.country)
+                user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
+                user_country = user_country_lookup.name if user_country_lookup else user_profile.country
+                country_lookup = pycountry.countries.get(alpha_2=site.country)
+                country = country_lookup.name if country_lookup else site.country
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"

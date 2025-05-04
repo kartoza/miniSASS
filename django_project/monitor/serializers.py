@@ -1,6 +1,6 @@
+import pycountry
 from rest_framework import serializers
 
-from minisass_authentication.constants import COUNTRIES_DICT
 from minisass_authentication.models import UserProfile
 from minisass_authentication.serializers import LookupSerializer
 from monitor.models import (
@@ -39,7 +39,8 @@ class SitesSerializer(serializers.ModelSerializer):
 	country = serializers.SerializerMethodField()
 
 	def get_country(self, obj):
-		return COUNTRIES_DICT.get(obj.country, obj.country)
+		country = pycountry.countries.get(alpha_2=obj.country)
+		return country.name if country else obj.country
 
 	def get_images(self, obj):
 		"""Return images of site."""
@@ -167,7 +168,8 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 	def get_country(self, obj):
-		return COUNTRIES_DICT.get(obj.country, obj.country)
+		country = pycountry.countries.get(alpha_2=obj.country)
+		return country.name if country else obj.country
 
 	def get_images(self, obj: Sites):
 		"""Return images of site."""

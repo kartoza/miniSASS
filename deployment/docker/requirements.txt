@@ -72,3 +72,5 @@ tensorflow==2.15.0.post1
 minio==7.2.3
 django-leaflet==0.31.0
 geopy==2.4.1
+pycountry==24.6.1
+django-countries[pyuca]==7.6.1
