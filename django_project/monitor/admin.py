@@ -3,14 +3,14 @@ from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.sites.models import Site
-from django.contrib.gis import admin as geo_admin
+from leaflet.admin import LeafletGeoAdmin
 from django.contrib.gis.geos import Point
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
+from django.contrib.sites.models import Site
 from minisass_authentication.constants import COUNTRIES_DICT
 
 from .models import (
@@ -191,7 +191,7 @@ class SiteImageInline(admin.TabularInline):
 
 
 @admin.register(Sites)
-class SitesAdmin(geo_admin.OSMGeoAdmin):
+class SitesAdmin(LeafletGeoAdmin):
     form = CustomGeoAdminForm
     class Media:
         js = (
@@ -219,6 +219,7 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
         'river_name',
         'user',
         'user_organization_name',
+        'user_country',
         'user_is_expert',
         'time_stamp',
         'country'
@@ -263,7 +264,6 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                 'Country',
                 'Site Creation Date'
             ])
-        writer = csv.writer(response, quoting=csv.QUOTE_ALL)
 
         for site in queryset.order_by('site_name'):
             try:

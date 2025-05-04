@@ -6,6 +6,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.utils.timezone import now
 from minisass.models.privacy_policy import PrivacyPolicy, PrivacyPolicyConsent
 from minisass.serializers.privacy_policy import PrivacyPolicySerializer, PrivacyPolicyConsentSerializer
+from minisass_authentication.utils import create_privacy_policy_consent
 
 
 class PrivacyPolicyConsentStatusView(APIView):
@@ -76,24 +77,8 @@ class PrivacyPolicyConsentCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        agree = request.data.get("agree", False)
-        try:
-            policy = PrivacyPolicy.objects.order_by("-published_at").first()
-        except PrivacyPolicy.DoesNotExist:
+        consent = create_privacy_policy_consent(request, request.user)
+        if not consent:
             return Response({"detail": "Privacy policy not found."}, status=404)
-
-        consent, _ = PrivacyPolicyConsent.objects.get_or_create(
-            user=request.user,
-            policy=policy,
-            defaults={
-                'consent_given': agree,
-                'consent_date': now(),
-                'ip_address': request.META.get("REMOTE_ADDR")
-            }
-        )
-        consent.consent_given = agree
-        consent.consent_date = now()
-        consent.ip_address = request.META.get("REMOTE_ADDR")
-        consent.save()
 
         return Response(PrivacyPolicyConsentSerializer(consent).data, status=status.HTTP_201_CREATED)
