@@ -276,7 +276,7 @@ class SitesAdmin(LeafletGeoAdmin):
                 country_lookup = pycountry.countries.get(alpha_2=site.country)
                 country = country_lookup.name if country_lookup else site.country
                 user_is_expert = user_profile.is_expert
-            except (UserProfile.DoesNotExist, AttributeError):
+            except (UserProfile.DoesNotExist, AttributeError, LookupError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
