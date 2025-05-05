@@ -59,7 +59,8 @@ function NavigationBar(props) {
       
       <AuthenticationButtons isDisableNavigations={props.isDisableNavigations} />
 
-      <div className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
+      <div
+        className="md:bottom-[120px] sm:bottom-[135px] flex md:flex-col flex-row md:gap-10 md:h-[] items-end justify-between md:relative static md:top-[] w-full">
         <div className="flex sm:flex-1 flex-row gap-px items-center justify-center md:mt-0
         mt-[15px] md:relative md:right-[400px] w-auto sm:w-full sm:flex-col sm:ml-[700px] sm:left-[10px]">
           <Button
@@ -70,11 +71,13 @@ function NavigationBar(props) {
             color={activePage === 'home' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'home' ? 'fill' : 'outline'}
-            onClick={() => { 
+            onClick={() => {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/')
-              } else {navigate("/")}
+              } else {
+                navigate("/")
+              }
             }}
           >
             Home
@@ -87,11 +90,13 @@ function NavigationBar(props) {
             color={activePage === 'howto' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'howto' ? 'fill' : 'outline'}
-            onClick={() => { 
+            onClick={() => {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/howto')
-              }else {navigate("/howto")}
+              } else {
+                navigate("/howto")
+              }
             }}
           >
             How to
@@ -104,11 +109,13 @@ function NavigationBar(props) {
             color={activePage === 'map' ? 'gray_200' : 'default'}
             size="xs"
             variant={activePage === 'map' ? 'fill' : 'outline'}
-            onClick={() => { 
+            onClick={() => {
               if (props.isDisableNavigations) {
                 setIsCloseDialogOpen(true);
                 setNavigation('/map')
-              }else {navigate("/map")}
+              } else {
+                navigate("/map")
+              }
             }}
           >
             Map
@@ -126,34 +133,35 @@ function NavigationBar(props) {
             Contact us
           </Button>
 
-          
-          <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit} />
-      </div>
 
+          <ContactFormModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleFormSubmit}/>
+        </div>
 
-      <div className="mb-[12px] sticky mr-[-15px]">
-          <Button
-          className="cursor-pointer font-semibold leading-[normal] relative rounded-bl-[15px] rounded-tl-[15px]
+          <div className="mb-[12px] sticky mr-[-15px]">
+            <Button
+              className="cursor-pointer font-semibold leading-[normal] relative rounded-bl-[15px] rounded-tl-[15px]
           text-base text-center w-full"
-          shape="square"
-          color="blue_900"
-          size="xs"
-          variant="fill"
-          onClick={() => {
-            if (props.isDisableNavigations) {
-              setIsCloseDialogOpen(true);
-              setNavigation('/mobile-app')
-            }else {navigate("/mobile-app")}
-          }}
-        >
-          Download miniSASS App
-        </Button>
-      </div>
+              shape="square"
+              color="blue_900"
+              size="xs"
+              variant="fill"
+              onClick={() => {
+                if (props.isDisableNavigations) {
+                  setIsCloseDialogOpen(true);
+                  setNavigation('/mobile-app')
+                } else {
+                  navigate("/mobile-app")
+                }
+              }}
+            >
+              Download miniSASS App
+            </Button>
+          </div>
 
-                      
-      </div>
-    </>
-  );
-}
 
-export default NavigationBar;
+        </div>
+      </>
+      );
+      }
+
+      export default NavigationBar;

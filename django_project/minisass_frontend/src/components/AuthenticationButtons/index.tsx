@@ -8,6 +8,7 @@ import RegistrationFormModal from '../../components/RegistrationFormModal/index'
 import UserFormModal from '../../components/UserForm/index';
 import EnforcePasswordChange from '../../components/EnforcePasswordChange';
 import PrivacyConsentModal from '../../components/PrivacyConsentModal';
+import LanguageSelector from "../LanguageSelector";
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
@@ -182,20 +183,27 @@ function AuthenticationButtons(props) {
         src={`${globalVariables.staticPath}img_minisasstext1.png`}
         alt="minisasstextOne"
       />
-      <div className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px] sm:mf sm:w-full">
-        { state.isAuthenticated ? (
-          <Grid container spacing={2}
-                flexDirection={'row-reverse'}
-                className="sm:w-full md:w-full sm:justify-center md:items-center mr-[-30px] sm:mr-[0px] sm:md-[0px]"
-                // alignItems="center"
-                // justifyContent="center"
-          >
-            <Grid item xs={3} className="w-full">
-              <UserMenu setUpdateProfileOpen={setProfileModalOpen} isDisableNavigations={props.isDisableNavigations} />
+      <div
+        className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[480px] sm:mf sm:w-full">
+        {state.isAuthenticated ? (
+          <>
+            <Grid container
+                  flexDirection={'row-reverse'}
+                  className="sm:w-full md:w-full sm:justify-center md:items-center mr-[-15px]"
+            >
+              <Grid item>
+                <UserMenu setUpdateProfileOpen={setProfileModalOpen} isDisableNavigations={props.isDisableNavigations}/>
+              </Grid>
+              <Grid item>
+                <LanguageSelector/>
+              </Grid>
             </Grid>
-          </Grid>
+          </>
         ) : (
           <>
+            <LanguageSelector
+              className="left-2.5"
+            />
             <Button
               onClick={openLoginModal}
               className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
@@ -219,29 +227,29 @@ function AuthenticationButtons(props) {
           </>
         )}
       </div>
-      <LoginFormModal 
-        isOpen={isLoginModalOpen} 
-        onClose={closeLoginModal} 
-        onSubmit={handleLogin}  
+      <LoginFormModal
+        isOpen={isLoginModalOpen}
+        onClose={closeLoginModal}
+        onSubmit={handleLogin}
         error_response={error}
         isAuthenticating={isAuthenticating}
         openRegisterModal={openRegisterModal}
       />
       <RegistrationFormModal
-        isOpen={isRegisterModalOpen} 
-        onClose={closeRegisterModal} 
-        onSubmit={handleRegistration} 
+        isOpen={isRegisterModalOpen}
+        onClose={closeRegisterModal}
+        onSubmit={handleRegistration}
         error_response={error}
         Registrationloading={Registrationloading}
         registrationInProgress={registrationInProgress}
-        />
+      />
       <UserFormModal
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
         defaultTab={updatePassword ? 1 : 0}
         loading={updateProfileLoading}
         inProgress={updateProfileInProgress}
-        />
+      />
       <EnforcePasswordChange
         isOpen={isEnforcePasswordOpen}
         onClose={handleEnforcePassword}
@@ -250,7 +258,7 @@ function AuthenticationButtons(props) {
         open={isPrivacyConsentModalOpen}
         onClose={closePrivacyModal}
         setOpen={setIsPrivacyConsentModalOpen}
-        forceShow />
+        forceShow/>
     </div>
   );
 }
