@@ -159,7 +159,6 @@ class SitesListCreateView(generics.ListCreateAPIView):
 			the_geom=Point(x=longitude, y=latitude, srid=4326),
 			user=user
 		)
-		breakpoint()
 
 		# Save images for the site
 		for image in images:
