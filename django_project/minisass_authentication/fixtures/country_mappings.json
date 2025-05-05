@@ -1,0 +1,202 @@
+[
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 1,
+    "fields": {
+      "key": "ZA",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 2,
+    "fields": {
+      "key": "9",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 3,
+    "fields": {
+      "key": "South Africa",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 4,
+    "fields": {
+      "key": "MY",
+      "value": "MY"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 5,
+    "fields": {
+      "key": "Kenya",
+      "value": "KE"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 6,
+    "fields": {
+      "key": "NA",
+      "value": "NA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 7,
+    "fields": {
+      "key": "None",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 8,
+    "fields": {
+      "key": "101",
+      "value": "IN"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 9,
+    "fields": {
+      "key": "109",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 10,
+    "fields": {
+      "key": "16",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 11,
+    "fields": {
+      "key": "104",
+      "value": "IT"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 12,
+    "fields": {
+      "key": "169",
+      "value": "TZ"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 13,
+    "fields": {
+      "key": "73",
+      "value": "DK"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 14,
+    "fields": {
+      "key": "81",
+      "value": "ES"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 15,
+    "fields": {
+      "key": "188",
+      "value": "MG"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 16,
+    "fields": {
+      "key": "55",
+      "value": "CA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 17,
+    "fields": {
+      "key": "87",
+      "value": "GB"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 18,
+    "fields": {
+      "key": "135",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 19,
+    "fields": {
+      "key": "144",
+      "value": "PL"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 20,
+    "fields": {
+      "key": "166",
+      "value": "TR"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 21,
+    "fields": {
+      "key": "17",
+      "value": "MW"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 22,
+    "fields": {
+      "key": "133",
+      "value": "MX"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 23,
+    "fields": {
+      "key": "N/A",
+      "value": "ZA"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 24,
+    "fields": {
+      "key": "239",
+      "value": "AU"
+    }
+  },
+  {
+    "model": "minisass_authentication.countrymapping",
+    "pk": 25,
+    "fields": {
+      "key": "14",
+      "value": "ZW"
+    }
+  }
+]
