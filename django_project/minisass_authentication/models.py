@@ -133,3 +133,11 @@ def post_user_save(sender, instance: settings.AUTH_USER_MODEL, created, **kwargs
         user=instance,
         hashed_password=instance.password
     )
+
+
+class CountryMapping(models.Model):
+    key = models.CharField(max_length=255, unique=True)
+    value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.value

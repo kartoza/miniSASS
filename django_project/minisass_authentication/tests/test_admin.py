@@ -2,27 +2,29 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.admin.sites import AdminSite
 from minisass_authentication.admin import UserAdmin, correct_country
-from minisass_authentication.models import UserProfile
+from minisass_authentication.models import UserProfile, CountryMapping
 
 
 class CorrectCountryAdminActionTest(TestCase):
+    fixtures = ['country_mappings.json']
+
     def setUp(self):
         self.site = AdminSite()
         self.admin = UserAdmin(User, self.site)
 
-        self.country_mapping = {
-            'ZA': 'ZA', '9': 'ZA', 'South Africa': 'ZA', 'MY': 'MY', 'Kenya': 'KE', 'NA': 'NA', 'None': 'ZA',
-            '101': 'IN', '109': 'ZA', '16': 'ZA', '104': 'IT', '169': 'TZ', '73': 'DK', '81': 'ES', '188': 'MG',
-            '55': 'CA', '87': 'GB', '135': 'ZA', '144': 'PL', '166': 'TR', '17': 'MW', '133': 'MX', 'N/A': 'ZA',
-            '239': 'AU', '14': 'ZW'
-        }
+        self.country_mappings = CountryMapping.objects.all()
 
         self.users = []
-        for i, (input_val, expected) in enumerate(self.country_mapping.items()):
+        for i, country_mapping in enumerate(self.country_mappings):
+            input_val, expected = country_mapping.key, country_mapping.value
             user = User.objects.create(username=f"user{i}")
             user.userprofile.country = input_val
             user.userprofile.save()
             self.users.append((user, expected))
+        user = User.objects.create(username=f"user{self.country_mappings.count()}")
+        user.userprofile.country = '999999999'
+        user.userprofile.save()
+        self.users.append((user, '999999999'))
 
     def test_correct_country_bulk(self):
         queryset = User.objects.filter(pk__in=[u.pk for u, _ in self.users])
