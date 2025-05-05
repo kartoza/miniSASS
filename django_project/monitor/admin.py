@@ -1,17 +1,18 @@
-import pycountry
 import csv
+import pycountry
 from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 from django.contrib.gis.geos import Point
+from django.contrib.sites.models import Site
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
-from django.contrib.sites.models import Site
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
+
 
 from .models import (
     Sites,
@@ -99,6 +100,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("River category"),
                 smart_str("Latitude"),
                 smart_str("Longitude"),
+                smart_str("Country"),
                 smart_str("Flatworms"),
                 smart_str("Worms"),
                 smart_str("Leeches"),
@@ -124,7 +126,6 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("Comment")
             ])
 
-
         for obs in queryset:
             if obs.flag == 'clean':
                 flag = 'Verified'
@@ -135,11 +136,14 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_organization_name = user_profile.organisation_name
                 user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
                 user_country = user_country_lookup.name if user_country_lookup else user_profile.country
+                country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
+                country = country_lookup.name if country_lookup else obs.site.country
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
+                country = "N/A"
 
             obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
             writer.writerow(
@@ -154,6 +158,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.site.river_cat),
                     smart_str(obs.site.the_geom.y),
                     smart_str(obs.site.the_geom.x),
+                    smart_str(country),
                     smart_str(obs.flatworms),
                     smart_str(obs.worms),
                     smart_str(obs.leeches),
@@ -219,6 +224,7 @@ class SitesAdmin(LeafletGeoAdmin):
         'user_country',
         'user_is_expert',
         'time_stamp',
+        'country'
     )
 
     def user_organization_name(self, obj):
@@ -257,6 +263,7 @@ class SitesAdmin(LeafletGeoAdmin):
                 'User Organization Name',
                 'User Expert Status',
                 'User Country',
+                'Country',
                 'Site Creation Date'
             ])
 
@@ -264,12 +271,17 @@ class SitesAdmin(LeafletGeoAdmin):
             try:
                 user_profile = site.user.userprofile
                 user_organization_name = user_profile.organisation_name
-                user_country = user_profile.country
+                user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
+                user_country = user_country_lookup.name if user_country_lookup else user_profile.country
+                country_lookup = pycountry.countries.get(alpha_2=site.country)
+                country = country_lookup.name if country_lookup else site.country
                 user_is_expert = user_profile.is_expert
-            except (UserProfile.DoesNotExist, AttributeError):
+            except (UserProfile.DoesNotExist, AttributeError, LookupError):
                 user_organization_name = "N/A"
                 user_country = "N/A"
                 user_is_expert = False
+                country = "N/A"
+
             writer.writerow(
                 [
                     smart_str(site.site_name),
@@ -281,6 +293,7 @@ class SitesAdmin(LeafletGeoAdmin):
                     smart_str(user_organization_name),
                     smart_str(user_is_expert),
                     smart_str(user_country),
+                    smart_str(country),
                     smart_str(site.time_stamp)
                 ]
             )

@@ -1,3 +1,4 @@
+import pycountry
 from rest_framework import serializers
 
 from minisass_authentication.models import UserProfile
@@ -35,6 +36,11 @@ class SitesSerializer(serializers.ModelSerializer):
 	"""Serializer of site."""
 
 	images = serializers.SerializerMethodField()
+	country = serializers.SerializerMethodField()
+
+	def get_country(self, obj):
+		country = pycountry.countries.get(alpha_2=obj.country)
+		return country.name if country else obj.country
 
 	def get_images(self, obj):
 		"""Return images of site."""
@@ -152,6 +158,7 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 	rivername = serializers.CharField(source='river_name')
 	sitedescription = serializers.CharField(source='description')
 	rivercategory = serializers.CharField(source='river_cat')
+	country = serializers.SerializerMethodField()
 	longitude = serializers.FloatField(source='the_geom.x')
 	latitude = serializers.FloatField(source='the_geom.y')
 	images = serializers.SerializerMethodField()
@@ -160,6 +167,9 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 		model = Sites
 		fields = '__all__'
 
+	def get_country(self, obj):
+		country = pycountry.countries.get(alpha_2=obj.country)
+		return country.name if country else obj.country
 
 	def get_images(self, obj: Sites):
 		"""Return images of site."""
@@ -181,6 +191,7 @@ class SitesWithObservationsSerializer(serializers.ModelSerializer):
 				'rivername': data['rivername'],
 				'rivercategory': data['rivercategory'],
 				'sitedescription': data['sitedescription'],
+				'country': data['country'],
 				'longitude': instance.the_geom.x,
 				'latitude': instance.the_geom.y,
 				'images': data['images'],
