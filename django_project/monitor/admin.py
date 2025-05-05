@@ -1,3 +1,4 @@
+import pycountry
 import csv
 from collections import OrderedDict
 from django import forms
@@ -8,9 +9,9 @@ from django.contrib.gis.geos import Point
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
+from django.contrib.sites.models import Site
 from minisass_authentication.models import UserProfile
 from monitor.forms import ObservationPestImageForm, CustomGeoAdminForm
-from django.contrib.sites.models import Site
 
 from .models import (
     Sites,
@@ -123,6 +124,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("Comment")
             ])
 
+
         for obs in queryset:
             if obs.flag == 'clean':
                 flag = 'Verified'
@@ -131,7 +133,8 @@ class ObservationsAdmin(admin.ModelAdmin):
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
-                user_country = user_profile.country
+                user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
+                user_country = user_country_lookup.name if user_country_lookup else user_profile.country
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = "N/A"

@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from minisass_authentication.models import Lookup, UserProfile, PasswordHistory
+from minisass_authentication.models import (
+    Lookup,
+    UserProfile,
+    PasswordHistory,
+    CountryMapping
+)
 
 
 @admin.register(Lookup)
@@ -34,11 +39,18 @@ class UserProfileInline(admin.StackedInline):
 
 
 def correct_country(modeladmin, request, queryset):
+    country_mappings = {
+        mapping.key: mapping.value for mapping in CountryMapping.objects.all()
+    }
+
     for user in queryset:
         if user.userprofile:
-            if user.userprofile.country in ['ZA', 'SA', 'South Africa', '9']:
-                user.userprofile.country = 'ZA'
-                user.userprofile.save()
+            country = country_mappings.get(
+                user.userprofile.country,
+                user.userprofile.country
+            )
+            user.userprofile.country = country
+            user.userprofile.save()
 correct_country.short_description = "Correct Country"
 
 
