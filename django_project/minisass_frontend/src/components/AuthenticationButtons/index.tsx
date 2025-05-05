@@ -184,7 +184,7 @@ function AuthenticationButtons(props) {
         alt="minisasstextOne"
       />
       <div
-        className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[480px] sm:mf sm:w-full">
+        className="flex flex-row gap-px items-start justify-end mb-[15px] rounded-bl-[15px] w-[280px] sm:mf sm:w-full">
         {state.isAuthenticated ? (
           <>
             <Grid container
@@ -201,12 +201,10 @@ function AuthenticationButtons(props) {
           </>
         ) : (
           <>
-            <LanguageSelector
-              className="left-2.5"
-            />
+            <LanguageSelector/>
             <Button
               onClick={openLoginModal}
-              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-2.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center"
               shape="square"
               color="blue_900"
               size="xs"
@@ -216,7 +214,7 @@ function AuthenticationButtons(props) {
             </Button>
             <Button
               onClick={openRegisterModal}
-              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center w-full"
+              className="sm:bottom-[130px] cursor-pointer font-semibold leading-[normal] left-3.5 sm:left-[9px] relative rounded-bl-[15px] rounded-br-[15px] text-base text-center"
               shape="square"
               color="blue_900"
               size="xs"

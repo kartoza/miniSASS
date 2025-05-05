@@ -23,7 +23,7 @@ const LanguageSelector: React.FC = () => {
         }}
       >
         <MenuItem value="en">English</MenuItem>
-        <MenuItem value="af">Portugese</MenuItem>
+        <MenuItem value="pt">Portugese</MenuItem>
         <MenuItem value="zu">isiZulu</MenuItem>
         <MenuItem value="id">Indonesian</MenuItem>
       </Select>
