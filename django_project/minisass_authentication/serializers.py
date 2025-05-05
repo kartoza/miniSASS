@@ -34,6 +34,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     organisation_name = serializers.CharField(source='userprofile.organisation_name', required=False, allow_null=True)
     country = serializers.CharField(source='userprofile.country', required=False, allow_null=True)
     is_expert = serializers.SerializerMethodField()
+    upload_preference = serializers.CharField(source='userprofile.upload_preference', required=True, allow_null=False)
+
 
     def get_is_expert(self, obj):
         try:
@@ -58,6 +60,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         organisation_type_desc = user_profile_dict.get('organisation_type', {}).get('description', None)
         organisation_name = user_profile_dict.get('organisation_name', '')
         country = user_profile_dict.get('country', '')
+        upload_preference = user_profile_dict.get('upload_preference', 'wifi')
 
         User.objects.filter(id=old_user.id).update(**user_dict)
         
@@ -70,7 +73,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         
         defaults = {
             'organisation_name': organisation_name,
-            'country': country
+            'country': country,
+            'upload_preference': upload_preference
         }
         if organisation_type:
             defaults['organisation_type'] = organisation_type
@@ -85,7 +89,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'username', 'email', 'name', 'surname',
-            'organisation_type', 'organisation_name', 'country', 'is_expert'
+            'organisation_type', 'organisation_name', 'country', 'is_expert', 'upload_preference'
         )
 
 

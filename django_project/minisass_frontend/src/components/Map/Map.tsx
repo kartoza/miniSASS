@@ -382,7 +382,7 @@ export const Map = forwardRef((props: Interface, ref) => {
 
       const handleMapClick = (e) => {
         const { lng, lat } = e.lngLat;
-        captureCoordinatesAndQuery(lat, lng);
+        captureCoordinatesAndQuery(lat, lng, e);
       };
 
     
@@ -437,64 +437,16 @@ export const Map = forwardRef((props: Interface, ref) => {
       }, [props.isSelectSiteOnMap]);
 
 
-    const captureCoordinatesAndQuery = async (latitude, longitude) => {
-
-      // get meter per pixel, to be used when counting crab icon coverage in meters
-      const metersPerPixel = (latitude, zoomLevel) => {
-        const EARTH_RADIUS = 6378137;
-        const TILESIZE = 512;
-        const EARTH_CIRCUMFERENCE = 2 * Math.PI * EARTH_RADIUS;
-        const scale = Math.pow(2,zoomLevel); const worldSize = TILESIZE * scale;
-        const latitudeRadians = latitude * (Math.PI/180);
-        return EARTH_CIRCUMFERENCE * Math.cos(latitudeRadians) / worldSize;
-      };
-
-      // get icon size in meter.
-      // Currently, the icon size is 60 x 74 pixels so we'll just assume it's diameter is 67 pixels, meaning the radius is 34.
-      // On zoom level lower than 5, it's not scaled.
-      // Starting from on zoom level  5, it's scaled to 1/2 the size.
-      // Starting from on zoom level 17, it's scaled to 2x the size.
-      const iconRadiusMeter = (zoomLevel, meterPerPixel) => {
-        if (zoomLevel < 5) {
-          return 34 * meterPerPixel;
-        } else if (zoomLevel < 17) {
-          return 17 * meterPerPixel;
-        } else {
-          return 67 * meterPerPixel;
-        }
-      }
-
-      const mpp = metersPerPixel(latitude, map.getZoom())
+    const captureCoordinatesAndQuery = async (latitude, longitude, e) => {
+      const bbox = [
+        [e.point.x - 5, e.point.y - 5], // top-left of bbox (in pixels)
+        [e.point.x + 5, e.point.y + 5]  // bottom-right of bbox (in pixels)
+      ];
 
       // get features on the clicked coordinate
-      const features = map.queryRenderedFeatures({
-        lng: longitude,
-        lat: latitude
-      });
-      const targetPoint = point([longitude, latitude]);
-      const points = featureCollection(features.filter(feature => feature.source == 'MiniSASS Observations').map(
-        feature => point([feature.properties.x, feature.properties.y], feature.properties)
-      ));
+      const features = map.queryRenderedFeatures(bbox);
 
-      let gid = 0
-
-      // if there are any observation layers in the clicked coordinate
-      if (points.features.length > 0) {
-          // check nearest site
-          const nearest = nearestPoint(targetPoint, points);
-
-          // get distance from clicked coordinate to site
-          const distanceMeter = distance(targetPoint, nearest) * 1000;
-
-          // Check if the site falls within the icon radius, to prevent getting closest site
-          // when clicking on nowhere e.g. Pacific Ocean
-          const iconRadius = iconRadiusMeter(map.getZoom(), mpp)
-
-          // if the site falls within the icon radius, use the sites_gid.
-          if (distanceMeter < iconRadius) {
-            gid = nearest.properties.sites_gid
-          }
-      }
+      const gid = features.length > 0 ? features[0].properties.sites_gid : 0;
 
       try {
 
@@ -503,7 +455,6 @@ export const Map = forwardRef((props: Interface, ref) => {
         if (response.data) {
           window.location.href = window.location.href.split('?')[0];
           var data = response.data;
-          console.log('debug ',data)
           if (data.observations.length === 0) {
             data.observations = [{
               "gid": 0,

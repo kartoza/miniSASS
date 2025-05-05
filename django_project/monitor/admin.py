@@ -4,7 +4,7 @@ from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.gis import admin as geo_admin
+from leaflet.admin import LeafletGeoAdmin
 from django.contrib.gis.geos import Point
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
@@ -188,7 +188,7 @@ class SiteImageInline(admin.TabularInline):
 
 
 @admin.register(Sites)
-class SitesAdmin(geo_admin.OSMGeoAdmin):
+class SitesAdmin(LeafletGeoAdmin):
     form = CustomGeoAdminForm
     class Media:
         js = (
@@ -245,7 +245,7 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="selected_sites.csv"'
 
-        writer = csv.writer(response)
+        writer = csv.writer(response, quoting=csv.QUOTE_ALL)
         writer.writerow(
             [
                 'Site Name',
@@ -260,7 +260,7 @@ class SitesAdmin(geo_admin.OSMGeoAdmin):
                 'Site Creation Date'
             ])
 
-        for site in queryset:
+        for site in queryset.order_by('site_name'):
             try:
                 user_profile = site.user.userprofile
                 user_organization_name = user_profile.organisation_name
