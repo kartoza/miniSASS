@@ -230,7 +230,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'leaflet',
-    # 'django_countries',
     'minisass_frontend',
     'minisass_authentication',
     'monitor',
