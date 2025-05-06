@@ -406,8 +406,8 @@ class UploadCertificate(APIView):
 				send_mail(
 					'Certificate Verification',
 					None,
-					email,
-					[settings.DEFAULT_FROM_EMAIL],
+					settings.DEFAULT_FROM_EMAIL,
+					[email],
 					html_message=message
 				)
 			except Exception as e:

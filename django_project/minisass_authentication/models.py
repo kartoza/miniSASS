@@ -126,7 +126,7 @@ def post_certificate_approve(sender, instance: UserProfile, **kwargs):
         send_mail(
             'Certificate Approved',
             None,
-            settings.EXPERT_APPROVAL_RECIPIENT_EMAIL,
+            settings.DEFAULT_FROM_EMAIL,
             [email],
             html_message=message
         )

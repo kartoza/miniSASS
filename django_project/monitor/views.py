@@ -68,7 +68,7 @@ def send_email_observation(observation, new_site=False):
         email_subject = 'New Observation Submitted'
 
     email_content = get_email_content(observation, new_site)
-    email_sender = 'info@minisass.org'
+    email_sender = settings.DEFAULT_FROM_EMAIL
 
     send_mail(email_subject, email_content, email_sender, [observation.user.email])
 
