@@ -122,11 +122,11 @@ def contact_us(request):
 	send_mail(
 		mail_subject,
 		None,
-		email,
+		settings.DEFAULT_FROM_EMAIL,
 		[settings.CONTACT_US_RECEPIENT_EMAIL],
 		html_message=message
 	)
-	
+
 	return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
 
@@ -163,7 +163,7 @@ def request_password_reset(request):
 	send_mail(
 		mail_subject,
 		None,
-		settings.CONTACT_US_RECEPIENT_EMAIL,
+		settings.DEFAULT_FROM_EMAIL,
 		[email],
 		html_message=message
 	)
@@ -324,13 +324,13 @@ def register(request):
 						'name': username
 					})
 					create_privacy_policy_consent(request, user)
-					# send_mail(
-					# 	mail_subject,
-					# 	None,
-					# 	settings.CONTACT_US_RECEPIENT_EMAIL,
-					# 	[user_email],
-					# 	html_message=message
-					# )
+					send_mail(
+						mail_subject,
+						None,
+						settings.DEFAULT_FROM_EMAIL,
+						[user_email],
+						html_message=message
+					)
 
 				else:
 					return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
@@ -407,7 +407,7 @@ class UploadCertificate(APIView):
 					'Certificate Verification',
 					None,
 					email,
-					[settings.EXPERT_APPROVAL_RECIPIENT_EMAIL],
+					[settings.DEFAULT_FROM_EMAIL],
 					html_message=message
 				)
 			except Exception as e:
