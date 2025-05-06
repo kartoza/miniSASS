@@ -1,3 +1,5 @@
+import json
+from decimal import Decimal
 from django.contrib.gis.geos import Point
 from rest_framework import generics
 from rest_framework import status
@@ -136,15 +138,16 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 		# Extract data from the request payload
 		site_data = request.data.get('site_data', {})
-		images = request.FILES.getlist('images', [])
+		if isinstance(site_data, str):
+			site_data = json.loads(site_data)
 
 		# Extract site data
 		site_name = site_data.get('site_name', '')
 		river_name = site_data.get('river_name', '')
 		description = site_data.get('description', '')
 		river_cat = site_data.get('river_cat', '')
-		longitude = site_data.get('longitude', 0)
-		latitude = site_data.get('latitude', 0)
+		longitude = float(site_data.get('longitude', 0))
+		latitude = float(site_data.get('latitude', 0))
 
 		# Get the user from the request object
 		user = request.user
@@ -161,10 +164,11 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		)
 
 		# Save images for the site
-		for image in images:
-			SiteImage.objects.create(
-				site=site, image=image
-			)
+		for key, image in request.FILES.items():
+			if key.startswith('images'):
+				SiteImage.objects.create(
+					site=site, image=image
+				)
 
 		# Serialize the created site and return the response
 		serializer = self.get_serializer(site)
