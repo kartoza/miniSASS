@@ -123,7 +123,7 @@ class Command(BaseCommand):
 			send_mail(
 				subject,
 				message,
-				settings.CONTACT_US_RECEPIENT_EMAIL,
+				settings.DEFAULT_FROM_EMAIL,
 				[user.email],
 				fail_silently=False,  # Log the error instead of failing silently
 				html_message=message,
