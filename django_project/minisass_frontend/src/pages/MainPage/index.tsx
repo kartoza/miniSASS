@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { HashLink } from 'react-router-hash-link';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -20,6 +22,7 @@ import "react-circular-progressbar/dist/styles.css";
 import YouTubeVideo from "../../components/YoutubeEmbedded";
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [blogsCurrentIndex, setBlogsCurrentIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -296,7 +299,7 @@ const Home: React.FC = () => {
                     className="bottom-5 mt-1 relative text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                     size="txtRalewayExtraBold14WhiteA700"
                   >
-                    Explore the map
+                    {t('Explore the map')}
                   </Text>
                 </div>
               </div>
@@ -322,7 +325,7 @@ const Home: React.FC = () => {
                     className="mt-1 text-center text-sm text-white-A700 tracking-[0.98px] uppercase w-auto"
                     size="txtRalewayExtraBold14WhiteA700"
                   >
-                    How to do miniSASS
+                    {t('How to do miniSASS')}
                   </Text>
                 </div>
               </div>
@@ -395,7 +398,7 @@ const Home: React.FC = () => {
                 className="flex-1 sm:text-4xl md:text-[38px] text-[40px] text-blue-900 w-auto mb-[25px] sm:pl-[16px]"
                 size="txtRalewayRomanBold40"
               >
-                What is miniSASS?
+                {t('What is miniSASS?')}
               </Text>
             </div>
             <div className="flex flex-row sm:flex-col md:flex-col gap-5 md:grid items-center justify-start max-w-[1450px] mx-auto md:px-5 relative w-full">
@@ -410,13 +413,9 @@ const Home: React.FC = () => {
                 sm:overflow-scroll text-base text-gray-800 text-justify"
                 size="txtRalewayRoman20"
               >
-                The mini stream assessment scoring system (miniSASS) is a simple and accessible citizen science tool
-                  for monitoring the water quality and health of stream and river systems. You collect a sample of
-                  aquatic macroinvertebrates (small, but large enough to see animals with no internal skeletons) from
-                  a site in a stream or river. The community of these aquatic macroinvertebrates present then tells
-                  you about the water quality and health of the stream or river based on the concept that different
-                  groups of aquatic macroinvertebrates have different tolerances and sensitivities to disturbance and
-                  pollution.
+                  <Trans i18nKey="home_description">
+                    The mini stream assessment scoring system (miniSASS) is a simple and accessible citizen science tool for monitoring the water quality and health of stream and river systems. You collect a sample of aquatic macroinvertebrates (small, but large enough to see animals with no internal skeletons) from a site in a stream or river. The community of these aquatic macroinvertebrates present then tells you about the water quality and health of the stream or river based on the concept that different groups of aquatic macroinvertebrates have different tolerances and sensitivities to disturbance and pollution.
+                  </Trans>
               </Text>
               </div>
             </div>
