@@ -3,6 +3,8 @@ import json
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.conf import settings
+from minisass.models import PrivacyPolicy
+from minisass_authentication.utils import get_user_privacy_consent
 
 
 class ReactBaseView(TemplateView):
@@ -16,4 +18,6 @@ class ReactBaseView(TemplateView):
         ctx['GOOGLE_ANALYTICS_TRACKING_CODE'] = settings.GOOGLE_ANALYTICS_TRACKING_CODE
         countries_dict = [{'title': country.name, 'value': country.alpha_2} for country in pycountry.countries]
         ctx['COUNTRIES_DICT'] = json.dumps(countries_dict)
+        priv_pol = PrivacyPolicy.objects.order_by('-version').first()
+        ctx['PRIVACY_POLICY_VERSION'] = priv_pol.version if priv_pol else None
         return ctx

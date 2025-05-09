@@ -23,6 +23,8 @@ def get_is_user_password_enforced(user, password):
 
 
 def get_user_privacy_consent(user):
+    if user.is_anonymous:
+        return True
     latest_policy = PrivacyPolicy.objects.order_by("-published_at").first()
     if not latest_policy:
         return True
@@ -33,7 +35,7 @@ def get_user_privacy_consent(user):
     )
 
     if not consents.exists():
-        return None
+        return False
     else:
         consent = consents.first()
         return consent.consent_given

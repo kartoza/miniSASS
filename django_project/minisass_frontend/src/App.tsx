@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Routes from "./Routes";
 import PrivacyConsentModal from "./components/PrivacyConsentModal"
+import { usePrivacyConsent, CLOSE_PRIVACY_MODAL } from './PrivacyConsentContext';
 
 function App() {
-  const [consentModalOpen, setConsentModalOpen] = useState(false);
+  const { state, dispatch } = usePrivacyConsent();
+  const closePrivacyModal = () => {
+    setConsentModalOpen(false);
+  };
   useEffect(() => {
     const startTime = Date.now();
 
@@ -22,7 +26,10 @@ function App() {
 
   return (
     <>
-      <PrivacyConsentModal open={consentModalOpen} setOpen={setConsentModalOpen} />
+      <PrivacyConsentModal
+        open={state.isPrivacyModalOpen}
+        onClose={() => dispatch({ type: CLOSE_PRIVACY_MODAL })}
+      />
       <Routes />
     </>
   );
