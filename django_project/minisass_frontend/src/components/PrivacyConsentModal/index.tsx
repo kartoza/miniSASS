@@ -28,7 +28,17 @@ export default function PrivacyConsentModal({
   setOpen,
 }: PrivacyConsentModalProps) {
   const { state } = useAuth();
-  const hasConsent = localStorage.getItem("hasPrivacyConsent");
+  console.log(state.user);
+  let acceptedPrivacyPolicyVersion = localStorage.getItem("acceptedPrivacyPolicyVersion");
+  let hasConsent = true;
+  if (state.user) {
+    acceptedPrivacyPolicyVersion = state.user.accepted_privacy_policy_version;
+    if (!acceptedPrivacyPolicyVersion) {
+      hasConsent = true;
+    } else {
+      hasConsent = acceptedPrivacyPolicyVersion === PRIVACY_POLICY_VERSION
+    }
+  }
 
   useEffect(() => {
     if (!hasConsent && !forceShow && setOpen && !window.location.href.includes('privacy-policy')) {
@@ -45,6 +55,7 @@ export default function PrivacyConsentModal({
         { headers: { "Content-Type": "application/json" } }
       );
       if (response.status === 201 && onClose) {
+        localStorage.setItem("acceptedPrivacyPolicyVersion", PRIVACY_POLICY_VERSION);
         onClose();
       }
     } catch (error) {
@@ -53,13 +64,11 @@ export default function PrivacyConsentModal({
   };
 
   const handleAccept = async () => {
-    localStorage.setItem("hasPrivacyConsent", "true");
     await sendConsent(true);
-    if (setOpen) setOpen(false);
   };
 
   return (
-    <Dialog open={!!open} maxWidth="sm" fullWidth className='privacy-modal'>
+    <Dialog open={open} maxWidth="sm" fullWidth className='privacy-modal'>
       <DialogTitle>We've updated our Privacy Policy</DialogTitle>
       <DialogContent>
         <Typography>
@@ -75,6 +84,7 @@ export default function PrivacyConsentModal({
           variant="contained"
           onClick={handleAccept}
           color="primary"
+          sx={{ backgroundColor: '#0e4981' }} // Explicitly set the background color
           fullWidth
         >
           Continue

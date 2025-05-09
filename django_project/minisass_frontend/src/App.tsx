@@ -4,6 +4,9 @@ import PrivacyConsentModal from "./components/PrivacyConsentModal"
 
 function App() {
   const [consentModalOpen, setConsentModalOpen] = useState(false);
+  const closePrivacyModal = () => {
+    setConsentModalOpen(false);
+  };
   useEffect(() => {
     const startTime = Date.now();
 
@@ -22,7 +25,10 @@ function App() {
 
   return (
     <>
-      <PrivacyConsentModal open={consentModalOpen} setOpen={setConsentModalOpen} />
+      <PrivacyConsentModal
+        open={consentModalOpen}
+        setOpen={setConsentModalOpen}
+        onClose={closePrivacyModal}/>
       <Routes />
     </>
   );
