@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,40 +11,66 @@ import {
 import axios from "axios";
 import { globalVariables } from "../../utils";
 import { useAuth } from "../../AuthContext";
+import { usePrivacyConsent, CLOSE_PRIVACY_MODAL, OPEN_PRIVACY_MODAL } from '../../PrivacyConsentContext';
 
 const PRIVACY_CONSENT_API = globalVariables.baseUrl + "/privacy-policy/consent/";
+const PRIVACY_CONSENT_CHECK = globalVariables.baseUrl + "/privacy-policy/check/";
 
 export interface PrivacyConsentModalProps {
   open?: boolean;
   forceShow?: boolean;
   onClose?: () => void;
-  setOpen?: (open: boolean) => void;
 }
 
 export default function PrivacyConsentModal({
   open,
   forceShow,
   onClose,
-  setOpen,
 }: PrivacyConsentModalProps) {
+  const { dispatch } = usePrivacyConsent();
   const { state } = useAuth();
-  console.log(state.user);
-  let acceptedPrivacyPolicyVersion = localStorage.getItem("acceptedPrivacyPolicyVersion");
-  let hasConsent = true;
-  if (state.user) {
-    acceptedPrivacyPolicyVersion = state.user.accepted_privacy_policy_version;
-    if (!acceptedPrivacyPolicyVersion) {
-      hasConsent = true;
-    } else {
-      hasConsent = acceptedPrivacyPolicyVersion === PRIVACY_POLICY_VERSION
+  const [acceptedPrivacyPolicyVersion, setAcceptedPrivacyPolicyVersion] = useState("");
+  let hasConsent = acceptedPrivacyPolicyVersion === PRIVACY_POLICY_VERSION;
+  hasConsent = state.user? hasConsent : true;
+
+    // Create a ref to track if the analytics endpoint has been called
+  const analyticsEndpointCalled = useRef(false);
+
+  // Debounced function to call the analytics endpoint
+  const debouncedAnalyticsCall = useCallback(() => {
+    if (!analyticsEndpointCalled.current && state.user && state.user.access_token) {
+      analyticsEndpointCalled.current = true;
+
+      // Call the analytics endpoint
+      const getAcceptedPrivacyPolicycallAnalyticsEndpoint = async () => {
+        try {
+          axios.defaults.headers.common["Authorization"] = `Bearer ${state.user.access_token}`;
+          const response = await axios.get(
+            PRIVACY_CONSENT_CHECK
+          );
+          setAcceptedPrivacyPolicyVersion(response.data.policy.version);
+        } catch (error) {
+          console.error("Error sending analytics:", error);
+        }
+      };
+
+      getAcceptedPrivacyPolicycallAnalyticsEndpoint();
     }
-  }
+  }, [state.user]);
 
   useEffect(() => {
-    if (!hasConsent && !forceShow && setOpen && !window.location.href.includes('privacy-policy')) {
-      setOpen(true);
+    if (open && state.user && state.user.access_token) {
+      // Call the debounced analytics function when the modal is opened
+      debouncedAnalyticsCall();
     }
-  }, [hasConsent, forceShow, setOpen]);
+  }, [open, debouncedAnalyticsCall, state.user]);
+
+
+  useEffect(() => {
+    if (!hasConsent && !forceShow && !window.location.href.includes('privacy-policy')) {
+      dispatch({ type: OPEN_PRIVACY_MODAL });
+    }
+  }, [hasConsent, forceShow]);
 
   const sendConsent = async (agree: boolean) => {
     try {
@@ -55,7 +81,7 @@ export default function PrivacyConsentModal({
         { headers: { "Content-Type": "application/json" } }
       );
       if (response.status === 201 && onClose) {
-        localStorage.setItem("acceptedPrivacyPolicyVersion", PRIVACY_POLICY_VERSION);
+        // localStorage.setItem("acceptedPrivacyPolicyVersion", PRIVACY_POLICY_VERSION);
         onClose();
       }
     } catch (error) {
@@ -65,6 +91,8 @@ export default function PrivacyConsentModal({
 
   const handleAccept = async () => {
     await sendConsent(true);
+    dispatch({ type: CLOSE_PRIVACY_MODAL });
+    if (onClose) onClose();
   };
 
   return (
@@ -84,7 +112,7 @@ export default function PrivacyConsentModal({
           variant="contained"
           onClick={handleAccept}
           color="primary"
-          sx={{ backgroundColor: '#0e4981' }} // Explicitly set the background color
+          sx={{ backgroundColor: '#0e4981' }}
           fullWidth
         >
           Continue
