@@ -1,6 +1,7 @@
 import os
 import shutil
 import time
+import requests
 
 from geopy.geocoders import Nominatim
 from dirtyfields import DirtyFieldsMixin
@@ -100,6 +101,23 @@ class Sites(models.Model):
                 self.country = location.get('address', {}).get('country_code', 'N/A').upper()
             except AttributeError:
                 pass
+
+        validate_ocean = kwargs.pop('validate_ocean', False)
+        if validate_ocean:
+            url = "https://maps.kartoza.com/geoserver/kartoza/ows"
+            params = {
+                "SERVICE": "WFS",
+                "VERSION": "1.1.0",
+                "REQUEST": "GetFeature",
+                "TYPENAME": "kartoza:world",
+                "SRSNAME": "EPSG:4326",
+                "OUTPUTFORMAT": "application/json",
+                "CQL_FILTER": f"INTERSECTS(the_geom,POINT({self.the_geom.y} {self.the_geom.x}))"
+            }
+            response = requests.get(url, params=params)
+            data = response.json()
+            if data.get('numberReturned', 0) == 0:
+                raise ValueError("Site is located in the ocean!")
 
         super().save(*args, **kwargs)
 

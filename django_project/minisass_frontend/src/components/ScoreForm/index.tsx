@@ -182,7 +182,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
           }else {
             if(response.data.message === "")
               setErrorMessage("something unexpectedly went wrong, please try again. If the issue should persist ,contact the system administrator via the contact us form describing the problem you're facing.");
-            else setErrorMessage(response.data.message)
+            else {
+              setErrorMessage(response.data.message)
+            }
             setIsErrorModalOpen(true);
           }
         }else {
@@ -774,36 +776,40 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
               <br />
             <Text size="txtRalewayBold18" className="text-red-500">
-              {errorMessage.message ? (
-                 <div>
+              {errorMessage ? (
+                <div>
                   <Text size="txtRalewayBold18" className="text-red-500">
-                    Something unexpectedly went wrong. Please try again.
+                    {errorMessage}
                   </Text>
-                 <Text size="txtRalewayBold18" className="text-red-500">
-                   If the problem persists, kindly contact the system administrator via the contact form.
-                 </Text>
-                 <Text size="txtRalewayBold18" className="text-red-500">
-                   We apologize for the inconvenience.
-                 </Text>
                 </div>
-              ) : null
-            }
-            </Text>
-            <Button
-                  className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-                  shape="round"
-                  color="red_500"
-                  size="xs"
-                  variant="fill"
-                  style={{ marginLeft: "70%" }}
-                  onClick={closeErrorModal}
-                >
-                  Close
-                </Button>
+              ) : <div>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  Something unexpectedly went wrong. Please try again.
+                </Text>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  If the problem persists, kindly contact the system administrator via the contact form.
+                </Text>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  We apologize for the inconvenience.
+                </Text>
               </div>
+              }
+            </Text>
+              <Button
+                className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="red_500"
+                size="xs"
+                variant="fill"
+                style={{marginLeft: "70%"}}
+                onClick={closeErrorModal}
+              >
+                Close
+              </Button>
+            </div>
           )}
         </Modal>
-        
+
         <ManageImagesModal
           title={manageImagesModalData.groups}
           isOpen={isManageImagesModalOpen}

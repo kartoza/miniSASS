@@ -171,7 +171,7 @@ def convert_to_int(value, default=0):
 
 @csrf_exempt
 def upload_pest_image(request):
-	"""
+	""""
 	This view function handles the upload of pest images, associating them with an observation and a site.
 
 	- Creates an empty site and observation.
@@ -221,8 +221,8 @@ def upload_pest_image(request):
 					river_name = request.POST.get('riverName', '')
 					description = request.POST.get('siteDescription', '')
 					river_cat = request.POST.get('rivercategory', 'rocky')
-					latitude = request.POST.get('latitude', 0)
-					longitude = request.POST.get('longitude', 0)
+					latitude = request.POST.get('latitude', -26)
+					longitude = request.POST.get('longitude', 28)
 
 					site = Sites(
 						gid=new_site_id,
@@ -236,7 +236,7 @@ def upload_pest_image(request):
 					site.description = description
 					site.river_cat = river_cat
 					site.user = user
-					site.save()
+					site.save(validate_ocean=True)
 
 				try:
 					observation = Observations.objects.get(
@@ -526,7 +526,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 							else:
 								return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
 						else:
-							site = Sites.objects.create(
+							site = Sites(
 								gid=new_site_id,
 								site_name=site_name,
 								river_name=river_name,
@@ -535,6 +535,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 								the_geom=Point(x=longitude, y=latitude, srid=4326),
 								user=user
 							)
+							site.save(validate_ocean=True)
 
 					for key, image in request.FILES.items():
 						if 'image_' in key:
