@@ -52,6 +52,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const [loading, setLoading] = useState(true);
   const [observationDetails, setObservationDetails] = useState({});
+  console.log(observationDetails);
   const [titleColor, setTitleColor] = useState<string>('');
   const [classification, setClassification] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
@@ -84,7 +85,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   const fetchObservations = async () => {
-    const url = `${OBSERVATION_LIST_URL}/?site_id=${observationDetails.site.gid}&recent=False`
+    const url = `${OBSERVATION_LIST_URL}/?site_id=${observationDetails.site?.gid}&recent=False`
     axios.get(url).then((response) => {
       if (response.data) {
           setObservationList(response.data as Observation[])
@@ -287,6 +288,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       
       if (response.status === 200) {
         setLoading(false);
+        console.log('set obs')
+        console.log(response.data);
         setObservationDetails(response.data);
         setSiteDetails({})
         setObservations([])
@@ -534,8 +537,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >
-                      {observationDetails.site.country ?
-                        observationDetails.site.country
+                      {observationDetails.site?.country ?
+                        observationDetails.site?.country
                         : (siteWithObservations.observations.length > 0
                           ? siteWithObservations.observations[0].site.country
                           : 'N/A')
