@@ -52,7 +52,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
 
   const [loading, setLoading] = useState(true);
   const [observationDetails, setObservationDetails] = useState({});
-  console.log(observationDetails);
   const [titleColor, setTitleColor] = useState<string>('');
   const [classification, setClassification] = useState<string>('');
   const [progressBarColor, setProgressBarColor] = useState<string>('');
@@ -288,8 +287,6 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
       
       if (response.status === 200) {
         setLoading(false);
-        console.log('set obs')
-        console.log(response.data);
         setObservationDetails(response.data);
         setSiteDetails({})
         setObservations([])
