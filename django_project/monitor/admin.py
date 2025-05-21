@@ -98,6 +98,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("User Country"),
                 smart_str("User Expert Status"),
                 smart_str("Obs Date"),
+                smart_str("Submission Date"),
                 smart_str("Site name"),
                 smart_str("River name"),
                 smart_str("River category"),
@@ -118,6 +119,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 smart_str("True flies"),
                 smart_str("Snails"),
                 smart_str("Score"),
+                smart_str("ML Score"),
                 smart_str("Status"),
                 smart_str("Water clarity"),
                 smart_str("Water temp"),
@@ -137,33 +139,32 @@ class ObservationsAdmin(admin.ModelAdmin):
             try:
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
+                user_organization_type = user_profile.organisation_type if user_profile.organisation_type else ""
                 user_country_lookup = pycountry.countries.get(alpha_2=user_profile.country)
                 user_country = user_country_lookup.name if user_country_lookup else user_profile.country
                 country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
                 country = country_lookup.name if country_lookup else obs.site.country
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
-                user_organization_name = "N/A"
-                user_country = "N/A"
+                user_organization_name = ""
+                user_organization_type = ""
+                user_country = ""
                 user_is_expert = False
-                country = "N/A"
+                country = ""
 
             obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
-            smart_str("Email"),
-            smart_str("User Name"),
-            smart_str("Surname"),
-            smart_str("Organization Name"),
-            smart_str("Organization Type"),
-            smart_str("User Country"),
+            submission_date_str = obs.submission_date.strftime('%Y-%m-%d')
             writer.writerow(
                 [
                     smart_str(obs.user.email),
                     smart_str(obs.user.first_name),
                     smart_str(obs.user.last_name),
                     smart_str(user_organization_name),
+                    smart_str(user_organization_type),
                     smart_str(user_country),
                     smart_str(user_is_expert),
                     smart_str(obs_date_str),
+                    smart_str(submission_date_str),
                     smart_str(obs.site.site_name),
                     smart_str(obs.site.river_name),
                     smart_str(obs.site.river_cat),
@@ -184,13 +185,14 @@ class ObservationsAdmin(admin.ModelAdmin):
                     smart_str(obs.true_flies),
                     smart_str(obs.snails),
                     smart_str(obs.score),
+                    smart_str(obs.minisass_ml_score if obs.minisass_ml_score else ""),
                     smart_str(flag),
-                    smart_str(obs.water_clarity),
-                    smart_str(obs.water_temp),
-                    smart_str(obs.ph),
-                    smart_str(obs.diss_oxygen),
+                    smart_str(obs.water_clarity if obs.water_clarity not in [-9999, None] else ""),
+                    smart_str(obs.water_temp if obs.water_temp  not in [-9999, None] else ""),
+                    smart_str(obs.ph if obs.ph  not in [-9999, None] else ""),
+                    smart_str(obs.diss_oxygen if obs.diss_oxygen  not in [-9999, None] else ""),
                     smart_str(obs.diss_oxygen_unit),
-                    smart_str(obs.elec_cond),
+                    smart_str(obs.elec_cond if obs.elec_cond  not in [-9999, None] else ""),
                     smart_str(obs.elec_cond_unit),
                     smart_str(obs.comment)
                 ])

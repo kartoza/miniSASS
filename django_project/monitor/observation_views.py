@@ -445,7 +445,6 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 				comment = datainput.get('notes', '')
 				water_clarity = Decimal(
 					str(datainput.get('waterclaritycm', -9999) or -9999))
-				print(water_clarity)
 				water_temp = Decimal(
 					str(datainput.get('watertemperatureOne', -9999) or -9999))
 				ph = Decimal(str(datainput.get('ph', -9999) or -9999))
