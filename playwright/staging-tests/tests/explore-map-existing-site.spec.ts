@@ -21,10 +21,10 @@ test('test', async ({ page }) => {
   await expect(page.getByText('Site location')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Disable' })).toBeVisible();
   await page.getByPlaceholder('01.01.2024').fill('2024-01-08');
-  await page.getByPlaceholder('Collectors name:').click();
+  await page.getByPlaceholder("Collector's name:").click();
   await page.locator('textarea[name="notes"]').click();
-  await page.getByPlaceholder('Collectors name:').click();
-  await expect(page.getByPlaceholder('Collectors name:')).toBeEmpty();
+  await page.getByPlaceholder("Collector's name:").click();
+  await expect(page.getByPlaceholder("Collector's name:")).toBeEmpty();
   await expect(page.locator('textarea[name="notes"]')).toBeEmpty();
   await expect(page.getByText('Measurements')).toBeVisible();
   await expect(page.getByPlaceholder('Water clarity (cm):')).toBeEmpty();

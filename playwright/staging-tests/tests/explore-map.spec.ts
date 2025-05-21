@@ -51,7 +51,7 @@ test('test', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Select on map' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Type in coordinates' })).toBeVisible();
   await expect(page.getByPlaceholder('01.01.2024')).toBeEmpty();
-  await expect(page.getByPlaceholder('Collectors name:')).toBeEmpty();
+  await expect(page.getByPlaceholder("Collector's name:")).toBeEmpty();
   await expect(page.locator('textarea[name="notes"]')).toBeEmpty();
   await expect(page.getByText('Measurements')).toBeVisible();
   await expect(page.getByPlaceholder('Water clarity (cm):')).toBeEmpty();

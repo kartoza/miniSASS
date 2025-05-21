@@ -635,7 +635,7 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                         className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                         size="txtRalewayRomanRegular18"
                       >
-                        Collectors name:
+                        Collector's name:
                       </Text>
                       <Text
                         className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
@@ -652,16 +652,16 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                         className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                         size="txtRalewayRomanRegular18"
                       >
-                        Organisation type:
+                        Organisation name:
                       </Text>
                       <Text
                         className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                         size="txtRalewayRomanRegular18"
                       >
-                        {observationDetails.organisationtype !== undefined && observationDetails.organisationtype !== null
-                          ? observationDetails.organisationtype.description
+                        {observationDetails.organisationname !== undefined && observationDetails.organisationname !== null
+                          ? observationDetails.organisationname
                           : (siteWithObservations.observations.length > 0
-                            ? siteWithObservations.observations[0].organisationtype.description
+                            ? siteWithObservations.observations[0].organisationname
                             : 'N/A')}
                       </Text>
                     </div></>
