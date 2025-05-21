@@ -90,8 +90,11 @@ class ObservationsAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(
             [
-                smart_str("User name"),
-                smart_str("User Organization"),
+                smart_str("Email"),
+                smart_str("User Name"),
+                smart_str("Surname"),
+                smart_str("Organization Name"),
+                smart_str("Organization Type"),
                 smart_str("User Country"),
                 smart_str("User Expert Status"),
                 smart_str("Obs Date"),
@@ -146,9 +149,17 @@ class ObservationsAdmin(admin.ModelAdmin):
                 country = "N/A"
 
             obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
+            smart_str("Email"),
+            smart_str("User Name"),
+            smart_str("Surname"),
+            smart_str("Organization Name"),
+            smart_str("Organization Type"),
+            smart_str("User Country"),
             writer.writerow(
                 [
-                    smart_str(obs.user.username),
+                    smart_str(obs.user.email),
+                    smart_str(obs.user.first_name),
+                    smart_str(obs.user.last_name),
                     smart_str(user_organization_name),
                     smart_str(user_country),
                     smart_str(user_is_expert),
