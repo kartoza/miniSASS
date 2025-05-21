@@ -197,7 +197,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		)
 		self.assertEqual(
 			response['collectorsname'],
-			f"{self.user.first_name} {self.user.last_name}"
+			f"{self.user.first_name}"
 		)
 		self.assertEqual(float(response['score']), self.observation.score)
 		self.assertEqual(response['flatworms'], self.observation.flatworms)
