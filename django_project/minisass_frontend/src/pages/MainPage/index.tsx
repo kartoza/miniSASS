@@ -58,7 +58,7 @@ const Home: React.FC = () => {
                 
                   const structuredItem = {
                     observation: item.observation,
-                    usernamejimtaylOne: `Username: ${item.username}`,
+                    usernamejimtaylOne: `Observer name: ${item.username}`,
                     userimage: "",
                     username: item.site,
                     score1: item.score,
