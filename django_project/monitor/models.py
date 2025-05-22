@@ -114,10 +114,22 @@ class Sites(models.Model):
                 "OUTPUTFORMAT": "application/json",
                 "CQL_FILTER": f"INTERSECTS(the_geom,POINT({self.the_geom.y} {self.the_geom.x}))"
             }
-            response = requests.get(url, params=params)
-            data = response.json()
-            if data.get('numberReturned', 0) == 0:
-                raise ValueError("Site is located in the ocean!")
+            try:
+                response = requests.get(url, params=params, timeout=10)
+                response.raise_for_status()
+                data = response.json()
+                if data.get('numberReturned', 0) == 0:
+                    raise ValueError("Site is located in the ocean!")
+            except requests.exceptions.Timeout:
+                raise ValueError("Ocean validation timed out. Please try again later.")
+            except requests.exceptions.ConnectionError:
+                raise ValueError("Could not connect to validation service. Please check your network connection.")
+            except requests.exceptions.HTTPError as e:
+                raise ValueError(f"Ocean validation service error: {e}")
+            except ValueError:
+                raise
+            except Exception as e:
+                raise ValueError(f"Unexpected error during ocean validation: {str(e)}")
 
         super().save(*args, **kwargs)
 
