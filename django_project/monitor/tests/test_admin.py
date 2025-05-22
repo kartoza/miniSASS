@@ -169,14 +169,18 @@ class AdminCSVDownloadTest(TestCase):
                 'Elec cond unit', 'Comment'
             ],
             [
-                'admin@example.com', '', '', '', '', 'South Africa', 'False', '2025-05-21', '2025-05-21',
+                'admin@example.com', '', '', '', '', 'South Africa', 'False',
+                minimal_observation.obs_date.strftime('%Y-%m-%d'),
+                minimal_observation.submission_date.strftime('%Y-%m-%d'),
                 'Site A', 'Big River', 'rocky', '7.456', '110.123', '', 'False', 'True', 'False', 'False',
                 'True', 'False', 'False', 'True', 'False', 'True', 'True', 'False', 'True', '0.00',
                 '', 'Unverified', '', '', '', '', 'mgl', '', 'mS/m',
                 'This is a minimal observation with empty water quality data'
             ],
             [
-                'admin@example.com', '', '', '', '', 'South Africa', 'False', '2025-05-21', '2025-05-21',
+                'admin@example.com', '', '', '', '', 'South Africa', 'False',
+                minimal_observation.obs_date.strftime('%Y-%m-%d'),
+                minimal_observation.submission_date.strftime('%Y-%m-%d'),
                 'Site A', 'Big River', 'rocky', '7.456', '110.123', '', 'True', 'False', 'True', 'True',
                 'False', 'True', 'True', 'False', 'True', 'True', 'False', 'True', 'False', '4.25',
                 '7.5', 'Verified', '45.5', '23.5', '7.2', '8.50', 'mgl', '120.50',
