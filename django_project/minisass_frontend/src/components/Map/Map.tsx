@@ -77,12 +77,7 @@ export const Map = forwardRef((props: Interface, ref) => {
             const urlTile = new URL(styles.sources[minisassObservationId].tiles[0])
             const currUrl = new URL(window.location)
             currUrl.pathname = urlTile.pathname
-            // styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
-            styles.sources[minisassObservationId].tiles[0] = 'http://192.168.1.7:7800/tiles/public.minisass_observations/{z}/{x}/{y}.pbf#/map'
-            // console.log(urlTile);
-            // console.log(currUrl);
-            // console.log(currUrl.pathname);
-            // console.log(currUrl.href);
+            styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
 
             // Just using 'MiniSASS Observations' source
             for (const [key, value] of Object.entries(styles.sources)) {
