@@ -174,6 +174,31 @@ class SitesListCreateViewTestCase(TestCase):
         # Assert that the number of saved images matches the number of provided images
         self.assertEqual(saved_images.count(), len(image_files))
 
+    def test_create_site_in_ocean(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+
+        # Prepare the request data without images
+        data = {
+            'site_data': {
+                'site_name': 'Test Site',
+                'river_name': 'Test River',
+                'description': 'Test Description',
+                'river_cat': 'rocky',
+                'longitude': 0,
+                'latitude': 0,
+            },
+            'images': [],
+        }
+
+        # Make a POST request to create a site without images
+        url = reverse('sites-list-create')
+        response = client.post(url, data, format='json')
+
+        # Check if the response status code is 201 Created
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['message'], 'Site is located in the ocean!')
+
     def test_create_site_with_images(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
@@ -191,8 +216,8 @@ class SitesListCreateViewTestCase(TestCase):
                 'river_name': 'Test River',
                 'description': 'Test Description',
                 'river_cat': 'rocky',
-                'longitude': 0,
-                'latitude': 0,
+                'longitude': 2,
+                'latitude': 49,
             },
             'images': [image_file],
         }
@@ -230,8 +255,8 @@ class SitesListCreateViewTestCase(TestCase):
                 'river_name': 'Test River',
                 'description': 'Test Description',
                 'river_cat': 'rocky',
-                'longitude': 0,
-                'latitude': 0,
+                'longitude': 2,
+                'latitude': 49,
             },
             'images': [],
         }
