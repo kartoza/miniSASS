@@ -6,10 +6,13 @@ import App from "./App";
 import "./styles/index.css";
 import "./styles/tailwind.css";
 import { AuthProvider } from './AuthContext';
+import { PrivacyConsentProvider } from './PrivacyConsentContext';
 
 ReactDOM.render(
   <AuthProvider>
-    <App />
+    <PrivacyConsentProvider>
+      <App />
+    </PrivacyConsentProvider>
   </AuthProvider>,
   document.getElementById("root"),
 );

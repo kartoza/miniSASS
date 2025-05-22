@@ -5,6 +5,7 @@ import requests
 
 from geopy.geocoders import Nominatim
 from dirtyfields import DirtyFieldsMixin
+from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geometry_fields
@@ -201,6 +202,7 @@ class Observations(models.Model, DirtyFieldsMixin):
     time_stamp = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255, null=True, blank=True)
     obs_date = models.DateField(blank=True, null=True)
+    submission_date = models.DateField(blank=False, null=False, default=timezone.now)
     flag = models.CharField(
         max_length=5, choices=FLAG_CATS, default='dirty', blank=False,
         help_text='Flag whether observation comes from expert or novice'

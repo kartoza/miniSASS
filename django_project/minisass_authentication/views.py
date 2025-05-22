@@ -30,6 +30,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from minisass.models.privacy_policy import PrivacyPolicy
 from minisass_authentication.models import UserProfile, Lookup, PasswordHistory
 from minisass_authentication.serializers import (
 	CertificateSerializer,
@@ -455,10 +456,12 @@ def user_login(request):
 			# Check if first name is "Anonymous"
 			if user.first_name == "Anonymous":
 				is_profile_updated = False
-				has_consented = False
+				has_consented = True
 			else:
 				is_profile_updated = get_is_user_password_enforced(user, password)
 				has_consented = get_user_privacy_consent(user)
+			priv_pol = PrivacyPolicy.objects.order_by("-published_at").first()
+			priv_pol_ver = priv_pol.version if priv_pol else None
 
 			user_data = {
 				'username': user.username,
@@ -470,6 +473,7 @@ def user_login(request):
 				'is_admin': request.user.is_staff if request.user.is_authenticated else None,
 				'is_profile_updated': is_profile_updated,
 				'is_agreed_to_privacy_policy': has_consented,
+				'accepted_privacy_policy_version': priv_pol_ver
 			}
 
 			return Response(user_data, status=status.HTTP_200_OK)
