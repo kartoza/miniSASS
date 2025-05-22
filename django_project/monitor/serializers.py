@@ -104,6 +104,7 @@ class ObservationsSerializer(serializers.ModelSerializer):
 	latitude = serializers.FloatField(source='site.the_geom.y')
 	collectorsname = serializers.SerializerMethodField()
 	organisationtype = serializers.SerializerMethodField()
+	organisationname = serializers.SerializerMethodField()
 	images = serializers.SerializerMethodField()
 
 	class Meta:
@@ -113,7 +114,7 @@ class ObservationsSerializer(serializers.ModelSerializer):
 	def get_collectorsname(self, obj):
 		"""Return collector name."""
 		if obj.collector_name:
-			return obj.collector_name
+			return obj.collector_name.split(' ')[0]
 		else:
 			user = obj.user
 			return (
@@ -134,6 +135,19 @@ class ObservationsSerializer(serializers.ModelSerializer):
 			serialized_organisation_type = LookupSerializer(
 				organisation_type).data
 			return serialized_organisation_type
+		else:
+			return None
+
+	def get_organisationname(self, obj):
+		"""Return organisation name."""
+		try:
+			user_profile = UserProfile.objects.get(user=obj.user)
+		except UserProfile.DoesNotExist:
+			user_profile = None
+
+		if user_profile:
+			organisation_name = user_profile.organisation_name
+			return organisation_name
 		else:
 			return None
 

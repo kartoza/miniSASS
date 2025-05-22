@@ -1070,7 +1070,7 @@ const DataInputForm: React.FC<DataInputFormProps> = (props) => {
                     </Text>
                     <Field
                       name="collectorsname"
-                      placeholder="Collectors name:"
+                      placeholder="Collector's name:"
                       className="!placeholder:text-black-900_99 !text-black-900_99 font-raleway md:h-auto p-0 sm:h-auto text-base text-left tracking-[0.50px] w-full"
                       wrapClassName="sm:w-full"
                       shape="round"
@@ -1419,7 +1419,7 @@ DataInputForm.defaultProps = {
   typeInCoordinates: SiteSelectionModes.TYPE_IN_COORDINATES,
   observationdetaOne: "Observation details",
   date: "Date:",
-  collectorsname: "Collectors name:",
+  collectorsname: "Collector's name:",
   notes: "Notes:",
   defaultslotOne: (
     <>

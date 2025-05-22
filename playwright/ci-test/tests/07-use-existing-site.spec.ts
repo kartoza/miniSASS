@@ -32,8 +32,8 @@ test.describe('test - use existing site', () => {
       }
     });
     await page.getByPlaceholder('01.01.2024').fill('2024-01-10');
-    await page.getByPlaceholder('Collectors name:').click();
-    await page.getByPlaceholder('Collectors name:').fill('admin');
+    await page.getByPlaceholder("Collector's name:").click();
+    await page.getByPlaceholder("Collector's name:").fill('admin');
     await page.locator('input[name="notes"]').click();
     await page.locator('input[name="notes"]').fill('downstream demo2');
     await page.getByPlaceholder('Water clarity (cm):').click();
@@ -68,8 +68,8 @@ test.describe('test - use existing site', () => {
     await page.locator('.css-19bb58m').click();
     await page.getByText('demo2', { exact: true }).click();
     await page.getByPlaceholder('01.01.2024').fill('2024-01-11');
-    await page.getByPlaceholder('Collectors name:').click();
-    await page.getByPlaceholder('Collectors name:').fill('admin');
+    await page.getByPlaceholder("Collector's name:").click();
+    await page.getByPlaceholder("Collector's name:").fill('admin');
     await page.locator('input[name="notes"]').click();
     await page.locator('input[name="notes"]').fill('upstream demo');
     await page.getByPlaceholder('Water clarity (cm):').click();

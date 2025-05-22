@@ -23,8 +23,8 @@ test('test', async ({ page }) => {
     }
   });
   await page.getByPlaceholder('01.01.2024').fill('2024-01-09');
-  await page.getByPlaceholder('Collectors name:').click();
-  await page.getByPlaceholder('Collectors name:').fill('admin');
+  await page.getByPlaceholder("Collector's name:").click();
+  await page.getByPlaceholder("Collector's name:").fill('admin');
   await page.locator('input[name="notes"]').click();
   await page.locator('input[name="notes"]').fill('downstream');
   await page.getByPlaceholder('Water clarity (cm):').click();
