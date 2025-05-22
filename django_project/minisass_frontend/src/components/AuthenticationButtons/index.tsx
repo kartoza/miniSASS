@@ -8,6 +8,8 @@ import RegistrationFormModal from '../../components/RegistrationFormModal/index'
 import UserFormModal from '../../components/UserForm/index';
 import EnforcePasswordChange from '../../components/EnforcePasswordChange';
 import PrivacyConsentModal from '../../components/PrivacyConsentModal';
+import { usePrivacyConsent, OPEN_PRIVACY_MODAL } from '../../PrivacyConsentContext';
+
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
 import Grid from '@mui/material/Grid'
@@ -18,12 +20,14 @@ function AuthenticationButtons(props) {
   const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
-  const [isPrivacyConsentModalOpen, setIsPrivacyConsentModalOpen] = useState(false);
+  // const [isPrivacyConsentModalOpen, setIsPrivacyConsentModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
   const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
   const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
+  const { state: authState } = useAuth();
+  const { dispatch: privacyDispatch } = usePrivacyConsent();
 
   const { dispatch, state } = useAuth();
 
@@ -57,10 +61,10 @@ function AuthenticationButtons(props) {
   const openPrivacyModal = () => {
     setIsPrivacyConsentModalOpen(true);
   };
-
-  const closePrivacyModal = () => {
-    setIsPrivacyConsentModalOpen(false);
-  };
+  //
+  // const closePrivacyModal = () => {
+  //   setIsPrivacyConsentModalOpen(false);
+  // };
 
   const closeProfileModal = () => {
     setProfileModalOpen(false);
@@ -98,30 +102,9 @@ function AuthenticationButtons(props) {
         if (!userData.is_profile_updated) {
           setIsEnforcePasswordOpen(true)
         }
-        const localConsent = localStorage.getItem("hasPrivacyConsent");
 
-        if (localConsent === "true" || localConsent === "false") {
-          // User already gave consent before, so send it to backend silently
-          const agree = localConsent === "true";
-
-          // If consent in local storage is not equal to consent on server,
-          // update consent on server
-          if (userData.is_agreed_to_privacy_policy !== agree) {
-            try {
-              axios.defaults.headers.common["Authorization"] = `Bearer ${userData.access_token}`;
-              await axios.post(
-                `${globalVariables.baseUrl}/privacy-policy/consent/`,
-                { agree: agree },
-                { headers: { "Content-Type": "application/json" } }
-              );
-            } catch (err) {
-              console.error("Failed to sync privacy consent with backend:", err);
-            }
-          }
-
-        } else {
-          // No local consent found, show the modal
-          setIsPrivacyConsentModalOpen(true);
+        if (userData.is_agreed_to_privacy_policy === false) {
+          privacyDispatch({ type: OPEN_PRIVACY_MODAL });
         }
         setError(null);
         setLoginModalOpen(false)
@@ -246,11 +229,11 @@ function AuthenticationButtons(props) {
         isOpen={isEnforcePasswordOpen}
         onClose={handleEnforcePassword}
       />
-      <PrivacyConsentModal
-        open={isPrivacyConsentModalOpen}
-        onClose={closePrivacyModal}
-        setOpen={setIsPrivacyConsentModalOpen}
-        forceShow />
+      {/*<PrivacyConsentModal*/}
+      {/*  open={isPrivacyConsentModalOpen}*/}
+      {/*  onClose={closePrivacyModal}*/}
+      {/*  setOpen={openPrivacyModal}*/}
+      {/*  forceShow />*/}
     </div>
   );
 }
