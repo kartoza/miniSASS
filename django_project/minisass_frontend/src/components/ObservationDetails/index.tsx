@@ -84,14 +84,16 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
   }
 
   const fetchObservations = async () => {
-    const url = `${OBSERVATION_LIST_URL}/?site_id=${observationDetails.site.gid}&recent=False`
-    axios.get(url).then((response) => {
-      if (response.data) {
-          setObservationList(response.data as Observation[])
-      }
-    }).catch((error) => {
-        console.log(error)
-    })
+    if (observationDetails.site?.gid) {
+      const url = `${OBSERVATION_LIST_URL}/?site_id=${observationDetails.site?.gid}&recent=False`
+      axios.get(url).then((response) => {
+        if (response.data) {
+            setObservationList(response.data as Observation[])
+        }
+      }).catch((error) => {
+          console.log(error)
+      })
+    }
   }
 
   useEffect(() => {
@@ -534,8 +536,8 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                       className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
                       size="txtRalewayRomanRegular18"
                     >
-                      {observationDetails.site.country ?
-                        observationDetails.site.country
+                      {observationDetails.site?.country ?
+                        observationDetails.site?.country
                         : (siteWithObservations.observations.length > 0
                           ? siteWithObservations.observations[0].site.country
                           : 'N/A')
