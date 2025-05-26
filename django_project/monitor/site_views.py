@@ -153,7 +153,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		user = request.user
 
 		# Create a new site
-		site = Sites.objects.create(
+		site = Sites(
 			gid=new_gid,
 			site_name=site_name,
 			river_name=river_name,
@@ -162,6 +162,13 @@ class SitesListCreateView(generics.ListCreateAPIView):
 			the_geom=Point(x=longitude, y=latitude, srid=4326),
 			user=user
 		)
+		try:
+			site.save(validate_ocean=True)
+		except ValueError as e:
+			return Response(
+				{'status': 'error', 'message': str(e)},
+				status=status.HTTP_400_BAD_REQUEST
+			)
 
 		# Save images for the site
 		for key, image in request.FILES.items():
