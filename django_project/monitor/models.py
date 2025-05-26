@@ -129,8 +129,8 @@ class Sites(models.Model):
                 raise ValueError(f"Ocean validation service error: {e}")
             except ValueError:
                 raise
-            except Exception as e:
-                raise ValueError(f"Unexpected error during ocean validation: {str(e)}")
+            except Exception:
+                raise ValueError(f"Unexpected error during ocean validation!")
 
         super().save(*args, **kwargs)
 
