@@ -498,7 +498,6 @@ def user_login(request):
 				'is_agreed_to_privacy_policy': has_consented,
 				'accepted_privacy_policy_version': priv_pol_ver
 			}
-			print(user_data)
 
 			return Response(user_data, status=status.HTTP_200_OK)
 		return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
