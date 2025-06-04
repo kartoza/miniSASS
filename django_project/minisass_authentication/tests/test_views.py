@@ -301,13 +301,14 @@ class CheckAuthenticationStatusTest(APITestCase):
                 'is_authenticated': True,
                 'username': self.user.username,
                 'email': self.user.email,
-                'is_admin': self.user.is_staff
+                'is_admin': self.user.is_staff,
+                'is_agreed_to_privacy_policy': True
             }
         )
 
     def test_check_authentication_status_unauthenticated(self):
         response = self.client.get(self.url)
-        self.assertEquals(response.status_code, 403)
+        self.assertEquals(response.status_code, 401)
         self.assertEquals(
             response.json(),
             {'detail': 'Authentication credentials were not provided.'}
