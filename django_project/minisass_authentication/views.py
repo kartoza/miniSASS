@@ -23,6 +23,7 @@ from rest_framework.decorators import (
 	api_view,
 	permission_classes
 )
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -58,11 +59,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def user_logout(request):
-	logout(request)
-	return JsonResponse({'message': 'Logout successful'}, status=200)
+class UserLogout(APIView):
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [JWTAuthentication, SessionAuthentication]
+
+	def post(self, request, *args, **kwargs):
+		logout(request)
+		return JsonResponse({'message': 'Logout successful'}, status=200)
 
 
 @api_view(['GET'])
