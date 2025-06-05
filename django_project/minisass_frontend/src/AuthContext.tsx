@@ -167,9 +167,9 @@ const login = (dispatch: React.Dispatch<AuthAction>, user: User) => {
 };
 
 const logout = (dispatch: React.Dispatch<AuthAction>) => {
-  localStorage.removeItem('authState');
   dispatch({ type: 'LOGOUT' });
   axios.post(`${globalVariables.baseUrl}/authentication/api/logout/`);
+  localStorage.removeItem('authState');
 };
 
 const register = (dispatch: React.Dispatch<AuthAction>) => {
