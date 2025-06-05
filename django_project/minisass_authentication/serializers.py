@@ -26,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True)
+    username = serializers.CharField(required=False)
     email = serializers.EmailField(required=True)
     name = serializers.CharField(source='first_name')
     surname = serializers.CharField(source='last_name')
