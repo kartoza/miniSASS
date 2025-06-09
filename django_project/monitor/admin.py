@@ -141,7 +141,7 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_organization_name = user_profile.organisation_name
                 user_organization_type = user_profile.organisation_type if user_profile.organisation_type else ""
                 user_country = str(user_profile.country)
-                user_country_lookup = pycountry.countries.get(alpha_2=)
+                user_country_lookup = pycountry.countries.get(alpha_2=user_country)
                 user_country = user_country_lookup.name if user_country_lookup else user_country
                 country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
                 country = country_lookup.name if country_lookup else obs.site.country
