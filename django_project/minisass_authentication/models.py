@@ -82,7 +82,7 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
     def save(self, *args, **kwargs):
         if self.expert_approval_status == APPROVED_STATUS and self.certificate:
