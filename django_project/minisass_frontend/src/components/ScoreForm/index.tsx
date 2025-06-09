@@ -137,10 +137,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
       additionalData?.images?.map((file, idx) => {
         form_data.append('image_' + idx, file);
       })
-      if (localStorage.getItem('siteId') !== "0") {
+      if (![null, "none", "0"].includes(localStorage.getItem('siteId'))) {
         form_data.append('create_site_or_observation', JSON.stringify(false));
         setCreateNewSiteOrObservation(false);
-      } else if (additionalData.selectedSite) {
+      } else if (additionalData.selectedSite && additionalData.selectedSite !== "none") {
         if(additionalData.selectedSite.value)
           localStorage.setItem('siteId', additionalData.selectedSite.value)
         else
@@ -167,6 +167,9 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         {
           headers: {
             'Content-Type': 'multipart/form-data'
+          },
+          validateStatus: function (status) {
+            return status < 500; // Don't throw for status codes less than 500
           }
         }
       );
@@ -176,6 +179,10 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
         setIsCloseDialogOpen(false)
         localStorage.setItem('observationId', JSON.stringify(0))
         localStorage.setItem('siteId', JSON.stringify(0))
+        setProceedToSavingData(false);
+        setIsSuccessModalOpen(true);
+        setIsDisableNavigations(false);
+      } else {
         if (response.data.status.includes('error')) {
           if("Site name already exists" === response.data.message){
             setIsCloseSiteDialogOpen(true);
@@ -185,15 +192,12 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             else setErrorMessage(response.data.message)
             setIsErrorModalOpen(true);
           }
-        }else {
           setProceedToSavingData(false);
-          setIsSuccessModalOpen(true);
-          setIsDisableNavigations(false);
         }
       }
     } catch (exception) {
       setIsSavingData(false)
-      setErrorMessage(exception.message);
+      setErrorMessage(exception.message + (exception.response?.data?.message ? ": " + exception.response.data.message : ""));
       setIsErrorModalOpen(true);
     }
   };
@@ -384,13 +388,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
 
   const handleCloseSidebar = () => {
     if(proceedToSavingData)
-      setIsCloseDialogOpen(true)
-    else if(
-      additionalData.riverName !== '' &&
-      additionalData.siteName !== '' &&
-      additionalData.siteDescription !== '' &&
-      additionalData.date !== ''
-    )
       setIsCloseDialogOpen(true)
     else
       setSidebarOpen(false)
@@ -774,20 +771,24 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 
               <br />
             <Text size="txtRalewayBold18" className="text-red-500">
-              {errorMessage.message ? (
-                 <div>
+              {errorMessage ? (
+                <div>
                   <Text size="txtRalewayBold18" className="text-red-500">
-                    Something unexpectedly went wrong. Please try again.
+                    {errorMessage}
                   </Text>
-                 <Text size="txtRalewayBold18" className="text-red-500">
-                   If the problem persists, kindly contact the system administrator via the contact form.
-                 </Text>
-                 <Text size="txtRalewayBold18" className="text-red-500">
-                   We apologize for the inconvenience.
-                 </Text>
                 </div>
-              ) : null
-            }
+              ) : <div>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  Something unexpectedly went wrong. Please try again.
+                </Text>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  If the problem persists, kindly contact the system administrator via the contact form.
+                </Text>
+                <Text size="txtRalewayBold18" className="text-red-500">
+                  We apologize for the inconvenience.
+                </Text>
+              </div>
+              }
             </Text>
             <Button
                   className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
