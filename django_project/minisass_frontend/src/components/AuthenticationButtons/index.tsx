@@ -8,7 +8,7 @@ import RegistrationFormModal from '../../components/RegistrationFormModal/index'
 import UserFormModal from '../../components/UserForm/index';
 import EnforcePasswordChange from '../../components/EnforcePasswordChange';
 import PrivacyConsentModal from '../../components/PrivacyConsentModal';
-import { usePrivacyConsent, OPEN_PRIVACY_MODAL } from '../../PrivacyConsentContext';
+import {usePrivacyConsent, OPEN_PRIVACY_MODAL, CLOSE_PRIVACY_MODAL} from '../../PrivacyConsentContext';
 
 import { logout, OPEN_LOGIN_MODAL, useAuth } from '../../AuthContext';
 import { globalVariables } from '../../utils';
@@ -20,16 +20,13 @@ function AuthenticationButtons(props) {
   const [isEnforcePasswordOpen, setIsEnforcePasswordOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
-  // const [isPrivacyConsentModalOpen, setIsPrivacyConsentModalOpen] = useState(false);
   const [Registrationloading, setLoading] = useState(false);
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
   const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
   const [updateProfileInProgress, setUpdateProfileInProgress] = useState(false);
-  const { state: authState } = useAuth();
-  const { dispatch: privacyDispatch } = usePrivacyConsent();
-
   const { dispatch, state } = useAuth();
+  const { state: privacyState, dispatch: privacyDispatch } = usePrivacyConsent();
 
   /** Open login modal based on context ***/
   useEffect(() => {
@@ -57,14 +54,6 @@ function AuthenticationButtons(props) {
     setRegisterModalOpen(false);
     setError(null);
   };
-
-  const openPrivacyModal = () => {
-    setIsPrivacyConsentModalOpen(true);
-  };
-  //
-  // const closePrivacyModal = () => {
-  //   setIsPrivacyConsentModalOpen(false);
-  // };
 
   const closeProfileModal = () => {
     setProfileModalOpen(false);
@@ -229,11 +218,10 @@ function AuthenticationButtons(props) {
         isOpen={isEnforcePasswordOpen}
         onClose={handleEnforcePassword}
       />
-      {/*<PrivacyConsentModal*/}
-      {/*  open={isPrivacyConsentModalOpen}*/}
-      {/*  onClose={closePrivacyModal}*/}
-      {/*  setOpen={openPrivacyModal}*/}
-      {/*  forceShow />*/}
+      <PrivacyConsentModal
+        open={privacyState.isPrivacyModalOpen}
+        onClose={() => privacyDispatch({ type: CLOSE_PRIVACY_MODAL })}
+      />
     </div>
   );
 }
