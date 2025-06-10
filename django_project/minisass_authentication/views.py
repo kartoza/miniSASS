@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth import (
 	authenticate,
@@ -19,16 +20,24 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import api_view
 from rest_framework.decorators import (
 	api_view,
 	permission_classes
 )
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.response import Response
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from minisass.models.privacy_policy import PrivacyPolicy
 from minisass_authentication.models import UserProfile, Lookup, PasswordHistory
@@ -41,15 +50,11 @@ from minisass_authentication.serializers import (
 from minisass_authentication.serializers import (
 	UserProfileSerializer
 )
+from minisass_authentication.utils import create_privacy_policy_consent
 from minisass_authentication.utils import (
 	get_is_user_password_enforced,
 	get_user_privacy_consent
 )
-from minisass_authentication.utils import create_privacy_policy_consent
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from datetime import timedelta
 
 User = get_user_model()
 import logging
@@ -58,23 +63,29 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def user_logout(request):
-	logout(request)
-	return JsonResponse({'message': 'Logout successful'}, status=200)
+class UserLogout(APIView):
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [JWTAuthentication, SessionAuthentication]
+
+	def post(self, request, *args, **kwargs):
+		logout(request)
+		return JsonResponse({'message': 'Logout successful'}, status=200)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def check_authentication_status(request):
-	user_data = {
-		'is_authenticated': request.user.is_authenticated,
-		'username': request.user.username if request.user.is_authenticated else None,
-		'email': request.user.email if request.user.is_authenticated else None,
-		'is_admin': request.user.is_staff if request.user.is_authenticated else None
-	}
-	return JsonResponse(user_data, status=200)
+class CheckAuthenticationStatus(APIView):
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [JWTAuthentication, SessionAuthentication]
+
+	def get(self, request):
+		has_consented = get_user_privacy_consent(request.user)
+		user_data = {
+			'is_authenticated': request.user.is_authenticated,
+			'username': request.user.username if request.user.is_authenticated else None,
+			'email': request.user.email if request.user.is_authenticated else None,
+			'is_admin': request.user.is_staff if request.user.is_authenticated else None,
+			'is_agreed_to_privacy_policy': has_consented,
+		}
+		return Response(user_data, status=200)
 
 
 @api_view(['GET'])
@@ -439,12 +450,19 @@ class UpdatePassword(APIView):
 				return JsonResponse({'error': str(e)}, status=400)
 
 
+def create_long_lived_refresh_token(user, days=90):
+	refresh = RefreshToken.for_user(user)
+	refresh.set_exp(lifetime=timedelta(days=days))
+	return refresh
+
+
 @api_view(['POST'])
 def user_login(request):
 	if request.method == 'POST':
 
 		email = request.data.get('email')
 		password = request.data.get('password')
+		app = request.GET.get('app', 'web')
 		
 		user = authenticate(request, email=email, password=password)
 		
@@ -463,11 +481,16 @@ def user_login(request):
 			priv_pol = PrivacyPolicy.objects.order_by("-published_at").first()
 			priv_pol_ver = priv_pol.version if priv_pol else None
 
+			if app == 'mobile':
+				refresh_token = str(create_long_lived_refresh_token(user, days=90))
+			else:
+				refresh_token = str(create_long_lived_refresh_token(user, days=30))
+
 			user_data = {
 				'username': user.username,
 				'email': user.email,
 				'access_token': str(access_token),
-				'refresh_token': str(RefreshToken.for_user(user)),
+				'refresh_token': refresh_token,
 				'is_authenticated': True,
 				'user_id': user.pk,
 				'is_admin': request.user.is_staff if request.user.is_authenticated else None,
