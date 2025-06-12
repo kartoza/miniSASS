@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import (
 	authenticate,
 	login,
@@ -456,19 +457,23 @@ def create_long_lived_refresh_token(user, days=90):
 	return refresh
 
 
-@api_view(['POST'])
-def user_login(request):
-	if request.method == 'POST':
+from django.utils.decorators import method_decorator
 
+
+class UserLoginView(APIView):
+	permission_classes = [AllowAny]
+	authentication_classes = []  # No authentication required for login
+
+	def post(self, request):
 		email = request.data.get('email')
 		password = request.data.get('password')
 		app = request.GET.get('app', 'web')
-		
+
 		user = authenticate(request, email=email, password=password)
-		
+
 		if user:
 			login(request, user)
-			
+
 			access_token = RefreshToken.for_user(user).access_token
 
 			# Check if first name is "Anonymous"
@@ -478,6 +483,7 @@ def user_login(request):
 			else:
 				is_profile_updated = get_is_user_password_enforced(user, password)
 				has_consented = get_user_privacy_consent(user)
+
 			priv_pol = PrivacyPolicy.objects.order_by("-published_at").first()
 			priv_pol_ver = priv_pol.version if priv_pol else None
 
