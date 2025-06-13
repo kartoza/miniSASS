@@ -245,7 +245,6 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		site_id = response.json()['site_id']
 		pest_image_id = response.json()['pest_image_id']
 
-
 		response = self.client.post(
 			url, 
 			{

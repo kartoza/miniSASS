@@ -171,7 +171,7 @@ def convert_to_int(value, default=0):
 
 @csrf_exempt
 def upload_pest_image(request):
-	"""
+	""""
 	This view function handles the upload of pest images, associating them with an observation and a site.
 
 	- Creates an empty site and observation.
@@ -221,8 +221,8 @@ def upload_pest_image(request):
 					river_name = request.POST.get('riverName', '')
 					description = request.POST.get('siteDescription', '')
 					river_cat = request.POST.get('rivercategory', 'rocky')
-					latitude = request.POST.get('latitude', 0)
-					longitude = request.POST.get('longitude', 0)
+					latitude = request.POST.get('latitude', -26)
+					longitude = request.POST.get('longitude', 28)
 
 					site = Sites(
 						gid=new_site_id,
@@ -236,7 +236,7 @@ def upload_pest_image(request):
 					site.description = description
 					site.river_cat = river_cat
 					site.user = user
-					site.save()
+					site.save(validate_ocean=True)
 
 				try:
 					observation = Observations.objects.get(
@@ -293,10 +293,10 @@ def upload_pest_image(request):
 					}
 				)
 		except ValidationError as ve:
-			return JsonResponse({'status': 'error', 'message': str(ve)})
+			return JsonResponse({'status': 'error', 'message': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
 		except Exception as e:
 			# Handle other exceptions
-			return JsonResponse({'status': 'error', 'message': str(e)})
+			return JsonResponse({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
@@ -501,11 +501,17 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 					latitude = float(str(datainput.get('latitude', 0)))
 					longitude = float(str(datainput.get('longitude', 0)))
 				except ValueError:
-					return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude format'})
+					return JsonResponse(
+						{'status': 'error', 'message': 'Invalid longitude or latitude format'},
+						status=status.HTTP_400_BAD_REQUEST
+					)
 
 				# Check if the values are within a valid range
 				if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
-					return JsonResponse({'status': 'error', 'message': 'Invalid longitude or latitude values'})
+					return JsonResponse(
+						{'status': 'error', 'message': 'Invalid longitude or latitude values'},
+						status=status.HTTP_400_BAD_REQUEST
+					)
 
 				create_site_or_observation = request.data.get(
 					'create_site_or_observation', 'true').lower()
@@ -523,9 +529,12 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 							if saveToSite == 'true':
 								site = Sites.objects.get(site_name=site_name)
 							else:
-								return JsonResponse({'status': 'error', 'message': 'Site name already exists'})
+								return JsonResponse(
+									{'status': 'error', 'message': 'Site name already exists'},
+									status=status.HTTP_400_BAD_REQUEST
+								)
 						else:
-							site = Sites.objects.create(
+							site = Sites(
 								gid=new_site_id,
 								site_name=site_name,
 								river_name=river_name,
@@ -534,6 +543,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 								the_geom=Point(x=longitude, y=latitude, srid=4326),
 								user=user
 							)
+							site.save(validate_ocean=True)
 
 					for key, image in request.FILES.items():
 						if 'image_' in key:
@@ -567,7 +577,9 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 						setattr(observation, db_fields[0], value)
 					observation.save()
 					return JsonResponse(
-						{'status': 'success', 'observation_id': observation.gid})
+						{'status': 'success', 'observation_id': observation.gid},
+						status=status.HTTP_201_CREATED
+					)
 
 				elif create_site_or_observation == 'false':
 					try:
@@ -637,13 +649,21 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 						)
 
 					except Sites.DoesNotExist:
-						return JsonResponse({'status': 'error', 'message': 'cannot find site to save observation to'})
+						return JsonResponse(
+							{'status': 'error', 'message': 'cannot find site to save observation to'},
+							status=status.HTTP_400_BAD_REQUEST
+						)
 
 			except Exception as e:
-				return JsonResponse({'status': 'error', 'message': str(e)})
+				return JsonResponse(
+					{'status': 'error', 'message': str(e)},
+					status=status.HTTP_400_BAD_REQUEST
+				)
 
 		return JsonResponse(
-			{'status': 'error', 'message': 'Invalid request method'})
+			{'status': 'error', 'message': 'Invalid request method'},
+			status=status.HTTP_400_BAD_REQUEST
+		)
 
 
 class ObservationRetrieveUpdateDeleteView(

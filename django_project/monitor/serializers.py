@@ -13,6 +13,34 @@ from monitor.models import (
 
 
 class ObservationsAllFieldsSerializer(serializers.ModelSerializer):
+	collector_name = serializers.SerializerMethodField()
+	organisationname = serializers.SerializerMethodField()
+
+	def get_collector_name(self, obj):
+		"""Return collector name."""
+		if obj.collector_name:
+			return obj.collector_name.split(' ')[0]
+		else:
+			user = obj.user
+			return (
+				f"{user.first_name}"
+				if user and user.first_name
+				else "Anonymous"
+			)
+
+	def get_organisationname(self, obj):
+		"""Return organisation name."""
+		try:
+			user_profile = UserProfile.objects.get(user=obj.user)
+		except UserProfile.DoesNotExist:
+			user_profile = None
+
+		if user_profile:
+			organisation_name = user_profile.organisation_name
+			return organisation_name
+		else:
+			return None
+
 	class Meta:
 		model = Observations
 		fields = '__all__'

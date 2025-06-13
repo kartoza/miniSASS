@@ -666,7 +666,26 @@ const ObservationDetails: React.FC<ObservationDetailsProps> = ({
                             ? siteWithObservations.observations[0].organisationname
                             : 'N/A')}
                       </Text>
-                    </div></>
+                    </div>
+                    <div className="flex flex-row gap-3 items-center justify-between w-[541px] sm:w-full">
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        Note:
+                      </Text>
+                      <Text
+                        className="text-gray-800_01 text-lg tracking-[0.15px] w-auto"
+                        size="txtRalewayRomanRegular18"
+                      >
+                        {observationDetails.comment !== undefined && observationDetails.comment !== null
+                          ? observationDetails.comment
+                          : (siteWithObservations.observations.length > 0
+                            ? siteWithObservations.observations[0].comment
+                            : '')}
+                      </Text>
+                    </div>
+            </>
               )}
 
             <div className="flex flex-col gap-3 items-start justify-start w-auto sm:w-full">
