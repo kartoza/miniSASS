@@ -293,10 +293,10 @@ def upload_pest_image(request):
 					}
 				)
 		except ValidationError as ve:
-			return JsonResponse({'status': 'error', 'message': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+			return JsonResponse({'status': 'error', 'message': 'Invalid input'}, status=status.HTTP_400_BAD_REQUEST)
 		except Exception as e:
 			# Handle other exceptions
-			return JsonResponse({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+			return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status=status.HTTP_400_BAD_REQUEST)
 
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
