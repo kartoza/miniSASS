@@ -1,6 +1,7 @@
 import os
 import shutil
 import time
+import requests
 
 from geopy.geocoders import Nominatim
 from dirtyfields import DirtyFieldsMixin
@@ -101,6 +102,35 @@ class Sites(models.Model):
                 self.country = location.get('address', {}).get('country_code', 'N/A').upper()
             except AttributeError:
                 pass
+
+        validate_ocean = kwargs.pop('validate_ocean', False)
+        if validate_ocean:
+            url = "https://maps.kartoza.com/geoserver/kartoza/ows"
+            params = {
+                "SERVICE": "WFS",
+                "VERSION": "1.1.0",
+                "REQUEST": "GetFeature",
+                "TYPENAME": "kartoza:world",
+                "SRSNAME": "EPSG:4326",
+                "OUTPUTFORMAT": "application/json",
+                "CQL_FILTER": f"INTERSECTS(the_geom,POINT({self.the_geom.y} {self.the_geom.x}))"
+            }
+            try:
+                response = requests.get(url, params=params, timeout=10)
+                response.raise_for_status()
+                data = response.json()
+                if data.get('numberReturned', 0) == 0:
+                    raise ValueError("Site is located in the ocean!")
+            except requests.exceptions.Timeout:
+                raise ValueError("Ocean validation timed out. Please try again later.")
+            except requests.exceptions.ConnectionError:
+                raise ValueError("Could not connect to validation service. Please check your network connection.")
+            except requests.exceptions.HTTPError as e:
+                raise ValueError(f"Ocean validation service error: {e}")
+            except ValueError:
+                raise
+            except Exception:
+                raise ValueError(f"Unexpected error during ocean validation!")
 
         super().save(*args, **kwargs)
 
