@@ -655,7 +655,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
 			except Exception as e:
 				return JsonResponse(
-					{'status': 'error', 'message': str(e)},
+					{'status': 'error', 'message': 'An unexpected error occurred'},
 					status=status.HTTP_400_BAD_REQUEST
 				)
 
