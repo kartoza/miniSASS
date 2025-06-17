@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
 )
 from minisass_authentication.views import (
     activate_account,
-    check_authentication_status,
+    CheckAuthenticationStatus,
     check_registration_status,
     user_login, 
     register,
@@ -41,7 +41,7 @@ urlpatterns = [
     path('api/user/update/', UpdateUser.as_view(), name='profile-update'),
     path('api/user/password/update/', UpdatePassword.as_view(), name='password-update'),
     path('api/user/certificate/upload/', UploadCertificate.as_view(), name='certificate-upload'),
-    path('api/check-auth-status/', check_authentication_status, name='check-auth-status'),
+    path('api/check-auth-status/', CheckAuthenticationStatus.as_view(), name='check-auth-status'),
     path('api/check-registration-status/<str:email>/', check_registration_status, name='check_registration_status'),
     path('api/contact-us', contact_us, name='contact_us'),
     path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account'),
