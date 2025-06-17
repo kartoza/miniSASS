@@ -5,9 +5,6 @@ import { usePrivacyConsent, CLOSE_PRIVACY_MODAL } from './PrivacyConsentContext'
 
 function App() {
   const { state, dispatch } = usePrivacyConsent();
-  const closePrivacyModal = () => {
-    setConsentModalOpen(false);
-  };
   useEffect(() => {
     const startTime = Date.now();
 
