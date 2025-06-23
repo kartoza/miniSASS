@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    user_id = serializers.CharField(required=False, source='id')
     username = serializers.CharField(required=False)
     email = serializers.EmailField(required=True)
     name = serializers.CharField(source='first_name')
@@ -35,7 +36,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     country = serializers.CharField(source='userprofile.country', required=False, allow_null=True)
     is_expert = serializers.SerializerMethodField()
     upload_preference = serializers.CharField(source='userprofile.upload_preference', required=True, allow_null=False)
-
 
     def get_is_expert(self, obj):
         try:
@@ -88,7 +88,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'email', 'name', 'surname',
+            'user_id', 'username', 'email', 'name', 'surname',
             'organisation_type', 'organisation_name', 'country', 'is_expert', 'upload_preference'
         )
 
