@@ -1,11 +1,13 @@
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
 from monitor.models import Sites
+from django.test import override_settings
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 
 User = get_user_model()
 
+@override_settings(ENABLE_GEOCODING=True)
 class SitesModelTest(TestCase):
 
     def setUp(self):

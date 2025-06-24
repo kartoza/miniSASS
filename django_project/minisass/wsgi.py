@@ -20,7 +20,7 @@ from django.core.wsgi import get_wsgi_application
 # sys.path.append("/home/django/sites/miniSASS/miniSASS")
 # sys.path.append("/home/web/django_project")
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minisass.settings.default")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION

@@ -186,6 +186,7 @@ class UpdateUserTest(APITestCase):
         self.assertEquals(response.status_code, 200)
         expected_response = self.base_payload
         expected_response['is_expert'] = False
+        expected_response['user_id'] = str(self.user.id)
         self.assertEquals(
             response.json(),
             expected_response

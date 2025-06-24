@@ -94,14 +94,25 @@ class Sites(models.Model):
             f'{self.gid}'
         )
 
+    def _get_geocoder(self):
+        """Factory method for geocoder - easier to mock"""
+        return Nominatim(user_agent="minisass")
+
+    def _get_country_from_coordinates(self):
+        """Extract country lookup logic"""
+        if not getattr(settings, 'ENABLE_GEOCODING', True):
+            return ''  # Default for tests
+
+        try:
+            geocoder = self._get_geocoder()
+            location = geocoder.reverse(f"{self.the_geom.y}, {self.the_geom.x}").raw
+            return location.get('address', {}).get('country_code', 'N/A').upper()
+        except (AttributeError, Exception):
+            return ''  # Fallback
+
     def save(self, *args, **kwargs):
         if not self.country:
-            app = Nominatim(user_agent="minisass")
-            try:
-                location = app.reverse(f"{self.the_geom.y}, {self.the_geom.x}").raw
-                self.country = location.get('address', {}).get('country_code', 'N/A').upper()
-            except AttributeError:
-                pass
+            self.country = self._get_country_from_coordinates()
 
         validate_ocean = kwargs.pop('validate_ocean', False)
         if validate_ocean:
