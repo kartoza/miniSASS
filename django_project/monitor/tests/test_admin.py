@@ -39,7 +39,8 @@ class AdminCSVDownloadTest(TestCase):
             description="Clean description",
             river_cat="sandy",
             the_geom="POINT(111.000 8.000)",
-            user=self.admin_user
+            user=self.admin_user,
+            country=''
         )
 
     def test_csv_download_action(self):

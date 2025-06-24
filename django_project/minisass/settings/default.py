@@ -151,7 +151,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(FRONTEND_PATH, 'templates'),
-            os.path.join(PROJECT_PATH, 'templates'),
+            os.path.join(PROJECT_PATH, '../templates'),
             os.path.join(PROJECT_PATH.replace('/minisass', '/minisass_authentication'), 'templates', 'registration'),
             os.path.join(PROJECT_PATH, 'monitor' , 'templates' , 'monitor')
         ],
@@ -287,3 +287,5 @@ MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY") or os.getenv("AWS_ACCESS_KEY")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY") or os.getenv("AWS_SECRET_ACCESS_KEY")
 MINIO_AI_BUCKET = os.getenv("MINIO_BUCKET")
 MINIO_ENDPOINT = os.getenv("MINIO_URL")
+
+ENABLE_GEOCODING = True

@@ -254,7 +254,7 @@ class SiteObservationsByLocation(APIView):
 class SitesWithObservationsView(APIView):
 	serializer_class = SitesAndObservationsSerializer
 	authentication_classes = [JWTAuthentication]
-	# permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated]
 	@swagger_auto_schema(
 		operation_description="Retrieve detailed information about a site, including its observations and images.",
 		manual_parameters=[
