@@ -192,6 +192,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             else setErrorMessage(response.data.message)
             setIsErrorModalOpen(true);
           }
+        }else {
           setProceedToSavingData(false);
         }
       }
@@ -790,21 +791,21 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               </div>
               }
             </Text>
-            <Button
-                  className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
-                  shape="round"
-                  color="red_500"
-                  size="xs"
-                  variant="fill"
-                  style={{ marginLeft: "70%" }}
-                  onClick={closeErrorModal}
-                >
-                  Close
-                </Button>
-              </div>
+              <Button
+                className="!text-white-A700 cursor-pointer font-raleway min-w-[105px] text-center text-lg tracking-[0.81px]"
+                shape="round"
+                color="red_500"
+                size="xs"
+                variant="fill"
+                style={{marginLeft: "70%"}}
+                onClick={closeErrorModal}
+              >
+                Close
+              </Button>
+            </div>
           )}
         </Modal>
-        
+
         <ManageImagesModal
           title={manageImagesModalData.groups}
           isOpen={isManageImagesModalOpen}

@@ -18,59 +18,49 @@ const PRIVACY_CONSENT_CHECK = globalVariables.baseUrl + "/privacy-policy/check/"
 
 export interface PrivacyConsentModalProps {
   open?: boolean;
-  forceShow?: boolean;
   onClose?: () => void;
 }
 
 export default function PrivacyConsentModal({
   open,
-  forceShow,
   onClose,
 }: PrivacyConsentModalProps) {
   const { dispatch } = usePrivacyConsent();
   const { state } = useAuth();
-  const [acceptedPrivacyPolicyVersion, setAcceptedPrivacyPolicyVersion] = useState("");
-  let hasConsent = acceptedPrivacyPolicyVersion === PRIVACY_POLICY_VERSION;
-  hasConsent = state.user? hasConsent : true;
 
-    // Create a ref to track if the analytics endpoint has been called
-  const analyticsEndpointCalled = useRef(false);
+   // Track ongoing request instead of completed requests
+  const isRequestInProgress = useRef(false);
 
-  // Debounced function to call the analytics endpoint
-  const debouncedAnalyticsCall = useCallback(() => {
-    if (!analyticsEndpointCalled.current && state.user && state.user.access_token) {
-      analyticsEndpointCalled.current = true;
-
-      // Call the analytics endpoint
-      const getAcceptedPrivacyPolicycallAnalyticsEndpoint = async () => {
-        try {
-          axios.defaults.headers.common["Authorization"] = `Bearer ${state.user.access_token}`;
-          const response = await axios.get(
-            PRIVACY_CONSENT_CHECK
-          );
-          setAcceptedPrivacyPolicyVersion(response.data.policy.version);
-        } catch (error) {
-          console.error("Error sending analytics:", error);
-        }
-      };
-
-      getAcceptedPrivacyPolicycallAnalyticsEndpoint();
+  const checkPrivacyConsent = useCallback(async () => {
+    // If user is not available or request is already in progress, skip
+    if (!state.user?.access_token || isRequestInProgress.current) {
+      return;
     }
-  }, [state.user]);
 
+    // Mark request as in progress
+    isRequestInProgress.current = true;
+
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${state.user.access_token}`;
+      const response = await axios.get(PRIVACY_CONSENT_CHECK);
+      if (!response.data.is_agreed_to_privacy_policy) {
+        // User has already consented to the privacy policy
+        dispatch({type: OPEN_PRIVACY_MODAL});
+      }
+    } catch (error) {
+      console.error("Error checking privacy consent:", error);
+    } finally {
+      // Always reset the flag when request completes (success or error)
+      isRequestInProgress.current = false;
+    }
+  }, [state.user?.access_token]);
+
+  // Run on every render when user is available
   useEffect(() => {
-    if (open && state.user && state.user.access_token) {
-      // Call the debounced analytics function when the modal is opened
-      debouncedAnalyticsCall();
+    if (state.user?.access_token) {
+      checkPrivacyConsent();
     }
-  }, [open, debouncedAnalyticsCall, state.user]);
-
-
-  useEffect(() => {
-    if (!hasConsent && !forceShow && !window.location.href.includes('privacy-policy')) {
-      dispatch({ type: OPEN_PRIVACY_MODAL });
-    }
-  }, [hasConsent, forceShow]);
+  });
 
   const sendConsent = async (agree: boolean) => {
     try {
