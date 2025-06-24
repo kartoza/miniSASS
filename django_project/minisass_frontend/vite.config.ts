@@ -20,6 +20,8 @@ export default defineConfig({
   //       },
   //       host: "0.0.0.0", // or use "0.0.0.0" for LAN access
   //       port: 5173,
+  //       strictPort: true,
+  //       origin: 'http://0.0.0.0:5173'
   //     }
   //   : undefined,
 });
