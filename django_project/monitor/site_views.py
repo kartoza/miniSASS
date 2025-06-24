@@ -1,6 +1,7 @@
 import json
 from decimal import Decimal
 from django.contrib.gis.geos import Point
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
@@ -111,12 +112,18 @@ class SaveSiteImagesView(generics.CreateAPIView):
 		return Response({'success': 'Images saved successfully'}, status=status.HTTP_201_CREATED)
 
 
+class SitesPagination(PageNumberPagination):
+	page_size = 20
+	page_size_query_param = 'page_size'
+	max_page_size = 100
+
 
 class SitesListCreateView(generics.ListCreateAPIView):
 	parser_classes = [MultiPartParser, FormParser, JSONParser]
 	queryset = Sites.objects.all()
 	serializer_class = SitesSerializer
 	authentication_classes = [JWTAuthentication]
+	pagination_class = SitesPagination
 
 	def get_permissions(self):
 		if self.request.method == 'POST':
@@ -128,6 +135,20 @@ class SitesListCreateView(generics.ListCreateAPIView):
 		site_name = request.GET.get('site_name', None)
 		if site_name:
 			queryset = queryset.filter(site_name__icontains=site_name)
+
+		my_sites = request.GET.get('my_sites', '').lower() == 'true'
+		if my_sites and request.user.is_authenticated:
+			queryset = queryset.filter(user_id=user_id)
+
+		# Check if pagination is requested
+		paginated = request.GET.get('paginated', '').lower() == 'true'
+
+		if paginated:
+			# Use DRF's built-in pagination
+			page = self.paginate_queryset(queryset)
+			if page is not None:
+				serializer = self.get_serializer(page, many=True)
+				return self.get_paginated_response(serializer.data)
 
 		serializer = SitesSerializer(queryset, many=True)
 		return Response(serializer.data)

@@ -38,14 +38,14 @@ test:
 	@echo "------------------------------------------------------------------"
 	@echo "Running test"
 	@echo "------------------------------------------------------------------"7
-	@docker compose exec django bash -c "python manage.py test"
+	@docker compose exec django bash -c "python manage.py test --settings=minisass.settings.test"
 	
 dev:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Running in dev mode"
 	@echo "------------------------------------------------------------------"
-	@docker compose ${ARGS} --profile dev up -d
+	@docker compose ${ARGS} --profile dev --env-file .env up -d
 
 frontend-dev:
 	@echo
