@@ -124,7 +124,7 @@ def contact_us(request):
 	domain = Site.objects.get_current().domain
 
 	mail_subject = 'Contact Us'
-	message = render_to_string('contact_us.html', {
+	message = render_to_string('registration/contact_us.html', {
 		'from': email,
 		'name': name,
 		'contact': phone,
@@ -330,7 +330,7 @@ def register(request):
 					)
 
 					mail_subject = 'Activate account on miniSASS'
-					message = render_to_string('activate_account.html', {
+					message = render_to_string('registration/activate_account.html', {
 						'domain': domain,
 						'activation_link': activation_link,
 						'name': username
