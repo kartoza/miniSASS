@@ -138,7 +138,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 
 		my_sites = request.GET.get('my_sites', '').lower() == 'true'
 		if my_sites and request.user.is_authenticated:
-			queryset = queryset.filter(user_id=user_id)
+			queryset = queryset.filter(user_id=request.user.id)
 
 		# Check if pagination is requested
 		paginated = request.GET.get('paginated', '').lower() == 'true'
