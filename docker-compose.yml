@@ -105,6 +105,7 @@ services:
       - MINIO_URL=${MINIO_URL:-http://minio:9000}
       - ALLOWED_HOSTS='*'
       - DEV_SETUP=${DEV_SETUP}
+      - GOOGLE_ANALYTICS_TRACKING_CODE=${GOOGLE_ANALYTICS_TRACKING_CODE}
     depends_on:
       db:
         condition: service_healthy

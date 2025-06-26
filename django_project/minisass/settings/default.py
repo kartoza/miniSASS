@@ -8,7 +8,9 @@ from django.core.files.storage import FileSystemStorage
 from minisass.utils import absolute_path
 from drf_yasg import openapi
 
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+PROJECT_PATH = os.path.abspath(
+    os.path.dirname(os.path.dirname(__file__))
+)
 
 ALLOWED_HOSTS = ['*']
 
