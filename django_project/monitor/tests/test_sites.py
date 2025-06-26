@@ -333,6 +333,35 @@ class SitesListCreateViewTestCase(TestCase):
         self.assertEquals(len(response.json()), 1)
         self.assertEquals(response.json()[0]['site_name'], 'Limpopo')
 
+    def test_list_site_filter_user(self):
+        user = User.objects.create_user(username='testuser_1', password='testpassword', email='test1@example.com')
+        token = self.generate_token_for_user(user)
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        Sites.objects.create(
+            user=user,
+            site_name='Cape Town',
+            the_geom=Point(0, 0)
+        )
+        Sites.objects.create(
+            user=user,
+            site_name='Limpopo',
+            the_geom=Point(1, 1)
+        )
+        Sites.objects.create(
+            user=user,
+            site_name='KZN',
+            the_geom=Point(1, 1)
+        )
+        url = reverse('sites-list-create')
+        response = self.client.get(f'{url}?my_sites=true&paginated=true&page_size=2', format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()['results']), 2)
+
+        response = self.client.get(f'{url}?my_sites=true&paginated=true', format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()['results']), 3)
+
 
 class SiteObservationsByLocationTestCase(APITestCase):
     def setUp(self):
