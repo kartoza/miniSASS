@@ -228,7 +228,6 @@ class SitesAdmin(LeafletGeoAdmin):
         context['osm_widget'] = True
         return super().render_change_form(request, context, *args, **kwargs)
 
-
     list_max_show_all = 1000
     list_display = (
         'site_name',
