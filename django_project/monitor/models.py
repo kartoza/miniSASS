@@ -94,13 +94,13 @@ class Sites(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        # when creating a new site, set the country
-        if not self.gid:
+        # when creating a new site and it has no country, set the country
+        if not self.gid and not self.country:
             self.country = get_country_from_coordinates_kartoza_maps(
                 latitude=self.the_geom.y,
                 longitude=self.the_geom.x
             )
-        else:
+        elif self.gid:
             # when the_geom is updated, update the country
             old_site = Sites.objects.get(gid=self.gid)
             if old_site.the_geom != self.the_geom:
