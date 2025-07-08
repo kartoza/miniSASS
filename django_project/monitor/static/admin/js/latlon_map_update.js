@@ -1,107 +1,138 @@
 (function($) {
+    // Wait for both DOM and Leaflet to be ready
+    function waitForLeaflet(callback) {
+        if (typeof L !== 'undefined') {
+            callback();
+        } else {
+            setTimeout(function() {
+                waitForLeaflet(callback);
+            }, 100);
+        }
+    }
+
     $(document).ready(function() {
-        var $latField = $('#id_latitude');
-        var $lonField = $('#id_longitude');
-        var mapWidget = window.geodjango_the_geom.map;
-        
-        if (!mapWidget) {
-            return;
+        waitForLeaflet(function() {
+            initializeMapHandlers();
+        });
+    });
+
+    function initializeMapHandlers() {
+        var map = window['leafletmapid_the_geom-map'];
+        var currentMarker;
+        var mapInitialized = false;
+
+        console.log('Leaflet is ready, initializing map handlers');
+
+        // Function to update lat/lng fields
+        function updateLatLngFields(lat, lng) {
+            $('#id_latitude').val(lat.toFixed(6));
+            $('#id_longitude').val(lng.toFixed(6));
         }
 
-        // Helper function to find the vector layer containing the point
-        function getVectorLayer() {
-            var vectorLayer = null;
+        // Function to update geometry field
+        function updateGeometryField(lng, lat) {
+            $('#id_the_geom').val('POINT(' + lng + ' ' + lat + ')');
+        }
 
-            // Loop through all layers in the map to find a vector layer
-            for (var i = 0; i < mapWidget.layers.length; i++) {
-                var layer = mapWidget.layers[i];
-                if (layer.CLASS_NAME === 'OpenLayers.Layer.Vector') {
-                    vectorLayer = layer;
-                    break;
-                }
+        // Function to add/update marker
+        function updateMarker(lat, lng) {
+            if (!map) return;
+
+            // Remove existing marker
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
             }
 
-            return vectorLayer;
-        }
+            // Add new marker
+            currentMarker = L.marker([lat, lng], {draggable: true}).addTo(map);
 
-        var vectorLayer = getVectorLayer();
-
-        // If the vector layer exists, attach event listeners to it
-        if (vectorLayer) {
-            // Listen for changes to features (points) on the vector layer
-            vectorLayer.events.on({
-                'featuremodified': function(event) {
-                    var geometry = event.feature.geometry;
-                    var lonLat = new OpenLayers.LonLat(geometry.x, geometry.y).transform(
-                        mapWidget.getProjectionObject(),
-                        new OpenLayers.Projection("EPSG:4326")  // To WGS84
-                    );
-
-                    // Update lat/lon fields based on new point location
-                    $latField.val(lonLat.lat.toFixed(8));
-                    $lonField.val(lonLat.lon.toFixed(8));
-                },
-                'featureadded': function(event) {
-                    var geometry = event.feature.geometry;
-                    var lonLat = new OpenLayers.LonLat(geometry.x, geometry.y).transform(
-                        mapWidget.getProjectionObject(),
-                        new OpenLayers.Projection("EPSG:4326")  // To WGS84
-                    );
-
-                    // Update lat/lon fields when a new point is added
-                    $latField.val(lonLat.lat.toFixed(8));
-                    $lonField.val(lonLat.lon.toFixed(8));
-                }
+            // Handle marker drag
+            currentMarker.on('dragend', function(e) {
+                var position = e.target.getLatLng();
+                updateLatLngFields(position.lat, position.lng);
+                updateGeometryField(position.lng, position.lat);
             });
         }
 
-        // Update the map based on lat/lon fields when they are changed
+        // Function to update map from lat/lng fields
         function updateMapFromFields() {
-            vectorLayer.removeAllFeatures();
-            var lat = parseFloat($latField.val());
-            var lon = parseFloat($lonField.val());
+            var lat = parseFloat($('#id_latitude').val());
+            var lng = parseFloat($('#id_longitude').val());
 
-            if (!isNaN(lat) && !isNaN(lon)) {
-                var lonLat = new OpenLayers.LonLat(lon, lat).transform(
-                    new OpenLayers.Projection("EPSG:4326"),  // From WGS84
-                    mapWidget.getProjectionObject()  // To map projection
-                );
-
-                var pointGeometry = new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat);
-
-                // Update the existing feature with new geometry
-                if (vectorLayer.features.length > 0) {
-                    vectorLayer.features[0].geometry = pointGeometry;
-                    vectorLayer.drawFeature(vectorLayer.features[0]);
-                } else {
-                    // Add a new feature if none exist
-                    var feature = new OpenLayers.Feature.Vector(pointGeometry);
-                    vectorLayer.addFeatures([feature]);
-                }
-
-                // Recenter the map to the new location
-                mapWidget.setCenter(lonLat, mapWidget.getZoom());
+            if (!isNaN(lat) && !isNaN(lng) && map) {
+                map.setView([lat, lng], map.getZoom());
+                updateMarker(lat, lng);
+                updateGeometryField(lng, lat);
             }
         }
 
-        // Debounce function: delays execution until user stops typing
-        function debounce(func, delay) {
-            var timeout;
-            return function() {
-                var context = this, args = arguments;
-                clearTimeout(timeout);
-                timeout = setTimeout(function() {
-                    func.apply(context, args);
-                }, delay);
-            };
+        // Listen for lat/lng field changes
+        var timeout;
+        $('#id_latitude, #id_longitude').on('input', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateMapFromFields, 300);
+        });
+
+        // Hook into Django Leaflet's map initialization
+        $(document).on('map:init', function(e) {
+            var detail = e.originalEvent ? e.originalEvent.detail : e.detail;
+
+            // Check if this is our geometry field's map
+            if (detail && detail.id === 'id_the_geom') {
+                map = detail.map;
+                mapInitialized = true;
+
+                console.log('Map initialized successfully via map:init event');
+
+                setupMapHandlers();
+            }
+        });
+
+        function setupMapHandlers() {
+            if (!map) return;
+
+            // Set up map click handler
+            map.on('click', function(e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                updateLatLngFields(lat, lng);
+                updateGeometryField(lng, lat);
+                updateMarker(lat, lng);
+            });
+
+            // Initialize marker if lat/lng already exist
+            var existingLat = $('#id_latitude').val();
+            var existingLng = $('#id_longitude').val();
+
+            if (existingLat && existingLng) {
+                var lat = parseFloat(existingLat);
+                var lng = parseFloat(existingLng);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    updateMarker(lat, lng);
+                    map.setView([lat, lng], 10);
+                }
+            }
         }
 
-        // Attach debounced event listeners to the lat/lon fields
-        var debouncedUpdateMap = debounce(updateMapFromFields, 500);  // 500ms delay
+        // Fallback method - try to find map after a delay
+        function tryFallbackInit() {
+            if (mapInitialized) return;
 
-        // Attach event listeners to the lat/lon fields to update the map when they change
-        $latField.on('input', debouncedUpdateMap);
-        $lonField.on('input', debouncedUpdateMap);
+            var mapContainer = document.getElementById('id_the_geom-map');
+            if (mapContainer && mapContainer._leaflet_map) {
+                map = mapContainer._leaflet_map;
+                mapInitialized = true;
+                console.log('Map initialized via fallback method');
+                setupMapHandlers();
+            } else {
+                // Try again after a delay
+                setTimeout(tryFallbackInit, 500);
+            }
+        }
 
-    });
-})(django.jQuery);
+        // Start fallback after a delay
+        setTimeout(tryFallbackInit, 1000);
+    }
+
+})(django.jQuery || jQuery || $);
