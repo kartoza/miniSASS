@@ -1,10 +1,13 @@
 # tests.py
-from django.test import TestCase
+from unittest.mock import patch, Mock
+from django.test import TestCase, override_settings
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
 from django.urls import reverse
+
+from minisass.settings.test import ENABLE_GEOCODING
 from monitor.models import Sites, Observations, SiteImage
 from monitor.serializers import SitesWithObservationsSerializer
 from rest_framework.test import APIClient
@@ -174,14 +177,30 @@ class SitesListCreateViewTestCase(TestCase):
         # Assert that the number of saved images matches the number of provided images
         self.assertEqual(saved_images.count(), len(image_files))
 
-    def test_create_site_in_ocean(self):
+    @patch('monitor.utils.requests.get')
+    @override_settings(ENABLE_GEOCODING=True)
+    def test_create_site_in_ocean(self, mock_get):
+        Sites.objects.all().delete()
         client = APIClient()
         client.force_authenticate(user=self.user)
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "type": "FeatureCollection",
+            "features": [],
+            "totalFeatures": 0,
+            "numberMatched": 0,
+            "numberReturned": 0,
+            "timeStamp": "2025-07-08T03:17:38.103Z",
+            "crs": None,
+        }
+        mock_get.return_value = mock_response
 
         # Prepare the request data without images
         data = {
             'site_data': {
-                'site_name': 'Test Site',
+                'site_name': 'Test New Site',
                 'river_name': 'Test River',
                 'description': 'Test Description',
                 'river_cat': 'rocky',
@@ -195,7 +214,7 @@ class SitesListCreateViewTestCase(TestCase):
         url = reverse('sites-list-create')
         response = client.post(url, data, format='json')
 
-        # Check if the response status code is 201 Created
+        # Check if the response status code is 400 (HTTP_BAD_REQUEST)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], 'Site is located in the ocean!')
 
