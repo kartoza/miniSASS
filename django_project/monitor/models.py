@@ -93,9 +93,8 @@ class Sites(models.Model):
             f'{self.gid}'
         )
 
-    def save(self, *args, **kwargs):
-        # when creating a new site and it has no country, set the country
-        set_country = False
+    def save(self, set_country=False, *args, **kwargs):
+        # when creating a new site, and it has no country, set the country
         if not self.gid and not self.country:
             set_country = True
         elif self.gid:

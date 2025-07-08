@@ -100,7 +100,6 @@ class SitesListCreateViewTestCase(TestCase):
         
         return str(token)
 
-
     def test_get_all_sites_with_observations(self):
         url = reverse('sites-with-observations')
         response = self.client.get(url)

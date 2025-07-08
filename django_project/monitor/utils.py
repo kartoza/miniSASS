@@ -65,6 +65,7 @@ def get_country_from_coordinates_nominatim(latitude, longitude):
     except (AttributeError, Exception):
         return ''
 
+
 def get_country_from_coordinates_kartoza_maps(latitude, longitude):
     """Extract country lookup logic"""
     if not getattr(settings, 'ENABLE_GEOCODING', True):
