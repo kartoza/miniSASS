@@ -227,26 +227,27 @@ FORMFIELD_OVERRIDES = {
     geo_models.MultiPolygonField: LEAFLET_FIELD_OPTIONS,
 }
 
+from django.contrib.gis.admin import GISModelAdmin
 
 @admin.register(Sites)
 class SitesAdmin(LeafletGeoAdmin):
     form = CustomGeoAdminForm
     # formfield_overrides = FORMFIELD_OVERRIDES
     #
-    # # Leaflet settings
-    # settings_overrides = {
-    #     'DEFAULT_CENTER': (-25.0, 30.0),  # South Africa center
-    #     'DEFAULT_ZOOM': 6,
-    #     'MIN_ZOOM': 3,
-    #     'MAX_ZOOM': 18,
-    #     'TILES': [
-    #         ('OpenStreetMap', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    #             'attribution': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    #             'maxZoom': 18,
-    #         }),
-    #     ],
-    #     'NO_GLOBALS': False
-    # }
+    # Leaflet settings
+    settings_overrides = {
+        'DEFAULT_CENTER': (-25.0, 30.0),  # South Africa center
+        'DEFAULT_ZOOM': 6,
+        'MIN_ZOOM': 3,
+        'MAX_ZOOM': 18,
+        'TILES': [
+            ('OpenStreetMap', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                'attribution': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                'maxZoom': 18,
+            }),
+        ],
+        'NO_GLOBALS': False
+    }
 
     class Media:
         js = (

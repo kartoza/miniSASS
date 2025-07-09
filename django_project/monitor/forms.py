@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.gis.geos import Point
 from django.forms import ModelForm, Textarea, Select, DateInput
-from leaflet.forms.widgets import LeafletWidget
 
 from monitor.models import Sites, Observations, ObservationPestImage
 
@@ -70,77 +69,29 @@ class MapForm(forms.Form):
     saved_obs = forms.CharField()
 
 
-from django import forms
-from django.contrib.gis.geos import Point
-from .models import Sites
-
-
-from django import forms
-from django.contrib.gis.geos import Point
-from leaflet.forms.widgets import LeafletWidget
-from .models import Sites
-
-
 class CustomGeoAdminForm(forms.ModelForm):
-    latitude = forms.FloatField(
-        required=False,
-        label='Latitude',
-        widget=forms.NumberInput(attrs={
-            'step': 'any',
-            'placeholder': 'Enter latitude',
-            'class': 'vTextField'
-        })
-    )
-    longitude = forms.FloatField(
-        required=False,
-        label='Longitude',
-        widget=forms.NumberInput(attrs={
-            'step': 'any',
-            'placeholder': 'Enter longitude',
-            'class': 'vTextField'
-        })
-    )
+    latitude = forms.FloatField(required=False, label='Latitude')
+    longitude = forms.FloatField(required=False, label='Longitude')
 
     class Meta:
         model = Sites
         fields = ['the_geom', 'latitude', 'longitude', 'site_name', 'river_name',
                   'description', 'river_cat', 'user', 'assessment', 'country']
-        # widgets = {
-        #     'the_geom': LeafletWidget,
-        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         # Pre-fill lat/lng from the existing point field if available
         if self.instance and self.instance.the_geom:
-            self.fields['latitude'].initial = round(self.instance.the_geom.y, 6)
-            self.fields['longitude'].initial = round(self.instance.the_geom.x, 6)
+            self.fields['latitude'].initial = self.instance.the_geom.y
+            self.fields['longitude'].initial = self.instance.the_geom.x
 
     def clean(self):
         cleaned_data = super().clean()
         lat = cleaned_data.get('latitude')
         lng = cleaned_data.get('longitude')
 
-        # If lat/lng are provided, create/update the geometry
         if lat is not None and lng is not None:
-            try:
-                cleaned_data['the_geom'] = Point(lng, lat)
-            except Exception as e:
-                raise forms.ValidationError(f"Invalid coordinates: {e}")
+            cleaned_data['the_geom'] = Point(lng, lat)
 
         return cleaned_data
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-
-        # Ensure the geometry is set from lat/lng if they exist
-        lat = self.cleaned_data.get('latitude')
-        lng = self.cleaned_data.get('longitude')
-
-        if lat is not None and lng is not None:
-            instance.the_geom = Point(lng, lat)
-
-        if commit:
-            instance.save()
-        return instance
