@@ -1,7 +1,8 @@
 import ast
+import os
 from datetime import timedelta
 from pathlib import Path
-import os
+from collections import OrderedDict
 
 from django.core.files.storage import FileSystemStorage
 
@@ -228,6 +229,9 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.admin',
     'django.contrib.gis',
+    # django constance,
+    'constance',
+    'constance.backends.database',
     # custom apps here:
     'rest_framework',
     'rest_framework_simplejwt',
@@ -291,3 +295,14 @@ MINIO_AI_BUCKET = os.getenv("MINIO_BUCKET")
 MINIO_ENDPOINT = os.getenv("MINIO_URL")
 
 ENABLE_GEOCODING = True
+
+
+# DJANGO CONSTANCE
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_CONFIG = OrderedDict([
+    ('YOMA_CLIENT_ID', ('', 'YOMA Client ID')),
+    ('YOMA_CLIENT_SECRET', ('', 'YOMA Client Secret')),
+    ('YOMA_REDIRECT_URI', ('', 'YOMA Redirect URI')),
+    ('YOMA_AUTH_URI', ('https://stage.yoma.world/auth/realms/yoma/protocol/openid-connect/auth', '')),
+    ('YOMA_BASE_URI', ('https://stage.yoma.world', 'Base URI for YOMA service, without trailing slash')),
+])
