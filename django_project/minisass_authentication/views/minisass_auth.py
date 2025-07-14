@@ -53,7 +53,9 @@ from minisass_authentication.serializers import (
 from minisass_authentication.utils import create_privacy_policy_consent
 from minisass_authentication.utils import (
 	get_is_user_password_enforced,
-	get_user_privacy_consent
+	get_user_privacy_consent,
+	generate_user_response,
+	create_long_lived_refresh_token
 )
 
 User = get_user_model()
@@ -71,10 +73,45 @@ class UserLogout(APIView):
 		logout(request)
 		return JsonResponse({'message': 'Logout successful'}, status=200)
 
+import traceback
+class DebugJWTAuthentication(JWTAuthentication):
+	def authenticate(self, request):
+		print("JWTAuthentication.authenticate() called")
+		try:
+			print("About to call super().authenticate()")
+			result = super().authenticate(request)
+			print(f"JWTAuthentication result: {result}")
+			return result
+		except Exception as e:
+			print(f"Exception in JWTAuthentication: {e}")
+			print(f"Exception type: {type(e)}")
+			print(f"Traceback: {traceback.format_exc()}")
+			# Return None to allow next authenticator
+			return None
+
+class DebugSessionAuthentication(SessionAuthentication):
+	def authenticate(self, request):
+		print("SessionAuthentication.authenticate() called")
+		try:
+			result = super().authenticate(request)
+			print(f"SessionAuthentication result: {result}")
+			return result
+		except Exception as e:
+			print(f"Exception in SessionAuthentication: {e}")
+			return None
+
 
 class CheckAuthenticationStatus(APIView):
 	permission_classes = [IsAuthenticated]
-	authentication_classes = [JWTAuthentication, SessionAuthentication]
+	authentication_classes = [DebugJWTAuthentication, DebugSessionAuthentication]
+
+	def authenticate(self, request):
+		try:
+			return super().authenticate(request)
+		except AuthenticationFailed:
+			print('Authentication failed')
+			# Return None to allow next authenticator to try
+			return None
 
 	def get(self, request):
 		has_consented = get_user_privacy_consent(request.user)
@@ -85,6 +122,7 @@ class CheckAuthenticationStatus(APIView):
 			'is_admin': request.user.is_staff if request.user.is_authenticated else None,
 			'is_agreed_to_privacy_policy': has_consented,
 		}
+		user_data.update(generate_user_response(request.user))
 		return Response(user_data, status=200)
 
 
@@ -448,15 +486,6 @@ class UpdatePassword(APIView):
 				return JsonResponse({'status': 'OK'})
 			except Exception as e:
 				return JsonResponse({'error': str(e)}, status=400)
-
-
-def create_long_lived_refresh_token(user, days=90):
-	refresh = RefreshToken.for_user(user)
-	refresh.set_exp(lifetime=timedelta(days=days))
-	return refresh
-
-
-from django.utils.decorators import method_decorator
 
 
 class UserLoginView(APIView):

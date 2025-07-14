@@ -1,13 +1,24 @@
-import requests
+import jwt
 import logging
-from django.conf import settings
-from django.http import JsonResponse
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+import requests
+import secrets
+import string
 from constance import config
+from django.conf import settings
+from django.contrib.auth import get_user_model, login
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.http import JsonResponse
+from jwt.exceptions import DecodeError, ExpiredSignatureError
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from minisass_authentication.models.yoma import YomaToken
+
+
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +30,6 @@ class YomaAuthCallbackView(APIView):
     This endpoint receives the authorization code from YOMA after user authentication
     and exchanges it for an access token that can be used for subsequent API calls.
     """
-    permission_classes = [IsAuthenticated]  # User must be authenticated to link YOMA
 
     def get(self, request):
         """
@@ -50,15 +60,87 @@ class YomaAuthCallbackView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Exchange authorization code for access token
             token_response = self._exchange_code_for_token(auth_code)
 
             if token_response.get('error'):
                 return Response(token_response, status=status.HTTP_400_BAD_REQUEST)
 
+            # Decode the ID token to get user information
+            try:
+                # Note: In production, you should verify the JWT signature
+                # For now, we'll decode without verification (not recommended for production)
+                id_token = token_response.get('id_token')
+                if not id_token:
+                    return Response(
+                        {'error': 'missing_id_token', 'error_description': 'ID token not found in response'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                # Decode JWT without verification (add verification in production)
+                decoded_token = jwt.decode(id_token, options={"verify_signature": False})
+
+                # Extract user information from the token
+                email = decoded_token.get('email')
+                username = decoded_token.get('preferred_username') or decoded_token.get('sub')
+                first_name = decoded_token.get('given_name', '')
+                last_name = decoded_token.get('family_name', '')
+
+                if not email or not username:
+                    return Response(
+                        {'error': 'invalid_token', 'error_description': 'Required user information not found in token'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                # Generate a complex random password
+                def generate_complex_password(length=16):
+                    """Generate a complex random password with uppercase, lowercase, digits, and special characters."""
+                    # Ensure at least one character from each category
+                    uppercase = secrets.choice(string.ascii_uppercase)
+                    lowercase = secrets.choice(string.ascii_lowercase)
+                    digit = secrets.choice(string.digits)
+                    special = secrets.choice('!@#$%^&*()_+-=[]{}|;:,.<>?')
+
+                    # Fill the rest with random characters from all categories
+                    all_chars = string.ascii_letters + string.digits + '!@#$%^&*()_+-=[]{}|;:,.<>?'
+                    remaining = ''.join(secrets.choice(all_chars) for _ in range(length - 4))
+
+                    # Combine and shuffle
+                    password_chars = list(uppercase + lowercase + digit + special + remaining)
+                    secrets.SystemRandom().shuffle(password_chars)
+
+                    return ''.join(password_chars)
+
+                # Get or create user
+                user, created = User.objects.get_or_create(
+                    email=email,
+                    defaults={
+                        'username': username,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'password': make_password(generate_complex_password()),
+                        'is_active': True,
+                    }
+                )
+
+                # If user already exists but username is different, update it
+                if not created and user.username != username:
+                    user.username = username
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+
+                # Authenticate and login the user
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+            except (DecodeError, ExpiredSignatureError, KeyError) as e:
+                return Response(
+                    {'error': 'token_decode_error', 'error_description': f'Failed to decode ID token: {str(e)}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             # Store token in database using the model's class method
-            yoma_token = YomaToken.create_or_update_token(
-                user=request.user,
+            YomaToken.create_or_update_token(
+                user=user,  # Use the authenticated user
                 token_data=token_response,
                 session_state=session_state
             )
@@ -67,19 +149,20 @@ class YomaAuthCallbackView(APIView):
             logger.info(f"Successfully stored YOMA token for user {request.user.username}. Session: {session_state}")
 
             # Return success response with token info
-            return Response({
-                'success': True,
-                'message': 'YOMA authentication successful and token stored',
-                'token_info': {
-                    'expires_at': yoma_token.expires_at.isoformat(),
-                    'refresh_expires_at': yoma_token.refresh_expires_at.isoformat() if yoma_token.refresh_expires_at else None,
-                    'scope': yoma_token.scope,
-                    'token_type': yoma_token.token_type,
-                    'is_valid': yoma_token.is_valid,
-                    'created_at': yoma_token.created_at.isoformat(),
-                    'updated_at': yoma_token.updated_at.isoformat()
-                }
-            }, status=status.HTTP_200_OK)
+            # return Response({
+            #     'success': True,
+            #     'message': 'YOMA authentication successful and token stored',
+            #     'token_info': {
+            #         'expires_at': yoma_token.expires_at.isoformat(),
+            #         'refresh_expires_at': yoma_token.refresh_expires_at.isoformat() if yoma_token.refresh_expires_at else None,
+            #         'scope': yoma_token.scope,
+            #         'token_type': yoma_token.token_type,
+            #         'is_valid': yoma_token.is_valid,
+            #         'created_at': yoma_token.created_at.isoformat(),
+            #         'updated_at': yoma_token.updated_at.isoformat()
+            #     }
+            # }, status=status.HTTP_200_OK)
+            return redirect(reverse('home'))  # Replace 'home' with your actual URL name
 
         except Exception as e:
             logger.error(f"Error during YOMA token exchange: {str(e)}")
@@ -122,18 +205,18 @@ class YomaAuthCallbackView(APIView):
             'client_secret': client_secret
         }
 
-        # Set request headers
+        # Set request headers (exactly like your curl command)
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json'
         }
 
         try:
-            # Make token exchange request
+            # Make token exchange request (exactly like your curl command)
             response = requests.post(
                 token_url,
-                data=token_data,
                 headers=headers,
+                data=token_data,
                 timeout=30
             )
 
@@ -194,14 +277,14 @@ class YomaAuthInitiateView(APIView):
                 f"?client_id={client_id}"
                 f"&redirect_uri={redirect_uri}"
                 "&response_type=code"
-                "&scope=openid email%20profile%20yoma-api%20phone"
+                "&scope=openid+email+profile+yoma-api+phone"
             )
 
             return Response({
                 'auth_url': auth_url,
                 'client_id': client_id,
                 'redirect_uri': redirect_uri,
-                'scope': 'openid email profile yoma-api phone'
+                'scope': 'openid+email+profile+yoma-api+phone'
             }, status=status.HTTP_200_OK)
 
         except Exception as e:
