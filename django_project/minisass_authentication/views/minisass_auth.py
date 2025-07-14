@@ -73,37 +73,28 @@ class UserLogout(APIView):
 		logout(request)
 		return JsonResponse({'message': 'Logout successful'}, status=200)
 
-import traceback
-class DebugJWTAuthentication(JWTAuthentication):
+class CustomJWTAuthentication(JWTAuthentication):
 	def authenticate(self, request):
-		print("JWTAuthentication.authenticate() called")
 		try:
-			print("About to call super().authenticate()")
 			result = super().authenticate(request)
-			print(f"JWTAuthentication result: {result}")
 			return result
 		except Exception as e:
-			print(f"Exception in JWTAuthentication: {e}")
-			print(f"Exception type: {type(e)}")
-			print(f"Traceback: {traceback.format_exc()}")
 			# Return None to allow next authenticator
 			return None
 
-class DebugSessionAuthentication(SessionAuthentication):
+
+class CustomSessionAuthentication(SessionAuthentication):
 	def authenticate(self, request):
-		print("SessionAuthentication.authenticate() called")
 		try:
 			result = super().authenticate(request)
-			print(f"SessionAuthentication result: {result}")
 			return result
 		except Exception as e:
-			print(f"Exception in SessionAuthentication: {e}")
 			return None
 
 
 class CheckAuthenticationStatus(APIView):
 	permission_classes = [IsAuthenticated]
-	authentication_classes = [DebugJWTAuthentication, DebugSessionAuthentication]
+	authentication_classes = [CustomJWTAuthentication, CustomSessionAuthentication]
 
 	def authenticate(self, request):
 		try:

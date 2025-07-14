@@ -148,20 +148,6 @@ class YomaAuthCallbackView(APIView):
             # Log successful token exchange (without sensitive data)
             logger.info(f"Successfully stored YOMA token for user {request.user.username}. Session: {session_state}")
 
-            # Return success response with token info
-            # return Response({
-            #     'success': True,
-            #     'message': 'YOMA authentication successful and token stored',
-            #     'token_info': {
-            #         'expires_at': yoma_token.expires_at.isoformat(),
-            #         'refresh_expires_at': yoma_token.refresh_expires_at.isoformat() if yoma_token.refresh_expires_at else None,
-            #         'scope': yoma_token.scope,
-            #         'token_type': yoma_token.token_type,
-            #         'is_valid': yoma_token.is_valid,
-            #         'created_at': yoma_token.created_at.isoformat(),
-            #         'updated_at': yoma_token.updated_at.isoformat()
-            #     }
-            # }, status=status.HTTP_200_OK)
             return redirect(reverse('home'))  # Replace 'home' with your actual URL name
 
         except Exception as e:
