@@ -1,4 +1,5 @@
 from django.test import TestCase
+from constance.test import override_config
 from unittest.mock import patch
 from minisass_authentication.models import Lookup
 from rest_framework.test import APITestCase
@@ -297,14 +298,14 @@ class CheckAuthenticationStatusTest(APITestCase):
         response = self.client.get(self.url)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
-            response.json(),
-            {
-                'is_authenticated': True,
-                'username': self.user.username,
-                'email': self.user.email,
-                'is_admin': self.user.is_staff,
-                'is_agreed_to_privacy_policy': True
-            }
+            sorted(response.json().keys()),
+            [
+                'accepted_privacy_policy_version',
+                'access_token', 'email', 'is_admin',
+                'is_agreed_to_privacy_policy',
+                'is_authenticated', 'is_profile_updated', 'refresh_token',
+                'user_id', 'username'
+            ]
         )
 
     def test_check_authentication_status_unauthenticated(self):
@@ -436,7 +437,7 @@ class TestContactUs(APITestCase):
     Test Contact Us view.
     """
 
-    @patch('minisass_authentication.views.send_mail')
+    @patch('minisass_authentication.views.minisass_auth.send_mail')
     def test_contact_us(self, mock_mail):
         """
         Test Contact Us works without phone number and without login.

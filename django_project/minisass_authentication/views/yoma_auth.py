@@ -75,7 +75,6 @@ class YomaAuthCallbackView(APIView):
                         {'error': 'missing_id_token', 'error_description': 'ID token not found in response'},
                         status=status.HTTP_400_BAD_REQUEST
                     )
-
                 # Decode JWT without verification (add verification in production)
                 decoded_token = jwt.decode(id_token, options={"verify_signature": False})
 
@@ -140,7 +139,7 @@ class YomaAuthCallbackView(APIView):
 
             # Store token in database using the model's class method
             YomaToken.create_or_update_token(
-                user=user,  # Use the authenticated user
+                user=user,
                 token_data=token_response,
                 session_state=session_state
             )
@@ -148,7 +147,7 @@ class YomaAuthCallbackView(APIView):
             # Log successful token exchange (without sensitive data)
             logger.info(f"Successfully stored YOMA token for user {request.user.username}. Session: {session_state}")
 
-            return redirect(reverse('home'))  # Replace 'home' with your actual URL name
+            return redirect(reverse('home'))
 
         except Exception as e:
             logger.error(f"Error during YOMA token exchange: {str(e)}")

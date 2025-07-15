@@ -427,11 +427,15 @@ class UpdateUser(APIView):
 			try:
 				user, user_profile = serializer.save(request.user)
 				user.refresh_from_db()
-				if user.yoma_token:
-					user.yoma_token.renew_access_token()
-					user.yoma_token.update_yoma_user()
+				try:
+					if user.yoma_token:
+						user.yoma_token.renew_access_token()
+						user.yoma_token.update_yoma_user()
+				except YomaToken.DoesNotExist:
+					pass
 				return JsonResponse(UserUpdateSerializer(user).data)
 			except Exception as e:
+				print(e)
 				return JsonResponse({'error': str(e)}, status=400)
 
 

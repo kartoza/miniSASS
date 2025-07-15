@@ -20,6 +20,6 @@ YOMA_TEST_CONFIG = {
 CONSTANCE_CONFIG = {
     'YOMA_CLIENT_ID': ('test_client_id', 'Test YOMA Client ID'),
     'YOMA_CLIENT_SECRET': ('test_client_secret', 'Test YOMA Client Secret'),
-    'YOMA_BASE_URI': ('https://stage.yoma.world', 'Test YOMA Base URI'),
-    'YOMA_REDIRECT_URI': ('https://minisass.org/auth/yoma/callback', 'Test YOMA Redirect URI'),
+    'YOMA_BASE_URI': ('https://dummystage.yoma.world', 'Test YOMA Base URI'),
+    'YOMA_REDIRECT_URI': ('https://dummy.minisass.org/auth/yoma/callback', 'Test YOMA Redirect URI'),
 }

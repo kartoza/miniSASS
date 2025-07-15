@@ -20,19 +20,19 @@ class YomaAuthTestCase(APITestCase):
         """Set up test data."""
         self.client = APIClient()
         self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
+            username='john@example.com',
+            email='john@example.com',
             password='testpass123'
         )
 
         # Sample YOMA token response
         self.sample_token_response = {
-            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWJjMTIzIiwic2NvcGVzIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2OTAwODAzOTl9.PxKm3vKQg...signature",
             "expires_in": 300,
             "refresh_expires_in": 1800,
-            "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWJjMTIzIiwidHlwIjoiUmVmcmVzaCIsImlhdCI6MTY4OTk5OTk5OSwiZXhwIjoxNzI1OTk5OTk5fQ.Y2YtZT...signature",
             "token_type": "Bearer",
-            "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "id_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huQGV4YW1wbGUuY29tIiwiaWF0IjoxNjg5OTk5OTk5LCJleHAiOjE3MDAwMDAwMDB9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
             "not-before-policy": 0,
             "session_state": "xyz456",
             "scope": "openid email profile yoma-api phone"
@@ -42,11 +42,6 @@ class YomaAuthTestCase(APITestCase):
 class YomaAuthInitiateViewTest(YomaAuthTestCase):
     """Test cases for YomaAuthInitiateView."""
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     def test_get_auth_url_success(self):
         """Test successful generation of YOMA auth URL."""
         url = reverse('yoma-initiate')
@@ -60,7 +55,7 @@ class YomaAuthInitiateViewTest(YomaAuthTestCase):
 
         # Check auth URL format
         auth_url = response.data['auth_url']
-        self.assertIn('https://stage.yoma.world/auth/realms/yoma/protocol/openid-connect/auth', auth_url)
+        self.assertIn('https://dummystage.yoma.world/auth/realms/yoma/protocol/openid-connect/auth', auth_url)
         self.assertIn('client_id=test_client_id', auth_url)
         self.assertIn('response_type=code', auth_url)
         self.assertIn('scope=openid', auth_url)
@@ -84,12 +79,6 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
         super().setUp()
         self.client.force_authenticate(user=self.user)
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_CLIENT_SECRET='test_client_secret',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     @patch('minisass_authentication.views.yoma_auth.requests.post')
     def test_callback_success(self, mock_post):
         """Test successful YOMA callback with token exchange."""
@@ -105,9 +94,7 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
             'session_state': 'test_session_state'
         })
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.data['success'])
-        self.assertIn('token_info', response.data)
+        self.assertEqual(response.status_code, 302)
 
         # Verify token was stored in database
         yoma_token = YomaToken.objects.get(user=self.user)
@@ -119,7 +106,7 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
         # Verify token exchange request was made correctly
         mock_post.assert_called_once()
         call_args = mock_post.call_args
-        self.assertEqual(call_args[0][0], 'https://stage.yoma.world/auth/realms/yoma/protocol/openid-connect/token')
+        self.assertEqual(call_args[0][0], 'https://dummystage.yoma.world/auth/realms/yoma/protocol/openid-connect/token')
         self.assertEqual(call_args[1]['data']['grant_type'], 'authorization_code')
         self.assertEqual(call_args[1]['data']['code'], 'test_auth_code')
 
@@ -143,12 +130,6 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
         self.assertEqual(response.data['error'], 'access_denied')
         self.assertEqual(response.data['error_description'], 'User denied access')
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_CLIENT_SECRET='test_client_secret',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     @patch('minisass_authentication.views.yoma_auth.requests.post')
     def test_callback_token_exchange_error(self, mock_post):
         """Test callback when token exchange fails."""
@@ -176,12 +157,6 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['error'], 'configuration_error')
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_CLIENT_SECRET='test_client_secret',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     @patch('minisass_authentication.views.yoma_auth.requests.post')
     def test_callback_network_error(self, mock_post):
         """Test callback when network error occurs during token exchange."""
@@ -194,12 +169,6 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(response.data['error'], 'token_exchange_failed')
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_CLIENT_SECRET='test_client_secret',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     @patch('minisass_authentication.views.yoma_auth.requests.post')
     def test_callback_token_update(self, mock_post):
         """Test callback updates existing token for user."""
@@ -224,7 +193,7 @@ class YomaAuthCallbackViewTest(YomaAuthTestCase):
             'session_state': 'new_session_state'
         })
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, 302)
 
         # Verify token was updated, not created new
         self.assertEqual(YomaToken.objects.filter(user=self.user).count(), 1)
@@ -487,12 +456,6 @@ class YomaAuthIntegrationTest(YomaAuthTestCase):
         super().setUp()
         self.client.force_authenticate(user=self.user)
 
-    @override_config(
-        YOMA_CLIENT_ID='test_client_id',
-        YOMA_CLIENT_SECRET='test_client_secret',
-        YOMA_BASE_URI='https://stage.yoma.world',
-        YOMA_REDIRECT_URI='https://minisass.org/auth/yoma/callback'
-    )
     def test_full_auth_flow(self):
         """Test complete YOMA authentication flow."""
         # Step 1: Get auth URL
@@ -516,8 +479,8 @@ class YomaAuthIntegrationTest(YomaAuthTestCase):
                 'session_state': 'test_session_state'
             })
 
-            self.assertEqual(callback_response.status_code, status.HTTP_200_OK)
-            self.assertTrue(callback_response.data['success'])
+            # request is redirected
+            self.assertEqual(callback_response.status_code, 302)
 
         # Step 3: Check token status
         status_url = reverse('yoma-token-status')
@@ -553,11 +516,3 @@ class YomaAuthIntegrationTest(YomaAuthTestCase):
 
         self.assertEqual(status_response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertFalse(status_response.data['has_token'])
-
-
-# Legacy test compatibility
-def test_yoma_auth_url_success():
-    """Legacy test for backward compatibility."""
-    test_case = YomaAuthInitiateViewTest()
-    test_case.setUp()
-    test_case.test_get_auth_url_success()
