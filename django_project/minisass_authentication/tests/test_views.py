@@ -1,20 +1,24 @@
-from django.test import TestCase
+import requests_mock
+from constance import config
 from constance.test import override_config
-from unittest.mock import patch
-from minisass_authentication.models import Lookup
-from rest_framework.test import APITestCase
-from django.urls import reverse
+from datetime import timedelta
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import (
     urlsafe_base64_encode
 )
-from django.contrib.auth.tokens import default_token_generator
-from minisass_authentication.tests.factories import UserFactory
-from minisass_authentication.models import PENDING_STATUS
-from minisass.models.privacy_policy import PrivacyPolicy
 from rest_framework import status
+from rest_framework.test import APITestCase
+from unittest.mock import patch
 
+from minisass.models.privacy_policy import PrivacyPolicy
+from minisass_authentication.models import Lookup, PENDING_STATUS
+from minisass_authentication.models.yoma import YomaToken, YomaCountry
+from minisass_authentication.tests.factories import UserFactory
 from minisass_authentication.utils import get_user_privacy_consent
 
 
@@ -163,6 +167,9 @@ class RegisterTest(APITestCase):
 
 
 class UpdateUserTest(APITestCase):
+
+    fixtures = ['yoma_country.json']
+
     def setUp(self):
         self.user = UserFactory.create()
         self.base_payload = {
@@ -176,6 +183,16 @@ class UpdateUserTest(APITestCase):
             "upload_preference": "both",
         }
         self.url = reverse('profile-update')
+        self.yoma_user_profile = {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "username": self.user.email,
+          "email": self.user.email,
+          "emailConfirmed": True,
+          "firstName": f"{self.user.first_name} Yoma",
+          "surname": self.user.last_name,
+          "phoneNumberConfirmed": True,
+          "countryId": "a0d029b2-49ca-4e89-81aa-8d06be5d2241"
+        }
 
     def test_not_authenticated(self):
         response = self.client.get(self.url)
@@ -185,6 +202,38 @@ class UpdateUserTest(APITestCase):
         self.client.force_authenticate(self.user)
         response = self.client.post(self.url, self.base_payload, format='json')
         self.assertEquals(response.status_code, 200)
+        expected_response = self.base_payload
+        expected_response['is_expert'] = False
+        expected_response['user_id'] = str(self.user.id)
+        self.assertEquals(
+            response.json(),
+            expected_response
+        )
+
+    @requests_mock.Mocker()
+    def test_update_yoma_profile(self, rm):
+        """
+        Test that the user's profile is updated in YOMA, if user linked their YOMA account.
+        """
+        rm.get(f"{config.YOMA_API_URL}/user", json=self.yoma_user_profile)
+        rm.patch(f"{config.YOMA_API_URL}/user", json=self.yoma_user_profile)
+
+        YomaToken.objects.create(
+            user=self.user,
+            expires_at=timezone.now() + timedelta(seconds=300),
+        )
+        self.client.force_authenticate(self.user)
+        response = self.client.post(self.url, self.base_payload, format='json')
+        self.assertEquals(response.status_code, 200)
+
+        # check miniSASS calls YOMA user update endpoint
+        self.assertEquals(
+            [[rh.method, rh.url] for rh in rm.request_history],
+            [
+                ['GET', f"{config.YOMA_API_URL}/user"],
+                ['PATCH', f"{config.YOMA_API_URL}/user"]
+            ]
+        )
         expected_response = self.base_payload
         expected_response['is_expert'] = False
         expected_response['user_id'] = str(self.user.id)
@@ -203,6 +252,28 @@ class UpdateUserTest(APITestCase):
         self.assertEquals(
             response.json(),
             {'name': ['This field may not be blank.'], 'surname': ['This field may not be blank.']}
+        )
+
+    @requests_mock.Mocker()
+    def test_get_yoma_profile(self, rm):
+        """
+        When getting miniSASS profile, if user linked their YOMA account, then YOMA profile should be returned.
+        """
+        rm.get(f"{config.YOMA_API_URL}/user", json=self.yoma_user_profile)
+        YomaToken.objects.create(
+            user=self.user,
+            expires_at=timezone.now() + timedelta(seconds=300),
+        )
+        self.client.force_authenticate(self.user)
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(
+            response.json()['name'],
+            self.yoma_user_profile['firstName']
+        )
+        self.assertEquals(
+            response.json()['country'],
+            YomaCountry.objects.get(id=self.yoma_user_profile['countryId']).code_alpha2
         )
 
 

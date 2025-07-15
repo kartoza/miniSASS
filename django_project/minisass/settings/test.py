@@ -22,4 +22,5 @@ CONSTANCE_CONFIG = {
     'YOMA_CLIENT_SECRET': ('test_client_secret', 'Test YOMA Client Secret'),
     'YOMA_BASE_URI': ('https://dummystage.yoma.world', 'Test YOMA Base URI'),
     'YOMA_REDIRECT_URI': ('https://dummy.minisass.org/auth/yoma/callback', 'Test YOMA Redirect URI'),
+    'YOMA_API_URL': ('https://dummyapi.yoma.world/api/v3', 'Base URI for YOMA API service, without trailing slash'),
 }

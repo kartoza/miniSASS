@@ -435,7 +435,6 @@ class UpdateUser(APIView):
 					pass
 				return JsonResponse(UserUpdateSerializer(user).data)
 			except Exception as e:
-				print(e)
 				return JsonResponse({'error': str(e)}, status=400)
 
 
