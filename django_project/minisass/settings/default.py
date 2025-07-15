@@ -246,6 +246,7 @@ INSTALLED_APPS = [
     # 'google_analytics'
 ]
 
+PROJECT_APPS = ['minisass_authentication']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -305,4 +306,5 @@ CONSTANCE_CONFIG = OrderedDict([
     ('YOMA_REDIRECT_URI', ('', 'YOMA Redirect URI')),
     ('YOMA_AUTH_URI', ('https://stage.yoma.world/auth/realms/yoma/protocol/openid-connect/auth', '')),
     ('YOMA_BASE_URI', ('https://stage.yoma.world', 'Base URI for YOMA service, without trailing slash')),
+    ('YOMA_API_URL', ('https://api.yoma.world/api/v3', 'Base URI for YOMA API service, without trailing slash')),
 ])

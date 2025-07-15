@@ -1,9 +1,20 @@
+import requests
+import uuid
+from constance import config
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
 
 User = get_user_model()
+
+
+class YomaCountry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    code_alpha2 = models.CharField(max_length=2, unique=True)
+    code_alpha3 = models.CharField(max_length=3, unique=True)
+    code_numeric = models.CharField(max_length=3, unique=True)
 
 
 class YomaToken(models.Model):
@@ -144,3 +155,108 @@ class YomaToken(models.Model):
         )
 
         return token
+
+    def renew_access_token(self):
+        """
+        Renew the access token using the refresh token.
+        """
+        if not self.is_access_token_expired:
+            return None
+        token_url = f"{config.YOMA_BASE_URI}/auth/realms/yoma/protocol/openid-connect/token"
+
+        # Get configuration from Django settings
+        client_id = config.YOMA_CLIENT_ID
+        client_secret = config.YOMA_CLIENT_SECRET
+
+        if not client_id or not client_secret:
+            logger.error("YOMA client credentials not configured")
+            return {
+                'error': 'configuration_error',
+                'error_description': 'YOMA client credentials not configured'
+            }
+
+        # Prepare token exchange request data
+        token_data = {
+            'grant_type': 'refresh_token',
+            'client_id': client_id,
+            'client_secret': client_secret,
+            'refresh_token': self.refresh_token,
+        }
+
+        # Set request headers (exactly like your curl command)
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+        }
+
+        try:
+            # Make token exchange request (exactly like your curl command)
+            response = requests.post(
+                token_url,
+                headers=headers,
+                data=token_data,
+                timeout=30
+            )
+            # Parse response
+            if response.status_code == 200:
+                response_data = response.json()
+                self.create_or_update_token(self.user, response_data)
+                return None
+            return None
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error during token renewal: {e}")
+            return None
+
+    def get_yoma_user(self):
+        url = f"{config.YOMA_API_URL}/user"
+        print(url)
+        headers = {
+            'Content-Type': 'application/application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer {}'.format(self.access_token)
+        }
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=30
+        )
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {}
+
+    def update_yoma_user(self):
+        user_data = self.get_yoma_user()
+        url = f"{config.YOMA_API_URL}/user"
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer {}'.format(self.access_token)
+        }
+        used_keys = [
+            'firstName', 'surname', 'countryId',
+            'email', 'displayName', 'educationId',
+            'genderId', 'dateOfBirth'
+        ]
+        user_data = {
+            key: value for key, value in user_data.items() if key in used_keys
+
+        }
+        user_data.update({
+            "firstName": self.user.first_name,
+            "surname": self.user.last_name,
+            "email": self.user.email,
+            "countryId": YomaCountry.objects.get(code_alpha2=self.user.userprofile.country).id.hex,
+            "updatePhoneNumber": False,
+            "resetPassword": False
+        })
+        response = requests.patch(
+            url,
+            headers=headers,
+            json=user_data,
+            timeout=30
+        )
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None

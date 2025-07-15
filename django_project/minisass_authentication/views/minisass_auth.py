@@ -50,8 +50,9 @@ from minisass_authentication.serializers import (
 from minisass_authentication.serializers import (
 	UserProfileSerializer
 )
-from minisass_authentication.utils import create_privacy_policy_consent
+from minisass_authentication.models.yoma import YomaToken, YomaCountry
 from minisass_authentication.utils import (
+	create_privacy_policy_consent,
 	get_is_user_password_enforced,
 	get_user_privacy_consent,
 	generate_user_response,
@@ -392,6 +393,26 @@ class UpdateUser(APIView):
 
 	def get(self, request):
 		try:
+			yoma_token: YomaToken = YomaToken.objects.get(user=request.user)
+			yoma_token.renew_access_token()
+			yoma_user = yoma_token.get_yoma_user()
+			if yoma_user:
+				user = request.user
+				user_profile = user.userprofile
+				user.username = yoma_user['username']
+				user.email = yoma_user['email']
+				user.first_name = yoma_user['firstName']
+				user.last_name = yoma_user['surname']
+				user.save()
+
+				user_profile.country = YomaCountry.objects.get(id=yoma_user['countryId']).code_alpha2
+				user_profile.save()
+		except YomaToken.DoesNotExist:
+			pass
+
+		try:
+			user = request.user
+			user.refresh_from_db()
 			user_data = UserUpdateSerializer(request.user).data
 			return Response(user_data)
 		except Exception as e:
@@ -406,6 +427,9 @@ class UpdateUser(APIView):
 			try:
 				user, user_profile = serializer.save(request.user)
 				user.refresh_from_db()
+				if user.yoma_token:
+					user.yoma_token.renew_access_token()
+					user.yoma_token.update_yoma_user()
 				return JsonResponse(UserUpdateSerializer(user).data)
 			except Exception as e:
 				return JsonResponse({'error': str(e)}, status=400)
