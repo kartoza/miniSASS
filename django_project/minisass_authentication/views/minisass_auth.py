@@ -101,7 +101,6 @@ class CheckAuthenticationStatus(APIView):
 		try:
 			return super().authenticate(request)
 		except AuthenticationFailed:
-			print('Authentication failed')
 			# Return None to allow next authenticator to try
 			return None
 

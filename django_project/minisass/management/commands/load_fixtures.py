@@ -34,5 +34,4 @@ class Command(BaseCommand):
                     for file in files:
                         if file.endswith('.json'):
                             logger.info(f"Loading {file}")
-                            print(f"Loading {app}/{file}")
                             call_command('loaddata', file)

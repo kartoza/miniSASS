@@ -209,7 +209,6 @@ class YomaToken(models.Model):
 
     def get_yoma_user(self):
         url = f"{config.YOMA_API_URL}/user"
-        print(url)
         headers = {
             'Content-Type': 'application/application/json',
             'Accept': 'application/json',

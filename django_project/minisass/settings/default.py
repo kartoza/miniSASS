@@ -229,7 +229,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.admin',
     'django.contrib.gis',
-    # django constance,
     'constance',
     'constance.backends.database',
     # custom apps here:
