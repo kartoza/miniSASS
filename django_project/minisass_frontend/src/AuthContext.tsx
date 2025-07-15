@@ -115,14 +115,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           });
 
           if (response.status == 200) {
-            // dispatch({ type: 'LOGIN', payload: parsedState.userData });
             const userData = response.data;
             dispatch({ type: 'LOGIN', payload: userData });
             localStorage.setItem('authState', JSON.stringify({ userData }));
             axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
-            // if (userData.is_agreed_to_privacy_policy === false) {
-            //   privacyDispatch({ type: OPEN_PRIVACY_MODAL });
-            // }
           }
 
         }
