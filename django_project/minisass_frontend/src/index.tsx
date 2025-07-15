@@ -9,10 +9,10 @@ import { AuthProvider } from './AuthContext';
 import { PrivacyConsentProvider } from './PrivacyConsentContext';
 
 ReactDOM.render(
-  <AuthProvider>
-    <PrivacyConsentProvider>
+<PrivacyConsentProvider>
+    <AuthProvider>
       <App />
-    </PrivacyConsentProvider>
-  </AuthProvider>,
+  </AuthProvider>
+</PrivacyConsentProvider>,
   document.getElementById("root"),
 );

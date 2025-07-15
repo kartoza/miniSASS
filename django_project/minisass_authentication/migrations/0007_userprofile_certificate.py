@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='certificate',
-            field=models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(base_url='/minio-media', location='/home/web/minio'), upload_to=minisass_authentication.models.certificate_path),
+            field=models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(base_url='/minio-media', location='/home/web/minio'), upload_to=minisass_authentication.models.minisass.certificate_path),
         ),
     ]

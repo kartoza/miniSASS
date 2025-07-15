@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from minisass_authentication.views import (
+from minisass_authentication.views.minisass_auth import (
     activate_account,
     CheckAuthenticationStatus,
     check_registration_status,
@@ -21,6 +21,11 @@ from minisass_authentication.views import (
     UpdatePassword,
     check_is_expert,
     retrieve_email_by_username
+)
+from minisass_authentication.views.yoma_auth import (
+    YomaAuthCallbackView,
+    YomaAuthInitiateView,
+    YomaTokenStatusView
 )
 
 
@@ -47,4 +52,9 @@ urlpatterns = [
     path('api/activate/<str:uidb64>/<str:token>/', activate_account, name='activate-account'),
     path('api/user-profile/is-expert/<str:email>/', check_is_expert, name='user-profile-is-expert'),
     path('api/retrieve-email-by-username/<str:username>/', retrieve_email_by_username, name='retrieve-email-by-username'),
+
+    # Yoma Auth
+    path('api/yoma/callback/', YomaAuthCallbackView.as_view(), name='yoma-callback'),
+    path('api/yoma/initiate/', YomaAuthInitiateView.as_view(), name='yoma-initiate'),
+    path('api/yoma/status/', YomaTokenStatusView.as_view(), name='yoma-token-status'),
 ]

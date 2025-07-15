@@ -55,6 +55,10 @@ python manage.py shell -c "from django.contrib.auth.models import User; User.obj
 
 psql -d "${DJANGO_DB}" -p 5432 -U "${POSTGRES_USER}" -h "${DATABASE_HOST}" -f /home/web/django_project/webmapping/sql/observation.sql
 
+
+echo "Loading fixtures"
+python manage.py load_fixtures
+
 echo "-----------------------------------------------------"
 echo "FINISHED DJANGO ENTRYPOINT --------------------------"
 echo "-----------------------------------------------------"

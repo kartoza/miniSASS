@@ -1,5 +1,5 @@
 # Use the official Python image with version 3.11 as the base image
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bullseye
 
 # Set the maintainer label
 LABEL maintainer="Admire Nyakudya <admire@kartoza.com>"
