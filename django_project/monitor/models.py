@@ -3,7 +3,6 @@ import shutil
 import time
 import requests
 
-from geopy.geocoders import Nominatim
 from dirtyfields import DirtyFieldsMixin
 from django.utils import timezone
 from django.conf import settings
@@ -16,7 +15,7 @@ from django.utils.html import mark_safe
 
 from minisass.models import GroupScores
 from minisass.utils import delete_file_field, delete_from_minio, get_path_string
-from monitor.utils import send_to_ai_bucket
+from monitor.utils import send_to_ai_bucket, get_country_from_coordinates_kartoza_maps
 
 
 class Organisations(models.Model):
@@ -94,54 +93,24 @@ class Sites(models.Model):
             f'{self.gid}'
         )
 
-    def _get_geocoder(self):
-        """Factory method for geocoder - easier to mock"""
-        return Nominatim(user_agent="minisass")
-
-    def _get_country_from_coordinates(self):
-        """Extract country lookup logic"""
-        if not getattr(settings, 'ENABLE_GEOCODING', True):
-            return ''  # Default for tests
-
-        try:
-            geocoder = self._get_geocoder()
-            location = geocoder.reverse(f"{self.the_geom.y}, {self.the_geom.x}").raw
-            return location.get('address', {}).get('country_code', 'N/A').upper()
-        except (AttributeError, Exception):
-            return ''  # Fallback
-
-    def save(self, *args, **kwargs):
-        if not self.country:
-            self.country = self._get_country_from_coordinates()
-
-        validate_ocean = kwargs.pop('validate_ocean', False)
-        if validate_ocean:
-            url = "https://maps.kartoza.com/geoserver/kartoza/ows"
-            params = {
-                "SERVICE": "WFS",
-                "VERSION": "1.1.0",
-                "REQUEST": "GetFeature",
-                "TYPENAME": "kartoza:world",
-                "SRSNAME": "EPSG:4326",
-                "OUTPUTFORMAT": "application/json",
-                "CQL_FILTER": f"INTERSECTS(the_geom,POINT({self.the_geom.y} {self.the_geom.x}))"
-            }
+    def save(self, set_country=False, *args, **kwargs):
+        # when creating a new site, and it has no country, set the country
+        if not self.gid and not self.country:
+            set_country = True
+        elif self.gid:
+            # when the_geom is updated, update the country
             try:
-                response = requests.get(url, params=params, timeout=10)
-                response.raise_for_status()
-                data = response.json()
-                if data.get('numberReturned', 0) == 0:
-                    raise ValueError("Site is located in the ocean!")
-            except requests.exceptions.Timeout:
-                raise ValueError("Ocean validation timed out. Please try again later.")
-            except requests.exceptions.ConnectionError:
-                raise ValueError("Could not connect to validation service. Please check your network connection.")
-            except requests.exceptions.HTTPError as e:
-                raise ValueError(f"Ocean validation service error: {e}")
-            except ValueError:
-                raise
-            except Exception:
-                raise ValueError(f"Unexpected error during ocean validation!")
+                old_site = Sites.objects.get(gid=self.gid)
+                if old_site.the_geom != self.the_geom:
+                    set_country = True
+            except Sites.DoesNotExist:
+                set_country = True
+
+        if set_country:
+            self.country = get_country_from_coordinates_kartoza_maps(
+                latitude=self.the_geom.y,
+                longitude=self.the_geom.x
+            )
 
         super().save(*args, **kwargs)
 

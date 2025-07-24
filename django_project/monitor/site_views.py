@@ -184,7 +184,7 @@ class SitesListCreateView(generics.ListCreateAPIView):
 			user=user
 		)
 		try:
-			site.save(validate_ocean=True)
+			site.save()
 		except ValueError as e:
 			return Response(
 				{'status': 'error', 'message': str(e)},

@@ -236,7 +236,7 @@ def upload_pest_image(request):
 					site.description = description
 					site.river_cat = river_cat
 					site.user = user
-					site.save(validate_ocean=True)
+					site.save()
 
 				try:
 					observation = Observations.objects.get(
@@ -543,7 +543,7 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 								the_geom=Point(x=longitude, y=latitude, srid=4326),
 								user=user
 							)
-							site.save(validate_ocean=True)
+							site.save()
 
 					for key, image in request.FILES.items():
 						if 'image_' in key:
