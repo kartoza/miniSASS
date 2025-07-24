@@ -206,14 +206,69 @@ class SiteImageInline(admin.TabularInline):
     model = SiteImage
 
 
+from leaflet.forms.widgets import LeafletWidget
+
+LEAFLET_WIDGET_ATTRS = {
+    'map_height': '500px',
+    'map_width': '100%',
+    'display_raw': 'true',
+    'map_srid': 4326,
+}
+
+from django.contrib.gis.db import models as geo_models
+LEAFLET_FIELD_OPTIONS = {'widget': LeafletWidget(attrs=LEAFLET_WIDGET_ATTRS)}
+
+FORMFIELD_OVERRIDES = {
+    geo_models.PointField: LEAFLET_FIELD_OPTIONS,
+    geo_models.MultiPointField: LEAFLET_FIELD_OPTIONS,
+    geo_models.LineStringField: LEAFLET_FIELD_OPTIONS,
+    geo_models.MultiLineStringField: LEAFLET_FIELD_OPTIONS,
+    geo_models.PolygonField: LEAFLET_FIELD_OPTIONS,
+    geo_models.MultiPolygonField: LEAFLET_FIELD_OPTIONS,
+}
+
+from django.contrib.gis.admin import GISModelAdmin
+
 @admin.register(Sites)
 class SitesAdmin(LeafletGeoAdmin):
     form = CustomGeoAdminForm
+    # formfield_overrides = FORMFIELD_OVERRIDES
+    #
+    # Leaflet settings
+    settings_overrides = {
+        'DEFAULT_CENTER': (-25.0, 30.0),  # South Africa center
+        'DEFAULT_ZOOM': 6,
+        'MIN_ZOOM': 3,
+        'MAX_ZOOM': 18,
+        'TILES': [
+            ('OpenStreetMap', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                'attribution': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                'maxZoom': 18,
+            }),
+        ],
+        'NO_GLOBALS': False
+    }
+
     class Media:
         js = (
             'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',  # Ensure jQuery is available
             'admin/js/latlon_map_update.js',  # Custom JS file to handle lat/lon updates
         )
+
+    # class Media:
+    #     css = {
+    #         'all': (
+    #             'leaflet/leaflet.css',
+    #             'leaflet/leaflet.extras.css',
+    #         )
+    #     }
+    #     js = (
+    #         'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',  # Ensure jQuery is available
+    #         'leaflet/leaflet.js',
+    #         'leaflet/leaflet.extras.js',
+    #         'leaflet/leaflet.forms.js',
+    #         'admin/js/latlon_map_update.js',  # Load our script AFTER Leaflet
+    #     )
 
     def latitude(self, obj):
         return obj.the_geom.y if obj.the_geom else None
