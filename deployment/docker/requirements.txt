@@ -76,3 +76,6 @@ pycountry==24.6.1
 
 django-constance==4.3.2
 requests-mock==1.12.1
+
+# for encrypted field
+django-fernet-fields-v2==0.9
