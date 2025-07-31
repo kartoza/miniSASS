@@ -1,8 +1,10 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.contrib.gis.geos import Point
 from django.forms import ModelForm, Textarea, Select, DateInput
 
 from monitor.models import Sites, Observations, ObservationPestImage
+from monitor.utils import get_country_from_coordinates_kartoza_maps
 
 class DateRangeForm(forms.Form):
     start_date = forms.DateField(label='Start Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
@@ -93,5 +95,13 @@ class CustomGeoAdminForm(forms.ModelForm):
 
         if lat is not None and lng is not None:
             cleaned_data['the_geom'] = Point(lng, lat)
+
+        try:
+            get_country_from_coordinates_kartoza_maps(
+                latitude=lat,
+                longitude=lng,
+            )
+        except ValueError as e:
+            raise ValidationError(str(e))
 
         return cleaned_data
