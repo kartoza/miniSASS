@@ -1,6 +1,7 @@
 import requests
 import uuid
 from constance import config
+from fernet_fields import EncryptedTextField
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -31,17 +32,17 @@ class YomaToken(models.Model):
         help_text="User associated with this YOMA token"
     )
 
-    access_token = models.TextField(
+    access_token = EncryptedTextField(
         help_text="YOMA access token for API requests"
     )
 
-    refresh_token = models.TextField(
+    refresh_token = EncryptedTextField(
         blank=True,
         null=True,
         help_text="YOMA refresh token for obtaining new access tokens"
     )
 
-    id_token = models.TextField(
+    id_token = EncryptedTextField(
         blank=True,
         null=True,
         help_text="YOMA ID token containing user identity information"
@@ -70,7 +71,7 @@ class YomaToken(models.Model):
         help_text="OAuth2 scopes granted for this token"
     )
 
-    session_state = models.CharField(
+    session_state = EncryptedTextField(
         max_length=255,
         blank=True,
         null=True,

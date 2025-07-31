@@ -1,6 +1,8 @@
 import os
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from fernet_fields import EncryptedTextField
 
 
 class GroupScores(models.Model):
@@ -55,3 +57,19 @@ class MobileApp(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     file = models.FileField(upload_to=mobile_app_path, null=True)
     active = models.BooleanField(default=False)
+
+
+class EncryptedConstance(models.Model):
+    key = models.CharField(max_length=255, unique=True)
+    value = EncryptedTextField()
+
+    class Meta:
+        verbose_name = _('constance')
+        verbose_name_plural = _('constances')
+        permissions = [
+            ('change_config', 'Can change config'),
+            ('view_config', 'Can view config'),
+        ]
+
+    def __str__(self):
+        return self.key

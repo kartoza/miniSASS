@@ -298,7 +298,7 @@ ENABLE_GEOCODING = True
 
 
 # DJANGO CONSTANCE
-CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_BACKEND = 'minisass.constance.backend.EncryptedDatabaseBackend'
 CONSTANCE_CONFIG = OrderedDict([
     ('YOMA_CLIENT_ID', ('', 'YOMA Client ID')),
     ('YOMA_CLIENT_SECRET', ('', 'YOMA Client Secret')),
