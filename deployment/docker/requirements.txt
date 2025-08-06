@@ -73,3 +73,9 @@ minio==7.2.3
 django-leaflet==0.31.0
 geopy==2.4.1
 pycountry==24.6.1
+
+django-constance==4.3.2
+requests-mock==1.12.1
+
+# for encrypted field
+django-fernet-fields-v2==0.9

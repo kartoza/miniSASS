@@ -7,7 +7,7 @@ from monitor.models import Sites
 
 
 class Command(BaseCommand):
-    help = 'Move images location and update path to be groupped by flag and group'
+    help = 'Fix site countries'
 
     def handle(self, *args, **kwargs):
         for site in Sites.objects.all():

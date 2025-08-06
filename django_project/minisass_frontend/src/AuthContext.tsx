@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import { globalVariables } from '../src/utils';
+import {OPEN_PRIVACY_MODAL, usePrivacyConsent} from "./PrivacyConsentContext";
 
 export type ActionTypes = 'OPEN_LOGIN_MODAL';
 export const OPEN_LOGIN_MODAL: ActionTypes = 'OPEN_LOGIN_MODAL';
@@ -95,16 +96,17 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const { state: privacyState, dispatch: privacyDispatch } = usePrivacyConsent();
 
   // Load the state from local storage (if available)
   useEffect(() => {
 
     const checkAuthStatus = async () => {
       try {
-        const storedState = localStorage.getItem('authState');
+        let storedState = localStorage.getItem('authState');
+        storedState = storedState ? JSON.parse(storedState) : {};
         if (storedState) {
-          const parsedState = JSON.parse(storedState);
-          const accessToken = parsedState.userData.access_token;
+          const accessToken = storedState.userData?.access_token ? storedState.userData.access_token : "dummy-token";
 
           const response = await axios.get(`${globalVariables.baseUrl}/authentication/api/check-auth-status/`, {
             headers: {
@@ -113,7 +115,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           });
 
           if (response.status == 200) {
-            dispatch({ type: 'LOGIN', payload: parsedState.userData });
+            const userData = response.data;
+            dispatch({ type: 'LOGIN', payload: userData });
+            localStorage.setItem('authState', JSON.stringify({ userData }));
+            axios.defaults.headers.common['Authorization'] = `Bearer ${userData.access_token}`;
           }
 
         }
