@@ -237,38 +237,6 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ isOpen, onClose, onSubm
                       login with YOMA.WORLD
                     </span>
                   </p>
-
-                  {/*<p style={{ textAlign: 'center', color: 'gray' }}>*/}
-                  {/*  The system no longer uses username for login.*/}
-                  {/*  <br />*/}
-                  {/*  If you have forgotten your email, enter your username below to retrieve your email.*/}
-                  {/*  <br />*/}
-                  {/*  This functionality is temporary and will be removed in the near future.*/}
-                  {/*</p>*/}
-                  {/*<input*/}
-                  {/*  type="text"*/}
-                  {/*  name="usernameForEmailRetrieval"*/}
-                  {/*  value={formData.usernameForEmailRetrieval}*/}
-                  {/*  onChange={handleInputChange}*/}
-                  {/*  placeholder="Username for Email Retrieval"*/}
-                  {/*  style={{*/}
-                  {/*    width: '100%',*/}
-                  {/*    maxWidth: '300px',*/}
-                  {/*    height: '40px',*/}
-                  {/*    border: '1px solid rgba(0, 0, 0, 0.23)',*/}
-                  {/*    borderRadius: '4px',*/}
-                  {/*    padding: '8px 12px',*/}
-                  {/*  }} />*/}
-                  {/*<Button*/}
-                  {/*  className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[200px]"*/}
-                  {/*  color="blue_gray_500"*/}
-                  {/*  size="xs"*/}
-                  {/*  variant="fill"*/}
-                  {/*  style={{ marginRight: "-40%" }}*/}
-                  {/*  onClick={handleEmailRetrieval}*/}
-                  {/*>*/}
-                  {/*  Retrieve Email Address*/}
-                  {/*</Button>*/}
                   {responseMessage && (<div>{responseMessage}</div>)}
                 </form></>
       )}
