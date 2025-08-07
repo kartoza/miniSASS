@@ -31,9 +31,7 @@
     const GOOGLE_ANALYTICS_TRACKING_CODE = "{{ GOOGLE_ANALYTICS_TRACKING_CODE }}";
     const PRIVACY_POLICY_VERSION = "{{ PRIVACY_POLICY_VERSION }}";
     const COUNTRIES_DICT = {{ COUNTRIES_DICT|safe }};
-    {#const YOMA_AUTH_URL = "{{ YOMA_AUTH_URL }}";#}
-    const YOMA_AUTH_URL = "https://stage.yoma.world/auth/realms/yoma/protocol/openid-connect/auth?client_id=mini-sass&redirect_uri=http://localhost:5000/authentication/api/yoma/callback/&response_type=code&scope=openid+email+profile+yoma-api+phone";
-    {#console.log("{{ YOMA_AUTH_URL }}");#}
+    const YOMA_AUTH_URL = "{{ YOMA_AUTH_URL|safe }}";
   </script>
 </head>
 
