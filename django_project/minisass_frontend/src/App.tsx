@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Routes from "./Routes";
+import Tooltip from '@mui/material/Tooltip';
 import PrivacyConsentModal from "./components/PrivacyConsentModal"
 import { usePrivacyConsent, CLOSE_PRIVACY_MODAL } from './PrivacyConsentContext';
 
@@ -104,21 +105,25 @@ function App() {
     <>
       {/* GTranslate wrapper - the widget will be injected here */}
       <div className="gtranslate_wrapper"></div>
-
       {/* Translation attribution */}
-      <div style={{
-        position: 'fixed',
-        bottom: '10px',
-        left: '10px',
-        fontSize: '0.7rem',
-        color: '#666',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        padding: '2px 6px',
-        borderRadius: '3px',
-        zIndex: 1000
-      }}>
-        Translations by GTranslate
-      </div>
+      <Tooltip
+        title="Please be aware that the translations done by this tool are automatic. They are not verified by the miniSASS team and may not be completely accurate."
+        placement="right-start"
+      >
+        <div style={{
+          position: 'fixed',
+          bottom: '10px',
+          left: '10px',
+          fontSize: '0.7rem',
+          color: '#666',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          padding: '2px 6px',
+          borderRadius: '3px',
+          zIndex: 1000
+        }}>
+          Translations by GTranslate
+        </div>
+      </Tooltip>
 
       <PrivacyConsentModal
         open={state.isPrivacyModalOpen}
