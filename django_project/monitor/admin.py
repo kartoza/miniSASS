@@ -140,11 +140,12 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
                 user_organization_type = user_profile.organisation_type if user_profile.organisation_type else ""
-                user_country = str(user_profile.country) if user_profile.country else ""
-                user_country_lookup = pycountry.countries.get(alpha_2=user_country)
-                user_country = user_country_lookup.name if user_country_lookup else user_country
-                country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
-                country = country_lookup.name if country_lookup else obs.site.country
+                user_country_code = str(user_profile.country) if user_profile.country else ""
+                user_country_lookup = pycountry.countries.get(alpha_2=user_country_code)
+                user_country = user_country_lookup.name if user_country_lookup else user_country_code
+                country_code = obs.site.country if obs.site.country else ""
+                country_lookup = pycountry.countries.get(alpha_2=country_code)
+                country = country_lookup.name if country_lookup else user_country_code
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
                 user_organization_name = ""

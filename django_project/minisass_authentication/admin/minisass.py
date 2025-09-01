@@ -89,6 +89,11 @@ class PasswordHistoryAdmin(admin.ModelAdmin):
     list_display = ('user', 'hashed_password', 'timestamp')
 
 
+class CountryMappingAdmin(admin.ModelAdmin):
+    list_display = ('key', 'value')
+
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(CountryMapping, CountryMappingAdmin)
 admin.site.register(PasswordHistory, PasswordHistoryAdmin)
