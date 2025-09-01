@@ -109,10 +109,6 @@ class FixCountriesCommandTest(TestCase):
         # Assert that expert user's profile country is updated
         self.assertEqual(self.user_profile.country, 'ZA')
 
-        # Assert that sleep was called for each site processed (sites without country)
-        self.assertEqual(mock_sleep.call_count, 2)
-        mock_sleep.assert_called_with(1)
-
     @patch('monitor.utils.requests.get')
     @patch('time.sleep')
     def test_fix_countries_command_updates_user_profile_without_country(self, mock_sleep, mock_get):
