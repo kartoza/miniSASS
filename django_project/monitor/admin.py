@@ -61,7 +61,7 @@ class ObservationsAdmin(admin.ModelAdmin):
         'is_validated'
     )
     list_filter = ('flag', 'is_validated',('obs_date', admin.DateFieldListFilter))
-    search_fields = ('site__site_name', 'site__river_name')
+    search_fields = ('site__site_name', 'site__river_name', 'obs_date')
     autocomplete_fields = ('site', 'user')
     actions = [make_verified, make_unverified, 'download_records']
     inlines = (ObservationPestImageInline,)
@@ -140,18 +140,23 @@ class ObservationsAdmin(admin.ModelAdmin):
                 user_profile = obs.user.userprofile
                 user_organization_name = user_profile.organisation_name
                 user_organization_type = user_profile.organisation_type if user_profile.organisation_type else ""
-                user_country = str(user_profile.country) if user_profile.country else ""
-                user_country_lookup = pycountry.countries.get(alpha_2=user_country)
-                user_country = user_country_lookup.name if user_country_lookup else user_country
-                country_lookup = pycountry.countries.get(alpha_2=obs.site.country)
-                country = country_lookup.name if country_lookup else obs.site.country
+                user_country_code = str(user_profile.country) if user_profile.country else ""
+                user_country_lookup = pycountry.countries.get(alpha_2=user_country_code)
+                user_country = user_country_lookup.name if user_country_lookup else user_country_code
+                country_code = obs.site.country if obs.site.country else ""
+                country_lookup = pycountry.countries.get(alpha_2=country_code)
+                country = country_lookup.name if country_lookup else ""
                 user_is_expert = user_profile.is_expert
             except (UserProfile.DoesNotExist, AttributeError):
+                user_country_lookup = ""
                 user_organization_name = ""
                 user_organization_type = ""
                 user_country = ""
                 user_is_expert = False
+                country_lookup = ""
                 country = ""
+
+            print(user_country_lookup, user_country, country_lookup, country)
 
             obs_date_str = obs.obs_date.strftime('%Y-%m-%d')
             submission_date_str = obs.submission_date.strftime('%Y-%m-%d')
