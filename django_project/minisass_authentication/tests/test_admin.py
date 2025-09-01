@@ -1,8 +1,10 @@
 from django.test import TestCase
+from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 from django.contrib.admin.sites import AdminSite
 from minisass_authentication.admin import UserAdmin, correct_country
 from minisass_authentication.models import UserProfile, CountryMapping
+from monitor.models import Sites
 
 
 class CorrectCountryAdminActionTest(TestCase):
@@ -25,6 +27,16 @@ class CorrectCountryAdminActionTest(TestCase):
         user.userprofile.country = '999999999'
         user.userprofile.save()
         self.users.append((user, '999999999'))
+        user = User.objects.create(username=f"user_without_profile")
+        user.userprofile.delete()
+        site = Sites.objects.create(
+            site_name='Test Site',
+            river_name='Test River',
+            the_geom=Point(-7.713518, 110.009160),
+            user=user,
+            country='ID'
+        )
+        self.users.append((user, site.country))
 
     def test_correct_country_bulk(self):
         queryset = User.objects.filter(pk__in=[u.pk for u, _ in self.users])
@@ -34,5 +46,6 @@ class CorrectCountryAdminActionTest(TestCase):
 
         for user, expected_country in self.users:
             with self.subTest(user=user.username):
+                user.refresh_from_db()
                 user.userprofile.refresh_from_db()
                 self.assertEqual(user.userprofile.country, expected_country)
