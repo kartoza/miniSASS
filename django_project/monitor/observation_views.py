@@ -221,8 +221,18 @@ def upload_pest_image(request):
 					river_name = request.POST.get('riverName', '')
 					description = request.POST.get('siteDescription', '')
 					river_cat = request.POST.get('rivercategory', 'rocky')
-					latitude = request.POST.get('latitude', -26)
-					longitude = request.POST.get('longitude', 28)
+					latitude = request.POST.get('latitude', None)
+					longitude = request.POST.get('longitude', None)
+					if latitude is None or longitude is None:
+						return JsonResponse(
+							{'status': 'error', 'message': 'Lattitude and/or Longitude cannot be None!'},
+							status=status.HTTP_400_BAD_REQUEST
+						)
+					if site_name == '' or river_name == '':
+						return JsonResponse(
+							{'status': 'error', 'message': 'Site Name and/or River Name cannot be empty!'},
+							status=status.HTTP_400_BAD_REQUEST
+						)
 
 					site = Sites(
 						gid=new_site_id,
@@ -498,8 +508,15 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 					observation_id = 0
 
 				try:
-					latitude = float(str(datainput.get('latitude', 0)))
-					longitude = float(str(datainput.get('longitude', 0)))
+					latitude_input = datainput.get('latitude', None)
+					longitude_input = datainput.get('longitude', None)
+					latitude = float(str(latitude_input))
+					longitude = float(str(longitude_input))
+					if latitude is None or longitude is None:
+						return JsonResponse(
+							{'status': 'error', 'message': 'Lattitude and/or Longitude cannot be None!'},
+							status=status.HTTP_400_BAD_REQUEST
+						)
 				except ValueError:
 					return JsonResponse(
 						{'status': 'error', 'message': 'Invalid longitude or latitude format'},

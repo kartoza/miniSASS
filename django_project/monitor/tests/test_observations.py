@@ -216,7 +216,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		with self.assertRaises(Observations.DoesNotExist):
 			Observations.objects.get(gid=observation.gid)
 
-	def test_upload_pest_image(self):
+	def test_upload_pest_image_success(self):
 
 		# Create a sample image file
 		image_file = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg")
@@ -232,7 +232,11 @@ class ObservationsModelTest(BaseObservationsModelTest):
 				f'pest_image:{self.flatworms.id}': image_file,
 				'observationId': 0,
 				'siteId': 0,
-				'create_site_or_observation': 'False'
+				'create_site_or_observation': 'False',
+				'latitude': -26,
+				'longitude': 28,
+				'siteName': 'Test Site',
+				'riverName': 'Test River'
 			},
 		)
 
@@ -270,6 +274,58 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		response = self.client.post(url)
 
 		self.assertEqual(response.status_code, 200)
+
+	def test_upload_pest_image_failed(self):
+		"""
+		Test upload group image failed when location is None or Name is Empty
+		"""
+
+		# Create a sample image file
+		image_file = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg")
+
+		# this resolves the user instance error when creating the site
+		self.client.login(email='test@gmail.com', password='testpassword')
+
+		url = reverse('upload-pest-images')
+
+		response = self.client.post(
+			url,
+			{
+				f'pest_image:{self.flatworms.id}': image_file,
+				'observationId': 0,
+				'siteId': 0,
+				'create_site_or_observation': 'False',
+				'latitude': -26
+			},
+		)
+
+		# Check the response status and content
+		self.assertEqual(response.status_code, 400)
+		self.assertEquals(
+			response.json(),
+			{'status': 'error', 'message': 'Lattitude and/or Longitude cannot be None!'}
+		)
+
+		response = self.client.post(
+			url,
+			{
+				f'pest_image:{self.flatworms.id}': image_file,
+				'observationId': 0,
+				'siteId': 0,
+				'create_site_or_observation': 'False',
+				'latitude': -26,
+				'longitude': 28,
+				'siteName': 'Test Site'
+			},
+		)
+
+		# Check the response status and content
+		self.assertEqual(response.status_code, 400)
+		print(response.json())
+		self.assertEquals(
+			response.json(),
+			{'status': 'error', 'message': 'Site Name and/or River Name cannot be empty!'}
+		)
 
 	def test_observation_image_list_view(self):
 		"""Test observation images."""
