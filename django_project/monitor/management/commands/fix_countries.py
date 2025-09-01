@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.contrib.auth.models import User
 from monitor.models import Sites
+from minisass_authentication.models import UserProfile
 from minisass_authentication.admin.minisass import correct_country
 
 logger = logging.getLogger(__name__)
@@ -27,9 +28,16 @@ class Command(BaseCommand):
                 except Exception as e:
                     logger.error('Error fixing Site %s: %s', site.gid, e)
                 # set user country if empty
-                if not site.user.userprofile.country:
-                    site.user.userprofile.country = site.country
-                    site.user.userprofile.save()
+                try:
+                    user_profile = UserProfile.objects.get(user=site.user)
+                except UserProfile.DoesNotExist:
+                    user_profile = UserProfile.objects.create(user=site.user)
+                try:
+                    if not user_profile.country:
+                        user_profile.country = site.country
+                        user_profile.save()
+                except Exception as e:
+                    logger.error('Error fixing User country %s: %s', site.user, e)
                 logger.info('Site %s fixed successfully', site.gid)
 
         correct_country(None, None, User.objects.all().filter(email='zakki@kartoza.com'))

@@ -164,6 +164,59 @@ class FixCountriesCommandTest(TestCase):
 
     @patch('monitor.utils.requests.get')
     @patch('time.sleep')
+    def test_fix_countries_command_updates_user_without_profile(self, mock_sleep, mock_get):
+        # Create a user
+        non_expert_user = User.objects.create_user(
+            username='nonexpert',
+            password='testpassword',
+            email='nonexpert@example.com'
+        )
+        non_expert_user.userprofile.delete()
+
+        # Create site for non-expert user
+        site_non_expert = Sites.objects.create(
+            site_name='Non Expert Site',
+            river_name='Non Expert River',
+            the_geom=Point(30.0, -25.0),
+            user=non_expert_user,
+            country=None
+        )
+
+        # Mock the API response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {"ISO_A2": "ZA"},
+                }
+            ],
+            "totalFeatures": 1,
+            "numberMatched": 1,
+            "numberReturned": 1,
+            "timeStamp": "2025-07-08T03:17:38.103Z",
+            "crs": None
+        }
+        mock_get.return_value = mock_response
+
+        with override_settings(ENABLE_GEOCODING=True):
+            # Run the command
+            call_command('fix_countries')
+
+            # Refresh objects
+            site_non_expert.refresh_from_db()
+            non_expert_user.refresh_from_db()
+
+            # Assert site country is set
+            self.assertEqual(site_non_expert.country, 'ZA')
+
+            # Assert user profile country is updated
+            self.assertEquals(non_expert_user.userprofile.country, 'ZA')
+
+    @patch('monitor.utils.requests.get')
+    @patch('time.sleep')
     def test_fix_countries_command_not_update_user_profile_with_country(self, mock_sleep, mock_get):
         # Create a user
         non_expert_user = User.objects.create_user(

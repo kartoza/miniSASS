@@ -7,6 +7,7 @@ from minisass_authentication.models import (
     PasswordHistory,
     CountryMapping
 )
+from monitor.models import Sites
 
 
 @admin.register(Lookup)
@@ -44,13 +45,21 @@ def correct_country(modeladmin, request, queryset):
     }
 
     for user in queryset:
-        if user.userprofile:
-            country = country_mappings.get(
-                user.userprofile.country,
-                user.userprofile.country
+        site = Sites.objects.filter(user=user).first()
+        try:
+            userprofile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            userprofile = UserProfile.objects.create(
+                user=user,
+                country=site.country if site else None,
             )
-            user.userprofile.country = country
-            user.userprofile.save()
+        if userprofile:
+            country = country_mappings.get(
+                userprofile.country,
+                userprofile.country
+            )
+            userprofile.country = country
+            userprofile.save()
 correct_country.short_description = "Correct Country"
 
 
