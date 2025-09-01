@@ -61,7 +61,7 @@ class ObservationsAdmin(admin.ModelAdmin):
         'is_validated'
     )
     list_filter = ('flag', 'is_validated',('obs_date', admin.DateFieldListFilter))
-    search_fields = ('site__site_name', 'site__river_name')
+    search_fields = ('site__site_name', 'site__river_name', 'obs_date')
     autocomplete_fields = ('site', 'user')
     actions = [make_verified, make_unverified, 'download_records']
     inlines = (ObservationPestImageInline,)
