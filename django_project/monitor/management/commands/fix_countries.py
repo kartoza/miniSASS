@@ -40,6 +40,6 @@ class Command(BaseCommand):
                     logger.error('Error fixing User country %s: %s', site.user, e)
                 logger.info('Site %s fixed successfully', site.gid)
 
-        correct_country(None, None, User.objects.all().filter(email='zakki@kartoza.com'))
+        correct_country(None, None, User.objects.all())
 
         logger.info('Finished fixing countries')
