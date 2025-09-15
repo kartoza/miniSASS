@@ -241,7 +241,7 @@ class ObservationsModelTest(BaseObservationsModelTest):
 		)
 
 		# Check the response status and content
-		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.status_code, 201)
 		self.assertIn('status', response.json())
 		self.assertIn('observation_id', response.json())
 
@@ -321,7 +321,27 @@ class ObservationsModelTest(BaseObservationsModelTest):
 
 		# Check the response status and content
 		self.assertEqual(response.status_code, 400)
-		print(response.json())
+		self.assertEquals(
+			response.json(),
+			{'status': 'error', 'message': 'Site Name and/or River Name cannot be empty!'}
+		)
+
+		# Site is in the ocean
+		response = self.client.post(
+			url,
+			{
+				f'pest_image:{self.flatworms.id}': image_file,
+				'observationId': 0,
+				'siteId': 0,
+				'create_site_or_observation': 'False',
+				'latitude': -8.089023,
+				'longitude': 109.879311,
+				'siteName': 'Test Site'
+			},
+		)
+
+		# Check the response status and content
+		self.assertEqual(response.status_code, 400)
 		self.assertEquals(
 			response.json(),
 			{'status': 'error', 'message': 'Site Name and/or River Name cannot be empty!'}

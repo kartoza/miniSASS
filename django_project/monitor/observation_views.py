@@ -300,10 +300,16 @@ def upload_pest_image(request):
 						'site_id': site.gid,
 						'pest_image_id': pest_image.id,
 						'classification_results': classification_results
-					}
+					},
+					status=status.HTTP_201_CREATED
 				)
 		except ValidationError as ve:
 			return JsonResponse({'status': 'error', 'message': 'Invalid input'}, status=status.HTTP_400_BAD_REQUEST)
+		except ValueError as e:
+			return JsonResponse(
+				{'status': 'error', 'message': str(e)},
+				status=status.HTTP_400_BAD_REQUEST
+			)
 		except Exception as e:
 			# Handle other exceptions
 			return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status=status.HTTP_400_BAD_REQUEST)
@@ -510,13 +516,13 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 				try:
 					latitude_input = datainput.get('latitude', None)
 					longitude_input = datainput.get('longitude', None)
-					latitude = float(str(latitude_input))
-					longitude = float(str(longitude_input))
-					if latitude is None or longitude is None:
+					if latitude_input is None or longitude_input is None:
 						return JsonResponse(
 							{'status': 'error', 'message': 'Lattitude and/or Longitude cannot be None!'},
 							status=status.HTTP_400_BAD_REQUEST
 						)
+					latitude = float(str(latitude_input))
+					longitude = float(str(longitude_input))
 				except ValueError:
 					return JsonResponse(
 						{'status': 'error', 'message': 'Invalid longitude or latitude format'},
@@ -636,8 +642,6 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 
 						# Handle uploaded pest images
 						for key, image in request.FILES.items():
-							print(key, image)
-
 							if key.startswith("pest_"):
 								# Do something with each file — like saving to a model
 								group_name = key.split(':')[1]
@@ -670,7 +674,11 @@ class ObservationListCreateView(generics.ListCreateAPIView):
 							{'status': 'error', 'message': 'cannot find site to save observation to'},
 							status=status.HTTP_400_BAD_REQUEST
 						)
-
+			except ValueError as e:
+				return JsonResponse(
+					{'status': 'error', 'message': str(e)},
+					status=status.HTTP_400_BAD_REQUEST
+				)
 			except Exception as e:
 				return JsonResponse(
 					{'status': 'error', 'message': 'An unexpected error occurred'},

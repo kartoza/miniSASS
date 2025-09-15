@@ -169,7 +169,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             'Content-Type': 'multipart/form-data'
           },
           validateStatus: function (status) {
-            return status < 500; // Don't throw for status codes less than 500
+            return status < 500 || status == 400; // Don't throw for status codes less than 500 or error 400
           }
         }
       );
@@ -192,12 +192,14 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
             else setErrorMessage(response.data.message)
             setIsErrorModalOpen(true);
           }
+          setIsSavingData(false);
         }else {
           setProceedToSavingData(false);
+          setIsSavingData(false);
         }
       }
     } catch (exception) {
-      setIsSavingData(false)
+      setIsSavingData(false);
       setErrorMessage(exception.message + (exception.response?.data?.message ? ": " + exception.response.data.message : ""));
       setIsErrorModalOpen(true);
     }
@@ -275,7 +277,7 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
   const [createSiteOrObservation, setCreateNewSiteOrObservation] = useState(true);
   const [refetchImages, setRefetchImages] = useState(false);
 
-  const uploadImages = async (pestImages) => {
+  const uploadImages = async (pestImages, callback) => {
     setIsUploadingImage(true)
 
     for (const key in pestImages) {
@@ -292,9 +294,6 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                 });
             }
           }
-
-          const storedObservationId = localStorage.getItem('observationId') || 0;
-          const storedSiteId = localStorage.getItem('siteId') || 0;
 
           data.append('observationId', JSON.stringify(observationId));
 
@@ -324,23 +323,46 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
+                },
+                validateStatus: function (status) {
+                  return status < 500 || status == 400; // Don't throw for status codes less than 500 or error 400
                 }
               }
             );
 
-            if(response.status == 200){
+            if(response.status == 201){
               setIsUploadingImage(false)
               setObservationId(response.data.observation_id)
               setSiteId(response.data.site_id)
-              setPestImages({})
               setCreateNewSiteOrObservation(false)
               localStorage.setItem('observationId', JSON.stringify(response.data.observation_id));
               localStorage.setItem('siteId', JSON.stringify(response.data.site_id));
               setRefetchImages(true)
+              console.log('call callback')
+              callback()
+            } else {
+              if (response.data.status.includes('error')) {
+                if("Site name already exists" === response.data.message){
+                  setIsCloseSiteDialogOpen(true);
+                }else {
+                  if(response.data.message === "")
+                    setErrorMessage("Something unexpectedly went wrong, please try again. If the issue should persist ,contact the system administrator via the contact us form describing the problem you're facing.");
+                  else setErrorMessage(response.data.message)
+                  setIsErrorModalOpen(true);
+                }
+              }else {
+                setProceedToSavingData(false);
+              }
+              setIsSavingData(false);
+              setIsUploadingImage(false);
             }
           }catch( exception ){
-            console.log(exception.message);
+            setIsSavingData(false);
+            setIsUploadingImage(false);
+            setErrorMessage(exception.message + (exception.response?.data?.message ? ": " + exception.response.data.message : ""));
+            setIsErrorModalOpen(true);
           }
+          setPestImages({});
         }
       }
     }
@@ -552,17 +574,19 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                 onSubmit={
                                   files => {
                                     pestImages[props.id] = files
-                                    setPestImages({...pestImages})
                                     setOpenImagePestId(0)
-                                    setIsAddMore(false)
-                                    const updatedButtonStates = buttonStates.map(buttonState => {
-                                      if (buttonState.id === props.id) {
-                                        return { ...buttonState, showManageImages: !buttonState.showManageImages };
-                                      }
-                                      return buttonState;
-                                    });
-                                    setButtonStates(updatedButtonStates);
-                                    uploadImages(pestImages)
+                                    const callback = () => {
+                                      const updatedButtonStates = buttonStates.map(buttonState => {
+                                        if (buttonState.id === props.id) {
+                                          return { ...buttonState, showManageImages: !buttonState.showManageImages };
+                                        }
+                                        return buttonState;
+                                      });
+                                      setButtonStates(updatedButtonStates);
+                                      setPestImages({...pestImages})
+                                      setIsAddMore(false)
+                                    }
+                                    uploadImages(pestImages, callback)
                                   }
                                 }/>
                               </>
@@ -596,17 +620,19 @@ const ScoreForm: React.FC<ScoreFormProps> = ({ onCancel, additionalData, setSide
                                           onClose={closeUploadModal}
                                           onSubmit={files => {
                                               pestImages[props.id] = files;
-                                              setPestImages({ ...pestImages });
                                               setOpenImagePestId(0);
-                                              setIsAddMore(false);
-                                              setManageImagesModalData({
-                                                  'groups': props.name,
-                                                  'sensetivityScore': props.sensitivity_score,
-                                                  'id': props.id,
-                                                  'images': pestImages[props.id],
-                                                  'saved_group_prediction': {}
-                                              });
-                                              uploadImages(pestImages);
+                                              const callback = () => {
+                                                setPestImages({ ...pestImages });
+                                                setIsAddMore(false);
+                                                setManageImagesModalData({
+                                                    'groups': props.name,
+                                                    'sensetivityScore': props.sensitivity_score,
+                                                    'id': props.id,
+                                                    'images': pestImages[props.id],
+                                                    'saved_group_prediction': {}
+                                                });
+                                              }
+                                              uploadImages(pestImages, callback);
                                           }}
                                       />
                                   </>
