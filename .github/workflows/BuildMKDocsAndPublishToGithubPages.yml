@@ -2,7 +2,7 @@ name: 📖 Build MKDocs And Publish To Github Pages.yml
 on:
   push:
     branches:
-      - develop
+      - main
   # Allow manually running in the actions tab
   workflow_dispatch:
 

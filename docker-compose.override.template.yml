@@ -1,58 +1,116 @@
-version: '3.4'
+# Copy to docker-compose.override.yml before running anything:
+#   cp docker-compose.override.template.yml docker-compose.override.yml
+#
+# The Makefile sets COMPOSE_FILE=docker-compose.yml:docker-compose.override.yml,
+# so every make target fails until this file exists. docker-compose.override.yml
+# is gitignored, so local tweaks stay out of the repository.
+
 services:
+
+  db:
+    # docker-compose.yml hardcodes "-d minisass_data" in this healthcheck. Use the
+    # database actually configured in .env so the check is meaningful.
+    healthcheck:
+      test: "PGPASSWORD=${POSTGRES_PASS} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  django:
+    # Required on Apple Silicon and any other arm64 host.
+    #
+    # The image cannot be built natively for linux/arm64: geopandas (used by
+    # monitor/views.py for observation export) depends on fiona, which publishes
+    # no aarch64 wheels, so pip compiles it from source. That fails because
+    # deployment/docker/Dockerfile installs gcc but not g++, and because Debian
+    # bullseye only offers GDAL 3.2.2 while current fiona needs GDAL >= 3.4.
+    # Emulating amd64 sidesteps both and matches the ECS runtime.
+    #
+    # Comment this out on an x86_64 host if you prefer a native build.
+    platform: linux/amd64
+
+    # docker-compose.yml forwards only a subset of the environment. Loading .env
+    # directly picks up DEBUG, SECRET_KEY, SMTP_*, RECAPTCHA_*, the superuser
+    # variables and WHITELISTED_IP_ADDRESSES as well.
+    env_file:
+      - .env
+    environment:
+      - DJANGO_DB=${POSTGRES_DB}
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DEBUG=${DEBUG}
+      # docker-compose.yml wires the storage credentials to
+      # ${MINIO_ROOT_USER}/${MINIO_ROOT_PASSWORD}, i.e. the local MinIO account.
+      # These pass through whatever .env defines instead, so the same file works
+      # for local MinIO and for real S3.
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_URL=${MINIO_URL}
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+      - MINIO_BUCKET=${MINIO_BUCKET}
+      - MINIO_AI_BUCKET=${MINIO_AI_BUCKET}
+      - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
+
+  tiles:
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/${POSTGRES_DB}
+      - TS_URLBASE=${VECTOR_TILES_URL}
+      - TS_BASEPATH=/tiles
+
+  web:
+    # deployment/nginx/sites-enabled/default.conf is written for ECS "awsvpc"
+    # networking: it listens on 8090 and points its upstreams at 127.0.0.1, which
+    # under compose resolves to the nginx container itself. sites-enabled-local
+    # is the same config using the compose service names, listening on 80.
+    volumes:
+      - ./deployment/nginx/sites-enabled-local:/etc/nginx/conf.d:ro
+    ports:
+      - "61122:80"
+    depends_on:
+      - django
+      - tiles
+      - db
+
+  # ---------------------------------------------------------------------------
+  # Optional services, disabled by default via profiles.
+  #
+  # Enable the local MinIO stack with:
+  #   docker compose --profile local-minio up -d
+  # Leave these disabled when MINIO_URL points at real AWS S3.
+  # ---------------------------------------------------------------------------
+  minio:
+    profiles: ["local-minio"]
+
+  createbuckets:
+    profiles: ["local-minio"]
+
+  # s3fs mount. Not used by the current deployment, which proxies media through
+  # nginx instead. Enable with --profile s3-mount if you specifically need it.
+  mount:
+    profiles: ["s3-mount"]
+
+  # Only needed when terminating TLS in this stack (LETSENCRYPT_MODE=production).
+  letsencrypt:
+    profiles: ["tls"]
+
+  # Optional SSH/dev container from the original template. Enable with
+  #   docker compose --profile dev up -d dev
   dev:
+    profiles: ["dev"]
     build:
       context: .
       dockerfile: ./deployment/docker/Dockerfile-dev
+    platform: linux/amd64
     volumes:
       - static-data:/home/web/static
       - media-data:/home/web/media
       - ./django_project:/home/web/django_project
-      # Images on the platform will be stored here
       - minio_images:/home/web/minio
     ports:
-      # for django test server
+      # django test server
       - "5000:8080"
-      # for ssh
+      # ssh
       - "5001:22"
-    entrypoint: [ ]
-  
-  django:
-    build:
-      context: .
-      dockerfile: ./deployment/docker/Dockerfile
-    volumes:
-      - static-data:/home/web/static
-      - media-data:/home/web/media
-      # Images on the platform will be stored here
-      - minio_images:/home/web/minio
-    environment:
-      - AWS_ACCESS_KEY=${MINIO_ROOT_USER:-minisass_admin}
-      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD:-secure_minio_secret}
-      - DJANGO_DB=${POSTGRES_DB:-minisass_data}
-      - POSTGRES_USER=${POSTGRES_USER:-docker}
-      - POSTGRES_PASS=${POSTGRES_PASS:-docker}
-      - DATABASE_HOST=${DATABASE_HOST:-db}
-      - DATABASE_PORT=${DATABASE_PORT:-5432}
-      - SENTRY_KEY=${SENTRY_KEY:-}
-      - MINIO_ROOT=/home/web/minio
-      - MINIO_BUCKET=${BUCKET:-demo}
-      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minisass_admin}
-      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-secure_minio_secret}
-      - MINIO_AI_BUCKET=${BUCKET}
-      - MINIO_ENDPOINT=${MINIO_URL:-http://minio:9000}
-      - MINIO_URL=${MINIO_URL:-http://minio:9000}
-      - ALLOWED_HOSTS='*'
-      - DEV_SETUP=${DEV_SETUP}
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
-    ports:
-      - "8080"
-    logging:
-      driver: json-file
-      options:
-        max-size: 200m
-        max-file: '10'
-        
+    entrypoint: []
