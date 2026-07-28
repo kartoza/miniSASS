@@ -102,23 +102,23 @@ These materials are designed for learners in different grades, specifically Grad
 
 1. **Available miniSASS field sheets to download:** click on the name of the sheet to view and download.
 
-    [miniSASS Dichotomous Key](https://minisass.sta.do.kartoza.com/static/docs/minisass_dichotomous_key_pg_4_5.pdf)
+    [miniSASS Dichotomous Key](https://minisass.org/static/docs/minisass_dichotomous_key_pg_4_5.pdf)
 
-    [miniSASS Method information](https://minisass.sta.do.kartoza.com/static/docs/minisass_info_pamphlet_pg_1_8_1.pdf)
+    [miniSASS Method information](https://minisass.org/static/docs/minisass_info_pamphlet_pg_1_8_1.pdf)
 
-    [miniSASS Background information](https://minisass.sta.do.kartoza.com/static/docs/minisass_info_pamphlet_pg_2_3_1.pdf)
+    [miniSASS Background information](https://minisass.org/static/docs/minisass_info_pamphlet_pg_2_3_1.pdf)
 
-    [miniSASS macroinvertebrate Groups](https://minisass.sta.do.kartoza.com/static/docs/minisass_microinvertebrate_groups_pg_6_7.pdf)
+    [miniSASS macroinvertebrate Groups](https://minisass.org/static/docs/minisass_microinvertebrate_groups_pg_6_7.pdf)
 
 2. **Educational Resources:** click on the name of the resource to view and download.
 
-    [mini SASS Grade 5](https://minisass.sta.do.kartoza.com/static/docs/minisass_grade_5.pdf)
+    [mini SASS Grade 5](https://minisass.org/static/docs/minisass_grade_5.pdf)
 
-    [miniSASS Grade 7](https://minisass.sta.do.kartoza.com/static/docs/minisass_grade_7.pdf)
+    [miniSASS Grade 7](https://minisass.org/static/docs/minisass_grade_7.pdf)
 
-    [mini SASS Grade 9](https://minisass.sta.do.kartoza.com/static/docs/minisass_grade_9.pdf)
+    [mini SASS Grade 9](https://minisass.org/static/docs/minisass_grade_9.pdf)
 
-    [mini SASS Grade 11](https://minisass.sta.do.kartoza.com/static/docs/minisass_grade_11.pdf)
+    [mini SASS Grade 11](https://minisass.org/static/docs/minisass_grade_11.pdf)
 
 ## Available References
 

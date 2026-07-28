@@ -9,13 +9,13 @@ test.use({
 });
 
 test('test', async ({ page }) => {
-  await page.goto('https://minisass.sta.do.kartoza.com/#/');
-  await page.goto('https://minisass.sta.do.kartoza.com/');
+  await page.goto('/');
+  await page.goto('/');
   //const page1Promise = page.waitForEvent('popup');
   //await page.getByRole('link', { name: 'Wildlife and Environment' }).click();
   //const page1 = await page1Promise;
   await page.getByRole('list').getByText('Map').click();
-  await page.goto('https://minisass.sta.do.kartoza.com/#/map');
+  await page.goto('/map');
   await expect(page.getByLabel('Map')).toBeVisible();
   await expect(page.getByText('Legend')).toBeVisible();
   await expect(page.locator('#root')).toContainText('Unmodified (NATURAL condition)');

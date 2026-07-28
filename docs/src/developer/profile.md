@@ -18,7 +18,7 @@ The User Profile API functions as an endpoint to update the user profile, passwo
 
 ## How to use
 
-### current_domain: https://minisass.sta.do.kartoza.com/
+### current_domain: https://minisass.org/
 
 ### 1. https://{current_domain}/authentication/api/user/update/
 
@@ -34,11 +34,11 @@ Example response:
 ```typescript
 {
     "username": "admin",
-    "email": "admin@kartoza.com",
+    "email": "admin@example.org",
     "name": "Admin",
     "surname": "Name",
     "organisation_type": "Other",
-    "organisation_name": "Kartoza",
+    "organisation_name": "Example Organisation",
     "country": "ZA",
     "is_expert": true
 }
@@ -51,11 +51,11 @@ Here is a payload example to send the POST request.
 ```typescript
 {
     "username": "admin",
-    "email": "admin@kartoza.com",
+    "email": "admin@example.org",
     "name": "Admin",
     "surname": "Name",
     "organisation_type": "Other",
-    "organisation_name": "Kartoza",
+    "organisation_name": "Example Organisation",
     "country": "ZA"
 }
 ```
@@ -63,11 +63,11 @@ The POST request will return serialized user profile, just like the one returned
 ```typescript
 {
     "username": "admin",
-    "email": "admin@kartoza.com",
+    "email": "admin@example.org",
     "name": "Admin",
     "surname": "Name",
     "organisation_type": "Other",
-    "organisation_name": "Kartoza",
+    "organisation_name": "Example Organisation",
     "country": "ZA",
     "is_expert": true
 }

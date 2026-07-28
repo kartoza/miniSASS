@@ -41,7 +41,7 @@ You can deploy your own instance by following instructions in [installation](./d
 ## Support
 
 If you experience issues when interacting with the platform or setting up your own instance
-please report the issues through [GitHub Issue Tracker](https://github.com/kartoza/miniSASS/issues)
+please report the issues through [GitHub Issue Tracker](https://github.com/iwmihq/miniSASS/issues)
 
 ## About
 

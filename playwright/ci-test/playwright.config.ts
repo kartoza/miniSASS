@@ -31,7 +31,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    baseURL: process.env.STAGING === '1' ? 'https://minisass.sta.do.kartoza.com/#/' : 'http://localhost:61122/#/'
+    // These specs exercise the "Add Record" flow and therefore CREATE sites and
+    // observations. The default is deliberately local: set BASE_URL explicitly to
+    // run them against a deployed environment, and never point them at production.
+    baseURL: process.env.BASE_URL || 'http://localhost:61122/#/'
   },
 
   /* Configure projects for major browsers */

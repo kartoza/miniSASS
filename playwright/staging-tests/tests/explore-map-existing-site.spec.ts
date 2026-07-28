@@ -9,7 +9,7 @@ test.use({
 });
 
 test('test', async ({ page }) => {
-  await page.goto('https://minisass.sta.do.kartoza.com/#/');
+  await page.goto('/');
   await page.getByRole('button', { name: 'Map', exact: true }).click();
   await page.getByRole('button', { name: 'Add Record' }).click();
   await page.getByText('Use Existing Site').click();
@@ -33,5 +33,5 @@ test('test', async ({ page }) => {
   await expect(page.locator('input[name="dissolvedoxygenOne"]')).toBeEmpty();
   await expect(page.locator('input[name="electricalconduOne"]')).toBeEmpty();
   await page.getByRole('button', { name: 'next' }).click();
-  await page.goto('https://minisass.sta.do.kartoza.com/#/map');
+  await page.goto('/map');
 });

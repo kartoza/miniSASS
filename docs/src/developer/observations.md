@@ -14,7 +14,7 @@ license: This program is free software; you can redistribute it and/or modify it
 
 The Observations API facilitates users in creating observations for various sites, allowing the specification of existing site IDs or the creation of new sites if they are not available. Additionally, it enables retrieval of recent observations, access to all observations, fetching a single observation, and other CRUD (Create, Retrieve, Update, Delete) operations.
 
-## current_domain: https://minisass.sta.do.kartoza.com/
+## current_domain: https://minisass.org/
 
 ## Endpoints
 
@@ -264,7 +264,7 @@ The response includes various details related to the observation:
 }
 ```
 
-4. **Observation Update, and Deletion** `https://{current_domain}/monitor/observations/observation-details/<observation_id>/`
+4. **Observation Update, and Deletion** `https://{current_domain}/monitor/observations/<observation_id>/`
 
 ![crud on observations](./img/crud_observations.png)
 
@@ -272,10 +272,17 @@ This API endpoint allows retrieving, updating, or deleting a specific observatio
 
 ## Endpoint
 
-`/observations/<observation_id>/`
+`/monitor/observations/<observation_id>/`
 
-- **Request Type**: GET (Retrieve), PUT (Update), DELETE (Delete)
-- **Authentication**: Required (User authentication)
+!!! warning "Do not confuse this with the observation-details path"
+    Updates and deletes go to `/monitor/observations/<observation_id>/`.
+
+    The similar-looking `/monitor/observations/observation-details/<observation_id>/`
+    described in section 3 above is **read-only**: a `PUT` or `DELETE` there returns
+    `405 Method Not Allowed`.
+
+- **Request Type**: GET (Retrieve), PUT or PATCH (Update), DELETE (Delete)
+- **Authentication**: Required. An unauthenticated request returns `403`
 - **CSRF Protection**: Not applicable
 - **Content Type**: Application/JSON
 

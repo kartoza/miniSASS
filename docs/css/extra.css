@@ -12,7 +12,7 @@
     white-space: normal;
     color: grey;
     @bottom-right {
-        content: 'Copyright © Kartoza';
+        content: 'Copyright © IWMI';
     	  margin-top: -25mm;
     	  margin-right: 10mm;
     }
@@ -24,7 +24,8 @@
 }
 
 body{
-  background-image: url('../img/kartozaBackgroundBorder.png');
+  /* Previously referenced ../img/kartozaBackgroundBorder.png, which is not
+     present in this repository, so the rule never resolved. */
   background-repeat: no-repeat;
   background-size: cover;
   font-family: avenir;
