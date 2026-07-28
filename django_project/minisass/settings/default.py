@@ -55,7 +55,12 @@ DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 #     # For CSRF token access in JavaScript
 #     CSRF_COOKIE_HTTPONLY = False
 #     # CSRF_COOKIE_SAMESITE = "Lax"
-SECRET_KEY = os.getenv('SECRET_KEY', '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i')
+# "or" rather than a getenv default: a variable that is SET BUT EMPTY (as in
+# .example.env, which ships SECRET_KEY= for you to fill in) returns '' from
+# os.getenv, not the default, and Django refuses to start on an empty SECRET_KEY.
+# Always set a real value in any deployed environment; this fallback exists only so
+# a fresh clone boots.
+SECRET_KEY = os.getenv('SECRET_KEY') or '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i'
 
 
 # Recipients of unhandled-exception mail when DEBUG is False. Kept as the
@@ -277,7 +282,8 @@ EMAIL_USE_TLS = str(os.getenv('SMTP_EMAIL_TLS', 'False')).strip().lower() in (
     '1', 'true', 'yes', 'on')
 # Automated mail (activation, password reset, observation notifications) is sent
 # from this address. It is a send-only identity; nothing monitors replies.
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@minisass.org')
+# 'or' so a set-but-empty value still yields a usable From address.
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') or 'no-reply@minisass.org'
 
 def _email_list(env_name, default):
     """Parse a comma-separated recipient list from the environment."""
