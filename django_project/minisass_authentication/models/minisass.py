@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+
+from minisass.storage import minio_storage
 from django.contrib.auth.hashers import check_password
 
 
@@ -72,7 +74,7 @@ class UserProfile(models.Model):
     )
     certificate = models.FileField(
         null=True, blank=True,
-        upload_to=certificate_path, storage=settings.MINION_STORAGE
+        upload_to=certificate_path, storage=minio_storage
     )
     upload_preference = models.CharField(
         max_length=10,

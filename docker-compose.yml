@@ -50,12 +50,15 @@ services:
     depends_on:
       minio:
         condition: service_started
+    # "mc config host add" and "mc policy" are removed from current mc releases,
+    # so this used to fail and the bucket never received its public-read policy.
+    # "mb --ignore-existing" also replaces an "rm -r --force" that wiped all local
+    # media on every single start.
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc config host add minisass http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      /usr/bin/mc rm -r --force minisass/${BUCKET};
-      /usr/bin/mc mb minisass/${BUCKET};
-      /usr/bin/mc policy download minisass/${BUCKET};
+      /usr/bin/mc alias set minisass http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb --ignore-existing minisass/${BUCKET};
+      /usr/bin/mc anonymous set download minisass/${BUCKET};
       exit 0;
       "
 
@@ -77,7 +80,7 @@ services:
   #     minio:
   #       condition: service_started
 
-  # Build failed with the service above, so I replaced with a custom image as documented on https://kartoza.github.io/miniSASS/developer/install/#installation-steps:~:text=of%20your%20choice.-,Optional,-%3A%20Adjust%20the%20build
+  # Build failed with the service above, so I replaced with a custom image as documented on https://iwmihq.github.io/miniSASS/developer/install/#installation-steps:~:text=of%20your%20choice.-,Optional,-%3A%20Adjust%20the%20build
   mount:
     image: kartoza/s3mount
     build:
@@ -149,11 +152,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # The pg_tileserv image ships no curl, wget or nc, so the previous
+    # "curl --fail http://localhost:9000/" check failed twice over: wrong port
+    # (pg_tileserv listens on 7800) and a binary that does not exist. The container
+    # was therefore permanently "unhealthy" while serving tiles perfectly well.
+    # Its shell does support /dev/tcp, so check the port is accepting connections.
     healthcheck:
-      test: curl --fail -s http://localhost:9000/ || exit 1
-      interval: 1m30s
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/7800 || exit 1"]
+      interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 20s
     logging:
       driver: json-file
       options:

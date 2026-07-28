@@ -1,6 +1,3 @@
-![Staging Tag](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lgkgh/889dd6c34a68d9461b1fd8cdb56b8a21/raw/minisass_build-tag.json)
-![Staging Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/lgkgh/889dd6c34a68d9461b1fd8cdb56b8a21/raw/minisass_build-status.json)
-
 miniSASS
 ========
 
@@ -26,11 +23,12 @@ A running instance is accessible through [miniSASS](https://minisass.org/)
 
 # Running your own instance
 
-You can deploy your own instance by following instructions in [installation](https://github.com/kartoza/miniSASS/blob/master/INSTALL.md)
+You can deploy your own instance by following the instructions in [INSTALL.md](INSTALL.md).
+Full documentation is published at [iwmihq.github.io/miniSASS](https://iwmihq.github.io/miniSASS/).
 
 # Support
 If you experience issues when interacting with the platform or setting up your own instance
-please report the issues through [GitHub Issue Tracker](https://github.com/kartoza/miniSASS/issues)
+please report the issues through the [GitHub Issue Tracker](https://github.com/iwmihq/miniSASS/issues)
 
 # Credits
 

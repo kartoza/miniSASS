@@ -46,15 +46,11 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/kartoza
-    - icon: fontawesome/brands/docker
-      link: https://hub.docker.com/r/kartoza/
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/KartozaGeo
-    - icon: fontawesome/brands/facebook
-      link: https://kartoza.com
+      link: https://github.com/iwmihq
     - icon: fontawesome/solid/earth-africa
-      link: https://kartoza.com
+      link: https://minisass.org
+    - icon: fontawesome/solid/water
+      link: https://www.iwmi.org
 
 extra_css:
   - stylesheets/extra.css
@@ -65,17 +61,10 @@ extra_javascript:
 
 plugins:
   - search
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [..]
-          import:
-            - https://docs.python.org/3/objects.inv
-            - https://mkdocstrings.github.io/autorefs/objects.inv
-          options:
-            docstring_style: sphinx
-            separate_signature: true
-            merge_init_into_class: true
-            docstring_options:
-              ignore_init_summary: true
+  # mkdocstrings was configured here but no page uses its "::: module" syntax, and
+  # its "import:" option was renamed to "inventories:" in current releases, so the
+  # build aborted with:
+  #   TypeError: PythonConfig.__init__() got an unexpected keyword argument 'import'
+  # Removed rather than pinned, since nothing depends on it. Re-add it (with
+  # "inventories:") if Python API pages are ever generated from docstrings.
 

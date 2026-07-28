@@ -4,7 +4,7 @@ from django.contrib.gis.geos import Point
 from django.forms import ModelForm, Textarea, Select, DateInput
 
 from monitor.models import Sites, Observations, ObservationPestImage
-from monitor.utils import get_country_from_coordinates_kartoza_maps
+from monitor.utils import get_country_from_coordinates
 
 class DateRangeForm(forms.Form):
     start_date = forms.DateField(label='Start Date', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
@@ -97,7 +97,7 @@ class CustomGeoAdminForm(forms.ModelForm):
             cleaned_data['the_geom'] = Point(lng, lat)
 
         try:
-            get_country_from_coordinates_kartoza_maps(
+            get_country_from_coordinates(
                 latitude=lat,
                 longitude=lng,
             )

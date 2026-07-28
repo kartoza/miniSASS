@@ -10,7 +10,7 @@ from django.contrib.auth import (
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.http import JsonResponse
@@ -28,7 +28,9 @@ from rest_framework.decorators import (
 )
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import throttle_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.throttling import SimpleRateThrottle
 from rest_framework.response import Response
 from rest_framework.response import Response
 from rest_framework.response import Response
@@ -60,6 +62,36 @@ from minisass_authentication.utils import (
 )
 
 User = get_user_model()
+
+
+class IPRateThrottle(SimpleRateThrottle):
+    """Throttle by client IP, whether or not the caller is authenticated.
+
+    Deliberately not ScopedRateThrottle: that reads its scope from a
+    ``throttle_scope`` attribute on the *view*, and when the attribute is missing it
+    returns True and applies no limit at all. On a function-based @api_view that is
+    easy to get silently wrong, so the scope is fixed on the class here instead.
+
+    Not AnonRateThrottle either, since that exempts authenticated users, and a
+    logged-in account should not be able to flood the support inbox.
+
+    get_ident() honours REST_FRAMEWORK['NUM_PROXIES'], which is what makes this
+    identify the real client rather than the load balancer.
+    """
+
+    def get_cache_key(self, request, view):
+        return self.cache_format % {
+            'scope': self.scope,
+            'ident': self.get_ident(request),
+        }
+
+
+class ContactThrottle(IPRateThrottle):
+    scope = 'contact'
+
+
+class PasswordResetThrottle(IPRateThrottle):
+    scope = 'password_reset'
 import logging
 
 # Get an instance of a logger
@@ -144,34 +176,64 @@ def check_is_expert(request, email):
 @api_view(['POST'])
 @authentication_classes([])  # disable auth for this endpoint
 @permission_classes([AllowAny])  # make sure it's public
+# Public and unauthenticated, so rate limited: without this anyone can drive
+# unlimited mail to the support inboxes. Rate is set by DEFAULT_THROTTLE_RATES
+# ['contact'] and can be tuned with the THROTTLE_CONTACT environment variable.
+@throttle_classes([ContactThrottle])
 def contact_us(request):
-	email = request.data.get('email')
-	name = request.data.get('name')
-	phone = request.data.get('phone')
-	message = request.data.get('message')
+	email = (request.data.get('email') or '').strip()
+	name = (request.data.get('name') or '').strip()
+	phone = (request.data.get('phone') or '').strip()
+	enquiry = (request.data.get('message') or '').strip()
+
+	if not email or not enquiry:
+		return Response(
+			{'message': 'An email address and a message are required.'},
+			status=status.HTTP_400_BAD_REQUEST
+		)
 
 	domain = Site.objects.get_current().domain
 
 	mail_subject = 'Contact Us'
-	message = render_to_string('registration/contact_us.html', {
+	html_body = render_to_string('registration/contact_us.html', {
 		'from': email,
 		'name': name,
 		'contact': phone,
-		'message': message,
+		'message': enquiry,
 		'domain': domain
 	})
-	send_mail(
-		mail_subject,
-		None,
-		settings.DEFAULT_FROM_EMAIL,
-		[settings.CONTACT_US_RECEPIENT_EMAIL],
-		html_message=message
+
+	# A real text/plain part rather than an empty one: previously send_mail was
+	# given None as the body, so the multipart message carried an empty text
+	# alternative, which hurts both deliverability and spam scoring.
+	text_body = (
+		f'New contact form submission from {name or "an unnamed visitor"}.\n\n'
+		f'Email: {email}\n'
+		f'Contact number: {phone or "not supplied"}\n\n'
+		f'{enquiry}\n'
 	)
+
+	mail = EmailMultiAlternatives(
+		subject=mail_subject,
+		body=text_body,
+		from_email=settings.DEFAULT_FROM_EMAIL,
+		# A list, so contact-form mail can be routed to several people without a
+		# code change. Configured via CONTACT_US_RECIPIENT_EMAILS.
+		to=settings.CONTACT_US_RECIPIENT_EMAILS,
+		# Sent from the no-reply identity, so without this a reply would go to a
+		# mailbox nobody reads. Reply-To puts the submitter there instead, which is
+		# what makes this usable as a support channel.
+		reply_to=[email],
+	)
+	mail.attach_alternative(html_body, 'text/html')
+	mail.send()
 
 	return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
+# Rate limited so the form cannot be used to mail-bomb someone's inbox.
+@throttle_classes([PasswordResetThrottle])
 def request_password_reset(request):
 	email = request.data.get('email')
 

@@ -78,7 +78,7 @@
         },
         {
           "name": "DEV_SETUP",
-          "value": "TRUE"
+          "value": "FALSE"
         },
         {
           "name": "GOOGLE_ANALYTICS_TRACKING_CODE",
@@ -102,7 +102,7 @@
         }
       ],
       "secrets": [
-                {
+        {
           "name": "DATABASE_HOST",
           "valueFrom": "<SECRET_ARN>:RDS_DATABASE_HOST::"
         },
@@ -133,6 +133,42 @@
         {
           "name": "AWS_SECRET_ACCESS_KEY",
           "valueFrom": "<SECRET_ARN>:AWS_SECRET_ACCESS_KEY::"
+        },
+        {
+          "name": "SECRET_KEY",
+          "valueFrom": "<SECRET_ARN>:SECRET_KEY::"
+        },
+        {
+          "name": "DEFAULT_FROM_EMAIL",
+          "valueFrom": "<SECRET_ARN>:DEFAULT_FROM_EMAIL::"
+        },
+        {
+          "name": "SMTP_HOST",
+          "valueFrom": "<SECRET_ARN>:SMTP_HOST::"
+        },
+        {
+          "name": "SMTP_PORT",
+          "valueFrom": "<SECRET_ARN>:SMTP_PORT::"
+        },
+        {
+          "name": "SMTP_EMAIL_TLS",
+          "valueFrom": "<SECRET_ARN>:SMTP_EMAIL_TLS::"
+        },
+        {
+          "name": "SMTP_HOST_USER",
+          "valueFrom": "<SECRET_ARN>:SMTP_HOST_USER::"
+        },
+        {
+          "name": "SMTP_HOST_PASSWORD",
+          "valueFrom": "<SECRET_ARN>:SMTP_HOST_PASSWORD::"
+        },
+        {
+          "name": "CONTACT_US_RECIPIENT_EMAILS",
+          "valueFrom": "<SECRET_ARN>:CONTACT_US_RECIPIENT_EMAILS::"
+        },
+        {
+          "name": "SUPPORT_RECIPIENT_EMAILS",
+          "valueFrom": "<SECRET_ARN>:SUPPORT_RECIPIENT_EMAILS::"
         }
       ],
       "logConfiguration": {

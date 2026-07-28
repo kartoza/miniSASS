@@ -18,7 +18,7 @@ The Sites API offers CRUD (Create, Read, Update, Delete) operations for managing
 
 ## How to Use
 
-**current_domain**: https://minisass.sta.do.kartoza.com/
+**current_domain**: https://minisass.org/
 
 ![Sites API](./img/sites_api.png)
 
@@ -27,6 +27,7 @@ The Sites API offers CRUD (Create, Read, Update, Delete) operations for managing
 #### Endpoint: `https://{current_domain}/monitor/sites/`
 
 - **GET METHOD**: Retrieve a list of all sites.
+- **Authentication**: Not required. This endpoint is public.
 
 Returns an HTTP 200 OK and an array of the sites stored in the database.
 - example output:
@@ -60,14 +61,33 @@ Returns an HTTP 200 OK and an array of the sites stored in the database.
 
 #### Endpoint: `https://{current_domain}/monitor/sites/`
 
+- **Authentication**: **Required.** An unauthenticated `POST` returns `401`.
+
 Fields required for site creation:
-- `the_geom`: Geometric point field (e.g., SRID=4326;POINT (24.84165007535725 -30.47829136066817))
-- `site_name`: Name of the site (max length: 15, mandatory)
-- `river_name`: Name of the river (max length: 15, mandatory)
-- `description`: Description of the site (max length: 255)
-- `river_cat`: River category (choices: 'rocky', 'sandy')
-- `user`: User reference
-- `time_stamp`: Optional field, if not provided current datetime is added to the site
+
+| Field | Type | Notes |
+| ----- | ---- | ----- |
+| `the_geom` | Point | `SRID=4326;POINT (<longitude> <latitude>)`. Longitude first |
+| `site_name` | string | Mandatory, max length **50** |
+| `river_name` | string | Mandatory, max length **50** |
+| `description` | string | Optional, max length 255 |
+| `river_cat` | string | One of `rocky` or `sandy` |
+| `user` | integer | User reference |
+| `time_stamp` | datetime | Optional; set to the current time when omitted |
+
+!!! warning "Coordinate order and valid range"
+    `POINT` takes **longitude first, then latitude**, which is the opposite of how
+    coordinates are usually spoken. Getting this backwards is the most common
+    mistake when creating sites, and it places the site in the wrong hemisphere.
+
+    Latitude must be between -90 and 90, longitude between -180 and 180. A new
+    site whose coordinate falls in the ocean is rejected. You can check a
+    coordinate before submitting with
+    `GET /monitor/sites/is-land/<latitude>/<longitude>/`, which returns
+    `{"is_land": true}` or `{"is_land": false}`. Note that endpoint takes
+    **latitude first**.
+
+The site's `country` is derived automatically from the coordinate on save.
 
 These fields should be attached to the post request as a json object.
 - **POST METHOD**: Create a new site.

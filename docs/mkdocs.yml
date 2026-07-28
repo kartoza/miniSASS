@@ -1,13 +1,13 @@
 site_name: MiniSASS
 site_description: "MiniSASS documentation."
-site_author: "Kartoza"
+site_author: "IWMI"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "miniSASS"
-repo_url: "https://github.com/kartoza/minisass"
-edit_uri: "https://github.com/kartoza/minisass/blob/main/docs/"
+repo_url: "https://github.com/iwmihq/miniSASS"
+edit_uri: "https://github.com/iwmihq/miniSASS/blob/main/docs/"
 
-copyright: Kartoza and Contributors
+copyright: IWMI and Contributors
 
 markdown_extensions:
         - attr_list # lets us resize images see https://github.com/mkdocs/mkdocs/issues/1678#issuecomment-455500757
@@ -34,8 +34,8 @@ markdown_extensions:
                             class: mermaid
                             format: !!python/name:pymdownx.superfences.fence_code_format
         - pymdownx.emoji:
-                  emoji_generator: !!python/name:materialx.emoji.to_svg
-                  emoji_index: !!python/name:materialx.emoji.twemoji
+                emoji_index: !!python/name:material.extensions.emoji.twemoji
+                emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 nav:
         - Home:
@@ -45,6 +45,14 @@ nav:
                   - About: about/index.md
         - User:
                   - user/index.md
+                  - Quickstart: user/quickstart/index.md
+                  - Guide:
+                        - user/guide/index.md
+                        - Register-Login-Logout: user/guide/register-login-logout.md
+                        - Upload Data: user/guide/upload.md
+                        - Profile: user/guide/profile.md
+                        - Forgot Password: user/guide/forgot-password.md
+                        - Map: user/guide/map.md
                   - Manual:
                         - user/manual/index.md
                         - Landing Page: user/manual/landing-page.md
@@ -84,14 +92,16 @@ nav:
                   - Sites: developer/sites.md
                   - Observations: developer/observations.md
                   - Profile API: developer/profile.md
+                  - Third-party API: developer/3rd-party-api-access.md
         - About:
                   - about/index.md
                   - License: about/license.md
+                  - Images Storage: about/images_storage.md
 
 # Configuration
 theme:
   name: material
-  logo: 
+  logo: img/img_minisasslogo1.png
   language: en
   direction: ltr
   include_search_page: false
@@ -135,15 +145,11 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/kartoza
-    - icon: fontawesome/brands/docker
-      link: https://hub.docker.com/r/kartoza/
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/KartozaGeo
-    - icon: fontawesome/brands/facebook
-      link: https://kartoza.com
+      link: https://github.com/iwmihq
     - icon: fontawesome/solid/earth-africa
-      link: https://kartoza.com
+      link: https://minisass.org
+    - icon: fontawesome/solid/water
+      link: https://www.iwmi.org
 
 extra_css:
   - stylesheets/extra.css
@@ -154,17 +160,10 @@ extra_javascript:
 
 plugins:
   - search
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [..]
-          import:
-            - https://docs.python.org/3/objects.inv
-            - https://mkdocstrings.github.io/autorefs/objects.inv
-          options:
-            docstring_style: sphinx
-            separate_signature: true
-            merge_init_into_class: true
-            docstring_options:
-              ignore_init_summary: true
+  # mkdocstrings was configured here but no page uses its "::: module" syntax, and
+  # its "import:" option was renamed to "inventories:" in current releases, so the
+  # build aborted with:
+  #   TypeError: PythonConfig.__init__() got an unexpected keyword argument 'import'
+  # Removed rather than pinned, since nothing depends on it. Re-add it (with
+  # "inventories:") if Python API pages are ever generated from docstrings.
 

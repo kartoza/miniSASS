@@ -100,7 +100,7 @@ Select the `GET` from the 1️⃣ `method` dropdown and enter the constructed UR
 
 - Once you send the request, the API will return the data in data body.
 
-    Here are examples of the responses you will receive after sending the request via [Postman](#1-using-postman).
+    Here are examples of the responses you will receive after sending the request via [Postman](#using-postman).
 
     #### 200 OK
 

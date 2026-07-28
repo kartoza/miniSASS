@@ -1,13 +1,13 @@
 site_name: MiniSASS
 site_description: "MiniSASS documentation."
-site_author: "Kartoza"
+site_author: "IWMI"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "miniSASS"
-repo_url: "https://github.com/kartoza/minisass"
-edit_uri: "https://github.com/kartoza/minisass/blob/main/docs/"
+repo_url: "https://github.com/iwmihq/miniSASS"
+edit_uri: "https://github.com/iwmihq/miniSASS/blob/main/docs/"
 
-copyright: Kartoza and Contributors
+copyright: IWMI and Contributors
 
 markdown_extensions:
         - attr_list # lets us resize images see https://github.com/mkdocs/mkdocs/issues/1678#issuecomment-455500757
@@ -92,6 +92,7 @@ nav:
                   - Sites: developer/sites.md
                   - Observations: developer/observations.md
                   - Profile API: developer/profile.md
+                  - Third-party API: developer/3rd-party-api-access.md
         - About:
                   - about/index.md
                   - License: about/license.md

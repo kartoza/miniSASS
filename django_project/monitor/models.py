@@ -13,8 +13,36 @@ from django.dispatch import receiver
 from django.utils.html import mark_safe
 
 from minisass.models import GroupScores
+from minisass.storage import minio_storage
 from minisass.utils import delete_file_field, get_path_string
-from monitor.utils import get_country_from_coordinates_kartoza_maps
+from monitor.utils import get_country_from_coordinates
+
+
+class WorldCountry(models.Model):
+    """World administrative boundaries, used to resolve a coordinate to a country.
+
+    This replaces an outbound WFS call to a third-party GeoServer for both country
+    lookup and the "is this point in the ocean?" check. Doing the intersection in
+    PostGIS removes a network dependency from the site-creation path.
+
+    Populate with:
+        python manage.py load_country_boundaries
+    """
+
+    iso_a2 = models.CharField(
+        max_length=2,
+        db_index=True,
+        help_text='ISO 3166-1 alpha-2 country code.'
+    )
+    name = models.CharField(max_length=128)
+    geom = geometry_fields.MultiPolygonField(srid=4326, spatial_index=True)
+
+    class Meta:
+        verbose_name = 'world country'
+        verbose_name_plural = 'world countries'
+
+    def __str__(self):
+        return f'{self.iso_a2} - {self.name}'
 
 
 class Organisations(models.Model):
@@ -106,7 +134,7 @@ class Sites(models.Model):
                 set_country = True
 
         if set_country:
-            self.country = get_country_from_coordinates_kartoza_maps(
+            self.country = get_country_from_coordinates(
                 latitude=self.the_geom.y,
                 longitude=self.the_geom.x
             )
@@ -127,7 +155,7 @@ class SiteImage(models.Model):
     """Image for a site."""
     site = models.ForeignKey(Sites, on_delete=models.CASCADE)
     image = models.ImageField(
-        upload_to=site_image_path, max_length=250, storage=settings.MINION_STORAGE
+        upload_to=site_image_path, max_length=250, storage=minio_storage
     )
 
     def delete_image(self):
@@ -269,7 +297,7 @@ class ObservationPestImage(models.Model):
     pest = models.ForeignKey(Pest, on_delete=models.CASCADE, null=True, blank=True)
     group = models.ForeignKey(GroupScores, on_delete=models.CASCADE, null=True)
     image = models.ImageField(
-        upload_to=observation_pest_image_path, max_length=250, storage=settings.MINION_STORAGE
+        upload_to=observation_pest_image_path, max_length=250, storage=minio_storage
     )
     valid = models.BooleanField(default=False)
     ml_prediction = models.CharField(max_length=255, null=True, blank=True)
@@ -342,7 +370,9 @@ Kind regards,
 The miniSASS team.
     '''
 
-    email_sender = 'info@minisass.org'
+    # Use the configured no-reply sender rather than a monitored inbox, so
+    # replies to an automated notification do not land in a support queue.
+    email_sender = settings.DEFAULT_FROM_EMAIL
 
     observation.user.email_user(email_subject, email_content, email_sender)
 

@@ -5,7 +5,7 @@ test.use({
 });
 
 test('test', async ({ page }) => {
-  await page.goto('https://minisass.sta.do.kartoza.com/#/');
+  await page.goto('/');
   await expect(page.getByRole('img', { name: 'minisasstextOne' })).toBeVisible();
   await expect(page.getByRole('img', { name: 'minisasslogoOne' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Home' })).toBeVisible();

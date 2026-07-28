@@ -5,7 +5,7 @@ import shutil
 import uuid
 import subprocess
 from io import BytesIO
-from rest_framework import generics
+from rest_framework import generics, status
 
 import requests
 from django.conf import settings
@@ -30,7 +30,7 @@ from rest_framework.response import Response
 
 from monitor.forms import SiteForm, ObservationForm, CoordsForm, MapForm
 from monitor.models import Schools, Sites, Observations, SiteImage, ObservationPestImage, Pest
-from monitor.utils import safe_copy, safe_save_field_file, zip_directory
+from monitor.utils import safe_copy, safe_save_field_file, zip_directory, validate_coordinates, get_country_from_coordinates
 
 
 def get_email_content(observation, new_site=False):
@@ -654,15 +654,41 @@ def zoom_observation(request, obs_id):
 
 
 class CheckSiteIsLand(APIView):
-    def get(self, request, lat, long):
-        sql_query = '''
-            SELECT point_intersects_admin(%s, %s);
-        ''' % (lat, long)
+    """Report whether a coordinate falls on land.
 
-        with connection.cursor() as cursor:
-            cursor.execute(sql_query)
-            is_land = cursor.fetchall()[0][0]
-            return Response({'is_land': is_land})
+    Used by the site form before submission.
+
+    This deliberately calls the same get_country_from_coordinates() that
+    Sites.save() uses, so the pre-flight check and the save-time validation can
+    never disagree and tell a user two different things about the same point.
+
+    It previously built SQL by string interpolation::
+
+        sql_query = 'SELECT point_intersects_admin(%s, %s);' % (lat, long)
+        cursor.execute(sql_query)
+
+    lat and long come straight from the URL path, and the <str:> converter accepts
+    any character except "/", so that was injectable. It also depended on a
+    point_intersects_admin() function created by deployment/docker/entrypoint.sh
+    rather than by a migration, which made it absent from any freshly created
+    database (including the test database).
+    """
+
+    def get(self, request, lat, long):
+        try:
+            latitude, longitude = validate_coordinates(lat, long)
+        except ValueError as error:
+            return Response(
+                {'error': str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            get_country_from_coordinates(
+                latitude=latitude, longitude=longitude)
+        except ValueError:
+            # Raised when the point intersects no country polygon.
+            return Response({'is_land': False})
+
+        return Response({'is_land': True})
 
 
 class ObservationCountView(APIView):

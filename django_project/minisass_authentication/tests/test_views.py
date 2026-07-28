@@ -2,7 +2,9 @@ import requests_mock
 from constance import config
 from constance.test import override_config
 from datetime import timedelta
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core import mail
 from django.contrib.auth.tokens import default_token_generator
 from django.test import TestCase
 from django.urls import reverse
@@ -508,19 +510,40 @@ class TestContactUs(APITestCase):
     Test Contact Us view.
     """
 
-    @patch('minisass_authentication.views.minisass_auth.send_mail')
-    def test_contact_us(self, mock_mail):
+    def test_contact_us(self):
         """
         Test Contact Us works without phone number and without login.
         """
-
         url = reverse('contact_us')
         payload = {
             'name': 'Name',
-            'email': 'name@kartoza.com',
+            'email': 'name@example.org',
             'phone': '',
             'message': 'Test message'
         }
         response = self.client.post(url, payload, format='json')
         self.assertEquals(response.status_code, 200)
-        mock_mail.assert_called_once()
+
+        # Assert against the real outbox rather than mocking the send function, so
+        # the test keeps passing if the send mechanism changes and actually checks
+        # what gets delivered.
+        self.assertEqual(len(mail.outbox), 1)
+        sent = mail.outbox[0]
+        self.assertEqual(sent.to, settings.CONTACT_US_RECIPIENT_EMAILS)
+        self.assertEqual(sent.from_email, settings.DEFAULT_FROM_EMAIL)
+        # Reply-To must be the submitter: mail is sent from a no-reply identity, so
+        # this is what lets the team answer a support request.
+        self.assertEqual(sent.reply_to, ['name@example.org'])
+        self.assertIn('Test message', sent.body)
+        self.assertTrue(sent.alternatives, 'expected an HTML alternative part')
+
+    def test_contact_us_requires_email_and_message(self):
+        """
+        Test Contact Us rejects a submission with no address to reply to.
+        """
+        url = reverse('contact_us')
+        response = self.client.post(
+            url, {'name': 'Name', 'email': '', 'phone': '', 'message': ''},
+            format='json')
+        self.assertEquals(response.status_code, 400)
+        self.assertEqual(len(mail.outbox), 0)

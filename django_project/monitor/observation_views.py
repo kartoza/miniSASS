@@ -1,7 +1,9 @@
 # Standard library imports
 import json
+import logging
 import multiprocessing
 import os
+import threading
 from queue import Queue
 from datetime import datetime
 from decimal import Decimal
@@ -30,6 +32,11 @@ from django.views.decorators.http import require_POST
 
 # Django REST framework imports
 from rest_framework import generics, mixins, status
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -43,12 +50,16 @@ from minisass_authentication.permissions import IsAuthenticatedOrWhitelisted
 from monitor.models import (
     Observations, Sites, SiteImage, ObservationPestImage
 )
+from monitor.utils import validate_coordinates
 from monitor.serializers import (
     ObservationsSerializer,
     ObservationPestImageSerializer,
     ObservationsAllFieldsSerializer
 )
 
+
+
+logger = logging.getLogger(__name__)
 
 
 def clear_tensorflow_session():
@@ -84,8 +95,15 @@ def get_observations_by_site(request, site_id, format=None):
 
 
 def retrieve_file_from_s3(file_name):
-	"""Download a file from S3 using django-storages backend."""
-	storage = settings.MINION_STORAGE
+	"""Download a file from S3, returning a local path (or None on failure).
+
+	``file_name`` is relative to the MINIO_BUCKET prefix inside the bucket, so
+	"ai_image_calculation.h5" lives at "<MINIO_BUCKET>/ai_image_calculation.h5".
+	"""
+	# Objects are stored under the MINIO_BUCKET prefix (e.g.
+	# minisass/ai_image_calculation.h5), matching how model FileFields are laid
+	# out. Downloading the bare file_name looks at the bucket root, where nothing
+	# exists, which is what previously left the classifier permanently disabled.
 	s3_key = f'{settings.MINIO_BUCKET}/{file_name}'
 
 	# Check local cache first
@@ -103,26 +121,61 @@ def retrieve_file_from_s3(file_name):
 			aws_secret_access_key=settings.MINIO_SECRET_KEY,
 			region_name=os.getenv('AWS_S3_REGION_NAME', 'af-south-1'),
 		)
-		s3_client.download_file(settings.MINIO_AI_BUCKET, file_name, local_path)
+		s3_client.download_file(settings.MINIO_AI_BUCKET, s3_key, local_path)
 		return local_path
 	except Exception as e:
 		print(f"Error retrieving file from S3: {e}")
 		return None
 
 
-file_name = "ai_image_calculation.h5"
-downloaded_file_path = retrieve_file_from_s3(file_name)
-if downloaded_file_path:
-	try:
-		model = keras.models.load_model(downloaded_file_path)
-	except OSError:
-		model = None
-else:
-	model = None
+AI_MODEL_FILE_NAME = "ai_image_calculation.h5"
+
+# Loaded on first use rather than at import. The model file is ~270MB and uwsgi
+# runs several workers, so loading it at import time multiplied the download and
+# the resident Keras graph by the worker count during startup - enough to exhaust
+# a 4GB ECS task before it served a single request.
+#
+# _MODEL_SENTINEL distinguishes "not tried yet" from "tried and failed", so a
+# failed load is not retried on every request.
+_MODEL_SENTINEL = object()
+_model = _MODEL_SENTINEL
+_model_lock = threading.Lock()
+
+
+def get_classifier_model():
+	"""Return the Keras classifier, loading it once on first use.
+
+	Returns None if the model cannot be fetched or loaded, in which case
+	classification is skipped and observations still save normally.
+
+	Note: the first call pays the S3 download plus the Keras load. That can exceed
+	the uwsgi ``harakiri`` timeout, so warm it ahead of serving traffic with:
+	    python manage.py warm_ai_model
+	"""
+	global _model
+	if _model is not _MODEL_SENTINEL:
+		return _model
+
+	with _model_lock:
+		# Re-check inside the lock: another thread may have loaded it already.
+		if _model is not _MODEL_SENTINEL:
+			return _model
+
+		downloaded_file_path = retrieve_file_from_s3(AI_MODEL_FILE_NAME)
+		if not downloaded_file_path:
+			_model = None
+			return _model
+		try:
+			_model = keras.models.load_model(downloaded_file_path)
+		except (OSError, ValueError) as e:
+			print(f"Could not load AI classifier model: {e}")
+			_model = None
+		return _model
 
 
 
 def classify_image(image):
+	model = get_classifier_model()
 	if not model:
 		return {'error': 'Cannot load model'}
 	try:
@@ -158,7 +211,9 @@ def convert_to_int(value, default=0):
 		except (ValueError, TypeError):
 			return default
 
-@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticatedOrWhitelisted])
 def upload_pest_image(request):
 	""""
 	This view function handles the upload of pest images, associating them with an observation and a site.
@@ -178,26 +233,29 @@ def upload_pest_image(request):
 
 	:param request: The HTTP request object.
 	:return: JsonResponse with status, observation ID, site ID, and pest image IDs.
+
+	Authentication
+	--------------
+	Requires a JWT, matching ObservationListCreateView.
+
+	This was previously a plain Django view with no authentication at all. Because a
+	plain view never processes a Bearer token, request.user was always anonymous and
+	the code fell through to a "user_id" field taken from the request body. Any
+	unauthenticated caller could therefore create sites and observations attributed
+	to any user simply by posting their id. The record is now always attributed to
+	the authenticated user and any submitted user_id is ignored.
 	"""
 	if request.method == 'POST':
 		try:
 			with transaction.atomic():
 
-				site_id = request.POST.get('siteId')
-				observation_id = request.POST.get('observationId')
+				site_id = request.data.get('siteId')
+				observation_id = request.data.get('observationId')
 				site_id = convert_to_int(site_id)
 				observation_id = convert_to_int(observation_id)
 
-				if request.user.is_authenticated:
-					# If the user is authenticated, use request.user
-					user = request.user
-				else:
-					# If user_id is provided, get the user
-					user_id = int(request.POST.get('user_id', 0))
-					try:
-						user = User.objects.get(pk=user_id)
-					except User.DoesNotExist:
-						return JsonResponse({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+				# Always the authenticated user. A user_id in the payload is ignored.
+				user = request.user
 
 				try:
 					site = Sites.objects.get(gid=site_id)
@@ -206,12 +264,12 @@ def upload_pest_image(request):
 						'gid__max']
 					new_site_id = max_site_id + 1 if max_site_id is not None else 1
 
-					site_name = request.POST.get('siteName', '')
-					river_name = request.POST.get('riverName', '')
-					description = request.POST.get('siteDescription', '')
-					river_cat = request.POST.get('rivercategory', 'rocky')
-					latitude = request.POST.get('latitude', None)
-					longitude = request.POST.get('longitude', None)
+					site_name = request.data.get('siteName', '')
+					river_name = request.data.get('riverName', '')
+					description = request.data.get('siteDescription', '')
+					river_cat = request.data.get('rivercategory', 'rocky')
+					latitude = request.data.get('latitude', None)
+					longitude = request.data.get('longitude', None)
 					if latitude is None or longitude is None:
 						return JsonResponse(
 							{'status': 'error', 'message': 'Lattitude and/or Longitude cannot be None!'},
@@ -222,6 +280,9 @@ def upload_pest_image(request):
 							{'status': 'error', 'message': 'Site Name and/or River Name cannot be empty!'},
 							status=status.HTTP_400_BAD_REQUEST
 						)
+
+					# Raises ValueError, handled below as a 400 carrying the message.
+					latitude, longitude = validate_coordinates(latitude, longitude)
 
 					site = Sites(
 						gid=new_site_id,
@@ -256,6 +317,7 @@ def upload_pest_image(request):
 
 				# Save images in the request object
 				classification_results = []
+				pest_image = None
 				for key, image in request.FILES.items():
 					if 'pest_' in key:
 						group_id = key.split(':')[1]
@@ -287,20 +349,29 @@ def upload_pest_image(request):
 						'status': 'success',
 						'observation_id': observation.gid,
 						'site_id': site.gid,
-						'pest_image_id': pest_image.id,
+						# None when the request carried no "pest_<n>:<group_id>" files.
+						# Referencing pest_image directly raised NameError in that case,
+						# which the generic handler below turned into an opaque 400.
+						'pest_image_id': pest_image.id if pest_image is not None else None,
 						'classification_results': classification_results
 					},
 					status=status.HTTP_201_CREATED
 				)
 		except ValidationError as ve:
+			logger.warning('upload_pest_image validation error', exc_info=True)
 			return JsonResponse({'status': 'error', 'message': 'Invalid input'}, status=status.HTTP_400_BAD_REQUEST)
 		except ValueError as e:
+			logger.warning('upload_pest_image rejected input: %s', e)
 			return JsonResponse(
 				{'status': 'error', 'message': str(e)},
 				status=status.HTTP_400_BAD_REQUEST
 			)
-		except Exception as e:
-			# Handle other exceptions
+		except Exception:
+			# Must be logged. This handler previously returned a bare 400 and
+			# discarded the exception, so a storage misconfiguration that broke
+			# every single submission was invisible for months: no traceback, no
+			# 500 in the metrics, and nothing actionable for the user.
+			logger.exception('upload_pest_image failed unexpectedly')
 			return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status=status.HTTP_400_BAD_REQUEST)
 
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
