@@ -75,12 +75,21 @@ export const Map = forwardRef((props: Interface, ref) => {
       if (!map && latitude && longitude) {
         (
           async () => {
-            const response = await fetch('https://raw.githubusercontent.com/kartoza/miniSASS/main/django_project/webmapping/styles/minisass_style_v1.json');
+            // Served by this deployment from django_project/webmapping/styles via
+            // STATICFILES_DIRS. It used to be fetched from a third-party GitHub
+            // repository at runtime, which meant the committed copy was ignored and
+            // the live map styling depended on an external repo staying available.
+            const response = await fetch('/static/webmapping/minisass_style_v1.json');
             const styles = await response.json();
             const urlTile = new URL(styles.sources[minisassObservationId].tiles[0])
             const currUrl = new URL(window.location)
             currUrl.pathname = urlTile.pathname
             styles.sources[minisassObservationId].tiles[0] = decodeURIComponent(currUrl.href)
+
+            // Resolve the root-relative sprite path against this origin.
+            if (styles.sprite && styles.sprite.startsWith('/')) {
+              styles.sprite = new URL(styles.sprite, window.location.origin).href
+            }
 
             // Just using 'MiniSASS Observations' source
             for (const [key, value] of Object.entries(styles.sources)) {

@@ -111,7 +111,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", showLogo = true, ...res
                       category: "User Engagement",
                       label: "Clicked Documentation",
                     });
-                    window.open("https://kartoza.github.io/miniSASS/", "_blank");
+                    window.open("https://iwmihq.github.io/miniSASS/", "_blank");
                   }}
                   className="text-body-sm font-extrabold uppercase tracking-wider text-text-inverse hover:underline"
                 >

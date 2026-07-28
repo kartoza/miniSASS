@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const refreshTok = parsed.userData?.refresh_token;
       if (!refreshTok) return;
 
-      const response = await axios.post(`${baseUrl}/token/refresh/`, {
+      const response = await axios.post(`${baseUrl}/authentication/api/token/refresh/`, {
         refresh: refreshTok,
       });
 
