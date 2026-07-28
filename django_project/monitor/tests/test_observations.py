@@ -50,7 +50,11 @@ class BaseObservationsModelTest(TestCase):
 		)
 
 	def setUp(self):
-		self.s3_client_patch = patch('minisass.utils.boto3.client')
+		# Patch boto3 where it is actually imported. This previously targeted
+		# minisass.utils, which does not import boto3, so every test in this module
+		# errored in setUp with AttributeError. It went unnoticed because CI only
+		# ran on a branch that had been abandoned.
+		self.s3_client_patch = patch('monitor.observation_views.boto3.client')
 		self.s3_client_patch.start()
 
 		self.user = User.objects.create_user(
