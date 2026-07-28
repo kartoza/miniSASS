@@ -1,0 +1,49 @@
+name: Sync GitHub Issues to Jira
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create-jira-ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Map fields and send to Jira
+        run: |
+          case "${{ github.event.issue.assignee.login }}" in
+            "Kanishka-Hewageegana-IWMI")   JIRA_ACCOUNT="712020:91dcd83f-78ad-4a96-aead-456e154422e4" ;;
+            "Hasindu-IWMI")                JIRA_ACCOUNT="712020:1e5f022f-93f8-4385-a25a-b158be818c04" ;;
+            "AkilaIWMI")                   JIRA_ACCOUNT="712020:ba66d487-2896-47dc-9952-8278906e754d" ;;
+            "Abdul-Shahid-IWMI")           JIRA_ACCOUNT="712020:6ec7d129-5b97-492f-8ec8-3fb5accffc47" ;;
+            "Keerthan-IWMI")               JIRA_ACCOUNT="712020:2eaf16de-ea2e-466f-9899-19c6645772ab" ;;
+            "HugoRetief")                  JIRA_ACCOUNT="712020:e9cf0376-2a5b-48e9-84eb-e970c3bbeec7" ;;
+            "surfer23")                    JIRA_ACCOUNT="712020:e9cf0376-2a5b-48e9-84eb-e970c3bbeec7" ;;
+            "ZoloKiala")                   JIRA_ACCOUNT="712020:68a38e09-0e93-4585-a1d2-0a1cf16702f0" ;;
+            "PSilva-IWMI")                 JIRA_ACCOUNT="712020:14fa570f-7dc1-45d4-87fa-6dd8dfacc0ed" ;;
+            "surajitghoshiwmi")            JIRA_ACCOUNT="60ec0ab0a2243e0070172b45" ;;
+            "Thisumi-Ranasinghe-IWMI")     JIRA_ACCOUNT="712020:9a3ad845-915a-4096-bbd6-5d416b65d1ed" ;;
+            "Rashmi-Tharuka-IWMI")         JIRA_ACCOUNT="712020:f7bbf6b8-152c-4887-abee-7cdf7dc795c6" ;;
+            "senadhi-chandrasekara-IWMI")  JIRA_ACCOUNT="712020:fbfa226d-ce63-4cd0-ab38-eac0a47bee23" ;;
+            "jeafreezy")                   JIRA_ACCOUNT="712020:ab7a4967-96a1-496c-825f-c9a27d93bf2e" ;;
+            *)                              JIRA_ACCOUNT="-1" ;;
+          esac
+
+          case "${{ github.event.issue.type.name }}" in
+            "Bug")     JIRA_TYPE="Bug" ;;
+            "Feature") JIRA_TYPE="Story" ;;
+            "Task")    JIRA_TYPE="Task" ;;
+            *)         JIRA_TYPE="Task" ;;
+          esac
+
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            -H 'X-Automation-Webhook-Token: ${{ secrets.JIRA_WEBHOOK_TOKEN }}' \
+            --data "$(jq -n \
+              --arg title "${{ github.event.issue.title }}" \
+              --arg body "${{ github.event.issue.body }}" \
+              --arg url "${{ github.event.issue.html_url }}" \
+              --arg repo "${{ github.event.repository.name }}" \
+              --arg login "${{ github.event.issue.assignee.login }}" \
+              --arg account "$JIRA_ACCOUNT" \
+              --arg jtype "$JIRA_TYPE" \
+              '{issue:{title:$title,body:$body,html_url:$url,assignee:{login:$login}},repository:{name:$repo},jira_account_id:$account,jira_type:$jtype}')" \
+            "${{ secrets.JIRA_WEBHOOK_URL }}"
