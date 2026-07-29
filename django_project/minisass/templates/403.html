@@ -1,27 +1,16 @@
 {% comment %}
-Deliberately self-contained.
+Django's handler403. Previously absent, so a forbidden response rendered
+Django's bare built-in page: an unstyled "403 Forbidden" with no way back into
+the site.
 
-This template previously did {% extends "base.html" %}. No project template of that
-name exists, so it resolved to pinax/templates/templates/base.html, which uses a
-{% user_display %} tag that is not loaded here. Rendering therefore raised
-TemplateSyntaxError, and Django returned 500 instead of 404 for EVERY missing URL,
-including /favicon.ico and /robots.txt.
-
-Keep this page free of {% extends %}, {% include %}, custom tags and external
-assets so it can always render, even when the rest of the application cannot.
-That is why the styling is repeated across 400/403/404/500 rather than shared:
-an error page that depends on another file can fail for the same reason the
-request did, and then the user gets Django's bare fallback instead.
-
-Note there is no mailto here. minisass.org publishes no MX record, so mail sent
-to info@ or support@minisass.org bounces. Reports have to go through the Contact
-Us form, which posts to the API and is delivered to the team.
+Self-contained for the same reason as 404.html and 500.html - see the comment
+there for why the styling is repeated rather than shared.
 {% endcomment %}<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page not found | miniSASS</title>
+    <title>No access to that page | miniSASS</title>
     <link rel="icon" href="/static/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -38,6 +27,8 @@ Us form, which posts to the API and is delivered to the team.
               margin: 0 0 8px; letter-spacing: -2px; }
       h1 { font-size: 28px; color: #0e4981; margin: 0 0 16px; line-height: 1.25; }
       p { margin: 0 0 16px; color: #52606d; }
+      ul { margin: 0 0 16px; padding-left: 22px; color: #52606d; }
+      li { margin-bottom: 6px; }
       .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
       .btn { display: inline-block; padding: 12px 22px; text-decoration: none;
              font-weight: 600; font-size: 15px; border-radius: 0 16px 16px 16px; }
@@ -58,21 +49,22 @@ Us form, which posts to the API and is delivered to the team.
   <body>
     <header><a class="brand" href="/">mini<b>SASS</b></a></header>
     <main>
-      <p class="code">404</p>
-      <h1>We can&rsquo;t find that page</h1>
-      <p>
-        The address may have changed, or there might be a typo in the link that
-        brought you here. It is also possible the page has been removed.
-      </p>
+      <p class="code">403</p>
+      <h1>You don&rsquo;t have access to that page</h1>
+      <p>There are a few reasons this happens:</p>
+      <ul>
+        <li>You are signed out, or your session expired while the page sat open.</li>
+        <li>The page is for administrators or verified experts only.</li>
+        <li>The link was meant for a different account.</li>
+      </ul>
+      <p>Signing in again resolves most of these.</p>
       <div class="actions">
         <a class="btn btn-primary" href="/">Back to miniSASS</a>
         <a class="btn btn-secondary" href="/map/">Explore the map</a>
-        <a class="btn btn-secondary" href="/howto/">How to do a survey</a>
       </div>
       <p class="note">
-        If you followed a link on this site to get here, something is broken and
-        we would like to know. Please report it using <strong>Contact Us</strong>
-        in the menu.
+        If you believe you should have access to this page, please get in touch
+        through <strong>Contact Us</strong> in the menu.
       </p>
     </main>
   </body>

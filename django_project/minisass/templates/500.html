@@ -1,9 +1,17 @@
 {% comment %}
-Deliberately self-contained: no {% extends %}, no custom template tags and no
-external assets. A 500 page must render when the application is already failing,
-so it cannot depend on anything that might itself be broken. The previous version
-pulled in jQuery from a CDN and several stylesheets, none of which are needed to
-say "something went wrong".
+Deliberately self-contained: no {% extends %}, no {% include %}, no custom
+template tags and no external assets. A 500 page has to render when the
+application is already failing, so it must not depend on anything that could be
+broken for the same reason the request was. The original version pulled jQuery
+from a CDN and three stylesheets, none of which are needed to say "something
+went wrong" - and it named a support address that no longer reaches anyone.
+
+Django renders this with an empty context. No template variables are available
+here, so nothing on this page may depend on one.
+
+The warning about unsaved work is deliberate and honest: a 500 during an
+observation upload really can lose the submission, and telling someone to
+"try again" without that caveat invites duplicate records.
 {% endcomment %}<!doctype html>
 <html lang="en">
   <head>
@@ -14,29 +22,64 @@ say "something went wrong".
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
     <style>
-      body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-             color: #1f2933; background: #f7f9fa; }
-      .wrap { max-width: 640px; margin: 0 auto; padding: 64px 24px; text-align: center; }
-      h1 { font-size: 22px; margin: 0 0 12px; }
-      p { line-height: 1.6; color: #52606d; margin: 0 0 24px; }
-      .btn { display: inline-block; padding: 10px 20px; border-radius: 6px;
-             background: #539987; color: #fff; text-decoration: none; font-weight: 600; }
-      .btn:hover { background: #47836f; }
-      .muted { font-size: 13px; color: #7b8794; }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; background: #f7f9fa; color: #414141; line-height: 1.6;
+             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                          Helvetica, Arial, sans-serif; }
+      header { background: #fff; border-bottom: 1px solid #e7e7e7; padding: 18px 24px; }
+      .brand { font-size: 24px; letter-spacing: -0.5px; color: #0e4981; text-decoration: none; }
+      .brand b { font-weight: 800; }
+      main { max-width: 640px; margin: 0 auto; padding: 64px 24px 80px; }
+      .code { font-size: 64px; font-weight: 800; color: #d9e2ec; line-height: 1;
+              margin: 0 0 8px; letter-spacing: -2px; }
+      h1 { font-size: 28px; color: #0e4981; margin: 0 0 16px; line-height: 1.25; }
+      p { margin: 0 0 16px; color: #52606d; }
+      .callout { background: #fff8e1; border-left: 4px solid #fadf63;
+                 padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+      .callout p { margin: 0; color: #5c4a03; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+      .btn { display: inline-block; padding: 12px 22px; text-decoration: none;
+             font-weight: 600; font-size: 15px; border-radius: 0 16px 16px 16px; }
+      .btn-primary { background: #539987; color: #fff; }
+      .btn-primary:hover { background: #3d7a67; }
+      .btn-secondary { border: 2px solid #0e4981; color: #0e4981; }
+      .btn-secondary:hover { background: #0e4981; color: #fff; }
+      .note { margin-top: 36px; padding-top: 20px; border-top: 1px solid #e7e7e7;
+              font-size: 14px; color: #7b8794; }
+      @media (max-width: 480px) {
+        main { padding: 40px 20px 60px; }
+        h1 { font-size: 23px; }
+        .code { font-size: 52px; }
+        .btn { width: 100%; text-align: center; }
+      }
     </style>
   </head>
   <body>
-    <div class="wrap">
+    <header><a class="brand" href="/">mini<b>SASS</b></a></header>
+    <main>
+      <p class="code">500</p>
       <h1>Something went wrong on our side</h1>
       <p>
-        This is not your fault. The problem has been logged and the team has been
-        notified. Please try again in a few minutes.
+        This is a fault in miniSASS, not something you did wrong. The error has
+        been recorded and the team can see it. Waiting a few minutes and trying
+        again will often be enough.
       </p>
-      <a class="btn" href="/">Back to miniSASS</a>
-      <p class="muted" style="margin-top:28px">
-        If it keeps happening, contact
-        <a href="mailto:info@minisass.org">info@minisass.org</a>.
+      <div class="callout">
+        <p>
+          <strong>If you were part-way through submitting an observation or
+          filling in a form, it may not have been saved.</strong> Please check
+          before entering it again, so you don&rsquo;t end up with a duplicate.
+        </p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="/">Back to miniSASS</a>
+        <a class="btn btn-secondary" href="/map/">Explore the map</a>
+      </div>
+      <p class="note">
+        If this keeps happening, please tell us what you were doing at the time
+        using <strong>Contact Us</strong> in the menu. That detail is usually
+        what makes a problem like this findable.
       </p>
-    </div>
+    </main>
   </body>
 </html>

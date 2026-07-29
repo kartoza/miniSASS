@@ -1,27 +1,24 @@
 {% comment %}
-Deliberately self-contained.
+Rendered by django.views.csrf.csrf_failure when a POST arrives without a valid
+CSRF token. Previously absent, so Django used its built-in developer-facing page,
+which opens with "Forbidden (403) CSRF verification failed. Request aborted." and
+then explains cookie behaviour to someone who only wanted to reset their password.
 
-This template previously did {% extends "base.html" %}. No project template of that
-name exists, so it resolved to pinax/templates/templates/base.html, which uses a
-{% user_display %} tag that is not loaded here. Rendering therefore raised
-TemplateSyntaxError, and Django returned 500 instead of 404 for EVERY missing URL,
-including /favicon.ico and /robots.txt.
+In practice this is the most common of these pages: it fires whenever a form sits
+open long enough for the token to expire, which is exactly what happens when
+someone opens the reset form and goes to find their email. The fix is almost
+always "reload and submit again", so that is what this page leads with.
 
-Keep this page free of {% extends %}, {% include %}, custom tags and external
-assets so it can always render, even when the rest of the application cannot.
-That is why the styling is repeated across 400/403/404/500 rather than shared:
-an error page that depends on another file can fail for the same reason the
-request did, and then the user gets Django's bare fallback instead.
+Django passes a `reason` into the context, but it is deliberately not shown -
+it describes the CSRF mechanism, not anything the reader can act on.
 
-Note there is no mailto here. minisass.org publishes no MX record, so mail sent
-to info@ or support@minisass.org bounces. Reports have to go through the Contact
-Us form, which posts to the API and is delivered to the team.
+Self-contained for the same reason as the other error pages; see 404.html.
 {% endcomment %}<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page not found | miniSASS</title>
+    <title>Your session expired | miniSASS</title>
     <link rel="icon" href="/static/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -34,10 +31,10 @@ Us form, which posts to the API and is delivered to the team.
       .brand { font-size: 24px; letter-spacing: -0.5px; color: #0e4981; text-decoration: none; }
       .brand b { font-weight: 800; }
       main { max-width: 640px; margin: 0 auto; padding: 64px 24px 80px; }
-      .code { font-size: 64px; font-weight: 800; color: #d9e2ec; line-height: 1;
-              margin: 0 0 8px; letter-spacing: -2px; }
       h1 { font-size: 28px; color: #0e4981; margin: 0 0 16px; line-height: 1.25; }
       p { margin: 0 0 16px; color: #52606d; }
+      ul { margin: 0 0 16px; padding-left: 22px; color: #52606d; }
+      li { margin-bottom: 6px; }
       .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
       .btn { display: inline-block; padding: 12px 22px; text-decoration: none;
              font-weight: 600; font-size: 15px; border-radius: 0 16px 16px 16px; }
@@ -50,7 +47,6 @@ Us form, which posts to the API and is delivered to the team.
       @media (max-width: 480px) {
         main { padding: 40px 20px 60px; }
         h1 { font-size: 23px; }
-        .code { font-size: 52px; }
         .btn { width: 100%; text-align: center; }
       }
     </style>
@@ -58,21 +54,24 @@ Us form, which posts to the API and is delivered to the team.
   <body>
     <header><a class="brand" href="/">mini<b>SASS</b></a></header>
     <main>
-      <p class="code">404</p>
-      <h1>We can&rsquo;t find that page</h1>
+      <h1>Your session expired before that was sent</h1>
       <p>
-        The address may have changed, or there might be a typo in the link that
-        brought you here. It is also possible the page has been removed.
+        Forms on miniSASS stay valid for a limited time. This one was open too
+        long, so it was not accepted. Nothing is wrong with your account and
+        nothing has been changed.
       </p>
+      <p><strong>Go back, reload the page, and fill it in again.</strong></p>
+      <p>If it happens every time, check that your browser is:</p>
+      <ul>
+        <li>accepting cookies from minisass.org</li>
+        <li>not blocking them through a privacy extension or private window</li>
+      </ul>
       <div class="actions">
         <a class="btn btn-primary" href="/">Back to miniSASS</a>
-        <a class="btn btn-secondary" href="/map/">Explore the map</a>
-        <a class="btn btn-secondary" href="/howto/">How to do a survey</a>
       </div>
       <p class="note">
-        If you followed a link on this site to get here, something is broken and
-        we would like to know. Please report it using <strong>Contact Us</strong>
-        in the menu.
+        Still stuck? Let us know through <strong>Contact Us</strong> in the menu
+        and mention which form you were filling in.
       </p>
     </main>
   </body>
