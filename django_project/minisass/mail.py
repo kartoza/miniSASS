@@ -38,7 +38,16 @@ def deliver(message):
     Returns True when the transport accepted the message. A True result is not a
     guarantee of delivery - it means the message was handed over successfully.
     """
-    recipients = ', '.join(message.to or [])
+    if not message.to:
+        # Not an error to report to the user as success. An unconfigured
+        # recipient list used to mean the transport accepted a message with
+        # nowhere to go, so the contact form said "sent" and nothing arrived.
+        logger.warning(
+            'Refusing to send %r: no recipients configured', message.subject
+        )
+        return False
+
+    recipients = ', '.join(message.to)
     try:
         message.send()
     except Exception:

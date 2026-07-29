@@ -12,6 +12,14 @@ ENABLE_GEOCODING = False
 # command run against these settings - cannot reach SES with real credentials.
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
+# Contact and support recipients are configured per environment and deliberately
+# have no default in default.py, because the previous defaults (info@ and
+# support@minisass.org) cannot receive mail and silently swallowed submissions.
+# The tests exercise the delivery path itself, so they need somewhere to deliver.
+CONTACT_US_RECIPIENT_EMAILS = ['contact@example.org']
+SUPPORT_RECIPIENT_EMAILS = ['support@example.org']
+EXPERT_APPROVAL_RECIPIENT_EMAILS = ['contact@example.org']
+
 # Keep the test suite off object storage entirely.
 #
 # MINION_STORAGE is attached to model FileFields, so without this override the

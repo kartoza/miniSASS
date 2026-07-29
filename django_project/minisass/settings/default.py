@@ -63,11 +63,19 @@ DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 SECRET_KEY = os.getenv('SECRET_KEY') or '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i'
 
 
-# Recipients of unhandled-exception mail when DEBUG is False. Kept as the
-# maintaining team rather than individuals from the original build contract.
-ADMINS = (
-    ('miniSASS admin team', 'info@minisass.org'),
-)
+# Recipients of unhandled-exception mail when DEBUG is False.
+#
+# Empty unless ADMIN_EMAIL is set. This was info@minisass.org, which cannot
+# receive anything - minisass.org publishes no MX record - so every 500 produced
+# a message that bounced. Bounces count against the SES sending reputation, and
+# an error storm generates one per exception, which is a good way to get an
+# account's sending paused. Point ADMIN_EMAIL at a mailbox that exists to turn
+# error reporting back on; the tracebacks are in CloudWatch either way.
+ADMINS = [
+    ('miniSASS admin team', address.strip())
+    for address in os.getenv('ADMIN_EMAIL', '').split(',')
+    if address.strip()
+]
 
 MANAGERS = ADMINS
 
@@ -335,20 +343,30 @@ def _email_list(env_name, default):
 # public, and hardcoding staff addresses here would publish them to scrapers. Set
 # the real recipients through the environment (they come from Secrets Manager in
 # production), which also means routing changes need no code deploy.
-CONTACT_US_RECIPIENT_EMAILS = _email_list(
-    'CONTACT_US_RECIPIENT_EMAILS', ['info@minisass.org'])
+# Where the contact form and support requests are delivered. Set per environment
+# through Secrets Manager; production routes them to the miniSASS team.
+#
+# There is deliberately no default. The previous defaults were info@minisass.org
+# and support@minisass.org, which read as sensible but cannot receive anything:
+# minisass.org publishes no MX record, so mail addressed to them bounces. An
+# unset variable therefore dropped every contact-form submission into a black
+# hole while the site reported success to the sender. Defaulting to nothing
+# makes the send refuse and log instead, which is at least visible.
+CONTACT_US_RECIPIENT_EMAILS = _email_list('CONTACT_US_RECIPIENT_EMAILS', [])
 
-SUPPORT_RECIPIENT_EMAILS = _email_list(
-    'SUPPORT_RECIPIENT_EMAILS', ['support@minisass.org'])
+SUPPORT_RECIPIENT_EMAILS = _email_list('SUPPORT_RECIPIENT_EMAILS', [])
 
 EXPERT_APPROVAL_RECIPIENT_EMAILS = _email_list(
     'EXPERT_APPROVAL_RECIPIENT_EMAILS', CONTACT_US_RECIPIENT_EMAILS)
 
-# Retained because existing code refers to the singular name.
-CONTACT_US_RECEPIENT_EMAIL = CONTACT_US_RECIPIENT_EMAILS[0]
+# Retained because existing code refers to the singular name. Guarded, because
+# the list above can now legitimately be empty.
+CONTACT_US_RECEPIENT_EMAIL = (
+    CONTACT_US_RECIPIENT_EMAILS[0] if CONTACT_US_RECIPIENT_EMAILS else '')
 # Note: EXPERT_APPROVAL_RECIPIENT_EMAIL was defined here but never read by any
 # code. Kept as an alias so nothing breaks if something starts using it.
-EXPERT_APPROVAL_RECIPIENT_EMAIL = EXPERT_APPROVAL_RECIPIENT_EMAILS[0]
+EXPERT_APPROVAL_RECIPIENT_EMAIL = (
+    EXPERT_APPROVAL_RECIPIENT_EMAILS[0] if EXPERT_APPROVAL_RECIPIENT_EMAILS else '')
 
 # django registration/auth settings
 # ACCOUNT_ACTIVATION_DAYS = 7

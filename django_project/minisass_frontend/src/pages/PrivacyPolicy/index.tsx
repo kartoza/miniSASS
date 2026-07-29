@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {Text} from "../../components";
 import AppShell from "../../components/AppShell";
-import {Box, Container, List, ListItem, ListItemIcon, ListItemText, Paper, Typography} from '@mui/material';
+import ContactFormModal from "../../components/ContactFormModal";
+import { ContactFormData } from "../../components/ContactFormModal/types";
+import {Box, Button, Container, List, ListItem, ListItemIcon, ListItemText, Paper, Typography} from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 
 import "../../pages/PrivacyPolicy/styles.css"
 
 
 const PrivacyPolicyPage: React.FC = () => {
+  // This page used to send people to mailto:info@minisass.org. minisass.org
+  // publishes no MX record, so that mail bounces - meaning a request about
+  // someone's personal data reached nobody at all. The contact form posts to the
+  // API and is delivered to the team, so it is the only channel that works.
+  const [contactOpen, setContactOpen] = useState(false);
+
   return (
     <AppShell activePage="privacy-policy">
       <div className="bg-white-A700 flex flex-col font-raleway items-center justify-start mx-auto pb-[5px] w-full">
@@ -47,7 +55,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 Welcome to miniSASS. We are committed to protecting your personal information and your right to privacy.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use
                 our website and app. If you have any questions or concerns about this policy or our practices with regard
-                to your personal information, please contact us at info@minisass.org.
+                to your personal information, please get in touch using the Contact Us form.
               </Typography>
             </Box>
 
@@ -366,15 +374,32 @@ const PrivacyPolicyPage: React.FC = () => {
                 12. Contact Us
               </Typography>
               <Typography variant="body1" paragraph>
-                If you have questions or comments about this Privacy Policy, you may email us at{' '}
-                <a href="mailto:info@minisass.org" style={{ color: '#0e4981', textDecoration: 'none' }}>
-                  info@minisass.org
-                </a>.
+                If you have questions or comments about this Privacy Policy, or you
+                want to ask about the information we hold on you, please use the
+                form below. It reaches the miniSASS team directly.
               </Typography>
+              <Button
+                variant="contained"
+                onClick={() => setContactOpen(true)}
+                sx={{
+                  backgroundColor: '#539987',
+                  borderRadius: '0 16px 16px 16px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': { backgroundColor: '#3d7a67' },
+                }}
+              >
+                Contact us
+              </Button>
             </Box>
           </Paper>
         </Container>
 
+        <ContactFormModal
+          isOpen={contactOpen}
+          onClose={() => setContactOpen(false)}
+          onSubmit={(_data: ContactFormData) => setContactOpen(false)}
+        />
       </div>
     </AppShell>
   );
