@@ -120,6 +120,39 @@ jobs:
           sed -i "s|<SECRET_ARN>|$SECRET_ARN|g" taskdef.json
           
       
+      # Static files must reach S3 BEFORE the new tasks start serving.
+      #
+      # nginx proxies /static/ to the S3 bucket, but collectstatic writes to the
+      # container's local filesystem, which nginx never reads in production.
+      # Nothing bridged the two, so every object under static/ dated from the day
+      # someone uploaded them by hand. Any frontend change therefore produced new
+      # content-hashed bundle names that did not exist in S3, and the browser got
+      # 403 for every asset: the page returned 200 while rendering completely blank.
+      #
+      # collectstatic is run inside the image that is about to be deployed, so the
+      # uploaded files match the deployed code exactly rather than depending on a
+      # separate build producing identical hashes.
+      - name: Collect static files from the built image
+        env:
+          IMAGE: ${{ env.FULL_IMAGE_URI }}
+        run: |
+          mkdir -p ./collected-static
+          docker run --rm \
+            -e DJANGO_DB=unused -e POSTGRES_USER=unused -e POSTGRES_PASS=unused \
+            -e DATABASE_HOST=unused -e DATABASE_PORT=5432 \
+            -e MINIO_BUCKET="$MINIO_BUCKET" -e MINIO_AI_BUCKET="$MINIO_AI_BUCKET" \
+            -e STATIC_ROOT=/home/web/static \
+            -v "$PWD/collected-static":/out \
+            --entrypoint bash "$IMAGE" -c \
+            'cd /home/web/django_project && python manage.py collectstatic --noinput >/dev/null && cp -a /home/web/static/. /out/'
+          echo "Collected $(find ./collected-static -type f | wc -l) static files"
+
+      - name: Upload static files to S3
+        run: |
+          aws s3 sync ./collected-static/ "s3://${S3_MEDIA_BUCKET}/static/" \
+            --no-progress
+          echo "Static files synced to s3://${S3_MEDIA_BUCKET}/static/"
+
       - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

@@ -14,6 +14,15 @@
   <meta name="referrer" content="origin" />
 <title class="notranslate" translate="no">miniSASS</title>
 
+  <!-- Declared explicitly so browsers use these rather than falling back to a
+       bare request for /favicon.ico at the site root, which Django does not
+       route. The files are collected to STATIC_ROOT by collectstatic. -->
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+  <link rel="manifest" href="/static/site.webmanifest">
+
   {% if dev_mode %}
   <script type="module" src="http://localhost:5173/@vite/client"></script>
 

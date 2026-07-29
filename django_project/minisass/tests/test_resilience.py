@@ -74,3 +74,38 @@ class HealthEndpointTest(TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(response.json()['status'], 'unhealthy')
         self.assertIn('error', response.json()['checks']['database'])
+
+
+class ErrorPageTest(TestCase):
+    """A missing URL must return 404, not 500.
+
+    404.html previously did {% extends "base.html" %}. No project template of that
+    name exists, so it resolved to pinax/templates/templates/base.html, which uses
+    a {% user_display %} tag that is not loaded. Rendering raised
+    TemplateSyntaxError and Django returned 500 for EVERY missing URL, including
+    /favicon.ico and /robots.txt.
+    """
+
+    def test_missing_url_returns_404_not_500(self):
+        with self.settings(DEBUG=False, ALLOWED_HOSTS=['*']):
+            response = self.client.get('/definitely-not-a-real-url-9876')
+        self.assertEqual(
+            response.status_code, 404,
+            'a missing URL must 404; a 500 here means the 404 template is broken')
+
+    def test_404_template_renders_standalone(self):
+        """It must not depend on {% extends %} or a third-party base template."""
+        from django.template.loader import render_to_string
+        html = render_to_string('404.html')
+        self.assertIn('miniSASS', html)
+
+    def test_500_template_renders_standalone(self):
+        from django.template.loader import render_to_string
+        html = render_to_string('500.html')
+        self.assertIn('miniSASS', html)
+
+    def test_favicon_is_routed(self):
+        """Browsers request /favicon.ico at the root regardless of link tags."""
+        response = self.client.get('/favicon.ico')
+        self.assertIn(response.status_code, (301, 302))
+        self.assertIn('favicon', response['Location'])

@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
+from django.views.generic.base import RedirectView
+
 from minisass.health import liveness, readiness
 from django.urls import path, re_path, include
 from django.conf import settings
@@ -92,6 +94,10 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # Liveness: is the process up. Readiness: can it actually serve a page.
     # The load balancer should target readiness; see minisass/health.py.
+    # Browsers request /favicon.ico at the root regardless of any <link> tag,
+    # and nothing routed it, so it fell through to the 404 handler.
+    path("favicon.ico", RedirectView.as_view(
+        url="/static/favicon.ico", permanent=True), name="favicon"),
     path("health/", liveness, name="health"),
     path("health/ready/", readiness, name="health-ready"),
 ]

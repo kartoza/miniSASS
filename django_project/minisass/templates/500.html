@@ -1,58 +1,42 @@
-<!doctype html>
-<html>
+{% comment %}
+Deliberately self-contained: no {% extends %}, no custom template tags and no
+external assets. A 500 page must render when the application is already failing,
+so it cannot depend on anything that might itself be broken. The previous version
+pulled in jQuery from a CDN and several stylesheets, none of which are needed to
+say "something went wrong".
+{% endcomment %}<!doctype html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Coming+Soon">
-    <link href="/static/css/normalize.css" media="screen, print" rel="stylesheet">
-    <link href="/static/css/minisass-menu.css" media="screen, print" rel="stylesheet">
-    <link href="/static/css/base.css" media="screen, print" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
-    <script src="/static/js/jqueryslidemenu.js"></script>
-
-    <title>
-     miniSASS Error
-    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Something went wrong | miniSASS</title>
+    <link rel="icon" href="/static/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <style>
+      body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+             color: #1f2933; background: #f7f9fa; }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 64px 24px; text-align: center; }
+      h1 { font-size: 22px; margin: 0 0 12px; }
+      p { line-height: 1.6; color: #52606d; margin: 0 0 24px; }
+      .btn { display: inline-block; padding: 10px 20px; border-radius: 6px;
+             background: #539987; color: #fff; text-decoration: none; font-weight: 600; }
+      .btn:hover { background: #47836f; }
+      .muted { font-size: 13px; color: #7b8794; }
+    </style>
   </head>
   <body>
-    <div class="minisass-box"><div class="minisass-container">
-
-      <div class="minisass-heading">
-        <a href="/">
-          <img src="/static/images/mini_SASS_logo.png" alt="miniSASS Logo"
-          title="miniSASS Logo" style="margin: 4px 0 4px 4px">
-        </a>
-        <div class="registration_links">
-        </div>
-        <div class="minisass-heading-space">
-        </div>
-        <div id="myslidemenu">
-          <ul class="minisass-menus">
-          </ul>
-        </div>
-
-      <div class="red-line">
-      </div>
-
-      <div class="minisass-page">
-
-              <div class="minisass-page-content">
-                An error occurred. Please contact simon@groundtruth.co.za for
-                assistance.
-              </div>
-
-              <div class="minisass-right-column">
-              </div>
-
-      </div>
-
-      <div class="minisass-bottom">
-          <div>
-          </div>
-      </div>
-      <div class="minisass-bottom-logos">
-      </div>
-
-    </div></div>
-
+    <div class="wrap">
+      <h1>Something went wrong on our side</h1>
+      <p>
+        This is not your fault. The problem has been logged and the team has been
+        notified. Please try again in a few minutes.
+      </p>
+      <a class="btn" href="/">Back to miniSASS</a>
+      <p class="muted" style="margin-top:28px">
+        If it keeps happening, contact
+        <a href="mailto:info@minisass.org">info@minisass.org</a>.
+      </p>
+    </div>
   </body>
 </html>
