@@ -32,18 +32,23 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
         settextColor('bg-red-100 text-red-600')
       }
     } catch (error) {
-      if (error.response?.data) {
-         const errorMessage = error.response.data.error;
-      if (errorMessage.includes("Multiple users found")) {
-        // Display a message informing the user to contact the system admin
+      // Narrowed through axios rather than read straight off `error`, which
+      // TypeScript types as unknown. The previous version raised TS18046 and
+      // would also have thrown a second time on a non-axios failure, replacing
+      // the real error with "cannot read property response of undefined".
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+
+      if (typeof errorMessage === "string" && errorMessage.includes("Multiple users found")) {
+        // Tell the user to contact an administrator; they cannot fix this one.
         setResetErrors(["Multiple users found for this email address. Please contact the system administrator."]);
-      } else {
+      } else if (typeof errorMessage === "string" && errorMessage) {
         setResetErrors([errorMessage]);
+      } else {
+        setResetErrors(["Password update failed. Please try again later."]);
       }
-    } else {
-      setResetErrors(["Password update failed. Please try again later."]);
-    }
-    settextColor('bg-red-100 text-red-600');
+      settextColor('bg-red-100 text-red-600');
     }
   };
 
@@ -51,50 +56,57 @@ const PasswordResetForm = ({ uid = "", token = "" }) => {
   const isDisabled = newPassword !== repeatPassword;
 
   return (
-    <div className=" ">
+    <div className="w-full max-w-[560px]">
       {resetErrors.length > 0 && (
-        <div className={`${textColor} p-2 rounded mb-4`}>
+        <div className={`${textColor} p-3 rounded mb-4`}>
           {resetErrors.join(", ")}
         </div>
       )}
-      <div style={{ display: "flex", flexDirection: "row-reverse", gap: "40px" }}>
-        <div style={{ flex: 1, flexDirection: "column" }}>
-          <label>Confirm Password:</label>
-          <br />
+      {/*
+        A plain two-column grid that collapses on narrow screens. This was a
+        row-reverse flexbox, which rendered the fields in the opposite order to
+        the markup - so the box labelled "Password" appeared on the right of the
+        one labelled "Confirm Password". The inputs were also 16.5vw wide, which
+        is about 60px on a phone.
+      */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="new-password">Password:</label>
           <input
+            id="new-password"
             type="password"
             name="password"
+            autoComplete="new-password"
             value={newPassword}
             onChange={(e) =>  {
               setNewPassword(e.target.value);
               setResetErrors([]);
             }}
             placeholder="Password"
-            style={{ borderRadius: "4px", width: "16.5vw" }}
+            className="border border-gray-400 p-2 rounded w-full"
           />
-           <br/>
-          {newPassword && newPassword !== repeatPassword && (
-            <span style={{ color: "red" }}>Passwords do not match</span>
-          )}
         </div>
-        <div style={{ flex: 1, flexDirection: "column" }}>
-          <label>Password:</label>
-          <br />
+        <div className="flex flex-col gap-1">
+          <label htmlFor="confirm-password">Confirm Password:</label>
           <input
+            id="confirm-password"
             type="password"
             name="confirmPassword"
+            autoComplete="new-password"
             value={repeatPassword}
             onChange={(e) => {
               setRepeatPassword(e.target.value)
               setResetErrors([]);
             }}
             placeholder="Confirm Password"
-            style={{ borderRadius: "4px", width: "16.5vw" }}
+            className="border border-gray-400 p-2 rounded w-full"
           />
         </div>
       </div>
-      <br />
-      <div className="flex items-center justify-between">
+      {newPassword && repeatPassword && newPassword !== repeatPassword && (
+        <p className="mt-2 text-red-600">Passwords do not match</p>
+      )}
+      <div className="flex items-center justify-between mt-6">
         <Button
           className="cursor-pointer rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] text-center text-lg tracking-[0.81px] w-[156px]"
           color="blue_gray_500"

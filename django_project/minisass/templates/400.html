@@ -1,27 +1,22 @@
 {% comment %}
-Deliberately self-contained.
+Django's handler400. Previously absent, so a bad request rendered Django's bare
+built-in page.
 
-This template previously did {% extends "base.html" %}. No project template of that
-name exists, so it resolved to pinax/templates/templates/base.html, which uses a
-{% user_display %} tag that is not loaded here. Rendering therefore raised
-TemplateSyntaxError, and Django returned 500 instead of 404 for EVERY missing URL,
-including /favicon.ico and /robots.txt.
+This one fires for malformed requests and for SuspiciousOperation, which
+includes DisallowedHost - a request arriving with a Host header that is not in
+ALLOWED_HOSTS. That is worth knowing when reading logs: a burst of 400s here
+usually means a misconfigured ALLOWED_HOSTS or a new load balancer hostname,
+not users doing anything unusual.
 
-Keep this page free of {% extends %}, {% include %}, custom tags and external
-assets so it can always render, even when the rest of the application cannot.
-That is why the styling is repeated across 400/403/404/500 rather than shared:
-an error page that depends on another file can fail for the same reason the
-request did, and then the user gets Django's bare fallback instead.
-
-Note there is no mailto here. minisass.org publishes no MX record, so mail sent
-to info@ or support@minisass.org bounces. Reports have to go through the Contact
-Us form, which posts to the API and is delivered to the team.
+Django renders this with an empty context, so no template variables are
+available. Self-contained for the same reason as the other error pages; see
+404.html.
 {% endcomment %}<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page not found | miniSASS</title>
+    <title>That request could not be processed | miniSASS</title>
     <link rel="icon" href="/static/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -58,21 +53,21 @@ Us form, which posts to the API and is delivered to the team.
   <body>
     <header><a class="brand" href="/">mini<b>SASS</b></a></header>
     <main>
-      <p class="code">404</p>
-      <h1>We can&rsquo;t find that page</h1>
+      <p class="code">400</p>
+      <h1>That request could not be processed</h1>
       <p>
-        The address may have changed, or there might be a typo in the link that
-        brought you here. It is also possible the page has been removed.
+        Something about the request was not valid, so miniSASS stopped rather
+        than guessing. This usually means the link was incomplete or had been
+        altered along the way. Opening the page fresh from the menu normally
+        works.
       </p>
       <div class="actions">
         <a class="btn btn-primary" href="/">Back to miniSASS</a>
         <a class="btn btn-secondary" href="/map/">Explore the map</a>
-        <a class="btn btn-secondary" href="/howto/">How to do a survey</a>
       </div>
       <p class="note">
-        If you followed a link on this site to get here, something is broken and
-        we would like to know. Please report it using <strong>Contact Us</strong>
-        in the menu.
+        If a link on this site brought you here, please report it through
+        <strong>Contact Us</strong> in the menu.
       </p>
     </main>
   </body>

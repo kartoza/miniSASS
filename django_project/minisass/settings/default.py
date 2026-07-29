@@ -63,11 +63,19 @@ DEBUG = ast.literal_eval(os.getenv('DEBUG', 'False'))
 SECRET_KEY = os.getenv('SECRET_KEY') or '#vdoy$8tv)5k06)o(+@hyjbvhw^4$q=ub0whn*@k*1s9wwnv9i'
 
 
-# Recipients of unhandled-exception mail when DEBUG is False. Kept as the
-# maintaining team rather than individuals from the original build contract.
-ADMINS = (
-    ('miniSASS admin team', 'info@minisass.org'),
-)
+# Recipients of unhandled-exception mail when DEBUG is False.
+#
+# Empty unless ADMIN_EMAIL is set. This was info@minisass.org, which cannot
+# receive anything - minisass.org publishes no MX record - so every 500 produced
+# a message that bounced. Bounces count against the SES sending reputation, and
+# an error storm generates one per exception, which is a good way to get an
+# account's sending paused. Point ADMIN_EMAIL at a mailbox that exists to turn
+# error reporting back on; the tracebacks are in CloudWatch either way.
+ADMINS = [
+    ('miniSASS admin team', address.strip())
+    for address in os.getenv('ADMIN_EMAIL', '').split(',')
+    if address.strip()
+]
 
 MANAGERS = ADMINS
 
@@ -269,7 +277,41 @@ ROOT_URLCONF = 'minisass.urls'
 WSGI_APPLICATION = 'minisass.wsgi.application'
 
 # email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#
+# Mail goes through the SES API rather than SMTP. SES publishes no SMTP endpoint
+# in af-south-1 - email-smtp.af-south-1.amazonaws.com has no address record at
+# all - so the SMTP backend could never open a connection from this region, and
+# every send failed with "No address associated with hostname". The SES API is
+# available here and authenticates with the ECS task role, so there is also no
+# SMTP password to store or rotate.
+#
+# Override EMAIL_BACKEND to run against something else: the console backend for
+# local development, or the SMTP backend if sending ever moves to a region that
+# offers one. The SMTP_* settings below are still read so that remains possible.
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND') or 'minisass.email_backends.SESEmailBackend'
+AWS_SES_REGION_NAME = (
+    os.getenv('AWS_SES_REGION_NAME')
+    or os.getenv('AWS_S3_REGION_NAME')
+    or 'af-south-1'
+)
+# A verified identity to send from when SES refuses the primary one.
+#
+# An SES domain must verify before it can send, and verification is asynchronous:
+# minisass.org sat at PENDING for over a day with correct DNS published. Every
+# password reset and activation email in a window like that is lost. With this
+# set, the primary address is still tried first and the fallback is used only
+# when SES refuses it, so the moment the domain verifies this stops applying by
+# itself - no redeploy and no secret change.
+#
+# Include a display name so the mail still reads as miniSASS even when it leaves
+# from another domain, e.g. 'miniSASS <no-reply@digitaltwins.iwmi.org>'.
+AWS_SES_FALLBACK_FROM_EMAIL = os.getenv('SES_FALLBACK_FROM_EMAIL') or None
+# Optional: enables SES event publishing (bounces, complaints) when configured.
+AWS_SES_CONFIGURATION_SET = os.getenv('AWS_SES_CONFIGURATION_SET') or None
+# Optional. Left unset, boto3 uses the ECS task role, which is preferred.
+AWS_SES_ACCESS_KEY_ID = os.getenv('AWS_SES_ACCESS_KEY_ID') or None
+AWS_SES_SECRET_ACCESS_KEY = os.getenv('AWS_SES_SECRET_ACCESS_KEY') or None
+
 EMAIL_HOST = os.getenv('SMTP_HOST', 'smtp')
 EMAIL_PORT = int(os.getenv('SMTP_PORT') or 25)
 # With Amazon SES this is an SMTP credential (an access key id), not an address.
@@ -301,20 +343,30 @@ def _email_list(env_name, default):
 # public, and hardcoding staff addresses here would publish them to scrapers. Set
 # the real recipients through the environment (they come from Secrets Manager in
 # production), which also means routing changes need no code deploy.
-CONTACT_US_RECIPIENT_EMAILS = _email_list(
-    'CONTACT_US_RECIPIENT_EMAILS', ['info@minisass.org'])
+# Where the contact form and support requests are delivered. Set per environment
+# through Secrets Manager; production routes them to the miniSASS team.
+#
+# There is deliberately no default. The previous defaults were info@minisass.org
+# and support@minisass.org, which read as sensible but cannot receive anything:
+# minisass.org publishes no MX record, so mail addressed to them bounces. An
+# unset variable therefore dropped every contact-form submission into a black
+# hole while the site reported success to the sender. Defaulting to nothing
+# makes the send refuse and log instead, which is at least visible.
+CONTACT_US_RECIPIENT_EMAILS = _email_list('CONTACT_US_RECIPIENT_EMAILS', [])
 
-SUPPORT_RECIPIENT_EMAILS = _email_list(
-    'SUPPORT_RECIPIENT_EMAILS', ['support@minisass.org'])
+SUPPORT_RECIPIENT_EMAILS = _email_list('SUPPORT_RECIPIENT_EMAILS', [])
 
 EXPERT_APPROVAL_RECIPIENT_EMAILS = _email_list(
     'EXPERT_APPROVAL_RECIPIENT_EMAILS', CONTACT_US_RECIPIENT_EMAILS)
 
-# Retained because existing code refers to the singular name.
-CONTACT_US_RECEPIENT_EMAIL = CONTACT_US_RECIPIENT_EMAILS[0]
+# Retained because existing code refers to the singular name. Guarded, because
+# the list above can now legitimately be empty.
+CONTACT_US_RECEPIENT_EMAIL = (
+    CONTACT_US_RECIPIENT_EMAILS[0] if CONTACT_US_RECIPIENT_EMAILS else '')
 # Note: EXPERT_APPROVAL_RECIPIENT_EMAIL was defined here but never read by any
 # code. Kept as an alias so nothing breaks if something starts using it.
-EXPERT_APPROVAL_RECIPIENT_EMAIL = EXPERT_APPROVAL_RECIPIENT_EMAILS[0]
+EXPERT_APPROVAL_RECIPIENT_EMAIL = (
+    EXPERT_APPROVAL_RECIPIENT_EMAILS[0] if EXPERT_APPROVAL_RECIPIENT_EMAILS else '')
 
 # django registration/auth settings
 # ACCOUNT_ACTIVATION_DAYS = 7

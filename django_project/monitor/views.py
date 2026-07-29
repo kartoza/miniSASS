@@ -11,8 +11,9 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.core.serializers import serialize
+from minisass.mail import deliver
 from django.db import connection
 from django.db.models import (
     F,
@@ -70,7 +71,14 @@ def send_email_observation(observation, new_site=False):
     email_content = get_email_content(observation, new_site)
     email_sender = settings.DEFAULT_FROM_EMAIL
 
-    send_mail(email_subject, email_content, email_sender, [observation.user.email])
+    # The observation is saved before this is called, so a mail failure must not
+    # discard it. deliver() logs the problem and lets the submission stand.
+    deliver(EmailMessage(
+        subject=email_subject,
+        body=email_content,
+        from_email=email_sender,
+        to=[observation.user.email],
+    ))
 
 
 def index(request):

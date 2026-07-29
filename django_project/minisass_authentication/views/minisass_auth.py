@@ -12,6 +12,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db import IntegrityError
+from minisass.mail import MAIL_UNAVAILABLE_MESSAGE, deliver, send_html_email
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -226,7 +227,11 @@ def contact_us(request):
 		reply_to=[email],
 	)
 	mail.attach_alternative(html_body, 'text/html')
-	mail.send()
+	if not deliver(mail):
+		return Response(
+			{'message': MAIL_UNAVAILABLE_MESSAGE},
+			status=status.HTTP_503_SERVICE_UNAVAILABLE
+		)
 
 	return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
 
@@ -263,14 +268,15 @@ def request_password_reset(request):
 		'domain': domain,
 		'reset_link': reset_link,
 	})
-	send_mail(
-		mail_subject,
-		None,
-		settings.DEFAULT_FROM_EMAIL,
-		[email],
-		html_message=message
-	)
-	
+	# A transport failure here used to escape as a 500, which told the user their
+	# account was broken when in fact only the mail service was unavailable. 503
+	# is the honest answer: the request was valid, the dependency was not.
+	if not send_html_email(mail_subject, message, [email]):
+		return Response(
+			{'error': MAIL_UNAVAILABLE_MESSAGE},
+			status=status.HTTP_503_SERVICE_UNAVAILABLE
+		)
+
 	return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
 
@@ -427,18 +433,31 @@ def register(request):
 						'name': username
 					})
 					create_privacy_policy_consent(request, user)
-					send_mail(
-						mail_subject,
-						None,
-						settings.DEFAULT_FROM_EMAIL,
-						[user_email],
-						html_message=message
+					activation_email_sent = send_html_email(
+						mail_subject, message, [user_email]
 					)
 
 				else:
 					return Response({'error': 'Missing required fields for User Profile creation. country ,organisation name, organisation type'}, status=status.HTTP_400_BAD_REQUEST)
 
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
+				# The account exists at this point whether or not the activation
+				# email went out. Letting a mail failure raise here was what
+				# created accounts that were registered but permanently
+				# inactive: the user saw an error, assumed the signup had not
+				# worked, and every retry hit "email already registered". The
+				# account is now reported as created either way, with a flag the
+				# frontend can use to tell the user to ask for a new activation
+				# link rather than to register again.
+				response_data = dict(serializer.data)
+				response_data['activation_email_sent'] = activation_email_sent
+				if not activation_email_sent:
+					response_data['warning'] = (
+						'Your account was created, but we could not send the '
+						'activation email. Please contact support@minisass.org '
+						'to have your account activated.'
+					)
+
+				return Response(response_data, status=status.HTTP_201_CREATED)
 			
 			except IntegrityError:
 				return Response({'error': 'User creation failed due to integrity error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -532,13 +551,11 @@ class UploadCertificate(APIView):
 					'user_url': f'{domain}/admin/auth/user/{user_profile.user.id}/change/'
 				})
 
-				send_mail(
-					'Certificate Verification',
-					None,
-					settings.DEFAULT_FROM_EMAIL,
-					[email],
-					html_message=message
-				)
+				# The certificate is already stored, so a failed notification must
+				# not turn into a 400 that tells the user their upload did not
+				# work. send_html_email logs the failure for an administrator to
+				# follow up; the upload itself is reported as the success it is.
+				send_html_email('Certificate Verification', message, [email])
 			except Exception as e:
 				return JsonResponse({'error': str(e)}, status=400)
 			return JsonResponse(CertificateSerializer(user_profile).data)
