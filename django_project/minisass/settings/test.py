@@ -7,6 +7,11 @@ from minisass.settings.default import *
 
 ENABLE_GEOCODING = False
 
+# Django's test runner already swaps in the locmem backend, but state it here as
+# well so that anything sending mail outside the runner - a shell, a management
+# command run against these settings - cannot reach SES with real credentials.
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
 # Keep the test suite off object storage entirely.
 #
 # MINION_STORAGE is attached to model FileFields, so without this override the

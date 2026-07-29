@@ -97,6 +97,10 @@
           "value": "<AWS_REGION>"
         },
         {
+          "name": "SES_FALLBACK_FROM_EMAIL",
+          "value": "miniSASS <no-reply@digitaltwins.iwmi.org>"
+        },
+        {
           "name": "DEBUG",
           "value": "False"
         }

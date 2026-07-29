@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
+from minisass.mail import send_html_email
 from minisass.storage import minio_storage
 from django.contrib.auth.hashers import check_password
 
@@ -125,13 +126,11 @@ def post_certificate_approve(sender, instance: UserProfile, **kwargs):
             'full_name': '{} {}'.format(instance.user.first_name, instance.user.last_name)
         })
 
-        send_mail(
-            'Certificate Approved',
-            None,
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            html_message=message
-        )
+        # This runs inside a post_save signal, so an exception here propagates
+        # out of UserProfile.save() and breaks whatever triggered it - including
+        # an administrator approving an expert in the Django admin, which would
+        # fail with a 500 after the approval had already been written.
+        send_html_email('Certificate Approved', message, [email])
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
