@@ -72,7 +72,7 @@ django-storages[boto3]==1.14.2
 # Changed from tensorflow==2.15.0.post1
 tensorflow==2.15.1
 django-leaflet==0.31.0
-geopy==2.4.1
+geopy==2.5.0
 pycountry==24.6.1
 
 django-constance==4.3.2
